@@ -98,6 +98,7 @@ router_bgp:
     router_id: 10.255.0.4
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.1.96
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -116,6 +117,7 @@ router_bgp:
     router_id: 10.255.0.4
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.1.96
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -380,7 +382,7 @@ ethernet_interfaces:
   peer: dc1-spine1
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet2
+  description: P2P_dc1-spine1_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:
@@ -390,7 +392,7 @@ ethernet_interfaces:
   peer: dc1-spine2
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet2
+  description: P2P_dc1-spine2_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:
@@ -400,7 +402,7 @@ ethernet_interfaces:
   peer: dc1-wan1
   peer_interface: Ethernet2
   peer_type: wan_router
-  description: P2P_LINK_TO_DC1-WAN1_Ethernet2
+  description: P2P_dc1-wan1_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:
@@ -410,7 +412,7 @@ ethernet_interfaces:
   peer: dc1-wan2
   peer_interface: Ethernet2
   peer_type: wan_router
-  description: P2P_LINK_TO_DC1-WAN2_Ethernet2
+  description: P2P_dc1-wan2_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:
@@ -549,6 +551,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -575,6 +585,10 @@ prefix_lists:
     action: permit 10.255.0.0/27 eq 32
   - sequence: 20
     action: permit 10.255.1.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.1.96/31
 - name: PL-L2LEAF-INBAND-MGMT
   sequence_numbers:
   - sequence: 10

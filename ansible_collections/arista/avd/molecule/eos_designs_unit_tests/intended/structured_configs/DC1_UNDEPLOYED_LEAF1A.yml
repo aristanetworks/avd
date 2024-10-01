@@ -116,7 +116,6 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -137,7 +136,6 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -158,6 +156,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -180,7 +179,6 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -201,7 +199,6 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 172.31.11.25
       peer_group: MLAG-PEERS
@@ -222,6 +219,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -242,6 +240,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -262,6 +261,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -282,6 +282,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
       peer_group: MLAG-PEERS
@@ -990,8 +991,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 10.255.251.24/31
-  - sequence: 20
-    action: permit 172.31.11.24/31
 router_bfd:
   multihop:
     interval: 1200

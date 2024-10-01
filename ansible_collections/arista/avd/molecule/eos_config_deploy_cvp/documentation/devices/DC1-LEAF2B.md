@@ -372,38 +372,38 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet3 | - | 172.31.255.17/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet3 | - | 172.31.255.19/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet3 | - | 172.31.255.21/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet3 | - | 172.31.255.23/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet3 | - | 172.31.255.17/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet3 | - | 172.31.255.19/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet3 | - | 172.31.255.21/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet3 | - | 172.31.255.23/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet3
+   description P2P_DC1-SPINE1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
    ip address 172.31.255.17/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet3
+   description P2P_DC1-SPINE2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
    ip address 172.31.255.19/31
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet3
+   description P2P_DC1-SPINE3_Ethernet3
    no shutdown
    mtu 1500
    no switchport
    ip address 172.31.255.21/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet3
+   description P2P_DC1-SPINE4_Ethernet3
    no shutdown
    mtu 1500
    no switchport
@@ -1055,7 +1055,7 @@ router bgp 65102
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description DC1-LEAF2A_Vlan3011
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.7:13
@@ -1065,7 +1065,7 @@ router bgp 65102
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description DC1-LEAF2A_Vlan3012
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.7:10
@@ -1075,7 +1075,7 @@ router bgp 65102
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description DC1-LEAF2A_Vlan3009
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.7:11
@@ -1085,7 +1085,7 @@ router bgp 65102
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description DC1-LEAF2A_Vlan3010
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.7:20
@@ -1095,7 +1095,7 @@ router bgp 65102
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description DC1-LEAF2A_Vlan3019
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.7:30
@@ -1105,7 +1105,7 @@ router bgp 65102
       update wait-install
       neighbor 10.255.251.2 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.2 description DC1-LEAF2A_Vlan3029
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -1162,6 +1162,12 @@ no ip igmp snooping vlan 120
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.255.251.2/31 |
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -1169,6 +1175,9 @@ no ip igmp snooping vlan 120
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 10.255.251.2/31
 ```
 
 ### Route-maps
@@ -1180,6 +1189,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -1193,6 +1209,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

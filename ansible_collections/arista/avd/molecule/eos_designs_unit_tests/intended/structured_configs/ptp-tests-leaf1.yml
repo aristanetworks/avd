@@ -79,6 +79,7 @@ router_bgp:
     router_id: 10.254.1.1
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.254.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -294,7 +295,7 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
+  description: P2P_ptp-tests-spine1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -313,7 +314,7 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
+  description: P2P_ptp-tests-spine1_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -446,6 +447,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -462,6 +471,10 @@ prefix_lists:
     action: permit 10.254.1.0/27 eq 32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.96/31
 router_bfd:
   multihop:
     interval: 300

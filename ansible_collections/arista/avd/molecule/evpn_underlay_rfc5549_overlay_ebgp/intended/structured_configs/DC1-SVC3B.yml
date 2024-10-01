@@ -125,6 +125,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3011
       peer_group: MLAG_PEER
@@ -144,6 +145,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3012
       peer_group: MLAG_PEER
@@ -163,6 +165,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3009
       peer_group: MLAG_PEER
@@ -182,6 +185,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3013
       peer_group: MLAG_PEER
@@ -201,6 +205,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3010
       peer_group: MLAG_PEER
@@ -220,6 +225,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3019
       peer_group: MLAG_PEER
@@ -239,6 +245,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3020
       peer_group: MLAG_PEER
@@ -258,6 +265,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan2
       peer_group: MLAG_PEER
@@ -277,6 +285,7 @@ router_bgp:
     router_id: 192.168.255.9
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3030
       peer_group: MLAG_PEER
@@ -901,7 +910,7 @@ ethernet_interfaces:
   peer: DC1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet5
+  description: P2P_DC1-SPINE1_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:
@@ -911,7 +920,7 @@ ethernet_interfaces:
   peer: DC1-SPINE2
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet5
+  description: P2P_DC1-SPINE2_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:
@@ -921,7 +930,7 @@ ethernet_interfaces:
   peer: DC1-SPINE3
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet5
+  description: P2P_DC1-SPINE3_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:
@@ -931,7 +940,7 @@ ethernet_interfaces:
   peer: DC1-SPINE4
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet5
+  description: P2P_DC1-SPINE4_Ethernet5
   shutdown: false
   mtu: 1500
   switchport:

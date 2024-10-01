@@ -467,7 +467,7 @@ interface Ethernet21
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel7 | CUSTOM_DC1_L2LEAF1_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
+| Port-Channel7 | CUSTOM_DC1-L2LEAF1A_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0808:0707:0606 |
 | Port-Channel9 | CUSTOM_DC1-L2LEAF3A_Po1 | trunk | 110-111,120-124,130-131,160-162 | - | - | - | - | - | 0000:1234:0606:0707:0808 |
 | Port-Channel10 | CUSTOM_server01_MLAG_PortChanne1 | trunk | 210-211 | - | - | - | - | - | - |
 | Port-Channel11 | CUSTOM_server01_MTU_PROFILE_MLAG_PortChanne1 | access | 110 | - | - | - | - | - | - |
@@ -488,7 +488,7 @@ interface Ethernet21
 ```eos
 !
 interface Port-Channel7
-   description CUSTOM_DC1_L2LEAF1_Po1
+   description CUSTOM_DC1-L2LEAF1A_Po1
    no shutdown
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk

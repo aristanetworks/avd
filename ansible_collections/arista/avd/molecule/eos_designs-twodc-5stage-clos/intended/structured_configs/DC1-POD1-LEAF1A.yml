@@ -141,7 +141,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet3
+  description: P2P_DC1-POD1-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -155,7 +155,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet3
+  description: P2P_DC1-POD1-SPINE2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -178,7 +178,7 @@ ethernet_interfaces:
   peer: DC1-RS1
   peer_interface: Ethernet3
   peer_type: overlay-controller
-  description: P2P_LINK_TO_DC1-RS1_Ethernet3
+  description: P2P_DC1-RS1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
