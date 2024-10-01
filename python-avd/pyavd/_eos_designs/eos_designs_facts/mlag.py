@@ -70,3 +70,12 @@ class MlagMixin:
         {"primary": int, "secondary": int}
         """
         return self.shared_utils.mlag_switch_ids
+
+    @cached_property
+    def local_vrfs(self: EosDesignsFacts) -> set():
+        """
+        Return a set of VRF names.
+
+        The vrfs are those filtered on this switch but _not_ on the mlag peer (since we would have circular references then).
+        """
+        return self.shared_utils.local_vrfs

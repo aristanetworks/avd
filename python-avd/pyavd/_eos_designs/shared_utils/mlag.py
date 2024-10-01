@@ -217,4 +217,8 @@ class MlagMixin:
 
     @cached_property
     def mlag_peer_vrfs(self: SharedUtils) -> list[str]:
-        return self.get_mlag_peer_facts.shared_utils.vrfs
+        # Fact phase
+        if hasattr(self.mlag_peer_facts, "shared_utils"):
+            return self.mlag_peer_facts.shared_utils.local_vrfs
+        # structured_config phase
+        return self.get_mlag_peer_fact("local_vrfs")

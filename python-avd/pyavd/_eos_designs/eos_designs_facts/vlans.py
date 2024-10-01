@@ -159,15 +159,6 @@ class VlansMixin:
         return mlag_peer_facts._endpoint_vlans_and_trunk_groups
 
     @cached_property
-    def local_vrfs(self: EosDesignsFacts) -> set():
-        """
-        Return a set of VRF names.
-
-        The vrfs are those filtered on this switch but NOT mlag peer (since we would have circular references then).
-        """
-        return self.shared_utils.local_vrfs
-
-    @cached_property
     def _endpoint_vlans_and_trunk_groups(self: EosDesignsFacts) -> tuple[set, set]:
         """
         Return set of vlans and set of trunk groups.

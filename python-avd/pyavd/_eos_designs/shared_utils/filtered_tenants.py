@@ -182,14 +182,6 @@ class FilteredTenantsMixin:
 
         return vrf["name"] in (self.get_switch_fact("uplink_switch_vrfs", required=False) or [])
 
-    def is_mlag_peer_vrf(self: SharedUtils, vrf: dict) -> bool:
-        """
-        Returns True if the given VRF name should be configured because it is present on the mlag peer.
-
-        - This device is in an MLAG pair and the VRF is present on the remote peer.
-        """
-        return self.mlag and vrf["name"] in self.mlag_peer_facts.local_vrfs
-
     @cached_property
     def local_vrfs(self: SharedUtils) -> list:
         """
@@ -200,160 +192,125 @@ class FilteredTenantsMixin:
         if not self.network_services_l3:
             return []
 
-        vrfs = set()
-        for tenant in self.filtered_tenants:
-            for vrf in self._local_vrfs(tenant):
-                vrfs.add(vrf["name"])
-
+        vrfs = {vrf["name"] for vrf in self._build_vrfs[0]}
         return natural_sort(vrfs)
 
-    def _local_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
-        """TODO."""
-        filtered_vrfs = []
+    @cached_property
+    def _build_vrfs(self: SharedUtils) -> [list[dict], list[dict]]:
+        """Return two lists of VRFs object as dicts.
 
-        vrfs: list[dict] = natural_sort(tenant.get("vrfs", []), "name")
-        for original_vrf in vrfs:
-            if not self.is_accepted_vrf(original_vrf):
-                continue
+        Filtering based on svi tags, l3interfaces, loopbacks or self.is_forced_vrf() check.
 
-            # Copying original_vrf and setting "tenant" for use by child objects like SVIs
-            vrf = {**original_vrf, "tenant": tenant["name"]}
+        The first one containing VRFs to be configured on the device.
 
-            bgp_peers = natural_sort(vrf.get("bgp_peers"), "ip_address")
-            vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.hostname in bgp_peer.get("nodes", [])]
-            vrf["static_routes"] = [route for route in get(vrf, "static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])]
-            vrf["ipv6_static_routes"] = [
-                route for route in get(vrf, "ipv6_static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])
-            ]
-            vrf["svis"] = self.filtered_svis(vrf)
-            vrf["l3_interfaces"] = [
-                l3_interface
-                for l3_interface in get(vrf, "l3_interfaces", default=[])
-                if (
-                    self.hostname in get(l3_interface, "nodes", default=[])
-                    and l3_interface.get("ip_addresses") is not None
-                    and l3_interface.get("interfaces") is not None
-                )
-            ]
-            vrf["loopbacks"] = [loopback for loopback in get(vrf, "loopbacks", default=[]) if self.hostname == get(loopback, "node")]
+        The second one a list of VRFs not retained by local criteria.
+        This list is reused in case some VRFs need to be forced on the device because of the MLAG peer.
+        """
+        selected_vrfs = not_selected_vrfs = []
 
-            if self.vtep is True:
-                evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
-                if self.evpn_multicast:
-                    vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
-                    vrf["_evpn_l3_multicast_group_ip"] = get(vrf, "evpn_l3_multicast.evpn_underlay_l3_multicast_group")
+        filter_tenants = self.filter_tenants
+        for network_services_key in self.network_services_keys:
+            tenants = get(self.hostvars, network_services_key["name"])
+            for tenant in tenants:
+                if tenant["name"] not in filter_tenants and "all" not in filter_tenants:
+                    continue
 
-                    rps = []
-                    for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
-                        if self.hostname in get(rp_entry, "nodes", default=[self.hostname]):
-                            for rp_ip in get(
-                                rp_entry,
-                                "rps",
-                                required=True,
-                                org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
-                            ):
-                                rp_address = {"address": rp_ip}
-                                if (rp_groups := get(rp_entry, "groups")) is not None:
-                                    if (acl := rp_entry.get("access_list_name")) is not None:
-                                        rp_address["access_lists"] = [acl]
-                                    else:
-                                        rp_address["groups"] = rp_groups
+            vrfs: list[dict] = natural_sort(tenant.get("vrfs", []), "name")
+            for original_vrf in vrfs:
+                if not self.is_accepted_vrf(original_vrf):
+                    continue
 
-                                rps.append(rp_address)
+                # Copying original_vrf and setting "tenant" for use by child objects like SVIs
+                vrf = {**original_vrf, "tenant": tenant["name"]}
 
-                    if rps:
-                        vrf["_pim_rp_addresses"] = rps
+                bgp_peers = natural_sort(vrf.get("bgp_peers"), "ip_address")
+                vrf["bgp_peers"] = [bgp_peer for bgp_peer in bgp_peers if self.hostname in bgp_peer.get("nodes", [])]
+                vrf["static_routes"] = [
+                    route for route in get(vrf, "static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])
+                ]
+                vrf["ipv6_static_routes"] = [
+                    route for route in get(vrf, "ipv6_static_routes", default=[]) if self.hostname in get(route, "nodes", default=[self.hostname])
+                ]
+                vrf["svis"] = self.filtered_svis(vrf)
+                vrf["l3_interfaces"] = [
+                    l3_interface
+                    for l3_interface in get(vrf, "l3_interfaces", default=[])
+                    if (
+                        self.hostname in get(l3_interface, "nodes", default=[])
+                        and l3_interface.get("ip_addresses") is not None
+                        and l3_interface.get("interfaces") is not None
+                    )
+                ]
+                vrf["loopbacks"] = [loopback for loopback in get(vrf, "loopbacks", default=[]) if self.hostname == get(loopback, "node")]
 
-                    for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
-                        if self.hostname in evpn_peg.get("nodes", [self.hostname]) and rps:
-                            vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
-                            break
+                if self.vtep is True:
+                    evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
+                    if self.evpn_multicast:
+                        vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
+                        vrf["_evpn_l3_multicast_group_ip"] = get(vrf, "evpn_l3_multicast.evpn_underlay_l3_multicast_group")
 
-            vrf["additional_route_targets"] = [
-                rt
-                for rt in get(vrf, "additional_route_targets", default=[])
-                if (
-                    self.hostname in get(rt, "nodes", default=[self.hostname])
-                    and rt.get("address_family") is not None
-                    and rt.get("route_target") is not None
-                    and rt.get("type") in ["import", "export"]
-                )
-            ]
+                        rps = []
+                        for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
+                            if self.hostname in get(rp_entry, "nodes", default=[self.hostname]):
+                                for rp_ip in get(
+                                    rp_entry,
+                                    "rps",
+                                    required=True,
+                                    org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
+                                ):
+                                    rp_address = {"address": rp_ip}
+                                    if (rp_groups := get(rp_entry, "groups")) is not None:
+                                        if (acl := rp_entry.get("access_list_name")) is not None:
+                                            rp_address["access_lists"] = [acl]
+                                        else:
+                                            rp_address["groups"] = rp_groups
 
-            if vrf["svis"] or vrf["l3_interfaces"] or vrf["loopbacks"] or self.is_forced_vrf(vrf):
-                filtered_vrfs.append(vrf)
+                                    rps.append(rp_address)
 
-            if tenant_evpn_vlan_bundle := get(tenant, "evpn_vlan_bundle"):
-                for svi in vrf["svis"]:
-                    svi["evpn_vlan_bundle"] = get(svi, "evpn_vlan_bundle", default=tenant_evpn_vlan_bundle)
+                        if rps:
+                            vrf["_pim_rp_addresses"] = rps
 
-        return filtered_vrfs
+                        for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
+                            if self.hostname in evpn_peg.get("nodes", [self.hostname]) and rps:
+                                vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
+                                break
+
+                vrf["additional_route_targets"] = [
+                    rt
+                    for rt in get(vrf, "additional_route_targets", default=[])
+                    if (
+                        self.hostname in get(rt, "nodes", default=[self.hostname])
+                        and rt.get("address_family") is not None
+                        and rt.get("route_target") is not None
+                        and rt.get("type") in ["import", "export"]
+                    )
+                ]
+
+                if vrf["svis"] or vrf["l3_interfaces"] or vrf["loopbacks"] or self.is_forced_vrf(vrf):
+                    selected_vrfs.append(vrf)
+                else:
+                    not_selected_vrfs.append(vrf)
+
+                if tenant_evpn_vlan_bundle := get(tenant, "evpn_vlan_bundle"):
+                    for svi in vrf["svis"]:
+                        svi["evpn_vlan_bundle"] = get(svi, "evpn_vlan_bundle", default=tenant_evpn_vlan_bundle)
+
+        return selected_vrfs, not_selected_vrfs
 
     def filtered_vrfs(self: SharedUtils, tenant: dict) -> list[dict]:
         """
         Return sorted and filtered vrf list from given tenant.
 
-        Filtering based on svi tags, l3interfaces, loopbacks or self.is_forced_vrf() check.
         Keys of VRF data model will be converted to lists.
         """
-        filtered_vrfs = self._local_vrfs(tenant)
-        vrfs: list[dict] = natural_sort(tenant.get("vrfs", []), "name")
-        for original_vrf in vrfs:
-            if not self.is_mlag_peer_vrf or get_item(filtered_vrfs, "name", original_vrf["name"]) is not None:
+        selected_vrfs, not_selected_vrfs = self._build_vrfs
+        filtered_vrfs = [vrf for vrf in selected_vrfs if vrf["tenant"] == tenant["name"]]
+        # Need to loop through the not selected VRFs and check if they should be added because of the MLAG peer.
+        for vrf in not_selected_vrfs:
+            if vrf["tenant"] != tenant["name"]:
                 continue
-            # Copying original_vrf and setting "tenant" for use by child objects like SVIs
-            vrf = {**original_vrf, "tenant": tenant["name"]}
-            vrf["bgp_peers"] = []
-            vrf["static_routes"] = []
-            vrf["ipv6_static_routes"] = []
-            vrf["svis"] = []
-            vrf["l3_interfaces"] = []
-            vrf["loopbacks"] = []
-
-            if self.vtep is True:
-                evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
-                if self.evpn_multicast:
-                    vrf["_evpn_l3_multicast_enabled"] = evpn_l3_multicast_enabled
-                    vrf["_evpn_l3_multicast_group_ip"] = get(vrf, "evpn_l3_multicast.evpn_underlay_l3_multicast_group")
-
-                    rps = []
-                    for rp_entry in default(get(vrf, "pim_rp_addresses"), get(tenant, "pim_rp_addresses"), []):
-                        if self.hostname in get(rp_entry, "nodes", default=[self.hostname]):
-                            for rp_ip in get(
-                                rp_entry,
-                                "rps",
-                                required=True,
-                                org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
-                            ):
-                                rp_address = {"address": rp_ip}
-                                if (rp_groups := get(rp_entry, "groups")) is not None:
-                                    if (acl := rp_entry.get("access_list_name")) is not None:
-                                        rp_address["access_lists"] = [acl]
-                                    else:
-                                        rp_address["groups"] = rp_groups
-
-                                rps.append(rp_address)
-
-                    if rps:
-                        vrf["_pim_rp_addresses"] = rps
-
-                    for evpn_peg in default(get(vrf, "evpn_l3_multicast.evpn_peg"), get(tenant, "evpn_l3_multicast.evpn_peg"), []):
-                        if self.hostname in evpn_peg.get("nodes", [self.hostname]) and rps:
-                            vrf["_evpn_l3_multicast_evpn_peg_transit"] = evpn_peg.get("transit")
-                            break
-
-            vrf["additional_route_targets"] = [
-                rt
-                for rt in get(vrf, "additional_route_targets", default=[])
-                if (
-                    self.hostname in get(rt, "nodes", default=[self.hostname])
-                    and rt.get("address_family") is not None
-                    and rt.get("route_target") is not None
-                    and rt.get("type") in ["import", "export"]
-                )
-            ]
-
-            filtered_vrfs.append(vrf)
+            if vrf["name"] in self.mlag_peer_vrfs:
+                filtered_vrfs.append(vrf)
 
         return filtered_vrfs
 
