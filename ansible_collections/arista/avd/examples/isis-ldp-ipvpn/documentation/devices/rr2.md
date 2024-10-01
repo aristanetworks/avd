@@ -175,9 +175,9 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet2 | P2P_LINK_TO_p4_Ethernet2 | - | 10.255.3.18/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_p2_Ethernet3 | - | 10.255.3.16/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_rr1_Ethernet4 | - | 10.255.3.15/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_p4_Ethernet2 | - | 10.255.3.18/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_p2_Ethernet3 | - | 10.255.3.16/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_rr1_Ethernet4 | - | 10.255.3.15/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -192,7 +192,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 interface Ethernet2
-   description P2P_LINK_TO_p4_Ethernet2
+   description P2P_p4_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -209,7 +209,7 @@ interface Ethernet2
    isis authentication key 7 <removed>
 !
 interface Ethernet3
-   description P2P_LINK_TO_p2_Ethernet3
+   description P2P_p2_Ethernet3
    no shutdown
    mtu 1500
    no switchport
@@ -226,7 +226,7 @@ interface Ethernet3
    isis authentication key 7 <removed>
 !
 interface Ethernet4
-   description P2P_LINK_TO_rr1_Ethernet4
+   description P2P_rr1_Ethernet4
    no shutdown
    mtu 1500
    no switchport
@@ -464,13 +464,13 @@ router bgp 65001
    neighbor RR-OVERLAY-PEERS send-community
    neighbor RR-OVERLAY-PEERS maximum-routes 0
    neighbor 10.255.1.1 peer group MPLS-OVERLAY-PEERS
-   neighbor 10.255.1.1 description pe1
+   neighbor 10.255.1.1 description pe1_Loopback0
    neighbor 10.255.1.2 peer group MPLS-OVERLAY-PEERS
-   neighbor 10.255.1.2 description pe2
+   neighbor 10.255.1.2 description pe2_Loopback0
    neighbor 10.255.1.3 peer group MPLS-OVERLAY-PEERS
-   neighbor 10.255.1.3 description pe3
+   neighbor 10.255.1.3 description pe3_Loopback0
    neighbor 10.255.2.1 peer group RR-OVERLAY-PEERS
-   neighbor 10.255.2.1 description rr1
+   neighbor 10.255.2.1 description rr1_Loopback0
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
@@ -520,10 +520,10 @@ router bfd
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 10.255.2.2
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces

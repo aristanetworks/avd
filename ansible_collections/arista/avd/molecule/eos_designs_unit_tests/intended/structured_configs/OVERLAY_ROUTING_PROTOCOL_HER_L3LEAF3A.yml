@@ -34,7 +34,7 @@ router_bgp:
   - ip_address: 192.168.253.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
-    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B
+    description: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3B_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -81,7 +81,7 @@ vlans:
   name: SVI_ON_LEAF2-3
   tenant: TEST
 - id: 3000
-  name: MLAG_iBGP_TEST
+  name: MLAG_L3_VRF_TEST
   trunk_groups:
   - MLAG
   tenant: TEST
@@ -124,7 +124,7 @@ vlan_interfaces:
   tenant: TEST
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TEST'
+  description: MLAG_L3_VRF_TEST
   vrf: TEST
   mtu: 9214
   ip_address: 192.168.253.4/31
@@ -178,6 +178,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -194,6 +202,10 @@ prefix_lists:
     action: permit 192.168.254.0/24 eq 32
   - sequence: 20
     action: permit 192.168.253.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.253.4/31
 ip_igmp_snooping:
   globally_enabled: true
 vxlan_interface:

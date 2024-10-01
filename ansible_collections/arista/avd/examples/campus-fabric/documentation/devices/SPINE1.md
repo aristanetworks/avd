@@ -324,7 +324,7 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet52/1 | P2P_LINK_TO_WAN_Ethernet1/1 | - | 10.0.0.3/31 | default | 1500 | False | - | - |
+| Ethernet52/1 | P2P_WAN_Ethernet1/1 | - | 10.0.0.3/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -351,7 +351,7 @@ interface Ethernet51/1
    channel-group 501 mode active
 !
 interface Ethernet52/1
-   description P2P_LINK_TO_WAN_Ethernet1/1
+   description P2P_WAN_Ethernet1/1
    no shutdown
    mtu 1500
    no switchport

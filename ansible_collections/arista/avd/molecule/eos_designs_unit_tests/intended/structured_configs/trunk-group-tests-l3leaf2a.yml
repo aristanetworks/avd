@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.255.247.5
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: trunk-group-tests-l3leaf2b
-    description: trunk-group-tests-l3leaf2b
+    description: trunk-group-tests-l3leaf2b_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -66,10 +66,11 @@ router_bgp:
     router_id: 192.168.250.11
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.247.5
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: trunk-group-tests-l3leaf2b
+      description: trunk-group-tests-l3leaf2b_Vlan3199
     updates:
       wait_install: true
   vlans:
@@ -146,7 +147,7 @@ vlans:
   name: l2vlan210_with_trunk_groups
   tenant: TRUNK_GROUP_TESTS
 - id: 3199
-  name: MLAG_iBGP_TG_200
+  name: MLAG_L3_VRF_TG_200
   trunk_groups:
   - MLAG
   tenant: TRUNK_GROUP_TESTS
@@ -175,7 +176,7 @@ vlan_interfaces:
   tenant: TRUNK_GROUP_TESTS
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf TG_200'
+  description: MLAG_L3_VRF_TG_200
   vrf: TG_200
   mtu: 9214
   ip_address: 10.255.247.4/31
@@ -248,6 +249,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -264,6 +273,10 @@ prefix_lists:
     action: permit 192.168.250.0/24 eq 32
   - sequence: 20
     action: permit 192.168.249.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.247.4/31
 router_bfd:
   multihop:
     interval: 300

@@ -43,7 +43,7 @@ router_bgp:
   - ip_address: 10.255.251.11
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: CUSTOM-PYTHON_MODULES-L3LEAF1B
-    description: CUSTOM-PYTHON_MODULES-L3LEAF1B
+    description: CUSTOM-PYTHON_MODULES-L3LEAF1B_Vlan4093
   - ip_address: 172.31.255.20
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65001'
@@ -57,7 +57,7 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: CUSTOM-PYTHON_MODULES-SPINE1
-    description: CUSTOM-PYTHON_MODULES-SPINE1
+    description: CUSTOM-PYTHON_MODULES-SPINE1_Loopback0
     remote_as: '65001'
   redistribute_routes:
   - source_protocol: connected
@@ -72,7 +72,7 @@ router_bgp:
       description: CUSTOM-PYTHON_MODULES-L3LEAF2_Ethernet1.1_vrf_TEST_VRF
     - ip_address: 10.255.240.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: CUSTOM-PYTHON_MODULES-L3LEAF1B
+      description: CUSTOM-PYTHON_MODULES-L3LEAF1B_Vlan3000
     rd: 192.168.255.21:1
     route_targets:
       import:
@@ -85,6 +85,7 @@ router_bgp:
         - '1:1'
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     updates:
       wait_install: true
   address_family_evpn:
@@ -152,7 +153,7 @@ vlans:
   name: Tenant_A_OP_Zone_1
   tenant: CUSTOM_PYTHON_MODULES_TENANT
 - id: 3000
-  name: MLAG_iBGP_TEST_VRF
+  name: MLAG_L3_VRF_TEST_VRF
   trunk_groups:
   - MLAG
   tenant: CUSTOM_PYTHON_MODULES_TENANT
@@ -259,6 +260,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_L3LEAF
@@ -275,6 +284,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.240.10/31
 router_bfd:
   multihop:
     interval: 300

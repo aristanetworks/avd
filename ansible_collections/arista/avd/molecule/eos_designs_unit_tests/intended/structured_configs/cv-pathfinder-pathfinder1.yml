@@ -105,11 +105,11 @@ router_bgp:
   - ip_address: 192.168.144.3
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder2
-    description: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2_Dps1
   - ip_address: 6.6.6.6
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder3
-    description: cv-pathfinder-pathfinder3
+    description: cv-pathfinder-pathfinder3_Dps1
   vrfs:
   - name: default
     rd: 192.168.44.2:1
@@ -591,7 +591,11 @@ metadata:
         - name: Site404
           id: 404
           location:
-            address: Not Found
+            address: Atlantis
+        - name: Site405
+          id: 405
+          location:
+            address: El Dorado
         - name: Site422
           id: 422
           location:

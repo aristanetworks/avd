@@ -187,16 +187,16 @@ vlan 2020
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR2_Ethernet1 | - | 100.64.48.2/31 | default | 9214 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER1_Ethernet2 | - | 100.64.48.5/31 | default | 9178 | False | - | - |
+| Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | 100.64.48.2/31 | default | 9214 | False | - | - |
+| Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | 100.64.48.5/31 | default | 9178 | False | - | - |
 | Ethernet5.100 | TENANT_B_SITE_3 | - | 192.168.48.0/31 | TENANT_B_WAN | - | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LSR2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER1_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -210,7 +210,7 @@ vlan 2020
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE1-LSR2_Ethernet1
+   description P2P_SITE1-LSR2_Ethernet1
    no shutdown
    mtu 9214
    speed forced 100gfull
@@ -231,7 +231,7 @@ interface Ethernet1
 
 !
 interface Ethernet2
-   description P2P_LINK_TO_SITE1-LER1_Ethernet2
+   description P2P_SITE1-LER1_Ethernet2
    no shutdown
    mtu 9178
    speed forced 10000full
@@ -688,13 +688,13 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.5 description SITE1-LER1
+   neighbor 100.70.0.5 description SITE1-LER1_Loopback0
    neighbor 100.70.0.7 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.7 description SITE2-LER1
+   neighbor 100.70.0.7 description SITE2-LER1_Loopback0
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.8 description SITE1-RR1
+   neighbor 100.70.0.8 description SITE1-RR1_Loopback0
    neighbor 100.70.0.9 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.9 description SITE2-RR1
+   neighbor 100.70.0.9 description SITE2-RR1_Loopback0
    !
    vlan 10
       rd 100.70.0.6:10010
@@ -808,10 +808,10 @@ router bfd
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 100.70.0.6
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces

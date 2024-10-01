@@ -41,7 +41,7 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: EVPN-MULTICAST-SPINE1
-    description: EVPN-MULTICAST-SPINE1
+    description: EVPN-MULTICAST-SPINE1_Loopback0
     remote_as: '65001'
   address_family_evpn:
     peer_groups:
@@ -694,7 +694,7 @@ ethernet_interfaces:
   peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet3
+  description: P2P_EVPN-MULTICAST-SPINE1_Ethernet3
   shutdown: false
   mtu: 9214
   switchport:

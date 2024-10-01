@@ -57,11 +57,11 @@ router_bgp:
   - ip_address: 10.255.255.10
     peer_group: WAN-OVERLAY-PEERS
     peer: dc1-leaf1a
-    description: dc1-leaf1a
+    description: dc1-leaf1a_Dps1
   - ip_address: 10.255.255.20
     peer_group: WAN-OVERLAY-PEERS
     peer: dc1-leaf1b
-    description: dc1-leaf1b
+    description: dc1-leaf1b_Dps1
   - ip_address: 10.255.1.1
     peer: dc1-wan1
     description: dc1-wan1
@@ -166,7 +166,7 @@ ethernet_interfaces:
   peer: dc1-leaf1a
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-LEAF1A_Ethernet7
+  description: P2P_dc1-leaf1a_Ethernet7
   shutdown: false
   mtu: 1500
   switchport:
@@ -176,7 +176,7 @@ ethernet_interfaces:
   peer: dc1-leaf1b
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-LEAF1B_Ethernet7
+  description: P2P_dc1-leaf1b_Ethernet7
   shutdown: false
   mtu: 1500
   switchport:

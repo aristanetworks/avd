@@ -453,7 +453,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet6 = 'up'"
+    "custom_field": "Interface Ethernet1 - P2P_dc2-spine1_Ethernet6 = 'up'"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -471,7 +471,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet6 = 'up'"
+    "custom_field": "Interface Ethernet2 - P2P_dc2-spine2_Ethernet6 = 'up'"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -588,7 +588,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up'"
+    "custom_field": "Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up'"
   },
   {
     "name": "dc2-leaf3b.arista.com",
@@ -597,7 +597,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up'"
+    "custom_field": "Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up'"
   },
   {
     "name": "dc2-leaf3b.arista.com",

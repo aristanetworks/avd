@@ -369,10 +369,12 @@ class FilteredTenantsMixin:
         }
 
         if (svi_profile_name := filtered_svi.get("profile")) is not None:
-            svi_profile = get_item(self.svi_profiles, "profile", svi_profile_name, default={})
+            msg = f"Profile '{svi_profile_name}' applied under SVI '{filtered_svi['name']}' does not exist in `svi_profiles`."
+            svi_profile = get_item(self.svi_profiles, "profile", svi_profile_name, required=True, custom_error_msg=msg)
 
         if (svi_parent_profile_name := svi_profile.get("parent_profile")) is not None:
-            svi_parent_profile = get_item(self.svi_profiles, "profile", svi_parent_profile_name, default={})
+            msg = f"Profile '{svi_parent_profile_name}' applied under SVI Profile '{svi_profile_name}' does not exist in `svi_profiles`."
+            svi_parent_profile = get_item(self.svi_profiles, "profile", svi_parent_profile_name, required=True, custom_error_msg=msg)
 
         # deepmerge all levels of config - later vars override previous.
         # Using destructive_merge=False to avoid having references to profiles and other data.

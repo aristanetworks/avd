@@ -281,18 +281,18 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.13/31 | default | - | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.15/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
+| Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.13/31 | default | - | False | - | - |
+| Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.15/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+   description P2P_DC1-POD1-SPINE1_Ethernet4
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -301,7 +301,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4
+   description P2P_DC1-POD1-SPINE2_Ethernet4
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -330,13 +330,13 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6
+   description P2P_DC2-POD1-LEAF1A_Ethernet6
    no shutdown
    no switchport
    ip address 100.100.100.101/24
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
+   description P2P_DC1-POD1-SPINE1_Ethernet7
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -345,7 +345,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
+   description P2P_DC1-POD1-SPINE2_Ethernet7
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -900,19 +900,19 @@ router bgp 65112.100
    neighbor 100.100.100.201 description DC2-POD1-LEAF1A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
-   neighbor 172.16.10.1 description DC1-RS1
+   neighbor 172.16.10.1 description DC1-RS1_Loopback0
    neighbor 172.16.10.1 route-map RM-EVPN-FILTER-AS65101 out
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110.100
-   neighbor 172.16.110.1 description DC1-POD1-SPINE1
+   neighbor 172.16.110.1 description DC1-POD1-SPINE1_Loopback0
    neighbor 172.16.110.1 route-map RM-EVPN-FILTER-AS65110.100 out
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.3 remote-as 65111.100
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.110.3 description DC1-POD1-LEAF1A_Loopback0
    neighbor 172.16.110.3 route-map RM-EVPN-FILTER-AS65111.100 out
    neighbor 172.16.120.3 peer group EVPN-OVERLAY-CORE
    neighbor 172.16.120.3 remote-as 65121
-   neighbor 172.16.120.3 description DC1-POD2-LEAF1A
+   neighbor 172.16.120.3 description DC1-POD2-LEAF1A_Loopback0
    neighbor 172.17.110.8 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.110.8 remote-as 65110.100
    neighbor 172.17.110.8 description DC1-POD1-SPINE1_Ethernet4
@@ -926,7 +926,7 @@ router bgp 65112.100
    neighbor 172.17.110.14 remote-as 65110.100
    neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 172.20.110.3 description DC1-POD1-LEAF2B
+   neighbor 172.20.110.3 description DC1-POD1-LEAF2B_Vlan4094
    redistribute attached-host
    redistribute connected
    !

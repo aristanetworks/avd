@@ -219,22 +219,22 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF4A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF4B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_DC1-LEAF4A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_DC1-LEAF4B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF4A_Ethernet1
+   description P2P_DC1-LEAF4A_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF4B_Ethernet1
+   description P2P_DC1-LEAF4B_Ethernet1
    no shutdown
    mtu 1500
    no switchport
@@ -414,10 +414,10 @@ router bgp 65001
    neighbor interface Ethernet2 peer-group UNDERLAY_PEERS remote-as 65107
    neighbor 192.168.255.14 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.14 remote-as 65107
-   neighbor 192.168.255.14 description DC1-LEAF4A
+   neighbor 192.168.255.14 description DC1-LEAF4A_Loopback0
    neighbor 192.168.255.15 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.15 remote-as 65107
-   neighbor 192.168.255.15 description DC1-LEAF4B
+   neighbor 192.168.255.15 description DC1-LEAF4B_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

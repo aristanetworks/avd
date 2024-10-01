@@ -250,16 +250,16 @@ vlan 2601
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
+| Ethernet3 | P2P_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
+   description P2P_DC1-POD2-SPINE1_Ethernet3
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -268,7 +268,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+   description P2P_DC1-POD2-SPINE2_Ethernet3
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -277,7 +277,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-RS2_Ethernet3
+   description P2P_DC1-RS2_Ethernet3
    no shutdown
    no switchport
    ip address 172.17.10.12/31
@@ -634,11 +634,11 @@ router bgp 65121
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.120.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.1 remote-as 65120
-   neighbor 172.16.120.1 description DC1-POD2-SPINE1
+   neighbor 172.16.120.1 description DC1-POD2-SPINE1_Loopback0
    neighbor 172.16.120.1 route-map RM-EVPN-FILTER-AS65120 out
    neighbor 172.16.120.2 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.2 remote-as 65120
-   neighbor 172.16.120.2 description DC1-POD2-SPINE2
+   neighbor 172.16.120.2 description DC1-POD2-SPINE2_Loopback0
    neighbor 172.16.120.2 route-map RM-EVPN-FILTER-AS65120 out
    neighbor 172.17.10.13 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.13 remote-as 65102

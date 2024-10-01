@@ -51,7 +51,7 @@ router_bgp:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.143.2
     peer: cv-pathfinder-transit1B
     description: cv-pathfinder-transit1B
@@ -220,7 +220,7 @@ ethernet_interfaces:
   peer: site-ha-enabled-leaf1
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet1
+  description: P2P_site-ha-enabled-leaf1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -231,7 +231,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet1.1000_vrf_IT
+  description: P2P_site-ha-enabled-leaf1_Ethernet1.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -242,7 +242,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet1.142_vrf_PROD
+  description: P2P_site-ha-enabled-leaf1_Ethernet1.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -253,7 +253,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.666
   peer_type: l3leaf
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF1_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_site-ha-enabled-leaf1_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
