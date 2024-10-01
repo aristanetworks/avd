@@ -6,6 +6,10 @@ tenants:
   - name: TENANT1
     # Number used to generate the VNI of each VLAN by adding the VLAN number in this tenant.
     mac_vrf_vni_base: 10000
+    bgp_peer_groups:
+      - name: ISP1_BGP_PEERS
+        remote_as: 577
+        description: ISP1_BGP_Peers
     vrfs:
       # VRF definitions inside the tenant.
       - name: VRF10
@@ -31,6 +35,17 @@ tenants:
             name: VRF10_VLAN12
             enabled: true
             ip_address_virtual: 10.10.12.1/24
+        bgp_peers:
+          - ip_address: 142.198.50.1
+            peer_group: ISP1_BGP_PEERS
+            nodes:
+              - dc1-leaf1a
+              - dc1-leaf1b
+          - ip_address: 142.198.50.2
+            peer_group: ISP1_BGP_PEERS
+            nodes:
+              - dc1-leaf1a
+              - dc1-leaf1b
       - name: VRF11
         vrf_vni: 11
         vtep_diagnostic:
@@ -45,6 +60,12 @@ tenants:
             name: VRF11_VLAN22
             enabled: true
             ip_address_virtual: 10.10.22.1/24
+        bgp_peers:
+          - ip_address: 142.78.60.1
+            nodes:
+              - dc1-leaf1a
+              - dc1-leaf1b
+            remote_as: 786
 
     l2vlans:
       # These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric

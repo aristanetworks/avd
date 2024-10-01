@@ -16,7 +16,7 @@ from .yaml_loader import YamlLoader
 
 # TODO: The pyavd imports can be removed once validate_state has been moved to pyavd.
 try:
-    from pyavd._utils import default, get
+    from pyavd._utils import default, get, get_item
 except ImportError as e:
     default = get = RaiseOnUse(ImportError(f"The 'arista.avd' collection requires the 'pyavd' Python library. Got import error {e}"))
 
@@ -34,5 +34,6 @@ __all__ = [
     "YamlLoader",
     "default",
     "get",
+    "get_item",
     "write_file",
 ]

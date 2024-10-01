@@ -563,6 +563,51 @@ anta.tests.routing.bgp:
       safi: unicast
     result_overwrite:
       custom_field: 'BGP IPv4 Unicast Peer: dc1-wan2 (IP: 10.255.255.5)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.1.97
+      safi: unicast
+      vrf: VRF10
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.1.97 - VRF VRF10'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 142.198.50.1
+      safi: unicast
+      vrf: VRF10
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 142.198.50.1 - VRF VRF10'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 142.198.50.2
+      safi: unicast
+      vrf: VRF10
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 142.198.50.2 - VRF VRF10'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.1.97
+      safi: unicast
+      vrf: VRF11
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.1.97 - VRF VRF11'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 142.78.60.1
+      safi: unicast
+      vrf: VRF11
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 142.78.60.1 - VRF VRF11'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent

@@ -32,6 +32,9 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ebgp_multihop: 3
+  - name: ISP1_BGP_PEERS
+    remote_as: '577'
+    description: ISP1_BGP_Peers
   address_family_ipv4:
     peer_groups:
     - name: MLAG-IPv4-UNDERLAY-PEER
@@ -102,6 +105,16 @@ router_bgp:
     - ip_address: 10.255.1.96
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc1-leaf1a_Vlan3009
+    - ip_address: 142.198.50.1
+      peer_group: ISP1_BGP_PEERS
+    - ip_address: 142.198.50.2
+      peer_group: ISP1_BGP_PEERS
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 142.198.50.1
+        activate: true
+      - ip_address: 142.198.50.2
+        activate: true
   - name: VRF11
     rd: 10.255.0.4:11
     route_targets:
@@ -120,6 +133,12 @@ router_bgp:
     - ip_address: 10.255.1.96
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: dc1-leaf1a_Vlan3010
+    - ip_address: 142.78.60.1
+      remote_as: '786'
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 142.78.60.1
+        activate: true
   vlans:
   - id: 11
     tenant: TENANT1
