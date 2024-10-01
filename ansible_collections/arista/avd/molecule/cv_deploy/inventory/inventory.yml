@@ -11,6 +11,14 @@ SITE1:
             avd-ci-spine1:
             avd-ci-spine2:
             avd-ci-core1:
+              # ansible_host: "{{ lookup('env', 'AVD_CI_CORE1_FQDN') }}"
+              # ansible_user: "{{ lookup('env', 'EOS_EAPI_USERNAME') }}"
+              # ansible_password: "{{ lookup('env', 'EOS_EAPI_PASSWORD') }}"
+              # ansible_connection: httpapi
+              # ansible_httpapi_use_ssl: True
+              # ansible_httpapi_validate_certs: False
+              # ansible_network_os: eos
+              # ansible_httpapi_port: 443
         SITE1_LEAFS:
           hosts:
             avd-ci-leaf1:
