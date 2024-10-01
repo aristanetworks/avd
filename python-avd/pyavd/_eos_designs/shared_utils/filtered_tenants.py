@@ -192,11 +192,11 @@ class FilteredTenantsMixin:
         if not self.network_services_l3:
             return []
 
-        vrfs = {vrf["name"] for vrf in self._build_vrfs[0]}
+        vrfs = {vrf["name"] for vrfs_list in self._build_vrfs[0].values() for vrf in vrfs_list}
         return natural_sort(vrfs)
 
     def _update_vrf_with_vtep_data(self: SharedUtils, tenant: dict, vrf: dict) -> None:
-        """Build VTEP related config for the VRF."""
+        """In-place update VRF dict with VTEP related config."""
         evpn_l3_multicast_enabled = default(get(vrf, "evpn_l3_multicast.enabled"), get(tenant, "evpn_l3_multicast.enabled"))
         if not self.evpn_multicast:
             return
@@ -233,7 +233,7 @@ class FilteredTenantsMixin:
 
     def _build_tenant_vrfs(self: SharedUtils, tenant: dict) -> [list[dict], list[dict]]:
         """Build selected and not selected VRFs list per tenant."""
-        selected_vrfs = not_selected_vrfs = []
+        selected_vrfs, not_selected_vrfs = [], []
 
         vrfs: list[dict] = natural_sort(tenant.get("vrfs", []), "name")
 
@@ -288,27 +288,27 @@ class FilteredTenantsMixin:
         return selected_vrfs, not_selected_vrfs
 
     @cached_property
-    def _build_vrfs(self: SharedUtils) -> [list[dict], list[dict]]:
-        """Return two lists of VRFs object as dicts.
+    def _build_vrfs(self: SharedUtils) -> [dict[str, list[dict]], dict[str, list[dict]]]:
+        """Return dictionaries keyed by tenant name of VRFs object as dicts.
 
         Filtering based on svi tags, l3interfaces, loopbacks or self.is_forced_vrf() check.
 
         The first one containing VRFs to be configured on the device.
 
-        The second one a list of VRFs not retained by local criteria.
+        The second one the  VRFs not retained by local criteria.
         This list is reused in case some VRFs need to be forced on the device because of the MLAG peer.
         """
-        selected_vrfs = not_selected_vrfs = []
+        selected_vrfs, not_selected_vrfs = {}, {}
 
         filter_tenants = self.filter_tenants
         for network_services_key in self.network_services_keys:
             tenants = get(self.hostvars, network_services_key["name"])
             for tenant in tenants:
-                if tenant["name"] not in filter_tenants and "all" not in filter_tenants:
+                tenant_name = tenant["name"]
+                if tenant_name not in filter_tenants and "all" not in filter_tenants:
                     continue
-                tenant_selected_vrfs, tenant_not_selected_vrfs = self._build_tenant_vrfs(tenant)
-                selected_vrfs.extend(tenant_selected_vrfs)
-                not_selected_vrfs.extend(tenant_not_selected_vrfs)
+
+                selected_vrfs[tenant_name], not_selected_vrfs[tenant_name] = self._build_tenant_vrfs(tenant)
 
         return selected_vrfs, not_selected_vrfs
 
@@ -318,12 +318,13 @@ class FilteredTenantsMixin:
 
         Keys of VRF data model will be converted to lists.
         """
+        tenant_name = tenant["name"]
+
         selected_vrfs, not_selected_vrfs = self._build_vrfs
-        filtered_vrfs = [vrf for vrf in selected_vrfs if vrf["tenant"] == tenant["name"]]
+        filtered_vrfs = selected_vrfs[tenant_name]
+
         # Need to loop through the not selected VRFs and check if they should be added because of the MLAG peer.
-        for vrf in not_selected_vrfs:
-            if vrf["tenant"] != tenant["name"]:
-                continue
+        for vrf in not_selected_vrfs[tenant_name]:
             if vrf["name"] in self.mlag_peer_vrfs:
                 filtered_vrfs.append(vrf)
 
