@@ -58,8 +58,6 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         if router_bgp.bgp.additional_paths.send is arista.avd.defined %}
 {%             if router_bgp.bgp.additional_paths.send == 'disabled' %}
 | no bgp additional-paths send |
-{%             elif router_bgp.bgp.additional_paths.send == 'disabled_any' %}
-| no bgp additional-paths send any |
 {%             elif router_bgp.bgp.additional_paths.send == 'any' %}
 | bgp additional-paths send any |
 {%             elif router_bgp.bgp.additional_paths.send == 'backup' %}
