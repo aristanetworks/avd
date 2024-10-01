@@ -99,7 +99,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             - peer
             - peer_interface
             - peer_channel_group_id
-            - peer_group
+            - peer_node_group
             - port_channel_id
             - port_channel_description
             - mpls_overlay_role
