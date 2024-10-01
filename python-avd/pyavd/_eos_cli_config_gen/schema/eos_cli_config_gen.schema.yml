@@ -19809,7 +19809,6 @@ $defs:
         type: int
         description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
           this setting. If this key-value pair is not set, it will send all paths
-          this setting. If this key-value pair is not set, it will send all paths
           in best ECMP group.
         convert_types:
         - str
