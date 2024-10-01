@@ -36,7 +36,7 @@ class PtpMixin:
 
     @cached_property
     def ptp_profile(self: SharedUtils) -> dict:
-        msg = f"Profile '{self.ptp_profile_name}' defined under `ptp.profile` node variables does not exist in `ptp_profiles`."
+        msg = f"PTP Profile '{self.ptp_profile_name}' referenced under `ptp.profile` node variables does not exist in `ptp_profiles`."
         return get_item(self.ptp_profiles, "profile", self.ptp_profile_name, required=True, custom_error_msg=msg)
 
     @cached_property

@@ -206,7 +206,7 @@ class UtilsMixin:
 
         # Apply PTP profile config
         if (ptp_profile_name := get(adapter, "ptp.profile", default=self.shared_utils.ptp_profile_name)) is not None:
-            msg = f"Profile '{ptp_profile_name}' defined under {context} does not exist in `ptp_profiles`."
+            msg = f"PTP Profile '{ptp_profile_name}' referenced under {context} does not exist in `ptp_profiles`."
             ptp_config.update(get_item(self.shared_utils.ptp_profiles, "profile", ptp_profile_name, required=True, custom_error_msg=msg))
 
         ptp_config["enable"] = True
