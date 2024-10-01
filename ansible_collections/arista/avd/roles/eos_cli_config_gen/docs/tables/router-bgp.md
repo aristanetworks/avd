@@ -227,15 +227,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;domain</samp>](## "router_bgp.vlan_aware_bundles.[].route_targets.import_export_evpn_domains.[].domain") | String |  |  | Valid Values:<br>- <code>remote</code><br>- <code>all</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target</samp>](## "router_bgp.vlan_aware_bundles.[].route_targets.import_export_evpn_domains.[].route_target") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vlan_aware_bundles.[].redistribute_routes") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vlan_aware_bundles.[].redistribute_routes.[]") | String |  |  | Valid Values:<br>- <code>dot1x</code><br>- <code>host-route</code><br>- <code>igmp</code><br>- <code>learned</code><br>- <code>link-local</code><br>- <code>mld</code><br>- <code>multicast-router</code><br>- <code>router-mac</code><br>- <code>static</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vlan_aware_bundles.[].redistribute_routes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;no_redistribute_routes</samp>](## "router_bgp.vlan_aware_bundles.[].no_redistribute_routes") | List, items: String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vlan_aware_bundles.[].no_redistribute_routes.[]") | String |  |  | Valid Values:<br>- <code>dot1x</code><br>- <code>host-route</code><br>- <code>igmp</code><br>- <code>learned</code><br>- <code>link-local</code><br>- <code>mld</code><br>- <code>multicast-router</code><br>- <code>router-mac</code><br>- <code>static</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;learned_remote</samp>](## "router_bgp.vlan_aware_bundles.[].learned_remote") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_mac</samp>](## "router_bgp.vlan_aware_bundles.[].router_mac") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_bgp.vlan_aware_bundles.[].router_mac.next_hop") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;system</samp>](## "router_bgp.vlan_aware_bundles.[].router_mac.system") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vlan_aware_bundles.[].router_mac.system.enabled") | Boolean | Required |  | Valid Values:<br>- <code>True</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_gateway</samp>](## "router_bgp.vlan_aware_bundles.[].router_mac.system.default_gateway") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "router_bgp.vlan_aware_bundles.[].no_redistribute_routes.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "router_bgp.vlan_aware_bundles.[].vlan") | String |  |  |  | VLAN range as string. Example "100-200,300". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "router_bgp.vlan_aware_bundles.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the Router BGP, VLAN-aware-bundle definition in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;vlans</samp>](## "router_bgp.vlans") | List, items: Dictionary |  |  |  |  |
@@ -1595,15 +1589,9 @@
               - domain: <str; "remote" | "all">
                 route_target: <str>
           redistribute_routes:
-            - <str; "dot1x" | "host-route" | "igmp" | "learned" | "link-local" | "mld" | "multicast-router" | "router-mac" | "static">
+            - <str>
           no_redistribute_routes:
-            - <str; "dot1x" | "host-route" | "igmp" | "learned" | "link-local" | "mld" | "multicast-router" | "router-mac" | "static">
-          learned_remote: <bool>
-          router_mac:
-            next_hop: <bool>
-            system:
-              enabled: <bool; True; required>
-              default_gateway: <bool>
+            - <str>
 
           # VLAN range as string. Example "100-200,300".
           vlan: <str>

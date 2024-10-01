@@ -868,47 +868,10 @@ keys:
               type: list
               items:
                 type: str
-                valid_values:
-                  - dot1x
-                  - host-route
-                  - igmp
-                  - learned
-                  - link-local
-                  - mld
-                  - multicast-router
-                  - router-mac
-                  - static
             no_redistribute_routes:
               type: list
               items:
                 type: str
-                valid_values:
-                  - dot1x
-                  - host-route
-                  - igmp
-                  - learned
-                  - link-local
-                  - mld
-                  - multicast-router
-                  - router-mac
-                  - static
-            learned_remote:
-              type: bool
-            router_mac:
-              type: dict
-              keys:
-                next_hop:
-                  type: bool
-                system:
-                  type: dict
-                  keys:
-                    enabled:
-                      type: bool
-                      required: true
-                      valid_values:
-                        - true
-                    default_gateway:
-                      type: bool
             vlan:
               type: str
               description: VLAN range as string. Example "100-200,300".
