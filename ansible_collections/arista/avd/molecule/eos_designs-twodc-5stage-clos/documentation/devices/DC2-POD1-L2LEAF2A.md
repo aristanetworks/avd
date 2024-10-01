@@ -189,7 +189,7 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC2-POD1-LEAF2A_Ethernet3 | *trunk | *4092 | *- | *- | 1 |
+| Ethernet1 | L2_DC2-POD1-LEAF2A_Ethernet3 | *trunk | *4092 | *- | *- | 1 |
 
 *Inherited from Port-Channel Interface
 
@@ -198,7 +198,7 @@ vlan 4092
 ```eos
 !
 interface Ethernet1
-   description DC2-POD1-LEAF2A_Ethernet3
+   description L2_DC2-POD1-LEAF2A_Ethernet3
    no shutdown
    channel-group 1 mode active
 ```
@@ -211,14 +211,14 @@ interface Ethernet1
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC2-POD1-LEAF2A_Po3 | trunk | 4092 | - | - | - | - | - | - |
+| Port-Channel1 | L2_DC2-POD1-LEAF2A_Port-Channel3 | trunk | 4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel1
-   description DC2-POD1-LEAF2A_Po3
+   description L2_DC2-POD1-LEAF2A_Port-Channel3
    no shutdown
    switchport trunk allowed vlan 4092
    switchport mode trunk

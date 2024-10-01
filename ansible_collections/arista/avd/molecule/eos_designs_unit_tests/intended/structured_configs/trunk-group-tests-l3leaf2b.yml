@@ -187,7 +187,7 @@ port_channel_interfaces:
       - CUSTOM_MLAG_TG_NAME
   shutdown: false
 - name: Port-Channel1
-  description: TRUNK-GROUP-TESTS-L2LEAF4_Po1
+  description: L2_trunk-group-tests-l2leaf4_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -219,7 +219,7 @@ ethernet_interfaces:
   peer: trunk-group-tests-l2leaf4
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: TRUNK-GROUP-TESTS-L2LEAF4_Ethernet2
+  description: L2_trunk-group-tests-l2leaf4_Ethernet2
   shutdown: false
   channel_group:
     id: 1

@@ -229,7 +229,7 @@ port_channel_interfaces:
     transport: ipv4
     enable: true
 - name: Port-Channel11
-  description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
+  description: L2_ptp-tests-l2leaf1-ptp-disabled_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -238,7 +238,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 11
 - name: Port-Channel12
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
+  description: L2_ptp-tests-l2leaf2-ptp-enabled_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -256,7 +256,7 @@ port_channel_interfaces:
     transport: ipv4
     enable: true
 - name: Port-Channel14
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
+  description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -344,7 +344,7 @@ ethernet_interfaces:
   peer: ptp-tests-l2leaf1-ptp-disabled
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Ethernet2
+  description: L2_ptp-tests-l2leaf1-ptp-disabled_Ethernet2
   shutdown: false
   channel_group:
     id: 11
@@ -353,7 +353,7 @@ ethernet_interfaces:
   peer: ptp-tests-l2leaf2-ptp-enabled
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Ethernet2
+  description: L2_ptp-tests-l2leaf2-ptp-enabled_Ethernet2
   shutdown: false
   channel_group:
     id: 12
@@ -362,7 +362,7 @@ ethernet_interfaces:
   peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Ethernet2
+  description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Ethernet2
   shutdown: false
   channel_group:
     id: 14
