@@ -99,7 +99,6 @@ router_bgp:
         activate: true
     redistribute:
       ospf:
-        enabled: true
         match_external:
           enabled: true
         match_internal:

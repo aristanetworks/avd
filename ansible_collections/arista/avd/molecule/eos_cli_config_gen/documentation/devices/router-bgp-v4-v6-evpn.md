@@ -278,7 +278,7 @@ router bgp 65100
       route-target export evpn rcf RT_EXPORT_AF_RCF()
       redistribute connected
       redistribute ospf match external include leaked
-      redistribute ospfv3 match internal
+      redistribute ospfv3
       redistribute ospfv3 match nssa-external
    !
    vrf Tenant_B

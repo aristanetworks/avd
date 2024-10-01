@@ -87,7 +87,6 @@ router_bgp:
   address_family_ipv6:
     redistribute:
       ospfv3:
-        enabled: true
         match_external:
           enabled: true
           include_leaked: true

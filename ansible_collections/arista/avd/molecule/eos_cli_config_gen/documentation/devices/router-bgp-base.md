@@ -272,7 +272,7 @@ router bgp 65101
       redistribute dhcp
       redistribute dynamic
       redistribute isis
-      redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
+      redistribute ospfv3
       redistribute ospfv3 match external include leaked
       redistribute ospfv3 match nssa-external 1
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
