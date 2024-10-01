@@ -60,7 +60,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                         loopback_interface["vrf"] = vrf["name"]
 
                     if get(loopback, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
-                        loopback_interface["ospf_area"] = loopback["ospf"].get("area", "0")
+                        loopback_interface["ospf_area"] = loopback["ospf"].get("area", "0.0.0.0")  # noqa: S104
 
                     # Strip None values from interface before adding to list
                     loopback_interface = {key: value for key, value in loopback_interface.items() if value is not None}
