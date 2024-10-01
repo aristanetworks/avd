@@ -256,9 +256,9 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 210 | Tenant_B_OP_Zone_1 | - |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | MLAG |
-| 4093 | LEAF_PEER_L3 | MLAG |
-| 4094 | MLAG_PEER | MLAG |
+| 3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -268,15 +268,15 @@ vlan 210
    name Tenant_B_OP_Zone_1
 !
 vlan 3019
-   name MLAG_iBGP_Tenant_B_OP_Zone
+   name MLAG_L3_VRF_Tenant_B_OP_Zone
    trunk group MLAG
 !
 vlan 4093
-   name LEAF_PEER_L3
+   name MLAG_L3
    trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -290,8 +290,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-LEAF2B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1-LEAF2B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet5 | MLAG_DC1-LEAF2B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1-LEAF2B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | DC1-L2LEAF1A_Ethernet1 | *trunk | *210 | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
@@ -300,17 +300,17 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet2 | - | 172.31.255.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.255.11/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet2 | - | 172.31.255.13/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet2 | - | 172.31.255.15/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet2 | - | 172.31.255.9/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet2 | - | 172.31.255.11/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet2 | - | 172.31.255.13/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet2 | - | 172.31.255.15/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet2
+   description P2P_DC1-SPINE1_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -321,7 +321,7 @@ interface Ethernet1
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet2
+   description P2P_DC1-SPINE2_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -332,7 +332,7 @@ interface Ethernet2
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet2
+   description P2P_DC1-SPINE3_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -343,7 +343,7 @@ interface Ethernet3
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet2
+   description P2P_DC1-SPINE4_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -354,12 +354,12 @@ interface Ethernet4
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-LEAF2B_Ethernet5
+   description MLAG_DC1-LEAF2B_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-LEAF2B_Ethernet6
+   description MLAG_DC1-LEAF2B_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
@@ -377,7 +377,7 @@ interface Ethernet7
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-LEAF2B_Po5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel5 | MLAG_DC1-LEAF2B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel7 | DC1-L2LEAF1A_Po1 | trunk | 210 | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -385,7 +385,7 @@ interface Ethernet7
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-LEAF2B_Po5
+   description MLAG_DC1-LEAF2B_Port-Channel5
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
@@ -442,9 +442,9 @@ interface Loopback1
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan210 | Tenant_B_OP_Zone_1 | Tenant_B_OP_Zone | - | False |
-| Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
+| Vlan4093 | MLAG_L3 | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -466,14 +466,14 @@ interface Vlan210
    ip address virtual 10.2.10.1/24
 !
 interface Vlan3019
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone
+   description MLAG_L3_VRF_Tenant_B_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_OP_Zone
    ip address 10.255.251.2/31
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 1500
    ip address 10.255.251.2/31
@@ -481,7 +481,7 @@ interface Vlan4093
    ip ospf area 0.0.0.0
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
@@ -730,16 +730,16 @@ router bgp 65102
    neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    !
    vlan-aware-bundle Tenant_B_OP_Zone
       rd 192.168.255.6:20
@@ -762,7 +762,7 @@ router bgp 65102
       router-id 192.168.255.6
       update wait-install
       neighbor 10.255.251.3 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.3 description DC1-LEAF2B
+      neighbor 10.255.251.3 description DC1-LEAF2B_Vlan3019
       redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 

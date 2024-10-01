@@ -60,22 +60,22 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE1
-    description: DC1-SPINE1
+    description: DC1-SPINE1_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE2
-    description: DC1-SPINE2
+    description: DC1-SPINE2_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE3
-    description: DC1-SPINE3
+    description: DC1-SPINE3_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE4
-    description: DC1-SPINE4
+    description: DC1-SPINE4_Loopback0
     remote_as: '65001'
   address_family_evpn:
     peer_groups:
@@ -428,8 +428,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: subinterface test
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   vrf: Tenant_L3_VRF_Zone
 - name: Ethernet10.200
   peer_type: l3_interface
@@ -437,8 +437,8 @@ ethernet_interfaces:
   mtu: 9000
   shutdown: false
   description: subinterface test with vlan override
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 121
+  encapsulation_dot1q:
+    vlan: 121
   vrf: Tenant_L3_VRF_Zone
 - name: Ethernet10
   switchport:

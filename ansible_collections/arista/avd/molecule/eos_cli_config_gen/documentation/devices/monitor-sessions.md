@@ -80,6 +80,20 @@ interface Management1
 | Access Group Name | ipv4ACL |
 | Sample | 50 |
 
+##### myMonitoringSession3
+
+####### myMonitoringSession3 Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet20 | both | ip | ipv4ACL | 10 |
+
+####### myMonitoringSession3 Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | - |
+
 #### Monitor Sessions Device Configuration
 
 ```eos
@@ -87,16 +101,17 @@ interface Management1
 monitor session myMonitoringSession1 source Ethernet0 ipv6 access-group ipv6ACL
 monitor session myMonitoringSession1 source Ethernet5 both ip access-group ipv4ACL priority 10
 monitor session myMonitoringSession1 destination Ethernet48
-monitor session myMonitoringSession1 encapsulation gre metadata tx
-monitor session myMonitoringSession1 header remove size 32
 monitor session myMonitoringSession1 truncate
+monitor session myMonitoringSession1 header remove size 32
+monitor session myMonitoringSession1 encapsulation gre metadata tx
+monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 source Ethernet3, Ethernet5 rx
 monitor session myMonitoringSession2 source Ethernet10-15 rx
 monitor session myMonitoringSession2 source Ethernet12 rx
 monitor session myMonitoringSession2 source Ethernet18 tx mac access-group macACL priority 100
 monitor session myMonitoringSession2 destination Cpu
 monitor session myMonitoringSession2 destination Ethernet50
-monitor session myMonitoringSession2 encapsulation gre metadata tx
-monitor session myMonitoringSession2 ip access-group ipv4ACL
 monitor session myMonitoringSession2 sample 50
+monitor session myMonitoringSession2 encapsulation gre metadata tx
+monitor session myMonitoringSession3 source Ethernet20 both ip access-group ipv4ACL priority 10
 ```

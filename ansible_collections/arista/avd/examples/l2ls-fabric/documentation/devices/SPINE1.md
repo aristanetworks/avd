@@ -264,7 +264,7 @@ vlan internal order ascending range 1006 1199
 | 10 | BLUE-NET | - |
 | 20 | GREEN-NET | - |
 | 30 | ORANGE-NET | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -280,7 +280,7 @@ vlan 30
    name ORANGE-NET
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -299,8 +299,8 @@ vlan 4094
 | Ethernet3 | LEAF3_Ethernet1 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet4 | LEAF4_Ethernet1 | *trunk | *10,30 | *- | *- | 3 |
 | Ethernet5 | FIREWALL_FIREWALL_Eth1 | *trunk | *10,20,30 | *- | *- | 5 |
-| Ethernet47 | MLAG_PEER_SPINE2_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
-| Ethernet48 | MLAG_PEER_SPINE2_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet47 | MLAG_SPINE2_Ethernet47 | *trunk | *- | *- | *MLAG | 47 |
+| Ethernet48 | MLAG_SPINE2_Ethernet48 | *trunk | *- | *- | *MLAG | 47 |
 
 *Inherited from Port-Channel Interface
 
@@ -334,12 +334,12 @@ interface Ethernet5
    channel-group 5 mode active
 !
 interface Ethernet47
-   description MLAG_PEER_SPINE2_Ethernet47
+   description MLAG_SPINE2_Ethernet47
    no shutdown
    channel-group 47 mode active
 !
 interface Ethernet48
-   description MLAG_PEER_SPINE2_Ethernet48
+   description MLAG_SPINE2_Ethernet48
    no shutdown
    channel-group 47 mode active
 ```
@@ -355,7 +355,7 @@ interface Ethernet48
 | Port-Channel1 | RACK1_Po1 | trunk | 10,20 | - | - | - | - | 1 | - |
 | Port-Channel3 | RACK2_Po1 | trunk | 10,30 | - | - | - | - | 3 | - |
 | Port-Channel5 | FIREWALL_FIREWALL | trunk | 10,20,30 | - | - | - | - | 5 | - |
-| Port-Channel47 | MLAG_PEER_SPINE2_Po47 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel47 | MLAG_SPINE2_Port-Channel47 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -386,7 +386,7 @@ interface Port-Channel5
    mlag 5
 !
 interface Port-Channel47
-   description MLAG_PEER_SPINE2_Po47
+   description MLAG_SPINE2_Port-Channel47
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
@@ -399,7 +399,7 @@ interface Port-Channel47
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -412,7 +412,7 @@ interface Port-Channel47
 ```eos
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

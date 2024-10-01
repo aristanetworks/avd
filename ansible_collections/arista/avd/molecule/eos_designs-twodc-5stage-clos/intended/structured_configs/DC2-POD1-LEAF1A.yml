@@ -50,27 +50,27 @@ router_bgp:
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-LEAF1A
-    description: DC1-POD1-LEAF1A
+    description: DC1-POD1-LEAF1A_Loopback0
     remote_as: '65111.100'
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-SPINE1
-    description: DC1-POD1-SPINE1
+    description: DC1-POD1-SPINE1_Loopback0
     remote_as: '65110.100'
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS1
-    description: DC1-RS1
+    description: DC1-RS1_Loopback0
     remote_as: '65101'
   - ip_address: 172.16.10.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS2
-    description: DC1-RS2
+    description: DC1-RS2_Loopback0
     remote_as: '65102'
   - ip_address: 172.16.210.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC2-POD1-LEAF2A
-    description: DC2-POD1-LEAF2A
+    description: DC2-POD1-LEAF2A_Loopback0
     remote_as: '65212'
   - ip_address: 100.100.100.101
     remote_as: '65112.100'
@@ -220,7 +220,7 @@ ethernet_interfaces:
   peer: DC2-POD1-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
+  description: P2P_DC2-POD1-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
@@ -232,7 +232,7 @@ ethernet_interfaces:
   peer: DC2-POD1-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
+  description: P2P_DC2-POD1-SPINE2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
@@ -253,20 +253,20 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
   switchport:
     enabled: false
   shutdown: false
   ip_address: 100.100.100.201/24
+  description: P2P_DC1.POD1.LEAF2A_Ethernet7
 - name: Ethernet7
   peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
   switchport:
     enabled: false
   shutdown: false
   ip_address: 11.1.0.39/31
+  description: P2P_DC1-POD1-LEAF2B_Ethernet7
   ptp:
     enable: true
 port_channel_interfaces:

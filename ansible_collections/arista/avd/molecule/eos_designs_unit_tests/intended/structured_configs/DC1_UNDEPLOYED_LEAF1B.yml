@@ -18,7 +18,7 @@ router_bgp:
     type: ipv4
     remote_as: '65111'
     next_hop_self: true
-    description: DC1_UNDEPLOYED_LEAF1A
+    description: MLAG_PEER_DC1_UNDEPLOYED_LEAF1A
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     maximum_routes: 12000
     send_community: all

@@ -48,10 +48,12 @@ router_bgp:
     route_reflector_client: true
   address_family_evpn:
     peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
     - name: WAN-RR-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4:
@@ -75,7 +77,7 @@ router_bgp:
   - ip_address: 192.168.131.1
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: legacy-autovpn-rr1
-    description: legacy-autovpn-rr1
+    description: legacy-autovpn-rr1_Dps1
   vrfs:
   - name: default
     rd: 192.168.31.2:1

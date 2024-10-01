@@ -133,7 +133,7 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 100 | SVI_100 | - |
 | 4092 | INBAND_MGMT | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -146,7 +146,7 @@ vlan 4092
    name INBAND_MGMT
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -162,8 +162,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | OSPF-LEAF1_Ethernet1 | *trunk | *100,4092 | *- | *- | 1 |
 | Ethernet2 | OSPF-LEAF2_Ethernet1 | *trunk | *100,4092 | *- | *- | 2 |
-| Ethernet3 | MLAG_PEER_OSPF-SPINE2_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
-| Ethernet4 | MLAG_PEER_OSPF-SPINE2_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet3 | MLAG_OSPF-SPINE2_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet4 | MLAG_OSPF-SPINE2_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -171,7 +171,7 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet5 | P2P_LINK_TO_DUMMY-CORE_Ethernet1/1 | - | 192.168.253.0/31 | default | 9214 | False | - | - |
+| Ethernet5 | P2P_DUMMY-CORE_Ethernet1/1 | - | 192.168.253.0/31 | default | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -188,17 +188,17 @@ interface Ethernet2
    channel-group 2 mode active
 !
 interface Ethernet3
-   description MLAG_PEER_OSPF-SPINE2_Ethernet3
+   description MLAG_OSPF-SPINE2_Ethernet3
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description MLAG_PEER_OSPF-SPINE2_Ethernet4
+   description MLAG_OSPF-SPINE2_Ethernet4
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet5
-   description P2P_LINK_TO_DUMMY-CORE_Ethernet1/1
+   description P2P_DUMMY-CORE_Ethernet1/1
    no shutdown
    mtu 9214
    no switchport
@@ -217,7 +217,7 @@ interface Ethernet5
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | OSPF-LEAF1_Po1 | trunk | 100,4092 | - | - | - | - | 1 | - |
 | Port-Channel2 | OSPF-LEAF2_Po1 | trunk | 100,4092 | - | - | - | - | 2 | - |
-| Port-Channel3 | MLAG_PEER_OSPF-SPINE2_Po3 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel3 | MLAG_OSPF-SPINE2_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -240,7 +240,7 @@ interface Port-Channel2
    mlag 2
 !
 interface Port-Channel3
-   description MLAG_PEER_OSPF-SPINE2_Po3
+   description MLAG_OSPF-SPINE2_Port-Channel3
    no shutdown
    switchport mode trunk
    switchport trunk group MLAG
@@ -282,7 +282,7 @@ interface Loopback0
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan4092 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -310,7 +310,7 @@ interface Vlan4092
    ip virtual-router address 172.23.254.1
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 9214
    no autostate

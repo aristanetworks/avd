@@ -141,30 +141,30 @@
 | 58 | dc1-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 59 | dc1-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arastra, Inc.', 'Arista Networks', 'Generic', 'Not Present' | NOT RUN | - |
 | 60 | dc1-leaf1a | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 61 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1 = 'up' | NOT RUN | - |
-| 62 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1 = 'up' | NOT RUN | - |
-| 63 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc1-leaf1b_Ethernet3 = 'up' | NOT RUN | - |
-| 64 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc1-leaf1b_Ethernet4 = 'up' | NOT RUN | - |
+| 61 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-spine1_Ethernet1 = 'up' | NOT RUN | - |
+| 62 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-spine2_Ethernet1 = 'up' | NOT RUN | - |
+| 63 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc1-leaf1b_Ethernet3 = 'up' | NOT RUN | - |
+| 64 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc1-leaf1b_Ethernet4 = 'up' | NOT RUN | - |
 | 65 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc1-leaf1-server1_PCI1 = 'up' | NOT RUN | - |
-| 66 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet1 = 'up' | NOT RUN | - |
-| 67 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet1 = 'up' | NOT RUN | - |
+| 66 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc1-wan1_Ethernet1 = 'up' | NOT RUN | - |
+| 67 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet7 - P2P_dc1-wan2_Ethernet1 = 'up' | NOT RUN | - |
 | 68 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC1-LEAF1C_Ethernet1 = 'up' | NOT RUN | - |
 | 69 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 70 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 71 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 72 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 73 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc1-leaf1b_Po3 = 'up' | NOT RUN | - |
+| 73 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc1-leaf1b_Port-Channel3 = 'up' | NOT RUN | - |
 | 74 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - PortChannel dc1-leaf1-server1 = 'up' | NOT RUN | - |
 | 75 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC1-LEAF1C_Po1 = 'up' | NOT RUN | - |
 | 76 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 77 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 78 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 79 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 80 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 81 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
+| 80 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 81 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
 | 82 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4085 - Inband Management = 'up' | NOT RUN | - |
-| 83 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 84 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 83 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 84 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 85 | dc1-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 86 | dc1-leaf1a | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 87 | dc1-leaf1a | MLAG | VerifyMlagStatus | Verifies the health status of the MLAG configuration. | - | NOT RUN | - |
@@ -300,30 +300,30 @@
 | 217 | dc1-leaf1b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 218 | dc1-leaf1b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 219 | dc1-leaf1b | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 220 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet2 = 'up' | NOT RUN | - |
-| 221 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet2 = 'up' | NOT RUN | - |
-| 222 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc1-leaf1a_Ethernet3 = 'up' | NOT RUN | - |
-| 223 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc1-leaf1a_Ethernet4 = 'up' | NOT RUN | - |
+| 220 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-spine1_Ethernet2 = 'up' | NOT RUN | - |
+| 221 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-spine2_Ethernet2 = 'up' | NOT RUN | - |
+| 222 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc1-leaf1a_Ethernet3 = 'up' | NOT RUN | - |
+| 223 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc1-leaf1a_Ethernet4 = 'up' | NOT RUN | - |
 | 224 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc1-leaf1-server1_PCI2 = 'up' | NOT RUN | - |
-| 225 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet2 = 'up' | NOT RUN | - |
-| 226 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet2 = 'up' | NOT RUN | - |
+| 225 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc1-wan1_Ethernet2 = 'up' | NOT RUN | - |
+| 226 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet7 - P2P_dc1-wan2_Ethernet2 = 'up' | NOT RUN | - |
 | 227 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC1-LEAF1C_Ethernet2 = 'up' | NOT RUN | - |
 | 228 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 229 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 230 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 231 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 232 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc1-leaf1a_Po3 = 'up' | NOT RUN | - |
+| 232 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc1-leaf1a_Port-Channel3 = 'up' | NOT RUN | - |
 | 233 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - PortChannel dc1-leaf1-server1 = 'up' | NOT RUN | - |
 | 234 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC1-LEAF1C_Po1 = 'up' | NOT RUN | - |
 | 235 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 236 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 237 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 238 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 239 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 240 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
+| 239 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 240 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
 | 241 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4085 - Inband Management = 'up' | NOT RUN | - |
-| 242 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 243 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 242 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 243 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 244 | dc1-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 245 | dc1-leaf1b | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 246 | dc1-leaf1b | MLAG | VerifyMlagStatus | Verifies the health status of the MLAG configuration. | - | NOT RUN | - |
@@ -536,29 +536,29 @@
 | 453 | dc1-leaf2a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 454 | dc1-leaf2a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 455 | dc1-leaf2a | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 456 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet3 = 'up' | NOT RUN | - |
-| 457 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet3 = 'up' | NOT RUN | - |
-| 458 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc1-leaf2b_Ethernet3 = 'up' | NOT RUN | - |
-| 459 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc1-leaf2b_Ethernet4 = 'up' | NOT RUN | - |
+| 456 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-spine1_Ethernet3 = 'up' | NOT RUN | - |
+| 457 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-spine2_Ethernet3 = 'up' | NOT RUN | - |
+| 458 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc1-leaf2b_Ethernet3 = 'up' | NOT RUN | - |
+| 459 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc1-leaf2b_Ethernet4 = 'up' | NOT RUN | - |
 | 460 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc1-leaf2-server1_PCI1 = 'up' | NOT RUN | - |
-| 461 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_dc2-leaf2a_Ethernet6 = 'up' | NOT RUN | - |
+| 461 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc2-leaf2a_Ethernet6 = 'up' | NOT RUN | - |
 | 462 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC1-LEAF2C_Ethernet1 = 'up' | NOT RUN | - |
 | 463 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 464 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 465 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 466 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 467 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc1-leaf2b_Po3 = 'up' | NOT RUN | - |
+| 467 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc1-leaf2b_Port-Channel3 = 'up' | NOT RUN | - |
 | 468 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - SERVER_dc1-leaf2-server1_PortChannel dc1-leaf2-server1 = 'up' | NOT RUN | - |
 | 469 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC1-LEAF2C_Po1 = 'up' | NOT RUN | - |
 | 470 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 471 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 472 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 473 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 474 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 475 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
+| 474 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 475 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
 | 476 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4085 - Inband Management = 'up' | NOT RUN | - |
-| 477 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 478 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 477 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 478 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 479 | dc1-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 480 | dc1-leaf2a | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 481 | dc1-leaf2a | MLAG | VerifyMlagStatus | Verifies the health status of the MLAG configuration. | - | NOT RUN | - |
@@ -796,12 +796,12 @@
 | 713 | dc1-spine1 | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | - | NOT RUN | - |
 | 714 | dc1-spine1 | Interfaces | VerifyInterfaceErrors | Verifies there are no interface error counters. | - | NOT RUN | - |
 | 715 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | - | NOT RUN | - |
-| 716 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet1 = 'up' | NOT RUN | - |
-| 717 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet1 = 'up' | NOT RUN | - |
-| 718 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet1 = 'up' | NOT RUN | - |
-| 719 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet1 = 'adminDown' | NOT RUN | - |
-| 720 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_LINK_TO_DC1-SVC-LEAF1A_Ethernet1 = 'up' | NOT RUN | - |
-| 721 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_DC1-SVC-LEAF1B_Ethernet1 = 'up' | NOT RUN | - |
+| 716 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-leaf1a_Ethernet1 = 'up' | NOT RUN | - |
+| 717 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-leaf1b_Ethernet1 = 'up' | NOT RUN | - |
+| 718 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_dc1-leaf2a_Ethernet1 = 'up' | NOT RUN | - |
+| 719 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_dc1-leaf2b_Ethernet1 = 'adminDown' | NOT RUN | - |
+| 720 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_dc1-svc-leaf1a_Ethernet1 = 'up' | NOT RUN | - |
+| 721 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc1-svc-leaf1b_Ethernet1 = 'up' | NOT RUN | - |
 | 722 | dc1-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 723 | dc1-spine1 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | - | NOT RUN | - |
 | 724 | dc1-spine1 | Interfaces | VerifyIPProxyARP | Verifies if Proxy ARP is enabled. | - | NOT RUN | - |
@@ -912,12 +912,12 @@
 | 829 | dc1-spine2 | Interfaces | VerifyInterfaceErrDisabled | Verifies there are no interfaces in the errdisabled state. | - | NOT RUN | - |
 | 830 | dc1-spine2 | Interfaces | VerifyInterfaceErrors | Verifies there are no interface error counters. | - | NOT RUN | - |
 | 831 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | - | NOT RUN | - |
-| 832 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet2 = 'up' | NOT RUN | - |
-| 833 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet2 = 'up' | NOT RUN | - |
-| 834 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_LINK_TO_DC1-LEAF2A_Ethernet2 = 'up' | NOT RUN | - |
-| 835 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_LINK_TO_DC1-LEAF2B_Ethernet2 = 'adminDown' | NOT RUN | - |
-| 836 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_LINK_TO_DC1-SVC-LEAF1A_Ethernet2 = 'up' | NOT RUN | - |
-| 837 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_DC1-SVC-LEAF1B_Ethernet2 = 'up' | NOT RUN | - |
+| 832 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-leaf1a_Ethernet2 = 'up' | NOT RUN | - |
+| 833 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-leaf1b_Ethernet2 = 'up' | NOT RUN | - |
+| 834 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_dc1-leaf2a_Ethernet2 = 'up' | NOT RUN | - |
+| 835 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_dc1-leaf2b_Ethernet2 = 'adminDown' | NOT RUN | - |
+| 836 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_dc1-svc-leaf1a_Ethernet2 = 'up' | NOT RUN | - |
+| 837 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc1-svc-leaf1b_Ethernet2 = 'up' | NOT RUN | - |
 | 838 | dc1-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 839 | dc1-spine2 | Interfaces | VerifyInterfaceUtilization | Verifies that the utilization of interfaces is below a certain threshold. | - | NOT RUN | - |
 | 840 | dc1-spine2 | Interfaces | VerifyIPProxyARP | Verifies if Proxy ARP is enabled. | - | NOT RUN | - |
@@ -1027,15 +1027,15 @@
 | 944 | dc1-svc-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 945 | dc1-svc-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 946 | dc1-svc-leaf1a | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 947 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet5 = 'up' | NOT RUN | - |
-| 948 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet5 = 'up' | NOT RUN | - |
-| 949 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc1-svc-leaf1b_Ethernet3 = 'up' | NOT RUN | - |
-| 950 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc1-svc-leaf1b_Ethernet4 = 'up' | NOT RUN | - |
+| 947 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-spine1_Ethernet5 = 'up' | NOT RUN | - |
+| 948 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-spine2_Ethernet5 = 'up' | NOT RUN | - |
+| 949 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc1-svc-leaf1b_Ethernet3 = 'up' | NOT RUN | - |
+| 950 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc1-svc-leaf1b_Ethernet4 = 'up' | NOT RUN | - |
 | 951 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 952 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
-| 953 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc1-svc-leaf1b_Po3 = 'up' | NOT RUN | - |
-| 954 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 955 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 953 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc1-svc-leaf1b_Port-Channel3 = 'up' | NOT RUN | - |
+| 954 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 955 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 956 | dc1-svc-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 957 | dc1-svc-leaf1a | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 958 | dc1-svc-leaf1a | MLAG | VerifyMlagStatus | Verifies the health status of the MLAG configuration. | - | NOT RUN | - |
@@ -1156,15 +1156,15 @@
 | 1073 | dc1-svc-leaf1b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 1074 | dc1-svc-leaf1b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1075 | dc1-svc-leaf1b | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 1076 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet6 = 'up' | NOT RUN | - |
-| 1077 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet6 = 'up' | NOT RUN | - |
-| 1078 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc1-svc-leaf1a_Ethernet3 = 'up' | NOT RUN | - |
-| 1079 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc1-svc-leaf1a_Ethernet4 = 'up' | NOT RUN | - |
+| 1076 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-spine1_Ethernet6 = 'up' | NOT RUN | - |
+| 1077 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-spine2_Ethernet6 = 'up' | NOT RUN | - |
+| 1078 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc1-svc-leaf1a_Ethernet3 = 'up' | NOT RUN | - |
+| 1079 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc1-svc-leaf1a_Ethernet4 = 'up' | NOT RUN | - |
 | 1080 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 1081 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
-| 1082 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc1-svc-leaf1a_Po3 = 'up' | NOT RUN | - |
-| 1083 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 1084 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 1082 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc1-svc-leaf1a_Port-Channel3 = 'up' | NOT RUN | - |
+| 1083 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 1084 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 1085 | dc1-svc-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 1086 | dc1-svc-leaf1b | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 1087 | dc1-svc-leaf1b | MLAG | VerifyMlagStatus | Verifies the health status of the MLAG configuration. | - | NOT RUN | - |
@@ -1275,8 +1275,8 @@
 | 1192 | dc1-wan1 | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1193 | dc1-wan1 | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
 | 1194 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Dps1 - DPS Interface = 'up' | NOT RUN | - |
-| 1195 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet6 = 'up' | NOT RUN | - |
-| 1196 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet6 = 'up' | NOT RUN | - |
+| 1195 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-leaf1a_Ethernet6 = 'up' | NOT RUN | - |
+| 1196 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-leaf1b_Ethernet6 = 'up' | NOT RUN | - |
 | 1197 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - mpls-sp-1_DC1-MPLS-3 = 'up' | NOT RUN | - |
 | 1198 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - isp-1_DC1-INET-3 = 'up' | NOT RUN | - |
 | 1199 | dc1-wan1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
@@ -1371,8 +1371,8 @@
 | 1288 | dc1-wan2 | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1289 | dc1-wan2 | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
 | 1290 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Dps1 - DPS Interface = 'up' | NOT RUN | - |
-| 1291 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet7 = 'up' | NOT RUN | - |
-| 1292 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet7 = 'up' | NOT RUN | - |
+| 1291 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc1-leaf1a_Ethernet7 = 'up' | NOT RUN | - |
+| 1292 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc1-leaf1b_Ethernet7 = 'up' | NOT RUN | - |
 | 1293 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - mpls-sp-1_DC1-MPLS-4 = 'up' | NOT RUN | - |
 | 1294 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - isp-1_DC1-INET-4 = 'up' | NOT RUN | - |
 | 1295 | dc1-wan2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
@@ -1478,27 +1478,27 @@
 | 1395 | dc2-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 1396 | dc2-leaf1a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1397 | dc2-leaf1a | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 1398 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet1 = 'up' | NOT RUN | - |
-| 1399 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet1 = 'up' | NOT RUN | - |
-| 1400 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc2-leaf1b_Ethernet3 = 'up' | NOT RUN | - |
-| 1401 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc2-leaf1b_Ethernet4 = 'up' | NOT RUN | - |
+| 1398 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-spine1_Ethernet1 = 'up' | NOT RUN | - |
+| 1399 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-spine2_Ethernet1 = 'up' | NOT RUN | - |
+| 1400 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc2-leaf1b_Ethernet3 = 'up' | NOT RUN | - |
+| 1401 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc2-leaf1b_Ethernet4 = 'up' | NOT RUN | - |
 | 1402 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc2-leaf1-server1_PCI1 = 'up' | NOT RUN | - |
 | 1403 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC2-LEAF1C_Ethernet1 = 'up' | NOT RUN | - |
 | 1404 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 1405 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 1406 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 1407 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 1408 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc2-leaf1b_Po3 = 'up' | NOT RUN | - |
+| 1408 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc2-leaf1b_Port-Channel3 = 'up' | NOT RUN | - |
 | 1409 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - PortChannel dc2-leaf1-server1 = 'up' | NOT RUN | - |
 | 1410 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC2-LEAF1C_Po1 = 'up' | NOT RUN | - |
 | 1411 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 1412 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 1413 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 1414 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 1415 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 1416 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
-| 1417 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 1418 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 1415 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 1416 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
+| 1417 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 1418 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 1419 | dc2-leaf1a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 1420 | dc2-leaf1a | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 1421 | dc2-leaf1a | Logging | VerifyLoggingAccounting | Verifies if AAA accounting logs are generated. | - | NOT RUN | - |
@@ -1640,27 +1640,27 @@
 | 1557 | dc2-leaf1b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 1558 | dc2-leaf1b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1559 | dc2-leaf1b | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 1560 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet2 = 'up' | NOT RUN | - |
-| 1561 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet2 = 'up' | NOT RUN | - |
-| 1562 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc2-leaf1a_Ethernet3 = 'up' | NOT RUN | - |
-| 1563 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc2-leaf1a_Ethernet4 = 'up' | NOT RUN | - |
+| 1560 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-spine1_Ethernet2 = 'up' | NOT RUN | - |
+| 1561 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-spine2_Ethernet2 = 'up' | NOT RUN | - |
+| 1562 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc2-leaf1a_Ethernet3 = 'up' | NOT RUN | - |
+| 1563 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc2-leaf1a_Ethernet4 = 'up' | NOT RUN | - |
 | 1564 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc2-leaf1-server1_PCI2 = 'up' | NOT RUN | - |
 | 1565 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC2-LEAF1C_Ethernet2 = 'up' | NOT RUN | - |
 | 1566 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 1567 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 1568 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 1569 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 1570 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc2-leaf1a_Po3 = 'up' | NOT RUN | - |
+| 1570 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc2-leaf1a_Port-Channel3 = 'up' | NOT RUN | - |
 | 1571 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - PortChannel dc2-leaf1-server1 = 'up' | NOT RUN | - |
 | 1572 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC2-LEAF1C_Po1 = 'up' | NOT RUN | - |
 | 1573 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 1574 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 1575 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 1576 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 1577 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 1578 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
-| 1579 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 1580 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 1577 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 1578 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
+| 1579 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 1580 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 1581 | dc2-leaf1b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 1582 | dc2-leaf1b | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 1583 | dc2-leaf1b | Logging | VerifyLoggingAccounting | Verifies if AAA accounting logs are generated. | - | NOT RUN | - |
@@ -1878,28 +1878,28 @@
 | 1795 | dc2-leaf2a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 1796 | dc2-leaf2a | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1797 | dc2-leaf2a | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 1798 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet3 = 'up' | NOT RUN | - |
-| 1799 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet3 = 'up' | NOT RUN | - |
-| 1800 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc2-leaf2b_Ethernet3 = 'up' | NOT RUN | - |
-| 1801 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc2-leaf2b_Ethernet4 = 'up' | NOT RUN | - |
+| 1798 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-spine1_Ethernet3 = 'up' | NOT RUN | - |
+| 1799 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-spine2_Ethernet3 = 'up' | NOT RUN | - |
+| 1800 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc2-leaf2b_Ethernet3 = 'up' | NOT RUN | - |
+| 1801 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc2-leaf2b_Ethernet4 = 'up' | NOT RUN | - |
 | 1802 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc2-leaf2-server1_PCI1 = 'up' | NOT RUN | - |
-| 1803 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_dc1-leaf2a_Ethernet6 = 'up' | NOT RUN | - |
+| 1803 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc1-leaf2a_Ethernet6 = 'up' | NOT RUN | - |
 | 1804 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC2-LEAF2C_Ethernet1 = 'up' | NOT RUN | - |
 | 1805 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 1806 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 1807 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 1808 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 1809 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc2-leaf2b_Po3 = 'up' | NOT RUN | - |
+| 1809 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc2-leaf2b_Port-Channel3 = 'up' | NOT RUN | - |
 | 1810 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - SERVER_dc2-leaf2-server1_PortChannel dc2-leaf2-server1 = 'up' | NOT RUN | - |
 | 1811 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC2-LEAF2C_Po1 = 'up' | NOT RUN | - |
 | 1812 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 1813 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 1814 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 1815 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 1816 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 1817 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
-| 1818 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 1819 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 1816 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 1817 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
+| 1818 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 1819 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 1820 | dc2-leaf2a | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 1821 | dc2-leaf2a | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 1822 | dc2-leaf2a | Logging | VerifyLoggingAccounting | Verifies if AAA accounting logs are generated. | - | NOT RUN | - |
@@ -2041,28 +2041,28 @@
 | 1958 | dc2-leaf2b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 1959 | dc2-leaf2b | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 1960 | dc2-leaf2b | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 1961 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet4 = 'up' | NOT RUN | - |
-| 1962 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet4 = 'up' | NOT RUN | - |
-| 1963 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc2-leaf2a_Ethernet3 = 'up' | NOT RUN | - |
-| 1964 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc2-leaf2a_Ethernet4 = 'up' | NOT RUN | - |
+| 1961 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-spine1_Ethernet4 = 'up' | NOT RUN | - |
+| 1962 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-spine2_Ethernet4 = 'up' | NOT RUN | - |
+| 1963 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc2-leaf2a_Ethernet3 = 'up' | NOT RUN | - |
+| 1964 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc2-leaf2a_Ethernet4 = 'up' | NOT RUN | - |
 | 1965 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - SERVER_dc2-leaf2-server1_PCI2 = 'up' | NOT RUN | - |
-| 1966 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_dc1-leaf2b_Ethernet6 = 'up' | NOT RUN | - |
+| 1966 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc1-leaf2b_Ethernet6 = 'up' | NOT RUN | - |
 | 1967 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet8 - DC2-LEAF2C_Ethernet2 = 'up' | NOT RUN | - |
 | 1968 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 1969 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 1970 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 1971 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
-| 1972 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc2-leaf2a_Po3 = 'up' | NOT RUN | - |
+| 1972 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc2-leaf2a_Port-Channel3 = 'up' | NOT RUN | - |
 | 1973 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel5 - SERVER_dc2-leaf2-server1_PortChannel dc2-leaf2-server1 = 'up' | NOT RUN | - |
 | 1974 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel8 - DC2-LEAF2C_Po1 = 'up' | NOT RUN | - |
 | 1975 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 1976 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 1977 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 1978 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 1979 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 1980 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
-| 1981 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 1982 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 1979 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 1980 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
+| 1981 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 1982 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 1983 | dc2-leaf2b | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 1984 | dc2-leaf2b | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 1985 | dc2-leaf2b | Logging | VerifyLoggingAccounting | Verifies if AAA accounting logs are generated. | - | NOT RUN | - |
@@ -2277,15 +2277,15 @@
 | 2194 | dc2-leaf3a.arista.com | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 2195 | dc2-leaf3a.arista.com | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 2196 | dc2-leaf3a.arista.com | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 2197 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet5 = 'up' | NOT RUN | - |
+| 2197 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-spine1_Ethernet5 = 'up' | NOT RUN | - |
 | 2198 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet11 - dc2-leaf3-fw1_e1 = 'up' | NOT RUN | - |
 | 2199 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet12 - Test_mode_and_vlans = 'up' | NOT RUN | - |
 | 2200 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet13 - Test_native_vlan_and_trunk_groups = 'up' | NOT RUN | - |
 | 2201 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet14 - Test_phone = 'up' | NOT RUN | - |
 | 2202 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet15 - Test_type_routed = 'up' | NOT RUN | - |
-| 2203 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet5 = 'up' | NOT RUN | - |
-| 2204 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet3 = 'up' | NOT RUN | - |
-| 2205 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc2-leaf3b.arista.com_Ethernet4 = 'up' | NOT RUN | - |
+| 2203 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-spine2_Ethernet5 = 'up' | NOT RUN | - |
+| 2204 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc2-leaf3b.arista.com_Ethernet3 = 'up' | NOT RUN | - |
+| 2205 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc2-leaf3b.arista.com_Ethernet4 = 'up' | NOT RUN | - |
 | 2206 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 2207 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 2208 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
@@ -2295,15 +2295,15 @@
 | 2212 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel13 - Test_native_vlan_and_trunk_groups = 'up' | NOT RUN | - |
 | 2213 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel14 - Test_phone = 'up' | NOT RUN | - |
 | 2214 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel15 - Test_type_routed = 'up' | NOT RUN | - |
-| 2215 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc2-leaf3b.arista.com_Po3 = 'up' | NOT RUN | - |
+| 2215 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc2-leaf3b.arista.com_Port-Channel3 = 'up' | NOT RUN | - |
 | 2216 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 2217 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 2218 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 2219 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 2220 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 2221 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
-| 2222 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 2223 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 2220 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 2221 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
+| 2222 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 2223 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 2224 | dc2-leaf3a.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 2225 | dc2-leaf3a.arista.com | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 2226 | dc2-leaf3a.arista.com | Logging | VerifyLoggingAccounting | Verifies if AAA accounting logs are generated. | - | NOT RUN | - |
@@ -2444,25 +2444,25 @@
 | 2361 | dc2-leaf3b.arista.com | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 2362 | dc2-leaf3b.arista.com | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 2363 | dc2-leaf3b.arista.com | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 2364 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-SPINE1_Ethernet6 = 'up' | NOT RUN | - |
+| 2364 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-spine1_Ethernet6 = 'up' | NOT RUN | - |
 | 2365 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet11 - dc2-leaf3-fw1_e1 = 'adminDown' | NOT RUN | - |
-| 2366 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-SPINE2_Ethernet6 = 'up' | NOT RUN | - |
-| 2367 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_PEER_dc2-leaf3a.arista.com_Ethernet3 = 'up' | NOT RUN | - |
-| 2368 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_PEER_dc2-leaf3a.arista.com_Ethernet4 = 'up' | NOT RUN | - |
+| 2366 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-spine2_Ethernet6 = 'up' | NOT RUN | - |
+| 2367 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - MLAG_dc2-leaf3a.arista.com_Ethernet3 = 'up' | NOT RUN | - |
+| 2368 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - MLAG_dc2-leaf3a.arista.com_Ethernet4 = 'up' | NOT RUN | - |
 | 2369 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 2370 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback1 - VXLAN_TUNNEL_SOURCE = 'up' | NOT RUN | - |
 | 2371 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 2372 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up' | NOT RUN | - |
 | 2373 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel11 - dc2-leaf3-fw1_PortChannel = 'up' | NOT RUN | - |
-| 2374 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_PEER_dc2-leaf3a.arista.com_Po3 = 'up' | NOT RUN | - |
+| 2374 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Port-Channel3 - MLAG_dc2-leaf3a.arista.com_Port-Channel3 = 'up' | NOT RUN | - |
 | 2375 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan11 - VRF10_VLAN11 = 'up' | NOT RUN | - |
 | 2376 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan12 - VRF10_VLAN12 = 'up' | NOT RUN | - |
 | 2377 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan21 - VRF11_VLAN21 = 'up' | NOT RUN | - |
 | 2378 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan22 - VRF11_VLAN22 = 'up' | NOT RUN | - |
-| 2379 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_PEER_L3_iBGP: vrf VRF10 = 'up' | NOT RUN | - |
-| 2380 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_PEER_L3_iBGP: vrf VRF11 = 'up' | NOT RUN | - |
-| 2381 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up' | NOT RUN | - |
-| 2382 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG_PEER = 'up' | NOT RUN | - |
+| 2379 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3009 - MLAG_L3_VRF_VRF10 = 'up' | NOT RUN | - |
+| 2380 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan3010 - MLAG_L3_VRF_VRF11 = 'up' | NOT RUN | - |
+| 2381 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4093 - MLAG_L3 = 'up' | NOT RUN | - |
+| 2382 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vlan4094 - MLAG = 'up' | NOT RUN | - |
 | 2383 | dc2-leaf3b.arista.com | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Vxlan1 = 'up' | NOT RUN | - |
 | 2384 | dc2-leaf3b.arista.com | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 2385 | dc2-leaf3b.arista.com | Logging | VerifyLoggingAccounting | Verifies if AAA accounting logs are generated. | - | NOT RUN | - |
@@ -2599,12 +2599,12 @@
 | 2516 | dc2-spine1 | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 2517 | dc2-spine1 | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 2518 | dc2-spine1 | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 2519 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-LEAF1A_Ethernet1 = 'up' | NOT RUN | - |
-| 2520 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-LEAF1B_Ethernet1 = 'up' | NOT RUN | - |
-| 2521 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_LINK_TO_DC2-LEAF2A_Ethernet1 = 'up' | NOT RUN | - |
-| 2522 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet1 = 'up' | NOT RUN | - |
-| 2523 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet1 = 'up' | NOT RUN | - |
-| 2524 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet1 = 'up' | NOT RUN | - |
+| 2519 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-leaf1a_Ethernet1 = 'up' | NOT RUN | - |
+| 2520 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-leaf1b_Ethernet1 = 'up' | NOT RUN | - |
+| 2521 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_dc2-leaf2a_Ethernet1 = 'up' | NOT RUN | - |
+| 2522 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_dc2-leaf2b_Ethernet1 = 'up' | NOT RUN | - |
+| 2523 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_dc2-leaf3a.arista.com_Ethernet1 = 'up' | NOT RUN | - |
+| 2524 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc2-leaf3b.arista.com_Ethernet1 = 'up' | NOT RUN | - |
 | 2525 | dc2-spine1 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 2526 | dc2-spine1 | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 2527 | dc2-spine1 | PTP | VerifyPtpGMStatus | Verifies that the device is locked to a valid PTP Grandmaster. | - | NOT RUN | - |
@@ -2697,12 +2697,12 @@
 | 2614 | dc2-spine2 | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | - | NOT RUN | - |
 | 2615 | dc2-spine2 | Hardware | VerifyTransceiversManufacturers | Verifies if all transceivers come from approved manufacturers. | Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present' | NOT RUN | - |
 | 2616 | dc2-spine2 | Hardware | VerifyTransceiversTemperature | Verifies the transceivers temperature. | - | NOT RUN | - |
-| 2617 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_LINK_TO_DC2-LEAF1A_Ethernet2 = 'up' | NOT RUN | - |
-| 2618 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_LINK_TO_DC2-LEAF1B_Ethernet2 = 'up' | NOT RUN | - |
-| 2619 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_LINK_TO_DC2-LEAF2A_Ethernet2 = 'up' | NOT RUN | - |
-| 2620 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_LINK_TO_DC2-LEAF2B_Ethernet2 = 'up' | NOT RUN | - |
-| 2621 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_LINK_TO_DC2-LEAF3A.ARISTA.COM_Ethernet2 = 'up' | NOT RUN | - |
-| 2622 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_LINK_TO_DC2-LEAF3B.ARISTA.COM_Ethernet2 = 'up' | NOT RUN | - |
+| 2617 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet1 - P2P_dc2-leaf1a_Ethernet2 = 'up' | NOT RUN | - |
+| 2618 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet2 - P2P_dc2-leaf1b_Ethernet2 = 'up' | NOT RUN | - |
+| 2619 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet3 - P2P_dc2-leaf2a_Ethernet2 = 'up' | NOT RUN | - |
+| 2620 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet4 - P2P_dc2-leaf2b_Ethernet2 = 'up' | NOT RUN | - |
+| 2621 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet5 - P2P_dc2-leaf3a.arista.com_Ethernet2 = 'up' | NOT RUN | - |
+| 2622 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Ethernet6 - P2P_dc2-leaf3b.arista.com_Ethernet2 = 'up' | NOT RUN | - |
 | 2623 | dc2-spine2 | Interfaces | VerifyInterfacesStatus | Verifies the status of the provided interfaces. | Interface Loopback0 - ROUTER_ID = 'up' | NOT RUN | - |
 | 2624 | dc2-spine2 | LANZ | VerifyLANZ | Verifies if LANZ is enabled. | - | NOT RUN | - |
 | 2625 | dc2-spine2 | PTP | VerifyPtpGMStatus | Verifies that the device is locked to a valid PTP Grandmaster. | - | NOT RUN | - |

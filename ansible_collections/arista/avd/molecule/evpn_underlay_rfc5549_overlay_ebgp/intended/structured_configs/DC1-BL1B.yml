@@ -83,22 +83,22 @@ router_bgp:
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE1
-    description: DC1-SPINE1
+    description: DC1-SPINE1_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.2
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE2
-    description: DC1-SPINE2
+    description: DC1-SPINE2_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE3
-    description: DC1-SPINE3
+    description: DC1-SPINE3_Loopback0
     remote_as: '65001'
   - ip_address: 192.168.255.4
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE4
-    description: DC1-SPINE4
+    description: DC1-SPINE4_Loopback0
     remote_as: '65001'
   - ip_address: 10.23.23.6
     remote_as: '64900'
@@ -297,7 +297,7 @@ ethernet_interfaces:
   peer: DC1-SPINE1
   peer_interface: Ethernet7
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet7
+  description: P2P_DC1-SPINE1_Ethernet7
   shutdown: false
   mtu: 1500
   switchport:
@@ -307,7 +307,7 @@ ethernet_interfaces:
   peer: DC1-SPINE2
   peer_interface: Ethernet7
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet7
+  description: P2P_DC1-SPINE2_Ethernet7
   shutdown: false
   mtu: 1500
   switchport:
@@ -317,7 +317,7 @@ ethernet_interfaces:
   peer: DC1-SPINE3
   peer_interface: Ethernet7
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet7
+  description: P2P_DC1-SPINE3_Ethernet7
   shutdown: false
   mtu: 1500
   switchport:
@@ -327,7 +327,7 @@ ethernet_interfaces:
   peer: DC1-SPINE4
   peer_interface: Ethernet7
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet7
+  description: P2P_DC1-SPINE4_Ethernet7
   shutdown: false
   mtu: 1500
   switchport:
@@ -337,33 +337,33 @@ ethernet_interfaces:
   peer: DC1-BL1A
   peer_interface: Ethernet9
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-BL1A_Ethernet9
   switchport:
     enabled: false
   shutdown: false
   mtu: 1500
   ipv6_enable: true
+  description: P2P_DC1-BL1A_Ethernet9
 - name: Ethernet10
   peer: DC1-BL1A
   peer_interface: Ethernet10
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-BL1A_Ethernet10
   switchport:
     enabled: false
   shutdown: false
   mtu: 1500
   ipv6_enable: true
+  description: P2P_DC1-BL1A_Ethernet10
 - name: Ethernet11
   peer: outside-r1
   peer_interface: other2
   peer_type: other
-  description: P2P_LINK_TO_outside-r1_other2
   switchport:
     enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 10.23.23.5/30
   ipv6_enable: true
+  description: P2P_outside-r1_other2
 - name: Ethernet4000
   description: My test
   ip_address: 10.1.2.3/12

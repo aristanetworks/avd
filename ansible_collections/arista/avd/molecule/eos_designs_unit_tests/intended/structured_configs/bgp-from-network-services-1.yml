@@ -30,7 +30,7 @@ router_bgp:
   neighbors:
   - ip_address: 10.10.20.1
     peer_group: MLAG-IPv4-UNDERLAY-PEER
-    description: bgp-from-network-services-2
+    description: bgp-from-network-services-2_Vlan3099
   - ip_address: 10.10.1.2
     peer_group: MYPEERGROUP
   address_family_ipv4:
@@ -74,17 +74,17 @@ management_api_http:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 3099
-  name: MLAG_iBGP_default
+  name: MLAG_L3_VRF_default
   trunk_groups:
   - MLAG
   tenant: TEST
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -93,13 +93,13 @@ vlan_interfaces:
   tenant: TEST
   type: underlay_peering
   shutdown: false
-  description: 'MLAG_PEER_L3_iBGP: vrf default'
+  description: MLAG_L3_VRF_default
   vrf: default
   mtu: 9214
   ip_address: 10.10.20.0/31
 port_channel_interfaces:
 - name: Port-Channel10
-  description: MLAG_PEER_bgp-from-network-services-2_Po10
+  description: MLAG_bgp-from-network-services-2_Port-Channel10
   switchport:
     enabled: true
     mode: trunk
@@ -112,7 +112,7 @@ ethernet_interfaces:
   peer: bgp-from-network-services-2
   peer_interface: Ethernet10
   peer_type: mlag_peer
-  description: MLAG_PEER_bgp-from-network-services-2_Ethernet10
+  description: MLAG_bgp-from-network-services-2_Ethernet10
   shutdown: false
   channel_group:
     id: 10

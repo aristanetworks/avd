@@ -44,7 +44,7 @@ router_bgp:
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: sflow-tests-spine1
-    description: sflow-tests-spine1
+    description: sflow-tests-spine1_Loopback0
     remote_as: '65200'
   address_family_evpn:
     peer_groups:
@@ -119,7 +119,7 @@ ethernet_interfaces:
   peer: sflow-tests-spine1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet1
+  description: P2P_sflow-tests-spine1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -131,7 +131,7 @@ ethernet_interfaces:
   peer: sflow-tests-spine1
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet2
+  description: P2P_sflow-tests-spine1_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:

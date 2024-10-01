@@ -1035,6 +1035,32 @@ keys:
             required: true
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements).
+  default_underlay_p2p_ethernet_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The default description or description template to be used on L3
+      point-to-point ethernet interfaces.\nThe interfaces using this are the routed
+      uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `peer`: The name of the peer.\n  - `interface`: The local interface
+      name.\n  - `peer_interface`: The interface on the peer.\n  - `vrf`: The name
+      of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).\n\nBy default
+      the description is templated from the name and interface of the peer."
+    default: P2P_{peer}_{peer_interface}{vrf?<_VRF_}
+  default_underlay_p2p_port_channel_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The default description or description template to be used on L3
+      point-to-point port-channel interfaces.\nThe port-channels using this are `p2p_links`
+      defined under `l3_edge` or `core_interfaces`.\nThis can be a template using
+      the format string syntax.\nThe available template fields are:\n  - `peer`: The
+      name of the peer.\n  - `interface`: The local interface name.\n  - `peer_interface`:
+      The interface on the peer.\n  - `port_channel_id`: The local port-channel ID.\n
+      \ - `peer_port_channel_id`: The ID of the port-channel on the peer.\n\nBy default
+      the description is templated from the name and interface of the peer."
+    default: P2P_{peer}_{peer_interface}
   design:
     documentation_options:
       table: design
@@ -1443,6 +1469,20 @@ keys:
             convert_types:
             - str
             description: IPv4 prefix length used for L3 point-to-point uplinks.
+      wan_ha:
+        type: dict
+        description: Allow to manipulate the IP addressing scheme for WAN HA direct
+          subnets.
+        keys:
+          ipv4_prefix_length:
+            type: int
+            default: 31
+            min: 1
+            max: 31
+            convert_types:
+            - str
+            description: IPv4 prefix length used for point-to-point interface for
+              direct WAN HA link.
   fabric_name:
     documentation_options:
       table: fabric-topology
@@ -2053,6 +2093,27 @@ keys:
     type: bool
     default: false
     description: Configure IP routing for the OOB Management VRF.
+  mlag_bgp_peer_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on the MLAG BGP peers
+      including those in VRFs.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG L3 VLAN interface.\n  - `peer_interface`: The
+      MLAG L3 VLAN interface on the MLAG peer.\n  - `vrf`: The name of the VRF. Not
+      available for the underlay peering.\n\nThe default description is built from
+      the name and interface of the MLAG peer and optionally the VRF."
+    default: '{mlag_peer}_{peer_interface}'
+  mlag_bgp_peer_group_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on the MLAG BGP peer-group.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n\nThe default description
+      is the name of the MLAG peers."
+    default: '{mlag_peer}'
   mlag_ibgp_peering_vrfs:
     documentation_options:
       table: network-services-vrfs-settings
@@ -2078,6 +2139,19 @@ keys:
         min: 1
         max: 4093
         default: 3000
+  mlag_member_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peer-link
+      ethernet interfaces.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
+      The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
+      local MLAG port-channel ID.\n  - `mlag_peer_port_channel_id`: The port-channel
+      ID on the MLAG peer.\n\nBy default the description is templated from the name
+      and interface of the MLAG peer."
+    default: MLAG_{mlag_peer}_{peer_interface}
   mlag_on_orphan_port_channel_downlink:
     type: bool
     documentation_options:
@@ -2088,6 +2162,76 @@ keys:
       If `false` (default) an MLAG ID will only be configured on Port-Channel downlinks
       dual-homed to two MLAG switches.'
     default: false
+  mlag_peer_l3_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG L3 peering
+      SVI (Interface Vlan4093 by default).\nThis can be a template using the format
+      string syntax.\nThe available template fields are:\n  - `mlag_peer`: The name
+      of the MLAG peer.\n  - `interface`: The MLAG L3 peering SVI name.\n  - `mlag_peer_l3_vlan`:
+      The MLAG L3 peering VLAN ID."
+    default: MLAG_L3
+  mlag_peer_l3_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG L3 VLAN (VLAN 4093 by default).\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_l3_vlan`:
+      The MLAG L3 peering VLAN ID."
+    default: MLAG_L3
+  mlag_peer_l3_vrf_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG L3 peering
+      SVI for VRFs.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `interface`:
+      The MLAG L3 VRF peering SVI name.\n  - `vlan`: The MLAG L3 VRF peering VLAN
+      ID.\n  - `vrf`: The VRF name."
+    default: MLAG_L3_VRF_{vrf}
+  mlag_peer_l3_vrf_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG L3 peering VLAN for VRFs.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `vlan`: The MLAG L3 VRF
+      peering VLAN ID.\n  - `vrf`: The VRF name."
+    default: MLAG_L3_VRF_{vrf}
+  mlag_peer_svi_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peering SVI
+      (Interface Vlan4094 by default).\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `mlag_peer`: The name of the
+      MLAG peer.\n  - `interface`: The MLAG peering SVI name.\n  - `mlag_peer_vlan`:
+      The MLAG peering VLAN ID."
+    default: MLAG
+  mlag_peer_vlan_name:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Name or name template to be used on MLAG peering VLAN (VLAN 4094
+      by default).\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n  - `mlag_peer_vlan`:
+      The MLAG peering VLAN ID."
+    default: MLAG
+  mlag_port_channel_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "Description or description template to be used on MLAG peer-link
+      port-channel interfaces.\nThis can be a template using the format string syntax.\nThe
+      available template fields are:\n  - `mlag_peer`: The name of the MLAG peer.\n
+      \ - `interface`: The local MLAG port-channel interface.\n  - `peer_interface`:
+      The port-channel interface on the MLAG peer.\n  - `mlag_port_channel_id`: The
+      local MLAG port-channel ID.\n  - `mlag_peer_port_channel_id`: The port-channel
+      ID on the MLAG peer.\n\nBy default the description is templated from the name
+      and port-channel interface of the MLAG peer."
+    default: MLAG_{mlag_peer}_{peer_interface}
   name_servers:
     documentation_options:
       table: management-settings
@@ -2563,6 +2707,16 @@ keys:
 
       '
     default: false
+  overlay_bgp_peer_description:
+    type: str
+    documentation_options:
+      table: overlay-settings
+    description: "Description or description template to be used on the overlay BGP
+      peers.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `peer`: The name of the BGP peer.\n  - `peer_interface`:
+      The interface on the BGP peer if available.\n\nThe default description is built
+      from the name and interface of the BGP peer."
+    default: '{peer}{peer_interface?<_}'
   overlay_cvx_servers:
     documentation_options:
       table: overlay-settings
@@ -4334,6 +4488,15 @@ keys:
 
             WAN interfaces require an inbound access-list to be set unless the carrier
             is "trusted".'
+  wan_encapsulation:
+    documentation_options:
+      table: wan-settings
+    description: Select the encapsulation to use for EVPN peerings for WAN BGP peers.
+    type: str
+    default: path-selection
+    valid_values:
+    - path-selection
+    - vxlan
   wan_ha:
     documentation_options:
       table: wan-settings
@@ -8956,6 +9119,18 @@ $defs:
                 description: 'Number of parallel links towards HA switches.
 
                   Can be used to reserve IP addresses for future parallel HA links.'
+              port_channel_id:
+                type: int
+                convert_types:
+                - str
+                description: Port-channel ID to use for direct HA.
+              use_port_channel_for_direct_ha:
+                type: bool
+                default: true
+                description: 'Enable or disable using a port-channel interface for
+                  direct HA when there is only one interface.
+
+                  This feature was introduced in EOS 4.33.0F.'
               flow_tracking:
                 type: dict
                 $ref: eos_designs#/$defs/flow_tracking_link
@@ -9336,9 +9511,16 @@ $defs:
             description: The values can be like ["node_a_as", "node_b_as"].
         descriptions:
           type: list
-          description: Interface description.
+          description: Interface descriptions.
           items:
             type: str
+            description: "Description or description template to be used on the ethernet
+              interface.\nThis can be a template using the format string syntax.\nThe
+              available template fields are:\n  - `peer`: The name of the peer.\n
+              \ - `interface`: The local interface name.\n  - `peer_interface`: The
+              interface on the peer.\n\nThe default description is set by `default_underlay_p2p_ethernet_description`.\nBy
+              default the description is templated from the name and interface of
+              the peer."
         include_in_underlay_protocol:
           type: bool
           default: true
@@ -9411,6 +9593,18 @@ $defs:
           description: Port-channel parameters.
           type: dict
           keys:
+            description:
+              type: str
+              description: "Description or description template to be used on the
+                port-channel interface.\nThis can be a template using the format string
+                syntax.\nThe available template fields are:\n  - `peer`: The name
+                of the peer.\n  - `interface`: The local port-channel interface name.\n
+                \ - `peer_interface`: The port-channel interface on the peer.\n  -
+                `port_channel_id`: The local port-channel ID.\n  - `peer_port_channel_id`:
+                The ID of the port-channel on the peer.\n\nFalls back to the description
+                on the `p2p_link` if set. Otherwise default description is set by
+                `default_underlay_p2p_port_channel_description`.\nBy default the description
+                is templated from the name and port_channel interface of the peer."
             mode:
               type: str
               default: active

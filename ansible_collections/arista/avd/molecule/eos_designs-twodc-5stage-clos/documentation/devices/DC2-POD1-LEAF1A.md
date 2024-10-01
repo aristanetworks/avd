@@ -221,17 +221,17 @@ vlan 4092
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3 | - | 172.17.210.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3 | - | 172.17.210.3/31 | default | - | False | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7 | - | 100.100.100.201/24 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7 | - | 11.1.0.39/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC2-POD1-SPINE1_Ethernet3 | - | 172.17.210.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC2-POD1-SPINE2_Ethernet3 | - | 172.17.210.3/31 | default | - | False | - | - |
+| Ethernet6 | P2P_DC1.POD1.LEAF2A_Ethernet7 | - | 100.100.100.201/24 | default | - | False | - | - |
+| Ethernet7 | P2P_DC1-POD1-LEAF2B_Ethernet7 | - | 11.1.0.39/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet3
+   description P2P_DC2-POD1-SPINE1_Ethernet3
    no shutdown
    no switchport
    ip address 172.17.210.1/31
@@ -239,7 +239,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet3
+   description P2P_DC2-POD1-SPINE2_Ethernet3
    no shutdown
    no switchport
    ip address 172.17.210.3/31
@@ -252,13 +252,13 @@ interface Ethernet3
    channel-group 3 mode active
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet7
+   description P2P_DC1.POD1.LEAF2A_Ethernet7
    no shutdown
    no switchport
    ip address 100.100.100.201/24
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet7
+   description P2P_DC1-POD1-LEAF2B_Ethernet7
    no shutdown
    no switchport
    ip address 11.1.0.39/31
@@ -571,19 +571,19 @@ router bgp 65211
    neighbor 100.100.100.101 description DC1.POD1.LEAF2A
    neighbor 172.16.10.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.1 remote-as 65101
-   neighbor 172.16.10.1 description DC1-RS1
+   neighbor 172.16.10.1 description DC1-RS1_Loopback0
    neighbor 172.16.10.2 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.10.2 remote-as 65102
-   neighbor 172.16.10.2 description DC1-RS2
+   neighbor 172.16.10.2 description DC1-RS2_Loopback0
    neighbor 172.16.110.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.1 remote-as 65110.100
-   neighbor 172.16.110.1 description DC1-POD1-SPINE1
+   neighbor 172.16.110.1 description DC1-POD1-SPINE1_Loopback0
    neighbor 172.16.110.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.3 remote-as 65111.100
-   neighbor 172.16.110.3 description DC1-POD1-LEAF1A
+   neighbor 172.16.110.3 description DC1-POD1-LEAF1A_Loopback0
    neighbor 172.16.210.4 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.4 remote-as 65212
-   neighbor 172.16.210.4 description DC2-POD1-LEAF2A
+   neighbor 172.16.210.4 description DC2-POD1-LEAF2A_Loopback0
    neighbor 172.17.210.0 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.0 remote-as 65210
    neighbor 172.17.210.0 description DC2-POD1-SPINE1_Ethernet3
