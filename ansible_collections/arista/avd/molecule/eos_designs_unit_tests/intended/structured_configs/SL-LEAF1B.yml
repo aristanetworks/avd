@@ -45,7 +45,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel27
-  description: SL-LEAF0_Po27
+  description: L2_SL-LEAF0_Port-Channel27
   switchport:
     enabled: true
     mode: trunk
@@ -76,7 +76,7 @@ ethernet_interfaces:
   peer: SL-LEAF0B
   peer_interface: Ethernet28
   peer_type: l2leaf
-  description: SL-LEAF0B_Ethernet28
+  description: L2_SL-LEAF0B_Ethernet28
   shutdown: false
   channel_group:
     id: 27

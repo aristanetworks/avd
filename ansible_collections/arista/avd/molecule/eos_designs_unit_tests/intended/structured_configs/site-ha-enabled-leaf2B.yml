@@ -187,7 +187,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-edge2A
   peer_interface: Ethernet53
   peer_type: wan_router
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2A_Ethernet53
+  description: P2P_cv-pathfinder-edge2A_Ethernet53
   shutdown: false
   mtu: 9214
   switchport:
@@ -198,7 +198,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53.1000
   peer_type: wan_router
   vrf: IT
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2A_Ethernet53.1000_vrf_IT
+  description: P2P_cv-pathfinder-edge2A_Ethernet53.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -209,7 +209,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53.142
   peer_type: wan_router
   vrf: PROD
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2A_Ethernet53.142_vrf_PROD
+  description: P2P_cv-pathfinder-edge2A_Ethernet53.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -220,7 +220,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53.666
   peer_type: wan_router
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2A_Ethernet53.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-edge2A_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
@@ -230,7 +230,7 @@ ethernet_interfaces:
   peer: cv-pathfinder-edge2B
   peer_interface: Ethernet53
   peer_type: wan_router
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2B_Ethernet53
+  description: P2P_cv-pathfinder-edge2B_Ethernet53
   shutdown: false
   mtu: 9214
   switchport:
@@ -241,7 +241,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53.1000
   peer_type: wan_router
   vrf: IT
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2B_Ethernet53.1000_vrf_IT
+  description: P2P_cv-pathfinder-edge2B_Ethernet53.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -252,7 +252,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53.142
   peer_type: wan_router
   vrf: PROD
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2B_Ethernet53.142_vrf_PROD
+  description: P2P_cv-pathfinder-edge2B_Ethernet53.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -263,7 +263,7 @@ ethernet_interfaces:
   peer_interface: Ethernet53.666
   peer_type: wan_router
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_CV-PATHFINDER-EDGE2B_Ethernet53.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_cv-pathfinder-edge2B_Ethernet53.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666

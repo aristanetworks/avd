@@ -167,7 +167,6 @@ ethernet_interfaces:
   peer: p3
   peer_interface: Ethernet1
   peer_type: p
-  description: P2P_LINK_TO_p3_Ethernet1
   switchport:
     enabled: false
   shutdown: false
@@ -185,11 +184,11 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_p3_Ethernet1
 - name: Ethernet3
   peer: p4
   peer_interface: Ethernet3
   peer_type: p
-  description: P2P_LINK_TO_p4_Ethernet3
   switchport:
     enabled: false
   shutdown: false
@@ -207,6 +206,7 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_p4_Ethernet3
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 10.0.1.9/30

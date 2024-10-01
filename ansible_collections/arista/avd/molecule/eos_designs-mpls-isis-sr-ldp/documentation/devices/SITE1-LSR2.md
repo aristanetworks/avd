@@ -136,15 +136,15 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LER2_Ethernet1 | - | 100.64.48.3/31 | default | 9214 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE2-LSR2_Ethernet3 | - | 100.64.48.10/31 | default | 9178 | False | - | - |
+| Ethernet1 | P2P_SITE1-LER2_Ethernet1 | - | 100.64.48.3/31 | default | 9214 | False | - | - |
+| Ethernet3 | P2P_SITE2-LSR2_Ethernet3 | - | 100.64.48.10/31 | default | 9178 | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LER2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_SITE2-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LER2_Ethernet1 | - | - | default | 9214 | False | - | - | - | - |
+| Ethernet3 | P2P_SITE2-LSR2_Ethernet3 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -158,7 +158,7 @@ vlan internal order ascending range 1006 1199
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE1-LER2_Ethernet1
+   description P2P_SITE1-LER2_Ethernet1
    no shutdown
    mtu 9214
    speed forced 100gfull
@@ -179,7 +179,7 @@ interface Ethernet1
 
 !
 interface Ethernet3
-   description P2P_LINK_TO_SITE2-LSR2_Ethernet3
+   description P2P_SITE2-LSR2_Ethernet3
    no shutdown
    mtu 9178
    speed forced 40gfull

@@ -415,8 +415,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet7 | L2_DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet8 | L2_DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet11 | SERVER_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
 | Ethernet12 | SERVER_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
 | Ethernet13 | SERVER_server06_override_profile_Eth2 | access | 210 | - | - | - |
@@ -430,38 +430,38 @@ vlan 4094
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet5
+   description P2P_DC1-SPINE1_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   description P2P_DC1-SPINE2_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet5
+   description P2P_DC1-SPINE3_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet5
+   description P2P_DC1-SPINE4_Ethernet5
    no shutdown
    mtu 1500
    no switchport
@@ -478,12 +478,12 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet2
+   description L2_DC1-L2LEAF2A_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet2
+   description L2_DC1-L2LEAF2B_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
@@ -559,7 +559,7 @@ interface Ethernet16
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-SVC3A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel7 | L2_DC1_L2LEAF2_Port-Channel1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel14 | ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
 
@@ -575,7 +575,7 @@ interface Port-Channel5
    switchport
 !
 interface Port-Channel7
-   description DC1_L2LEAF2_Po1
+   description L2_DC1_L2LEAF2_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
@@ -1332,7 +1332,7 @@ router bgp 65103
       route-target export evpn 12:12
       router-id 192.168.255.9
       neighbor interface Vlan3011 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.9:13
@@ -1340,7 +1340,7 @@ router bgp 65103
       route-target export evpn 13:13
       router-id 192.168.255.9
       neighbor interface Vlan3012 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.9:10
@@ -1348,7 +1348,7 @@ router bgp 65103
       route-target export evpn 10:10
       router-id 192.168.255.9
       neighbor interface Vlan3009 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.9:14
@@ -1356,7 +1356,7 @@ router bgp 65103
       route-target export evpn 14:14
       router-id 192.168.255.9
       neighbor interface Vlan3013 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.9:11
@@ -1364,7 +1364,7 @@ router bgp 65103
       route-target export evpn 11:11
       router-id 192.168.255.9
       neighbor interface Vlan3010 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.9:20
@@ -1372,7 +1372,7 @@ router bgp 65103
       route-target export evpn 20:20
       router-id 192.168.255.9
       neighbor interface Vlan3019 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.9:21
@@ -1380,7 +1380,7 @@ router bgp 65103
       route-target export evpn 21:21
       router-id 192.168.255.9
       neighbor interface Vlan3020 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.9:30
@@ -1388,7 +1388,7 @@ router bgp 65103
       route-target export evpn 30:30
       router-id 192.168.255.9
       neighbor interface Vlan2 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.9:31
@@ -1396,7 +1396,7 @@ router bgp 65103
       route-target export evpn 31:31
       router-id 192.168.255.9
       neighbor interface Vlan3030 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD

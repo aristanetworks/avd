@@ -266,8 +266,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
-| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
+| Ethernet3 | L2_DC1-POD1-L2LEAF2A_Ethernet1 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
+| Ethernet4 | L2_DC1-POD1-L2LEAF2B_Ethernet1 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_DC1-POD1-LEAF2B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_DC1-POD1-LEAF2B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet16 | SERVER_server-1_Eth1 | *access | *110 | *- | *- | 16 |
@@ -281,18 +281,18 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.13/31 | default | - | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.15/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet4 | - | 172.17.110.9/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet4 | - | 172.17.110.11/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet6 | - | 100.100.100.101/24 | default | - | False | - | - |
+| Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet7 | - | 172.17.110.13/31 | default | - | False | - | - |
+| Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet7 | - | 172.17.110.15/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet4
+   description P2P_DC1-POD1-SPINE1_Ethernet4
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -301,7 +301,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet4
+   description P2P_DC1-POD1-SPINE2_Ethernet4
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -310,12 +310,12 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description DC1-POD1-L2LEAF2A_Ethernet1
+   description L2_DC1-POD1-L2LEAF2A_Ethernet1
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description DC1-POD1-L2LEAF2B_Ethernet1
+   description L2_DC1-POD1-L2LEAF2B_Ethernet1
    no shutdown
    channel-group 3 mode active
 !
@@ -330,13 +330,13 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet6
+   description P2P_DC2-POD1-LEAF1A_Ethernet6
    no shutdown
    no switchport
    ip address 100.100.100.101/24
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet7
+   description P2P_DC1-POD1-SPINE1_Ethernet7
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -345,7 +345,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet7
+   description P2P_DC1-POD1-SPINE2_Ethernet7
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -398,7 +398,7 @@ interface Ethernet19
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
+| Port-Channel3 | L2_RACK2_MLAG_Port-Channel1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_DC1-POD1-LEAF2B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
@@ -410,7 +410,7 @@ interface Ethernet19
 ```eos
 !
 interface Port-Channel3
-   description RACK2_MLAG_Po1
+   description L2_RACK2_MLAG_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk

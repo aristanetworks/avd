@@ -263,7 +263,6 @@ ethernet_interfaces:
   peer: SITE2-LSR1
   peer_interface: Ethernet1
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR1_Ethernet1
   switchport:
     enabled: false
   shutdown: false
@@ -285,46 +284,47 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE2-LSR1_Ethernet1
   speed: forced 40gfull
 - name: Ethernet11
   peer: SITE2-LSR2
   peer_interface: Ethernet12
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Ethernet12
   shutdown: false
   channel_group:
     id: 11
     mode: active
+  description: P2P_SITE2-LSR2_Ethernet12
   speed: forced 40gfull
 - name: Ethernet12
   peer: SITE2-LSR2
   peer_interface: Ethernet13
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Ethernet13
   shutdown: false
   channel_group:
     id: 11
     mode: active
+  description: P2P_SITE2-LSR2_Ethernet13
   speed: forced 40gfull
 - name: Ethernet13
   peer: SITE2-LSR2
   peer_interface: Ethernet14
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Ethernet14
   shutdown: false
   channel_group:
     id: 220
     mode: active
+  description: P2P_SITE2-LSR2_Ethernet14
   speed: forced 40gfull
 - name: Ethernet14
   peer: SITE2-LSR2
   peer_interface: Ethernet15
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Ethernet15
   shutdown: false
   channel_group:
     id: 220
     mode: active
+  description: P2P_SITE2-LSR2_Ethernet15
   speed: forced 40gfull
 - name: Ethernet6.10
   peer_type: l3_interface
@@ -399,7 +399,6 @@ port_channel_interfaces:
   peer: SITE2-LSR2
   peer_interface: Port-Channel12
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Port-Channel12
   switchport:
     enabled: false
   shutdown: false
@@ -421,11 +420,11 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE2-LSR2_Port-Channel12
 - name: Port-Channel220
   peer: SITE2-LSR2
   peer_interface: Port-Channel110
   peer_type: p
-  description: P2P_LINK_TO_SITE2-LSR2_Port-Channel110
   switchport:
     enabled: false
   shutdown: false
@@ -447,6 +446,7 @@ port_channel_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE2-LSR2_Port-Channel110
 - name: Port-Channel4.1000
   peer_type: point_to_point_service
   encapsulation_vlan:

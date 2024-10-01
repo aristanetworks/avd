@@ -97,7 +97,7 @@ ethernet_interfaces:
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
+  description: P2P_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1A_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -110,7 +110,7 @@ ethernet_interfaces:
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
+  description: P2P_UPLINK-MLAG-STRUCTURED-CONFIG-L3LEAF1B_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:

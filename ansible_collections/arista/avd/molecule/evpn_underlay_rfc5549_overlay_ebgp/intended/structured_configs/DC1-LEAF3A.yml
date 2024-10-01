@@ -106,6 +106,7 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3011
       peer_group: MLAG_PEER
@@ -125,6 +126,7 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3012
       peer_group: MLAG_PEER
@@ -144,6 +146,7 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3009
       peer_group: MLAG_PEER
@@ -163,6 +166,7 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3010
       peer_group: MLAG_PEER
@@ -182,6 +186,7 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3019
       peer_group: MLAG_PEER
@@ -201,6 +206,7 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan2
       peer_group: MLAG_PEER
@@ -658,7 +664,7 @@ ethernet_interfaces:
   peer: DC1-SPINE5
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE5_Ethernet1
+  description: P2P_DC1-SPINE5_Ethernet1
   shutdown: false
   mtu: 1500
   switchport:
@@ -668,7 +674,7 @@ ethernet_interfaces:
   peer: DC1-SPINE5
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE5_Ethernet3
+  description: P2P_DC1-SPINE5_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:

@@ -109,7 +109,7 @@ ethernet_interfaces:
   peer: DC2-POD1-SPINE1
   peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
+  description: P2P_DC2-POD1-SPINE1_Ethernet4
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
@@ -121,7 +121,7 @@ ethernet_interfaces:
   peer: DC2-POD1-SPINE2
   peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
+  description: P2P_DC2-POD1-SPINE2_Ethernet4
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
@@ -133,14 +133,14 @@ ethernet_interfaces:
   peer: DC2-POD1-L2LEAF2A
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: DC2-POD1-L2LEAF2A_Ethernet1
+  description: L2_DC2-POD1-L2LEAF2A_Ethernet1
   shutdown: false
   channel_group:
     id: 3
     mode: active
 port_channel_interfaces:
 - name: Port-Channel3
-  description: DC2-POD1-L2LEAF2A_Po1
+  description: L2_DC2-POD1-L2LEAF2A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk

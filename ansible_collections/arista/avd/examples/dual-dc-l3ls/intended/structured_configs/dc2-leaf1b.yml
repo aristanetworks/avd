@@ -87,6 +87,7 @@ router_bgp:
     router_id: 10.255.128.14
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.129.116
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -105,6 +106,7 @@ router_bgp:
     router_id: 10.255.128.14
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.129.116
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -313,7 +315,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel8
-  description: DC2-LEAF1C_Po1
+  description: L2_dc2-leaf1c_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -355,7 +357,7 @@ ethernet_interfaces:
   peer: dc2-spine1
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE1_Ethernet2
+  description: P2P_dc2-spine1_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:
@@ -365,7 +367,7 @@ ethernet_interfaces:
   peer: dc2-spine2
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE2_Ethernet2
+  description: P2P_dc2-spine2_Ethernet2
   shutdown: false
   mtu: 1500
   switchport:
@@ -375,7 +377,7 @@ ethernet_interfaces:
   peer: dc2-leaf1c
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC2-LEAF1C_Ethernet2
+  description: L2_dc2-leaf1c_Ethernet2
   shutdown: false
   channel_group:
     id: 8
@@ -410,6 +412,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -436,6 +446,10 @@ prefix_lists:
     action: permit 10.255.128.0/27 eq 32
   - sequence: 20
     action: permit 10.255.129.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.129.116/31
 router_bfd:
   multihop:
     interval: 300

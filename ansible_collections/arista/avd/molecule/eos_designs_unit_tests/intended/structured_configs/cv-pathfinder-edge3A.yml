@@ -166,9 +166,10 @@ ethernet_interfaces:
   peer_type: l3_interface
   peer: cv-pathfinder-edge3B
   shutdown: false
-  description: DIRECT LAN HA LINK
+  description: WAN_HA_cv-pathfinder-edge3B_Ethernet52
   ip_address: 10.10.10.1/24
-  flow_tracker: null
+  flow_tracker:
+    hardware: FLOW-TRACKER
   mtu: 9100
 loopback_interfaces:
 - name: Loopback0

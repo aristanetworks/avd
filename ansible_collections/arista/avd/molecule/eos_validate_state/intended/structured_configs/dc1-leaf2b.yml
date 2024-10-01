@@ -114,6 +114,7 @@ router_bgp:
     router_id: 10.255.0.6
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.1.100
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -132,6 +133,7 @@ router_bgp:
     router_id: 10.255.0.6
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.1.100
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -390,7 +392,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel8
-  description: DC1-LEAF2C_Po1
+  description: L2_dc1-leaf2c_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -432,7 +434,7 @@ ethernet_interfaces:
   peer: dc1-spine1
   peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet4
+  description: P2P_dc1-spine1_Ethernet4
   shutdown: false
   mtu: 1500
   switchport:
@@ -442,7 +444,7 @@ ethernet_interfaces:
   peer: dc1-spine2
   peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet4
+  description: P2P_dc1-spine2_Ethernet4
   shutdown: false
   mtu: 1500
   switchport:
@@ -452,7 +454,7 @@ ethernet_interfaces:
   peer: dc1-leaf2c
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC1-LEAF2C_Ethernet2
+  description: L2_dc1-leaf2c_Ethernet2
   shutdown: false
   channel_group:
     id: 8
@@ -461,12 +463,12 @@ ethernet_interfaces:
   peer: dc2-leaf2b
   peer_interface: Ethernet6
   peer_type: l3leaf
-  description: P2P_LINK_TO_dc2-leaf2b_Ethernet6
   switchport:
     enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 192.168.100.2/31
+  description: P2P_dc2-leaf2b_Ethernet6
 - name: Ethernet5
   peer: dc1-leaf2-server1
   peer_interface: PCI2
@@ -501,6 +503,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -527,6 +537,10 @@ prefix_lists:
     action: permit 10.255.0.0/27 eq 32
   - sequence: 20
     action: permit 10.255.1.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.1.100/31
 - name: PL-L2LEAF-INBAND-MGMT
   sequence_numbers:
   - sequence: 10

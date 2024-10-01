@@ -137,7 +137,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf1
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF1_Ethernet1
+  description: P2P_sflow-tests-leaf1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -149,7 +149,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf1
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF1_Ethernet2
+  description: P2P_sflow-tests-leaf1_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -161,7 +161,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf2
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF2_Ethernet1
+  description: P2P_sflow-tests-leaf2_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -173,7 +173,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf2
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF2_Ethernet2
+  description: P2P_sflow-tests-leaf2_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -185,7 +185,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf3
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF3_Ethernet1
+  description: P2P_sflow-tests-leaf3_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -197,7 +197,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf3
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF3_Ethernet2
+  description: P2P_sflow-tests-leaf3_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -209,7 +209,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf4
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF4_Ethernet1
+  description: P2P_sflow-tests-leaf4_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -221,7 +221,7 @@ ethernet_interfaces:
   peer: sflow-tests-leaf4
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_SFLOW-TESTS-LEAF4_Ethernet2
+  description: P2P_sflow-tests-leaf4_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -233,68 +233,68 @@ ethernet_interfaces:
   peer: sflow-tests-spine2
   peer_interface: Ethernet9
   peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet9
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   sflow:
     enable: true
+  description: P2P_sflow-tests-spine2_Ethernet9
 - name: Ethernet10
   peer: sflow-tests-spine2
   peer_interface: Ethernet10
   peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet10
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   sflow:
     enable: false
+  description: P2P_sflow-tests-spine2_Ethernet10
 - name: Ethernet11
   peer: sflow-tests-spine2
   peer_interface: Ethernet11
   peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet11
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   sflow:
     enable: true
+  description: P2P_sflow-tests-spine2_Ethernet11
 - name: Ethernet12
   peer: sflow-tests-spine2
   peer_interface: Ethernet12
   peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet12
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   sflow:
     enable: true
+  description: P2P_sflow-tests-spine2_Ethernet12
 - name: Ethernet13
   peer: sflow-tests-spine2
   peer_interface: Ethernet13
   peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet13
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   sflow:
     enable: false
+  description: P2P_sflow-tests-spine2_Ethernet13
 - name: Ethernet14
   peer: sflow-tests-spine2
   peer_interface: Ethernet14
   peer_type: spine
-  description: P2P_LINK_TO_sflow-tests-spine2_Ethernet14
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   sflow:
     enable: true
+  description: P2P_sflow-tests-spine2_Ethernet14
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

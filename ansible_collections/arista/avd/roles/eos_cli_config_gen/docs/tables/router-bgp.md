@@ -41,6 +41,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.bgp.route_reflector_preserve_attributes.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bestpath</samp>](## "router_bgp.bgp.bestpath") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "router_bgp.bgp.bestpath.d_path") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.bgp.additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
@@ -393,9 +398,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ibgp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.aigp_session.ibgp") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
@@ -418,9 +423,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].aigp_session") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].graceful_restart") | Boolean |  |  |  |  |
@@ -454,9 +459,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].aigp_session") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart") | Boolean |  |  |  |  |
@@ -1205,6 +1210,24 @@
           always: <bool>
         bestpath:
           d_path: <bool>
+        additional_paths:
+
+          # Enable or disable reception of additional-paths.
+          receive: <bool>
+
+          # Select an option to send multiple paths for same prefix through bgp updates.
+          # any: Send any eligible path.
+          # backup: Best path and installed backup path.
+          # ecmp: All paths in best path ECMP group.
+          # limit: Limit to n eligible paths.
+          # disabled: Disable sending any path.
+          send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+          # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
+          send_ecmp_limit: <int; 2-64>
+
+          # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+          send_limit: <int; 2-64>
 
         # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
         redistribute_internal: <bool>
@@ -1896,6 +1919,8 @@
           ibgp: <bool>
         bgp:
           additional_paths:
+
+            # Enable or disable reception of additional-paths.
             receive: <bool>
 
             # Select an option to send multiple paths for same prefix through bgp updates.
@@ -1906,7 +1931,7 @@
             # disabled: Disable sending any path.
             send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-            # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+            # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
             send_ecmp_limit: <int; 2-64>
 
             # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
@@ -1958,6 +1983,8 @@
           - name: <str; required; unique>
             activate: <bool>
             additional_paths:
+
+              # Enable or disable reception of additional-paths.
               receive: <bool>
 
               # Select an option to send multiple paths for same prefix through bgp updates.
@@ -1968,7 +1995,7 @@
               # disabled: Disable sending any path.
               send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
               send_ecmp_limit: <int; 2-64>
 
               # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
@@ -2046,6 +2073,8 @@
           - ip_address: <str; required; unique>
             activate: <bool>
             additional_paths:
+
+              # Enable or disable reception of additional-paths.
               receive: <bool>
 
               # Select an option to send multiple paths for same prefix through bgp updates.
@@ -2056,7 +2085,7 @@
               # disabled: Disable sending any path.
               send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this settings. If this key-value pair is not set, it will send all paths in best ECMP group.
+              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
               send_ecmp_limit: <int; 2-64>
 
               # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.

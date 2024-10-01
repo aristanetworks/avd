@@ -211,7 +211,6 @@ ethernet_interfaces:
   peer: SITE1-LSR1
   peer_interface: Ethernet1
   peer_type: p
-  description: P2P_LINK_TO_SITE1-LSR1_Ethernet1
   switchport:
     enabled: false
   shutdown: false
@@ -233,12 +232,12 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE1-LSR1_Ethernet1
   speed: forced 40gfull
 - name: Ethernet2
   peer: SITE1-LER2
   peer_interface: Ethernet2
   peer_type: pe
-  description: P2P_LINK_TO_SITE1-LER2_Ethernet2
   switchport:
     enabled: false
   shutdown: false
@@ -260,6 +259,7 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE1-LER2_Ethernet2
   speed: forced 10000full
 - name: Ethernet6.10
   peer_type: l3_interface

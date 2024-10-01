@@ -196,7 +196,7 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC2-POD1-L2LEAF2A_Ethernet1 | *trunk | *4092 | *- | *- | 3 |
+| Ethernet3 | L2_DC2-POD1-L2LEAF2A_Ethernet1 | *trunk | *4092 | *- | *- | 3 |
 
 *Inherited from Port-Channel Interface
 
@@ -204,15 +204,15 @@ vlan 4092
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4 | - | 172.17.210.5/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4 | - | 172.17.210.7/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC2-POD1-SPINE1_Ethernet4 | - | 172.17.210.5/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC2-POD1-SPINE2_Ethernet4 | - | 172.17.210.7/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-POD1-SPINE1_Ethernet4
+   description P2P_DC2-POD1-SPINE1_Ethernet4
    no shutdown
    no switchport
    ip address 172.17.210.5/31
@@ -220,7 +220,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-POD1-SPINE2_Ethernet4
+   description P2P_DC2-POD1-SPINE2_Ethernet4
    no shutdown
    no switchport
    ip address 172.17.210.7/31
@@ -228,7 +228,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description DC2-POD1-L2LEAF2A_Ethernet1
+   description L2_DC2-POD1-L2LEAF2A_Ethernet1
    no shutdown
    channel-group 3 mode active
 ```
@@ -241,14 +241,14 @@ interface Ethernet3
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | DC2-POD1-L2LEAF2A_Po1 | trunk | 4092 | - | - | - | - | - | - |
+| Port-Channel3 | L2_DC2-POD1-L2LEAF2A_Port-Channel1 | trunk | 4092 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel3
-   description DC2-POD1-L2LEAF2A_Po1
+   description L2_DC2-POD1-L2LEAF2A_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 4092
    switchport mode trunk

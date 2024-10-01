@@ -216,20 +216,20 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF1A_Ethernet2 | - | 172.31.255.2/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF2A_Ethernet2 | - | 172.31.255.10/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF2B_Ethernet2 | - | 172.31.255.18/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SVC3A_Ethernet2 | - | 172.31.255.26/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-SVC3B_Ethernet2 | - | 172.31.255.34/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-BL1A_Ethernet2 | - | 172.31.255.42/31 | default | 1500 | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1-BL1B_Ethernet2 | - | 172.31.255.50/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_DC1-LEAF1A_Ethernet2 | - | 172.31.255.2/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_DC1-LEAF2A_Ethernet2 | - | 172.31.255.10/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_DC1-LEAF2B_Ethernet2 | - | 172.31.255.18/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_DC1-SVC3A_Ethernet2 | - | 172.31.255.26/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_DC1-SVC3B_Ethernet2 | - | 172.31.255.34/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_DC1-BL1A_Ethernet2 | - | 172.31.255.42/31 | default | 1500 | False | - | - |
+| Ethernet7 | P2P_DC1-BL1B_Ethernet2 | - | 172.31.255.50/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF1A_Ethernet2
+   description P2P_DC1-LEAF1A_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -240,7 +240,7 @@ interface Ethernet1
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF2A_Ethernet2
+   description P2P_DC1-LEAF2A_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -251,7 +251,7 @@ interface Ethernet2
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-LEAF2B_Ethernet2
+   description P2P_DC1-LEAF2B_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -262,7 +262,7 @@ interface Ethernet3
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SVC3A_Ethernet2
+   description P2P_DC1-SVC3A_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -273,7 +273,7 @@ interface Ethernet4
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-SVC3B_Ethernet2
+   description P2P_DC1-SVC3B_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -284,7 +284,7 @@ interface Ethernet5
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-BL1A_Ethernet2
+   description P2P_DC1-BL1A_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -295,7 +295,7 @@ interface Ethernet6
    ip ospf message-digest-key 1 sha256 7 <removed>
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1-BL1B_Ethernet2
+   description P2P_DC1-BL1B_Ethernet2
    no shutdown
    mtu 1500
    no switchport

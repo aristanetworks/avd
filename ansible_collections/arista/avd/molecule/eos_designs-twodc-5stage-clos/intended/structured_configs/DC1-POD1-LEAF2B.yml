@@ -490,7 +490,7 @@ port_channel_interfaces:
   shutdown: false
   service_profile: QOS-PROFILE
 - name: Port-Channel3
-  description: RACK2_MLAG_Po1
+  description: L2_RACK2_MLAG_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -572,7 +572,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+  description: P2P_DC1-POD1-SPINE1_Ethernet5
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -586,7 +586,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE2
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+  description: P2P_DC1-POD1-SPINE2_Ethernet5
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -600,7 +600,7 @@ ethernet_interfaces:
   peer: DC1-POD1-L2LEAF2A
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC1-POD1-L2LEAF2A_Ethernet2
+  description: L2_DC1-POD1-L2LEAF2A_Ethernet2
   shutdown: false
   channel_group:
     id: 3
@@ -609,7 +609,7 @@ ethernet_interfaces:
   peer: DC1-POD1-L2LEAF2B
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC1-POD1-L2LEAF2B_Ethernet2
+  description: L2_DC1-POD1-L2LEAF2B_Ethernet2
   shutdown: false
   channel_group:
     id: 3
@@ -618,7 +618,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet8
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
+  description: P2P_DC1-POD1-SPINE1_Ethernet8
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -632,7 +632,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE2
   peer_interface: Ethernet8
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
+  description: P2P_DC1-POD1-SPINE2_Ethernet8
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -646,11 +646,11 @@ ethernet_interfaces:
   peer: DC2-POD1-LEAF1A
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
   switchport:
     enabled: false
   shutdown: false
   ip_address: 11.1.0.38/31
+  description: P2P_DC2-POD1-LEAF1A_Ethernet7
   ptp:
     enable: true
 - name: Ethernet16

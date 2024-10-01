@@ -7,6 +7,8 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>default_underlay_p2p_ethernet_description</samp>](## "default_underlay_p2p_ethernet_description") | String |  | `P2P_{peer}_{peer_interface}{vrf?<_VRF_}` |  | The default description or description template to be used on L3 point-to-point ethernet interfaces.<br>The interfaces using this are the routed uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br>  - `vrf`: The name of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).<br><br>By default the description is templated from the name and interface of the peer. |
+    | [<samp>default_underlay_p2p_port_channel_description</samp>](## "default_underlay_p2p_port_channel_description") | String |  | `P2P_{peer}_{peer_interface}` |  | The default description or description template to be used on L3 point-to-point port-channel interfaces.<br>The port-channels using this are `p2p_links` defined under `l3_edge` or `core_interfaces`.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>By default the description is templated from the name and interface of the peer. |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
     | [<samp>mlag_bgp_peer_description</samp>](## "mlag_bgp_peer_description") | String |  | `{mlag_peer}_{peer_interface}` |  | Description or description template to be used on the MLAG BGP peers including those in VRFs.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG L3 VLAN interface.<br>  - `peer_interface`: The MLAG L3 VLAN interface on the MLAG peer.<br>  - `vrf`: The name of the VRF. Not available for the underlay peering.<br><br>The default description is built from the name and interface of the MLAG peer and optionally the VRF. |
     | [<samp>mlag_bgp_peer_group_description</samp>](## "mlag_bgp_peer_group_description") | String |  | `{mlag_peer}` |  | Description or description template to be used on the MLAG BGP peer-group.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br><br>The default description is the name of the MLAG peers. |
@@ -34,6 +36,8 @@
     | [<samp>underlay_filter_peer_as</samp>](## "underlay_filter_peer_as") | Boolean |  | `False` |  | Configure route-map on eBGP sessions towards underlay peers, where prefixes with the peer's ASN in the AS Path are filtered away.<br>This is very useful in very large scale networks not using EVPN overlays, where convergence will be quicker by not having to return<br>all updates received from Spine-1 to Spine-2 just for Spine-2 to throw them away because of AS Path loop detection.<br>Note that this setting cannot be used while there are EVPN services present in the default VRF.<br> |
     | [<samp>underlay_filter_redistribute_connected</samp>](## "underlay_filter_redistribute_connected") | Boolean |  | `True` |  | Filter redistribution of connected into the underlay routing protocol.<br>Only applicable when overlay_routing_protocol != 'none' and underlay_routing_protocol == BGP.<br>Creates a route-map and prefix-list assigned to redistribute connected permitting only loopbacks and inband management subnets.<br> |
     | [<samp>underlay_ipv6</samp>](## "underlay_ipv6") | Boolean |  | `False` |  | This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.<br>Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.<br> |
+    | [<samp>underlay_l2_ethernet_description</samp>](## "underlay_l2_ethernet_description") | String |  | `L2_{peer}_{peer_interface}` |  | The description or description template to be used on L2 ethernet interfaces.<br>The interfaces using this are the member interfaces of port-channel uplinks.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br><br>By default the description is templated from the hostname and interface of the peer. |
+    | [<samp>underlay_l2_port_channel_description</samp>](## "underlay_l2_port_channel_description") | String |  | `L2_{peer_node_group_or_peer}_{peer_interface}` |  | The description or description template to be used on L2 port-channel interfaces.<br>The interfaces using this are port-channel uplinks.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br>  - `peer_node_group`: The node group of the peer if the peer is an MLAG member or running EVPN A/A.<br>  - `peer_node_group_or_peer`: Helper alias of the peer_node_group or peer.<br>  - `peer_node_group_or_uppercase_peer`: Helper alias of the peer_node_group or peer hostname in uppercase.<br><br>By default the description is templated from the peer's node group (for MLAG or EVPN A/A) or hostname and port-channel interface of the peer. |
     | [<samp>underlay_multicast</samp>](## "underlay_multicast") | Boolean |  | `False` |  | Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.<br>Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.<br>No other configuration is added, so the underlay will only support Source-Specific Multicast (SSM).<br>The configuration is intended to be used as multicast underlay for EVPN OISM overlay.<br> |
     | [<samp>underlay_multicast_anycast_rp</samp>](## "underlay_multicast_anycast_rp") | Dictionary |  |  |  | If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured<br>with one of the following methods:<br>- Anycast RP using PIM (RFC4610).<br>- Anycast RP using MSDP (RFC4611).<br><br>NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".<br> |
     | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- <code>pim</code><br>- <code>msdp</code> |  |
@@ -54,6 +58,31 @@
 === "YAML"
 
     ```yaml
+    # The default description or description template to be used on L3 point-to-point ethernet interfaces.
+    # The interfaces using this are the routed uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `peer`: The name of the peer.
+    #   - `interface`: The local interface name.
+    #   - `peer_interface`: The interface on the peer.
+    #   - `vrf`: The name of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).
+    #
+    # By default the description is templated from the name and interface of the peer.
+    default_underlay_p2p_ethernet_description: <str; default="P2P_{peer}_{peer_interface}{vrf?<_VRF_}">
+
+    # The default description or description template to be used on L3 point-to-point port-channel interfaces.
+    # The port-channels using this are `p2p_links` defined under `l3_edge` or `core_interfaces`.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `peer`: The name of the peer.
+    #   - `interface`: The local interface name.
+    #   - `peer_interface`: The interface on the peer.
+    #   - `port_channel_id`: The local port-channel ID.
+    #   - `peer_port_channel_id`: The ID of the port-channel on the peer.
+    #
+    # By default the description is templated from the name and interface of the peer.
+    default_underlay_p2p_port_channel_description: <str; default="P2P_{peer}_{peer_interface}">
+
     # Enable Trunk Group support across eos_designs.
     # Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".
     # *All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.
@@ -213,6 +242,33 @@
     # This feature allows IPv6 underlay routing protocol with RFC5549 addresses to be used along with IPv4 advertisements as VXLAN tunnel endpoints.
     # Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
     underlay_ipv6: <bool; default=False>
+
+    # The description or description template to be used on L2 ethernet interfaces.
+    # The interfaces using this are the member interfaces of port-channel uplinks.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `peer`: The name of the peer.
+    #   - `interface`: The local interface name.
+    #   - `peer_interface`: The interface on the peer.
+    #
+    # By default the description is templated from the hostname and interface of the peer.
+    underlay_l2_ethernet_description: <str; default="L2_{peer}_{peer_interface}">
+
+    # The description or description template to be used on L2 port-channel interfaces.
+    # The interfaces using this are port-channel uplinks.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `peer`: The name of the peer.
+    #   - `interface`: The local interface name.
+    #   - `peer_interface`: The interface on the peer.
+    #   - `port_channel_id`: The local port-channel ID.
+    #   - `peer_port_channel_id`: The ID of the port-channel on the peer.
+    #   - `peer_node_group`: The node group of the peer if the peer is an MLAG member or running EVPN A/A.
+    #   - `peer_node_group_or_peer`: Helper alias of the peer_node_group or peer.
+    #   - `peer_node_group_or_uppercase_peer`: Helper alias of the peer_node_group or peer hostname in uppercase.
+    #
+    # By default the description is templated from the peer's node group (for MLAG or EVPN A/A) or hostname and port-channel interface of the peer.
+    underlay_l2_port_channel_description: <str; default="L2_{peer_node_group_or_peer}_{peer_interface}">
 
     # Enable Multicast in the underlay on all p2p uplink interfaces and mlag l3 peer interface.
     # Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
