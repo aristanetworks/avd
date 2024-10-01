@@ -102,11 +102,11 @@ Figure 1 below provides a visualization of the role's inputs, outputs, and tasks
   - VerifyRoutingTableEntry: Validate remote Loopback0 address and source interface for Vxlan1 interface are in the routing table.
 
 - AvdTestBGP
-  - VerifyBGPSpecificPeers: Validate IP BGP and BGP EVPN sessions state.
+  - VerifyBGPSpecificPeers: Validate sessions state for IPv4, IPv6, Path-Selection, Link-State and EVPN address families. Also supports VRFs for IPv4 address family.
   - VerifyRoutingProtocolModel: Validate ArBGP is configured and operating.
 
 - AvdTestReloadCause
-  - VerifyReloadCause: Validate last reload cause. (Optional)
+  - VerifyReloadCause: Validate last reload cause.
 
 - AvdTestAPIHttpsSSL
   - VerifyAPIHttpsSSL: Validate eAPI HTTPS SSL profile status.

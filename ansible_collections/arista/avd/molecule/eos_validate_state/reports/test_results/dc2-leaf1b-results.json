@@ -80,6 +80,24 @@
       "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.129.116 - VRF VRF10"
+  },
+  {
+    "name": "dc2-leaf1b",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
+    "custom_field": "BGP IPv4 Unicast Peer: 10.255.129.116 - VRF VRF11"
+  },
+  {
+    "name": "dc2-leaf1b",
+    "test": "VerifyBGPSpecificPeers",
+    "categories": [
+      "bgp"
+    ],
+    "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf1a (IP: 10.255.129.116)"
   },
   {

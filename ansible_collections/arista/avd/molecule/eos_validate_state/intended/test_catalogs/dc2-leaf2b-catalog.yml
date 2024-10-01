@@ -522,6 +522,24 @@ anta.tests.routing.bgp:
       safi: unicast
     result_overwrite:
       custom_field: 'BGP IPv4 Unicast Peer: dc2-spine2 (IP: 10.255.255.118)'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.129.120
+      safi: unicast
+      vrf: VRF10
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.129.120 - VRF VRF10'
+- VerifyBGPSpecificPeers:
+    address_families:
+    - afi: ipv4
+      peers:
+      - 10.255.129.120
+      safi: unicast
+      vrf: VRF11
+    result_overwrite:
+      custom_field: 'BGP IPv4 Unicast Peer: 10.255.129.120 - VRF VRF11'
 anta.tests.routing.generic:
 - VerifyRoutingProtocolModel:
     model: multi-agent
