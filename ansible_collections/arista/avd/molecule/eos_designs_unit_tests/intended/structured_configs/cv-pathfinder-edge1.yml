@@ -10,6 +10,30 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
+  neighbors:
+  - ip_address: 172.29.0.13
+    remote_as: '64520'
+    route_map_in: RM-BGP-172.29.0.13-IN
+    route_map_out: RM-BGP-172.29.0.13-OUT
+  - ip_address: 172.28.0.14
+    remote_as: '64520'
+    route_map_out: RM-BGP-172.28.0.14-OUT
+  - ip_address: 172.17.0.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65199'
+    peer: site-ha-disabled-leaf
+    description: site-ha-disabled-leaf_Ethernet2
+  - ip_address: 192.168.144.2
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder1
+    description: cv-pathfinder-pathfinder1_Dps1
+  - ip_address: 192.168.144.3
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder2
+    description: cv-pathfinder-pathfinder2_Dps1
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -35,30 +59,6 @@ router_bgp:
       activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  neighbors:
-  - ip_address: 172.17.0.2
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65199'
-    peer: site-ha-disabled-leaf
-    description: site-ha-disabled-leaf_Ethernet2
-  - ip_address: 172.29.0.13
-    remote_as: '64520'
-    route_map_in: RM-BGP-172.29.0.13-IN
-    route_map_out: RM-BGP-172.29.0.13-OUT
-  - ip_address: 172.28.0.14
-    remote_as: '64520'
-    route_map_out: RM-BGP-172.28.0.14-OUT
-  - ip_address: 192.168.144.2
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder1
-    description: cv-pathfinder-pathfinder1_Dps1
-  - ip_address: 192.168.144.3
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder2
-    description: cv-pathfinder-pathfinder2_Dps1
   vrfs:
   - name: IT
     router_id: 192.168.42.2

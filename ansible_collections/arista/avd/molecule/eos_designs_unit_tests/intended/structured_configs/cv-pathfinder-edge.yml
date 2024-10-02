@@ -10,6 +10,31 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
+  neighbors:
+  - ip_address: 172.16.9.4
+    remote_as: '64520'
+    description: ATT_666_peer3_Ethernet42
+    route_map_in: RM-BGP-172.16.9.4-IN
+    route_map_out: RM-BGP-172.16.9.4-OUT
+  - ip_address: 172.16.5.4
+    remote_as: '64520'
+    description: Colt_10555
+    route_map_in: RM-BGP-172.16.5.4-IN
+    route_map_out: RM-BGP-172.16.5.4-OUT
+  - ip_address: 172.17.0.0
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65199'
+    peer: site-ha-disabled-leaf
+    description: site-ha-disabled-leaf_Ethernet1
+  - ip_address: 192.168.144.1
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  - source_protocol: static
+    route_map: RM-STATIC-2-BGP
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -36,31 +61,6 @@ router_bgp:
       activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: static
-    route_map: RM-STATIC-2-BGP
-  neighbors:
-  - ip_address: 172.17.0.0
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65199'
-    peer: site-ha-disabled-leaf
-    description: site-ha-disabled-leaf_Ethernet1
-  - ip_address: 172.16.9.4
-    remote_as: '64520'
-    description: ATT_666_peer3_Ethernet42
-    route_map_in: RM-BGP-172.16.9.4-IN
-    route_map_out: RM-BGP-172.16.9.4-OUT
-  - ip_address: 172.16.5.4
-    remote_as: '64520'
-    description: Colt_10555
-    route_map_in: RM-BGP-172.16.5.4-IN
-    route_map_out: RM-BGP-172.16.5.4-OUT
-  - ip_address: 192.168.144.1
-    peer_group: WAN-OVERLAY-PEERS
-    peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder_Dps1
   vrfs:
   - name: IT
     router_id: 192.168.42.1

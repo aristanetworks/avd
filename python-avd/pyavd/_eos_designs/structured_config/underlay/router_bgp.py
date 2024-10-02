@@ -24,16 +24,30 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def router_bgp(self: AvdStructuredConfigUnderlay) -> dict | None:
         """Return the structured config for router_bgp."""
-        if not self.shared_utils.underlay_bgp:
-            if self.shared_utils.is_wan_router:
-                # Configure redistribute connected with or without route-map in case it the underlay is not BGP.
-                # TODO: Currently only implemented for WAN routers but should probably be
-                # implemented for anything with EVPN services in default VRF.
-                return {"redistribute_routes": self._router_bgp_redistribute_routes}
-
-            return None
-
         router_bgp = {}
+
+        l3_interfaces_neighbors = []
+        for neighbor_info in self.shared_utils.l3_interfaces_bgp_neighbors:
+            neighbor = {
+                "ip_address": get(neighbor_info, "ip_address"),
+                "remote_as": get(neighbor_info, "remote_as"),
+                "description": get(neighbor_info, "description"),
+                "route_map_in": get(neighbor_info, "route_map_in"),
+                "route_map_out": get(neighbor_info, "route_map_out"),
+            }
+            l3_interfaces_neighbors.append(strip_empties_from_dict(neighbor))
+
+        if l3_interfaces_neighbors:
+            router_bgp["neighbors"] = l3_interfaces_neighbors
+
+        if self.shared_utils.is_wan_router:
+            # Configure redistribute connected with or without route-map in case it the underlay is not BGP.
+            # TODO: Currently only implemented for WAN routers but should probably be
+            # implemented for anything with EVPN services in default VRF.
+            router_bgp["redistribute_routes"] = self._router_bgp_redistribute_routes
+
+        if not self.shared_utils.underlay_bgp:
+            return router_bgp or None
 
         peer_group = {
             "name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
@@ -171,18 +185,7 @@ class RouterBgpMixin(UtilsMixin):
                         )
 
             if neighbors:
-                router_bgp["neighbors"] = neighbors
-
-        for neighbor_info in self.shared_utils.l3_interfaces_bgp_neighbors:
-            neighbor = {
-                "ip_address": get(neighbor_info, "ip_address"),
-                "remote_as": get(neighbor_info, "remote_as"),
-                "description": get(neighbor_info, "description"),
-                "route_map_in": get(neighbor_info, "route_map_in"),
-                "route_map_out": get(neighbor_info, "route_map_out"),
-            }
-
-            router_bgp.setdefault("neighbors", []).append(strip_empties_from_dict(neighbor))
+                router_bgp.setdefault("neighbors", []).extend(neighbors)
 
         if vrfs_dict:
             router_bgp["vrfs"] = list(vrfs_dict.values())

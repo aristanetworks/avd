@@ -1,0 +1,50 @@
+---
+type: wan_router
+# By default it means that default routing protocol is none
+# we make it ebgp to trigger also when uplink-type is lan
+underlay_routing_protocol: ebgp
+
+ipv4_prefix_list_catalog:
+  - name: ALLOW-DEFAULT
+    sequence_numbers:
+      - sequence: 10
+        action: permit 0.0.0.0/0
+
+wan_router:
+  nodes:
+    - name: node-type-l3-interfaces-bgp
+      loopback_ipv4_pool: 192.168.255.0/24
+      vtep_loopback_ipv4_pool: 192.168.254.0/24
+      id: 1
+      bgp_as: 65000
+      # Having uplink type lan will set underlay_router to False in shared_utils
+      uplink_type: lan
+      l3_interfaces:
+        - # bgp
+          name: Ethernet43
+          enabled: false
+          ip_address: 192.168.42.42/24
+          peer_ip: 192.168.42.1
+          wan_carrier: INTERNET
+          bgp:
+            peer_as: 65042
+            ipv4_prefix_list_in: ALLOW-DEFAULT
+
+wan_mode: legacy-autovpn
+
+wan_path_groups:
+  - name: INTERNET
+    id: 42
+
+wan_carriers:
+  - name: INTERNET
+    path_group: INTERNET
+    trusted: true
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    listen_range_prefixes: [192.168.254.0/24]
