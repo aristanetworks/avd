@@ -247,8 +247,8 @@ vlan 230
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1/1 | SPINE1_Ethernet49/1 | *trunk | *10,210,220,230 | *- | *- | 11 |
-| Ethernet1/3 | SPINE2_Ethernet49/1 | *trunk | *10,210,220,230 | *- | *- | 11 |
+| Ethernet1/1 | L2_SPINE1_Ethernet49/1 | *trunk | *10,210,220,230 | *- | *- | 11 |
+| Ethernet1/3 | L2_SPINE2_Ethernet49/1 | *trunk | *10,210,220,230 | *- | *- | 11 |
 | Ethernet3/1 | IDF2 Standard Port | trunk phone | - | 210 | - | - |
 | Ethernet3/2 | IDF2 Standard Port | trunk phone | - | 210 | - | - |
 | Ethernet3/3 | IDF2 Standard Port | trunk phone | - | 210 | - | - |
@@ -742,12 +742,12 @@ vlan 230
 ```eos
 !
 interface Ethernet1/1
-   description SPINE1_Ethernet49/1
+   description L2_SPINE1_Ethernet49/1
    no shutdown
    channel-group 11 mode active
 !
 interface Ethernet1/3
-   description SPINE2_Ethernet49/1
+   description L2_SPINE2_Ethernet49/1
    no shutdown
    channel-group 11 mode active
 !
@@ -6760,14 +6760,14 @@ interface Ethernet7/48
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel11 | SPINES_Po491 | trunk | 10,210,220,230 | - | - | - | - | - | - |
+| Port-Channel11 | L2_SPINES_Port-Channel491 | trunk | 10,210,220,230 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel11
-   description SPINES_Po491
+   description L2_SPINES_Port-Channel491
    no shutdown
    switchport trunk allowed vlan 10,210,220,230
    switchport mode trunk

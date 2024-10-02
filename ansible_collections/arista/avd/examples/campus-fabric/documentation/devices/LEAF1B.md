@@ -329,7 +329,7 @@ vlan 4094
 | Ethernet46 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet47 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet48 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet51 | SPINE2_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
+| Ethernet51 | L2_SPINE2_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
 | Ethernet53 | MLAG_LEAF1A_Ethernet53 | *trunk | *- | *- | *MLAG | 53 |
 | Ethernet54 | MLAG_LEAF1A_Ethernet54 | *trunk | *- | *- | *MLAG | 53 |
 
@@ -1353,7 +1353,7 @@ interface Ethernet48
    spanning-tree bpduguard enable
 !
 interface Ethernet51
-   description SPINE2_Ethernet1
+   description L2_SPINE2_Ethernet1
    no shutdown
    channel-group 51 mode active
 !
@@ -1376,7 +1376,7 @@ interface Ethernet54
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel51 | SPINES_Po1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
+| Port-Channel51 | L2_SPINES_Port-Channel1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
 | Port-Channel53 | MLAG_LEAF1A_Port-Channel53 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -1384,7 +1384,7 @@ interface Ethernet54
 ```eos
 !
 interface Port-Channel51
-   description SPINES_Po1
+   description L2_SPINES_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 10,110,120,130
    switchport mode trunk
