@@ -701,7 +701,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.254.14/32
 - name: Loopback100
-  description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_Tenant_A_OP_Zone
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.15/32

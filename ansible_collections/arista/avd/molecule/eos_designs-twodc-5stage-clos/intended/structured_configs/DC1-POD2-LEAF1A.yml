@@ -317,12 +317,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 172.18.120.3/32
 - name: Loopback100
-  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.3/32
 - name: Loopback101
-  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.102.3/32
