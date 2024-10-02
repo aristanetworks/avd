@@ -6391,7 +6391,13 @@ $defs:
                     max: 2100
                   loopback_description:
                     type: str
-                    description: Provide a custom description for loopback interface.
+                    description: "Provide a custom description or description template
+                      to be used on the VRF diagnostic loopback interface.\nThis can
+                      be a template using the format string syntax.\nThe available
+                      template fields are:\n  - `interface`: The Loopback interface
+                      name.\n  - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nThe
+                      default description is set by `default_vrf_diag_loopback_description`.\nBy
+                      default the description is templated from the VRF name."
                   loopback_ip_range:
                     type: str
                     description: 'IPv4_address/Mask.
