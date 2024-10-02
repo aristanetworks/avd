@@ -424,7 +424,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: TRUNK_GROUP_TESTS_L2LEAF1_Po1
+  description: L2_TRUNK_GROUP_TESTS_L2LEAF1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -434,7 +434,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 1
 - name: Port-Channel5
-  description: TRUNK-GROUP-TESTS-L2LEAF3_Po1
+  description: L2_trunk-group-tests-l2leaf3_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -477,7 +477,7 @@ ethernet_interfaces:
   peer: trunk-group-tests-l2leaf1a
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: TRUNK-GROUP-TESTS-L2LEAF1A_Ethernet1
+  description: L2_trunk-group-tests-l2leaf1a_Ethernet1
   shutdown: false
   channel_group:
     id: 1
@@ -486,7 +486,7 @@ ethernet_interfaces:
   peer: trunk-group-tests-l2leaf1b
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: TRUNK-GROUP-TESTS-L2LEAF1B_Ethernet1
+  description: L2_trunk-group-tests-l2leaf1b_Ethernet1
   shutdown: false
   channel_group:
     id: 1
@@ -495,7 +495,7 @@ ethernet_interfaces:
   peer: trunk-group-tests-l2leaf3
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: TRUNK-GROUP-TESTS-L2LEAF3_Ethernet1
+  description: L2_trunk-group-tests-l2leaf3_Ethernet1
   shutdown: false
   channel_group:
     id: 5

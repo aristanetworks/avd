@@ -266,12 +266,17 @@ router bgp 65101
       network 2001:db8:100::/40
       network 2001:db8:200::/40 route-map RM-BAR-MATCH
       bgp redistribute-internal
+      redistribute attached-host
       redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
       redistribute connected rcf Address_Family_IPV6_Connected()
+      redistribute dhcp
+      redistribute dynamic
+      redistribute isis
+      redistribute ospfv3
       redistribute ospfv3 match external include leaked
-      redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
       redistribute ospfv3 match nssa-external 1
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
+      redistribute user
    session tracker ST1
       recovery delay 666 seconds
    session tracker ST2

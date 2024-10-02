@@ -1314,7 +1314,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel6
-  description: EVPN-MULTICAST-L2LEAF1A_Po1
+  description: L2_EVPN-MULTICAST-L2LEAF1A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -1358,7 +1358,7 @@ ethernet_interfaces:
   peer: EVPN-MULTICAST-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: EVPN-MULTICAST-L2LEAF1A_Ethernet1
+  description: L2_EVPN-MULTICAST-L2LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 6

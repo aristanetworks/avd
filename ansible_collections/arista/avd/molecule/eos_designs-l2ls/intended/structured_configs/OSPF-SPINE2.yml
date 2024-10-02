@@ -76,7 +76,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: OSPF-LEAF1_Po1
+  description: L2_OSPF-LEAF1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -85,7 +85,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 1
 - name: Port-Channel2
-  description: OSPF-LEAF2_Po1
+  description: L2_OSPF-LEAF2_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -116,7 +116,7 @@ ethernet_interfaces:
   peer: OSPF-LEAF1
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: OSPF-LEAF1_Ethernet2
+  description: L2_OSPF-LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
@@ -125,7 +125,7 @@ ethernet_interfaces:
   peer: OSPF-LEAF2
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: OSPF-LEAF2_Ethernet2
+  description: L2_OSPF-LEAF2_Ethernet2
   shutdown: false
   channel_group:
     id: 2
