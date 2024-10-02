@@ -287,8 +287,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *210 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *210 | *- | *- | 7 |
+| Ethernet7 | L2_DC1-L2LEAF2A_Ethernet1 | *trunk | *210 | *- | *- | 7 |
+| Ethernet8 | L2_DC1-L2LEAF2B_Ethernet1 | *trunk | *210 | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
@@ -360,12 +360,12 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet1
+   description L2_DC1-L2LEAF2A_Ethernet1
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet1
+   description L2_DC1-L2LEAF2B_Ethernet1
    no shutdown
    channel-group 7 mode active
 ```
@@ -379,7 +379,7 @@ interface Ethernet8
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-SVC3B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 210 | - | - | - | - | 7 | - |
+| Port-Channel7 | L2_DC1_L2LEAF2_Port-Channel1 | trunk | 210 | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -393,7 +393,7 @@ interface Port-Channel5
    switchport
 !
 interface Port-Channel7
-   description DC1_L2LEAF2_Po1
+   description L2_DC1_L2LEAF2_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 210
    switchport mode trunk

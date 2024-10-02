@@ -167,7 +167,7 @@ ethernet_interfaces:
   peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet1
+  description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet1
   shutdown: false
   channel_group:
     id: 51
@@ -176,14 +176,14 @@ ethernet_interfaces:
   peer: UPLINK_P2P_VRFS_TESTS_L2LEAF1
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet2
+  description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 51
     mode: active
 port_channel_interfaces:
 - name: Port-Channel51
-  description: UPLINK_P2P_VRFS_TESTS_L2LEAF1_Po1
+  description: L2_UPLINK_P2P_VRFS_TESTS_L2LEAF1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
