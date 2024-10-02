@@ -6,7 +6,15 @@ from typing import Any
 from pyavd._errors import AristaAvdMissingVariableError
 
 
-def get(dictionary: dict, key: str, default: Any = None, required: bool = False, org_key: str | None = None, separator: str = ".") -> Any:
+def get(
+    dictionary: dict,
+    key: str,
+    default: Any = None,
+    required: bool = False,
+    org_key: str | None = None,
+    separator: str = ".",
+    custom_error_msg: str | None = None,
+) -> Any:
     """
     Get a value from a dictionary or nested dictionaries.
 
@@ -28,6 +36,8 @@ def get(dictionary: dict, key: str, default: Any = None, required: bool = False,
     separator: str
         String to use as the separator parameter in the split function. Useful in cases when the key
         can contain variables with "." inside (e.g. hostnames)
+    custom_error_msg: str
+        Custom error message to raise when required is True and the value is not found
 
     Returns:
     -------
@@ -45,17 +55,23 @@ def get(dictionary: dict, key: str, default: Any = None, required: bool = False,
     value = dictionary.get(keys[0])
     if value is None:
         if required is True:
-            raise AristaAvdMissingVariableError(org_key)
+            raise AristaAvdMissingVariableError(org_key, message=custom_error_msg)
         return default
 
     if len(keys) > 1:
-        return get(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
+        return get(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator, custom_error_msg=custom_error_msg)
 
     return value
 
 
 def get_v2(
-    dict_or_object: dict | object, key_or_attribute: str, default: Any = None, required: bool = False, org_key: str | None = None, separator: str = "."
+    dict_or_object: dict | object,
+    key_or_attribute: str,
+    default: Any = None,
+    required: bool = False,
+    org_key: str | None = None,
+    separator: str = ".",
+    custom_error_msg: str | None = None,
 ) -> Any:
     """
     Get a value from a dictionary or object or nested dictionaries and objects.
@@ -78,6 +94,8 @@ def get_v2(
     separator: str
         String to use as the separator parameter in the split function. Useful in cases when the key
         can contain variables with "." inside (e.g. hostnames)
+    custom_error_msg: str
+        Custom error message to raise when required is True and the value is not found
 
     Returns:
     -------
@@ -96,10 +114,12 @@ def get_v2(
 
     if value is None:
         if required is True:
-            raise AristaAvdMissingVariableError(org_key)
+            raise AristaAvdMissingVariableError(org_key, message=custom_error_msg)
         return default
 
     if len(keys) > 1:
-        return get_v2(value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator)
+        return get_v2(
+            value, separator.join(keys[1:]), default=default, required=required, org_key=org_key, separator=separator, custom_error_msg=custom_error_msg
+        )
 
     return value

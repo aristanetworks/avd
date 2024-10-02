@@ -59,7 +59,7 @@ class RouterOspfMixin(UtilsMixin):
                 process_id = default(get(vrf, "ospf.process_id"), vrf.get("vrf_id"))
                 if not process_id:
                     msg = f"'ospf.process_id' or 'vrf_id' under vrf '{vrf['name']}"
-                    raise AristaAvdMissingVariableError(msg)
+                    raise AristaAvdMissingVariableError(message=msg)
 
                 process = {
                     "id": process_id,

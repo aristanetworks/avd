@@ -20,6 +20,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templa
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
     from pyavd._eos_designs.structured_config import get_structured_config
+    from pyavd._errors import AristaAvdMissingVariableError
     from pyavd._utils import get, merge, strip_null_from_data
     from pyavd._utils import template as templater
 except ImportError as e:
@@ -96,6 +97,8 @@ class ActionModule(ActionBase):
                 result=result,
                 templar=self.templar,
             )
+        except AristaAvdMissingVariableError as e:
+            raise AnsibleActionFail(message=str(e)) from e
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
 

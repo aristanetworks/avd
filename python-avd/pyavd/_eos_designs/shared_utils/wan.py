@@ -253,7 +253,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_site",
             required=self.is_cv_pathfinder_client,
-            org_key="A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
+            custom_error_msg="A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'.",
         )
         if node_defined_site is None:
             return None
@@ -265,7 +265,9 @@ class WanMixin:
                 f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list"
             )
         else:
-            sites = get(self.wan_region, "sites", required=True, org_key=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites")
+            sites = get(
+                self.wan_region, "sites", required=True, custom_error_msg=f"The CV Pathfinder region '{self.wan_region['name']}' is missing a list of sites."
+            )
             site_not_found_error_msg = (
                 (
                     f"The 'cv_pathfinder_site '{node_defined_site}' defined at the node level could not be found under the 'sites' list for the region"
@@ -292,7 +294,7 @@ class WanMixin:
             self.switch_data_combined,
             "cv_pathfinder_region",
             required=self.is_cv_pathfinder_client,
-            org_key="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'",
+            custom_error_msg="A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'.",
         )
         if node_defined_region is None:
             return None
@@ -301,7 +303,7 @@ class WanMixin:
             self.hostvars,
             "cv_pathfinder_regions",
             required=True,
-            org_key="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.",
+            custom_error_msg="'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.",
         )
 
         return get_item(
@@ -361,13 +363,13 @@ class WanMixin:
                         f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
-                    raise AristaAvdMissingVariableError(msg)
+                    raise AristaAvdMissingVariableError(message=msg)
                 if wan_path_groups is None:
                     msg = (
                         f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
                         " or something is wrong with the peer facts."
                     )
-                    raise AristaAvdMissingVariableError(msg)
+                    raise AristaAvdMissingVariableError(message=msg)
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 vtep_ip = get(wan_rs_dict, "vtep_ip", required=True)
@@ -375,7 +377,7 @@ class WanMixin:
                     wan_rs_dict,
                     "path_groups",
                     required=True,
-                    org_key=(
+                    custom_error_msg=(
                         f"'path_groups' is missing for peering with {wan_rs} which was not found in the inventory, either set it in under 'wan_route_servers'"
                         " or check your inventory."
                     ),
@@ -587,8 +589,8 @@ class WanMixin:
                         uplink,
                         "ip_address",
                         required=True,
-                        org_key=(
-                            f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address",
+                        custom_error_msg=(
+                            f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address.",
                         ),
                     )
                     prefix_length = uplink["prefix_length"]
@@ -615,7 +617,7 @@ class WanMixin:
                         uplink,
                         "ip_address",
                         required=True,
-                        org_key=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address",
+                        custom_error_msg=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address.",
                     )
                     # We can use [] notation here because if there is an ip_address, there should be a prefix_length
                     prefix_length = uplink["prefix_length"]
@@ -632,7 +634,7 @@ class WanMixin:
             self.switch_data_combined,
             "wan_ha.ha_ipv4_pool",
             required=True,
-            org_key="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface",
+            custom_error_msg="Missing `wan_ha.ha_ipv4_pool` node settings to allocate an IP address to defined HA interface.",
         )
 
     def generate_lb_policy_name(self: SharedUtils, name: str) -> str:

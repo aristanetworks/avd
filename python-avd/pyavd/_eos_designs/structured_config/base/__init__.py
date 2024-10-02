@@ -511,7 +511,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
             # For AutoVPN Route Reflectors and Pathfinders, running on CloudEOS, setting
             # this value is required for the solution to work.
             msg = "For AutoVPN RRs and Pathfinders, 'data_plane_cpu_allocation_max' must be set"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(message=msg)
 
         if platform:
             return platform
@@ -573,7 +573,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
         if (switch_id := self.shared_utils.id) is None:
             msg = f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(message=msg)
 
         node_group_length = max(len(self.shared_utils.switch_data_node_group_nodes), 1)
         port_range = int(get(lacp_port_id_range, "size", default=128))
@@ -615,7 +615,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
         if priority2 is None:
             if self.shared_utils.id is None:
                 msg = f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
             priority2 = self.shared_utils.id % 256
         default_auto_clock_identity = get(self._hostvars, "ptp_settings.auto_clock_identity", default=True)

@@ -107,7 +107,7 @@ class AvdStructuredConfigInbandManagement(AvdFacts):
 
         if self.shared_utils.virtual_router_mac_address is None:
             msg = "'virtual_router_mac_address' must be set for inband management parent."
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(message=msg)
         return str(self.shared_utils.virtual_router_mac_address).lower()
 
     @cached_property

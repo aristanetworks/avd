@@ -38,7 +38,7 @@ class AvdStructuredConfigFlows(AvdFacts):
         destinations = get(self._hostvars, "sflow_settings.destinations")
         if destinations is None:
             msg = "`sflow_settings.destinations` is required to configure `sflow`."
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(message=msg)
 
         sflow_settings_vrfs = get(self._hostvars, "sflow_settings.vrfs", default=[])
 
@@ -61,9 +61,7 @@ class AvdStructuredConfigFlows(AvdFacts):
             elif vrf == "use_mgmt_interface_vrf":
                 if (self.shared_utils.mgmt_ip is None) and (self.shared_utils.ipv6_mgmt_ip is None):
                     msg = "Unable to configure sFlow source-interface with 'use_mgmt_interface_vrf' since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdMissingVariableError(message=msg)
 
                 vrf = self.shared_utils.mgmt_interface_vrf
                 source_interface = get(get_item(sflow_settings_vrfs, "name", vrf, default={}), "source_interface", default=self.shared_utils.mgmt_interface)
@@ -72,9 +70,7 @@ class AvdStructuredConfigFlows(AvdFacts):
                 # Check for missing interface
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = "Unable to configure sFlow source-interface with 'use_inband_mgmt_vrf' since 'inband_mgmt_interface' is not set."
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdMissingVariableError(message=msg)
 
                 # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
                 vrf = self.shared_utils.inband_mgmt_vrf or "default"

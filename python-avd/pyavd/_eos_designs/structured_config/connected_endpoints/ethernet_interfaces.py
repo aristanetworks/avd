@@ -188,9 +188,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
                         f" the connected endpoint with the name '{connected_endpoint['name']}'."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdMissingVariableError(message=msg)
 
                 profile = self.shared_utils.get_merged_port_profile(
                     profile_name, context=f"{connected_endpoint['type']}[{connected_endpoint['name']}].adapters[{index}].port_channel.lacp_fallback.individual"

@@ -214,4 +214,4 @@ class NodeTypeKeysMixin:
 
         # Not found
         msg = f"node_type_keys.[type=={self.type}]"
-        raise AristaAvdMissingVariableError(msg)
+        raise AristaAvdMissingVariableError(message=msg)

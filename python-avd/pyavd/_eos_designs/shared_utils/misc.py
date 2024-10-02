@@ -136,7 +136,7 @@ class MiscMixin:
 
         if self.id is None:
             msg = f"'id' is not set on '{self.hostname}'"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(message=msg)
 
         uplink_switch_interfaces = []
         uplink_switch_counter = {}

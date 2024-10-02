@@ -71,14 +71,14 @@ class L3InterfacesMixin:
             peer_as = get(bgp, "peer_as")
             if peer_as is None:
                 msg = f"'l3_interfaces[{interface['name']}].bgp.peer_as' needs to be set to enable BGP."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
             is_intf_wan = get(interface, "wan_carrier") is not None
 
             prefix_list_in = get(bgp, "ipv4_prefix_list_in")
             if prefix_list_in is None and is_intf_wan:
                 msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for l3_interfaces[{interface['name']}]"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
             description = interface.get("description")
             if not description:

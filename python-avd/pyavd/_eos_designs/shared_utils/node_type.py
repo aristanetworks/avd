@@ -31,7 +31,7 @@ class NodeTypeMixin:
             return self.default_node_type
 
         msg = f"'type' for host {self.hostname}"
-        raise AristaAvdMissingVariableError(msg)
+        raise AristaAvdMissingVariableError(message=msg)
 
     @cached_property
     def default_node_type(self: SharedUtils) -> str | None:

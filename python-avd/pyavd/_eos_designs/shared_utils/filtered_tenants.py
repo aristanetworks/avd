@@ -230,7 +230,7 @@ class FilteredTenantsMixin:
                                 rp_entry,
                                 "rps",
                                 required=True,
-                                org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
+                                custom_error_msg=f"'pim_rp_addresses.rps' under VRF '{vrf['name']}' in Tenant '{tenant['name']}' is required.",
                             ):
                                 rp_address = {"address": rp_ip}
                                 if (rp_groups := get(rp_entry, "groups")) is not None:
@@ -370,7 +370,7 @@ class FilteredTenantsMixin:
         if vrf_id is None:
             if required:
                 msg = f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
             return None
         return int(vrf_id)
 
@@ -379,7 +379,7 @@ class FilteredTenantsMixin:
         vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
         if vrf_vni is None:
             msg = f"'vrf_vni' or 'vrf_id' for VRF '{vrf['name']} must be set."
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdMissingVariableError(message=msg)
         return int(vrf_vni)
 
     @cached_property

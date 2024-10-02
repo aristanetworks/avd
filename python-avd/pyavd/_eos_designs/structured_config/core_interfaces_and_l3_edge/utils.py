@@ -201,7 +201,7 @@ class UtilsMixin:
             return data
 
         msg = f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set."
-        raise AristaAvdMissingVariableError(msg)
+        raise AristaAvdMissingVariableError(message=msg)
 
     def _get_common_interface_cfg(self: AvdStructuredConfigCoreInterfacesAndL3Edge, p2p_link: dict) -> dict:
         """

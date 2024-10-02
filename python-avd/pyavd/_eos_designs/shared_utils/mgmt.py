@@ -70,7 +70,7 @@ class MgmtMixin:
         if default_mgmt_method == "oob":
             if (self.mgmt_ip is None) and (self.ipv6_mgmt_ip is None):
                 msg = "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to bet set."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
             return default_mgmt_method
 
@@ -78,7 +78,7 @@ class MgmtMixin:
             # Check for missing interface
             if self.inband_mgmt_interface is None:
                 msg = "'default_mgmt_method: inband' requires 'inband_mgmt_interface' to be set."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
             return default_mgmt_method
 

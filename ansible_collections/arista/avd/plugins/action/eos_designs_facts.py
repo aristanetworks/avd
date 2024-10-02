@@ -195,8 +195,8 @@ class ActionModule(ActionBase):
             try:
                 rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
             except AristaAvdMissingVariableError as e:
-                msg = f"{e} is required but was not found for host '{host}'"
-                raise AnsibleActionFail(msg) from e
+                e.host = host
+                raise AnsibleActionFail(message=str(e)) from e
 
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.

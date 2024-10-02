@@ -157,9 +157,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
             vrf_id = vrf.get("vrf_id", vrf.get("vrf_vni"))
             if vrf_id is None:
                 msg = f"Unable to assign MLAG VRF Peering VLAN for vrf {vrf['name']}.Set either 'mlag_ibgp_peering_vlan' or 'vrf_id' or 'vrf_vni' on the VRF"
-                raise AristaAvdMissingVariableError(
-                    msg,
-                )
+                raise AristaAvdMissingVariableError(message=msg)
             vlan_id = base_vlan + int(vrf_id) - 1
 
         return vlan_id

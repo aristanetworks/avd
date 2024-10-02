@@ -81,7 +81,7 @@ class VlanInterfacesMixin(UtilsMixin):
             if any(vlan_interface_config.get(var) for var in variables) and self.shared_utils.virtual_router_mac_address is None:
                 quoted_vars = [f"'{var}'" for var in variables]
                 msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using {' or '.join(quoted_vars)} under 'svi'"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
         interface_name = f"Vlan{svi['id']}"
         vlan_interface_config = {
@@ -123,7 +123,7 @@ class VlanInterfacesMixin(UtilsMixin):
                         f"No vtep_diagnostic loopback defined on VRF '{vrf['name']}' in Tenant '{svi['tenant']}'."
                         "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
                     )
-                    raise AristaAvdMissingVariableError(msg)
+                    raise AristaAvdMissingVariableError(message=msg)
                 pim_config_ipv4["local_interface"] = f"Loopback{vrf_diagnostic_loopback}"
 
             if pim_config_ipv4:

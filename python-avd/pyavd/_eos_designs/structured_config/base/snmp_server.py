@@ -80,8 +80,8 @@ class SnmpServerMixin(UtilsMixin):
             local_engine_id = sha1(f"{self.shared_utils.hostname}{self.shared_utils.mgmt_ip}".encode()).hexdigest()  # NOSONAR # noqa: S324
         elif compute_source == "system_mac":
             if self.shared_utils.system_mac_address is None:
-                msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set!"
-                raise AristaAvdMissingVariableError(msg)
+                msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set."
+                raise AristaAvdMissingVariableError(message=msg)
             # the default engine id on switches is derived as per the following formula
             local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
         else:

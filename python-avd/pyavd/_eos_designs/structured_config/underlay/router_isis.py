@@ -83,11 +83,11 @@ class RouterIsisMixin(UtilsMixin):
                     f"'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'."
                     f" 'isis_system_id_prefix' was not set for '{self.shared_utils.hostname}'"
                 )
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
 
             if self.shared_utils.id is None:
                 msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdMissingVariableError(message=msg)
             system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
         else:
             system_id = self.ipv4_to_isis_system_id(self.shared_utils.router_id)
