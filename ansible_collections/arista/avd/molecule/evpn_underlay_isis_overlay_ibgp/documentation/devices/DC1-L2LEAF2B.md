@@ -245,14 +245,14 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
 ```eos
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -266,8 +266,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | DC1-SVC3A_Ethernet8 | *trunk | *none | *- | *- | 1 |
-| Ethernet2 | DC1-SVC3B_Ethernet8 | *trunk | *none | *- | *- | 1 |
+| Ethernet1 | L2_DC1-SVC3A_Ethernet8 | *trunk | *none | *- | *- | 1 |
+| Ethernet2 | L2_DC1-SVC3B_Ethernet8 | *trunk | *none | *- | *- | 1 |
 | Ethernet3 | MLAG_DC1-L2LEAF2A_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_DC1-L2LEAF2A_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
@@ -278,12 +278,12 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description DC1-SVC3A_Ethernet8
+   description L2_DC1-SVC3A_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description DC1-SVC3B_Ethernet8
+   description L2_DC1-SVC3B_Ethernet8
    no shutdown
    channel-group 1 mode active
 !
@@ -306,7 +306,7 @@ interface Ethernet4
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | DC1_SVC3_Po7 | trunk | none | - | - | - | - | 1 | - |
+| Port-Channel1 | L2_DC1_SVC3_Port-Channel7 | trunk | none | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_DC1-L2LEAF2A_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -314,7 +314,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description DC1_SVC3_Po7
+   description L2_DC1_SVC3_Port-Channel7
    no shutdown
    switchport trunk allowed vlan none
    switchport mode trunk
@@ -335,7 +335,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -348,7 +348,7 @@ interface Port-Channel3
 ```eos
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

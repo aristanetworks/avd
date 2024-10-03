@@ -275,68 +275,68 @@ vlan 350
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet11 | P2P_LINK_TO_outside-r1_other1 | - | 10.23.23.1/30 | default | 1500 | False | - | - |
+| Ethernet11 | P2P_outside-r1_other1 | - | 10.23.23.1/30 | default | 1500 | False | - | - |
 | Ethernet4000 | My test | - | 10.1.2.3/12 | default | 1500 | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet9 | P2P_LINK_TO_DC1-BL1B_Ethernet9 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet10 | P2P_LINK_TO_DC1-BL1B_Ethernet10 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet6 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet9 | P2P_DC1-BL1B_Ethernet9 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet10 | P2P_DC1-BL1B_Ethernet10 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet6
+   description P2P_DC1-SPINE1_Ethernet6
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet6
+   description P2P_DC1-SPINE2_Ethernet6
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet6
+   description P2P_DC1-SPINE3_Ethernet6
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet6
+   description P2P_DC1-SPINE4_Ethernet6
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet9
-   description P2P_LINK_TO_DC1-BL1B_Ethernet9
+   description P2P_DC1-BL1B_Ethernet9
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet10
-   description P2P_LINK_TO_DC1-BL1B_Ethernet10
+   description P2P_DC1-BL1B_Ethernet10
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet11
-   description P2P_LINK_TO_outside-r1_other1
+   description P2P_outside-r1_other1
    no shutdown
    mtu 1500
    no switchport
@@ -694,16 +694,16 @@ router bgp 65104
    neighbor 10.23.23.2 description outside-r1
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_WAN_Zone

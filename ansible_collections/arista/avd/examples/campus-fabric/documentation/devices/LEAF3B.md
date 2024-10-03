@@ -248,7 +248,7 @@ vlan internal order ascending range 1006 1199
 | 310 | IDF3-Data | - |
 | 320 | IDF3-Voice | - |
 | 330 | IDF3-Guest | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -267,7 +267,7 @@ vlan 330
    name IDF3-Guest
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -377,11 +377,11 @@ vlan 4094
 | Ethernet94 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
 | Ethernet95 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
 | Ethernet96 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet97/1 | SPINE1_Ethernet51/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
-| Ethernet97/2 | SPINE2_Ethernet51/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
-| Ethernet97/3 | LEAF3C_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 973 |
-| Ethernet97/4 | LEAF3D_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 974 |
-| Ethernet98/1 | LEAF3E_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 981 |
+| Ethernet97/1 | L2_SPINE1_Ethernet51/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
+| Ethernet97/2 | L2_SPINE2_Ethernet51/1 | *trunk | *10,310,320,330 | *- | *- | 971 |
+| Ethernet97/3 | L2_LEAF3C_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 973 |
+| Ethernet97/4 | L2_LEAF3D_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 974 |
+| Ethernet98/1 | L2_LEAF3E_Ethernet97/2 | *trunk | *10,310,320,330 | *- | *- | 981 |
 | Ethernet98/3 | MLAG_LEAF3A_Ethernet98/3 | *trunk | *- | *- | *MLAG | 983 |
 | Ethernet98/4 | MLAG_LEAF3A_Ethernet98/4 | *trunk | *- | *- | *MLAG | 983 |
 
@@ -2413,27 +2413,27 @@ interface Ethernet96
    spanning-tree bpduguard enable
 !
 interface Ethernet97/1
-   description SPINE1_Ethernet51/1
+   description L2_SPINE1_Ethernet51/1
    no shutdown
    channel-group 971 mode active
 !
 interface Ethernet97/2
-   description SPINE2_Ethernet51/1
+   description L2_SPINE2_Ethernet51/1
    no shutdown
    channel-group 971 mode active
 !
 interface Ethernet97/3
-   description LEAF3C_Ethernet97/2
+   description L2_LEAF3C_Ethernet97/2
    no shutdown
    channel-group 973 mode active
 !
 interface Ethernet97/4
-   description LEAF3D_Ethernet97/2
+   description L2_LEAF3D_Ethernet97/2
    no shutdown
    channel-group 974 mode active
 !
 interface Ethernet98/1
-   description LEAF3E_Ethernet97/2
+   description L2_LEAF3E_Ethernet97/2
    no shutdown
    channel-group 981 mode active
 !
@@ -2456,10 +2456,10 @@ interface Ethernet98/4
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel971 | SPINES_Po501 | trunk | 10,310,320,330 | - | - | - | - | 971 | - |
-| Port-Channel973 | LEAF3C_Po971 | trunk | 10,310,320,330 | - | - | - | - | 973 | - |
-| Port-Channel974 | LEAF3D_Po971 | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
-| Port-Channel981 | LEAF3E_Po971 | trunk | 10,310,320,330 | - | - | - | - | 981 | - |
+| Port-Channel971 | L2_SPINES_Port-Channel501 | trunk | 10,310,320,330 | - | - | - | - | 971 | - |
+| Port-Channel973 | L2_LEAF3C_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 973 | - |
+| Port-Channel974 | L2_LEAF3D_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 974 | - |
+| Port-Channel981 | L2_LEAF3E_Port-Channel971 | trunk | 10,310,320,330 | - | - | - | - | 981 | - |
 | Port-Channel983 | MLAG_LEAF3A_Port-Channel983 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -2467,7 +2467,7 @@ interface Ethernet98/4
 ```eos
 !
 interface Port-Channel971
-   description SPINES_Po501
+   description L2_SPINES_Port-Channel501
    no shutdown
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
@@ -2475,7 +2475,7 @@ interface Port-Channel971
    mlag 971
 !
 interface Port-Channel973
-   description LEAF3C_Po971
+   description L2_LEAF3C_Port-Channel971
    no shutdown
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
@@ -2483,7 +2483,7 @@ interface Port-Channel973
    mlag 973
 !
 interface Port-Channel974
-   description LEAF3D_Po971
+   description L2_LEAF3D_Port-Channel971
    no shutdown
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
@@ -2491,7 +2491,7 @@ interface Port-Channel974
    mlag 974
 !
 interface Port-Channel981
-   description LEAF3E_Po971
+   description L2_LEAF3E_Port-Channel971
    no shutdown
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
@@ -2513,7 +2513,7 @@ interface Port-Channel983
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -2533,7 +2533,7 @@ interface Vlan10
    ip address 10.10.10.10/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

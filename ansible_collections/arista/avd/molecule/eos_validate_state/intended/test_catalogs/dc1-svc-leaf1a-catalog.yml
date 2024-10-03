@@ -310,13 +310,13 @@ anta.tests.interfaces:
     - name: Ethernet1
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet5 = 'up'
+      custom_field: Interface Ethernet1 - P2P_dc1-spine1_Ethernet5 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet2
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet5 = 'up'
+      custom_field: Interface Ethernet2 - P2P_dc1-spine2_Ethernet5 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Port-Channel3
@@ -329,13 +329,13 @@ anta.tests.interfaces:
     - name: Vlan4093
       status: up
     result_overwrite:
-      custom_field: Interface Vlan4093 - MLAG_PEER_L3_PEERING = 'up'
+      custom_field: Interface Vlan4093 - MLAG_L3 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Vlan4094
       status: up
     result_overwrite:
-      custom_field: Interface Vlan4094 - MLAG_PEER = 'up'
+      custom_field: Interface Vlan4094 - MLAG = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Loopback0

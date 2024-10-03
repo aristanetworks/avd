@@ -117,6 +117,24 @@ ASN Notation: asplain
 | ADDITIONAL-PATH-PG-6 | True | default |
 | EVPN-OVERLAY-PEERS | True | vxlan |
 | MLAG-IPv4-UNDERLAY-PEER | False | default |
+| TEST-ENCAPSULATION | True | mpls |
+| TEST-ENCAPSULATION-2 | True | path-selection |
+
+##### EVPN Neighbors
+
+| Neighbor | Activate | Encapsulation |
+| -------- | -------- | ------------- |
+| 10.100.100.1 | True | default |
+| 10.100.100.2 | True | default |
+| 10.100.100.3 | True | default |
+| 10.100.100.4 | True | path-selection |
+| 10.100.100.5 | True | mpls |
+
+##### EVPN Neighbor Default Encapsulation
+
+| Neighbor Default Encapsulation | Next-hop-self Source Interface |
+| ------------------------------ | ------------------------------ |
+| path-selection | - |
 
 ##### EVPN Host Flapping Settings
 
@@ -136,8 +154,8 @@ ASN Notation: asplain
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned<br>no host-routes | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp<br>no connected | 110 |
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned<br>no host-route | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp<br>no static | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | remote 2:12 | remote 2:12 | learned | 112 |
 
 #### Router BGP VLANs
@@ -230,7 +248,7 @@ router bgp 65101
       rd 192.168.255.3:20201
       route-target both 20201:20201
       redistribute learned
-      no redistribute host-routes
+      no redistribute host-route
       vlan 201
    !
    vlan-aware-bundle TENANT_A_PROJECT01
@@ -239,7 +257,7 @@ router bgp 65101
       route-target import export evpn domain remote 2:11
       redistribute igmp
       redistribute learned
-      no redistribute connected
+      no redistribute static
       vlan 110
    !
    vlan-aware-bundle TENANT_A_PROJECT02
@@ -257,6 +275,7 @@ router bgp 65101
       bgp next-hop-unchanged
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       domain identifier 65101:0
+      neighbor default encapsulation path-selection
       neighbor ADDITIONAL-PATH-PG-1 activate
       neighbor ADDITIONAL-PATH-PG-1 additional-paths receive
       neighbor ADDITIONAL-PATH-PG-1 additional-paths send any
@@ -275,12 +294,20 @@ router bgp 65101
       neighbor EVPN-OVERLAY-PEERS domain remote
       neighbor EVPN-OVERLAY-PEERS encapsulation vxlan
       no neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor TEST-ENCAPSULATION activate
+      neighbor TEST-ENCAPSULATION encapsulation mpls
+      neighbor TEST-ENCAPSULATION-2 activate
+      neighbor TEST-ENCAPSULATION-2 encapsulation path-selection
       neighbor 10.100.100.1 activate
       neighbor 10.100.100.1 default-route
       neighbor 10.100.100.2 activate
       neighbor 10.100.100.2 default-route route-map RM_DEFAULT_ROUTE
       neighbor 10.100.100.3 activate
       neighbor 10.100.100.3 default-route rcf RCF_DEFAULT_ROUTE()
+      neighbor 10.100.100.4 activate
+      neighbor 10.100.100.4 encapsulation path-selection
+      neighbor 10.100.100.5 activate
+      neighbor 10.100.100.5 encapsulation mpls
       next-hop resolution disabled
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
       route import ethernet-segment ip mass-withdraw

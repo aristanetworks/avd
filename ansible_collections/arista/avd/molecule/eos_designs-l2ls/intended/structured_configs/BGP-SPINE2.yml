@@ -34,7 +34,7 @@ router_bgp:
   - ip_address: 192.168.254.0
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: BGP-SPINE1
-    description: BGP-SPINE1
+    description: BGP-SPINE1_Vlan4094
   - ip_address: 192.168.253.7
     remote_as: '65000'
     peer: DUMMY-CORE
@@ -76,7 +76,7 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 1
@@ -96,7 +96,7 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -142,7 +142,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: BGP-LEAF1_Po1
+  description: L2_BGP-LEAF1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -151,7 +151,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 1
 - name: Port-Channel2
-  description: BGP-LEAF2_Po1
+  description: L2_BGP-LEAF2_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -182,7 +182,7 @@ ethernet_interfaces:
   peer: BGP-LEAF1
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: BGP-LEAF1_Ethernet2
+  description: L2_BGP-LEAF1_Ethernet2
   shutdown: false
   channel_group:
     id: 1
@@ -191,7 +191,7 @@ ethernet_interfaces:
   peer: BGP-LEAF2
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: BGP-LEAF2_Ethernet2
+  description: L2_BGP-LEAF2_Ethernet2
   shutdown: false
   channel_group:
     id: 2
@@ -200,12 +200,12 @@ ethernet_interfaces:
   peer: DUMMY-CORE
   peer_interface: Ethernet1/4
   peer_type: other
-  description: P2P_LINK_TO_DUMMY-CORE_Ethernet1/4
   switchport:
     enabled: false
   shutdown: false
   mtu: 9214
   ip_address: 192.168.253.6/31
+  description: P2P_DUMMY-CORE_Ethernet1/4
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094

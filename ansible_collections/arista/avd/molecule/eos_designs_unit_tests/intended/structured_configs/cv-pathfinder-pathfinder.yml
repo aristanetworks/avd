@@ -51,6 +51,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4_sr_te:
@@ -582,7 +583,11 @@ metadata:
         - name: Site404
           id: 404
           location:
-            address: Not Found
+            address: Atlantis
+        - name: Site405
+          id: 405
+          location:
+            address: El Dorado
         - name: Site422
           id: 422
           location:
