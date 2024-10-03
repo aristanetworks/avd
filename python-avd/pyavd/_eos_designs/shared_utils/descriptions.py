@@ -114,3 +114,8 @@ class DescriptionsMixin:
     def underlay_l2_port_channel_description(self: SharedUtils) -> str:
         default_value = self.schema.get_default_value(["underlay_l2_port_channel_description"])
         return get(self.hostvars, "underlay_l2_port_channel_description", default=default_value)
+
+    @cached_property
+    def default_vrf_diag_loopback_description(self: SharedUtils) -> str:
+        default_value = self.schema.get_default_value(["default_vrf_diag_loopback_description"])
+        return get(self.hostvars, "default_vrf_diag_loopback_description", default=default_value)
