@@ -49,6 +49,10 @@ router_bgp:
     peer: peer6
     description: peer6
     peer_group: IPv4-UNDERLAY-PEERS
+  - ip_address: 192.168.0.13
+    remote_as: '65007'
+    peer: peer7
+    description: peer7
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:
@@ -178,6 +182,16 @@ ethernet_interfaces:
     id: 7
     mode: active
   description: P2P_peer6_Ethernet8
+- name: ethernet9
+  peer: peer7
+  peer_interface: ethernet9
+  peer_type: other
+  switchport:
+    enabled: false
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.12/31
+  description: P2P_peer7_ethernet9
 port_channel_interfaces:
 - name: Port-Channel5
   peer: peer5

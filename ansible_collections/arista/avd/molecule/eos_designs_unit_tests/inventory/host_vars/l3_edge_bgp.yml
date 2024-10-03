@@ -85,3 +85,11 @@ l3_edge:
           - node: peer6
             interfaces: [ Ethernet7, Ethernet8 ]
       include_in_underlay_protocol: true
+
+      # P2P link with ebgp and no underlay routing.
+    - nodes: [l3_edge_bgp, peer7]
+      interfaces: [ethernet9, ethernet9]
+      subnet: 192.168.0.12/31
+      as: [65000, 65007]
+      include_in_underlay_protocol: false
+      routing_protocol: ebgp
