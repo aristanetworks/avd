@@ -18,10 +18,10 @@ l3leaf:
       bgp_as: 65101
       nodes:
         - name: site1-border1
-          mgmt_ip: "{{ ansible_host }}/24"
+          mgmt_ip: 192.168.17.14/24
           id: 5
         - name: site1-border2
-          mgmt_ip: "{{ ansible_host }}/24"
+          mgmt_ip: 192.168.17.15/24
           id: 6
 
 wan_router:
@@ -48,7 +48,7 @@ wan_router:
       nodes:
         - name: site1-wan1
           id: 3
-          mgmt_ip: "{{ ansible_host }}/24"
+          mgmt_ip: 192.168.17.12/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
           l3_interfaces:
             - name: Ethernet3
@@ -67,7 +67,7 @@ wan_router:
               wan_circuit_id: inet-site1-wan1
         - name: site1-wan2
           id: 4
-          mgmt_ip: "{{ ansible_host }}/24"
+          mgmt_ip: 192.168.17.13/24
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
           l3_interfaces:
             - name: Ethernet3

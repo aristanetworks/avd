@@ -4,7 +4,7 @@
 l2leaf:
   nodes:
     - name: site3-leaf1
-      mgmt_ip: "{{ ansible_host }}/24"
+      mgmt_ip: 192.168.17.21/24
       id: 12
 
 wan_router:
@@ -21,7 +21,7 @@ wan_router:
       cv_pathfinder_region: REGION2
       cv_pathfinder_site: SITE3
       id: 11
-      mgmt_ip: "{{ ansible_host }}/24"
+      mgmt_ip: 192.168.17.20/24
       uplink_switches: [site3-leaf1]
       l3_interfaces:
         - name: Ethernet4

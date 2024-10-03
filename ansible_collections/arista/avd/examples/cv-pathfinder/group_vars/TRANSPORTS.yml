@@ -7,7 +7,7 @@ spine:
     - name: mpls-cloud
       id: 22
       bgp_as: 65042
-      mgmt_ip: "{{ ansible_host }}/24"
+      mgmt_ip: 192.168.17.30/24
       l3_interfaces:
         - name: Ethernet1
           description: pf1-Ethernet1
@@ -27,7 +27,7 @@ spine:
     - name: inet-cloud
       id: 23
       bgp_as: 65666
-      mgmt_ip: "{{ ansible_host }}/24"
+      mgmt_ip: 192.168.17.31/24
       l3_interfaces:
         - name: Ethernet1
           description: pf1-Ethernet2
