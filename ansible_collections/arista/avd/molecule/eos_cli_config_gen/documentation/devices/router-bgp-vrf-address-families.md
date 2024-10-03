@@ -47,6 +47,12 @@ ASN Notation: asplain
 | ------ | --------- |
 | 65001 | 1.0.1.1 |
 
+#### BGP Neighbors
+
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 1.1.1.1 | - | VRF02 | - | - | - | - | - | - | - | - | - |
+
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute |
@@ -73,19 +79,29 @@ router bgp 65001
       neighbor FOOBAR activate
    !
    address-family ipv4 multicast
+      bgp additional-paths receive
       neighbor FOOBAR activate
+      neighbor FOOBAR additional-paths receive
+      neighbor 10.1.1.1 activate
+      neighbor 10.1.1.1 additional-paths receive
    !
    address-family ipv6
       no neighbor FOOBAR activate
    !
    address-family ipv6 multicast
+      bgp additional-paths receive
       no neighbor FOOBAR activate
+      neighbor FOOBAR additional-paths receive
+      neighbor aa::1 additional-paths receive
       redistribute isis rcf Router_BGP_Isis()
       redistribute ospf match internal
       redistribute ospfv3 match external
       redistribute ospfv3 match nssa-external 2
    !
    vrf VRF01
+      bgp additional-paths install
+      bgp additional-paths receive
+      bgp additional-paths send any
       no bgp redistribute-internal
       redistribute attached-host route-map RM_VRF_ATTACHED-HOST
       redistribute bgp leaked route-map RM_VRF_BGP
@@ -114,8 +130,10 @@ router bgp 65001
          bgp additional-paths receive
          bgp additional-paths send ecmp limit 4
          neighbor 1.2.3.4 activate
+         neighbor 1.2.3.4 additional-paths receive
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
+         neighbor 1.2.3.4 additional-paths send any
          network 2.3.4.0/24 route-map BARFOO
          no bgp redistribute-internal
          redistribute connected rcf VRF_AFIPV4_RCF_CONNECTED_1()
@@ -130,6 +148,7 @@ router bgp 65001
          bgp additional-paths receive
          neighbor 1.2.3.4 route-map FOO in
          neighbor 1.2.3.4 route-map BAR out
+         neighbor 1.2.3.4 additional-paths receive
          network 239.0.0.0/24 route-map BARFOO
          redistribute connected
          redistribute ospf match internal
@@ -144,8 +163,10 @@ router bgp 65001
          bgp additional-paths receive
          bgp additional-paths send any
          neighbor aa::1 activate
+         neighbor aa::1 additional-paths receive
          neighbor aa::1 route-map FOO in
          neighbor aa::1 route-map BAR out
+         neighbor aa::1 additional-paths send any
          neighbor aa::2 activate
          neighbor aa::2 rcf in VRF_AFIPV6_RCF_IN()
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
@@ -161,6 +182,8 @@ router bgp 65001
       address-family ipv6 multicast
          bgp missing-policy direction in action deny
          bgp missing-policy direction out action deny
+         bgp additional-paths receive
+         neighbor aa::1 additional-paths receive
          network ff08:1::/64
          redistribute connected
          redistribute ospf match external
@@ -169,6 +192,8 @@ router bgp 65001
          redistribute static route-map VRF_AFIPV6MULTI_RM_STATIC
    !
    vrf VRF02
+      neighbor 1.1.1.1 additional-paths receive
+      neighbor 1.1.1.1 additional-paths send ecmp limit 24
       redistribute attached-host
       redistribute bgp leaked
       redistribute connected
