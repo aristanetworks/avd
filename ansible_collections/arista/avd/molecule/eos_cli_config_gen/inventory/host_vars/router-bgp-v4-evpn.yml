@@ -84,6 +84,57 @@ router_bgp:
         activate: false
       - name: MLAG-IPv4-UNDERLAY-PEER
         activate: false
+  address_family_ipv6:
+    redistribute:
+      ospfv3:
+        match_external:
+          enabled: true
+          include_leaked: true
+        match_internal:
+          enabled: true
+          route_map: RM-REDISTRIBUTE-OSPF-INTERNAL
+          include_leaked: true
+        match_nssa_external:
+          enabled: true
+          nssa_type: 1
+      static:
+        enabled: true
+        route_map: RM-IPV6-STATIC-TO-BGP
+      bgp:
+        enabled: true
+        route_map: RM-REDISTRIBUTE-BGP
+      connected:
+        enabled: true
+        rcf: Address_Family_IPV6_Connected()
+  address_family_ipv4_multicast:
+    redistribute:
+      attached_host:
+        enabled: true
+        route_map: AFIPV4M_ATTACHED_HOST
+      connected:
+        enabled: true
+        route_map: AFIPV4M_CONNECTED
+      isis:
+        enabled: true
+        isis_level: level-1-2
+        route_map: AFIPV4M_ISIS
+        include_leaked: true
+      ospf:
+        match_external:
+          enabled: true
+          route_map: AFIPV4M_OSPF_EXTERNAL
+        match_internal:
+          enabled: true
+          route_map: AFIPV4M_OSPF_INTERNAL
+        match_nssa_external:
+          enabled: true
+          route_map: AFIPV4M_OSPF_NSSA
+      ospfv3:
+        enabled: true
+        route_map: AFIPV4M_OSPFV3
+      static:
+        enabled: true
+        route_map: AFIPV4M_STATIC
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
@@ -210,9 +261,11 @@ router_bgp:
             rcf: VRF_AFIPV4_RCF_CONNECTED()
           - source_protocol: static
             route_map: VRF_AFIPV4_RM_STATIC
-      redistribute_routes:
-        - source_protocol: connected
-        - source_protocol: static
+      redistribute:
+        connected:
+          enabled: true
+        static:
+          enabled: true
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       timers: 5 15
@@ -251,7 +304,9 @@ router_bgp:
           peer_group: MLAG-IPv4-UNDERLAY-PEER
           description: Test_Bfd
           bfd: true
-      redistribute_routes:
-        - source_protocol: connected
-        - source_protocol: static
+      redistribute:
+        connected:
+          enabled: true
+        static:
+          enabled: true
           route_map: RM-CONN-2-BGP

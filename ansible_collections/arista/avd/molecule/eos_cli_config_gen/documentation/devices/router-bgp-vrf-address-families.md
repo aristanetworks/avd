@@ -57,8 +57,8 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| VRF01 | - | - |
-| VRF02 | - | - |
+| VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host |
+| VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host |
 | VRF03 | - | dynamic |
 
 #### Router BGP Device Configuration
@@ -103,6 +103,15 @@ router bgp 65001
       bgp additional-paths receive
       bgp additional-paths send any
       no bgp redistribute-internal
+      redistribute attached-host route-map RM_VRF_ATTACHED-HOST
+      redistribute bgp leaked route-map RM_VRF_BGP
+      redistribute connected include leaked rcf RCF_VRF_CONNECTED()
+      redistribute isis level-2 rcf RCF_VRF_ISIS()
+      redistribute ospf match nssa-external route-map RM_VRF_OSPFV3
+      redistribute ospfv3 match internal include leaked route-map RM_VRF_OSPF
+      redistribute rip route-map RM_VRF_RIP
+      redistribute static route-map RM_VRF_STATIC
+      redistribute user rcf RCF_VRF_USER()
       !
       address-family flow-spec ipv4
          bgp missing-policy direction in action permit
@@ -185,6 +194,16 @@ router bgp 65001
    vrf VRF02
       neighbor 1.1.1.1 additional-paths receive
       neighbor 1.1.1.1 additional-paths send ecmp limit 24
+      redistribute attached-host
+      redistribute bgp leaked
+      redistribute connected
+      redistribute dynamic
+      redistribute isis level-2 route-map RM_VRF_ISIS
+      redistribute ospf include leaked
+      redistribute ospfv3 match external
+      redistribute rip
+      redistribute static
+      redistribute user
       !
       address-family ipv4
          bgp additional-paths send backup

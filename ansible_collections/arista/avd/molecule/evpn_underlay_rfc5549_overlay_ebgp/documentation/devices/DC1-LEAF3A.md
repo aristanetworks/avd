@@ -460,7 +460,7 @@ interface Port-Channel5
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 192.168.255.12/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.12/32 |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.12/32 |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 10.255.1.12/32 |
 
 ##### IPv6
 
@@ -468,7 +468,7 @@ interface Port-Channel5
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | 2001:1::c/128 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -486,7 +486,7 @@ interface Loopback1
    ip address 192.168.254.12/32
 !
 interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   description DIAG_VRF_Tenant_A_OP_Zone
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.12/32

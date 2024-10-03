@@ -154,8 +154,8 @@ ASN Notation: asplain
 
 | VLAN Aware Bundle | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute | VLANs |
 | ----------------- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ | ----- |
-| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned<br>no host-routes | 201 |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp<br>no connected | 110 |
+| B-ELAN-201 | 192.168.255.3:20201 | 20201:20201 | - | - | learned<br>no host-route | 201 |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | 11:11<br>remote 2:11 | - | - | learned<br>igmp<br>no static | 110 |
 | TENANT_A_PROJECT02 | 192.168.255.3:12 | 12:12 | remote 2:12 | remote 2:12 | learned | 112 |
 
 #### Router BGP VLANs
@@ -248,7 +248,7 @@ router bgp 65101
       rd 192.168.255.3:20201
       route-target both 20201:20201
       redistribute learned
-      no redistribute host-routes
+      no redistribute host-route
       vlan 201
    !
    vlan-aware-bundle TENANT_A_PROJECT01
@@ -257,7 +257,7 @@ router bgp 65101
       route-target import export evpn domain remote 2:11
       redistribute igmp
       redistribute learned
-      no redistribute connected
+      no redistribute static
       vlan 110
    !
    vlan-aware-bundle TENANT_A_PROJECT02

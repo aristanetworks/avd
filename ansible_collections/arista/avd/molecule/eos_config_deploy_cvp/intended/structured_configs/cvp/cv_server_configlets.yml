@@ -455,9 +455,9 @@ cvp_configlets:
     10 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
     \  ip address 192.168.255.6/32\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
     \  no shutdown\n   ip address 192.168.254.6/32\n!\ninterface Loopback100\n   description
-    Tenant_A_OP_Zone_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf Tenant_A_OP_Zone\n   ip
-    address 10.255.1.6/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n
-    \  no shutdown\n   vrf MGMT\n   ip address 192.168.200.106/24\n!\ninterface Vlan110\n
+    DIAG_VRF_Tenant_A_OP_Zone\n   no shutdown\n   vrf Tenant_A_OP_Zone\n   ip address
+    10.255.1.6/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n   no
+    shutdown\n   vrf MGMT\n   ip address 192.168.200.106/24\n!\ninterface Vlan110\n
     \  description Tenant_A_OP_Zone_1\n   no shutdown\n   vrf Tenant_A_OP_Zone\n   ip
     address virtual 10.1.10.1/24\n!\ninterface Vlan111\n   description Tenant_A_OP_Zone_2\n
     \  no shutdown\n   vrf Tenant_A_OP_Zone\n   ip helper-address 1.1.1.1 vrf MGMT
@@ -636,9 +636,9 @@ cvp_configlets:
     10 mode active\n!\ninterface Loopback0\n   description ROUTER_ID\n   no shutdown\n
     \  ip address 192.168.255.7/32\n!\ninterface Loopback1\n   description VXLAN_TUNNEL_SOURCE\n
     \  no shutdown\n   ip address 192.168.254.6/32\n!\ninterface Loopback100\n   description
-    Tenant_A_OP_Zone_VTEP_DIAGNOSTICS\n   no shutdown\n   vrf Tenant_A_OP_Zone\n   ip
-    address 10.255.1.7/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n
-    \  no shutdown\n   vrf MGMT\n   ip address 192.168.200.107/24\n!\ninterface Vlan110\n
+    DIAG_VRF_Tenant_A_OP_Zone\n   no shutdown\n   vrf Tenant_A_OP_Zone\n   ip address
+    10.255.1.7/32\n!\ninterface Management1\n   description OOB_MANAGEMENT\n   no
+    shutdown\n   vrf MGMT\n   ip address 192.168.200.107/24\n!\ninterface Vlan110\n
     \  description Tenant_A_OP_Zone_1\n   no shutdown\n   vrf Tenant_A_OP_Zone\n   ip
     address virtual 10.1.10.1/24\n!\ninterface Vlan111\n   description Tenant_A_OP_Zone_2\n
     \  no shutdown\n   vrf Tenant_A_OP_Zone\n   ip helper-address 1.1.1.1 vrf MGMT
@@ -1105,9 +1105,9 @@ cvp_configlets:
     \  no shutdown\n   channel-group 10 mode active\n!\ninterface Loopback0\n   description
     ROUTER_ID\n   no shutdown\n   ip address 192.168.255.8/32\n!\ninterface Loopback1\n
     \  description VXLAN_TUNNEL_SOURCE\n   no shutdown\n   ip address 192.168.254.8/32\n!\ninterface
-    Loopback100\n   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS\n   no shutdown\n
-    \  vrf Tenant_A_OP_Zone\n   ip address 10.255.1.8/32\n!\ninterface Management1\n
-    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 192.168.200.108/24\n!\ninterface
+    Loopback100\n   description DIAG_VRF_Tenant_A_OP_Zone\n   no shutdown\n   vrf
+    Tenant_A_OP_Zone\n   ip address 10.255.1.8/32\n!\ninterface Management1\n   description
+    OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 192.168.200.108/24\n!\ninterface
     Vlan110\n   description Tenant_A_OP_Zone_1\n   no shutdown\n   vrf Tenant_A_OP_Zone\n
     \  ip address virtual 10.1.10.1/24\n!\ninterface Vlan111\n   description Tenant_A_OP_Zone_2\n
     \  no shutdown\n   vrf Tenant_A_OP_Zone\n   ip helper-address 1.1.1.1 vrf MGMT
@@ -1320,9 +1320,9 @@ cvp_configlets:
     \  no shutdown\n   channel-group 7 mode active\n!\ninterface Loopback0\n   description
     ROUTER_ID\n   no shutdown\n   ip address 192.168.255.9/32\n!\ninterface Loopback1\n
     \  description VXLAN_TUNNEL_SOURCE\n   no shutdown\n   ip address 192.168.254.8/32\n!\ninterface
-    Loopback100\n   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS\n   no shutdown\n
-    \  vrf Tenant_A_OP_Zone\n   ip address 10.255.1.9/32\n!\ninterface Management1\n
-    \  description OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 192.168.200.109/24\n!\ninterface
+    Loopback100\n   description DIAG_VRF_Tenant_A_OP_Zone\n   no shutdown\n   vrf
+    Tenant_A_OP_Zone\n   ip address 10.255.1.9/32\n!\ninterface Management1\n   description
+    OOB_MANAGEMENT\n   no shutdown\n   vrf MGMT\n   ip address 192.168.200.109/24\n!\ninterface
     Vlan110\n   description Tenant_A_OP_Zone_1\n   no shutdown\n   vrf Tenant_A_OP_Zone\n
     \  ip address virtual 10.1.10.1/24\n!\ninterface Vlan111\n   description Tenant_A_OP_Zone_2\n
     \  no shutdown\n   vrf Tenant_A_OP_Zone\n   ip helper-address 1.1.1.1 vrf MGMT
