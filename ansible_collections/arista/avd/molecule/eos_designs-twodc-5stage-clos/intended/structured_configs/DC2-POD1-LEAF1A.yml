@@ -244,7 +244,7 @@ ethernet_interfaces:
   peer: DC2-POD1-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: DC2-POD1-L2LEAF1A_Ethernet1
+  description: L2_DC2-POD1-L2LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 3
@@ -271,7 +271,7 @@ ethernet_interfaces:
     enable: true
 port_channel_interfaces:
 - name: Port-Channel3
-  description: DC2-POD1-L2LEAF1A_Po1
+  description: L2_DC2-POD1-L2LEAF1A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -289,12 +289,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 172.18.210.3/32
 - name: Loopback100
-  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.3/32
 - name: Loopback101
-  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.201.3/32

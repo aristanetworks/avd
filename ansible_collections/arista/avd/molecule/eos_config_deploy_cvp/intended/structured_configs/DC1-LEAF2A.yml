@@ -616,7 +616,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel7
-  description: DC1-L2LEAF1A_Po1
+  description: L2_DC1-L2LEAF1A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -696,7 +696,7 @@ ethernet_interfaces:
   peer: DC1-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: DC1-L2LEAF1A_Ethernet1
+  description: L2_DC1-L2LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 7
@@ -750,7 +750,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.254.6/32
 - name: Loopback100
-  description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_Tenant_A_OP_Zone
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.6/32

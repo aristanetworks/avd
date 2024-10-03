@@ -43,9 +43,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d_path</samp>](## "router_bgp.bgp.bestpath.d_path") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.bgp.additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.bgp.additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;listen_ranges</samp>](## "router_bgp.listen_ranges") | List, items: Dictionary |  |  |  | Improved "listen_ranges" data model to support multiple listen ranges and additional filter capabilities.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.listen_ranges.[].prefix") | String |  |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
@@ -297,6 +296,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_evpn.neighbors.[].default_route.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_evpn.neighbors.[].default_route.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_evpn.neighbors.[].default_route.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_evpn.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_evpn.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "router_bgp.address_family_evpn.neighbors.[].encapsulation") | String |  |  | Valid Values:<br>- <code>vxlan</code><br>- <code>mpls</code><br>- <code>path-selection</code> | Transport encapsulation for the neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_evpn.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_evpn.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
@@ -312,13 +315,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;domain_remote</samp>](## "router_bgp.address_family_evpn.peer_groups.[].domain_remote") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "router_bgp.address_family_evpn.peer_groups.[].encapsulation") | String |  |  | Valid Values:<br>- <code>vxlan</code><br>- <code>mpls</code><br>- <code>path-selection</code> | Transport encapsulation for the peer-group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send.any") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send.backup") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send.ecmp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_evpn.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_hostflap_detection</samp>](## "router_bgp.address_family_evpn.evpn_hostflap_detection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_evpn.evpn_hostflap_detection.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "router_bgp.address_family_evpn.evpn_hostflap_detection.window") | Integer |  |  | Min: 0<br>Max: 4294967295 | Time (in seconds) to detect a MAC duplication issue. |
@@ -332,7 +331,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;import_overlay_index_gateway</samp>](## "router_bgp.address_family_evpn.route.import_overlay_index_gateway") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;export_ethernet_segment_ip_mass_withdraw</samp>](## "router_bgp.address_family_evpn.route.export_ethernet_segment_ip_mass_withdraw") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;next_hop_unchanged</samp>](## "router_bgp.address_family_evpn.next_hop_unchanged") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_additional_paths</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths") | Dictionary |  |  |  | BGP additional-paths commands. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp_additional_paths</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths") <span style="color:red">deprecated</span> | Dictionary |  |  |  | BGP additional-paths commands.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>bgp.additional_paths</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.receive") | Boolean |  |  |  | Receive multiple paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send") | Dictionary |  |  |  | Send multiple paths. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.any") | Boolean |  |  |  | Any eligible path. |
@@ -340,6 +339,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_evpn.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_evpn.bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_evpn.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_evpn.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_evpn.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;layer_2_fec_in_place_update</samp>](## "router_bgp.address_family_evpn.layer_2_fec_in_place_update") | Dictionary |  |  |  | BGP layer-2 in-place FEC operation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_evpn.layer_2_fec_in_place_update.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;timeout</samp>](## "router_bgp.address_family_evpn.layer_2_fec_in_place_update.timeout") | Integer |  |  | Min: 0<br>Max: 300 | In-place FEC update tracking timeout in seconds. |
@@ -355,6 +359,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv4.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.networks.[].route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv4.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.address_family_ipv4.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv4.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
@@ -368,6 +378,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].default_originate.route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4.peer_groups.[].next_hop.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
@@ -385,6 +400,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;default_originate</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;always</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate.always") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.neighbors.[].default_originate.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4.redistribute_routes") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].source_protocol") | String | Required |  | Valid Values:<br>- <code>attached-host</code><br>- <code>bgp</code><br>- <code>connected</code><br>- <code>dynamic</code><br>- <code>isis</code><br>- <code>ospf</code><br>- <code>ospfv3</code><br>- <code>rip</code><br>- <code>static</code><br>- <code>user</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4.redistribute_routes.[].route_map") | String |  |  |  |  |
@@ -399,9 +419,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;missing_policy</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy") | Dictionary |  |  |  | Missing policy configuration for all address-families. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in") | Dictionary |  |  |  | Missing policy inbound direction. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;action</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.bgp.missing_policy.direction_in.action") | String | Required |  | Valid Values:<br>- <code>deny</code><br>- <code>permit</code><br>- <code>deny-in-out</code> | Missing policy action. |
@@ -424,9 +443,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].aigp_session") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].graceful_restart") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].graceful_restart_helper") | Dictionary |  |  |  |  |
@@ -460,9 +478,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any path. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_ecmp_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send_ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. `send` must be set to `limit` for this setting. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;aigp_session</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].aigp_session") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;graceful_restart_helper</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].graceful_restart_helper") | Dictionary |  |  |  |  |
@@ -505,17 +522,66 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.tunnel_source_protocols.[].rcf") | String |  |  |  | Optional RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;update_wait_for_convergence</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.update_wait_for_convergence") | Boolean |  |  |  | Wait for BGP to converge before sending out any route updates. |
     | [<samp>&nbsp;&nbsp;address_family_ipv4_multicast</samp>](## "router_bgp.address_family_ipv4_multicast") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv4_multicast.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_multicast.bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_multicast.bgp.additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_multicast.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv4_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.attached_host") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.attached_host.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.connected") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.connected.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.connected.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_level</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.isis_level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> | Redistribute IS-IS route level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.isis.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.enabled") | Boolean |  |  |  | Redistribute OSPF routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal") | Dictionary |  |  |  | Redistribute OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_internal.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.match_nssa_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospf.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.ospfv3.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.static") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.static.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute.static.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].source_protocol") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv4_multicast.redistribute_routes.[].include_leaked") | Boolean |  |  |  | Only applicable if `source_protocol` is `isis`. |
@@ -538,6 +604,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.networks.[].route_map") | String |  |  |  | Route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv6.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.address_family_ipv6.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv6.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv6.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].activate") | Boolean |  |  |  |  |
@@ -547,6 +619,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv6.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_ipv6.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_ipv6.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6.neighbors.[].activate") | Boolean |  |  |  |  |
@@ -556,7 +633,62 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.address_family_ipv6.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.address_family_ipv6.neighbors.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6.redistribute_routes") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.prefix_list") | String |  |  |  | Apply the configurations only to the routes matching the prefix list. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_ipv6.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.address_family_ipv6.redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.address_family_ipv6.redistribute.attached_host") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.attached_host.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_ipv6.redistribute.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.bgp.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.bgp.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected</samp>](## "router_bgp.address_family_ipv6.redistribute.connected") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.connected.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.connected.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.connected.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.connected.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dhcp</samp>](## "router_bgp.address_family_ipv6.redistribute.dhcp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.dhcp.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.dhcp.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "router_bgp.address_family_ipv6.redistribute.dynamic") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.dynamic.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.dynamic.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.dynamic.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis</samp>](## "router_bgp.address_family_ipv6.redistribute.isis") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_level</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.isis_level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> | Redistribute IS-IS route level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.isis.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_internal.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.match_nssa_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.ospfv3.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.address_family_ipv6.redistribute.static") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.static.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute.static.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.static.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute.static.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.address_family_ipv6.redistribute.user") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.address_family_ipv6.redistribute.user.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.address_family_ipv6.redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.address_family_ipv6.redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].source_protocol") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.address_family_ipv6.redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
@@ -574,9 +706,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_ipv6_multicast.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_ipv6_multicast.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_ipv6_multicast.peer_groups.[].activate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_ipv6_multicast.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_ipv6_multicast.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.address_family_ipv6_multicast.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.address_family_ipv6_multicast.networks.[].prefix") | String | Required, Unique |  |  | IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.address_family_ipv6_multicast.networks.[].route_map") | String |  |  |  |  |
@@ -644,39 +780,23 @@
     | [<samp>&nbsp;&nbsp;address_family_path_selection</samp>](## "router_bgp.address_family_path_selection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.address_family_path_selection.bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.receive") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.any") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.backup") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.ecmp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_path_selection.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.address_family_path_selection.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.address_family_path_selection.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_path_selection.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.install") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.any") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.backup") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.ecmp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_path_selection.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_path_selection.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.install") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.receive") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.any") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.backup") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.ecmp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.address_family_path_selection.peer_groups.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;address_family_vpn_ipv4</samp>](## "router_bgp.address_family_vpn_ipv4") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;domain_identifier</samp>](## "router_bgp.address_family_vpn_ipv4.domain_identifier") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_vpn_ipv4.peer_groups") | List, items: Dictionary |  |  |  |  |
@@ -737,6 +857,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].bgp") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.vrfs.[].bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].bgp.additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd</samp>](## "router_bgp.vrfs.[].rd") | String |  |  |  | Route distinguisher. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast</samp>](## "router_bgp.vrfs.[].evpn_multicast") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_multicast_address_family</samp>](## "router_bgp.vrfs.[].evpn_multicast_address_family") | Dictionary |  |  |  | Enable per-AF EVPN multicast settings. |
@@ -825,6 +951,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;update_source</samp>](## "router_bgp.vrfs.[].neighbors.[].update_source") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.vrfs.[].neighbors.[].prefix_list_in") <span style="color:red">removed</span> | String |  |  |  | Inbound prefix-list name.<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_in or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_in</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.vrfs.[].neighbors.[].prefix_list_out") <span style="color:red">removed</span> | String |  |  |  | Outbound prefix-list name.<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>router_bgp.vrfs[].address_family_ipv4.neighbors[].prefix_list_out or router_bgp.vrfs[].address_family_ipv6.neighbors[].prefix_list_out</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor_interfaces</samp>](## "router_bgp.vrfs.[].neighbor_interfaces") | List, items: Dictionary |  |  |  |  |
@@ -833,7 +963,74 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_group</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].peer_group") | String |  |  |  | Peer-group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_filter</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].peer_filter") | String |  |  |  | Peer-filter name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "router_bgp.vrfs.[].neighbor_interfaces.[].description") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].redistribute_routes") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute</samp>](## "router_bgp.vrfs.[].redistribute") | Dictionary |  |  |  | Redistribute routes in to BGP. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;attached_host</samp>](## "router_bgp.vrfs.[].redistribute.attached_host") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.attached_host.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.attached_host.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp</samp>](## "router_bgp.vrfs.[].redistribute.bgp") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.bgp.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.bgp.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;connected</samp>](## "router_bgp.vrfs.[].redistribute.connected") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.connected.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.connected.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.connected.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.connected.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "router_bgp.vrfs.[].redistribute.dynamic") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.dynamic.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.dynamic.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.dynamic.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis</samp>](## "router_bgp.vrfs.[].redistribute.isis") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.isis.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;isis_level</samp>](## "router_bgp.vrfs.[].redistribute.isis.isis_level") | String |  |  | Valid Values:<br>- <code>level-1</code><br>- <code>level-2</code><br>- <code>level-1-2</code> | Redistribute IS-IS route level. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.isis.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.isis.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.isis.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "router_bgp.vrfs.[].redistribute.ospf") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.enabled") | Boolean |  |  |  | Redistribute OSPF routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal") | Dictionary |  |  |  | Redistribute OSPF routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_internal.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPF routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.match_nssa_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospf.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospf.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospfv3</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.enabled") | Boolean |  |  |  | Redistribute OSPFv3 routes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_external</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_internal</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from internal sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_internal.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_nssa_external</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external") | Dictionary |  |  |  | Redistribute OSPFv3 routes learned from external NSSA sources. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nssa_type</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.nssa_type") | Integer |  |  | Valid Values:<br>- <code>1</code><br>- <code>2</code> | NSSA External Type Number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.match_nssa_external.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.ospfv3.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rip</samp>](## "router_bgp.vrfs.[].redistribute.rip") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.rip.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.rip.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "router_bgp.vrfs.[].redistribute.static") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.static.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute.static.route_map") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.static.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute.static.include_leaked") | Boolean |  |  |  | Include following routes while redistributing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user</samp>](## "router_bgp.vrfs.[].redistribute.user") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].redistribute.user.enabled") | Boolean | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf</samp>](## "router_bgp.vrfs.[].redistribute.user.rcf") | String |  |  |  | RCF function name with parenthesis.<br>Example: MyFunction(myarg).<br>`route_map` and `rcf` are mutually exclusive. `route_map` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_routes</samp>](## "router_bgp.vrfs.[].redistribute_routes") <span style="color:red">deprecated</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>redistribute</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;source_protocol</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].source_protocol") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].route_map") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_leaked</samp>](## "router_bgp.vrfs.[].redistribute_routes.[].include_leaked") | Boolean |  |  |  |  |
@@ -852,15 +1049,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.install") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.receive") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send.any") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send.backup") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send.ecmp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.vrfs.[].address_family_ipv4.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
@@ -875,6 +1068,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;address_family_ipv6</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].next_hop.address_family_ipv6") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].next_hop.address_family_ipv6.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;originate</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].next_hop.address_family_ipv6.originate") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv4.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].prefix") | String | Required, Unique |  |  | IPv4 prefix "A.B.C.D/E". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4.networks.[].route_map") | String |  |  |  |  |
@@ -890,15 +1087,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_in_action</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.missing_policy.direction_in_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction_out_action</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.missing_policy.direction_out_action") | String |  |  | Valid Values:<br>- <code>deny</code><br>- <code>deny-in-out</code><br>- <code>permit</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.install") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.receive") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;any</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send.any") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send.backup") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send.ecmp") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.install") | Boolean |  |  |  | Install BGP backup path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;install_ecmp_primary</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.install_ecmp_primary") | Boolean |  |  |  | Allow additional path with ECMP primary path. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_internal</samp>](## "router_bgp.vrfs.[].address_family_ipv6.bgp.redistribute_internal") | Boolean |  |  |  | Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbors</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_address</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].ip_address") | String | Required, Unique |  |  |  |
@@ -909,6 +1102,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rcf_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].rcf_out") | String |  |  |  | Outbound RCF function name with parenthesis.<br>Example: MyFunction(myarg). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].prefix_list_in") | String |  |  |  | Inbound prefix-list name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_list_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].prefix_list_out") | String |  |  |  | Outbound prefix-list name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.receive") | Boolean |  |  |  | Enable or disable reception of additional-paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.send") | String |  |  | Valid Values:<br>- <code>any</code><br>- <code>backup</code><br>- <code>ecmp</code><br>- <code>limit</code><br>- <code>disabled</code> | Select an option to send multiple paths for same prefix through bgp updates.<br>any: Send any eligible path.<br>backup: Best path and installed backup path.<br>ecmp: All paths in best path ECMP group.<br>limit: Limit to n eligible paths.<br>disabled: Disable sending any paths. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;send_limit</samp>](## "router_bgp.vrfs.[].address_family_ipv6.neighbors.[].additional_paths.send_limit") | Integer |  |  | Min: 2<br>Max: 64 | Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].prefix") | String | Required, Unique |  |  | IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6.networks.[].route_map") | String |  |  |  |  |
@@ -930,6 +1127,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.networks.[].prefix") | String | Required, Unique |  |  | IPv6 prefix "A.B.C.D/E". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv4_multicast.networks.[].route_map") | String |  |  |  |  |
@@ -951,6 +1150,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;activate</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].activate") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_in</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].route_map_in") | String |  |  |  | Inbound route-map name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map_out</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].route_map_out") | String |  |  |  | Outbound route-map name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;additional_paths</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].additional_paths") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.neighbors.[].additional_paths.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;networks</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.networks") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;prefix</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.networks.[].prefix") | String | Required, Unique |  |  | IPv6 prefix "A:B:C:D:E:F:G:H/I". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "router_bgp.vrfs.[].address_family_ipv6_multicast.networks.[].route_map") | String |  |  |  |  |
@@ -1061,13 +1262,10 @@
           # backup: Best path and installed backup path.
           # ecmp: All paths in best path ECMP group.
           # limit: Limit to n eligible paths.
-          # disabled: Disable sending any path.
+          # disabled: Disable sending any paths.
           send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-          # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
-          send_ecmp_limit: <int; 2-64>
-
-          # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+          # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
           send_limit: <int; 2-64>
 
         # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
@@ -1561,6 +1759,21 @@
               # Example: MyFunction(myarg).
               rcf: <str>
               route_map: <str>
+            additional_paths:
+
+              # Enable or disable reception of additional-paths.
+              receive: <bool>
+
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
 
             # Transport encapsulation for the neighbor.
             encapsulation: <str; "vxlan" | "mpls" | "path-selection">
@@ -1595,17 +1808,20 @@
             # Transport encapsulation for the peer-group.
             encapsulation: <str; "vxlan" | "mpls" | "path-selection">
             additional_paths:
+
+              # Enable or disable reception of additional-paths.
               receive: <bool>
-              send:
-                any: <bool>
-                backup: <bool>
-                ecmp: <bool>
 
-                # Amount of ECMP paths to send.
-                ecmp_limit: <int; 2-64>
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-                # Amount of paths to send.
-                limit: <int; 2-64>
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
         evpn_hostflap_detection:
           enabled: <bool>
 
@@ -1627,6 +1843,9 @@
         next_hop_unchanged: <bool>
 
         # BGP additional-paths commands.
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>bgp.additional_paths</samp> instead.
         bgp_additional_paths:
 
           # Receive multiple paths.
@@ -1649,6 +1868,22 @@
 
             # Amount of paths to send.
             limit: <int; 2-64>
+        bgp:
+          additional_paths:
+
+            # Enable or disable reception of additional-paths.
+            receive: <bool>
+
+            # Select an option to send multiple paths for same prefix through bgp updates.
+            # any: Send any eligible path.
+            # backup: Best path and installed backup path.
+            # ecmp: All paths in best path ECMP group.
+            # limit: Limit to n eligible paths.
+            # disabled: Disable sending any paths.
+            send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+            # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+            send_limit: <int; 2-64>
 
         # BGP layer-2 in-place FEC operation.
         layer_2_fec_in_place_update:
@@ -1674,6 +1909,27 @@
             # Route-map name.
             route_map: <str>
         bgp:
+          additional_paths:
+
+            # Install BGP backup path.
+            install: <bool>
+
+            # Allow additional path with ECMP primary path.
+            install_ecmp_primary: <bool>
+
+            # Enable or disable reception of additional-paths.
+            receive: <bool>
+
+            # Select an option to send multiple paths for same prefix through bgp updates.
+            # any: Send any eligible path.
+            # backup: Best path and installed backup path.
+            # ecmp: All paths in best path ECMP group.
+            # limit: Limit to n eligible paths.
+            # disabled: Disable sending any paths.
+            send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+            # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+            send_limit: <int; 2-64>
 
           # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
           redistribute_internal: <bool>
@@ -1707,6 +1963,24 @@
 
             # Outbound prefix-list name.
             prefix_list_out: <str>
+            additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
+
+              # Enable or disable reception of additional-paths.
+              receive: <bool>
+
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
             next_hop:
               address_family_ipv6:
                 enabled: <bool; required>
@@ -1737,6 +2011,24 @@
             default_originate:
               always: <bool>
               route_map: <str>
+            additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
+
+              # Enable or disable reception of additional-paths.
+              receive: <bool>
+
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
         redistribute_routes:
           - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
             route_map: <str>
@@ -1769,13 +2061,10 @@
             # backup: Best path and installed backup path.
             # ecmp: All paths in best path ECMP group.
             # limit: Limit to n eligible paths.
-            # disabled: Disable sending any path.
+            # disabled: Disable sending any paths.
             send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-            # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
-            send_ecmp_limit: <int; 2-64>
-
-            # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+            # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
             send_limit: <int; 2-64>
 
           # Missing policy configuration for all address-families.
@@ -1833,13 +2122,10 @@
               # backup: Best path and installed backup path.
               # ecmp: All paths in best path ECMP group.
               # limit: Limit to n eligible paths.
-              # disabled: Disable sending any path.
+              # disabled: Disable sending any paths.
               send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
-              send_ecmp_limit: <int; 2-64>
-
-              # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
               send_limit: <int; 2-64>
             aigp_session: <bool>
             graceful_restart: <bool>
@@ -1923,13 +2209,10 @@
               # backup: Best path and installed backup path.
               # ecmp: All paths in best path ECMP group.
               # limit: Limit to n eligible paths.
-              # disabled: Disable sending any path.
+              # disabled: Disable sending any paths.
               send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-              # Amount of ECMP paths to send. `send` must be set to `ecmp` for this setting. If this key-value pair is not set, it will send all paths in best ECMP group.
-              send_ecmp_limit: <int; 2-64>
-
-              # Number of paths to send through bgp updates. `send` must be set to `limit` for this setting.
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
               send_limit: <int; 2-64>
             aigp_session: <bool>
             graceful_restart: <bool>
@@ -2029,6 +2312,9 @@
         # Wait for BGP to converge before sending out any route updates.
         update_wait_for_convergence: <bool>
       address_family_ipv4_multicast:
+        bgp:
+          additional_paths:
+            receive: <bool>
         peer_groups:
 
             # Peer-group name.
@@ -2040,6 +2326,8 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+            additional_paths:
+              receive: <bool>
         neighbors:
           - ip_address: <str; required; unique>
             activate: <bool>
@@ -2049,6 +2337,83 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+            additional_paths:
+              receive: <bool>
+
+        # Redistribute routes in to BGP.
+        redistribute:
+          attached_host:
+            enabled: <bool; required>
+            route_map: <str>
+          connected:
+            enabled: <bool; required>
+            route_map: <str>
+          isis:
+            enabled: <bool; required>
+
+            # Redistribute IS-IS route level.
+            isis_level: <str; "level-1" | "level-2" | "level-1-2">
+            route_map: <str>
+
+            # RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
+
+            # Include following routes while redistributing.
+            include_leaked: <bool>
+          ospf:
+
+            # Redistribute OSPF routes.
+            enabled: <bool>
+
+            # Redistribute OSPF routes learned from external sources.
+            match_external:
+              enabled: <bool; required>
+              route_map: <str>
+
+            # Redistribute OSPF routes learned from internal sources.
+            match_internal:
+              enabled: <bool; required>
+              route_map: <str>
+
+            # Redistribute OSPF routes learned from external NSSA sources.
+            match_nssa_external:
+              enabled: <bool; required>
+
+              # NSSA External Type Number.
+              nssa_type: <int; 1 | 2>
+              route_map: <str>
+            route_map: <str>
+          ospfv3:
+
+            # Redistribute OSPFv3 routes.
+            enabled: <bool>
+
+            # Redistribute OSPFv3 routes learned from external sources.
+            match_external:
+              enabled: <bool; required>
+              route_map: <str>
+
+            # Redistribute OSPFv3 routes learned from internal sources.
+            match_internal:
+              enabled: <bool; required>
+              route_map: <str>
+
+            # Redistribute OSPFv3 routes learned from external NSSA sources.
+            match_nssa_external:
+              enabled: <bool; required>
+
+              # NSSA External Type Number.
+              nssa_type: <int; 1 | 2>
+              route_map: <str>
+            route_map: <str>
+          static:
+            enabled: <bool; required>
+            route_map: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>redistribute</samp> instead.
         redistribute_routes:
           - source_protocol: <str; required>
             route_map: <str>
@@ -2098,6 +2463,27 @@
 
           # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
           redistribute_internal: <bool>
+          additional_paths:
+
+            # Install BGP backup path.
+            install: <bool>
+
+            # Allow additional path with ECMP primary path.
+            install_ecmp_primary: <bool>
+
+            # Enable or disable reception of additional-paths.
+            receive: <bool>
+
+            # Select an option to send multiple paths for same prefix through bgp updates.
+            # any: Send any eligible path.
+            # backup: Best path and installed backup path.
+            # ecmp: All paths in best path ECMP group.
+            # limit: Limit to n eligible paths.
+            # disabled: Disable sending any paths.
+            send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+            # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+            send_limit: <int; 2-64>
         peer_groups:
 
             # Peer-group name.
@@ -2123,6 +2509,24 @@
 
             # Outbound prefix-list name.
             prefix_list_out: <str>
+            additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
+
+              # Enable or disable reception of additional-paths.
+              receive: <bool>
+
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
         neighbors:
           - ip_address: <str; required; unique>
             activate: <bool>
@@ -2146,6 +2550,125 @@
 
             # Outbound prefix-list name.
             prefix_list_out: <str>
+            additional_paths:
+
+              # Apply the configurations only to the routes matching the prefix list.
+              prefix_list: <str>
+
+              # Enable or disable reception of additional-paths.
+              receive: <bool>
+
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
+
+        # Redistribute routes in to BGP.
+        redistribute:
+          attached_host:
+            enabled: <bool; required>
+            route_map: <str>
+          bgp:
+            enabled: <bool; required>
+            route_map: <str>
+          connected:
+            enabled: <bool; required>
+            route_map: <str>
+
+            # RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
+
+            # Include following routes while redistributing.
+            include_leaked: <bool>
+          dhcp:
+            enabled: <bool; required>
+            route_map: <str>
+          dynamic:
+            enabled: <bool; required>
+            route_map: <str>
+
+            # RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
+          isis:
+            enabled: <bool; required>
+
+            # Redistribute IS-IS route level.
+            isis_level: <str; "level-1" | "level-2" | "level-1-2">
+            route_map: <str>
+
+            # RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
+
+            # Include following routes while redistributing.
+            include_leaked: <bool>
+          ospfv3:
+
+            # Redistribute OSPFv3 routes.
+            enabled: <bool>
+
+            # Redistribute OSPFv3 routes learned from external sources.
+            match_external:
+              enabled: <bool; required>
+              route_map: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+
+            # Redistribute OSPFv3 routes learned from internal sources.
+            match_internal:
+              enabled: <bool; required>
+              route_map: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+
+            # Redistribute OSPFv3 routes learned from external NSSA sources.
+            match_nssa_external:
+              enabled: <bool; required>
+
+              # NSSA External Type Number.
+              nssa_type: <int; 1 | 2>
+              route_map: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+            route_map: <str>
+
+            # Include following routes while redistributing.
+            include_leaked: <bool>
+          static:
+            enabled: <bool; required>
+            route_map: <str>
+
+            # RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
+
+            # Include following routes while redistributing.
+            include_leaked: <bool>
+          user:
+            enabled: <bool; required>
+
+            # RCF function name with parenthesis.
+            # Example: MyFunction(myarg).
+            # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+            rcf: <str>
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>redistribute</samp> instead.
         redistribute_routes:
           - source_protocol: <str; required>
             route_map: <str>
@@ -2176,11 +2699,15 @@
 
             # Outbound route-map name.
             route_map_out: <str>
+            additional_paths:
+              receive: <bool>
         peer_groups:
 
             # Peer-group name.
           - name: <str; required; unique>
             activate: <bool>
+            additional_paths:
+              receive: <bool>
         networks:
 
             # IPv6 prefix "A:B:C:D:E:F:G:H/I".
@@ -2276,53 +2803,58 @@
       address_family_path_selection:
         bgp:
           additional_paths:
+
+            # Enable or disable reception of additional-paths.
             receive: <bool>
-            send:
-              any: <bool>
-              backup: <bool>
-              ecmp: <bool>
 
-              # Amount of ECMP paths to send.
-              ecmp_limit: <int; 2-64>
+            # Select an option to send multiple paths for same prefix through bgp updates.
+            # any: Send any eligible path.
+            # backup: Best path and installed backup path.
+            # ecmp: All paths in best path ECMP group.
+            # limit: Limit to n eligible paths.
+            # disabled: Disable sending any paths.
+            send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-              # Amount of paths to send.
-              limit: <int; 2-64>
+            # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+            send_limit: <int; 2-64>
         neighbors:
           - ip_address: <str; required; unique>
             activate: <bool>
             additional_paths:
-              install: <bool>
-              install_ecmp_primary: <bool>
+
+              # Enable or disable reception of additional-paths.
               receive: <bool>
-              send:
-                any: <bool>
-                backup: <bool>
-                ecmp: <bool>
 
-                # Amount of ECMP paths to send.
-                ecmp_limit: <int; 2-64>
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-                # Amount of paths to send.
-                limit: <int; 2-64>
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
         peer_groups:
 
             # Peer-group name.
           - name: <str; required; unique>
             activate: <bool>
             additional_paths:
-              install: <bool>
-              install_ecmp_primary: <bool>
+
+              # Enable or disable reception of additional-paths.
               receive: <bool>
-              send:
-                any: <bool>
-                backup: <bool>
-                ecmp: <bool>
 
-                # Amount of ECMP paths to send.
-                ecmp_limit: <int; 2-64>
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-                # Amount of paths to send.
-                limit: <int; 2-64>
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
       address_family_vpn_ipv4:
         domain_identifier: <str>
         peer_groups:
@@ -2443,6 +2975,27 @@
 
             # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
             redistribute_internal: <bool>
+            additional_paths:
+
+              # Install BGP backup path.
+              install: <bool>
+
+              # Allow additional path with ECMP primary path.
+              install_ecmp_primary: <bool>
+
+              # Enable or disable reception of additional-paths.
+              receive: <bool>
+
+              # Select an option to send multiple paths for same prefix through bgp updates.
+              # any: Send any eligible path.
+              # backup: Best path and installed backup path.
+              # ecmp: All paths in best path ECMP group.
+              # limit: Limit to n eligible paths.
+              # disabled: Disable sending any paths.
+              send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+              # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+              send_limit: <int; 2-64>
 
           # Route distinguisher.
           rd: <str>
@@ -2634,6 +3187,21 @@
 
               # Outbound route-map name.
               route_map_out: <str>
+              additional_paths:
+
+                # Enable or disable reception of additional-paths.
+                receive: <bool>
+
+                # Select an option to send multiple paths for same prefix through bgp updates.
+                # any: Send any eligible path.
+                # backup: Best path and installed backup path.
+                # ecmp: All paths in best path ECMP group.
+                # limit: Limit to n eligible paths.
+                # disabled: Disable sending any paths.
+                send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+                # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+                send_limit: <int; 2-64>
           neighbor_interfaces:
 
               # Interface name.
@@ -2649,6 +3217,142 @@
               # Peer-filter name.
               peer_filter: <str>
               description: <str>
+
+          # Redistribute routes in to BGP.
+          redistribute:
+            attached_host:
+              enabled: <bool; required>
+              route_map: <str>
+            bgp:
+              enabled: <bool; required>
+              route_map: <str>
+            connected:
+              enabled: <bool; required>
+              route_map: <str>
+
+              # RCF function name with parenthesis.
+              # Example: MyFunction(myarg).
+              # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+              rcf: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+            dynamic:
+              enabled: <bool; required>
+              route_map: <str>
+
+              # RCF function name with parenthesis.
+              # Example: MyFunction(myarg).
+              # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+              rcf: <str>
+            isis:
+              enabled: <bool; required>
+
+              # Redistribute IS-IS route level.
+              isis_level: <str; "level-1" | "level-2" | "level-1-2">
+              route_map: <str>
+
+              # RCF function name with parenthesis.
+              # Example: MyFunction(myarg).
+              # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+              rcf: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+            ospf:
+
+              # Redistribute OSPF routes.
+              enabled: <bool>
+
+              # Redistribute OSPF routes learned from external sources.
+              match_external:
+                enabled: <bool; required>
+                route_map: <str>
+
+                # Include following routes while redistributing.
+                include_leaked: <bool>
+
+              # Redistribute OSPF routes learned from internal sources.
+              match_internal:
+                enabled: <bool; required>
+                route_map: <str>
+
+                # Include following routes while redistributing.
+                include_leaked: <bool>
+
+              # Redistribute OSPF routes learned from external NSSA sources.
+              match_nssa_external:
+                enabled: <bool; required>
+
+                # NSSA External Type Number.
+                nssa_type: <int; 1 | 2>
+                route_map: <str>
+
+                # Include following routes while redistributing.
+                include_leaked: <bool>
+              route_map: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+            ospfv3:
+
+              # Redistribute OSPFv3 routes.
+              enabled: <bool>
+
+              # Redistribute OSPFv3 routes learned from external sources.
+              match_external:
+                enabled: <bool; required>
+                route_map: <str>
+
+                # Include following routes while redistributing.
+                include_leaked: <bool>
+
+              # Redistribute OSPFv3 routes learned from internal sources.
+              match_internal:
+                enabled: <bool; required>
+                route_map: <str>
+
+                # Include following routes while redistributing.
+                include_leaked: <bool>
+
+              # Redistribute OSPFv3 routes learned from external NSSA sources.
+              match_nssa_external:
+                enabled: <bool; required>
+
+                # NSSA External Type Number.
+                nssa_type: <int; 1 | 2>
+                route_map: <str>
+
+                # Include following routes while redistributing.
+                include_leaked: <bool>
+              route_map: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+            rip:
+              enabled: <bool; required>
+              route_map: <str>
+            static:
+              enabled: <bool; required>
+              route_map: <str>
+
+              # RCF function name with parenthesis.
+              # Example: MyFunction(myarg).
+              # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+              rcf: <str>
+
+              # Include following routes while redistributing.
+              include_leaked: <bool>
+            user:
+              enabled: <bool; required>
+
+              # RCF function name with parenthesis.
+              # Example: MyFunction(myarg).
+              # `route_map` and `rcf` are mutually exclusive. `route_map` takes precedence.
+              rcf: <str>
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>redistribute</samp> instead.
           redistribute_routes:
             - source_protocol: <str; required>
               route_map: <str>
@@ -2678,19 +3382,26 @@
                 direction_in_action: <str; "deny" | "deny-in-out" | "permit">
                 direction_out_action: <str; "deny" | "deny-in-out" | "permit">
               additional_paths:
+
+                # Install BGP backup path.
                 install: <bool>
+
+                # Allow additional path with ECMP primary path.
                 install_ecmp_primary: <bool>
+
+                # Enable or disable reception of additional-paths.
                 receive: <bool>
-                send:
-                  any: <bool>
-                  backup: <bool>
-                  ecmp: <bool>
 
-                  # Amount of ECMP paths to send.
-                  ecmp_limit: <int; 2-64>
+                # Select an option to send multiple paths for same prefix through bgp updates.
+                # any: Send any eligible path.
+                # backup: Best path and installed backup path.
+                # ecmp: All paths in best path ECMP group.
+                # limit: Limit to n eligible paths.
+                # disabled: Disable sending any paths.
+                send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-                  # Amount of paths to send.
-                  limit: <int; 2-64>
+                # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+                send_limit: <int; 2-64>
 
               # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
               redistribute_internal: <bool>
@@ -2721,6 +3432,21 @@
                   address_family_ipv6:
                     enabled: <bool; required>
                     originate: <bool>
+                additional_paths:
+
+                  # Enable or disable reception of additional-paths.
+                  receive: <bool>
+
+                  # Select an option to send multiple paths for same prefix through bgp updates.
+                  # any: Send any eligible path.
+                  # backup: Best path and installed backup path.
+                  # ecmp: All paths in best path ECMP group.
+                  # limit: Limit to n eligible paths.
+                  # disabled: Disable sending any paths.
+                  send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+                  # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+                  send_limit: <int; 2-64>
             networks:
 
                 # IPv4 prefix "A.B.C.D/E".
@@ -2746,19 +3472,26 @@
                 direction_in_action: <str; "deny" | "deny-in-out" | "permit">
                 direction_out_action: <str; "deny" | "deny-in-out" | "permit">
               additional_paths:
+
+                # Install BGP backup path.
                 install: <bool>
+
+                # Allow additional path with ECMP primary path.
                 install_ecmp_primary: <bool>
+
+                # Enable or disable reception of additional-paths.
                 receive: <bool>
-                send:
-                  any: <bool>
-                  backup: <bool>
-                  ecmp: <bool>
 
-                  # Amount of ECMP paths to send.
-                  ecmp_limit: <int; 2-64>
+                # Select an option to send multiple paths for same prefix through bgp updates.
+                # any: Send any eligible path.
+                # backup: Best path and installed backup path.
+                # ecmp: All paths in best path ECMP group.
+                # limit: Limit to n eligible paths.
+                # disabled: Disable sending any paths.
+                send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
 
-                  # Amount of paths to send.
-                  limit: <int; 2-64>
+                # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+                send_limit: <int; 2-64>
 
               # Allow redistribution of iBGP routes into an Interior Gateway Protocol (IGP). EOS default is true.
               redistribute_internal: <bool>
@@ -2785,6 +3518,21 @@
 
                 # Outbound prefix-list name.
                 prefix_list_out: <str>
+                additional_paths:
+
+                  # Enable or disable reception of additional-paths.
+                  receive: <bool>
+
+                  # Select an option to send multiple paths for same prefix through bgp updates.
+                  # any: Send any eligible path.
+                  # backup: Best path and installed backup path.
+                  # ecmp: All paths in best path ECMP group.
+                  # limit: Limit to n eligible paths.
+                  # disabled: Disable sending any paths.
+                  send: <str; "any" | "backup" | "ecmp" | "limit" | "disabled">
+
+                  # Number of paths to send through bgp updates. For this setting, `send` must be set to `limit` or `ecmp`.
+                  send_limit: <int; 2-64>
             networks:
 
                 # IPv6 prefix "A:B:C:D:E:F:G:H/I".
@@ -2820,6 +3568,8 @@
 
                 # Outbound route-map name.
                 route_map_out: <str>
+                additional_paths:
+                  receive: <bool>
             networks:
 
                 # IPv6 prefix "A.B.C.D/E".
@@ -2857,6 +3607,8 @@
 
                 # Outbound route-map name.
                 route_map_out: <str>
+                additional_paths:
+                  receive: <bool>
             networks:
 
                 # IPv6 prefix "A:B:C:D:E:F:G:H/I".

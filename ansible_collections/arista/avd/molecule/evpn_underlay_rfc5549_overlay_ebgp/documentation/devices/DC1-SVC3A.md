@@ -415,8 +415,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet7 | L2_DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet8 | L2_DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | SERVER_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
 | Ethernet11 | SERVER_server04_inherit_all_from_profile_Eth1 | trunk | 1-4094 | - | - | - |
 | Ethernet12 | SERVER_server05_no_profile_Eth1 | trunk | 1-4094 | - | - | - |
@@ -479,12 +479,12 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet1
+   description L2_DC1-L2LEAF2A_Ethernet1
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet1
+   description L2_DC1-L2LEAF2B_Ethernet1
    no shutdown
    channel-group 7 mode active
 !
@@ -565,7 +565,7 @@ interface Ethernet16
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-SVC3B_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel7 | L2_DC1_L2LEAF2_Port-Channel1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:0000:0303:0202:0101 |
 | Port-Channel14 | ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
@@ -590,7 +590,7 @@ interface Port-Channel5
    switchport
 !
 interface Port-Channel7
-   description DC1_L2LEAF2_Po1
+   description L2_DC1_L2LEAF2_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
@@ -647,7 +647,7 @@ interface Port-Channel15
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 192.168.255.8/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.8/32 |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.8/32 |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 10.255.1.8/32 |
 
 ##### IPv6
 
@@ -655,7 +655,7 @@ interface Port-Channel15
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -672,7 +672,7 @@ interface Loopback1
    ip address 192.168.254.8/32
 !
 interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   description DIAG_VRF_Tenant_A_OP_Zone
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.8/32

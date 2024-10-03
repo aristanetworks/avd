@@ -63,7 +63,7 @@ ethernet_interfaces:
   peer: LEAF3A
   peer_interface: Ethernet98/1
   peer_type: l2leaf
-  description: LEAF3A_Ethernet98/1
+  description: L2_LEAF3A_Ethernet98/1
   shutdown: false
   channel_group:
     id: 971
@@ -72,7 +72,7 @@ ethernet_interfaces:
   peer: LEAF3B
   peer_interface: Ethernet98/1
   peer_type: l2leaf
-  description: LEAF3B_Ethernet98/1
+  description: L2_LEAF3B_Ethernet98/1
   shutdown: false
   channel_group:
     id: 971
@@ -3151,7 +3151,7 @@ ethernet_interfaces:
       allow_vlan: 330
 port_channel_interfaces:
 - name: Port-Channel971
-  description: IDF3_AGG_Po981
+  description: L2_IDF3_AGG_Port-Channel981
   switchport:
     enabled: true
     mode: trunk

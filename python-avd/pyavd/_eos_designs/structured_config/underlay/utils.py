@@ -75,7 +75,7 @@ class UtilsMixin:
                         "prefix_length": get(uplink, "prefix_length"),
                         "channel_group_id": get(uplink, "peer_channel_group_id"),
                         "peer_channel_group_id": get(uplink, "channel_group_id"),
-                        "peer_mlag_group": get(uplink, "mlag_group"),
+                        "peer_node_group": get(uplink, "node_group"),
                         "vlans": get(uplink, "vlans"),
                         "native_vlan": get(uplink, "native_vlan"),
                         "trunk_groups": get(uplink, "peer_trunk_groups"),

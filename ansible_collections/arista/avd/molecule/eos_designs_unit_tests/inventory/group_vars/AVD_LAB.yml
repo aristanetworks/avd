@@ -22,6 +22,9 @@ mlag_bgp_peer_description: "{mlag_peer}"
 overlay_bgp_peer_description: "{peer}"
 default_underlay_p2p_ethernet_description: "P2P_LINK_TO_{peer!u}_{peer_interface}{vrf?<_vrf_}"
 default_underlay_p2p_port_channel_description: "P2P_LINK_TO_{peer}_{peer_interface}" # This is not actively used in this scenario. Included for completeness.
+underlay_l2_ethernet_description: "{peer!u}_{peer_interface}"
+underlay_l2_port_channel_description: "{peer_node_group_or_uppercase_peer}_Po{peer_port_channel_id}"
+default_vrf_diag_loopback_description: "{vrf}_VTEP_DIAGNOSTICS"
 
 # Test for custom description templates
 mlag_bgp_peer_group_description: "MLAG_PEER_{mlag_peer}"

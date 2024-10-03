@@ -257,7 +257,7 @@ vlan 4094
 | Ethernet3 | MLAG_dc2-leaf1a_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_dc2-leaf1a_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet5 | SERVER_dc2-leaf1-server1_PCI2 | *trunk | *11-12,21-22 | *4092 | *- | 5 |
-| Ethernet8 | DC2-LEAF1C_Ethernet2 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
+| Ethernet8 | L2_dc2-leaf1c_Ethernet2 | *trunk | *11-12,21-22,3401-3402 | *- | *- | 8 |
 
 *Inherited from Port-Channel Interface
 
@@ -302,7 +302,7 @@ interface Ethernet5
    channel-group 5 mode active
 !
 interface Ethernet8
-   description DC2-LEAF1C_Ethernet2
+   description L2_dc2-leaf1c_Ethernet2
    no shutdown
    channel-group 8 mode active
 ```
@@ -317,7 +317,7 @@ interface Ethernet8
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel3 | MLAG_dc2-leaf1a_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel5 | SERVER_dc2-leaf1-server1_Bond1 | trunk | 11-12,21-22 | 4092 | - | - | - | 5 | - |
-| Port-Channel8 | DC2-LEAF1C_Po1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
+| Port-Channel8 | L2_dc2-leaf1c_Port-Channel1 | trunk | 11-12,21-22,3401-3402 | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -341,7 +341,7 @@ interface Port-Channel5
    spanning-tree portfast
 !
 interface Port-Channel8
-   description DC2-LEAF1C_Po1
+   description L2_dc2-leaf1c_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 11-12,21-22,3401-3402
    switchport mode trunk
@@ -359,8 +359,8 @@ interface Port-Channel8
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 10.255.128.14/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 10.255.129.13/32 |
-| Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | 10.255.10.14/32 |
-| Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | 10.255.11.14/32 |
+| Loopback10 | DIAG_VRF_VRF10 | VRF10 | 10.255.10.14/32 |
+| Loopback11 | DIAG_VRF_VRF11 | VRF11 | 10.255.11.14/32 |
 
 ##### IPv6
 
@@ -368,8 +368,8 @@ interface Port-Channel8
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | - |
-| Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | - |
+| Loopback10 | DIAG_VRF_VRF10 | VRF10 | - |
+| Loopback11 | DIAG_VRF_VRF11 | VRF11 | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -386,13 +386,13 @@ interface Loopback1
    ip address 10.255.129.13/32
 !
 interface Loopback10
-   description VRF10_VTEP_DIAGNOSTICS
+   description DIAG_VRF_VRF10
    no shutdown
    vrf VRF10
    ip address 10.255.10.14/32
 !
 interface Loopback11
-   description VRF11_VTEP_DIAGNOSTICS
+   description DIAG_VRF_VRF11
    no shutdown
    vrf VRF11
    ip address 10.255.11.14/32

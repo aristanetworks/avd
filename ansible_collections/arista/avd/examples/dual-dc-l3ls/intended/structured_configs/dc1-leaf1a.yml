@@ -315,7 +315,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel8
-  description: DC1-LEAF1C_Po1
+  description: L2_dc1-leaf1c_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -377,7 +377,7 @@ ethernet_interfaces:
   peer: dc1-leaf1c
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: DC1-LEAF1C_Ethernet1
+  description: L2_dc1-leaf1c_Ethernet1
   shutdown: false
   channel_group:
     id: 8
@@ -430,12 +430,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.255.1.3/32
 - name: Loopback10
-  description: VRF10_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.10.3/32
 - name: Loopback11
-  description: VRF11_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.11.3/32
