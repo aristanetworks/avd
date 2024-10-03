@@ -10,6 +10,7 @@ from ipaddress import ip_network
 from itertools import islice
 from typing import TYPE_CHECKING
 
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get, get_item, merge
 
 if TYPE_CHECKING:

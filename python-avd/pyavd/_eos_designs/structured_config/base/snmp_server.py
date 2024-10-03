@@ -7,7 +7,7 @@ from functools import cached_property
 from hashlib import sha1
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import get, replace_or_append_item, strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 

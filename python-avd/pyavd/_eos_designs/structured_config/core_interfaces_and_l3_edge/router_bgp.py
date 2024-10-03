@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get_ip_from_ip_prefix
 
 from .utils import UtilsMixin

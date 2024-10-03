@@ -42,6 +42,6 @@ l2leaf:
           id: 2
 
 expected_error_message: >-
-  Unexpected failure during module execution: 'uplink_port_channel_id' on 'invalid-uplink-port-channel-id-l2leaf-2'
+  'uplink_port_channel_id' on 'invalid-uplink-port-channel-id-l2leaf-2'
   is set to 1234 and is not matching 1 set on MLAG peer.
-  The 'uplink_port_channel_id' must be matching on MLAG peers.
+  The 'uplink_port_channel_id' must be matching on MLAG peers for host 'invalid-uplink-port-channel-id-l2leaf-2'.

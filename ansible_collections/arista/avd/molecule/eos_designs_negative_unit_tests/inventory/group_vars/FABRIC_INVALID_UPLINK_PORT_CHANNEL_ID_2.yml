@@ -42,5 +42,5 @@ l2leaf:
           id: 2
 
 expected_error_message: >-
-  Unexpected failure during module execution: 'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches.
+  'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches.
   Got '2001' on 'invalid-uplink-port-channel-id-l2leaf-1'.

@@ -60,7 +60,7 @@ def get_item(
         if required is True:
             if custom_error_msg:
                 raise AristaAvdInvalidInputsError(custom_error_msg)
-            raise AristaAvdMissingVariableError(org_key)
+            raise AristaAvdMissingVariableError(var_name)
         return default
 
     for list_item in list_of_dicts:
@@ -75,5 +75,5 @@ def get_item(
     if required is True:
         if custom_error_msg:
             raise AristaAvdInvalidInputsError(custom_error_msg)
-        raise AristaAvdMissingVariableError(org_key)
+        raise AristaAvdMissingVariableError(var_name)
     return default
