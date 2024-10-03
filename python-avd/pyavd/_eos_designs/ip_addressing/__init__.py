@@ -313,7 +313,7 @@ class AvdIpAddressing(AvdFacts, UtilsMixin):
 
     def vrf_loopback_ipv6(self, pool: str) -> str:
         """
-        Return IP address for a Loopback interface based on the given pool.
+        Return IPv6 address for a Loopback interface based on the given pool.
 
         Default offset from pool is `id + loopback_ipv6_offset`.
 
