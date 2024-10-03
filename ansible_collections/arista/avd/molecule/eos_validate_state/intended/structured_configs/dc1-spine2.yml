@@ -41,9 +41,10 @@ router_bgp:
       activate: false
     - name: IPv4-EXTERNAL-PEERS
       activate: true
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 10.255.255.3
     peer_group: IPv4-UNDERLAY-PEERS

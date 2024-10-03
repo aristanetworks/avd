@@ -159,6 +159,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute:
       connected:
+        enabled: true
         route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
@@ -224,6 +225,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute:
       connected:
+        enabled: true
         route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
@@ -245,6 +247,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute:
       connected:
+        enabled: true
         route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
@@ -266,6 +269,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute:
       connected:
+        enabled: true
         route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25
@@ -287,6 +291,7 @@ router_bgp:
     router_id: 192.168.255.21
     redistribute:
       connected:
+        enabled: true
         route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.25

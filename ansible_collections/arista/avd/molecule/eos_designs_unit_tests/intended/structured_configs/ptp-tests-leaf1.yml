@@ -80,6 +80,7 @@ router_bgp:
     router_id: 10.254.1.1
     redistribute:
       connected:
+        enabled: true
         route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.254.1.97

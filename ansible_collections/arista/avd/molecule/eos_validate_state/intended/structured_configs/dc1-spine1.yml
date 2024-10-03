@@ -35,9 +35,10 @@ router_bgp:
       activate: true
     - ip_address: 123.1.1.11
       activate: true
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 10.255.255.1
     peer_group: IPv4-UNDERLAY-PEERS

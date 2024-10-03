@@ -24,8 +24,9 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-  redistribute_routes:
-  - source_protocol: connected
+  redistribute:
+    connected:
+      enabled: true
   neighbors:
   - ip_address: 172.16.11.2
     peer_group: IPv4-UNDERLAY-PEERS

@@ -26,6 +26,7 @@ router_bgp:
     route_map_in: RM-MLAG-PEER-IN
   redistribute:
     connected:
+      enabled: true
       route_map: RM-CONN-2-BGP-VRFS
   neighbors:
   - ip_address: 10.10.20.1

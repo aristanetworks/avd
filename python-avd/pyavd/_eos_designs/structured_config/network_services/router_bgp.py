@@ -322,7 +322,7 @@ class RouterBgpMixin(UtilsMixin):
     def _update_router_bgp_vrf_mlag_neighbor_cfg(self: AvdStructuredConfigNetworkServices, bgp_vrf: dict, vrf: dict, tenant: dict, vlan_id: int) -> None:
         """In-place update MLAG neighbor part of structured config for *one* VRF under router_bgp.vrfs."""
         if not self._mlag_ibgp_peering_redistribute(vrf, tenant):
-            bgp_vrf["redistribute"]["connected"] = {"route_map": "RM-CONN-2-BGP-VRFS"}
+            bgp_vrf["redistribute"]["connected"] = {"enabled": True, "route_map": "RM-CONN-2-BGP-VRFS"}
 
         interface_name = f"Vlan{vlan_id}"
         if self.shared_utils.underlay_rfc5549 and self.shared_utils.overlay_mlag_rfc5549:
