@@ -430,12 +430,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.255.129.13/32
 - name: Loopback10
-  description: VRF10_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.10.13/32
 - name: Loopback11
-  description: VRF11_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.11.13/32
