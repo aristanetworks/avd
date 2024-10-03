@@ -9,6 +9,7 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>default_underlay_p2p_ethernet_description</samp>](## "default_underlay_p2p_ethernet_description") | String |  | `P2P_{peer}_{peer_interface}{vrf?<_VRF_}` |  | The default description or description template to be used on L3 point-to-point ethernet interfaces.<br>The interfaces using this are the routed uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br>  - `vrf`: The name of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).<br><br>By default the description is templated from the name and interface of the peer. |
     | [<samp>default_underlay_p2p_port_channel_description</samp>](## "default_underlay_p2p_port_channel_description") | String |  | `P2P_{peer}_{peer_interface}` |  | The default description or description template to be used on L3 point-to-point port-channel interfaces.<br>The port-channels using this are `p2p_links` defined under `l3_edge` or `core_interfaces`.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local interface name.<br>  - `peer_interface`: The interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>By default the description is templated from the name and interface of the peer. |
+    | [<samp>default_vrf_diag_loopback_description</samp>](## "default_vrf_diag_loopback_description") | String |  | `DIAG_VRF_{vrf}` |  | The default description or description template to be used on VRF diagnostic loopback interfaces.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `interface`: The Loopback interface name.<br>  - `vrf`: The VRF name.<br>  - `tenant`: The tenant name.<br><br>By default the description is templated from the VRF name. |
     | [<samp>enable_trunk_groups</samp>](## "enable_trunk_groups") | Boolean |  | `False` |  | Enable Trunk Group support across eos_designs.<br>Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".<br>*All* vlans and *all* trunks towards connected endpoints must be using trunk groups as well.<br>If trunk groups are not assigned to a trunk, no vlans will be enabled on that trunk.<br>See "Details on enable_trunk_groups" below before enabling this feature.<br> |
     | [<samp>mlag_bgp_peer_description</samp>](## "mlag_bgp_peer_description") | String |  | `{mlag_peer}_{peer_interface}` |  | Description or description template to be used on the MLAG BGP peers including those in VRFs.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br>  - `interface`: The local MLAG L3 VLAN interface.<br>  - `peer_interface`: The MLAG L3 VLAN interface on the MLAG peer.<br>  - `vrf`: The name of the VRF. Not available for the underlay peering.<br><br>The default description is built from the name and interface of the MLAG peer and optionally the VRF. |
     | [<samp>mlag_bgp_peer_group_description</samp>](## "mlag_bgp_peer_group_description") | String |  | `{mlag_peer}` |  | Description or description template to be used on the MLAG BGP peer-group.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `mlag_peer`: The name of the MLAG peer.<br><br>The default description is the name of the MLAG peers. |
@@ -82,6 +83,16 @@
     #
     # By default the description is templated from the name and interface of the peer.
     default_underlay_p2p_port_channel_description: <str; default="P2P_{peer}_{peer_interface}">
+
+    # The default description or description template to be used on VRF diagnostic loopback interfaces.
+    # This can be a template using the format string syntax.
+    # The available template fields are:
+    #   - `interface`: The Loopback interface name.
+    #   - `vrf`: The VRF name.
+    #   - `tenant`: The tenant name.
+    #
+    # By default the description is templated from the VRF name.
+    default_vrf_diag_loopback_description: <str; default="DIAG_VRF_{vrf}">
 
     # Enable Trunk Group support across eos_designs.
     # Warning: Because of the nature of the EOS Trunk Group feature, enabling this is "all or nothing".

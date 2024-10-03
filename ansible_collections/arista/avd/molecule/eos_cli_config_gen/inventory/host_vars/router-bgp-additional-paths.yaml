@@ -7,4 +7,4 @@ router_bgp:
     additional_paths:
       receive: false
       send: ecmp
-      send_ecmp_limit: 30
+      send_limit: 30
