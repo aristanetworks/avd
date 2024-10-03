@@ -7,7 +7,7 @@ from functools import cached_property
 from re import findall
 from typing import TYPE_CHECKING, Literal
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, get, get_ip_from_ip_prefix, get_item, strip_empties_from_dict
 from pyavd.j2filters import natural_sort
 
@@ -363,13 +363,13 @@ class WanMixin:
                         f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                         " facts."
                     )
-                    raise AristaAvdMissingVariableError(message=msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 if wan_path_groups is None:
                     msg = (
                         f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
                         " or something is wrong with the peer facts."
                     )
-                    raise AristaAvdMissingVariableError(message=msg)
+                    raise AristaAvdInvalidInputsError(msg)
             else:
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 vtep_ip = get(wan_rs_dict, "vtep_ip", required=True)

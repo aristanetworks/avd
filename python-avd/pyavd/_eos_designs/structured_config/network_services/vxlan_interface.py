@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, NoReturn
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import append_if_not_duplicate, default, get, get_item, unique
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -281,7 +281,7 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         if overlay_her_flood_list_scope == "dc" and self.shared_utils.dc_name is None:
             msg = "'dc_name' is required with 'overlay_her_flood_list_scope: dc'"
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         for peer in self.shared_utils.all_fabric_devices:
             if peer == self.shared_utils.hostname:

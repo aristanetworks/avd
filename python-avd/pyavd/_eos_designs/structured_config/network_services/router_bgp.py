@@ -9,7 +9,7 @@ from itertools import groupby as itertools_groupby
 from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, append_if_not_duplicate, default, get, get_item, merge, strip_empties_from_dict
 from pyavd.j2filters import list_compress, natural_sort
 
@@ -526,7 +526,7 @@ class RouterBgpMixin(UtilsMixin):
                 "The 'evpn_vlan_bundle' of the svis/l2vlans must be defined in the common 'evpn_vlan_bundles' setting. First occurrence seen for svi/l2vlan"
                 f" {vlan['id']} in Tenant '{vlan['tenant']}' and evpn_vlan_bundle '{vlan['evpn_vlan_bundle']}'."
             )
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return evpn_vlan_bundle
 
     def _get_svi_l2vlan_bundle(self: AvdStructuredConfigNetworkServices, evpn_vlan_bundle: dict, tenant: dict, vlans: list) -> dict | None:
@@ -704,7 +704,7 @@ class RouterBgpMixin(UtilsMixin):
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
                 f"Unable to set EVPN RD/RT for vlan {vlan['id']} in Tenant '{vlan['tenant']}'"
             )
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return mac_vrf_id_base + int(vlan["id"])
 
     def get_vlan_mac_vrf_vni(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> int:
@@ -714,7 +714,7 @@ class RouterBgpMixin(UtilsMixin):
                 "'rt_override' or 'vni_override' or 'mac_vrf_id_base' or 'mac_vrf_vni_base' must be set. "
                 f"Unable to set EVPN RD/RT for vlan {vlan['id']} in Tenant '{vlan['tenant']}'"
             )
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return mac_vrf_vni_base + int(vlan["id"])
 
     def get_vlan_rd(self: AvdStructuredConfigNetworkServices, vlan: dict, tenant: dict) -> str:

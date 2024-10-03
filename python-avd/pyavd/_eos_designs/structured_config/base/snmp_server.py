@@ -7,7 +7,7 @@ from functools import cached_property
 from hashlib import sha1
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError
 from pyavd._utils import get, replace_or_append_item, strip_null_from_data
 from pyavd.j2filters import natural_sort, snmp_hash
 
@@ -81,7 +81,7 @@ class SnmpServerMixin(UtilsMixin):
         elif compute_source == "system_mac":
             if self.shared_utils.system_mac_address is None:
                 msg = "default_engine_id_from_system_mac: true requires system_mac_address to be set."
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
             # the default engine id on switches is derived as per the following formula
             local_engine_id = f"f5717f{str(self.shared_utils.system_mac_address).replace(':', '').lower()}00"
         else:

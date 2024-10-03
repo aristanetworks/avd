@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, get, get_item, merge, unique
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -370,7 +370,7 @@ class FilteredTenantsMixin:
         if vrf_id is None:
             if required:
                 msg = f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set."
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
             return None
         return int(vrf_id)
 
@@ -379,7 +379,7 @@ class FilteredTenantsMixin:
         vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
         if vrf_vni is None:
             msg = f"'vrf_vni' or 'vrf_id' for VRF '{vrf['name']} must be set."
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return int(vrf_vni)
 
     @cached_property

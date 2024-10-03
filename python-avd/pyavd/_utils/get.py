@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from typing import Any
 
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 
 def get(
@@ -55,7 +55,9 @@ def get(
     value = dictionary.get(keys[0])
     if value is None:
         if required is True:
-            raise AristaAvdMissingVariableError(org_key, message=custom_error_msg)
+            if custom_error_msg:
+                raise AristaAvdInvalidInputsError(custom_error_msg)
+            raise AristaAvdMissingVariableError(org_key)
         return default
 
     if len(keys) > 1:
@@ -114,7 +116,9 @@ def get_v2(
 
     if value is None:
         if required is True:
-            raise AristaAvdMissingVariableError(org_key, message=custom_error_msg)
+            if custom_error_msg:
+                raise AristaAvdInvalidInputsError(custom_error_msg)
+            raise AristaAvdMissingVariableError(org_key)
         return default
 
     if len(keys) > 1:

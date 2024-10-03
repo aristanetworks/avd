@@ -8,7 +8,7 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError
 from pyavd._utils import append_if_not_duplicate, default, get, replace_or_append_item, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
@@ -188,7 +188,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
                         f" the connected endpoint with the name '{connected_endpoint['name']}'."
                     )
-                    raise AristaAvdMissingVariableError(message=msg)
+                    raise AristaAvdInvalidInputsError(msg)
 
                 profile = self.shared_utils.get_merged_port_profile(
                     profile_name,

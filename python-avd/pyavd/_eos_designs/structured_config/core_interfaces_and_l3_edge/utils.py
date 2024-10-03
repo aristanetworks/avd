@@ -10,7 +10,6 @@ from ipaddress import ip_network
 from itertools import islice
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdMissingVariableError
 from pyavd._utils import default, get, get_item, merge
 
 if TYPE_CHECKING:
@@ -201,7 +200,7 @@ class UtilsMixin:
             return data
 
         msg = f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set."
-        raise AristaAvdMissingVariableError(message=msg)
+        raise AristaAvdInvalidInputsError(msg)
 
     def _get_common_interface_cfg(self: AvdStructuredConfigCoreInterfacesAndL3Edge, p2p_link: dict) -> dict:
         """

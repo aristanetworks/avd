@@ -21,35 +21,15 @@ class AristaAvdError(Exception):
         return path
 
 
+class AristaAvdInvalidInputsError(AristaAvdError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
 class AristaAvdMissingVariableError(AristaAvdError):
-    def __init__(self, variable: str | None = None, message: str | None = None, host: str | None = None) -> None:
-        """Assume either variable or message is set."""
-        self.variable = variable
-        self.host = host
-        if message is not None:
-            self._message = message
-        else:
-            self._message = f"'{variable}' is required but was not found."
+    def __init__(self, variable: str | None = None) -> None:
+        self.message = f"'{variable}' is required but was not found."
         super().__init__(self.message)
-
-    @property
-    def message(self) -> str:
-        """Render self.host in the error message if present."""
-        if self.host is None:
-            return self._message
-        if self._message.endswith("."):
-            return f"{self._message[:-1]} for host '{self.host}'."
-        return f"{self._message} for host '{self.host}'."
-
-    @message.setter
-    def message(self, value: str) -> None:
-        self._message = value
-
-    def __repr__(self) -> str:
-        return self.message
-
-    def __str__(self) -> str:
-        return self.message
 
 
 class AvdSchemaError(AristaAvdError):

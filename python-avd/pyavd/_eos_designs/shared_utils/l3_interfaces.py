@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get, get_item, merge
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
@@ -71,14 +71,14 @@ class L3InterfacesMixin:
             peer_as = get(bgp, "peer_as")
             if peer_as is None:
                 msg = f"'l3_interfaces[{interface['name']}].bgp.peer_as' needs to be set to enable BGP."
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             is_intf_wan = get(interface, "wan_carrier") is not None
 
             prefix_list_in = get(bgp, "ipv4_prefix_list_in")
             if prefix_list_in is None and is_intf_wan:
                 msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for l3_interfaces[{interface['name']}]"
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             description = interface.get("description")
             if not description:

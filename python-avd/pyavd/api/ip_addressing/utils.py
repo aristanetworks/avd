@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError
 from pyavd._utils import get
 from pyavd.j2filters import range_expand
 
@@ -25,14 +25,14 @@ class UtilsMixin:
     def _mlag_primary_id(self: AvdIpAddressing) -> int:
         if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("primary") is None:
             msg = "'mlag_switch_ids' is required to calculate MLAG IP addresses."
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return self.shared_utils.mlag_switch_ids["primary"]
 
     @cached_property
     def _mlag_secondary_id(self: AvdIpAddressing) -> int:
         if self.shared_utils.mlag_switch_ids is None or self.shared_utils.mlag_switch_ids.get("secondary") is None:
             msg = "'mlag_switch_ids' is required to calculate MLAG IP addresses."
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return self.shared_utils.mlag_switch_ids["secondary"]
 
     @cached_property
@@ -67,14 +67,14 @@ class UtilsMixin:
     def _uplink_ipv4_pool(self: AvdIpAddressing) -> str:
         if self.shared_utils.uplink_ipv4_pool is None:
             msg = "'uplink_ipv4_pool' is required to calculate uplink IP addresses."
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return self.shared_utils.uplink_ipv4_pool
 
     @cached_property
     def _id(self: AvdIpAddressing) -> int:
         if self.shared_utils.id is None:
             msg = "'id' is required to calculate IP addresses."
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
         return self.shared_utils.id
 
     @cached_property
@@ -187,7 +187,7 @@ class UtilsMixin:
 
         if uplink_pool is None and downlink_pool is None:
             msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
-            raise AristaAvdMissingVariableError(message=msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:
             return (uplink_pool, uplink_offset)

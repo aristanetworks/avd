@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import get, get_all, get_ip_from_ip_prefix, get_item
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.j2filters import natural_sort, range_expand
@@ -698,7 +698,7 @@ class UtilsWanMixin:
                     f"{wan_interface['name']} peer_ip needs to be set. When using wan interface "
                     "for direct type internet exit, peer_ip is used for nexthop, and connectivity monitoring."
                 )
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             # wan interface ip will be used for acl, hence raise error if ip is not available
             if (ip_address := wan_interface.get("ip_address")) == "dhcp" and not (ip_address := wan_interface.get("dhcp_ip")):
@@ -706,7 +706,7 @@ class UtilsWanMixin:
                     f"{wan_interface['name']} 'dhcp_ip' needs to be set. When using WAN interface for 'direct' type Internet exit, "
                     "'dhcp_ip' is used in the NAT ACL."
                 )
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             sanitized_interface_name = self.shared_utils.sanitize_interface_name(wan_interface["name"])
             connections.append(
@@ -760,7 +760,7 @@ class UtilsWanMixin:
                     f"{wan_interface['name']}.cv_pathfinder_internet_exit.policies[{internet_exit_policy['name']}]."
                     "tunnel_interface_numbers needs to be set, when using wan interface for zscaler type internet exit."
                 )
-                raise AristaAvdMissingVariableError(message=msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             tunnel_id_range = range_expand(tunnel_interface_numbers)
 
