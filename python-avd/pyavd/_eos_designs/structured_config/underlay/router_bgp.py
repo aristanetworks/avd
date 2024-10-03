@@ -29,7 +29,7 @@ class RouterBgpMixin(UtilsMixin):
                 # Configure redistribute connected with or without route-map in case it the underlay is not BGP.
                 # TODO: Currently only implemented for WAN routers but should probably be
                 # implemented for anything with EVPN services in default VRF.
-                return {"redistribute_routes": self._router_bgp_redistribute_routes}
+                return {"redistribute": self._router_bgp_redistribute_routes}
 
             return None
 
@@ -70,7 +70,7 @@ class RouterBgpMixin(UtilsMixin):
             router_bgp["address_family_ipv6"] = {"peer_groups": [{"name": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"], "activate": True}]}
 
         # Redistribute routes
-        router_bgp["redistribute_routes"] = self._router_bgp_redistribute_routes
+        router_bgp["redistribute"] = self._router_bgp_redistribute_routes
 
         vrfs_dict = {}
 
@@ -191,9 +191,9 @@ class RouterBgpMixin(UtilsMixin):
         return strip_empties_from_dict(router_bgp, strip_values_tuple=(None, ""))
 
     @cached_property
-    def _router_bgp_redistribute_routes(self: AvdStructuredConfigUnderlay) -> list:
+    def _router_bgp_redistribute_routes(self: AvdStructuredConfigUnderlay) -> dict:
         """Return structured config for router_bgp.redistribute_routes."""
         if self.shared_utils.overlay_routing_protocol == "none" or not self.shared_utils.underlay_filter_redistribute_connected:
-            return [{"source_protocol": "connected"}]
+            return {"connected": {"enabled": True}}
 
-        return [{"source_protocol": "connected", "route_map": "RM-CONN-2-BGP"}]
+        return {"connected": {"enabled": True, "route_map": "RM-CONN-2-BGP"}}

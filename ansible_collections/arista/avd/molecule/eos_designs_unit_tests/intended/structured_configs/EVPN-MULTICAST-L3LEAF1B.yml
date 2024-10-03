@@ -54,9 +54,10 @@ router_bgp:
     peer: EVPN-MULTICAST-SPINE1
     description: EVPN-MULTICAST-SPINE1_Loopback0
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -74,9 +75,9 @@ router_bgp:
         route_targets:
         - '13:13'
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -95,9 +96,9 @@ router_bgp:
         route_targets:
         - '11:11'
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -116,9 +117,9 @@ router_bgp:
         route_targets:
         - '12:12'
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -137,9 +138,9 @@ router_bgp:
         route_targets:
         - '23:23'
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -158,9 +159,9 @@ router_bgp:
         route_targets:
         - '21:21'
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -179,9 +180,9 @@ router_bgp:
         route_targets:
         - '22:22'
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -201,9 +202,9 @@ router_bgp:
         - '33:33'
     evpn_multicast: false
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -223,9 +224,9 @@ router_bgp:
         - 66:66
     evpn_multicast: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -245,9 +246,9 @@ router_bgp:
         - '32:32'
     evpn_multicast: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -267,9 +268,9 @@ router_bgp:
         - '42:42'
     evpn_multicast: false
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -289,9 +290,9 @@ router_bgp:
         - '41:41'
     evpn_multicast: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -311,9 +312,9 @@ router_bgp:
         - '55:55'
     evpn_multicast: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -336,9 +337,9 @@ router_bgp:
       ipv4:
         transit: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -361,9 +362,9 @@ router_bgp:
       ipv4:
         transit: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -383,9 +384,9 @@ router_bgp:
         - '51:51'
     evpn_multicast: true
     router_id: 192.168.255.4
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.0
       peer_group: MLAG-IPv4-UNDERLAY-PEER

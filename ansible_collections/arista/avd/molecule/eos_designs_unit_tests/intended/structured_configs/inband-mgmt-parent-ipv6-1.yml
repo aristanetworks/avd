@@ -44,10 +44,12 @@ router_bgp:
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: inband-mgmt-parent-ipv6-2
     description: inband-mgmt-parent-ipv6-2_Vlan4093
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: attached-host
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+    attached_host:
+      enabled: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

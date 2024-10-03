@@ -29,10 +29,12 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: attached-host
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+    attached_host:
+      enabled: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -50,8 +52,9 @@ router_bgp:
         route_targets:
         - '1:1'
     router_id: 10.0.255.1
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 vlan_internal_order:

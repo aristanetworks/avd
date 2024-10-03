@@ -59,9 +59,10 @@ router_bgp:
     peer: CUSTOM-PYTHON_MODULES-SPINE1
     description: CUSTOM-PYTHON_MODULES-SPINE1_Loopback0
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   vrfs:
   - name: TEST_VRF
     router_id: 192.168.255.21
@@ -83,9 +84,9 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
-    redistribute_routes:
-    - source_protocol: connected
-      route_map: RM-CONN-2-BGP-VRFS
+    redistribute:
+      connected:
+        route_map: RM-CONN-2-BGP-VRFS
     updates:
       wait_install: true
   address_family_evpn:

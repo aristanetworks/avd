@@ -10,9 +10,10 @@ router_bgp:
     paths: 16
   updates:
     wait_install: true
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
@@ -77,8 +78,9 @@ router_bgp:
         route_targets:
         - 100:100
     router_id: 192.168.30.1
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
   - name: PROD
     rd: 192.168.30.1:42
     route_targets:
@@ -91,8 +93,9 @@ router_bgp:
         route_targets:
         - '42:42'
     router_id: 192.168.30.1
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 aaa_root:
