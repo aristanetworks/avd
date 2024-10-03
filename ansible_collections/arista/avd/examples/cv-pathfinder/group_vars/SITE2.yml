@@ -4,6 +4,45 @@
 # default is none for WAN routers.
 underlay_routing_protocol: ebgp
 
+ipv4_prefix_list_catalog:
+  - name: ALLOW-DEFAULT
+    sequence_numbers:
+      - sequence: 10
+        action: permit 0.0.0.0/0
+
+# Internet ACL
+ipv4_acls:
+  - name: ACL-INTERNET-IN
+    entries:
+      - sequence: 1
+        remark: "Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface"
+      - sequence: 10
+        # IPSEC traffic from anywhere
+        action: permit
+        protocol: udp
+        source: any
+        destination: interface_ip
+        destination_ports_match: eq
+        destination_ports: [isakmp, non500-isakmp]
+      - sequence: 20
+        # Permit BGP
+        action: permit
+        protocol: tcp
+        source: any
+        destination: interface_ip
+        destination_ports_match: eq
+        destination_ports: [bgp]
+      - sequence: 30
+        # Troubleshooting
+        action: permit
+        protocol: icmp
+        source: any
+        destination: interface_ip
+      - action: deny
+        protocol: ip
+        source: any
+        destination: any
+
 l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.255.0/24
@@ -46,6 +85,7 @@ wan_router:
         # Direct HA
         ha_interfaces: [Ethernet5]
         ha_ipv4_pool: 10.42.0.0/24
+        use_port_channel_for_direct_ha: false
         # Can disable ipsec on WAN HA tunnel using this knob
         # ipsec: false
       nodes:
@@ -73,3 +113,12 @@ wan_router:
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION2-INTERNET-CORP
               wan_circuit_id: inet-site2-wan2
+              bgp:
+                peer_as: 65666
+                ipv4_prefix_list_in: ALLOW-DEFAULT
+          structured_config:
+            router_bgp:
+              address_family_ipv4:
+                neighbors:
+                - ip_address: 100.64.21.1
+                  activate: true

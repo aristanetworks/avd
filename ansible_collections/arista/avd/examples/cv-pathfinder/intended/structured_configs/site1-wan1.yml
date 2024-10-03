@@ -167,8 +167,6 @@ static_routes:
   gateway: 192.168.17.1
 - destination_address_prefix: 172.18.0.0/16
   gateway: 172.18.10.1
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 100.64.10.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -586,6 +584,7 @@ router_adaptive_virtual_topology:
       avt_profile: BLUE-POLICY-VIDEO
     - application_profile: VOICE
       avt_profile: BLUE-POLICY-VOICE
+      dscp: 46
     - application_profile: default
       avt_profile: BLUE-POLICY-DEFAULT
   - name: RED-POLICY
@@ -677,6 +676,10 @@ router_path_selection:
     - name: INTERNET
       priority: 2
     - name: LAN_HA
+    jitter: 30
+    latency: 150
+    loss_rate: '1'
+    lowest_hop_count: true
   - name: LB-BLUE-POLICY-DEFAULT
     path_groups:
     - name: INTERNET

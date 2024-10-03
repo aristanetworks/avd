@@ -266,24 +266,12 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet5
-  peer_type: wan_ha_peer
-  peer_interface: Ethernet5
-  peer: site2-wan2
-  description: WAN_HA_site2-wan2_Ethernet5
-  shutdown: false
-  channel_group:
-    id: 5
-    mode: active
-  mtu: 9194
-port_channel_interfaces:
-- name: Port-Channel5
   switchport:
     enabled: false
   peer_type: l3_interface
-  peer_interface: Port-Channel5
   peer: site2-wan2
   shutdown: false
-  description: WAN_HA_site2-wan2_Port-Channel5
+  description: WAN_HA_site2-wan2_Ethernet5
   ip_address: 10.42.0.0/31
   flow_tracker: null
   mtu: 9194
@@ -485,6 +473,7 @@ router_adaptive_virtual_topology:
       avt_profile: BLUE-POLICY-VIDEO
     - application_profile: VOICE
       avt_profile: BLUE-POLICY-VOICE
+      dscp: 46
     - application_profile: default
       avt_profile: BLUE-POLICY-DEFAULT
   - name: RED-POLICY
@@ -534,7 +523,7 @@ router_path_selection:
     id: 65535
     flow_assignment: lan
     local_interfaces:
-    - name: Port-Channel5
+    - name: Ethernet5
     static_peers:
     - router_ip: 192.168.42.8
       name: site2-wan2
@@ -551,6 +540,10 @@ router_path_selection:
     path_groups:
     - name: MPLS
     - name: LAN_HA
+    jitter: 30
+    latency: 150
+    loss_rate: '1'
+    lowest_hop_count: true
   - name: LB-BLUE-POLICY-DEFAULT
     path_groups:
     - name: MPLS

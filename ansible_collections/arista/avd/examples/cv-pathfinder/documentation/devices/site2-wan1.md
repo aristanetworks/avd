@@ -33,7 +33,6 @@
 - [Interfaces](#interfaces)
   - [DPS Interfaces](#dps-interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
@@ -434,9 +433,7 @@ interface Dps1
 | Ethernet1.100 | P2P_site2-leaf1_Ethernet3.100_VRF_BLUE | - | 10.0.2.13/31 | BLUE | 9214 | False | - | - |
 | Ethernet1.101 | P2P_site2-leaf1_Ethernet3.101_VRF_RED | - | 10.0.2.13/31 | RED | 9214 | False | - | - |
 | Ethernet3 | ACME-MPLS-INC_mpls-site2-wan1_mpls-cloud_Ethernet7 | - | 172.18.20.2/24 | default | - | False | - | - |
-| Ethernet5 | WAN_HA_site2-wan2_Ethernet5 | 5 | *10.42.0.0/31 | **default | *9194 | *False | **- | **- |
-
-*Inherited from Port-Channel Interface
+| Ethernet5 | WAN_HA_site2-wan2_Ethernet5 | - | 10.42.0.0/31 | default | 9194 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -477,32 +474,6 @@ interface Ethernet3
 !
 interface Ethernet5
    description WAN_HA_site2-wan2_Ethernet5
-   no shutdown
-   mtu 9194
-   channel-group 5 mode active
-```
-
-### Port-Channel Interfaces
-
-#### Port-Channel Interfaces Summary
-
-##### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-
-##### IPv4
-
-| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel5 | WAN_HA_site2-wan2_Port-Channel5 | - | 10.42.0.0/31 | default | 9194 | False | - | - |
-
-#### Port-Channel Interfaces Device Configuration
-
-```eos
-!
-interface Port-Channel5
-   description WAN_HA_site2-wan2_Port-Channel5
    no shutdown
    mtu 9194
    no switchport
@@ -657,7 +628,7 @@ Topology role: transit region
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 | VIDEO | BLUE-POLICY-VIDEO | - | - |
-| VOICE | BLUE-POLICY-VOICE | - | - |
+| VOICE | BLUE-POLICY-VOICE | - | 46 |
 | default | BLUE-POLICY-DEFAULT | - | - |
 
 ##### AVT policy DEFAULT-POLICY-WITH-CP
@@ -729,6 +700,7 @@ router adaptive-virtual-topology
       !
       match application-profile VOICE
          avt profile BLUE-POLICY-VOICE
+         dscp 46
       !
       match application-profile default
          avt profile BLUE-POLICY-DEFAULT
@@ -1319,7 +1291,7 @@ application traffic recognition
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Port-Channel5 | - |  |
+| Ethernet5 | - |  |
 
 ###### Static Peers
 
@@ -1360,7 +1332,7 @@ application traffic recognition
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 | LB-BLUE-POLICY-DEFAULT | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
 | LB-BLUE-POLICY-VIDEO | - | - | - | LAN_HA (1)<br>MPLS (2) | False |
-| LB-BLUE-POLICY-VOICE | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
+| LB-BLUE-POLICY-VOICE | 30 | 150 | 1 | LAN_HA (1)<br>MPLS (1) | True |
 | LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
 | LB-DEFAULT-POLICY-DEFAULT | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
 | LB-RED-POLICY-CRITICAL-SECRET-DATA | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
@@ -1378,7 +1350,7 @@ router path-selection
       ipsec profile DP-PROFILE
       flow assignment lan
       !
-      local interface Port-Channel5
+      local interface Ethernet5
       !
       peer static router-ip 192.168.42.8
          name site2-wan2
@@ -1409,6 +1381,10 @@ router path-selection
       path-group MPLS priority 2
    !
    load-balance policy LB-BLUE-POLICY-VOICE
+      latency 150
+      jitter 30
+      loss-rate 1
+      hop count lowest
       path-group LAN_HA
       path-group MPLS
    !

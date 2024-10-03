@@ -428,7 +428,7 @@ interface Dps1
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1.42 | RED-TEST | - | 10.42.3.1/24 | RED | - | False | - | - |
 | Ethernet1.666 | BLUE-TEST | - | 10.66.3.1/24 | BLUE | - | False | - | - |
-| Ethernet4 | REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Ethernet8 | - | 100.64.30.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
+| Ethernet4 | REGION2-INTERNET-CORP_inet-site3-wan1_inet-cloud_Ethernet8 | - | dhcp | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -461,7 +461,8 @@ interface Ethernet4
    no shutdown
    no switchport
    flow tracker hardware FLOW-TRACKER
-   ip address 100.64.30.2/24
+   ip address dhcp
+   dhcp client accept default-route
    ip access-group ACL-INTERNET-IN_Ethernet4 in
 ```
 
@@ -571,14 +572,12 @@ ip routing vrf RED
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
-| default | 0.0.0.0/0 | 100.64.30.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.17.1
-ip route 0.0.0.0/0 100.64.30.1
 ```
 
 ### Router Adaptive Virtual Topology
@@ -612,7 +611,7 @@ Topology role: edge
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 | VIDEO | BLUE-POLICY-VIDEO | - | - |
-| VOICE | BLUE-POLICY-VOICE | - | - |
+| VOICE | BLUE-POLICY-VOICE | - | 46 |
 | default | BLUE-POLICY-DEFAULT | - | - |
 
 ##### AVT policy DEFAULT-POLICY-WITH-CP
@@ -682,6 +681,7 @@ router adaptive-virtual-topology
       !
       match application-profile VOICE
          avt profile BLUE-POLICY-VOICE
+         dscp 46
       !
       match application-profile default
          avt profile BLUE-POLICY-DEFAULT
@@ -1188,7 +1188,7 @@ application traffic recognition
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 | LB-BLUE-POLICY-DEFAULT | - | - | - | INTERNET (1) | False |
 | LB-BLUE-POLICY-VIDEO | - | - | - | INTERNET (1) | False |
-| LB-BLUE-POLICY-VOICE | - | - | - | INTERNET (2) | False |
+| LB-BLUE-POLICY-VOICE | 30 | 150 | 1 | INTERNET (2) | True |
 | LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | INTERNET (1) | False |
 | LB-DEFAULT-POLICY-DEFAULT | - | - | - | INTERNET (1) | False |
 | LB-RED-POLICY-NORMAL-DATA | - | - | - | INTERNET (1) | False |
@@ -1224,6 +1224,10 @@ router path-selection
       path-group INTERNET
    !
    load-balance policy LB-BLUE-POLICY-VOICE
+      latency 150
+      jitter 30
+      loss-rate 1
+      hop count lowest
       path-group INTERNET priority 2
    !
    load-balance policy LB-DEFAULT-POLICY-CONTROL-PLANE

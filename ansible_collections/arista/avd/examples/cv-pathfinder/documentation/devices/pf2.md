@@ -558,7 +558,7 @@ Topology role: pathfinder
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 | VIDEO | BLUE-POLICY-VIDEO | - | - |
-| VOICE | BLUE-POLICY-VOICE | - | - |
+| VOICE | BLUE-POLICY-VOICE | - | 46 |
 | default | BLUE-POLICY-DEFAULT | - | - |
 
 ##### AVT policy DEFAULT-POLICY-WITH-CP
@@ -627,6 +627,7 @@ router adaptive-virtual-topology
       !
       match application-profile VOICE
          avt profile BLUE-POLICY-VOICE
+         dscp 46
       !
       match application-profile default
          avt profile BLUE-POLICY-DEFAULT
@@ -1199,7 +1200,7 @@ application traffic recognition
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 | LB-BLUE-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (1) | False |
 | LB-BLUE-POLICY-VIDEO | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (2) | False |
-| LB-BLUE-POLICY-VOICE | - | - | - | LAN_HA (1)<br>MPLS (1)<br>INTERNET (2) | False |
+| LB-BLUE-POLICY-VOICE | 30 | 150 | 1 | LAN_HA (1)<br>MPLS (1)<br>INTERNET (2) | True |
 | LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (1) | False |
 | LB-DEFAULT-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1)<br>MPLS (1) | False |
 | LB-RED-POLICY-CRITICAL-SECRET-DATA | - | - | - | LAN_HA (1)<br>MPLS (1) | False |
@@ -1246,6 +1247,10 @@ router path-selection
       path-group MPLS priority 2
    !
    load-balance policy LB-BLUE-POLICY-VOICE
+      latency 150
+      jitter 30
+      loss-rate 1
+      hop count lowest
       path-group LAN_HA
       path-group MPLS
       path-group INTERNET priority 2

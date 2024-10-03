@@ -118,10 +118,16 @@ wan_virtual_topologies: # (9)
           path_groups:
             - names: [INTERNET]
               preference: preferred
-            - names: [MPLS]
+            - names: [MPLS] # (10)
               preference: alternate
         - application_profile: VOICE
           id: 3
+          dscp: 46
+          lowest_hop_count: true
+          constraints:
+            jitter: 30
+            latency: 150
+            loss_rate: 1
           path_groups:
             - names: [MPLS]
               preference: preferred

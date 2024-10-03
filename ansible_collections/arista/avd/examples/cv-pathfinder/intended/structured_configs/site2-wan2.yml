@@ -34,6 +34,9 @@ router_bgp:
       activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
+    neighbors:
+    - ip_address: 100.64.21.1
+      activate: true
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -43,6 +46,11 @@ router_bgp:
     remote_as: '65102'
     peer: site2-leaf2
     description: site2-leaf2_Ethernet3
+  - ip_address: 100.64.21.1
+    remote_as: '65666'
+    description: REGION2-INTERNET-CORP_inet-site2-wan2_inet-cloud_Ethernet7
+    route_map_in: RM-BGP-100.64.21.1-IN
+    route_map_out: RM-BGP-100.64.21.1-OUT
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
     peer: pf1
@@ -149,8 +157,6 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.17.1
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 100.64.21.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -267,24 +273,12 @@ ethernet_interfaces:
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet5
-  peer_type: wan_ha_peer
-  peer_interface: Ethernet5
-  peer: site2-wan1
-  description: WAN_HA_site2-wan1_Ethernet5
-  shutdown: false
-  channel_group:
-    id: 5
-    mode: active
-  mtu: 9194
-port_channel_interfaces:
-- name: Port-Channel5
   switchport:
     enabled: false
   peer_type: l3_interface
-  peer_interface: Port-Channel5
   peer: site2-wan1
   shutdown: false
-  description: WAN_HA_site2-wan1_Port-Channel5
+  description: WAN_HA_site2-wan1_Ethernet5
   ip_address: 10.42.0.1/31
   flow_tracker: null
   mtu: 9194
@@ -298,6 +292,10 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.255.0/24 eq 32
+- name: ALLOW-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 0.0.0.0/0
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -326,6 +324,18 @@ route_maps:
     - metric 50
   - sequence: 20
     type: permit
+- name: RM-BGP-100.64.21.1-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list ALLOW-DEFAULT
+    set:
+    - community no-advertise additive
+- name: RM-BGP-100.64.21.1-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: deny
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -386,6 +396,14 @@ ip_access_lists:
     destination_ports:
     - isakmp
     - non500-isakmp
+  - sequence: 20
+    action: permit
+    protocol: tcp
+    source: any
+    destination: 100.64.21.2
+    destination_ports_match: eq
+    destination_ports:
+    - bgp
   - sequence: 30
     action: permit
     protocol: icmp
@@ -509,6 +527,7 @@ router_adaptive_virtual_topology:
       avt_profile: BLUE-POLICY-VIDEO
     - application_profile: VOICE
       avt_profile: BLUE-POLICY-VOICE
+      dscp: 46
     - application_profile: default
       avt_profile: BLUE-POLICY-DEFAULT
   - name: RED-POLICY
@@ -558,7 +577,7 @@ router_path_selection:
     id: 65535
     flow_assignment: lan
     local_interfaces:
-    - name: Port-Channel5
+    - name: Ethernet5
     static_peers:
     - router_ip: 192.168.42.7
       name: site2-wan1
@@ -575,6 +594,10 @@ router_path_selection:
     - name: INTERNET
       priority: 2
     - name: LAN_HA
+    jitter: 30
+    latency: 150
+    loss_rate: '1'
+    lowest_hop_count: true
   - name: LB-BLUE-POLICY-DEFAULT
     path_groups:
     - name: INTERNET

@@ -345,6 +345,7 @@ router_adaptive_virtual_topology:
       avt_profile: BLUE-POLICY-VIDEO
     - application_profile: VOICE
       avt_profile: BLUE-POLICY-VOICE
+      dscp: 46
     - application_profile: default
       avt_profile: BLUE-POLICY-DEFAULT
   - name: RED-POLICY
@@ -407,6 +408,10 @@ router_path_selection:
     - name: INTERNET
       priority: 2
     - name: LAN_HA
+    jitter: 30
+    latency: 150
+    loss_rate: '1'
+    lowest_hop_count: true
   - name: LB-BLUE-POLICY-DEFAULT
     path_groups:
     - name: INTERNET
@@ -606,7 +611,12 @@ metadata:
           preference: preferred
         application_profiles:
         - VIDEO
-      - id: 3
+      - constraints:
+          jitter: 30
+          latency: 150
+          lossrate: 1.0
+          hop_count: lowest
+        id: 3
         name: BLUE-POLICY-VOICE
         pathgroups:
         - name: MPLS

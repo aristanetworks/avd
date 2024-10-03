@@ -33,7 +33,6 @@
 - [Interfaces](#interfaces)
   - [DPS Interfaces](#dps-interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
-  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
@@ -436,9 +435,7 @@ interface Dps1
 | Ethernet1.100 | P2P_site2-leaf2_Ethernet3.100_VRF_BLUE | - | 10.0.2.15/31 | BLUE | 9214 | False | - | - |
 | Ethernet1.101 | P2P_site2-leaf2_Ethernet3.101_VRF_RED | - | 10.0.2.15/31 | RED | 9214 | False | - | - |
 | Ethernet4 | REGION2-INTERNET-CORP_inet-site2-wan2_inet-cloud_Ethernet7 | - | 100.64.21.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
-| Ethernet5 | WAN_HA_site2-wan1_Ethernet5 | 5 | *10.42.0.1/31 | **default | *9194 | *False | **- | **- |
-
-*Inherited from Port-Channel Interface
+| Ethernet5 | WAN_HA_site2-wan1_Ethernet5 | - | 10.42.0.1/31 | default | 9194 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -480,32 +477,6 @@ interface Ethernet4
 !
 interface Ethernet5
    description WAN_HA_site2-wan1_Ethernet5
-   no shutdown
-   mtu 9194
-   channel-group 5 mode active
-```
-
-### Port-Channel Interfaces
-
-#### Port-Channel Interfaces Summary
-
-##### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
-| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-
-##### IPv4
-
-| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
-| Port-Channel5 | WAN_HA_site2-wan1_Port-Channel5 | - | 10.42.0.1/31 | default | 9194 | False | - | - |
-
-#### Port-Channel Interfaces Device Configuration
-
-```eos
-!
-interface Port-Channel5
-   description WAN_HA_site2-wan1_Port-Channel5
    no shutdown
    mtu 9194
    no switchport
@@ -618,14 +589,12 @@ ip routing vrf RED
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
-| default | 0.0.0.0/0 | 100.64.21.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
 ip route vrf MGMT 0.0.0.0/0 192.168.17.1
-ip route 0.0.0.0/0 100.64.21.1
 ```
 
 ### Router Adaptive Virtual Topology
@@ -660,7 +629,7 @@ Topology role: transit region
 | Application profile | AVT Profile | Traffic Class | DSCP |
 | ------------------- | ----------- | ------------- | ---- |
 | VIDEO | BLUE-POLICY-VIDEO | - | - |
-| VOICE | BLUE-POLICY-VOICE | - | - |
+| VOICE | BLUE-POLICY-VOICE | - | 46 |
 | default | BLUE-POLICY-DEFAULT | - | - |
 
 ##### AVT policy DEFAULT-POLICY-WITH-CP
@@ -732,6 +701,7 @@ router adaptive-virtual-topology
       !
       match application-profile VOICE
          avt profile BLUE-POLICY-VOICE
+         dscp 46
       !
       match application-profile default
          avt profile BLUE-POLICY-DEFAULT
@@ -851,6 +821,7 @@ ASN Notation: asplain
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 10.0.2.14 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 100.64.21.1 | 65666 | default | - | - | - | - | - | - | - | - | - |
 | 192.168.42.1 | Inherited from peer group WAN-OVERLAY-PEERS | default | - | Inherited from peer group WAN-OVERLAY-PEERS | Inherited from peer group WAN-OVERLAY-PEERS | - | Inherited from peer group WAN-OVERLAY-PEERS(interval: 1000, min_rx: 1000, multiplier: 10) | - | - | - | Inherited from peer group WAN-OVERLAY-PEERS |
 | 192.168.42.2 | Inherited from peer group WAN-OVERLAY-PEERS | default | - | Inherited from peer group WAN-OVERLAY-PEERS | Inherited from peer group WAN-OVERLAY-PEERS | - | Inherited from peer group WAN-OVERLAY-PEERS(interval: 1000, min_rx: 1000, multiplier: 10) | - | - | - | Inherited from peer group WAN-OVERLAY-PEERS |
 | 192.168.42.7 | 65000 | default | - | all | - | - | - | - | True | - | - |
@@ -940,6 +911,10 @@ router bgp 65000
    neighbor 10.0.2.14 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.2.14 remote-as 65102
    neighbor 10.0.2.14 description site2-leaf2_Ethernet3
+   neighbor 100.64.21.1 remote-as 65666
+   neighbor 100.64.21.1 description REGION2-INTERNET-CORP_inet-site2-wan2_inet-cloud_Ethernet7
+   neighbor 100.64.21.1 route-map RM-BGP-100.64.21.1-IN in
+   neighbor 100.64.21.1 route-map RM-BGP-100.64.21.1-OUT out
    neighbor 192.168.42.1 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.1 description pf1_Dps1
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
@@ -965,6 +940,7 @@ router bgp 65000
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
       no neighbor WAN-OVERLAY-PEERS activate
+      neighbor 100.64.21.1 activate
    !
    address-family ipv4 sr-te
       neighbor WAN-OVERLAY-PEERS activate
@@ -1029,6 +1005,12 @@ router bfd
 
 #### Prefix-lists Summary
 
+##### ALLOW-DEFAULT
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 0.0.0.0/0 |
+
 ##### PL-LOOPBACKS-EVPN-OVERLAY
 
 | Sequence | Action |
@@ -1039,6 +1021,9 @@ router bfd
 
 ```eos
 !
+ip prefix-list ALLOW-DEFAULT
+   seq 10 permit 0.0.0.0/0
+!
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
 ```
@@ -1046,6 +1031,18 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ### Route-maps
 
 #### Route-maps Summary
+
+##### RM-BGP-100.64.21.1-IN
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | ip address prefix-list ALLOW-DEFAULT | community no-advertise additive | - | - |
+
+##### RM-BGP-100.64.21.1-OUT
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | - | - | - | - |
 
 ##### RM-BGP-UNDERLAY-PEERS-IN
 
@@ -1101,6 +1098,12 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 #### Route-maps Device Configuration
 
 ```eos
+!
+route-map RM-BGP-100.64.21.1-IN permit 10
+   match ip address prefix-list ALLOW-DEFAULT
+   set community no-advertise additive
+!
+route-map RM-BGP-100.64.21.1-OUT deny 10
 !
 route-map RM-BGP-UNDERLAY-PEERS-IN permit 40
    description Mark prefixes originated from the LAN
@@ -1169,6 +1172,7 @@ ip extcommunity-list ECL-EVPN-SOO permit soo 192.168.255.7:202
 ip access-list ACL-INTERNET-IN_Ethernet4
    1 remark Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface
    10 permit udp any host 100.64.21.2 eq isakmp non500-isakmp
+   20 permit tcp any host 100.64.21.2 eq bgp
    30 permit icmp any host 100.64.21.2
    deny ip any any
 ```
@@ -1364,7 +1368,7 @@ application traffic recognition
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Port-Channel5 | - |  |
+| Ethernet5 | - |  |
 
 ###### Static Peers
 
@@ -1378,7 +1382,7 @@ application traffic recognition
 | ----------- | ----------- | ------------ | ------------- | ---------------------- | ---------------- |
 | LB-BLUE-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
 | LB-BLUE-POLICY-VIDEO | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
-| LB-BLUE-POLICY-VOICE | - | - | - | LAN_HA (1)<br>INTERNET (2) | False |
+| LB-BLUE-POLICY-VOICE | 30 | 150 | 1 | LAN_HA (1)<br>INTERNET (2) | True |
 | LB-DEFAULT-POLICY-CONTROL-PLANE | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
 | LB-DEFAULT-POLICY-DEFAULT | - | - | - | INTERNET (1)<br>LAN_HA (1) | False |
 | LB-RED-POLICY-CRITICAL-SECRET-DATA | - | - | - | LAN_HA (1) | False |
@@ -1412,7 +1416,7 @@ router path-selection
       ipsec profile DP-PROFILE
       flow assignment lan
       !
-      local interface Port-Channel5
+      local interface Ethernet5
       !
       peer static router-ip 192.168.42.7
          name site2-wan1
@@ -1427,6 +1431,10 @@ router path-selection
       path-group LAN_HA
    !
    load-balance policy LB-BLUE-POLICY-VOICE
+      latency 150
+      jitter 30
+      loss-rate 1
+      hop count lowest
       path-group LAN_HA
       path-group INTERNET priority 2
    !

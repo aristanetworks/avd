@@ -79,8 +79,7 @@ wan_router:
               wan_circuit_id: mpls-site1-wan2
             - name: Ethernet4
               peer_interface: Ethernet6
-              peer_ip: 100.64.11.1
-              ip_address: 100.64.11.2/24
+              dhcp_ip: 100.64.11.2
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION1-INTERNET-CORP
               wan_circuit_id: inet-site1-wan2

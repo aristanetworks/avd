@@ -12,6 +12,10 @@
   - [Local Users](#local-users)
   - [Enable Password](#enable-password)
   - [AAA Authorization](#aaa-authorization)
+- [DHCP Server](#dhcp-server)
+  - [DHCP Servers Summary](#dhcp-servers-summary)
+  - [DHCP Server Configuration](#dhcp-server-configuration)
+  - [DHCP Server Interfaces](#dhcp-server-interfaces)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Spanning Tree](#spanning-tree)
@@ -184,6 +188,58 @@ aaa authorization exec default local
 !
 ```
 
+## DHCP Server
+
+### DHCP Servers Summary
+
+| DHCP Server Enabled | VRF | IPv4 DNS Domain | IPv4 DNS Servers | IPv4 Bootfile | IPv4 Lease Time | IPv6 DNS Domain | IPv6 DNS Servers | IPv6 Bootfile | IPv6 Lease Time |
+| ------------------- | --- | --------------- | ---------------- | ------------- | --------------- | --------------- | ---------------- | ------------- | --------------- |
+| True | default | - | - | - | 6 days 23 hours 59 minutes | - | - | - | - |
+
+#### VRF default DHCP Server
+
+##### Subnets
+
+| Subnet | Name | DNS Servers | Default Gateway | Lease Time | Ranges |
+| ------ | ---- | ----------- | --------------- | ---------- | ------ |
+| 100.64.10.0/24 | 10 NET | - | 100.64.10.1 | - | 100.64.10.2-100.64.10.2 |
+| 100.64.11.0/24 | 11 NET | - | 100.64.11.1 | - | 100.64.11.2-100.64.11.2 |
+| 100.64.30.0/24 | 30 NET | - | 100.64.30.1 | - | 100.64.30.2-100.64.30.2 |
+
+### DHCP Server Configuration
+
+```eos
+!
+dhcp server
+   lease time ipv4 6 days 23 hours 59 minutes
+   !
+   subnet 100.64.10.0/24
+      !
+      range 100.64.10.2 100.64.10.2
+      name 10 NET
+      default-gateway 100.64.10.1
+   !
+   subnet 100.64.11.0/24
+      !
+      range 100.64.11.2 100.64.11.2
+      name 11 NET
+      default-gateway 100.64.11.1
+   !
+   subnet 100.64.30.0/24
+      !
+      range 100.64.30.2 100.64.30.2
+      name 30 NET
+      default-gateway 100.64.30.1
+```
+
+### DHCP Server Interfaces
+
+| Interface name | DHCP IPv4 | DHCP IPv6 |
+| -------------- | --------- | --------- |
+| Ethernet5 | True | False |
+| Ethernet6 | True | False |
+| Ethernet8 | True | False |
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -276,12 +332,14 @@ interface Ethernet5
    no shutdown
    no switchport
    ip address 100.64.10.1/24
+   dhcp server ipv4
 !
 interface Ethernet6
    description site1-wan2-Ethernet4
    no shutdown
    no switchport
    ip address 100.64.11.1/24
+   dhcp server ipv4
 !
 interface Ethernet7
    description site2-wan2-Ethernet4
@@ -294,6 +352,7 @@ interface Ethernet8
    no shutdown
    no switchport
    ip address 100.64.30.1/24
+   dhcp server ipv4
 ```
 
 ### Loopback Interfaces
@@ -411,6 +470,12 @@ ASN Notation: asplain
 | Send community | all |
 | Maximum routes | 12000 |
 
+#### BGP Neighbors
+
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 100.64.21.2 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+
 #### Router BGP EVPN Address Family
 
 ##### EVPN Peer Groups
@@ -437,6 +502,9 @@ router bgp 65666
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
+   neighbor 100.64.21.2 peer group IPv4-UNDERLAY-PEERS
+   neighbor 100.64.21.2 remote-as 65000
+   neighbor 100.64.21.2 default-originate always
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

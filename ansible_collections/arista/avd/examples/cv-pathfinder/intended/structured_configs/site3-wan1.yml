@@ -110,8 +110,6 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.17.1
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 100.64.30.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -214,7 +212,7 @@ ethernet_interfaces:
   peer_type: l3_interface
   peer: inet-cloud
   peer_interface: Ethernet8
-  ip_address: 100.64.30.2/24
+  ip_address: dhcp
   shutdown: false
   switchport:
     enabled: false
@@ -222,6 +220,7 @@ ethernet_interfaces:
   access_group_in: ACL-INTERNET-IN_Ethernet4
   flow_tracker:
     hardware: FLOW-TRACKER
+  dhcp_client_accept_default_route: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -396,6 +395,7 @@ router_adaptive_virtual_topology:
       avt_profile: BLUE-POLICY-VIDEO
     - application_profile: VOICE
       avt_profile: BLUE-POLICY-VOICE
+      dscp: 46
     - application_profile: default
       avt_profile: BLUE-POLICY-DEFAULT
   - name: RED-POLICY
@@ -447,6 +447,10 @@ router_path_selection:
     path_groups:
     - name: INTERNET
       priority: 2
+    jitter: 30
+    latency: 150
+    loss_rate: '1'
+    lowest_hop_count: true
   - name: LB-BLUE-POLICY-DEFAULT
     path_groups:
     - name: INTERNET

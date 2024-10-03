@@ -10,12 +10,9 @@ l3_interface_profiles:
       enabled: true
   - profile: INTERNET-WAN-INTERFACE
     peer: inet-cloud
-    # TODO - DHCP not working in cEOS cloudlab for now
-    # ip_address: dhcp
-    # dhcp_accept_default_route: true
+    ip_address: dhcp
+    dhcp_accept_default_route: true
     ipv4_acl_in: ACL-INTERNET-IN
-    static_routes:
-      - prefix: 0.0.0.0/0
     # Enabling flow tracking on WAN interfaces
     flow_tracking:
       enabled: true
