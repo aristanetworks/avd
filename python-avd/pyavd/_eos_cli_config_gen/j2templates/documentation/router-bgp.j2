@@ -67,7 +67,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             elif router_bgp.bgp.additional_paths.send == 'ecmp' %}
 | bgp additional-paths send ecmp |
 {%             elif router_bgp.bgp.additional_paths.send_limit is arista.avd.defined and router_bgp.bgp.additional_paths.send == 'limit' %}
-| bgp additional-paths send {{ router_bgp.bgp.additional_paths.send_limit }} |
+| bgp additional-paths send limit {{ router_bgp.bgp.additional_paths.send_limit }} |
 {%             endif %}
 {%         endif %}
 {%         if router_bgp.updates.wait_for_convergence is arista.avd.defined(true) %}
