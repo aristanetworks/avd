@@ -118,6 +118,16 @@ ethernet_interfaces:
   peer: peer7
   peer_interface: Ethernet10
   peer_type: other
+- name: ethernet9
+  description: P2P_peer7_ethernet9
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.14/31
+  peer: peer7
+  peer_interface: ethernet9
+  peer_type: other
+  switchport:
+    enabled: false
 hostname: l3_edge_bgp
 ip_routing: true
 is_deployed: true
@@ -238,6 +248,10 @@ router_bgp:
   - ip_address: 192.168.0.13
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65006'
+    peer: peer7
+    description: peer7
+  - ip_address: 192.168.0.15
+    remote_as: '65007'
     peer: peer7
     description: peer7
   redistribute:
