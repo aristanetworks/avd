@@ -606,7 +606,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up'"
+    "custom_field": "Interface Loopback10 - DIAG_VRF_VRF10 = 'up'"
   },
   {
     "name": "dc1-leaf1b",
@@ -615,7 +615,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up'"
+    "custom_field": "Interface Loopback11 - DIAG_VRF_VRF11 = 'up'"
   },
   {
     "name": "dc1-leaf1b",

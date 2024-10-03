@@ -1061,6 +1061,16 @@ keys:
       \ - `peer_port_channel_id`: The ID of the port-channel on the peer.\n\nBy default
       the description is templated from the name and interface of the peer."
     default: P2P_{peer}_{peer_interface}
+  default_vrf_diag_loopback_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The default description or description template to be used on VRF
+      diagnostic loopback interfaces.\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `interface`: The Loopback interface
+      name.\n  - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nBy default
+      the description is templated from the VRF name."
+    default: DIAG_VRF_{vrf}
   design:
     documentation_options:
       table: design
@@ -6381,7 +6391,13 @@ $defs:
                     max: 2100
                   loopback_description:
                     type: str
-                    description: Provide a custom description for loopback interface.
+                    description: "Provide a custom description or description template
+                      to be used on the VRF diagnostic loopback interface.\nThis can
+                      be a template using the format string syntax.\nThe available
+                      template fields are:\n  - `interface`: The Loopback interface
+                      name.\n  - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nThe
+                      default description is set by `default_vrf_diag_loopback_description`.\nBy
+                      default the description is templated from the VRF name."
                   loopback_ip_range:
                     type: str
                     description: 'IPv4_address/Mask.

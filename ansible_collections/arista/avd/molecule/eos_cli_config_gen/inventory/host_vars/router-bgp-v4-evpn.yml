@@ -74,9 +74,9 @@ router_bgp:
     - source_protocol: connected
       route_map: RM-CONN-2-BGP
   address_family_evpn:
-    bgp_additional_paths:
-      send:
-        backup: true
+    bgp:
+      additional_paths:
+        send: backup
     peer_groups:
       - name: EVPN-OVERLAY-PEERS
         activate: true
@@ -224,8 +224,7 @@ router_bgp:
           additional_paths:
             install: true
             receive: true
-            send:
-              ecmp: true
+            send: ecmp
         neighbors:
           - ip_address: 10.2.3.4
             activate: true

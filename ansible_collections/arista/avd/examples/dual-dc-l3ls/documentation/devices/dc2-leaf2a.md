@@ -367,8 +367,8 @@ interface Port-Channel8
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 10.255.128.15/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 10.255.129.15/32 |
-| Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | 10.255.10.15/32 |
-| Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | 10.255.11.15/32 |
+| Loopback10 | DIAG_VRF_VRF10 | VRF10 | 10.255.10.15/32 |
+| Loopback11 | DIAG_VRF_VRF11 | VRF11 | 10.255.11.15/32 |
 
 ##### IPv6
 
@@ -376,8 +376,8 @@ interface Port-Channel8
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback10 | VRF10_VTEP_DIAGNOSTICS | VRF10 | - |
-| Loopback11 | VRF11_VTEP_DIAGNOSTICS | VRF11 | - |
+| Loopback10 | DIAG_VRF_VRF10 | VRF10 | - |
+| Loopback11 | DIAG_VRF_VRF11 | VRF11 | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -394,13 +394,13 @@ interface Loopback1
    ip address 10.255.129.15/32
 !
 interface Loopback10
-   description VRF10_VTEP_DIAGNOSTICS
+   description DIAG_VRF_VRF10
    no shutdown
    vrf VRF10
    ip address 10.255.10.15/32
 !
 interface Loopback11
-   description VRF11_VTEP_DIAGNOSTICS
+   description DIAG_VRF_VRF11
    no shutdown
    vrf VRF11
    ip address 10.255.11.15/32
