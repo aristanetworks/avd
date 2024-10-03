@@ -313,10 +313,10 @@ vlan internal order ascending range 1006 1199
 | ------- | ---- | ------------ |
 | 42 | RED-TEST | - |
 | 666 | BLUE-TEST | - |
-| 3099 | MLAG_iBGP_BLUE | LEAF_PEER_L3 |
-| 3100 | MLAG_iBGP_RED | LEAF_PEER_L3 |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
-| 4094 | MLAG_PEER | MLAG |
+| 3099 | MLAG_L3_VRF_BLUE | MLAG |
+| 3100 | MLAG_L3_VRF_RED | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -329,19 +329,19 @@ vlan 666
    name BLUE-TEST
 !
 vlan 3099
-   name MLAG_iBGP_BLUE
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_BLUE
+   trunk group MLAG
 !
 vlan 3100
-   name MLAG_iBGP_RED
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_RED
+   trunk group MLAG
 !
 vlan 4093
-   name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   name MLAG_L3
+   trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -355,8 +355,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_site1-border1_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | MLAG_PEER_site1-border1_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet5 | MLAG_site1-border1_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_site1-border1_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 
 *Inherited from Port-Channel Interface
 
@@ -364,28 +364,28 @@ vlan 4094
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet3.100 | P2P_LINK_TO_SITE1-WAN1_Ethernet2.100_vrf_BLUE | - | 100 | - |
-| Ethernet3.101 | P2P_LINK_TO_SITE1-WAN1_Ethernet2.101_vrf_RED | - | 101 | - |
-| Ethernet4.100 | P2P_LINK_TO_SITE1-WAN2_Ethernet2.100_vrf_BLUE | - | 100 | - |
-| Ethernet4.101 | P2P_LINK_TO_SITE1-WAN2_Ethernet2.101_vrf_RED | - | 101 | - |
+| Ethernet3.100 | P2P_site1-wan1_Ethernet2.100_VRF_BLUE | - | 100 | - |
+| Ethernet3.101 | P2P_site1-wan1_Ethernet2.101_VRF_RED | - | 101 | - |
+| Ethernet4.100 | P2P_site1-wan2_Ethernet2.100_VRF_BLUE | - | 100 | - |
+| Ethernet4.101 | P2P_site1-wan2_Ethernet2.101_VRF_RED | - | 101 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet3 | P2P_LINK_TO_SITE1-WAN1_Ethernet2 | - | 10.0.1.10/31 | default | 9214 | False | - | - |
-| Ethernet3.100 | P2P_LINK_TO_SITE1-WAN1_Ethernet2.100_vrf_BLUE | - | 10.0.1.10/31 | BLUE | 9214 | False | - | - |
-| Ethernet3.101 | P2P_LINK_TO_SITE1-WAN1_Ethernet2.101_vrf_RED | - | 10.0.1.10/31 | RED | 9214 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_SITE1-WAN2_Ethernet2 | - | 10.0.1.14/31 | default | 9214 | False | - | - |
-| Ethernet4.100 | P2P_LINK_TO_SITE1-WAN2_Ethernet2.100_vrf_BLUE | - | 10.0.1.14/31 | BLUE | 9214 | False | - | - |
-| Ethernet4.101 | P2P_LINK_TO_SITE1-WAN2_Ethernet2.101_vrf_RED | - | 10.0.1.14/31 | RED | 9214 | False | - | - |
+| Ethernet3 | P2P_site1-wan1_Ethernet2 | - | 10.0.1.10/31 | default | 9214 | False | - | - |
+| Ethernet3.100 | P2P_site1-wan1_Ethernet2.100_VRF_BLUE | - | 10.0.1.10/31 | BLUE | 9214 | False | - | - |
+| Ethernet3.101 | P2P_site1-wan1_Ethernet2.101_VRF_RED | - | 10.0.1.10/31 | RED | 9214 | False | - | - |
+| Ethernet4 | P2P_site1-wan2_Ethernet2 | - | 10.0.1.14/31 | default | 9214 | False | - | - |
+| Ethernet4.100 | P2P_site1-wan2_Ethernet2.100_VRF_BLUE | - | 10.0.1.14/31 | BLUE | 9214 | False | - | - |
+| Ethernet4.101 | P2P_site1-wan2_Ethernet2.101_VRF_RED | - | 10.0.1.14/31 | RED | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet3
-   description P2P_LINK_TO_SITE1-WAN1_Ethernet2
+   description P2P_site1-wan1_Ethernet2
    no shutdown
    mtu 9214
    no switchport
@@ -393,7 +393,7 @@ interface Ethernet3
    ip address 10.0.1.10/31
 !
 interface Ethernet3.100
-   description P2P_LINK_TO_SITE1-WAN1_Ethernet2.100_vrf_BLUE
+   description P2P_site1-wan1_Ethernet2.100_VRF_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -402,7 +402,7 @@ interface Ethernet3.100
    ip address 10.0.1.10/31
 !
 interface Ethernet3.101
-   description P2P_LINK_TO_SITE1-WAN1_Ethernet2.101_vrf_RED
+   description P2P_site1-wan1_Ethernet2.101_VRF_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -411,7 +411,7 @@ interface Ethernet3.101
    ip address 10.0.1.10/31
 !
 interface Ethernet4
-   description P2P_LINK_TO_SITE1-WAN2_Ethernet2
+   description P2P_site1-wan2_Ethernet2
    no shutdown
    mtu 9214
    no switchport
@@ -419,7 +419,7 @@ interface Ethernet4
    ip address 10.0.1.14/31
 !
 interface Ethernet4.100
-   description P2P_LINK_TO_SITE1-WAN2_Ethernet2.100_vrf_BLUE
+   description P2P_site1-wan2_Ethernet2.100_VRF_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -428,7 +428,7 @@ interface Ethernet4.100
    ip address 10.0.1.14/31
 !
 interface Ethernet4.101
-   description P2P_LINK_TO_SITE1-WAN2_Ethernet2.101_vrf_RED
+   description P2P_site1-wan2_Ethernet2.101_VRF_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -437,12 +437,12 @@ interface Ethernet4.101
    ip address 10.0.1.14/31
 !
 interface Ethernet5
-   description MLAG_PEER_site1-border1_Ethernet5
+   description MLAG_site1-border1_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_site1-border1_Ethernet6
+   description MLAG_site1-border1_Ethernet6
    no shutdown
    channel-group 5 mode active
 ```
@@ -455,19 +455,18 @@ interface Ethernet6
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_site1-border1_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
+| Port-Channel5 | MLAG_site1-border1_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_site1-border1_Po5
+   description MLAG_site1-border1_Port-Channel5
    no shutdown
-   switchport
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
+   switchport
 ```
 
 ### Loopback Interfaces
@@ -511,10 +510,10 @@ interface Loopback1
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan42 | RED-TEST | RED | - | False |
 | Vlan666 | BLUE-TEST | BLUE | - | False |
-| Vlan3099 | MLAG_PEER_L3_iBGP: vrf BLUE | BLUE | 9214 | False |
-| Vlan3100 | MLAG_PEER_L3_iBGP: vrf RED | RED | 9214 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 9214 | False |
-| Vlan4094 | MLAG_PEER | default | 9214 | False |
+| Vlan3099 | MLAG_L3_VRF_BLUE | BLUE | 9214 | False |
+| Vlan3100 | MLAG_L3_VRF_RED | RED | 9214 | False |
+| Vlan4093 | MLAG_L3 | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -544,27 +543,27 @@ interface Vlan666
    ip address 10.66.11.1/24
 !
 interface Vlan3099
-   description MLAG_PEER_L3_iBGP: vrf BLUE
+   description MLAG_L3_VRF_BLUE
    no shutdown
    mtu 9214
    vrf BLUE
    ip address 10.255.251.9/31
 !
 interface Vlan3100
-   description MLAG_PEER_L3_iBGP: vrf RED
+   description MLAG_L3_VRF_RED
    no shutdown
    mtu 9214
    vrf RED
    ip address 10.255.251.9/31
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 9214
    ip address 10.255.251.9/31
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 9214
    no autostate
@@ -781,7 +780,7 @@ router bgp 65101
    neighbor 10.0.1.15 remote-as 65000
    neighbor 10.0.1.15 description site1-wan2_Ethernet2
    neighbor 10.255.251.8 peer group MLAG-IPv4-UNDERLAY-PEER
-   neighbor 10.255.251.8 description site1-border1
+   neighbor 10.255.251.8 description site1-border1_Vlan4093
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan 42
@@ -814,8 +813,8 @@ router bgp 65101
       neighbor 10.0.1.15 peer group IPv4-UNDERLAY-PEERS
       neighbor 10.0.1.15 description site1-wan2_Ethernet2.100_vrf_BLUE
       neighbor 10.255.251.8 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.8 description site1-border1
-      redistribute connected
+      neighbor 10.255.251.8 description site1-border1_Vlan3099
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf RED
       rd 192.168.255.6:101
@@ -829,8 +828,8 @@ router bgp 65101
       neighbor 10.0.1.15 peer group IPv4-UNDERLAY-PEERS
       neighbor 10.0.1.15 description site1-wan2_Ethernet2.101_vrf_RED
       neighbor 10.255.251.8 peer group MLAG-IPv4-UNDERLAY-PEER
-      neighbor 10.255.251.8 description site1-border1
-      redistribute connected
+      neighbor 10.255.251.8 description site1-border1_Vlan3100
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -879,6 +878,12 @@ router bfd
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.42.0/24 eq 32 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.255.251.8/31 |
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -886,6 +891,9 @@ router bfd
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.42.0/24 eq 32
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 10.255.251.8/31
 ```
 
 ### Route-maps
@@ -897,6 +905,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -910,6 +925,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

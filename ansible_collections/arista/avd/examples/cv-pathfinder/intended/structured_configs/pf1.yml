@@ -47,10 +47,12 @@ router_bgp:
     route_reflector_client: true
   address_family_evpn:
     peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
     - name: WAN-RR-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4:
@@ -92,7 +94,7 @@ router_bgp:
   - ip_address: 192.168.42.2
     peer_group: WAN-RR-OVERLAY-PEERS
     peer: pf2
-    description: pf2
+    description: pf2_Dps1
   vrfs:
   - name: default
     rd: 192.168.255.1:1
@@ -182,7 +184,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   ip_address: 172.18.100.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ACME-MPLS-INC_mpls-pf1_mpls-cloud_Ethernet1
 - name: Ethernet2
   peer_type: l3_interface
@@ -190,7 +193,8 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   ip_address: 100.64.100.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: GLOBAL-INTERNET-LIMITED_inet-pf1_inet-cloud_Ethernet1
   access_group_in: ACL-PF-INTERNET-IN_Ethernet2
 loopback_interfaces:

@@ -252,6 +252,7 @@ aaa authorization exec default local
 ```eos
 !
 management security
+   !
    ssl profile STUN-DTLS
       tls versions 1.2
       trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
@@ -354,7 +355,6 @@ spanning-tree mode none
 ```eos
 !
 ip security
-   !
    ike policy CP-IKE-POLICY
       local-id 192.168.42.4
    !
@@ -425,21 +425,21 @@ interface Dps1
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet1.100 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.100_vrf_BLUE | - | 100 | - |
-| Ethernet1.101 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.101_vrf_RED | - | 101 | - |
-| Ethernet2.100 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.100_vrf_BLUE | - | 100 | - |
-| Ethernet2.101 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.101_vrf_RED | - | 101 | - |
+| Ethernet1.100 | P2P_site1-border1_Ethernet4.100_VRF_BLUE | - | 100 | - |
+| Ethernet1.101 | P2P_site1-border1_Ethernet4.101_VRF_RED | - | 101 | - |
+| Ethernet2.100 | P2P_site1-border2_Ethernet4.100_VRF_BLUE | - | 100 | - |
+| Ethernet2.101 | P2P_site1-border2_Ethernet4.101_VRF_RED | - | 101 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4 | - | 10.0.1.13/31 | default | 9214 | False | - | - |
-| Ethernet1.100 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.100_vrf_BLUE | - | 10.0.1.13/31 | BLUE | 9214 | False | - | - |
-| Ethernet1.101 | P2P_LINK_TO_SITE1-BORDER1_Ethernet4.101_vrf_RED | - | 10.0.1.13/31 | RED | 9214 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4 | - | 10.0.1.15/31 | default | 9214 | False | - | - |
-| Ethernet2.100 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.100_vrf_BLUE | - | 10.0.1.15/31 | BLUE | 9214 | False | - | - |
-| Ethernet2.101 | P2P_LINK_TO_SITE1-BORDER2_Ethernet4.101_vrf_RED | - | 10.0.1.15/31 | RED | 9214 | False | - | - |
+| Ethernet1 | P2P_site1-border1_Ethernet4 | - | 10.0.1.13/31 | default | 9214 | False | - | - |
+| Ethernet1.100 | P2P_site1-border1_Ethernet4.100_VRF_BLUE | - | 10.0.1.13/31 | BLUE | 9214 | False | - | - |
+| Ethernet1.101 | P2P_site1-border1_Ethernet4.101_VRF_RED | - | 10.0.1.13/31 | RED | 9214 | False | - | - |
+| Ethernet2 | P2P_site1-border2_Ethernet4 | - | 10.0.1.15/31 | default | 9214 | False | - | - |
+| Ethernet2.100 | P2P_site1-border2_Ethernet4.100_VRF_BLUE | - | 10.0.1.15/31 | BLUE | 9214 | False | - | - |
+| Ethernet2.101 | P2P_site1-border2_Ethernet4.101_VRF_RED | - | 10.0.1.15/31 | RED | 9214 | False | - | - |
 | Ethernet3 | ACME-MPLS-INC_mpls-site1-wan2_mpls-cloud_Ethernet6 | - | 172.18.11.2/24 | default | - | False | - | - |
 | Ethernet4 | REGION1-INTERNET-CORP_inet-site1-wan2_inet-cloud_Ethernet6 | - | 100.64.11.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
 
@@ -448,7 +448,7 @@ interface Dps1
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE1-BORDER1_Ethernet4
+   description P2P_site1-border1_Ethernet4
    no shutdown
    mtu 9214
    no switchport
@@ -456,7 +456,7 @@ interface Ethernet1
    ip address 10.0.1.13/31
 !
 interface Ethernet1.100
-   description P2P_LINK_TO_SITE1-BORDER1_Ethernet4.100_vrf_BLUE
+   description P2P_site1-border1_Ethernet4.100_VRF_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -465,7 +465,7 @@ interface Ethernet1.100
    ip address 10.0.1.13/31
 !
 interface Ethernet1.101
-   description P2P_LINK_TO_SITE1-BORDER1_Ethernet4.101_vrf_RED
+   description P2P_site1-border1_Ethernet4.101_VRF_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -474,7 +474,7 @@ interface Ethernet1.101
    ip address 10.0.1.13/31
 !
 interface Ethernet2
-   description P2P_LINK_TO_SITE1-BORDER2_Ethernet4
+   description P2P_site1-border2_Ethernet4
    no shutdown
    mtu 9214
    no switchport
@@ -482,7 +482,7 @@ interface Ethernet2
    ip address 10.0.1.15/31
 !
 interface Ethernet2.100
-   description P2P_LINK_TO_SITE1-BORDER2_Ethernet4.100_vrf_BLUE
+   description P2P_site1-border2_Ethernet4.100_VRF_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -491,7 +491,7 @@ interface Ethernet2.100
    ip address 10.0.1.15/31
 !
 interface Ethernet2.101
-   description P2P_LINK_TO_SITE1-BORDER2_Ethernet4.101_vrf_RED
+   description P2P_site1-border2_Ethernet4.101_VRF_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -872,7 +872,13 @@ ASN Notation: asplain
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
-| WAN-OVERLAY-PEERS | True | default |
+| WAN-OVERLAY-PEERS | True | path-selection |
+
+##### EVPN Neighbors
+
+| Neighbor | Activate | Encapsulation |
+| -------- | -------- | ------------- |
+| 192.168.42.3 | True | path-selection |
 
 ##### EVPN DCI Gateway Summary
 
@@ -948,9 +954,9 @@ router bgp 65000
    neighbor 10.0.1.14 remote-as 65101
    neighbor 10.0.1.14 description site1-border2_Ethernet4
    neighbor 192.168.42.1 peer group WAN-OVERLAY-PEERS
-   neighbor 192.168.42.1 description pf1
+   neighbor 192.168.42.1 description pf1_Dps1
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
-   neighbor 192.168.42.2 description pf2
+   neighbor 192.168.42.2 description pf2_Dps1
    neighbor 192.168.42.3 remote-as 65000
    neighbor 192.168.42.3 description site1-wan1
    neighbor 192.168.42.3 route-reflector-client
@@ -964,7 +970,9 @@ router bgp 65000
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
       neighbor WAN-OVERLAY-PEERS activate
+      neighbor WAN-OVERLAY-PEERS encapsulation path-selection
       neighbor 192.168.42.3 activate
+      neighbor 192.168.42.3 encapsulation path-selection
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix
    !
    address-family ipv4

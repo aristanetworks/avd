@@ -253,6 +253,7 @@ aaa authorization exec default local
 ```eos
 !
 management security
+   !
    ssl profile STUN-DTLS
       tls versions 1.2
       trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
@@ -346,7 +347,6 @@ spanning-tree mode none
 ```eos
 !
 ip security
-   !
    ike policy CP-IKE-POLICY
       local-id 192.168.42.1
    !
@@ -772,8 +772,8 @@ ASN Notation: asplain
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
-| WAN-OVERLAY-PEERS | True | default |
-| WAN-RR-OVERLAY-PEERS | True | default |
+| WAN-OVERLAY-PEERS | True | path-selection |
+| WAN-RR-OVERLAY-PEERS | True | path-selection |
 
 #### Router BGP IPv4 SR-TE Address Family
 
@@ -845,12 +845,14 @@ router bgp 65000
    neighbor WAN-RR-OVERLAY-PEERS send-community
    neighbor WAN-RR-OVERLAY-PEERS maximum-routes 0
    neighbor 192.168.42.2 peer group WAN-RR-OVERLAY-PEERS
-   neighbor 192.168.42.2 description pf2
+   neighbor 192.168.42.2 description pf2_Dps1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
       neighbor WAN-OVERLAY-PEERS activate
+      neighbor WAN-OVERLAY-PEERS encapsulation path-selection
       neighbor WAN-RR-OVERLAY-PEERS activate
+      neighbor WAN-RR-OVERLAY-PEERS encapsulation path-selection
       next-hop resolution disabled
    !
    address-family ipv4

@@ -279,7 +279,7 @@ vlan 666
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | SITE3-WAN1_Ethernet1 | trunk | 42,666 | - | - | - |
+| Ethernet1 | L2_site3-wan1_Ethernet1 | trunk | 42,666 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -288,7 +288,7 @@ vlan 666
 ```eos
 !
 interface Ethernet1
-   description SITE3-WAN1_Ethernet1
+   description L2_site3-wan1_Ethernet1
    no shutdown
    switchport trunk allowed vlan 42,666
    switchport mode trunk

@@ -33,6 +33,7 @@
 - [Interfaces](#interfaces)
   - [DPS Interfaces](#dps-interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
+  - [Port-Channel Interfaces](#port-channel-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
   - [VXLAN Interface](#vxlan-interface)
 - [Routing](#routing)
@@ -249,6 +250,7 @@ aaa authorization exec default local
 ```eos
 !
 management security
+   !
    ssl profile STUN-DTLS
       tls versions 1.2
       trust certificate aristaDeviceCertProvisionerDefaultRootCA.crt
@@ -351,7 +353,6 @@ spanning-tree mode none
 ```eos
 !
 ip security
-   !
    ike policy CP-IKE-POLICY
       local-id 192.168.42.7
    !
@@ -422,25 +423,27 @@ interface Dps1
 
 | Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
 | --------- | ----------- | ------- | -------------- | -------------------- |
-| Ethernet1.100 | P2P_LINK_TO_SITE2-LEAF1_Ethernet3.100_vrf_BLUE | - | 100 | - |
-| Ethernet1.101 | P2P_LINK_TO_SITE2-LEAF1_Ethernet3.101_vrf_RED | - | 101 | - |
+| Ethernet1.100 | P2P_site2-leaf1_Ethernet3.100_VRF_BLUE | - | 100 | - |
+| Ethernet1.101 | P2P_site2-leaf1_Ethernet3.101_VRF_RED | - | 101 | - |
 
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE2-LEAF1_Ethernet3 | - | 10.0.2.13/31 | default | 9214 | False | - | - |
-| Ethernet1.100 | P2P_LINK_TO_SITE2-LEAF1_Ethernet3.100_vrf_BLUE | - | 10.0.2.13/31 | BLUE | 9214 | False | - | - |
-| Ethernet1.101 | P2P_LINK_TO_SITE2-LEAF1_Ethernet3.101_vrf_RED | - | 10.0.2.13/31 | RED | 9214 | False | - | - |
+| Ethernet1 | P2P_site2-leaf1_Ethernet3 | - | 10.0.2.13/31 | default | 9214 | False | - | - |
+| Ethernet1.100 | P2P_site2-leaf1_Ethernet3.100_VRF_BLUE | - | 10.0.2.13/31 | BLUE | 9214 | False | - | - |
+| Ethernet1.101 | P2P_site2-leaf1_Ethernet3.101_VRF_RED | - | 10.0.2.13/31 | RED | 9214 | False | - | - |
 | Ethernet3 | ACME-MPLS-INC_mpls-site2-wan1_mpls-cloud_Ethernet7 | - | 172.18.20.2/24 | default | - | False | - | - |
-| Ethernet5 | DIRECT LAN HA LINK | - | 10.42.0.0/31 | default | 9194 | False | - | - |
+| Ethernet5 | WAN_HA_site2-wan2_Ethernet5 | 5 | *10.42.0.0/31 | **default | *9194 | *False | **- | **- |
+
+*Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE2-LEAF1_Ethernet3
+   description P2P_site2-leaf1_Ethernet3
    no shutdown
    mtu 9214
    no switchport
@@ -448,7 +451,7 @@ interface Ethernet1
    ip address 10.0.2.13/31
 !
 interface Ethernet1.100
-   description P2P_LINK_TO_SITE2-LEAF1_Ethernet3.100_vrf_BLUE
+   description P2P_site2-leaf1_Ethernet3.100_VRF_BLUE
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 100
@@ -457,7 +460,7 @@ interface Ethernet1.100
    ip address 10.0.2.13/31
 !
 interface Ethernet1.101
-   description P2P_LINK_TO_SITE2-LEAF1_Ethernet3.101_vrf_RED
+   description P2P_site2-leaf1_Ethernet3.101_VRF_RED
    no shutdown
    mtu 9214
    encapsulation dot1q vlan 101
@@ -473,7 +476,33 @@ interface Ethernet3
    ip address 172.18.20.2/24
 !
 interface Ethernet5
-   description DIRECT LAN HA LINK
+   description WAN_HA_site2-wan2_Ethernet5
+   no shutdown
+   mtu 9194
+   channel-group 5 mode active
+```
+
+### Port-Channel Interfaces
+
+#### Port-Channel Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
+| --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
+
+##### IPv4
+
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel5 | WAN_HA_site2-wan2_Port-Channel5 | - | 10.42.0.0/31 | default | 9194 | False | - | - |
+
+#### Port-Channel Interfaces Device Configuration
+
+```eos
+!
+interface Port-Channel5
+   description WAN_HA_site2-wan2_Port-Channel5
    no shutdown
    mtu 9194
    no switchport
@@ -831,7 +860,13 @@ ASN Notation: asplain
 
 | Peer Group | Activate | Encapsulation |
 | ---------- | -------- | ------------- |
-| WAN-OVERLAY-PEERS | True | default |
+| WAN-OVERLAY-PEERS | True | path-selection |
+
+##### EVPN Neighbors
+
+| Neighbor | Activate | Encapsulation |
+| -------- | -------- | ------------- |
+| 192.168.42.8 | True | path-selection |
 
 ##### EVPN DCI Gateway Summary
 
@@ -903,9 +938,9 @@ router bgp 65000
    neighbor 10.0.2.12 remote-as 65102
    neighbor 10.0.2.12 description site2-leaf1_Ethernet3
    neighbor 192.168.42.1 peer group WAN-OVERLAY-PEERS
-   neighbor 192.168.42.1 description pf1
+   neighbor 192.168.42.1 description pf1_Dps1
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
-   neighbor 192.168.42.2 description pf2
+   neighbor 192.168.42.2 description pf2_Dps1
    neighbor 192.168.42.8 remote-as 65000
    neighbor 192.168.42.8 description site2-wan2
    neighbor 192.168.42.8 route-reflector-client
@@ -919,7 +954,9 @@ router bgp 65000
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
       neighbor WAN-OVERLAY-PEERS activate
+      neighbor WAN-OVERLAY-PEERS encapsulation path-selection
       neighbor 192.168.42.8 activate
+      neighbor 192.168.42.8 encapsulation path-selection
       neighbor default next-hop-self received-evpn-routes route-type ip-prefix
    !
    address-family ipv4
@@ -1282,7 +1319,7 @@ application traffic recognition
 
 | Interface name | Public address | STUN server profile(s) |
 | -------------- | -------------- | ---------------------- |
-| Ethernet5 | - |  |
+| Port-Channel5 | - |  |
 
 ###### Static Peers
 
@@ -1341,7 +1378,7 @@ router path-selection
       ipsec profile DP-PROFILE
       flow assignment lan
       !
-      local interface Ethernet5
+      local interface Port-Channel5
       !
       peer static router-ip 192.168.42.8
          name site2-wan2

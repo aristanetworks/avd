@@ -46,11 +46,11 @@ router_bgp:
   - ip_address: 192.168.42.1
     peer_group: WAN-OVERLAY-PEERS
     peer: pf1
-    description: pf1
+    description: pf1_Dps1
   - ip_address: 192.168.42.2
     peer_group: WAN-OVERLAY-PEERS
     peer: pf2
-    description: pf2
+    description: pf2_Dps1
   - ip_address: 192.168.42.8
     peer: site2-wan2
     description: site2-wan2
@@ -115,6 +115,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
     neighbor_default:
@@ -123,6 +124,7 @@ router_bgp:
     neighbors:
     - ip_address: 192.168.42.8
       activate: true
+      encapsulation: path-selection
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -218,10 +220,11 @@ ethernet_interfaces:
   peer: site2-leaf1
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_SITE2-LEAF1_Ethernet3
+  description: P2P_site2-leaf1_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.2.13/31
@@ -230,10 +233,10 @@ ethernet_interfaces:
   peer_interface: Ethernet3.100
   peer_type: l3leaf
   vrf: BLUE
-  description: P2P_LINK_TO_SITE2-LEAF1_Ethernet3.100_vrf_BLUE
+  description: P2P_site2-leaf1_Ethernet3.100_VRF_BLUE
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 100
+  encapsulation_dot1q:
+    vlan: 100
   flow_tracker:
     hardware: FLOW-TRACKER
   mtu: 9214
@@ -243,10 +246,10 @@ ethernet_interfaces:
   peer_interface: Ethernet3.101
   peer_type: l3leaf
   vrf: RED
-  description: P2P_LINK_TO_SITE2-LEAF1_Ethernet3.101_vrf_RED
+  description: P2P_site2-leaf1_Ethernet3.101_VRF_RED
   shutdown: false
-  type: l3dot1q
-  encapsulation_dot1q_vlan: 101
+  encapsulation_dot1q:
+    vlan: 101
   flow_tracker:
     hardware: FLOW-TRACKER
   mtu: 9214
@@ -257,16 +260,30 @@ ethernet_interfaces:
   peer_interface: Ethernet7
   ip_address: 172.18.20.2/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: ACME-MPLS-INC_mpls-site2-wan1_mpls-cloud_Ethernet7
   flow_tracker:
     hardware: FLOW-TRACKER
 - name: Ethernet5
-  type: routed
+  peer_type: wan_ha_peer
+  peer_interface: Ethernet5
+  peer: site2-wan2
+  description: WAN_HA_site2-wan2_Ethernet5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  mtu: 9194
+port_channel_interfaces:
+- name: Port-Channel5
+  switchport:
+    enabled: false
   peer_type: l3_interface
+  peer_interface: Port-Channel5
   peer: site2-wan2
   shutdown: false
-  description: DIRECT LAN HA LINK
+  description: WAN_HA_site2-wan2_Port-Channel5
   ip_address: 10.42.0.0/31
   flow_tracker: null
   mtu: 9194
@@ -517,7 +534,7 @@ router_path_selection:
     id: 65535
     flow_assignment: lan
     local_interfaces:
-    - name: Ethernet5
+    - name: Port-Channel5
     static_peers:
     - router_ip: 192.168.42.8
       name: site2-wan2

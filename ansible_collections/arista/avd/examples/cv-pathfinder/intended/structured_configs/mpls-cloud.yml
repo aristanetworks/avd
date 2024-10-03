@@ -107,31 +107,36 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.18.100.1/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: pf1-Ethernet1
 - name: Ethernet2
   peer_type: l3_interface
   ip_address: 172.18.200.1/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: pf2-Ethernet1
 - name: Ethernet5
   peer_type: l3_interface
   ip_address: 172.18.10.1/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: site1-wan1-Ethernet3
 - name: Ethernet6
   peer_type: l3_interface
   ip_address: 172.18.11.1/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: site1-wan2-Ethernet3
 - name: Ethernet7
   peer_type: l3_interface
   ip_address: 172.18.20.1/24
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: site2-wan1-Ethernet3
 loopback_interfaces:
 - name: Loopback0

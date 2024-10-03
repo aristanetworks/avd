@@ -69,11 +69,13 @@ ethernet_interfaces:
   peer: site3-wan1
   peer_interface: Ethernet1
   peer_type: wan_router
-  description: SITE3-WAN1_Ethernet1
+  description: L2_site3-wan1_Ethernet1
   shutdown: false
-  type: switched
-  vlans: 42,666
-  mode: trunk
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 42,666
   spanning_tree_portfast: edge
   flow_tracker:
     sampled: FLOW-TRACKER
