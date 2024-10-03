@@ -138,7 +138,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: DC1_SVC3_Po7
+  description: L2_DC1_SVC3_Port-Channel7
   switchport:
     enabled: true
     mode: trunk
@@ -169,7 +169,7 @@ ethernet_interfaces:
   peer: DC1-SVC3A
   peer_interface: Ethernet8
   peer_type: l3leaf
-  description: DC1-SVC3A_Ethernet8
+  description: L2_DC1-SVC3A_Ethernet8
   shutdown: true
   channel_group:
     id: 1
@@ -178,7 +178,7 @@ ethernet_interfaces:
   peer: DC1-SVC3B
   peer_interface: Ethernet8
   peer_type: l3leaf
-  description: DC1-SVC3B_Ethernet8
+  description: L2_DC1-SVC3B_Ethernet8
   shutdown: true
   channel_group:
     id: 1

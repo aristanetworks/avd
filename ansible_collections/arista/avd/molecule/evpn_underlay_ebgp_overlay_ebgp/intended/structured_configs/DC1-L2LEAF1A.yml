@@ -135,7 +135,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: CUSTOM_DC1_LEAF2_Po7
+  description: CUSTOM_DC1-LEAF2A_Po7
   switchport:
     enabled: true
     mode: trunk

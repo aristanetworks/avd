@@ -45,13 +45,12 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   neighbors:
   - ip_address: 2.2.2.2
     peer_group: WAN-OVERLAY-PEERS
     peer: legacy-autovpn-rr3
-    description: legacy-autovpn-rr3
+    description: legacy-autovpn-rr3_Dps1
   vrfs:
   - name: default
     rd: 192.168.30.1:1

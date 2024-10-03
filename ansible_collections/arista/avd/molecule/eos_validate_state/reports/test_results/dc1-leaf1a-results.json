@@ -525,7 +525,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet1 - P2P_LINK_TO_DC1-SPINE1_Ethernet1 = 'up'"
+    "custom_field": "Interface Ethernet1 - P2P_dc1-spine1_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -534,7 +534,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet2 - P2P_LINK_TO_DC1-SPINE2_Ethernet1 = 'up'"
+    "custom_field": "Interface Ethernet2 - P2P_dc1-spine2_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -570,7 +570,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet6 - P2P_LINK_TO_DC1-WAN1_Ethernet1 = 'up'"
+    "custom_field": "Interface Ethernet6 - P2P_dc1-wan1_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -579,7 +579,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet7 - P2P_LINK_TO_DC1-WAN2_Ethernet1 = 'up'"
+    "custom_field": "Interface Ethernet7 - P2P_dc1-wan2_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -588,7 +588,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Ethernet8 - DC1-LEAF1C_Ethernet1 = 'up'"
+    "custom_field": "Interface Ethernet8 - L2_dc1-leaf1c_Ethernet1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -615,7 +615,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Loopback10 - VRF10_VTEP_DIAGNOSTICS = 'up'"
+    "custom_field": "Interface Loopback10 - DIAG_VRF_VRF10 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -624,7 +624,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Loopback11 - VRF11_VTEP_DIAGNOSTICS = 'up'"
+    "custom_field": "Interface Loopback11 - DIAG_VRF_VRF11 = 'up'"
   },
   {
     "name": "dc1-leaf1a",
@@ -651,7 +651,7 @@
       "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
-    "custom_field": "Interface Port-Channel8 - DC1-LEAF1C_Po1 = 'up'"
+    "custom_field": "Interface Port-Channel8 - L2_dc1-leaf1c_Port-Channel1 = 'up'"
   },
   {
     "name": "dc1-leaf1a",

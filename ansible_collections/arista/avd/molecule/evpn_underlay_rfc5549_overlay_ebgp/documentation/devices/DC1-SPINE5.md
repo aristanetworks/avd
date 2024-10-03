@@ -219,38 +219,38 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-LEAF3A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-LEAF3B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-LEAF3A_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-LEAF3B_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_DC1-LEAF3A_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_DC1-LEAF3B_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_DC1-LEAF3A_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_DC1-LEAF3B_Ethernet2 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-LEAF3A_Ethernet1
+   description P2P_DC1-LEAF3A_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-LEAF3B_Ethernet1
+   description P2P_DC1-LEAF3B_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-LEAF3A_Ethernet2
+   description P2P_DC1-LEAF3A_Ethernet2
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-LEAF3B_Ethernet2
+   description P2P_DC1-LEAF3B_Ethernet2
    no shutdown
    mtu 1500
    no switchport
@@ -434,10 +434,10 @@ router bgp 65001
    neighbor interface Ethernet4 peer-group UNDERLAY_PEERS remote-as 65106
    neighbor 2001:1::c peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::c remote-as 65106
-   neighbor 2001:1::c description DC1-LEAF3A
+   neighbor 2001:1::c description DC1-LEAF3A_Loopback0
    neighbor 2001:1::d peer group EVPN-OVERLAY-PEERS
    neighbor 2001:1::d remote-as 65106
-   neighbor 2001:1::d description DC1-LEAF3B
+   neighbor 2001:1::d description DC1-LEAF3B_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

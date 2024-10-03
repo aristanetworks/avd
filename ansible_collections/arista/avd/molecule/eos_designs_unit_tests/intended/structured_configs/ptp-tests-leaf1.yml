@@ -41,7 +41,7 @@ router_bgp:
   - ip_address: 10.254.1.97
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: ptp-tests-leaf2
-    description: ptp-tests-leaf2
+    description: ptp-tests-leaf2_Vlan4093
   - ip_address: 10.254.2.0
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65200'
@@ -55,7 +55,7 @@ router_bgp:
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: ptp-tests-spine1
-    description: ptp-tests-spine1
+    description: ptp-tests-spine1_Loopback0
     remote_as: '65200'
   redistribute_routes:
   - source_protocol: connected
@@ -79,10 +79,11 @@ router_bgp:
     router_id: 10.254.1.1
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.254.1.97
       peer_group: MLAG-IPv4-UNDERLAY-PEER
-      description: ptp-tests-leaf2
+      description: ptp-tests-leaf2_Vlan3000
   vlans:
   - id: 11
     tenant: PTP
@@ -217,7 +218,7 @@ port_channel_interfaces:
     transport: ipv4
     enable: true
 - name: Port-Channel11
-  description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Po1
+  description: L2_ptp-tests-l2leaf1-ptp-disabled_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -226,7 +227,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 11
 - name: Port-Channel12
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Po1
+  description: L2_ptp-tests-l2leaf2-ptp-enabled_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -244,7 +245,7 @@ port_channel_interfaces:
     transport: ipv4
     enable: true
 - name: Port-Channel14
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Po1
+  description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -294,7 +295,7 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet1
+  description: P2P_ptp-tests-spine1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -313,7 +314,7 @@ ethernet_interfaces:
   peer: ptp-tests-spine1
   peer_interface: Ethernet2
   peer_type: spine
-  description: P2P_LINK_TO_PTP-TESTS-SPINE1_Ethernet2
+  description: P2P_ptp-tests-spine1_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -332,7 +333,7 @@ ethernet_interfaces:
   peer: ptp-tests-l2leaf1-ptp-disabled
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF1-PTP-DISABLED_Ethernet1
+  description: L2_ptp-tests-l2leaf1-ptp-disabled_Ethernet1
   shutdown: false
   channel_group:
     id: 11
@@ -341,7 +342,7 @@ ethernet_interfaces:
   peer: ptp-tests-l2leaf2-ptp-enabled
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED_Ethernet1
+  description: L2_ptp-tests-l2leaf2-ptp-enabled_Ethernet1
   shutdown: false
   channel_group:
     id: 12
@@ -350,7 +351,7 @@ ethernet_interfaces:
   peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: PTP-TESTS-L2LEAF2-PTP-ENABLED-UPLINK-DISABLED_Ethernet1
+  description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Ethernet1
   shutdown: false
   channel_group:
     id: 14
@@ -446,6 +447,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -462,6 +471,10 @@ prefix_lists:
     action: permit 10.254.1.0/27 eq 32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.96/31
 router_bfd:
   multihop:
     interval: 300

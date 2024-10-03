@@ -71,13 +71,12 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   neighbors:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.6
     peer: cv-pathfinder-edge3A
     description: cv-pathfinder-edge3A
@@ -165,9 +164,10 @@ ethernet_interfaces:
   peer_type: l3_interface
   peer: cv-pathfinder-edge3A
   shutdown: false
-  description: DIRECT LAN HA LINK
+  description: WAN_HA_cv-pathfinder-edge3A_Ethernet52
   ip_address: 10.10.10.2/24
-  flow_tracker: null
+  flow_tracker:
+    hardware: FLOW-TRACKER
   mtu: 9100
 loopback_interfaces:
 - name: Loopback0

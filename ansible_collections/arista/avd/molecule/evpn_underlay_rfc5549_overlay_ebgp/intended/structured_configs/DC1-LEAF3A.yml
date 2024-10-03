@@ -63,7 +63,7 @@ router_bgp:
     peer_group: MLAG_PEER
     peer: DC1-LEAF3B
     remote_as: '65106'
-    description: DC1-LEAF3B
+    description: DC1-LEAF3B_Vlan4093
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
     remote_as: '65001'
@@ -89,7 +89,7 @@ router_bgp:
   - ip_address: 2001:1::5
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-SPINE5
-    description: DC1-SPINE5
+    description: DC1-SPINE5_Loopback0
     remote_as: '65001'
   vrfs:
   - name: Tenant_A_APP_Zone
@@ -106,11 +106,12 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3011
       peer_group: MLAG_PEER
       remote_as: '65106'
-      description: DC1-LEAF3B
+      description: DC1-LEAF3B_Vlan3011
   - name: Tenant_A_DB_Zone
     rd: 192.168.255.12:13
     route_targets:
@@ -125,11 +126,12 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3012
       peer_group: MLAG_PEER
       remote_as: '65106'
-      description: DC1-LEAF3B
+      description: DC1-LEAF3B_Vlan3012
   - name: Tenant_A_OP_Zone
     rd: 192.168.255.12:10
     route_targets:
@@ -144,11 +146,12 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3009
       peer_group: MLAG_PEER
       remote_as: '65106'
-      description: DC1-LEAF3B
+      description: DC1-LEAF3B_Vlan3009
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.12:11
     route_targets:
@@ -163,11 +166,12 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3010
       peer_group: MLAG_PEER
       remote_as: '65106'
-      description: DC1-LEAF3B
+      description: DC1-LEAF3B_Vlan3010
   - name: Tenant_B_OP_Zone
     rd: 192.168.255.12:20
     route_targets:
@@ -182,11 +186,12 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan3019
       peer_group: MLAG_PEER
       remote_as: '65106'
-      description: DC1-LEAF3B
+      description: DC1-LEAF3B_Vlan3019
   - name: Tenant_C_OP_Zone
     rd: 192.168.255.12:30
     route_targets:
@@ -201,11 +206,12 @@ router_bgp:
     router_id: 192.168.255.12
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbor_interfaces:
     - name: Vlan2
       peer_group: MLAG_PEER
       remote_as: '65106'
-      description: DC1-LEAF3B
+      description: DC1-LEAF3B_Vlan2
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.12:12
@@ -658,7 +664,7 @@ ethernet_interfaces:
   peer: DC1-SPINE5
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE5_Ethernet1
+  description: P2P_DC1-SPINE5_Ethernet1
   shutdown: false
   mtu: 1500
   switchport:
@@ -668,7 +674,7 @@ ethernet_interfaces:
   peer: DC1-SPINE5
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE5_Ethernet3
+  description: P2P_DC1-SPINE5_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -710,7 +716,7 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.254.12/32
 - name: Loopback100
-  description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_Tenant_A_OP_Zone
   shutdown: false
   vrf: Tenant_A_OP_Zone
   ip_address: 10.255.1.12/32
