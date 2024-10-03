@@ -191,7 +191,8 @@ class EthernetInterfacesMixin(UtilsMixin):
                     raise AristaAvdMissingVariableError(message=msg)
 
                 profile = self.shared_utils.get_merged_port_profile(
-                    profile_name, context=f"{connected_endpoint['type']}[{connected_endpoint['name']}].adapters[{index}].port_channel.lacp_fallback.individual"
+                    profile_name,
+                    context=f"{connected_endpoint['type']}[name={connected_endpoint['name']}].adapters[{index}].port_channel.lacp_fallback.individual",
                 )
 
                 ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)

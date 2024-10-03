@@ -12,12 +12,12 @@ class AristaAvdError(Exception):
         path = ""
         for index, elem in enumerate(json_path):
             if isinstance(elem, int):
-                path += f"[{elem!s}]"
+                path += f"[{elem}]"
             else:
                 if index == 0:
                     path += elem
                     continue
-                path += f".{elem!s}"
+                path += f".{elem}"
         return path
 
 

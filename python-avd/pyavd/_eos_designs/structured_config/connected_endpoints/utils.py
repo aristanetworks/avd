@@ -39,7 +39,7 @@ class UtilsMixin:
                 filtered_adapters = []
                 for adapter_index, adapter in enumerate(connected_endpoint["adapters"]):
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(
-                        adapter, context=f"{connected_endpoints_key['key']}[{connected_endpoint['name']}].adapters[{adapter_index}]"
+                        adapter, context=f"{connected_endpoints_key['key']}[name={connected_endpoint['name']}].adapters[{adapter_index}]"
                     )
 
                     if self.shared_utils.hostname not in adapter_settings.get("switches", []):
