@@ -637,7 +637,7 @@ keys:
 
                 The keys will be generated as a hash of `salt_<hostname>_<policy_name>`.
 
-                Since this salt can be used to deduct the encryption key, it is recommeneded
+                Since this salt can be used to deduct the encryption key, it is recommended
                 to use vault.'
             domain_name:
               type: str
@@ -1435,17 +1435,17 @@ keys:
             type: str
             default: first_id
             description: "This variable defines the Multi-chassis Link Aggregation
-              (MLAG) algorithm used.\nEach MLAG link will have a /31* subnet with
+              (MLAG) algorithm used.\nEach MLAG link will have a /31\xB9 subnet with
               each subnet allocated from the relevant MLAG pool via a calculated offset.\nThe
               offset is calculated using one of the following algorithms:\n  - first_id:
               `(mlag_primary_id - 1) * 2` where `mlag_primary_id` is the ID of the
               first node defined under the node_group.\n    This allocation method
-              will skip every other /31* subnet making it less space efficient than
-              `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group to
-              have a node with an odd ID and a node with an even ID.\n  - same_subnet:
+              will skip every other /31\xB9 subnet making it less space efficient
+              than `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group
+              to have a node with an odd ID and a node with an even ID.\n  - same_subnet:
               the offset will always be zero.\n    This allocation method will cause
-              every MLAG link to be addressed with the same /31* subnet.\n\\* - The
-              prefix length is configurable with a default of /31."
+              every MLAG link to be addressed with the same /31\xB9 subnet.\n\xB9
+              The prefix length is configurable with a default of /31."
             valid_values:
             - first_id
             - odd_id
@@ -4863,26 +4863,27 @@ keys:
               or destined to the WAN route servers.'
       policies:
         type: list
-        description: "List of virtual toplogies policies.\n\nFor Legacy AutoVPN, each
-          item in the list creates:\n  * one policy with:\n      * one `match` entry
-          per `application_virtual_topologies` item\n        they are indexed using
-          `10 * <list_index>` where `list_index` starts at `1`.\n      * one `default-match`\n
-          \ * one load-balance policy per `application_virtual_topologies` and one
-          for the `default_virtual_topology`.\n  * if the policy is associated with
-          the default VRF, a special control-plane rule is injected\n    in the policy
-          with index `1` referring to a control-plane load-balance policy as defined
-          under\n    `control_plane_virtual_topology` or if not set, the default one.\n\nFor
-          CV Pathfinder, each item in the list creates:\n  * one policy with:\n      *
-          one `match` entry per `application_virtual_topologies` item ordered as in
-          the data.\n      * one last match entry for the `default` application-profile
-          using `default_virtual_topology` information.\n  * one profile per `application_virtual_topologies`
-          item.\n  * one profile for the `default_virtual_topology`.\n  * one load-balance
-          policy per `application_virtual_topologies`.\n  * one load_balance policy
-          for the `default_virtual_topology`.\n  * if the policy is associated with
-          the default VRF, a special control-plane profile is configured\n    and
-          injected first in the policy assigned to the `default` VRF. This profile
-          points to a\n    control-plane load-balance policy as defined under `control_plane_virtual_topology`
-          or if not set, the default one."
+        description: "List of virtual topologies policies.\n\nFor Legacy AutoVPN,
+          each item in the list creates:\n  * one policy with:\n      * one `match`
+          entry per `application_virtual_topologies` item\n        they are indexed
+          using `10 * <list_index>` where `list_index` starts at `1`.\n      * one
+          `default-match`\n  * one load-balance policy per `application_virtual_topologies`
+          and one for the `default_virtual_topology`.\n  * if the policy is associated
+          with the default VRF, a special control-plane rule is injected\n    in the
+          policy with index `1` referring to a control-plane load-balance policy as
+          defined under\n    `control_plane_virtual_topology` or if not set, the default
+          one.\n\nFor CV Pathfinder, each item in the list creates:\n  * one policy
+          with:\n      * one `match` entry per `application_virtual_topologies` item
+          ordered as in the data.\n      * one last match entry for the `default`
+          application-profile using `default_virtual_topology` information.\n  * one
+          profile per `application_virtual_topologies` item.\n  * one profile for
+          the `default_virtual_topology`.\n  * one load-balance policy per `application_virtual_topologies`.\n
+          \ * one load_balance policy for the `default_virtual_topology`.\n  * if
+          the policy is associated with the default VRF, a special control-plane profile
+          is configured\n    and injected first in the policy assigned to the `default`
+          VRF. This profile points to a\n    control-plane load-balance policy as
+          defined under `control_plane_virtual_topology` or if not set, the default
+          one."
         primary_key: name
         items:
           type: dict
@@ -5021,8 +5022,6 @@ dynamic_keys:
   custom_node_type_keys.key:
     $ref: eos_designs#/$defs/node_type
     type: dict
-    documentation_options:
-      hide_keys: true
   network_services_keys.name:
     $ref: eos_designs#/$defs/network_services
     type: list

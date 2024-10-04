@@ -217,7 +217,7 @@ class UtilsWanMixin:
             load_balance_policy = self._generate_wan_load_balance_policy(load_balance_policy_name, default_virtual_topology, context_path)
             if not load_balance_policy:
                 msg = (
-                    f"The `default_virtual_topology` path-groups configuration for `wan_virtual_toplogies.policies[{policy['name']}]` produces "
+                    f"The `default_virtual_topology` path-groups configuration for `wan_virtual_topologies.policies[{policy['name']}]` produces "
                     "an empty load-balancing policy. Make sure at least one path-group present on the device is allowed in the "
                     "`default_virtual_topology` path-groups."
                 )
@@ -239,7 +239,7 @@ class UtilsWanMixin:
         if not matches and not default_match:
             # The policy is empty but should be assigned to a VRF
             msg = (
-                f"The policy `wan_virtual_toplogies.policies[{policy['name']}]` cannot match any traffic but is assigned to a VRF. "
+                f"The policy `wan_virtual_topologies.policies[{policy['name']}]` cannot match any traffic but is assigned to a VRF. "
                 "Make sure at least one path-group present on the device is used in the policy."
             )
             raise AristaAvdError(

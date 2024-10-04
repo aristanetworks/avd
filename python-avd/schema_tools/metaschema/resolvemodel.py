@@ -11,20 +11,26 @@ from deepmerge import conservative_merger
 from schema_tools.store import create_store
 
 
-def merge_schema_from_ref(schema: dict) -> dict:
+def merge_schema_from_ref(schema: dict, resolve_hide_keys: bool | None = None) -> dict:
     """
     Returns a copy of the schema with any $ref resolved.
 
     If the referenced schema also has a $ref, that too will be resolved.
 
     Any child schemas will _not_ be resolved.
+
+    By setting "resolve_hide_keys: False" it is possible to prevent dicts with hide_keys set in the schema from being resolved.
     """
     if "$ref" not in schema:
         return schema
 
+    if schema.get("documentation_options", {}).get("hide_keys") and resolve_hide_keys is False:
+        # Do not resolve a dict ref if it has hide_keys and resolve_hide_keys is false
+        return schema
+
     schema = deepcopy(schema)
     ref = schema.pop("$ref")
-    ref_schema = merge_schema_from_ref(get_schema_from_ref(ref))
+    ref_schema = merge_schema_from_ref(get_schema_from_ref(ref), resolve_hide_keys)
     if ref_schema["type"] != schema["type"]:
         # TODO: Consider if this should be a pyavd specific error
         msg = (
@@ -43,7 +49,7 @@ def get_schema_from_ref(ref: str) -> dict:
 
     The ref is in the style "schema_name#/path/to/schema/element"
     """
-    schema_store = create_store()
+    schema_store = create_store(load_from_yaml=True)
 
     if "#" not in ref:
         msg = "Missing # in ref"
@@ -51,7 +57,7 @@ def get_schema_from_ref(ref: str) -> dict:
 
     schema_name, ref = ref.split("#", maxsplit=1)
     if schema_name not in schema_store:
-        msg = f"Invalid schema name '{schema_name}'"
+        msg = f"Invalid schema name '{schema_name}' from $ref '{ref}'"
         raise KeyError(msg)
 
     schema = schema_store[schema_name]

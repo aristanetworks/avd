@@ -9,5 +9,6 @@ dynamic_keys:
   "custom_node_type_keys.key":
     $ref: "eos_designs#/$defs/node_type"
     type: dict
-    documentation_options:
-      hide_keys: true
+    # TODO: This breaks the class logic, so we need to figure out how to build this better.
+    # documentation_options:
+    #   hide_keys: true
