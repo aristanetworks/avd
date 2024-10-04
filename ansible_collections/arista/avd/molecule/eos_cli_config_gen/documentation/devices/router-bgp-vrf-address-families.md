@@ -172,12 +172,12 @@ router bgp 65001
          neighbor aa::2 rcf out VRF_AFIPV6_RCF_OUT()
          network aa::/64
          no bgp redistribute-internal
-      redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
-      redistribute isis include leaked
-      redistribute ospfv3 match external
-      redistribute ospfv3 match internal include leaked
-      redistribute ospfv3 match nssa-external
-      redistribute static route-map VRF_AFIPV6_RM_STATIC
+         redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
+         redistribute isis include leaked
+         redistribute ospfv3 match internal include leaked
+         redistribute ospfv3 match external
+         redistribute ospfv3 match nssa-external
+         redistribute static route-map VRF_AFIPV6_RM_STATIC
       !
       address-family ipv6 multicast
          bgp missing-policy direction in action deny
