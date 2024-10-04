@@ -1,0 +1,24 @@
+{#
+ Copyright (c) 2023-2024 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - recirc interfaces #}
+{% for recirc_interface in recirc_interfaces | arista.avd.natural_sort('name') %}
+!
+interface {{ recirc_interface.name }}
+{%     if recirc_interface.description is arista.avd.defined %}
+   description {{ recirc_interface.description }}
+{%     endif %}
+{%     if recirc_interface.shutdown is arista.avd.defined(true) %}
+   shutdown
+{%     elif recirc_interface.shutdown is arista.avd.defined(false) %}
+   no shutdown
+{%     endif %}
+{%     if recirc_interface.recirculation_features is arista.avd.defined %}
+   switchport recirculation features {{ recirc_interface.recirculation_features }}
+{%     endif %}
+{%     if  recirc_interface.eos_cli is arista.avd.defined %}
+   {{ recirc_interface.eos_cli | indent(3, false) }}
+{%     endif %}
+{% endfor %}
