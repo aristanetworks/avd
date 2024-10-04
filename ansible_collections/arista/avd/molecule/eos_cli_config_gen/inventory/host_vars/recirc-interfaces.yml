@@ -1,0 +1,15 @@
+---
+### Recirculation Interfaces ###
+recirc_interfaces:
+  - name: Recirc-Channel1
+    description: Test recirc interface
+    recirculation_features: cpu-mirror
+    eos_cli: |
+      comment
+      Comment created from eos_cli under recirc_interfaces.Recirc-Channel1
+      EOF
+
+  - name: Recirc-Channel2
+    description: Test recirc interface with shutdown
+    shutdown: true
+    recirculation_features: vxlan
