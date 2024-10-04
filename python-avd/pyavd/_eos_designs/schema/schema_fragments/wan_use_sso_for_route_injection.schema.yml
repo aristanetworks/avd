@@ -10,7 +10,7 @@ keys:
     documentation_options:
       table: wan-settings
     description: |-
-      In AVD 5.0.0, tags are used instead of SOO to manage which routes are
+      By default, route tags are used instead to mark which routes are exported to EVPN.
       injected.
       Set this to true to revert to AVD 4.x behavior.
     type: bool
