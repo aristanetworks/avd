@@ -418,9 +418,9 @@ router ospf 100
    passive-interface default
    no passive-interface Vlan4094
    no passive-interface Ethernet5
-   max-lsa 12000
-   redistribute static
    redistribute connected
+   redistribute static
+   max-lsa 12000
 ```
 
 ## Multicast

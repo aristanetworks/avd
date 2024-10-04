@@ -660,8 +660,8 @@ router ospf 100
    passive-interface default
    no passive-interface Vlan4093
    no passive-interface Ethernet52/1
-   max-lsa 12000
    redistribute connected
+   max-lsa 12000
 ```
 
 ## Multicast

@@ -412,6 +412,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router ospf 101
    router-id 192.168.255.3
+   bfd default
    passive-interface default
    no passive-interface Ethernet1
    no passive-interface Ethernet2
@@ -420,7 +421,6 @@ router ospf 101
    no passive-interface Ethernet5
    no passive-interface Ethernet6
    no passive-interface Ethernet7
-   bfd default
    max-lsa 12000
 ```
 

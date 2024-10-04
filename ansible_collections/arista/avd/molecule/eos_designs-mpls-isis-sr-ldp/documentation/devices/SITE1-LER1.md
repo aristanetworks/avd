@@ -535,8 +535,8 @@ router ospf 19 vrf TENANT_B_INTRA
    router-id 123.1.1.0
    passive-interface default
    no passive-interface Ethernet6.10
-   max-lsa 10000
    redistribute bgp
+   max-lsa 10000
 ```
 
 ### Router ISIS
