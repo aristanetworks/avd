@@ -101,7 +101,7 @@ ethernet_interfaces:
   peer: AUTO_NODE_TYPE_SPINE01
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE01_Ethernet1
+  description: P2P_AUTO_NODE_TYPE_SPINE01_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -111,7 +111,7 @@ ethernet_interfaces:
   peer: AUTO_NODE_TYPE_SPINE02
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_AUTO_NODE_TYPE_SPINE02_Ethernet1
+  description: P2P_AUTO_NODE_TYPE_SPINE02_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:

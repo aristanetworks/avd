@@ -632,7 +632,7 @@ interface Ethernet44
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel7 | CUSTOM_DC1-L2LEAF2A_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
 | Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
@@ -661,7 +661,7 @@ interface Port-Channel5
    switchport
 !
 interface Port-Channel7
-   description CUSTOM_DC1_L2LEAF2_Po1
+   description CUSTOM_DC1-L2LEAF2A_Po1
    no shutdown
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
@@ -1502,7 +1502,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3011
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.12:13
@@ -1512,7 +1512,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3012
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.12:10
@@ -1522,7 +1522,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3009
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.12:14
@@ -1534,7 +1534,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3013
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
       redistribute static
    !
    vrf Tenant_A_WEB_Zone
@@ -1545,7 +1545,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3010
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.12:20
@@ -1555,7 +1555,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3019
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.12:21
@@ -1565,7 +1565,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3020
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.12:30
@@ -1575,7 +1575,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan2
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.12:31
@@ -1585,7 +1585,7 @@ router bgp 65103
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
       neighbor 10.255.252.7 description DC1-SVC3B_Vlan3030
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -1663,6 +1663,12 @@ no ip igmp snooping vlan 161
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.255.252.6/31 |
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -1670,6 +1676,9 @@ no ip igmp snooping vlan 161
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 10.255.252.6/31
 ```
 
 ### Route-maps
@@ -1681,6 +1690,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -1694,6 +1710,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

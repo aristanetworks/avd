@@ -1035,6 +1035,42 @@ keys:
             required: true
             description: Regex needs to match full hostname (i.e. is bounded by ^
               and $ elements).
+  default_underlay_p2p_ethernet_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The default description or description template to be used on L3
+      point-to-point ethernet interfaces.\nThe interfaces using this are the routed
+      uplinks and `p2p_links` defined under `l3_edge` or `core_interfaces`.\nThis
+      can be a template using the format string syntax.\nThe available template fields
+      are:\n  - `peer`: The name of the peer.\n  - `interface`: The local interface
+      name.\n  - `peer_interface`: The interface on the peer.\n  - `vrf`: The name
+      of the VRF if set (Only applicable for `uplink_type: p2p-vrfs`).\n\nBy default
+      the description is templated from the name and interface of the peer."
+    default: P2P_{peer}_{peer_interface}{vrf?<_VRF_}
+  default_underlay_p2p_port_channel_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The default description or description template to be used on L3
+      point-to-point port-channel interfaces.\nThe port-channels using this are `p2p_links`
+      defined under `l3_edge` or `core_interfaces`.\nThis can be a template using
+      the format string syntax.\nThe available template fields are:\n  - `peer`: The
+      name of the peer.\n  - `interface`: The local interface name.\n  - `peer_interface`:
+      The interface on the peer.\n  - `port_channel_id`: The local port-channel ID.\n
+      \ - `peer_port_channel_id`: The ID of the port-channel on the peer.\n\nBy default
+      the description is templated from the name and interface of the peer."
+    default: P2P_{peer}_{peer_interface}
+  default_vrf_diag_loopback_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The default description or description template to be used on VRF
+      diagnostic loopback interfaces.\nThis can be a template using the format string
+      syntax.\nThe available template fields are:\n  - `interface`: The Loopback interface
+      name.\n  - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nBy default
+      the description is templated from the VRF name."
+    default: DIAG_VRF_{vrf}
   design:
     documentation_options:
       table: design
@@ -3457,6 +3493,7 @@ keys:
     documentation_options:
       table: ptp_settings
     type: list
+    primary_key: profile
     items:
       type: dict
       keys:
@@ -3500,27 +3537,27 @@ keys:
           valid_values:
           - ipv4
     default:
-    - announce:
+    - profile: aes67-r16-2016
+      announce:
         interval: 0
         timeout: 3
       delay_req: -3
-      profile: aes67-r16-2016
       sync_message:
         interval: -3
       transport: ipv4
-    - announce:
+    - profile: smpte2059-2
+      announce:
         interval: -2
         timeout: 3
       delay_req: -4
-      profile: smpte2059-2
       sync_message:
         interval: -4
       transport: ipv4
-    - announce:
+    - profile: aes67
+      announce:
         interval: 2
         timeout: 3
       delay_req: 0
-      profile: aes67
       sync_message:
         interval: 0
       transport: ipv4
@@ -3534,11 +3571,9 @@ keys:
         type: bool
       profile:
         type: str
-        valid_values:
-        - aes67
-        - smpte2059-2
-        - aes67-r16-2016
         default: aes67-r16-2016
+        description: "Default available profiles are:\n  - \"aes67\"\n  - \"aes67-r16-2016\"\n
+          \ - \"smpte2059-2\""
       domain:
         type: int
         $ref: eos_cli_config_gen#/keys/ptp/keys/domain
@@ -4191,6 +4226,35 @@ keys:
       table: isis-settings
     description: Default -> "EVPN_UNDERLAY" for l3ls, "CORE" for mpls.
     type: str
+  underlay_l2_ethernet_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The description or description template to be used on L2 ethernet
+      interfaces.\nThe interfaces using this are the member interfaces of port-channel
+      uplinks.\nThis can be a template using the format string syntax.\nThe available
+      template fields are:\n  - `peer`: The name of the peer.\n  - `interface`: The
+      local interface name.\n  - `peer_interface`: The interface on the peer.\n\nBy
+      default the description is templated from the hostname and interface of the
+      peer."
+    default: L2_{peer}_{peer_interface}
+  underlay_l2_port_channel_description:
+    type: str
+    documentation_options:
+      table: fabric-settings
+    description: "The description or description template to be used on L2 port-channel
+      interfaces.\nThe interfaces using this are port-channel uplinks.\nThis can be
+      a template using the format string syntax.\nThe available template fields are:\n
+      \ - `peer`: The name of the peer.\n  - `interface`: The local interface name.\n
+      \ - `peer_interface`: The interface on the peer.\n  - `port_channel_id`: The
+      local port-channel ID.\n  - `peer_port_channel_id`: The ID of the port-channel
+      on the peer.\n  - `peer_node_group`: The node group of the peer if the peer
+      is an MLAG member or running EVPN A/A.\n  - `peer_node_group_or_peer`: Helper
+      alias of the peer_node_group or peer.\n  - `peer_node_group_or_uppercase_peer`:
+      Helper alias of the peer_node_group or peer hostname in uppercase.\n\nBy default
+      the description is templated from the peer's node group (for MLAG or EVPN A/A)
+      or hostname and port-channel interface of the peer."
+    default: L2_{peer_node_group_or_peer}_{peer_interface}
   underlay_multicast:
     documentation_options:
       table: fabric-settings
@@ -5134,10 +5198,8 @@ $defs:
           profile:
             type: str
             default: aes67-r16-2016
-            valid_values:
-            - aes67
-            - aes67-r16-2016
-            - smpte2059-2
+            description: "Default available profiles are:\n  - \"aes67\"\n  - \"aes67-r16-2016\"\n
+              \ - \"smpte2059-2\""
       sflow:
         type: bool
         description: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints`
@@ -5868,16 +5930,16 @@ $defs:
           documentation_options:
             table: network-services-vrfs-settings
           type: bool
-          default: true
+          default: false
           description: 'Redistribute the connected subnet for the MLAG iBGP peering
             per VRF into overlay BGP.
 
-            By default the iBGP peering subnet is redistributed into the overlay routing
-            protocol per VRF.
+            By default the iBGP peering subnet is not redistributed into the overlay
+            routing protocol per VRF.
 
-            Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a tenant will
-            change this default to prevent redistribution of these subnets for all
-            VRFs in the tenant.
+            Setting `redistribute_mlag_ibgp_peering_vrfs: true` under a tenant will
+            change this default to redistribution of these subnets for all VRFs in
+            the tenant.
 
             This setting can be overridden per VRF.
 
@@ -6281,14 +6343,14 @@ $defs:
                   '
               redistribute_mlag_ibgp_peering_vrfs:
                 type: bool
-                default: true
+                default: false
                 description: 'Redistribute the connected subnet for the MLAG iBGP
                   peering per VRF into overlay BGP.
 
-                  By default the iBGP peering subnet is redistributed into the overlay
-                  routing protocol per VRF.
+                  By default the iBGP peering subnet is not redistributed into the
+                  overlay routing protocol per VRF.
 
-                  Setting `redistribute_mlag_ibgp_peering_vrfs: false` under a VRF
+                  Setting `redistribute_mlag_ibgp_peering_vrfs: true` under a VRF
                   will change this default and/or override the tenant-wide setting.
 
                   '
@@ -6326,7 +6388,13 @@ $defs:
                     max: 2100
                   loopback_description:
                     type: str
-                    description: Provide a custom description for loopback interface.
+                    description: "Provide a custom description or description template
+                      to be used on the VRF diagnostic loopback interface.\nThis can
+                      be a template using the format string syntax.\nThe available
+                      template fields are:\n  - `interface`: The Loopback interface
+                      name.\n  - `vrf`: The VRF name.\n  - `tenant`: The tenant name.\n\nThe
+                      default description is set by `default_vrf_diag_loopback_description`.\nBy
+                      default the description is templated from the VRF name."
                   loopback_ip_range:
                     type: str
                     description: 'IPv4_address/Mask.
@@ -8787,10 +8855,8 @@ $defs:
                 default: false
               profile:
                 type: str
-                valid_values:
-                - aes67
-                - smpte2059-2
-                - aes67-r16-2016
+                description: "Default available profiles are:\n  - \"aes67\"\n  -
+                  \"aes67-r16-2016\"\n  - \"smpte2059-2\""
                 default: aes67-r16-2016
               mlag:
                 description: Configure PTP on the MLAG peer-link port-channel when
@@ -9093,6 +9159,18 @@ $defs:
                 description: 'Number of parallel links towards HA switches.
 
                   Can be used to reserve IP addresses for future parallel HA links.'
+              port_channel_id:
+                type: int
+                convert_types:
+                - str
+                description: Port-channel ID to use for direct HA.
+              use_port_channel_for_direct_ha:
+                type: bool
+                default: true
+                description: 'Enable or disable using a port-channel interface for
+                  direct HA when there is only one interface.
+
+                  This feature was introduced in EOS 4.33.0F.'
               flow_tracking:
                 type: dict
                 $ref: eos_designs#/$defs/flow_tracking_link
@@ -9473,9 +9551,16 @@ $defs:
             description: The values can be like ["node_a_as", "node_b_as"].
         descriptions:
           type: list
-          description: Interface description.
+          description: Interface descriptions.
           items:
             type: str
+            description: "Description or description template to be used on the ethernet
+              interface.\nThis can be a template using the format string syntax.\nThe
+              available template fields are:\n  - `peer`: The name of the peer.\n
+              \ - `interface`: The local interface name.\n  - `peer_interface`: The
+              interface on the peer.\n\nThe default description is set by `default_underlay_p2p_ethernet_description`.\nBy
+              default the description is templated from the name and interface of
+              the peer."
         include_in_underlay_protocol:
           type: bool
           default: true
@@ -9548,6 +9633,18 @@ $defs:
           description: Port-channel parameters.
           type: dict
           keys:
+            description:
+              type: str
+              description: "Description or description template to be used on the
+                port-channel interface.\nThis can be a template using the format string
+                syntax.\nThe available template fields are:\n  - `peer`: The name
+                of the peer.\n  - `interface`: The local port-channel interface name.\n
+                \ - `peer_interface`: The port-channel interface on the peer.\n  -
+                `port_channel_id`: The local port-channel ID.\n  - `peer_port_channel_id`:
+                The ID of the port-channel on the peer.\n\nFalls back to the description
+                on the `p2p_link` if set. Otherwise default description is set by
+                `default_underlay_p2p_port_channel_description`.\nBy default the description
+                is templated from the name and port_channel interface of the peer."
             mode:
               type: str
               default: active

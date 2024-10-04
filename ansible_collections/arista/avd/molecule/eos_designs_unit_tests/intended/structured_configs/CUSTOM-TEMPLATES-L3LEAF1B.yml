@@ -76,6 +76,7 @@ router_bgp:
     router_id: 192.168.255.22
     redistribute_routes:
     - source_protocol: connected
+      route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.240.10
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -186,7 +187,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel5
-  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Po5_To_Po1_CUSTOM_TEMPLATES_L2LEAF1
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Po5_To_Po1_
   switchport:
     enabled: true
     mode: trunk
@@ -286,6 +287,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_L3LEAF
@@ -302,6 +311,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.240.10/31
 router_bfd:
   multihop:
     interval: 300

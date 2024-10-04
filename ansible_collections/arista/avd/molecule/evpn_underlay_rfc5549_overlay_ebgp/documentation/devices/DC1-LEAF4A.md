@@ -396,14 +396,14 @@ vlan 4094
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE6_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_DC1-SPINE6_Ethernet1 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE6_Ethernet1
+   description P2P_DC1-SPINE6_Ethernet1
    no shutdown
    mtu 1500
    no switchport
@@ -452,7 +452,7 @@ interface Port-Channel5
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 192.168.255.14/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.14/32 |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.14/32 |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 10.255.1.14/32 |
 
 ##### IPv6
 
@@ -460,7 +460,7 @@ interface Port-Channel5
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | 2001:1::e/128 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -478,7 +478,7 @@ interface Loopback1
    ip address 192.168.254.14/32
 !
 interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   description DIAG_VRF_Tenant_A_OP_Zone
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.14/32
@@ -1048,7 +1048,7 @@ router bgp 65107
       route-target export evpn 12:12
       router-id 192.168.255.14
       neighbor interface Vlan3011 peer-group MLAG_PEER remote-as 65107
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.14:13
@@ -1056,7 +1056,7 @@ router bgp 65107
       route-target export evpn 13:13
       router-id 192.168.255.14
       neighbor interface Vlan3012 peer-group MLAG_PEER remote-as 65107
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.14:10
@@ -1064,7 +1064,7 @@ router bgp 65107
       route-target export evpn 10:10
       router-id 192.168.255.14
       neighbor interface Vlan3009 peer-group MLAG_PEER remote-as 65107
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.14:11
@@ -1072,7 +1072,7 @@ router bgp 65107
       route-target export evpn 11:11
       router-id 192.168.255.14
       neighbor interface Vlan3010 peer-group MLAG_PEER remote-as 65107
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.14:20
@@ -1080,7 +1080,7 @@ router bgp 65107
       route-target export evpn 20:20
       router-id 192.168.255.14
       neighbor interface Vlan3019 peer-group MLAG_PEER remote-as 65107
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.14:30
@@ -1088,7 +1088,7 @@ router bgp 65107
       route-target export evpn 30:30
       router-id 192.168.255.14
       neighbor interface Vlan2 peer-group MLAG_PEER remote-as 65107
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD

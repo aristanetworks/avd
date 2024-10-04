@@ -53,7 +53,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: L2ONLY-LEAF1_Po1
+  description: L2_L2ONLY-LEAF1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -62,7 +62,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 1
 - name: Port-Channel2
-  description: L2ONLY-LEAF2_Po1
+  description: L2_L2ONLY-LEAF2_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -93,7 +93,7 @@ ethernet_interfaces:
   peer: L2ONLY-LEAF1
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: L2ONLY-LEAF1_Ethernet1
+  description: L2_L2ONLY-LEAF1_Ethernet1
   shutdown: false
   channel_group:
     id: 1
@@ -102,7 +102,7 @@ ethernet_interfaces:
   peer: L2ONLY-LEAF2
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: L2ONLY-LEAF2_Ethernet1
+  description: L2_L2ONLY-LEAF2_Ethernet1
   shutdown: false
   channel_group:
     id: 2

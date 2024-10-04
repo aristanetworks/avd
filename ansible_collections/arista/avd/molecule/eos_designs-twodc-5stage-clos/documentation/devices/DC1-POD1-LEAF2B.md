@@ -290,8 +290,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 | DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
-| Ethernet4 | DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
+| Ethernet3 | L2_DC1-POD1-L2LEAF2A_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
+| Ethernet4 | L2_DC1-POD1-L2LEAF2B_Ethernet2 | *trunk | *110-113,1100-1102,2500,2600-2601,4085 | *- | *- | 3 |
 | Ethernet5 | MLAG_DC1.POD1.LEAF2A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_DC1.POD1.LEAF2A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet16 | SERVER_server-1_Eth2 | *access | *110 | *- | *- | 16 |
@@ -305,18 +305,18 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
-| Ethernet11 | P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8 | - | 172.17.110.21/31 | default | - | False | - | - |
-| Ethernet12 | P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8 | - | 172.17.110.23/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD1-SPINE1_Ethernet5 | - | 172.17.110.17/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD1-SPINE2_Ethernet5 | - | 172.17.110.19/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC2-POD1-LEAF1A_Ethernet7 | - | 11.1.0.38/31 | default | - | False | - | - |
+| Ethernet11 | P2P_DC1-POD1-SPINE1_Ethernet8 | - | 172.17.110.21/31 | default | - | False | - | - |
+| Ethernet12 | P2P_DC1-POD1-SPINE2_Ethernet8 | - | 172.17.110.23/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+   description P2P_DC1-POD1-SPINE1_Ethernet5
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -325,7 +325,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+   description P2P_DC1-POD1-SPINE2_Ethernet5
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -334,12 +334,12 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description DC1-POD1-L2LEAF2A_Ethernet2
+   description L2_DC1-POD1-L2LEAF2A_Ethernet2
    no shutdown
    channel-group 3 mode active
 !
 interface Ethernet4
-   description DC1-POD1-L2LEAF2B_Ethernet2
+   description L2_DC1-POD1-L2LEAF2B_Ethernet2
    no shutdown
    channel-group 3 mode active
 !
@@ -354,14 +354,14 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
+   description P2P_DC2-POD1-LEAF1A_Ethernet7
    no shutdown
    no switchport
    ip address 11.1.0.38/31
    ptp enable
 !
 interface Ethernet11
-   description P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
+   description P2P_DC1-POD1-SPINE1_Ethernet8
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -370,7 +370,7 @@ interface Ethernet11
    service-profile QOS-PROFILE
 !
 interface Ethernet12
-   description P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
+   description P2P_DC1-POD1-SPINE2_Ethernet8
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -423,7 +423,7 @@ interface Ethernet19
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel3 | RACK2_MLAG_Po1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
+| Port-Channel3 | L2_RACK2_MLAG_Port-Channel1 | trunk | 110-113,1100-1102,2500,2600-2601,4085 | - | - | - | - | 3 | - |
 | Port-Channel5 | MLAG_DC1.POD1.LEAF2A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
 | Port-Channel16 | PortChannel | access | 110 | - | - | - | - | 16 | - |
 | Port-Channel17 | Set using structured_config on server adapter port-channel | access | 110 | - | - | - | - | 17 | - |
@@ -435,7 +435,7 @@ interface Ethernet19
 ```eos
 !
 interface Port-Channel3
-   description RACK2_MLAG_Po1
+   description L2_RACK2_MLAG_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 110-113,1100-1102,2500,2600-2601,4085
    switchport mode trunk
@@ -506,9 +506,9 @@ interface Port-Channel19
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 172.16.110.5/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.110.4/32 |
-| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.5/32 |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.101.5/32 |
-| Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.5/32 |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.5/32 |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 10.101.101.5/32 |
+| Loopback102 | DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only | vrf_with_loopbacks_dc1_pod1_only | 10.102.101.5/32 |
 
 ##### IPv6
 
@@ -516,9 +516,9 @@ interface Port-Channel19
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
-| Loopback102 | vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS | vrf_with_loopbacks_dc1_pod1_only | - |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | - |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | - |
+| Loopback102 | DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only | vrf_with_loopbacks_dc1_pod1_only | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -535,19 +535,19 @@ interface Loopback1
    ip address 172.18.110.4/32
 !
 interface Loopback100
-   description vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
    no shutdown
    vrf vrf_with_loopbacks_from_overlapping_pool
    ip address 10.100.0.5/32
 !
 interface Loopback101
-   description vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_from_pod_pools
    no shutdown
    vrf vrf_with_loopbacks_from_pod_pools
    ip address 10.101.101.5/32
 !
 interface Loopback102
-   description vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only
    no shutdown
    vrf vrf_with_loopbacks_dc1_pod1_only
    ip address 10.102.101.5/32

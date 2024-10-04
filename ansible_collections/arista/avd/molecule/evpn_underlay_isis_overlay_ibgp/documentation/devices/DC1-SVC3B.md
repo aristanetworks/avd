@@ -278,8 +278,8 @@ vlan 4094
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet5 | MLAG_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet6 | MLAG_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *none | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *none | *- | *- | 7 |
+| Ethernet7 | L2_DC1-L2LEAF2A_Ethernet2 | *trunk | *none | *- | *- | 7 |
+| Ethernet8 | L2_DC1-L2LEAF2B_Ethernet2 | *trunk | *none | *- | *- | 7 |
 
 *Inherited from Port-Channel Interface
 
@@ -287,10 +287,10 @@ vlan 4094
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | - | 172.31.255.33/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | - | 172.31.255.35/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | - | 172.31.255.37/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | - | 172.31.255.39/31 | default | 1500 | False | - | - |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet5 | - | 172.31.255.33/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet5 | - | 172.31.255.35/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet5 | - | 172.31.255.37/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet5 | - | 172.31.255.39/31 | default | 1500 | False | - | - |
 
 ##### ISIS
 
@@ -306,7 +306,7 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet5
+   description P2P_DC1-SPINE1_Ethernet5
    no shutdown
    mtu 1500
    no switchport
@@ -318,7 +318,7 @@ interface Ethernet1
    isis network point-to-point
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   description P2P_DC1-SPINE2_Ethernet5
    no shutdown
    mtu 1500
    no switchport
@@ -330,7 +330,7 @@ interface Ethernet2
    isis network point-to-point
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet5
+   description P2P_DC1-SPINE3_Ethernet5
    no shutdown
    mtu 1500
    no switchport
@@ -342,7 +342,7 @@ interface Ethernet3
    isis network point-to-point
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet5
+   description P2P_DC1-SPINE4_Ethernet5
    no shutdown
    mtu 1500
    no switchport
@@ -364,12 +364,12 @@ interface Ethernet6
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet2
+   description L2_DC1-L2LEAF2A_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet2
+   description L2_DC1-L2LEAF2B_Ethernet2
    no shutdown
    channel-group 7 mode active
 ```
@@ -383,7 +383,7 @@ interface Ethernet8
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel5 | MLAG_DC1-SVC3A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | none | - | - | - | - | 7 | - |
+| Port-Channel7 | L2_DC1_L2LEAF2_Port-Channel1 | trunk | none | - | - | - | - | 7 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -397,7 +397,7 @@ interface Port-Channel5
    switchport
 !
 interface Port-Channel7
-   description DC1_L2LEAF2_Po1
+   description L2_DC1_L2LEAF2_Port-Channel1
    no shutdown
    switchport trunk allowed vlan none
    switchport mode trunk

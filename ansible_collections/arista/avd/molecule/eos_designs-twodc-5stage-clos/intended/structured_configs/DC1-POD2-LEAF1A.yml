@@ -273,7 +273,7 @@ ethernet_interfaces:
   peer: DC1-POD2-SPINE1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
+  description: P2P_DC1-POD2-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -287,7 +287,7 @@ ethernet_interfaces:
   peer: DC1-POD2-SPINE2
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+  description: P2P_DC1-POD2-SPINE2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -301,7 +301,7 @@ ethernet_interfaces:
   peer: DC1-RS2
   peer_interface: Ethernet3
   peer_type: overlay-controller
-  description: P2P_LINK_TO_DC1-RS2_Ethernet3
+  description: P2P_DC1-RS2_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
@@ -317,12 +317,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 172.18.120.3/32
 - name: Loopback100
-  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.3/32
 - name: Loopback101
-  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.102.3/32

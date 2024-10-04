@@ -103,7 +103,7 @@ port_channel_interfaces:
   shutdown: false
   service_profile: QOS-PROFILE
 - name: Port-Channel1
-  description: RACK2_MLAG_Po3
+  description: L2_RACK2_MLAG_Port-Channel3
   switchport:
     enabled: true
     mode: trunk
@@ -135,7 +135,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: DC1.POD1.LEAF2A_Ethernet3
+  description: L2_DC1.POD1.LEAF2A_Ethernet3
   shutdown: false
   channel_group:
     id: 1
@@ -144,7 +144,7 @@ ethernet_interfaces:
   peer: DC1-POD1-LEAF2B
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: DC1-POD1-LEAF2B_Ethernet3
+  description: L2_DC1-POD1-LEAF2B_Ethernet3
   shutdown: false
   channel_group:
     id: 1

@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._utils import append_if_not_duplicate, get, get_item
+from pyavd._utils import AvdStringFormatter, append_if_not_duplicate, get, get_item
 
 from .utils import UtilsMixin
 
@@ -96,9 +96,10 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         # If we ended up here, it means we have a loopback_ipv4_pool set
         interface_name = f"Loopback{loopback}"
+        description_template = get(vrf, "vtep_diagnostic.loopback_description", default=self.shared_utils.default_vrf_diag_loopback_description)
         return {
             "name": interface_name,
-            "description": get(vrf, "vtep_diagnostic.loopback_description", default=f"{vrf['name']}_VTEP_DIAGNOSTICS"),
+            "description": AvdStringFormatter().format(description_template, interface=interface_name, vrf=vrf["name"], tenant=vrf["tenant"]),
             "shutdown": False,
             "vrf": vrf["name"],
             "ip_address": f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32",

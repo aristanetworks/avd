@@ -14,13 +14,28 @@ router_bgp:
       - name: FOOBAR
         activate: false
   address_family_ipv4_multicast:
+    bgp:
+      additional_paths:
+        receive: true
     peer_groups:
       - name: FOOBAR
         activate: true
+        additional_paths:
+          receive: true
+    neighbors:
+      - ip_address: 10.1.1.1
+        activate: true
+        additional_paths:
+          receive: true
   address_family_ipv6_multicast:
+    bgp:
+      additional_paths:
+        receive: true
     peer_groups:
       - name: FOOBAR
         activate: false
+        additional_paths:
+          receive: true
     redistribute_routes:
       - source_protocol: ospfv3
         ospf_route_type: external
@@ -30,6 +45,10 @@ router_bgp:
         ospf_route_type: nssa-external 2
       - source_protocol: isis
         rcf: Router_BGP_Isis()
+    neighbors:
+      - ip_address: aa::1
+        additional_paths:
+          receive: true
   address_family_flow_spec_ipv4:
     peer_groups:
       - name: FOOBAR
@@ -40,8 +59,45 @@ router_bgp:
         activate: false
   vrfs:
     - name: VRF01
+      redistribute:
+        user:
+          enabled: true
+          rcf: RCF_VRF_USER()
+        static:
+          enabled: true
+          route_map: RM_VRF_STATIC
+        rip:
+          enabled: true
+          route_map: RM_VRF_RIP
+        ospf:
+          match_nssa_external:
+            enabled: true
+            route_map: RM_VRF_OSPFV3
+        ospfv3:
+          match_internal:
+            enabled: true
+            include_leaked: true
+            route_map: RM_VRF_OSPF
+        isis:
+          enabled: true
+          isis_level: level-2
+          rcf: RCF_VRF_ISIS()
+        connected:
+          enabled: true
+          include_leaked: true
+          rcf: RCF_VRF_CONNECTED()
+        bgp:
+          enabled: true
+          route_map: RM_VRF_BGP
+        attached_host:
+          enabled: true
+          route_map: RM_VRF_ATTACHED-HOST
       bgp:
         redistribute_internal: false
+        additional_paths:
+          receive: true
+          send: any
+          install: true
       address_family_ipv4:
         bgp:
           missing_policy:
@@ -50,14 +106,17 @@ router_bgp:
           additional_paths:
             install_ecmp_primary: true
             receive: true
-            send:
-              ecmp_limit: 4
+            send: ecmp
+            send_limit: 4
           redistribute_internal: false
         neighbors:
           - ip_address: 1.2.3.4
             activate: true
             route_map_in: FOO
             route_map_out: BAR
+            additional_paths:
+              receive: true
+              send: any
         networks:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
@@ -80,14 +139,16 @@ router_bgp:
           additional_paths:
             install: true
             receive: true
-            send:
-              any: true
+            send: any
           redistribute_internal: false
         neighbors:
           - ip_address: aa::1
             activate: true
             route_map_in: FOO
             route_map_out: BAR
+            additional_paths:
+              send: any
+              receive: true
           - ip_address: aa::2
             activate: true
             rcf_in: VRF_AFIPV6_RCF_IN()
@@ -110,16 +171,18 @@ router_bgp:
             include_leaked: true
       address_family_ipv4_multicast:
         bgp:
+          additional_paths:
+            receive: true
           missing_policy:
             direction_in_action: permit
             direction_out_action: permit
-          additional_paths:
-            receive: true
         neighbors:
           - ip_address: 1.2.3.4
             activate: false
             route_map_in: FOO
             route_map_out: BAR
+            additional_paths:
+              receive: true
         networks:
           - prefix: 239.0.0.0/24
             route_map: BARFOO
@@ -136,12 +199,16 @@ router_bgp:
             route_map: VRF_AFIPV4MULTI_RM_STATIC
       address_family_ipv6_multicast:
         bgp:
+          additional_paths:
+            receive: true
           missing_policy:
             direction_in_action: deny
             direction_out_action: deny
         neighbors:
           - ip_address: aa::1
             activate: false
+            additional_paths:
+              receive: true
         networks:
           - prefix: ff08:1::/64
         redistribute_routes:
@@ -173,23 +240,53 @@ router_bgp:
             activate: true
 
     - name: VRF02
+      neighbors:
+        - ip_address: 1.1.1.1
+          additional_paths:
+            receive: true
+            send: ecmp
+            send_limit: 24
       address_family_ipv4:
         bgp:
           additional_paths:
-            send:
-              backup: true
+            send: backup
       address_family_ipv6:
         bgp:
           additional_paths:
-            send:
-              limit: 3
+            send: limit
+            send_limit: 3
+      redistribute:
+        dynamic:
+          enabled: true
+        user:
+          enabled: true
+        static:
+          enabled: true
+        rip:
+          enabled: true
+        ospf:
+          enabled: true
+          include_leaked: true
+        ospfv3:
+          match_external:
+            enabled: true
+        isis:
+          enabled: true
+          isis_level: level-2
+          route_map: RM_VRF_ISIS
+        connected:
+          enabled: true
+        bgp:
+          enabled: true
+        attached_host:
+          enabled: true
 
     - name: VRF03
       address_family_ipv4:
         bgp:
           additional_paths:
-            send:
-              ecmp: true
-      redistribute_routes:
-        - source_protocol: dynamic
+            send: ecmp
+      redistribute:
+        dynamic:
+          enabled: true
           rcf: VRF_RCF_DYNAMIC()

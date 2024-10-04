@@ -647,7 +647,7 @@ ethernet_interfaces:
   peer: EVPN-MULTICAST-SPINE1
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_EVPN-MULTICAST-SPINE1_Ethernet6
+  description: P2P_EVPN-MULTICAST-SPINE1_Ethernet6
   shutdown: false
   mtu: 9214
   switchport:
@@ -666,47 +666,47 @@ loopback_interfaces:
   shutdown: false
   ip_address: 192.168.254.8/32
 - name: Loopback33
-  description: TEN_C_L3_MULTICAST_DISABLED_330_331_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_C_L3_MULTICAST_DISABLED_330_331
   shutdown: false
   vrf: TEN_C_L3_MULTICAST_DISABLED_330_331
   ip_address: 10.255.3.8/32
 - name: Loopback31
-  description: TEN_C_L3_MULTICAST_ENABLED_130_131_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_C_L3_MULTICAST_ENABLED_130_131
   shutdown: false
   vrf: TEN_C_L3_MULTICAST_ENABLED_130_131
   ip_address: 10.255.1.8/32
 - name: Loopback32
-  description: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   shutdown: false
   vrf: TEN_C_L3_MULTICAST_ENABLED_230_DISABLED_231
   ip_address: 10.255.2.8/32
 - name: Loopback42
-  description: TEN_D_L3_MULTICAST_DISABLED_240_241_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_D_L3_MULTICAST_DISABLED_240_241
   shutdown: false
   vrf: TEN_D_L3_MULTICAST_DISABLED_240_241
   ip_address: 10.255.42.8/32
 - name: Loopback41
-  description: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   shutdown: false
   vrf: TEN_D_L3_MULTICAST_ENABLED_140_DISABLED_141
   ip_address: 10.255.41.8/32
 - name: Loopback55
-  description: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   shutdown: false
   vrf: TEN_E_L3_MULTICAST_ENABLED_PEG_OVERRIDE
   ip_address: 10.255.55.8/32
 - name: Loopback60
-  description: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   shutdown: false
   vrf: TEN_E_L3_MULTICAST_EVPN_PEG_RP_NODES
   ip_address: 10.255.60.8/32
 - name: Loopback52
-  description: TEN_E_L3_MULTICAST_TRANSIT_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_E_L3_MULTICAST_TRANSIT
   shutdown: false
   vrf: TEN_E_L3_MULTICAST_TRANSIT
   ip_address: 10.255.52.8/32
 - name: Loopback51
-  description: TEN_E_PEG_L3_MULTICAST_ENABLED_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_TEN_E_PEG_L3_MULTICAST_ENABLED
   shutdown: false
   vrf: TEN_E_PEG_L3_MULTICAST_ENABLED
   ip_address: 10.255.51.8/32

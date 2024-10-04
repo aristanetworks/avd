@@ -173,18 +173,18 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1 | - | 172.16.21.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1 | - | 172.16.21.65/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1 | - | 172.17.210.0/31 | default | - | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1 | - | 172.17.210.4/31 | default | - | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5 | - | 11.1.1.19/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC2-SUPER-SPINE1_Ethernet1 | - | 172.16.21.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC2-SUPER-SPINE2_Ethernet1 | - | 172.16.21.65/31 | default | - | False | - | - |
+| Ethernet3 | P2P_DC2-POD1-LEAF1A_Ethernet1 | - | 172.17.210.0/31 | default | - | False | - | - |
+| Ethernet4 | P2P_DC2-POD1-LEAF2A_Ethernet1 | - | 172.17.210.4/31 | default | - | False | - | - |
+| Ethernet5 | P2P_DC1-POD2-SPINE1_Ethernet5 | - | 11.1.1.19/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet1
+   description P2P_DC2-SUPER-SPINE1_Ethernet1
    no shutdown
    no switchport
    ip address 172.16.21.1/31
@@ -192,7 +192,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet1
+   description P2P_DC2-SUPER-SPINE2_Ethernet1
    no shutdown
    no switchport
    ip address 172.16.21.65/31
@@ -200,7 +200,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet1
+   description P2P_DC2-POD1-LEAF1A_Ethernet1
    no shutdown
    no switchport
    ip address 172.17.210.0/31
@@ -208,7 +208,7 @@ interface Ethernet3
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet1
+   description P2P_DC2-POD1-LEAF2A_Ethernet1
    no shutdown
    no switchport
    ip address 172.17.210.4/31
@@ -216,7 +216,7 @@ interface Ethernet4
    service-profile QOS-PROFILE
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet5
+   description P2P_DC1-POD2-SPINE1_Ethernet5
    no shutdown
    no switchport
    ip address 11.1.1.19/31
