@@ -30,11 +30,6 @@ router_bgp:
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
     description: cv-pathfinder-pathfinder_Dps1
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: static
-    route_map: RM-STATIC-2-BGP
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -61,6 +56,11 @@ router_bgp:
       activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  - source_protocol: static
+    route_map: RM-STATIC-2-BGP
   vrfs:
   - name: IT
     router_id: 192.168.42.1

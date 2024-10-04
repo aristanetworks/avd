@@ -7,7 +7,7 @@ from functools import cached_property
 
 from pyavd._eos_designs.avdfacts import AvdFacts
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import get, strip_null_from_data
+from pyavd._utils import get, strip_empties_from_dict, strip_null_from_data
 from pyavd.j2filters import natural_sort
 
 from .ntp import NtpMixin
@@ -94,6 +94,20 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                     },
                 },
             )
+
+        l3_interfaces_neighbors = []
+        for neighbor_info in self.shared_utils.l3_interfaces_bgp_neighbors:
+            neighbor = {
+                "ip_address": get(neighbor_info, "ip_address"),
+                "remote_as": get(neighbor_info, "remote_as"),
+                "description": get(neighbor_info, "description"),
+                "route_map_in": get(neighbor_info, "route_map_in"),
+                "route_map_out": get(neighbor_info, "route_map_out"),
+            }
+            l3_interfaces_neighbors.append(strip_empties_from_dict(neighbor))
+
+        if l3_interfaces_neighbors:
+            router_bgp["neighbors"] = l3_interfaces_neighbors
 
         return strip_null_from_data(router_bgp)
 
