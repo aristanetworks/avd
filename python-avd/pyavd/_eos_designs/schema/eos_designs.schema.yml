@@ -4774,6 +4774,17 @@ keys:
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
+  wan_use_soo_for_route_injection:
+    documentation_options:
+      table: wan-settings
+    description: 'In AVD 5.0.0, tags are used instead of SOO to manage which routes
+      are
+
+      injected.
+
+      Set this to true to revert to AVD 4.x behavior.'
+    type: bool
+    default: false
   wan_virtual_topologies:
     type: dict
     description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.

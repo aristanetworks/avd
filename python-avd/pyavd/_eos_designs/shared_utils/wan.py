@@ -650,3 +650,7 @@ class WanMixin:
     @cached_property
     def wan_encapsulation(self: SharedUtils) -> str:
         return get(self.hostvars, "wan_encapsulation", default="path-selection")
+
+    @cached_property
+    def wan_use_soo_for_route_injection(self: SharedUtils) -> bool:
+        return get(self.hostvars, "wan_use_soo_for_route_injection", default=False)

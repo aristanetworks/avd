@@ -290,14 +290,14 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - tag 10
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - tag 10
 - name: RM-BGP-172.16.9.4-IN
   sequence_numbers:
   - sequence: 10
@@ -345,7 +345,7 @@ route_maps:
   - sequence: 10
     type: permit
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 10
 - name: RM-STATIC-2-BGP
   sequence_numbers:
   - sequence: 10
@@ -353,7 +353,7 @@ route_maps:
     match:
     - ip address prefix-list PL-STATIC-VRF-DEFAULT
     set:
-    - extcommunity soo 192.168.42.1:511 additive
+    - tag 10
 static_routes:
 - destination_address_prefix: 172.16.0.0/16
   gateway: 172.16.5.4

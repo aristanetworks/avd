@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Copyright (c) 2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -155,15 +155,18 @@ class RouteMapsMixin(UtilsMixin):
         * SVI subnets in VRF default
         * Static routes subnets in VRF default.
 
-        * for WAN routers, all the routes matching the SOO (which includes the two above)
+        * for WAN routers, all the routes matching the tag 10 or the SOO if `wan_use_soo_for_route_injection: true`
+          (which for both options includes the two type of prefixes mentioned above)
         """
         sequence_numbers = []
         if self.shared_utils.is_wan_router:
+            match_statements = ["extcommunity ECL-EVPN-SOO"] if self.shared_utils.wan_use_soo_for_route_injection else ["tag 10"]
+
             sequence_numbers.append(
                 {
                     "sequence": 10,
                     "type": "permit",
-                    "match": ["extcommunity ECL-EVPN-SOO"],
+                    "match": match_statements,
                 },
             )
         else:
@@ -252,7 +255,11 @@ class RouteMapsMixin(UtilsMixin):
                 "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
             }
             if self.shared_utils.wan_role:
-                sequence_30["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+                if self.shared_utils.wan_use_soo_for_route_injection:
+                    set_statements = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+                else:
+                    set_statements = ["tag 10"]
+                sequence_30["set"] = set_statements
 
             sequence_numbers.append(sequence_30)
 
@@ -266,6 +273,11 @@ class RouteMapsMixin(UtilsMixin):
         if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
             return None
 
+        if self.shared_utils.wan_role and not self.shared_utils.wan_use_soo_for_route_injection:
+            set_statements = ["tag 10"]
+        else:
+            set_statements = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+
         return {
             "name": "RM-STATIC-2-BGP",
             "sequence_numbers": [
@@ -273,7 +285,7 @@ class RouteMapsMixin(UtilsMixin):
                     "sequence": 10,
                     "type": "permit",
                     "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
+                    "set": set_statements,
                 },
             ],
         }

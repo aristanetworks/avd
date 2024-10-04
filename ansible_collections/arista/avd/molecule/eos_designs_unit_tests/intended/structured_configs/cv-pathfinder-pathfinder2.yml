@@ -175,13 +175,13 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.44.3:0 additive
+    - tag 10
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 10
 agents:
 - name: KernelFib
   environment_variables:

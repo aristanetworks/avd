@@ -43,7 +43,9 @@ class RouteMapsMixin(UtilsMixin):
                 "match": ["ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY"],
             }
             if self.shared_utils.wan_role:
-                sequence_10["set"] = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+                sequence_10["set"] = (
+                    [f"extcommunity soo {self.shared_utils.evpn_soo} additive"] if self.shared_utils.wan_use_soo_for_route_injection else ["tag 10"]
+                )
 
             sequence_numbers = [sequence_10]
             # SEQ 20 is set by inband management if applicable, so avoid setting that here
@@ -99,14 +101,11 @@ class RouteMapsMixin(UtilsMixin):
 
         # Route-map IN and OUT for SOO, rendered for WAN routers
         if self.shared_utils.underlay_routing_protocol == "ebgp" and self.shared_utils.wan_role == "client":
+            set_statements = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"] if self.shared_utils.wan_use_soo_for_route_injection else ["tag 10"]
+
             # RM-BGP-UNDERLAY-PEERS-IN
             sequence_numbers = [
-                {
-                    "sequence": 40,
-                    "type": "permit",
-                    "description": "Mark prefixes originated from the LAN",
-                    "set": [f"extcommunity soo {self.shared_utils.evpn_soo} additive"],
-                },
+                {"sequence": 40, "type": "permit", "description": "Mark prefixes originated from the LAN", "set": set_statements},
             ]
             if self.shared_utils.wan_ha and self.shared_utils.use_uplinks_for_wan_ha:
                 sequence_numbers.extend(

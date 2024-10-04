@@ -162,14 +162,14 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.42.3:511 additive
+    - tag 10
 - name: RM-BGP-UNDERLAY-PEERS-IN
   sequence_numbers:
   - sequence: 40
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - extcommunity soo 192.168.42.3:511 additive
+    - tag 10
 - name: RM-EVPN-SOO-IN
   sequence_numbers:
   - sequence: 10
@@ -189,7 +189,7 @@ route_maps:
   - sequence: 10
     type: permit
     match:
-    - extcommunity ECL-EVPN-SOO
+    - tag 10
 agents:
 - name: KernelFib
   environment_variables:
