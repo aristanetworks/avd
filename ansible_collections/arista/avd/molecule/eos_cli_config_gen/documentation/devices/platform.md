@@ -44,6 +44,7 @@ interface Management1
 
 | Settings | Value |
 | -------- | ----- |
+| Routing MAC Address per VLAN | true |
 | Forwarding Table Partition | 2 |
 | MMU Applied Profile | mc_example_profile |
 
@@ -96,6 +97,7 @@ interface Management1
 
 ```eos
 !
+platform trident l3 routing mac-address per-vlan
 platform trident forwarding-table partition 2
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7

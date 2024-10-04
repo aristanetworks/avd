@@ -8629,6 +8629,13 @@ keys:
             type: str
             convert_types:
             - int
+          l3:
+            type: dict
+            keys:
+              routing_mac_address_per_vlan:
+                type: bool
+                description: Enable bridging of packet with destination MAC being
+                  routerMAC in non-routing enabled VLAN.
           mmu:
             type: dict
             description: 'Memory Management Unit settings.
