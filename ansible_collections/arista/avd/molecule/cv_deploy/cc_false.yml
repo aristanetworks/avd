@@ -6,7 +6,7 @@
   vars:
     cv_server: www.cv-staging.corp.arista.io
     cv_token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
-    cv_verify_certs: false
+    cv_verify_certs: true
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
@@ -44,7 +44,29 @@
         msg: '{{ cv_deploy_results }}'
 
     - name: Check CVP returns
+      run_once: true
       ansible.builtin.assert:
         that:
           # Change control
           - cv_deploy_results.change_control.requested_state == "pending approval"
+
+    - name: Cleanup orphan CC
+      run_once: true
+      uri:
+        url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
+        validate_certs: yes
+        return_content: yes
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ lookup('env', 'CVAAS_AAWG_CI') }}"
+        method: DELETE
+        body_format: json
+        force_basic_auth: yes
+        timeout: 10
+      register: cvp_abandon_cc_result
+      until: cvp_abandon_cc_result.status == 200
+      retries: 3
+      delay: 3
+      ignore_errors: True
+      when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']

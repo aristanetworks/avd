@@ -1,12 +1,12 @@
 ---
 - name: Converge - cv_submit_workspace_force = false
-  hosts: SITE1_FABRIC
+  hosts: SITE1_FABRIC:INACTIVE
   connection: local
   gather_facts: false
   vars:
     cv_server: www.cv-staging.corp.arista.io
     cv_token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
-    cv_verify_certs: false
+    cv_verify_certs: true
     cv_skip_missing_devices: true
     eos_config_dir: "{{ playbook_dir }}/intended/configs/test_configs"
     structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_configs"
@@ -28,6 +28,12 @@
         cv_register_detailed_results: true
       run_once: true
 
+    - name: Dynamically add inactive device avd-ci-core1 to group INACTIVE
+      run_once: true
+      add_host:
+        name: avd-ci-core1
+        groups: INACTIVE
+
     - name: Provision with cv_submit_workspace_force = false
       run_once: true
       delegate_to: localhost
@@ -38,30 +44,51 @@
         cv_submit_workspace_force: false
       ignore_errors: yes
 
-    - name: Force device avd-ci-core1 to start streaming
-      arista.eos.eos_command:
-        commands:
-          - enable
-          - configure
-          - daemon TerminAttr
-          - no shutdown
-      when: inventory_hostname == "avd-ci-core1"
-
-    - name: Pause for 10 seconds for streaming to start
-      run_once: true
-      ansible.builtin.pause:
-        seconds: 10
-
     - name: Display CVP result
       run_once: true
       ansible.builtin.debug:
         msg: '{{ cv_deploy_results }}'
 
     - name: Check CVP returns
+      run_once: true
       ansible.builtin.assert:
         that:
           # errors and warnings
           - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
+
+    - name: Cleanup orphan workspace
+      run_once: true
+      uri:
+        url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
+        validate_certs: yes
+        return_content: yes
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ lookup('env', 'CVAAS_AAWG_CI') }}"
+        method: POST
+        body_format: json
+        body:
+          {
+            "values": [
+              {
+                "key": {
+                  "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                },
+                "request": "REQUEST_ABANDON",
+                "requestParams": {
+                  "requestId": "{{ r }}"
+                }
+              }
+            ]
+          }
+        force_basic_auth: yes
+        timeout: 10
+      register: cvp_abandon_workspace_result
+      until: cvp_abandon_workspace_result.status == 200
+      retries: 3
+      delay: 3
+      ignore_errors: True
 
     - name: Cleanup
       run_once: true
