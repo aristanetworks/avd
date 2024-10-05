@@ -11436,7 +11436,7 @@ keys:
       new_key: radius_server.hosts
       remove_in_version: v5.0.0
     type: list
-  recirc_interfaces:
+  recirculation_interfaces:
     type: list
     primary_key: name
     items:

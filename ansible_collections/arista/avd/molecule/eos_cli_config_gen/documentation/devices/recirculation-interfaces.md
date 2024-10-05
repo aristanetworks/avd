@@ -1,11 +1,11 @@
-# recirc-interfaces
+# recirculation-interfaces
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
-  - [Recirculation Interfaces](#recirculation-interfaces)
+  - [Recirculation Interfaces](#recirculation-interfaces-1)
 
 ## Management
 
@@ -41,25 +41,25 @@ interface Management1
 
 #### Recirculation Interfaces Summary
 
-| Interface | Description | Shutdown | Recirc Features |
+| Interface | Description | Shutdown | Recirculation Features |
 | --------- | ----------- | -------- | --------------- |
-| Recirc-Channel1 | Test recirc interface | - | cpu-mirror |
-| Recirc-Channel2 | Test recirc interface with shutdown | True | vxlan |
+| Recirc-Channel1 | Test recirculation interface | - | cpu-mirror |
+| Recirc-Channel2 | Test recirculation interface with shutdown | True | vxlan |
 
 #### Recirculation Interfaces Device Configuration
 
 ```eos
 !
 interface Recirc-Channel1
-   description Test recirc interface
+   description Test recirculation interface
    switchport recirculation features cpu-mirror
    comment
-   Comment created from eos_cli under recirc_interfaces.Recirc-Channel1
+   Comment created from eos_cli under recirculation_interfaces.Recirc-Channel1
    EOF
 
 !
 interface Recirc-Channel2
-   description Test recirc interface with shutdown
+   description Test recirculation interface with shutdown
    shutdown
    switchport recirculation features vxlan
 ```
