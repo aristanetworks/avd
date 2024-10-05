@@ -52,7 +52,7 @@
 
     - name: Cleanup orphan CC
       run_once: true
-      uri:
+      ansible.legacy.uri:
         url: https://{{ cv_server }}/api/resources/changecontrol/v1/ChangeControlConfig?key.id={{ cv_deploy_results.change_control.id }}
         validate_certs: yes
         return_content: yes

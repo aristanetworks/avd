@@ -46,7 +46,7 @@
 
     - name: Cleanup orphan workspace
       run_once: true
-      uri:
+      ansible.legacy.uri:
         url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
         validate_certs: yes
         return_content: yes

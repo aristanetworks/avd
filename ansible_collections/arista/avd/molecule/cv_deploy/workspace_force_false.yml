@@ -30,35 +30,31 @@
 
     - name: Dynamically add inactive device avd-ci-core1 to group INACTIVE
       run_once: true
-      add_host:
+      ansible.legacy.add_host:
         name: avd-ci-core1
         groups: INACTIVE
 
     - name: Provision with cv_submit_workspace_force = false
       run_once: true
       delegate_to: localhost
-      ansible.builtin.import_role:
-        name: arista.avd.cv_deploy
-      vars:
-        cv_devices: [ avd-ci-leaf2, avd-ci-core1 ]
-        cv_submit_workspace_force: false
-      ignore_errors: yes
-
-    - name: Display CVP result
-      run_once: true
-      ansible.builtin.debug:
-        msg: '{{ cv_deploy_results }}'
-
-    - name: Check CVP returns
-      run_once: true
-      ansible.builtin.assert:
-        that:
-          # errors and warnings
-          - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
+      block:
+        - name: Trigger errors
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_devices: [ avd-ci-leaf2, avd-ci-core1 ]
+            cv_submit_workspace_force: false
+      rescue:
+        - name: Check CVP returns
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # errors and warnings
+              - "'Failed to submit workspace' in cv_deploy_results.errors[0]"
 
     - name: Cleanup orphan workspace
       run_once: true
-      uri:
+      ansible.legacy.uri:
         url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
         validate_certs: yes
         return_content: yes
