@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Interfaces](#interfaces)
   - [Recirculation Interfaces](#recirculation-interfaces-1)
+  - [Ethernet Interfaces](#ethernet-interfaces)
 
 ## Management
 
@@ -62,4 +63,30 @@ interface Recirc-Channel2
    description Test recirculation interface with shutdown
    shutdown
    switchport recirculation features vxlan
+```
+
+### Ethernet Interfaces
+
+#### Ethernet Interfaces Summary
+
+##### L2
+
+| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
+| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
+| Ethernet1 | Recirculation channel 1 | - | - | - | - | Recirc-Channel1 |
+| Ethernet2 | Recirculation channel 2 | - | - | - | - | Recirc-Channel2 |
+
+*Inherited from Port-Channel Interface
+
+#### Ethernet Interfaces Device Configuration
+
+```eos
+!
+interface Ethernet1
+   description Recirculation channel 1
+   channel-group recirculation 1
+!
+interface Ethernet2
+   description Recirculation channel 2
+   channel-group recirculation 2
 ```

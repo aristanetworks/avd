@@ -13,3 +13,17 @@ recirculation_interfaces:
     description: Test recirculation interface with shutdown
     shutdown: true
     recirculation_features: vxlan
+
+# Ethernet interface used for recirculation
+ethernet_interfaces:
+  - name: Ethernet1
+    description: Recirculation channel 1
+    channel_group:
+      id: 1
+      recirculation: true
+
+  - name: Ethernet2
+    description: Recirculation channel 2
+    channel_group:
+      id: 2
+      recirculation: true

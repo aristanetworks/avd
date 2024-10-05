@@ -673,16 +673,20 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ tcp_mss_ceiling_cli }}
 {%     endif %}
-{%     if ethernet_interface.channel_group.id is arista.avd.defined and ethernet_interface.channel_group.mode is arista.avd.defined %}
+{%     if ethernet_interface.channel_group.id is arista.avd.defined %}
+{%         if ethernet_interface.channel_group.recirculation is arista.avd.defined(true) %}
+   channel-group recirculation {{ ethernet_interface.channel_group.id }}
+{%         elif ethernet_interface.channel_group.mode is arista.avd.defined %}
    channel-group {{ ethernet_interface.channel_group.id }} mode {{ ethernet_interface.channel_group.mode }}
-{%         if ethernet_interface.lacp_timer.mode is arista.avd.defined %}
+{%             if ethernet_interface.lacp_timer.mode is arista.avd.defined %}
    lacp timer {{ ethernet_interface.lacp_timer.mode }}
-{%         endif %}
-{%         if ethernet_interface.lacp_timer.multiplier is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interface.lacp_timer.multiplier is arista.avd.defined %}
    lacp timer multiplier {{ ethernet_interface.lacp_timer.multiplier }}
-{%         endif %}
-{%         if ethernet_interface.lacp_port_priority is arista.avd.defined %}
+{%             endif %}
+{%             if ethernet_interface.lacp_port_priority is arista.avd.defined %}
    lacp port-priority {{ ethernet_interface.lacp_port_priority }}
+{%             endif %}
 {%         endif %}
 {%     endif %}
 {%     if ethernet_interface.lldp.transmit is arista.avd.defined(false) %}
