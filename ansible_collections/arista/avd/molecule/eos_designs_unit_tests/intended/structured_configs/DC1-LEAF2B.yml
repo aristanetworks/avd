@@ -625,7 +625,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
 - name: Ethernet10
   peer: server01_MLAG

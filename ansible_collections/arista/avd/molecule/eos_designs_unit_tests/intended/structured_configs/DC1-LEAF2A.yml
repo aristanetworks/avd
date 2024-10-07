@@ -625,7 +625,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
 - name: Ethernet23
   peer_type: l3_interface
@@ -634,7 +634,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
 - name: Ethernet24
   peer_type: network_port

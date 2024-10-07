@@ -282,7 +282,7 @@ interface Ethernet6.100
    ip address 192.168.48.4/31
    ip ospf cost 10
    ip ospf network point-to-point
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet6.101
    description TENANT_B_SITE_5
@@ -597,7 +597,7 @@ ip route vrf TENANT_B_INTRA 123.0.10.0/24 Ethernet6.10 123.1.1.3 name TENANT_B_S
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet6.100 | 0 | 10 | True |
+| Ethernet6.100 | 0.0.0.0 | 10 | True |
 
 #### Router OSPF Device Configuration
 

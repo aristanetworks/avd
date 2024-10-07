@@ -76,7 +76,6 @@ tenants:
             ospf:
               enabled: true
               point_to_point: true
-              area: 0
               cost: 10
           - description: TENANT_B_SITE_5_INTRA_L3VPN
             enabled: true
@@ -136,7 +135,6 @@ tenants:
             ospf:
               enabled: true
               point_to_point: true
-              area: 0
               cost: 10
           - description: TENANT_B_SITE_5
             enabled: true

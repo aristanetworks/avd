@@ -269,7 +269,7 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   vrf: TENANT_B_INTRA
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
   ospf_cost: 10
 - name: Ethernet6

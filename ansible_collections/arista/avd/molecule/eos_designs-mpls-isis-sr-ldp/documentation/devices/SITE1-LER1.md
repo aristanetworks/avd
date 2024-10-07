@@ -274,7 +274,7 @@ interface Ethernet6.10
    ip address 123.1.1.0/31
    ip ospf cost 10
    ip ospf network point-to-point
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet8
    description CPE_CPE_TENANT_A_SITE1_Ethernet1
@@ -525,7 +525,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet6.10 | 0 | 10 | True |
+| Ethernet6.10 | 0.0.0.0 | 10 | True |
 
 #### Router OSPF Device Configuration
 
