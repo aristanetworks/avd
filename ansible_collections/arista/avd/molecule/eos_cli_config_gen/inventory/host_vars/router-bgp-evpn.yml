@@ -223,7 +223,7 @@ router_bgp:
           route_map: RM_BGP_EVPN_IPV4M
         match_internal:
           enabled: true
-          route_map: RM_BGP_EVPN_IPV4M  
+          route_map: RM_BGP_EVPN_IPV4M
   address_family_ipv4:
     peer_groups:
       - name: EVPN-OVERLAY-PEERS

@@ -75,11 +75,11 @@ router_bgp:
           route_map: RM_VRF_RIP
         ospf:
           match_internal:
-            enabled: true 
+            enabled: true
             include_leaked: true
             route_map: RM_VRF_OSPF
           match_external:
-            enabled: true 
+            enabled: true
             include_leaked: true
             route_map: RM_VRF_OSPF
           match_nssa_external:
