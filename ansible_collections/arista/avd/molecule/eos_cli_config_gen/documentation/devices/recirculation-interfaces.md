@@ -43,7 +43,7 @@ interface Management1
 #### Recirculation Interfaces Summary
 
 | Interface | Description | Shutdown | Recirculation Features |
-| --------- | ----------- | -------- | --------------- |
+| --------- | ----------- | -------- | ---------------------- |
 | Recirc-Channel1 | Test recirculation interface | - | cpu-mirror |
 | Recirc-Channel2 | Test recirculation interface with shutdown | True | vxlan |
 
