@@ -337,7 +337,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - tag 10
+    - extcommunity soo 192.168.42.2:423 additive
   - sequence: 50
     type: permit
     match:
@@ -348,7 +348,7 @@ route_maps:
     type: permit
     description: Mark prefixes originated from the LAN
     set:
-    - tag 10
+    - extcommunity soo 192.168.42.2:423 additive
   - sequence: 10
     type: permit
     description: Allow WAN HA peer interface prefixes
@@ -411,7 +411,7 @@ route_maps:
   - sequence: 10
     type: permit
     match:
-    - tag 10
+    - extcommunity ECL-EVPN-SOO
 agents:
 - name: KernelFib
   environment_variables:

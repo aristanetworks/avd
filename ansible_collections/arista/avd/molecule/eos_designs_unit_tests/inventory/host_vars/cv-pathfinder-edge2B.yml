@@ -15,3 +15,6 @@ wan_ipsec_profiles:
 
 # Testing vxlan encapsulation
 wan_encapsulation: vxlan
+
+# Testing using SOO for LAN HA configuratiojn
+wan_use_soo_for_route_injection: true
