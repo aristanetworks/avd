@@ -45,7 +45,7 @@ tenant_a:
             enabled: True
             ospf:
               enabled: true
-              # Keeping 0 to make sure using 0 still works
+              # Keeping to make sure using '0' still works
               area: 0
               authentication: message-digest
               point_to_point: true
