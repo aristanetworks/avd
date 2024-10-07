@@ -1,7 +1,10 @@
 ---
 type: wan_router
-# By default it means that default routing protocol is none
-# we make it ebgp to trigger also when uplink-type is lan
+
+# The goal of this test is to verify that when underlay_bgp is computed as False
+# because of uplink_type (so not in p2p / p2p-vrfs).
+# To do so we make sure that underlay_router is True
+# we overwrite the default underlay_routing_protocol from none to ebgp
 underlay_routing_protocol: ebgp
 
 ipv4_prefix_list_catalog:
