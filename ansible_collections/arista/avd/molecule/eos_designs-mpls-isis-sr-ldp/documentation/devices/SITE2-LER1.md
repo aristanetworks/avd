@@ -662,8 +662,8 @@ router ospf 99 vrf TENANT_B_WAN
 !
 router isis CORE
    net 49.0001.1000.7000.0007.00
-   is-type level-1-2
    router-id ipv4 100.70.0.7
+   is-type level-1-2
    log-adjacency-changes
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
