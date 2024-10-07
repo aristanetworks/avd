@@ -600,8 +600,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router isis EVPN_UNDERLAY
    net 49.0001.1921.6825.5011.00
-   is-type level-2
    router-id ipv4 192.168.255.11
+   is-type level-2
    log-adjacency-changes
    !
    address-family ipv4 unicast
