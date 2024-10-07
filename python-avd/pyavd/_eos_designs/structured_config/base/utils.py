@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import get
 
 if TYPE_CHECKING:
@@ -37,7 +37,7 @@ class UtilsMixin:
         if include_mgmt_interface:
             if (self.shared_utils.mgmt_ip is None) and (self.shared_utils.ipv6_mgmt_ip is None):
                 msg = f"Unable to configure {error_context} source-interface since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             # mgmt_interface is always set (defaults to "Management1") so no need for error handling missing interface.
             source_interface = {"name": self.shared_utils.mgmt_interface}
@@ -49,7 +49,7 @@ class UtilsMixin:
             # Check for missing interface
             if self.shared_utils.inband_mgmt_interface is None:
                 msg = f"Unable to configure {error_context} source-interface since 'inband_mgmt_interface' is not set."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdInvalidInputsError(msg)
 
             # Check for duplicate VRF
             # inband_mgmt_vrf returns None in case of VRF "default", but here we want the "default" VRF name to have proper duplicate detection.
