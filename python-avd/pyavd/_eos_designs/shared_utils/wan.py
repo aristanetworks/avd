@@ -656,3 +656,17 @@ class WanMixin:
     @cached_property
     def wan_use_soo_for_route_injection(self: SharedUtils) -> bool:
         return get(self.hostvars, "wan_use_soo_for_route_injection", default=False)
+
+    @cached_property
+    def wan_set_statements(self: SharedUtils) -> list:
+        """Returns the set statetement to use for route_maps in WAN case."""
+        if self.wan_use_soo_for_route_injection:
+            return [f"extcommunity soo {self.evpn_soo} additive"]
+        return ["tag 10"]
+
+    @cached_property
+    def wan_match_statements(self: SharedUtils) -> list:
+        """Returns the set statetement to use for route_maps in WAN case."""
+        if self.wan_use_soo_for_route_injection:
+            return ["extcommunity ECL-EVPN-SOO"]
+        return ["tag 10"]

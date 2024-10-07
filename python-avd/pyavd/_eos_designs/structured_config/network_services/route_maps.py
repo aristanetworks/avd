@@ -160,24 +160,11 @@ class RouteMapsMixin(UtilsMixin):
         """
         sequence_numbers = []
         if self.shared_utils.is_wan_router:
-            match_statements = ["extcommunity ECL-EVPN-SOO"] if self.shared_utils.wan_use_soo_for_route_injection else ["tag 10"]
-
-            sequence_numbers.append(
-                {
-                    "sequence": 10,
-                    "type": "permit",
-                    "match": match_statements,
-                },
-            )
+            sequence_numbers.append({"sequence": 10, "type": "permit", "match": self.shared_utils.wan_match_statements})
         else:
-            # TODO: refactor existing behavior to SoO?
             if self._vrf_default_ipv4_subnets:
                 sequence_numbers.append(
-                    {
-                        "sequence": 10,
-                        "type": "permit",
-                        "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
-                    },
+                    {"sequence": 10, "type": "permit", "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"]},
                 )
 
             if self._vrf_default_ipv4_static_routes["static_routes"]:
@@ -255,11 +242,7 @@ class RouteMapsMixin(UtilsMixin):
                 "match": ["ip address prefix-list PL-SVI-VRF-DEFAULT"],
             }
             if self.shared_utils.wan_role:
-                if self.shared_utils.wan_use_soo_for_route_injection:
-                    set_statements = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
-                else:
-                    set_statements = ["tag 10"]
-                sequence_30["set"] = set_statements
+                sequence_30["set"] = self.shared_utils.wan_set_statements
 
             sequence_numbers.append(sequence_30)
 
@@ -273,10 +256,7 @@ class RouteMapsMixin(UtilsMixin):
         if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
             return None
 
-        if self.shared_utils.wan_role and not self.shared_utils.wan_use_soo_for_route_injection:
-            set_statements = ["tag 10"]
-        else:
-            set_statements = [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
+        set_statements = self.shared_utils.wan_set_statements if self.shared_utils.wan_role else [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
         return {
             "name": "RM-STATIC-2-BGP",
