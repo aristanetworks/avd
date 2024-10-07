@@ -136,6 +136,9 @@ ip access-list {{ acl.name }}
 {%             endif %}
 {#         END ACL_ENTRY CYCLE: walk over the list of ACL entries #}
 {%         endfor %}
+{%         if acl.permit_response_traffic is arista.avd.defined %}
+   permit response traffic {{ acl.permit_response_traffic }}
+{%         endif %}
 {#     END ACL CYCLE: end walk over the list of defined ACLs #}
 {%     endfor %}
 {% endif %}
