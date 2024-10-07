@@ -493,6 +493,7 @@ interface Port-Channel7
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:1234:0808:0707:0606
       route-target import 08:08:07:07:06:06
@@ -504,6 +505,7 @@ interface Port-Channel9
    switchport trunk allowed vlan 110-111,120-124,130-131,160-162
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:1234:0606:0707:0808
       route-target import 06:06:07:07:08:08

@@ -403,14 +403,14 @@ interface Port-Channel11
    no switchport
    ip address 100.64.49.2/30
    ipv6 enable
-   mpls ip
    mpls ldp interface
    mpls ldp igp sync
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
    link-debounce time 1600
@@ -423,14 +423,14 @@ interface Port-Channel220
    no switchport
    ip address 100.64.49.6/30
    ipv6 enable
-   mpls ip
    mpls ldp interface
    mpls ldp igp sync
+   mpls ip
    isis enable CORE
    isis circuit-type level-2
    isis metric 60
-   isis network point-to-point
    no isis hello padding
+   isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
    link-debounce time 1600
