@@ -365,8 +365,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 !
 router isis CORE
    net 49.0001.0102.5500.2002.00
-   is-type level-2
    router-id ipv4 10.255.2.2
+   is-type level-2
    log-adjacency-changes
    mpls ldp sync default
    !

@@ -215,7 +215,7 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   vrf: C1_VRF1
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: false
 - name: Ethernet3.20
   peer_type: l3_interface
