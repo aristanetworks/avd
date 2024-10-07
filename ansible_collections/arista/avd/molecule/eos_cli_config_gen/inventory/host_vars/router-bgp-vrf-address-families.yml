@@ -74,9 +74,19 @@ router_bgp:
           enabled: true
           route_map: RM_VRF_RIP
         ospf:
+          match_internal:
+            enabled: true 
+            include_leaked: true
+            route_map: RM_VRF_OSPF
+          match_external:
+            enabled: true 
+            include_leaked: true
+            route_map: RM_VRF_OSPF
           match_nssa_external:
             enabled: true
-            route_map: RM_VRF_OSPFV3
+            nssa_type: 1
+            include_leaked: true
+            route_map: RM_VRF_OSPF
         ospfv3:
           match_internal:
             enabled: true
@@ -125,21 +135,61 @@ router_bgp:
           - prefix: 2.3.4.0/24
             route_map: BARFOO
         redistribute:
+          user:
+            enabled: true
+            rcf: VRF_AFIPV4_RCF_USER()
+          attached_host:
+            enabled: true
+            route_map: VRF_AFIPV4_RM_HOST
+          bgp:
+            enabled: true
+            route_map: VRF_AFIPV4_RM_BGP
+          dynamic:
+            enabled: true
+            route_map: VRF_AFIPV4_RM_DYNAMIC
           ospf:
+            enabled: true
+            include_leaked: true
+            route_map: VRF_AFIPV4_RM_OSPF
             match_external:
               enabled: true
+              include_leaked: true
+              route_map: VRF_AFIPV4_RM_OSPF
             match_nssa_external:
               enabled: true
               nssa_type: 1
+              include_leaked: true
+              route_map: VRF_AFIPV4_RM_OSPF
           ospfv3:
             match_internal:
               enabled: true
+              include_leaked: true
+              route_map: VRF_AFIPV4_RM_OSPF
+            match_external:
+              enabled: true
+              include_leaked: true
+              route_map: VRF_AFIPV4_RM_OSPF
+            match_nssa_external:
+              enabled: true
+              include_leaked: true
+              nssa_type: 2
+              route_map: VRF_AFIPV4_RM_OSPF
           connected:
             enabled: true
+            include_leaked: true
             rcf: VRF_AFIPV4_RCF_CONNECTED_1()
           static:
             enabled: true
+            include_leaked: true
             route_map: VRF_AFIPV4_RM_STATIC_1
+          isis:
+            enabled: true
+            isis_level: level-1
+            include_leaked: true
+            rcf: VRF_AFIPV4_RCF_ISIS()
+          rip:
+            enabled: true
+            route_map: VRF_AFIPV4_RM_RIP
       address_family_ipv6:
         bgp:
           missing_policy:
@@ -200,20 +250,42 @@ router_bgp:
           - prefix: 239.0.0.0/24
             route_map: BARFOO
         redistribute:
+          attached_host:
+            enabled: true
+            route_map: VRF_AFIPV4MULTI_RM_HOST
           ospfv3:
+            match_internal:
+              enabled: true
+              route_map: VRF_AFIPV4MULTI_RM_OSPFv3
             match_external:
               enabled: true
+              route_map: VRF_AFIPV4MULTI_RM_OSPFv3
+            match_nssa_external:
+              enabled: true
+              nssa_type: 1
+              route_map: VRF_AFIPV4MULTI_RM_OSPFv3
           ospf:
             match_internal:
               enabled: true
+              route_map: VRF_AFIPV4MULTI_RM_OSPF
+            match_external:
+              enabled: true
+              route_map: VRF_AFIPV4MULTI_RM_OSPF
             match_nssa_external:
               enabled: true
               nssa_type: 2
+              route_map: VRF_AFIPV4MULTI_RM_OSPF
           connected:
             enabled: true
+            route_map: VRF_AFIPV4MULTI_RM_CONNECTED
           static:
             enabled: true
             route_map: VRF_AFIPV4MULTI_RM_STATIC
+          isis:
+            enabled: true
+            isis_level: level-1
+            include_leaked: true
+            route_map: VRF_AFIPV4MULTI_RM_ISIS
       address_family_ipv6_multicast:
         bgp:
           additional_paths:
@@ -230,18 +302,37 @@ router_bgp:
           - prefix: ff08:1::/64
         redistribute:
           ospf:
+            enabled: true
+            route_map: VRF_AFIPV6MULTI_RM_OSPF
             match_external:
               enabled: true
+              route_map: VRF_AFIPV6MULTI_RM_OSPF
             match_nssa_external:
               enabled: true
+              route_map: VRF_AFIPV6MULTI_RM_OSPF
+              nssa_type: 1
           ospfv3:
             match_internal:
               enabled: true
+              route_map: VRF_AFIPV6MULTI_RM_OSPFv3
+            match_external:
+              enabled: true
+              route_map: VRF_AFIPV6MULTI_RM_OSPFv3
+            match_nssa_external:
+              enabled: true
+              route_map: VRF_AFIPV6MULTI_RM_OSPFv3
+              nssa_type: 1
           connected:
             enabled: true
+            route_map: VRF_AFIPV6MULTI_RM_CONNECTED
           static:
             enabled: true
             route_map: VRF_AFIPV6MULTI_RM_STATIC
+          isis:
+            enabled: true
+            isis_level: level-1-2
+            include_leaked: true
+            route_map: VRF_AFIPV6MULTI_RM_ISIS
       address_family_flow_spec_ipv4:
         bgp:
           missing_policy:
@@ -278,28 +369,46 @@ router_bgp:
       redistribute:
         dynamic:
           enabled: true
+          route_map: RM_VRF_DYNAMIC
         user:
           enabled: true
         static:
           enabled: true
+          include_leaked: true
         rip:
           enabled: true
         ospf:
           enabled: true
           include_leaked: true
+          route_map: RM_VRF_OSPF
         ospfv3:
+          enabled: true
+          include_leaked: true
+          route_map: RM_VRF_OSPFv3
           match_external:
             enabled: true
+            include_leaked: true
+            route_map: RM_VRF_OSPFv3
+          match_nssa_external:
+            enabled: true
+            nssa_type: 1
+            include_leaked: true
+            route_map: RM_VRF_OSPFv3
         isis:
           enabled: true
           isis_level: level-2
           route_map: RM_VRF_ISIS
+          include_leaked: true
         connected:
           enabled: true
+          include_leaked: true
+          route_map: RM_VRF_CONNECTED
         bgp:
           enabled: true
+          route_map: RM_VRF_BGP
         attached_host:
           enabled: true
+          route_map: RM_VRF_HOST
 
     - name: VRF03
       address_family_ipv4:
