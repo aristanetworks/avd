@@ -123,6 +123,9 @@ class AvdTestAvtRole(AvdTestBase):
         if not avt_role:
             LOGGER.info("AVT role is not configured. %s is skipped.", self.__class__.__name__)
             return None
+       # Translating avt role for transit region and zone due to json output
+       if avt_role in ["transit region", "transit zone"]:
+           avt_role = ' '.join(reversed(avt_role.split()))
 
         # Construct the list of ANTA tests
         anta_tests = [
