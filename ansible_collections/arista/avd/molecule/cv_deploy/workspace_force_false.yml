@@ -42,7 +42,7 @@
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_devices: [ avd-ci-leaf2, avd-ci-core1 ]
+            cv_devices: [ avd-ci-core1 ]
             cv_submit_workspace_force: false
       rescue:
         - name: Check CVP returns

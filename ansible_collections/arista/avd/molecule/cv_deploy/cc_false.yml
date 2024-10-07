@@ -70,3 +70,15 @@
       delay: 3
       ignore_errors: True
       when: cv_deploy_results.change_control.state | lower in ['pending approval', 'approved']
+
+    - name: Cleanup
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+        cv_submit_workspace: true
+        cv_submit_workspace_force: true
+        cv_run_change_control: true
