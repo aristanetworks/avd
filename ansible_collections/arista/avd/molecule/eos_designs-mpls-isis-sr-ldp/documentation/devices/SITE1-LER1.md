@@ -591,8 +591,8 @@ router ospf 19 vrf TENANT_B_INTRA
 !
 router isis CORE
    net 49.0001.1000.7000.0005.00
-   is-type level-1-2
    router-id ipv4 100.70.0.5
+   is-type level-1-2
    log-adjacency-changes
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
