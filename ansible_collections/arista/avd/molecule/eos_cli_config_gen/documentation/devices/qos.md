@@ -135,10 +135,10 @@ interface Port-Channel3
    switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    switchport
+   service-policy type qos input pmap_test1
+   service-profile experiment
    qos trust cos
    qos cos 2
-   service-profile experiment
-   service-policy type qos input pmap_test1
 ```
 
 ## ACL

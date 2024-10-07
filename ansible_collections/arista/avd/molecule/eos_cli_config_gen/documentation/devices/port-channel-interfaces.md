@@ -395,6 +395,7 @@ interface Port-Channel5
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
+   ip verify unicast source reachable-via rx
    ip igmp host-proxy
    ip igmp host-proxy 239.0.0.1
    ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
@@ -410,7 +411,6 @@ interface Port-Channel5
    l2 mtu 8000
    l2 mru 8000
    mlag 5
-   ip verify unicast source reachable-via rx
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
@@ -432,18 +432,19 @@ interface Port-Channel8.101
 !
 interface Port-Channel9
    no switchport
-   spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
    bfd neighbor 10.1.2.4
    bfd per-link rfc-7130
+   spanning-tree guard root
 !
 interface Port-Channel10
    description SRV01_bond0
    switchport trunk allowed vlan 2-3000
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
@@ -460,6 +461,7 @@ interface Port-Channel12
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
@@ -471,6 +473,7 @@ interface Port-Channel13
 interface Port-Channel14
    description EVPN-MPLS multihoming
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
       mpls tunnel flood filter time 100
@@ -519,6 +522,7 @@ interface Port-Channel50
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -529,13 +533,13 @@ interface Port-Channel51
    switchport trunk allowed vlan 1-500
    switchport mode trunk
    switchport
+   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
    switchport port-security
    no switchport port-security mac-address maximum disabled
    switchport port-security vlan 1 mac-address maximum 3
    switchport port-security vlan 2 mac-address maximum 3
    switchport port-security vlan 3 mac-address maximum 3
    switchport port-security vlan default mac-address maximum 2
-   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
 !
 interface Port-Channel99
    description MCAST
@@ -673,8 +677,8 @@ interface Port-Channel110
    isis bfd
    isis circuit-type level-2
    isis metric 99
-   isis network point-to-point
    isis hello padding
+   isis network point-to-point
    isis authentication mode text
    isis authentication key 7 <removed>
 !
@@ -712,6 +716,7 @@ interface Port-Channel111.1000
    vlan id 1000
    encapsulation vlan
       client dot1q 100 network client
+   !
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -729,16 +734,16 @@ interface Port-Channel113
    description interface_with_mpls_enabled
    no switchport
    ip address 172.31.128.9/31
-   mpls ip
    mpls ldp interface
    mpls ldp igp sync
+   mpls ip
 !
 interface Port-Channel114
    description interface_with_mpls_disabled
    no switchport
    ip address 172.31.128.10/31
-   no mpls ip
    no mpls ldp interface
+   no mpls ip
 !
 interface Port-Channel115
    description native-vlan-tag-precedence
