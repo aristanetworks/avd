@@ -75,6 +75,30 @@ class RouteMapsMixin(UtilsMixin):
                     },
                 )
 
+            add_p2p_links = False
+            for peer in self._avd_peers:
+                peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
+                for uplink in peer_facts["uplinks"]:
+                    if (
+                        uplink["peer"] == self.shared_utils.hostname
+                        and uplink["type"] == "underlay_p2p"
+                        and uplink.get("ip_address")
+                        and "unnumbered" not in uplink["ip_address"]
+                        and get(peer_facts, "inband_ztp")
+                    ):
+                        add_p2p_links = True
+                        break
+                if add_p2p_links:
+                    break
+            if add_p2p_links:
+                sequence_numbers.append(
+                    {
+                        "sequence": 70,
+                        "type": "permit",
+                        "match": ["ip address prefix-list PL-P2P-LINKS"],
+                    }
+                )
+
             route_maps.append({"name": "RM-CONN-2-BGP", "sequence_numbers": sequence_numbers})
 
         # RM-BGP-AS{{ asn }}-OUT

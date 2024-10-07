@@ -8789,8 +8789,11 @@ $defs:
             description: 'Enable to configure upstream device with proper configuration
               to allow downstream devices to ZTP inband.
 
-              This setting also requires that the `inband_mgmt_vlan` is set for the
-              node.'
+              If the ZTP device''s uplink is L2, this setting also requires that the
+              `inband_mgmt_vlan` is set for the node.
+
+              Note that L3 inband ZTP is only supported for fabrics that use an IPv4
+              underlay routing protocol.'
             type: bool
             default: false
           inband_ztp_lacp_fallback_delay:
