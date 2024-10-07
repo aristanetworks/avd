@@ -9,7 +9,7 @@
 {%     set counter = namespace() %}
 {%     set counter.acle_number = 0 %}
 {#     START ACL CYCLE: walk over the list of defined ACLs #}
-{%     for acl in ip_access_lists %}
+{%     for acl in ip_access_lists | arista.avd.natural_sort('name') %}
 {%         if not (acl.name is arista.avd.defined) or
               not (acl.entries is arista.avd.defined) %}
 {#             break cycle if mandatory keys are not defined #}
