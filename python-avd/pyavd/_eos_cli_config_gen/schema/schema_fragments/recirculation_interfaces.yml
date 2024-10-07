@@ -14,14 +14,18 @@ keys:
       keys:
         name:
           type: str
-          description: "Recirculation interface name."
+          description: Recirculation interface name.
         description:
           type: str
         shutdown:
           type: bool
         recirculation_features:
           type: str
-          valid_values: ["vxlan", "telemetry inband", "openflow", "cpu-mirror"]
+          valid_values: 
+            - vxlan
+            - telemetry inband
+            - openflow
+            - cpu-mirror
           description: "Set the feature that will use this port for recirculation."
         eos_cli:
           type: str

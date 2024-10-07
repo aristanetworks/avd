@@ -11,7 +11,7 @@
 #### Recirculation Interfaces Summary
 
 | Interface | Description | Shutdown | Recirculation Features |
-| --------- | ----------- | -------- | --------------- |
+| --------- | ----------- | -------- | ---------------------- |
 {%     for recirculation_interface in recirculation_interfaces | arista.avd.natural_sort('name') %}
 {%         set description = recirculation_interface.description | arista.avd.default("-") %}
 {%         set shutdown = recirculation_interface.shutdown | arista.avd.default("-") %}
