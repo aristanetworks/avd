@@ -60,7 +60,7 @@ tenants:
           - evpn
         ospf:
           enabled: true
-          router_id: 123.1.1.0
+          router_id: 10.123.1.0
           max_lsa: 10000
           nodes:
             - SITE1-LER1
@@ -70,7 +70,7 @@ tenants:
             interfaces:
               - Ethernet6.10
             ip_addresses:
-              - 123.1.1.0/31
+              - 10.123.1.0/31
             nodes:
               - SITE1-LER1
             ospf:

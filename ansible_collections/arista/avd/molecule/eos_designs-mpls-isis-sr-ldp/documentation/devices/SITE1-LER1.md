@@ -190,7 +190,7 @@ vlan 2020
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
 | Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 123.1.1.0/31 | TENANT_B_INTRA | - | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10.123.1.0/31 | TENANT_B_INTRA | - | False | - | - |
 
 ##### IPv6
 
@@ -271,7 +271,7 @@ interface Ethernet6.10
    no shutdown
    encapsulation dot1q vlan 10
    vrf TENANT_B_INTRA
-   ip address 123.1.1.0/31
+   ip address 10.123.1.0/31
    ip ospf cost 10
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
@@ -513,7 +513,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 19 | 123.1.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
+| 19 | 10.123.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
@@ -532,7 +532,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router ospf 19 vrf TENANT_B_INTRA
-   router-id 123.1.1.0
+   router-id 10.123.1.0
    passive-interface default
    no passive-interface Ethernet6.10
    max-lsa 10000
