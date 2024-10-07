@@ -2994,7 +2994,7 @@ router bgp {{ router_bgp.as }}
 {%                             set redistribute_route_cli = redistribute_route_cli ~ " rcf " ~ redistribute_route.rcf %}
 {%                         endif %}
 {%                     endif %}
-      {{ redistribute_route_cli }}
+         {{ redistribute_route_cli }}
 {%                 endif %}
 {%             endfor %}
 {%         endif %}
