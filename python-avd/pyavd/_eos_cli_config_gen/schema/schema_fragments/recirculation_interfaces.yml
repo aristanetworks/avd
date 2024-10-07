@@ -21,7 +21,7 @@ keys:
           type: bool
         recirculation_features:
           type: str
-          valid_values: 
+          valid_values:
             - vxlan
             - telemetry inband
             - openflow
