@@ -48,7 +48,7 @@ class AvdSchemaTools:
                 Input variables which should be converted according to the schema.
 
         Returns:
-            List of AvdDeprecationWarnings
+            Validation result object with any validation errors or deprecation warnings.
         """
         # pylint: disable=import-outside-toplevel
         from ._errors import AvdDeprecationWarning, AvdValidationError
