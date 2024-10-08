@@ -1,11 +1,10 @@
 ---
-type: wan_router
+# The goal of this test is to verify that node l3_interfaces can generate BGP peerings even if BGP is not required for underlay or overlay.
+# The node type *must* have `underlay_router: true` to even be considered an L3 device.
+# The uplink type is overridden to `lan` to also ensure that nothing is relying on uplink type p2p / p2p-vrfs.
 
-# The goal of this test is to verify that when underlay_bgp is computed as False
-# because of uplink_type (so not in p2p / p2p-vrfs).
-# To do so we make sure that underlay_router is True
-# we overwrite the default underlay_routing_protocol from none to ebgp
-underlay_routing_protocol: ebgp
+# l3spine has default overlay and underlay protocols set to none, so it will not have any BGP config by default.
+type: l3spine
 
 ipv4_prefix_list_catalog:
   - name: ALLOW-DEFAULT
@@ -13,17 +12,16 @@ ipv4_prefix_list_catalog:
       - sequence: 10
         action: permit 0.0.0.0/0
 
-wan_router:
+l3spine:
   nodes:
     - name: node-type-l3-interfaces-bgp
       loopback_ipv4_pool: 192.168.255.0/24
-      vtep_loopback_ipv4_pool: 192.168.254.0/24
       id: 1
       bgp_as: 65000
       # Having uplink type lan will set underlay_router to False in shared_utils
       uplink_type: lan
       l3_interfaces:
-        - # bgp
+        - # triggering bgp
           name: Ethernet43
           enabled: false
           ip_address: 192.168.42.42/24
@@ -32,22 +30,3 @@ wan_router:
           bgp:
             peer_as: 65042
             ipv4_prefix_list_in: ALLOW-DEFAULT
-
-wan_mode: legacy-autovpn
-
-wan_path_groups:
-  - name: INTERNET
-    id: 42
-
-wan_carriers:
-  - name: INTERNET
-    path_group: INTERNET
-    trusted: true
-
-wan_ipsec_profiles:
-  control_plane:
-    shared_key: ABCDEF1234567890
-
-bgp_peer_groups:
-  wan_overlay_peers:
-    listen_range_prefixes: [192.168.254.0/24]
