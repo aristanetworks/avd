@@ -1,4 +1,5 @@
 ---
+fabric_name: MISSING_BGP_AS_WITH_L3_INTERFACES_BGP_PEERS
 underlay_routing_protocol: none
 type: spine
 
