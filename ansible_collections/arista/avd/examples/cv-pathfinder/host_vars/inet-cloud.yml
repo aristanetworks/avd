@@ -1,4 +1,6 @@
 ---
+overlay_routing_protocol: none
+
 dhcp_servers:
   - disabled: false
     vrf: default

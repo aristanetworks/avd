@@ -159,8 +159,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

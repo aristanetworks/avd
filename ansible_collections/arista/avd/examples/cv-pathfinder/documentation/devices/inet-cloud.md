@@ -33,11 +33,6 @@
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
   - [Router BGP](#router-bgp)
-- [BFD](#bfd)
-  - [Router BFD](#router-bfd)
-- [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
-  - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -450,18 +445,6 @@ ASN Notation: asplain
 
 #### Router BGP Peer Groups
 
-##### EVPN-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | evpn |
-| Next-hop unchanged | True |
-| Source | Loopback0 |
-| BFD | True |
-| Ebgp multihop | 3 |
-| Send community | all |
-| Maximum routes | 0 (no limit) |
-
 ##### IPv4-UNDERLAY-PEERS
 
 | Settings | Value |
@@ -476,14 +459,6 @@ ASN Notation: asplain
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 100.64.21.2 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
-#### Router BGP EVPN Address Family
-
-##### EVPN Peer Groups
-
-| Peer Group | Activate | Encapsulation |
-| ---------- | -------- | ------------- |
-| EVPN-OVERLAY-PEERS | True | default |
-
 #### Router BGP Device Configuration
 
 ```eos
@@ -492,83 +467,16 @@ router bgp 65666
    router-id 172.31.255.23
    maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
-   neighbor EVPN-OVERLAY-PEERS peer group
-   neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
-   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
-   neighbor EVPN-OVERLAY-PEERS bfd
-   neighbor EVPN-OVERLAY-PEERS ebgp-multihop 3
-   neighbor EVPN-OVERLAY-PEERS send-community
-   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 100.64.21.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 100.64.21.2 remote-as 65000
    neighbor 100.64.21.2 default-originate always
-   redistribute connected route-map RM-CONN-2-BGP
-   !
-   address-family evpn
-      neighbor EVPN-OVERLAY-PEERS activate
+   redistribute connected
    !
    address-family ipv4
-      no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
-```
-
-## BFD
-
-### Router BFD
-
-#### Router BFD Multihop Summary
-
-| Interval | Minimum RX | Multiplier |
-| -------- | ---------- | ---------- |
-| 300 | 300 | 3 |
-
-#### Router BFD Device Configuration
-
-```eos
-!
-router bfd
-   multihop interval 300 min-rx 300 multiplier 3
-```
-
-## Filters
-
-### Prefix-lists
-
-#### Prefix-lists Summary
-
-##### PL-LOOPBACKS-EVPN-OVERLAY
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 172.31.255.0/24 eq 32 |
-
-#### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-   seq 10 permit 172.31.255.0/24 eq 32
-```
-
-### Route-maps
-
-#### Route-maps Summary
-
-##### RM-CONN-2-BGP
-
-| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
-| -------- | ---- | ----- | --- | ------------- | -------- |
-| 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
-
-#### Route-maps Device Configuration
-
-```eos
-!
-route-map RM-CONN-2-BGP permit 10
-   match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ```
 
 ## VRF Instances

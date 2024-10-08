@@ -14,27 +14,12 @@ router_bgp:
     type: ipv4
     maximum_routes: 12000
     send_community: all
-  - name: EVPN-OVERLAY-PEERS
-    type: evpn
-    update_source: Loopback0
-    bfd: true
-    send_community: all
-    maximum_routes: 0
-    ebgp_multihop: 3
-    next_hop_unchanged: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-    - name: EVPN-OVERLAY-PEERS
-      activate: false
   redistribute_routes:
   - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
   neighbors:
   - ip_address: 100.64.21.2
     remote_as: '65000'
@@ -160,23 +145,6 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 172.31.255.23/32
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 172.31.255.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
 dns_domain: wan.example.local
 aaa_authorization:
   exec:
