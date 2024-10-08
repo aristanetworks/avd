@@ -120,5 +120,5 @@ wan_router:
             router_bgp:
               address_family_ipv4:
                 neighbors:
-                - ip_address: 100.64.21.1
-                  activate: true
+                  - ip_address: 100.64.21.1
+                    activate: true
