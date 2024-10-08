@@ -253,10 +253,8 @@ class RouteMapsMixin(UtilsMixin):
 
     def _redistribute_static_to_bgp_route_map(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """Append network services relevant entries to the route-map used to redistribute static routes to BGP."""
-        if not (self.shared_utils.wan_role and self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]):
+        if not self.shared_utils.wan_role or not self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]:
             return None
-
-        set_statements = self.shared_utils.wan_set_statements if self.shared_utils.wan_role else [f"extcommunity soo {self.shared_utils.evpn_soo} additive"]
 
         return {
             "name": "RM-STATIC-2-BGP",
@@ -265,7 +263,7 @@ class RouteMapsMixin(UtilsMixin):
                     "sequence": 10,
                     "type": "permit",
                     "match": ["ip address prefix-list PL-STATIC-VRF-DEFAULT"],
-                    "set": set_statements,
+                    "set": self.shared_utils.wan_set_statements,
                 },
             ],
         }

@@ -671,6 +671,14 @@ The following LAN scenarios are supported:
 - Dual Router L3 EBGP LAN with HA
 - Dual Router using one directed connected HA interface.
 
+!!! important
+
+    For the purpose of this section, it is assumed that `wan_use_soo_for_route_injection: false` (default).
+
+    The diagrams in this section comes in two flavors in two tabs:
+    - one where tags are used to mark the VRF default routes to inject in EVPN
+    - one where the same result is achieved using SoO (previous implementation which can be returned wan_use_soo_for_route_injection: true)
+
 Some design points:
 
 - The Site of Origin (SOO) extended community is configured as `<router_id>:<site_id>`
@@ -679,15 +687,13 @@ Some design points:
     the first router defined in the group.
 - HA is not supported for more than two routers for CV Pathfinders.
 - The routes to be advertised towards the WAN must be marked with the site SOO.
-  - The connected routes and static routes are marked with the SOO when
-    redistributed in BGP
-    - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are tagged with the SOO.
-    - the routes redistributed into BGP via the route-map `RM-STATIC-2-BGP` are tagged with the SOO.
-  - the routes received from LAN are marked with the SOO when received from
-        the LAN over BGP or when redistributed into BGP from the LAN protocol.
-        note: For other connection (e.g. L3 interface with a BGP peering, the
-        user must mark them with the SOO)
-- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes tagged with the SOO.
+  - The connected routes and static routes are marked with tag 10 when redistributed in BGP
+    - the routes redistributed into BGP via the route-map `RM-CONN-2-BGP` are marked with tag 10.
+    - the routes redistributed into BGP via the route-map `RM-STATIC-2-BGP` are marked with tag 10.
+  - the routes received from LAN are marked with ttag 10 when received from the LAN over BGP or when redistributed into BGP from the LAN protocol.
+        note: For other connection (e.g. L3 interface with a BGP peering, the user must mark them with tag 10).
+- For VRF default, there is a requirement to explicitly redistribute the routes for EVPN. The `RM-EVPN-EXPORT-VRF-DEFAULT` is configured to export the routes marked with tag 10.
+- For other VRFs, all routes are redistributed by default by AVD.
 - Routes received from the WAN with the local SOO are dropped.
 - Routes received from the WAN are redistributed / advertised towards the LAN.
 - For HA, an iBGP session using EVPN Gateway is used to share the routes from
@@ -701,11 +707,17 @@ interaction to help understand how everything fits together. This diagram
 represents the common scenario for a single router, without any LAN. It will be
 reused when adding LAN protocols to help understand the changes.
 
-<!-- ![Figure 1: WAN LAN Common design](../../../media/wan_lan_common.png) -->
+=== "Using `tag 10` to mark routes"
 
-<div style="text-align:center">
-  <img src="../../../../media/wan_lan_common.png" alt="WAN LAN Common design"/>
-</div>
+    <div style="text-align:center">
+      <img src="../../../../media/wan_lan_common.png" alt="WAN LAN Common design"/>
+    </div>
+
+=== "Using SoO to mark routes (legacy)"
+
+    <div style="text-align:center">
+      <img src="../../../../media/wan_lan_common_legacy.png" alt="WAN LAN Common design"/>
+    </div>
 
 #### LAN HA common configuration
 
@@ -773,11 +785,17 @@ From a configuration standpoint:
 
 The following diagram represents this scenario:
 
-<!-- ![Figure 2: WAN Direct HA](../../../media/wan_direct_ha_no_lan.png) -->
+=== "Using `tag 10` to mark routes"
 
-<div style="text-align:center">
-  <img src="../../../../media/wan_direct_ha_no_lan.png" alt="WAN Direct HA"/>
-</div>
+    <div style="text-align:center">
+      <img src="../../../../media/wan_direct_ha_no_lan.png" alt="WAN Direct HA"/>
+    </div>
+
+=== "Using SoO to mark routes (legacy)"
+
+    <div style="text-align:center">
+      <img src="../../../../media/wan_direct_ha_no_lan_legacy.png" alt="WAN Direct HA"/>
+    </div>
 
 #### EBGP LAN
 
@@ -792,11 +810,17 @@ The following diagram represents this scenario:
 
 The following diagram shows the additional route-maps configured to support eBGP on LAN:
 
-<!-- ![Figure 3: WAN eBGP LAN Single Router](../../../media/wan_ebgp_lan_single_router.png) -->
+=== "Using `tag 10` to mark routes"
 
-<div style="text-align:center">
-  <img src="../../../../media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
-</div>
+    <div style="text-align:center">
+      <img src="../../../../media/wan_ebgp_lan_single_router.png" alt="WAN eBGP LAN Single Router"/>
+    </div>
+
+=== "Using SoO to mark routes (legacy)"
+
+    <div style="text-align:center">
+      <img src="../../../../media/wan_ebgp_lan_single_router_legacy.png" alt="WAN eBGP LAN Single Router"/>
+    </div>
 
 ##### HA (PREVIEW)
 
@@ -817,21 +841,33 @@ for eBGP LAN routing protocol the following is done to enable HA:
 
 This is described in the following diagram:
 
-<!-- ![Figure 4: WAN eBGP LAN with HA](../../../media/wan_ebgp_lan_ha.png) -->
+=== "Using `tag 10` to mark routes"
 
-<div style="text-align:center">
-  <img src="../../../../media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
-</div>
+    <div style="text-align:center">
+      <img src="../../../../media/wan_ebgp_lan_ha.png" alt="WAN eBGP LAN with HA"/>
+    </div>
+
+=== "Using SoO to mark routes (legacy)"
+
+    <div style="text-align:center">
+      <img src="../../../../media/wan_ebgp_lan_ha_legacy.png" alt="WAN eBGP LAN with HA"/>
+    </div>
 
 ##### HA with Direct Link (PREVIEW)
 
 In the situation where the LAN is EBGP but HA is configured over a direct link, there is no peering with the HA peer required via the LAN and the configuration is simplified as follow:
 
-<!-- ![Figure 5: WAN eBGP LAN with Direct HA link](../../../media/wan_ebgp_lan_ha_direct.png) -->
+=== "Using `tag 10` to mark routes"
 
-<div style="text-align:center">
-  <img src="../../../../media/wan_ebgp_lan_ha_direct.png" alt="WAN eBGP LAN with Direct HA link"/>
-</div>
+    <div style="text-align:center">
+      <img src="../../../../media/wan_ebgp_lan_ha_direct.png" alt="WAN eBGP LAN with Direct HA link"/>
+    </div>
+
+=== "Using SoO to mark routes (legacy)"
+
+    <div style="text-align:center">
+      <img src="../../../../media/wan_ebgp_lan_ha_direct_legacy.png" alt="WAN eBGP LAN with Direct HA link"/>
+    </div>
 
 !!! warning
 
