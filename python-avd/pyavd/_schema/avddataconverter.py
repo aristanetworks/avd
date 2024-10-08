@@ -176,12 +176,13 @@ class AvdDataConverter:
             return
 
         new_key = deprecation.get("new_key")
+        removed = deprecation.get("removed", False)
 
         # If new_key set, we can check for collision where both new and old key are set.
         # If we have a space in the new_key, we will skip the check and just produce the deprecation warning with new_key.
         # New key is assumed to be relative to the parent dict.
         conflict = False
-        if new_key and parent_dict is not None:
+        if not removed and new_key and parent_dict is not None:
             for one_new_key in new_key.split(" or "):
                 if " " in one_new_key:
                     continue
@@ -197,7 +198,7 @@ class AvdDataConverter:
             remove_in_version=deprecation.get("remove_in_version"),
             remove_after_date=deprecation.get("remove_after_date"),
             url=deprecation.get("url"),
-            removed=deprecation.get("removed", False),
+            removed=removed,
             conflict=conflict,
         )
 
