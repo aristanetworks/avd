@@ -169,7 +169,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
         Does _not_ include checks if the peering is enabled at all, so that should be checked first.
         """
         if get(vrf, "redistribute_connected", True) is True:
-            return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), False) is False # noqa: FBT003
+            return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), False) is False  # noqa: FBT003
 
         return None
 
