@@ -253,9 +253,9 @@ STP Root Super: **True**
 
 ```eos
 !
-spanning-tree root super
 spanning-tree mode mstp
 no spanning-tree vlan-id 4092
+spanning-tree root super
 spanning-tree mst 0 priority 4096
 ```
 
@@ -280,7 +280,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 2 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3 |
+| 2 | MLAG_L3_VRF_Tenant_C_OP_Zone | MLAG |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
@@ -302,23 +302,23 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
-| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
-| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | LEAF_PEER_L3 |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3 |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3 |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3 |
-| 4092 | MLAG_PEER | MLAG |
+| 3009 | MLAG_L3_VRF_Tenant_A_OP_Zone | MLAG |
+| 3010 | MLAG_L3_VRF_Tenant_A_WEB_Zone | MLAG |
+| 3011 | MLAG_L3_VRF_Tenant_A_APP_Zone | MLAG |
+| 3012 | MLAG_L3_VRF_Tenant_A_DB_Zone | MLAG |
+| 3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | MLAG |
+| 3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | MLAG |
+| 3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | MLAG |
+| 4092 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
 ```eos
 !
 vlan 2
-   name MLAG_iBGP_Tenant_C_OP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_C_OP_Zone
+   trunk group MLAG
 !
 vlan 110
    name Tenant_A_OP_Zone_1
@@ -384,39 +384,39 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 !
 vlan 3009
-   name MLAG_iBGP_Tenant_A_OP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_OP_Zone
+   trunk group MLAG
 !
 vlan 3010
-   name MLAG_iBGP_Tenant_A_WEB_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_WEB_Zone
+   trunk group MLAG
 !
 vlan 3011
-   name MLAG_iBGP_Tenant_A_APP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_APP_Zone
+   trunk group MLAG
 !
 vlan 3012
-   name MLAG_iBGP_Tenant_A_DB_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_DB_Zone
+   trunk group MLAG
 !
 vlan 3013
-   name MLAG_iBGP_Tenant_A_WAN_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_WAN_Zone
+   trunk group MLAG
 !
 vlan 3019
-   name MLAG_iBGP_Tenant_B_OP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_B_OP_Zone
+   trunk group MLAG
 !
 vlan 3020
-   name MLAG_iBGP_Tenant_B_WAN_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_B_WAN_Zone
+   trunk group MLAG
 !
 vlan 3030
-   name MLAG_iBGP_Tenant_C_WAN_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_C_WAN_Zone
+   trunk group MLAG
 !
 vlan 4092
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -430,8 +430,8 @@ vlan 4092
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
+| Ethernet5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | CUSTOM_MLAG_PEER_DC1-SVC3B_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
 | Ethernet7 | CUSTOM_DC1-L2LEAF2A_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet8 | CUSTOM_DC1-L2LEAF2B_Ethernet1 | *trunk | *110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | *- | *- | 7 |
 | Ethernet10 | CUSTOM_server03_ESI_Eth1 | *trunk | *110-111,210-211 | *- | *- | 10 |
@@ -631,8 +631,8 @@ interface Ethernet44
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
-| Port-Channel7 | CUSTOM_DC1_L2LEAF2_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel5 | CUSTOM_MLAG_PEER_DC1-SVC3B_Po5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel7 | CUSTOM_DC1-L2LEAF2A_Po1 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 7 | - |
 | Port-Channel10 | CUSTOM_server03_ESI_PortChanne1 | trunk | 110-111,210-211 | - | - | - | - | - | 0000:1234:0303:0202:0101 |
 | Port-Channel14 | CUSTOM_server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
 | Port-Channel15 | CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
@@ -657,12 +657,11 @@ interface Port-Channel5
    description CUSTOM_MLAG_PEER_DC1-SVC3B_Po5
    no shutdown
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    switchport
 !
 interface Port-Channel7
-   description CUSTOM_DC1_L2LEAF2_Po1
+   description CUSTOM_DC1-L2LEAF2A_Po1
    no shutdown
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
@@ -815,7 +814,7 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan2 | MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
+| Vlan2 | MLAG_L3_VRF_Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
 | Vlan110 | SVI 110 CUSTOM DESCRIPTION | Tenant_A_OP_Zone | - | False |
 | Vlan111 | SVI 111 CUSTOM DESCRIPTION | Tenant_A_OP_Zone | - | False |
 | Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | False |
@@ -834,15 +833,15 @@ interface Loopback100
 | Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | False |
 | Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | False |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
-| Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
-| Vlan3010 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone | Tenant_A_WEB_Zone | 1500 | False |
-| Vlan3011 | MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
-| Vlan3012 | MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
-| Vlan3013 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
-| Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
-| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
-| Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
-| Vlan4092 | MLAG_PEER | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
+| Vlan3010 | MLAG_L3_VRF_Tenant_A_WEB_Zone | Tenant_A_WEB_Zone | 1500 | False |
+| Vlan3011 | MLAG_L3_VRF_Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
+| Vlan3012 | MLAG_L3_VRF_Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
+| Vlan3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
+| Vlan3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
+| Vlan3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
+| Vlan3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
+| Vlan4092 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -882,7 +881,7 @@ interface Loopback100
 ```eos
 !
 interface Vlan2
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
+   description MLAG_L3_VRF_Tenant_C_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_OP_Zone
@@ -1004,63 +1003,63 @@ interface Vlan350
    ip address virtual 10.3.50.1/24
 !
 interface Vlan3009
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   description MLAG_L3_VRF_Tenant_A_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_OP_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3010
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
+   description MLAG_L3_VRF_Tenant_A_WEB_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WEB_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3011
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
+   description MLAG_L3_VRF_Tenant_A_APP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_APP_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3012
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
+   description MLAG_L3_VRF_Tenant_A_DB_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_DB_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3013
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
+   description MLAG_L3_VRF_Tenant_A_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WAN_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3019
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone
+   description MLAG_L3_VRF_Tenant_B_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_OP_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3020
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
+   description MLAG_L3_VRF_Tenant_B_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_WAN_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan3030
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
+   description MLAG_L3_VRF_Tenant_C_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_WAN_Zone
    ip address 10.255.252.6/31
 !
 interface Vlan4092
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
@@ -1393,7 +1392,7 @@ router bgp 65103
    neighbor UNDERLAY-PEERS send-community
    neighbor UNDERLAY-PEERS maximum-routes 12000
    neighbor 10.255.252.7 peer group MLAG-PEERS
-   neighbor 10.255.252.7 description DC1-SVC3B
+   neighbor 10.255.252.7 description DC1-SVC3B_Vlan4092
    neighbor 172.31.255.48 peer group UNDERLAY-PEERS
    neighbor 172.31.255.48 remote-as 65001
    neighbor 172.31.255.48 description DC1-SPINE1_Ethernet4
@@ -1408,16 +1407,16 @@ router bgp 65103
    neighbor 172.31.255.54 description DC1-SPINE4_Ethernet4
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
@@ -1502,8 +1501,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3011
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.12:13
@@ -1512,8 +1511,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3012
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.12:10
@@ -1522,8 +1521,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3009
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.12:14
@@ -1534,8 +1533,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3013
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
       redistribute static
    !
    vrf Tenant_A_WEB_Zone
@@ -1545,8 +1544,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3010
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.12:20
@@ -1555,8 +1554,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3019
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.12:21
@@ -1565,8 +1564,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3020
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.12:30
@@ -1575,8 +1574,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan2
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.12:31
@@ -1585,8 +1584,8 @@ router bgp 65103
       router-id 192.168.255.12
       update wait-install
       neighbor 10.255.252.7 peer group MLAG-PEERS
-      neighbor 10.255.252.7 description DC1-SVC3B
-      redistribute connected
+      neighbor 10.255.252.7 description DC1-SVC3B_Vlan3030
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD
@@ -1620,6 +1619,7 @@ router bfd
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 
@@ -1663,6 +1663,12 @@ no ip igmp snooping vlan 161
 | 10 | permit 192.168.255.0/24 eq 32 |
 | 20 | permit 192.168.254.0/24 eq 32 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 10.255.252.6/31 |
+
 #### Prefix-lists Device Configuration
 
 ```eos
@@ -1670,6 +1676,9 @@ no ip igmp snooping vlan 161
 ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
    seq 10 permit 192.168.255.0/24 eq 32
    seq 20 permit 192.168.254.0/24 eq 32
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 10.255.252.6/31
 ```
 
 ### Route-maps
@@ -1681,6 +1690,13 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | Sequence | Type | Match | Set | Sub-Route-Map | Continue |
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY | - | - | - |
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -1694,6 +1710,11 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 !
 route-map RM-CONN-2-BGP permit 10
    match ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing

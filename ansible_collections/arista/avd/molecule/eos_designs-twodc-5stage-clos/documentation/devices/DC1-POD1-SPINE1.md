@@ -144,21 +144,21 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1 | - | 172.16.11.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1 | - | 172.16.11.65/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet1 | - | 172.17.110.0/31 | default | - | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet1 | - | 172.17.110.8/31 | default | - | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1 | - | 172.17.110.16/31 | default | - | False | - | - |
-| Ethernet6 | P2P_LINK_TO_DC1-RS1_Ethernet2 | - | 172.17.10.2/31 | default | - | False | - | - |
-| Ethernet7 | P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet11 | - | 172.17.110.12/31 | default | - | False | - | - |
-| Ethernet8 | P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11 | - | 172.17.110.20/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-SUPER-SPINE1_Ethernet1 | - | 172.16.11.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-SUPER-SPINE2_Ethernet1 | - | 172.16.11.65/31 | default | - | False | - | - |
+| Ethernet3 | P2P_DC1-POD1-LEAF1A_Ethernet1 | - | 172.17.110.0/31 | default | - | False | - | - |
+| Ethernet4 | P2P_DC1.POD1.LEAF2A_Ethernet1 | - | 172.17.110.8/31 | default | - | False | - | - |
+| Ethernet5 | P2P_DC1-POD1-LEAF2B_Ethernet1 | - | 172.17.110.16/31 | default | - | False | - | - |
+| Ethernet6 | P2P_DC1-RS1_Ethernet2 | - | 172.17.10.2/31 | default | - | False | - | - |
+| Ethernet7 | P2P_DC1.POD1.LEAF2A_Ethernet11 | - | 172.17.110.12/31 | default | - | False | - | - |
+| Ethernet8 | P2P_DC1-POD1-LEAF2B_Ethernet11 | - | 172.17.110.20/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SUPER-SPINE1_Ethernet1
+   description P2P_DC1-SUPER-SPINE1_Ethernet1
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -167,7 +167,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SUPER-SPINE2_Ethernet1
+   description P2P_DC1-SUPER-SPINE2_Ethernet1
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -176,7 +176,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-POD1-LEAF1A_Ethernet1
+   description P2P_DC1-POD1-LEAF1A_Ethernet1
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -185,7 +185,7 @@ interface Ethernet3
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet1
+   description P2P_DC1.POD1.LEAF2A_Ethernet1
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -194,7 +194,7 @@ interface Ethernet4
    service-profile QOS-PROFILE
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet1
+   description P2P_DC1-POD1-LEAF2B_Ethernet1
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -203,14 +203,14 @@ interface Ethernet5
    service-profile QOS-PROFILE
 !
 interface Ethernet6
-   description P2P_LINK_TO_DC1-RS1_Ethernet2
+   description P2P_DC1-RS1_Ethernet2
    no shutdown
    no switchport
    ip address 172.17.10.2/31
    service-profile QOS-PROFILE
 !
 interface Ethernet7
-   description P2P_LINK_TO_DC1.POD1.LEAF2A_Ethernet11
+   description P2P_DC1.POD1.LEAF2A_Ethernet11
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -219,7 +219,7 @@ interface Ethernet7
    service-profile QOS-PROFILE
 !
 interface Ethernet8
-   description P2P_LINK_TO_DC1-POD1-LEAF2B_Ethernet11
+   description P2P_DC1-POD1-LEAF2B_Ethernet11
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -402,25 +402,25 @@ router bgp 65110.100
    neighbor 172.16.11.64 description DC1-SUPER-SPINE2_Ethernet1
    neighbor 172.16.20.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.20.1 remote-as 65201
-   neighbor 172.16.20.1 description DC2-RS1
+   neighbor 172.16.20.1 description DC2-RS1_Loopback0
    neighbor 172.16.20.1 route-map RM-EVPN-FILTER-AS65201 out
    neighbor 172.16.110.4 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.4 remote-as 65112.100
-   neighbor 172.16.110.4 description DC1.POD1.LEAF2A
+   neighbor 172.16.110.4 description DC1.POD1.LEAF2A_Loopback0
    neighbor 172.16.110.5 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.110.5 remote-as 65112.100
-   neighbor 172.16.110.5 description DC1-POD1-LEAF2B
+   neighbor 172.16.110.5 description DC1-POD1-LEAF2B_Loopback0
    neighbor 172.16.200.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.200.1 remote-as 65200
-   neighbor 172.16.200.1 description DC2-SUPER-SPINE1
+   neighbor 172.16.200.1 description DC2-SUPER-SPINE1_Loopback0
    neighbor 172.16.200.1 route-map RM-EVPN-FILTER-AS65200 out
    neighbor 172.16.210.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.1 remote-as 65210
-   neighbor 172.16.210.1 description DC2-POD1-SPINE1
+   neighbor 172.16.210.1 description DC2-POD1-SPINE1_Loopback0
    neighbor 172.16.210.1 route-map RM-EVPN-FILTER-AS65210 out
    neighbor 172.16.210.3 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.210.3 remote-as 65211
-   neighbor 172.16.210.3 description DC2-POD1-LEAF1A
+   neighbor 172.16.210.3 description DC2-POD1-LEAF1A_Loopback0
    neighbor 172.16.210.3 route-map RM-EVPN-FILTER-AS65211 out
    neighbor 172.17.10.3 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.3 remote-as 65101

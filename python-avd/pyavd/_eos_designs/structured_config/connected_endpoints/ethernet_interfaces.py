@@ -8,7 +8,7 @@ from collections import ChainMap
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import append_if_not_duplicate, default, get, replace_or_append_item, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
@@ -42,9 +42,9 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         non_overwritable_ethernet_interfaces = []
 
-        for network_port in self._filtered_network_ports:
+        for index, network_port in enumerate(self._filtered_network_ports):
             connected_endpoint = {
-                "name": network_port.get("description"),
+                "name": network_port.get("endpoint"),
                 "type": "network_port",
             }
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
@@ -56,16 +56,18 @@ class EthernetInterfacesMixin(UtilsMixin):
                     },
                     network_port,
                 )
-                ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint)
+                context = f"network_ports[{index}]"
+                ethernet_interface = self._get_ethernet_interface_cfg(tmp_network_port, 0, connected_endpoint, context)
                 replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
 
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for index, connected_endpoint in enumerate(self._filtered_connected_endpoints):
             for adapter in connected_endpoint["adapters"]:
                 for node_index, node_name in enumerate(adapter["switches"]):
                     if node_name != self.shared_utils.hostname:
                         continue
 
-                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
+                    context = f"{connected_endpoint['type']}[name={connected_endpoint['name']}].adapters[{index}]"
+                    ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint, context)
                     append_if_not_duplicate(
                         list_of_dicts=non_overwritable_ethernet_interfaces,
                         primary_key="name",
@@ -81,7 +83,9 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         return None
 
-    def _update_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, ethernet_interface: dict, connected_endpoint: dict) -> dict:
+    def _update_ethernet_interface_cfg(
+        self: AvdStructuredConfigConnectedEndpoints, adapter: dict | ChainMap, ethernet_interface: dict, connected_endpoint: dict, context: str
+    ) -> dict:
         ethernet_interface.update(
             {
                 "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
@@ -105,7 +109,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 "storm_control": self._get_adapter_storm_control(adapter),
                 "dot1x": adapter.get("dot1x"),
                 "poe": self._get_adapter_poe(adapter),
-                "ptp": self._get_adapter_ptp(adapter),
+                "ptp": self._get_adapter_ptp(adapter, context),
                 "service_profile": adapter.get("qos_profile"),
                 "sflow": self._get_adapter_sflow(adapter),
                 "flow_tracker": self._get_adapter_flow_tracking(adapter),
@@ -114,7 +118,9 @@ class EthernetInterfacesMixin(UtilsMixin):
         )
         return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, "", {}))
 
-    def _get_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, node_index: int, connected_endpoint: dict) -> dict:
+    def _get_ethernet_interface_cfg(
+        self: AvdStructuredConfigConnectedEndpoints, adapter: dict, node_index: int, connected_endpoint: dict, context: str
+    ) -> dict:
         """Return structured_config for one ethernet_interface."""
         peer = connected_endpoint["name"]
         endpoint_ports: list = default(
@@ -141,7 +147,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         if (interface_descriptions := adapter.get("descriptions")) is not None:
             interface_description = interface_descriptions[node_index]
         else:
-            interface_description = adapter.get("description")
+            interface_description = get(adapter, "description")
 
         # Common ethernet_interface settings
         ethernet_interface = {
@@ -156,9 +162,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                     interface=adapter["switch_ports"][node_index],
                     peer=peer,
                     peer_interface=peer_interface,
+                    peer_type=connected_endpoint["type"],
                     description=interface_description,
                 ),
-            ),
+            )
+            or None,
             "speed": adapter.get("speed"),
             "shutdown": not adapter.get("enabled", True),
             "validate_state": None if adapter.get("validate_state", True) else False,
@@ -186,22 +194,11 @@ class EthernetInterfacesMixin(UtilsMixin):
                         "A Port-channel which is set to lacp fallback mode 'individual' must have a 'profile' defined. Profile definition is missing for"
                         f" the connected endpoint with the name '{connected_endpoint['name']}'."
                     )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                    raise AristaAvdInvalidInputsError(msg)
 
-                # Verify that the referred profile exists under port_profiles
-                if not (profile := self.shared_utils.get_merged_port_profile(profile_name)):
-                    msg = (
-                        "The 'profile' of every port-channel lacp fallback individual setting must be defined in the 'port_profiles'. First occurrence seen"
-                        f" of a missing profile is '{get(adapter, 'port_channel.lacp_fallback.individual.profile')}' for the connected endpoint with the"
-                        f" name '{connected_endpoint['name']}'."
-                    )
-                    raise AristaAvdMissingVariableError(
-                        msg,
-                    )
+                profile = self.shared_utils.get_merged_port_profile(profile_name, context=f"{context}.port_channel.lacp_fallback.individual")
 
-                ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
+                ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint, context)
 
             if port_channel_mode != "on" and get(adapter, "port_channel.lacp_timer") is not None:
                 ethernet_interface["lacp_timer"] = {
@@ -211,7 +208,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # NOT a port-channel member
         else:
-            ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint)
+            ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint, context)
             ethernet_interface["evpn_ethernet_segment"] = self._get_adapter_evpn_ethernet_segment_cfg(
                 adapter,
                 short_esi,

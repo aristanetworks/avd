@@ -57,7 +57,7 @@ router_bgp:
   - ip_address: 172.20.110.2
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: DC1.POD1.LEAF2A
-    description: DC1.POD1.LEAF2A
+    description: DC1.POD1.LEAF2A_Vlan4094
   - ip_address: 172.17.110.16
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65110.100'
@@ -81,19 +81,19 @@ router_bgp:
   - ip_address: 172.16.110.3
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-LEAF1A
-    description: DC1-POD1-LEAF1A
+    description: DC1-POD1-LEAF1A_Loopback0
     remote_as: '65111.100'
     route_map_out: RM-EVPN-FILTER-AS65111.100
   - ip_address: 172.16.110.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-POD1-SPINE1
-    description: DC1-POD1-SPINE1
+    description: DC1-POD1-SPINE1_Loopback0
     remote_as: '65110.100'
     route_map_out: RM-EVPN-FILTER-AS65110.100
   - ip_address: 172.16.10.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: DC1-RS1
-    description: DC1-RS1
+    description: DC1-RS1_Loopback0
     remote_as: '65101'
     route_map_out: RM-EVPN-FILTER-AS65101
   - ip_address: 1.1.1.1
@@ -117,10 +117,10 @@ router_bgp:
         enable: true
         inter_domain: false
     peer_groups:
-    - name: EVPN-OVERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-CORE
       domain_remote: true
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
       activate: true
     route:
       import_match_failure_action: discard
@@ -361,7 +361,7 @@ snmp_server:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -399,7 +399,7 @@ vlans:
   name: L2LEAF_INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   ip_address: 172.20.110.3/31
@@ -480,18 +480,17 @@ vlan_interfaces:
   - 172.21.110.1
 port_channel_interfaces:
 - name: Port-Channel5
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Po5
+  description: MLAG_DC1.POD1.LEAF2A_Port-Channel5
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
   service_profile: QOS-PROFILE
 - name: Port-Channel3
-  description: RACK2_MLAG_Po1
+  description: L2_RACK2_MLAG_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -501,7 +500,7 @@ port_channel_interfaces:
   service_profile: QOS-PROFILE
   mlag: 3
 - name: Port-Channel16
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: bar
   switchport:
@@ -519,7 +518,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 17
 - name: Port-Channel18
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -535,7 +534,7 @@ port_channel_interfaces:
     access_vlan: '110'
   mlag: 18
 - name: Port-Channel19
-  description: server-1_PortChannel
+  description: PortChannel
   shutdown: false
   service_profile: foo
   eos_cli: 'comment
@@ -555,7 +554,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet5
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet5
+  description: MLAG_DC1.POD1.LEAF2A_Ethernet5
   shutdown: false
   channel_group:
     id: 5
@@ -564,7 +563,7 @@ ethernet_interfaces:
   peer: DC1.POD1.LEAF2A
   peer_interface: Ethernet6
   peer_type: mlag_peer
-  description: MLAG_PEER_DC1.POD1.LEAF2A_Ethernet6
+  description: MLAG_DC1.POD1.LEAF2A_Ethernet6
   shutdown: false
   channel_group:
     id: 5
@@ -573,7 +572,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet5
+  description: P2P_DC1-POD1-SPINE1_Ethernet5
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -587,7 +586,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE2
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet5
+  description: P2P_DC1-POD1-SPINE2_Ethernet5
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -601,7 +600,7 @@ ethernet_interfaces:
   peer: DC1-POD1-L2LEAF2A
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC1-POD1-L2LEAF2A_Ethernet2
+  description: L2_DC1-POD1-L2LEAF2A_Ethernet2
   shutdown: false
   channel_group:
     id: 3
@@ -610,7 +609,7 @@ ethernet_interfaces:
   peer: DC1-POD1-L2LEAF2B
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: DC1-POD1-L2LEAF2B_Ethernet2
+  description: L2_DC1-POD1-L2LEAF2B_Ethernet2
   shutdown: false
   channel_group:
     id: 3
@@ -619,7 +618,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet8
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet8
+  description: P2P_DC1-POD1-SPINE1_Ethernet8
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -633,7 +632,7 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE2
   peer_interface: Ethernet8
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet8
+  description: P2P_DC1-POD1-SPINE2_Ethernet8
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
@@ -647,11 +646,11 @@ ethernet_interfaces:
   peer: DC2-POD1-LEAF1A
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet7
   switchport:
     enabled: false
   shutdown: false
   ip_address: 11.1.0.38/31
+  description: P2P_DC2-POD1-LEAF1A_Ethernet7
   ptp:
     enable: true
 - name: Ethernet16
@@ -659,7 +658,7 @@ ethernet_interfaces:
   peer_interface: Eth2
   peer_type: server
   port_profile: TENANT_A
-  description: server-1_Eth2
+  description: SERVER_server-1_Eth2
   shutdown: false
   eos_cli: 'comment
 
@@ -693,7 +692,7 @@ ethernet_interfaces:
   peer_interface: Eth6
   peer_type: server
   port_profile: NESTED_TENANT_A
-  description: server-1_Eth6
+  description: SERVER_server-1_Eth6
   shutdown: false
   eos_cli: 'comment
 
@@ -710,7 +709,7 @@ ethernet_interfaces:
   peer_interface: Eth8
   peer_type: server
   port_profile: NESTED_TENANT_A
-  description: server-1_Eth8
+  description: SERVER_server-1_Eth8
   shutdown: false
   eos_cli: 'comment
 
@@ -771,17 +770,17 @@ loopback_interfaces:
   shutdown: false
   ip_address: 172.18.110.4/32
 - name: Loopback102
-  description: vrf_with_loopbacks_dc1_pod1_only_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_dc1_pod1_only
   shutdown: false
   vrf: vrf_with_loopbacks_dc1_pod1_only
   ip_address: 10.102.101.5/32
 - name: Loopback100
-  description: vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
   shutdown: false
   vrf: vrf_with_loopbacks_from_overlapping_pool
   ip_address: 10.100.0.5/32
 - name: Loopback101
-  description: vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_vrf_with_loopbacks_from_pod_pools
   shutdown: false
   vrf: vrf_with_loopbacks_from_pod_pools
   ip_address: 10.101.101.5/32

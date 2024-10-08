@@ -24,14 +24,14 @@
 {% include 'eos/hardware-counters.j2' %}
 {# service routing configuration #}
 {% include 'eos/service-routing-configuration-bgp.j2' %}
-{# management api http #}
-{% include 'eos/management-api-http.j2' %}
 {# cli prompt #}
 {% include 'eos/prompt.j2' %}
 {# terminal settings #}
 {% include 'eos/terminal.j2' %}
 {# aliases #}
 {% include 'eos/aliases.j2' %}
+{# logging event storm-control #}
+{% include 'eos/logging-event-storm-control.j2' %}
 {# daemon TerminAttr #}
 {% include 'eos/daemon-terminattr.j2' %}
 {# daemons #}
@@ -58,6 +58,8 @@
 {% include 'eos/flow-tracking.j2' %}
 {# ip igmp snooping #}
 {% include 'eos/ip-igmp-snooping.j2' %}
+{# logging event congestion-drops #}
+{% include 'eos/logging-event-congestion-drops.j2' %}
 {# load-interval #}
 {% include 'eos/load-interval.j2' %}
 {# hardware configuration #}
@@ -100,6 +102,8 @@
 {% include 'eos/dns-domain.j2' %}
 {# domain-list #}
 {% include 'eos/domain-list.j2' %}
+{# aaa server groups ldap #}
+{% include 'eos/aaa-server-groups-ldap.j2' %}
 {# Object Tracking #}
 {% include 'eos/trackers.j2' %}
 {# poe #}
@@ -152,6 +156,8 @@
 {% include 'eos/banners.j2' %}
 {# management accounts #}
 {% include 'eos/management-accounts.j2' %}
+{# management api http #}
+{% include 'eos/management-api-http.j2' %}
 {# management console #}
 {% include 'eos/management-console.j2' %}
 {# management cvx #}
@@ -166,12 +172,18 @@
 {% include 'eos/management-security.j2' %}
 {# radius server #}
 {% include 'eos/radius-server.j2' %}
+{# aaa server groups radius #}
+{% include 'eos/aaa-server-groups-radius.j2' %}
 {# tacacs servers #}
 {% include 'eos/tacacs-servers.j2' %}
+{# aaa server groups tacacs+ #}
+{% include 'eos/aaa-server-groups-tacacs-plus.j2' %}
 {# aaa #}
 {% include 'eos/aaa.j2' %}
 {# CVX #}
 {% include 'eos/cvx.j2' %}
+{# 802.1x Global #}
+{% include 'eos/dot1x.j2' %}
 {# influxDB Telemetry #}
 {% include 'eos/monitor-telemetry-influx.j2' %}
 {# IP Security #}
@@ -222,6 +234,8 @@
 {% include 'eos/access-lists.j2' %}
 {# Extended Access-lists, improved data model #}
 {% include 'eos/ip-access-lists.j2' %}
+{# PBR class-map #}
+{% include 'eos/class-maps-pbr.j2' %}
 {# Standard Access-lists #}
 {% include 'eos/standard-access-lists.j2' %}
 {# IP Routing #}
@@ -339,8 +353,8 @@
 {% include 'eos/platform-apply.j2' %}
 {# vmtracer sessions #}
 {% include 'eos/vmtracer-sessions.j2' %}
-{# 802.1x Global #}
-{% include 'eos/dot1x.j2' %}
+{# dot1x part2 #}
+{% include 'eos/dot1x_part2.j2' %}
 {# management ssh #}
 {% include 'eos/management-ssh.j2' %}
 {# management tech-support #}

@@ -28,7 +28,7 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 100
@@ -39,14 +39,14 @@ vlans:
   tenant: TEST
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
   ip_address: 10.255.252.1/31
 port_channel_interfaces:
 - name: Port-Channel101
-  description: MLAG_PEER_network-ports-tests.1_Po101
+  description: MLAG_network-ports-tests.1_Port-Channel101
   switchport:
     enabled: true
     mode: trunk
@@ -81,7 +81,6 @@ port_channel_interfaces:
     enabled: true
   mlag: 42
 - name: Port-Channel44
-  description: Checking monitor sessions on port-channels
   shutdown: false
   switchport:
     enabled: true
@@ -96,7 +95,7 @@ ethernet_interfaces:
   peer: network-ports-tests.1
   peer_interface: Ethernet10/1
   peer_type: mlag_peer
-  description: MLAG_PEER_network-ports-tests.1_Ethernet10/1
+  description: MLAG_network-ports-tests.1_Ethernet10/1
   shutdown: false
   channel_group:
     id: 101
@@ -720,7 +719,6 @@ ethernet_interfaces:
   spanning_tree_portfast: edge
   spanning_tree_bpdufilter: enabled
 - name: Ethernet11
-  peer: Phones with attached PCs
   peer_type: network_port
   port_profile: phone_with_pc
   description: Phones with attached PCs
@@ -734,7 +732,6 @@ ethernet_interfaces:
       vlan: 300
       trunk: untagged
 - name: Ethernet12
-  peer: Phones with attached PCs
   peer_type: network_port
   port_profile: phone_with_pc
   description: Phones with attached PCs
@@ -780,14 +777,12 @@ ethernet_interfaces:
     id: 42
     mode: active
 - name: Ethernet14
-  peer: Checking monitor sessions on single interface
   peer_type: network_port
   description: Checking monitor sessions on single interface
   shutdown: false
   switchport:
     enabled: true
 - name: Ethernet15
-  peer: Checking monitor sessions on port-channels
   peer_type: network_port
   description: Checking monitor sessions on port-channels
   shutdown: false
@@ -795,7 +790,6 @@ ethernet_interfaces:
     id: 44
     mode: active
 - name: Ethernet16
-  peer: Checking monitor sessions on port-channels
   peer_type: network_port
   description: Checking monitor sessions on port-channels
   shutdown: false
@@ -803,7 +797,6 @@ ethernet_interfaces:
     id: 44
     mode: active
 - name: Ethernet17
-  peer: Monitor sessions destination
   peer_type: network_port
   description: Monitor sessions destination
   shutdown: false

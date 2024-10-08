@@ -35,7 +35,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
         - Raise a duplicate error for any other duplicate port-channel interface
         """
         port_channel_interfaces = []
-        for connected_endpoint in self._filtered_connected_endpoints:
+        for index, connected_endpoint in enumerate(self._filtered_connected_endpoints):
             for adapter in connected_endpoint["adapters"]:
                 if get(adapter, "port_channel.mode") is None:
                     continue
@@ -44,7 +44,8 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(adapter, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_config = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint)
+                context = f"{connected_endpoint['type']}[{connected_endpoint['name']}].adapters[{index}]"
+                port_channel_config = self._get_port_channel_interface_cfg(adapter, port_channel_interface_name, channel_group_id, connected_endpoint, context)
                 append_if_not_duplicate(
                     list_of_dicts=port_channel_interfaces,
                     primary_key="name",
@@ -75,12 +76,12 @@ class PortChannelInterfacesMixin(UtilsMixin):
                         context_keys=["name"],
                     )
 
-        for network_port in self._filtered_network_ports:
+        for index, network_port in enumerate(self._filtered_network_ports):
             if get(network_port, "port_channel.mode") is None:
                 continue
 
             connected_endpoint = {
-                "name": network_port.get("description"),
+                "name": network_port.get("endpoint"),
                 "type": "network_port",
             }
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
@@ -100,7 +101,10 @@ class PortChannelInterfacesMixin(UtilsMixin):
                 channel_group_id = get(tmp_network_port, "port_channel.channel_id", default=default_channel_group_id)
 
                 port_channel_interface_name = f"Port-Channel{channel_group_id}"
-                port_channel_config = self._get_port_channel_interface_cfg(tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint)
+                context = f"network_ports[{index}]"
+                port_channel_config = self._get_port_channel_interface_cfg(
+                    tmp_network_port, port_channel_interface_name, channel_group_id, connected_endpoint, context
+                )
                 append_if_not_duplicate(
                     list_of_dicts=port_channel_interfaces,
                     primary_key="name",
@@ -116,17 +120,25 @@ class PortChannelInterfacesMixin(UtilsMixin):
 
     def _get_port_channel_interface_cfg(
         self: AvdStructuredConfigConnectedEndpoints,
-        adapter: dict,
+        adapter: dict | ChainMap,
         port_channel_interface_name: str,
         channel_group_id: int,
         connected_endpoint: dict,
+        context: str,
     ) -> dict:
         """Return structured_config for one port_channel_interface."""
         peer = connected_endpoint["name"]
         adapter_description = get(adapter, "description")
-        adapter_port_channel_description = get(adapter, "port_channel.description")
+        port_channel_description = get(adapter, "port_channel.description")
         port_channel_mode = get(adapter, "port_channel.mode")
+        peer_interface = get(adapter, "port_channel.endpoint_port_channel")
         node_index = adapter["switches"].index(self.shared_utils.hostname)
+
+        # if 'descriptions' is set, it is preferred
+        if (interface_descriptions := adapter.get("descriptions")) is not None:
+            adapter_description = interface_descriptions[node_index]
+        else:
+            adapter_description = adapter.get("description")
 
         # Common port_channel_interface settings
         port_channel_interface = {
@@ -136,16 +148,18 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     shared_utils=self.shared_utils,
                     interface=port_channel_interface_name,
                     peer=peer,
+                    peer_interface=peer_interface,
+                    peer_type=connected_endpoint["type"],
                     description=adapter_description,
                     port_channel_id=channel_group_id,
-                    port_channel_description=adapter_port_channel_description,
+                    port_channel_description=port_channel_description,
                 ),
             ),
             "shutdown": not get(adapter, "port_channel.enabled", default=True),
             "mtu": adapter.get("mtu") if self.shared_utils.platform_settings_feature_support_per_interface_mtu else None,
             "service_profile": adapter.get("qos_profile"),
             "link_tracking_groups": self._get_adapter_link_tracking_groups(adapter),
-            "ptp": self._get_adapter_ptp(adapter),
+            "ptp": self._get_adapter_ptp(adapter, context),
             "sflow": self._get_adapter_sflow(adapter),
             "flow_tracker": self._get_adapter_flow_tracking(adapter),
             "validate_state": None if adapter.get("validate_state", True) else False,
@@ -214,16 +228,14 @@ class PortChannelInterfacesMixin(UtilsMixin):
         # Common port_channel_interface settings
         port_channel_interface = {
             "name": port_channel_subinterface_name,
-            "type": "l2dot1q",
             "vlan_id": subinterface.get("vlan_id", subinterface["number"]),
             "encapsulation_vlan": {
                 "client": {
-                    "dot1q": {
-                        "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
-                    },
+                    "encapsulation": "dot1q",
+                    "vlan": get(subinterface, "encapsulation_vlan.client_dot1q", default=subinterface["number"]),
                 },
                 "network": {
-                    "client": True,
+                    "encapsulation": "client",
                 },
             },
         }

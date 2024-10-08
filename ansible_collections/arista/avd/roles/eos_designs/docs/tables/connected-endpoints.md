@@ -16,10 +16,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;switches</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switches") | List, items: String | Required |  |  | List of switches.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switches.[]") | String |  |  |  | Device. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.<br>Each list item is one switchport.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Interface name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions") | List |  |  |  | Unique description per port. When set, takes priority over description.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions") | List |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].speed") | String |  |  |  | Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br>If not specified speed will be auto.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | By default the description is built leveraging `<peer>_<peer_interface>`.<br>When set this key will override the default value on the physical ports.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].mode") | String |  |  | Valid Values:<br>- <code>access</code><br>- <code>dot1q-tunnel</code><br>- <code>trunk</code><br>- <code>trunk phone</code> | Interface mode. |
@@ -42,7 +42,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].ptp") | Dictionary |  |  |  | The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually enabled.<br>`ptp role master` is set to ensure control over the PTP topology.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].ptp.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_role</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].ptp.endpoint_role") | String |  | `follower` | Valid Values:<br>- <code>bmca</code><br>- <code>default</code><br>- <code>follower</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].ptp.profile") | String |  | `aes67-r16-2016` | Valid Values:<br>- <code>aes67</code><br>- <code>aes67-r16-2016</code><br>- <code>smpte2059-2</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].ptp.profile") | String |  | `aes67-r16-2016` |  | Default available profiles are:<br>  - "aes67"<br>  - "aes67-r16-2016"<br>  - "smpte2059-2" |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].sflow") | Boolean |  |  |  | Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].flow_tracking.enabled") | Boolean |  |  |  |  |
@@ -136,7 +136,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel") | Dictionary |  |  |  | Used for port-channel adapter. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.mode") | String |  |  | Valid Values:<br>- <code>active</code><br>- <code>passive</code><br>- <code>on</code> | Port-Channel Mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.channel_id") | Integer |  |  |  | Port-Channel ID.<br>If no channel_id is specified, an id is generated from the first switch port in the port channel.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.description") | String |  |  |  | By default the description is built leveraging `<peer>` name or `adapter.description` when defined.<br>When this key is defined, it will append its content to the physical port description.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the format string syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.<br>  - `port_channel_id` - The port-channel number for the switch.<br>  - `adapter_description` - The adapter's description if set.<br>  - `adapter_description_or_endpoint` - Helper alias of the adapter_description or endpoint.<br><br>The default description is set by `default_connected_endpoints_port_channel_description`.<br>By default the description is templated from the type, name and port_channel interface of the endpoint if set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_port_channel</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.endpoint_port_channel") | String |  |  |  | Name of the port-channel interface on the endpoint.<br>Used for the port-channel description template with the field name `peer_interface` |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.enabled") | Boolean |  | `True` |  | Port-Channel administrative state.<br>Setting to false will set port to 'shutdown' in intended configuration.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ptp_mpass</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.ptp_mpass") | Boolean |  | `False` |  | When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP logical device.<br>Arista PTP enabled devices always place PTP messages on the same physical link within the port-channel.<br>Hence, MPASS is needed only on MLAG port-channels connected to non-Arista devices. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lacp_fallback</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.lacp_fallback") | Dictionary |  |  |  | LACP fallback configuration. |
@@ -195,18 +196,30 @@
             # Each list item is one switchport.
             endpoint_ports:
 
-                # Interface name.
+                # Port name on the endpoint.
               - <str>
 
             # Unique description per port. When set, takes priority over description.
+            # This can be a template using the format string syntax.
+            # The available template fields are:
+            #   - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+            #   - `endpoint` - The name of the connected endpoint
+            #   - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.
             descriptions: <list>
 
             # Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             # If not specified speed will be auto.
             speed: <str>
 
-            # By default the description is built leveraging `<peer>_<peer_interface>`.
-            # When set this key will override the default value on the physical ports.
+            # Description or description template to be used on all ports.
+            # This can be a template using the format string syntax.
+            # The available template fields are:
+            #   - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+            #   - `endpoint` - The name of the connected endpoint
+            #   - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.
+            #
+            # The default description is set by `default_connected_endpoints_description`.
+            # By default the description is templated from the type, name and port of the endpoint if set.
             description: <str>
 
             # Port-profile name to inherit configuration.
@@ -261,7 +274,12 @@
             ptp:
               enabled: <bool; default=False>
               endpoint_role: <str; "bmca" | "default" | "follower"; default="follower">
-              profile: <str; "aes67" | "aes67-r16-2016" | "smpte2059-2"; default="aes67-r16-2016">
+
+              # Default available profiles are:
+              #   - "aes67"
+              #   - "aes67-r16-2016"
+              #   - "smpte2059-2"
+              profile: <str; default="aes67-r16-2016">
 
             # Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
             sflow: <bool>
@@ -475,9 +493,23 @@
               # If no channel_id is specified, an id is generated from the first switch port in the port channel.
               channel_id: <int>
 
-              # By default the description is built leveraging `<peer>` name or `adapter.description` when defined.
-              # When this key is defined, it will append its content to the physical port description.
+              # Description or description template to be used on the port-channel interface.
+              # This can be a template using the format string syntax.
+              # The available template fields are:
+              #   - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+              #   - `endpoint` - The name of the connected endpoint
+              #   - `endpoint_port_channel` - The value from `endpoint_port_channel` if set.
+              #   - `port_channel_id` - The port-channel number for the switch.
+              #   - `adapter_description` - The adapter's description if set.
+              #   - `adapter_description_or_endpoint` - Helper alias of the adapter_description or endpoint.
+              #
+              # The default description is set by `default_connected_endpoints_port_channel_description`.
+              # By default the description is templated from the type, name and port_channel interface of the endpoint if set.
               description: <str>
+
+              # Name of the port-channel interface on the endpoint.
+              # Used for the port-channel description template with the field name `peer_interface`
+              endpoint_port_channel: <str>
 
               # Port-Channel administrative state.
               # Setting to false will set port to 'shutdown' in intended configuration.

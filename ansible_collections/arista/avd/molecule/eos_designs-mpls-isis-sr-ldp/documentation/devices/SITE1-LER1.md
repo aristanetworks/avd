@@ -188,16 +188,16 @@ vlan 2020
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 123.1.1.0/31 | TENANT_B_INTRA | - | False | - | - |
+| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
+| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10.123.1.0/31 | TENANT_B_INTRA | - | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -211,7 +211,7 @@ vlan 2020
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE1-LSR1_Ethernet1
+   description P2P_SITE1-LSR1_Ethernet1
    no shutdown
    mtu 9178
    speed forced 40gfull
@@ -232,7 +232,7 @@ interface Ethernet1
 
 !
 interface Ethernet2
-   description P2P_LINK_TO_SITE1-LER2_Ethernet2
+   description P2P_SITE1-LER2_Ethernet2
    no shutdown
    mtu 9178
    speed forced 10000full
@@ -271,13 +271,13 @@ interface Ethernet6.10
    no shutdown
    encapsulation dot1q vlan 10
    vrf TENANT_B_INTRA
-   ip address 123.1.1.0/31
+   ip address 10.123.1.0/31
    ip ospf cost 10
    ip ospf network point-to-point
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet8
-   description CPE_TENANT_A_SITE1_Ethernet1
+   description CPE_CPE_TENANT_A_SITE1_Ethernet1
    no shutdown
    channel-group 8 mode active
 ```
@@ -293,7 +293,7 @@ interface Ethernet8
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Protocol | Client Inner Protocol | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Protocol | Network Inner Protocol | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
 | --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
 | Port-Channel3.1000 | - | - | dot1q | - | 1000 | - | - | client | - | - | - | - |
 | Port-Channel3.1001 | - | - | dot1q | - | 1001 | - | - | client | - | - | - | - |
@@ -350,7 +350,7 @@ interface Port-Channel3.1004
       client dot1q 1004 network client
 !
 interface Port-Channel8
-   description CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
+   description CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
 !
@@ -401,11 +401,11 @@ interface Loopback0
    no shutdown
    ip address 100.70.0.5/32
    ipv6 address 2000:1234:ffff:ffff::5/128
-   isis enable CORE
-   isis passive
    mpls ldp interface
    node-segment ipv4 index 205
    node-segment ipv6 index 205
+   isis enable CORE
+   isis passive
 ```
 
 ### VLAN Interfaces
@@ -513,7 +513,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 19 | 123.1.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
+| 19 | 10.123.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
@@ -525,14 +525,14 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet6.10 | 0 | 10 | True |
+| Ethernet6.10 | 0.0.0.0 | 10 | True |
 
 #### Router OSPF Device Configuration
 
 ```eos
 !
 router ospf 19 vrf TENANT_B_INTRA
-   router-id 123.1.1.0
+   router-id 10.123.1.0
    passive-interface default
    no passive-interface Ethernet6.10
    max-lsa 10000
@@ -591,8 +591,8 @@ router ospf 19 vrf TENANT_B_INTRA
 !
 router isis CORE
    net 49.0001.1000.7000.0005.00
-   is-type level-1-2
    router-id ipv4 100.70.0.5
+   is-type level-1-2
    log-adjacency-changes
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
@@ -704,9 +704,9 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
    neighbor 100.70.0.8 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.8 description SITE1-RR1
+   neighbor 100.70.0.8 description SITE1-RR1_Loopback0
    neighbor 100.70.0.9 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.9 description SITE2-RR1
+   neighbor 100.70.0.9 description SITE2-RR1_Loopback0
    !
    vlan 10
       rd 100.70.0.5:10010
@@ -804,10 +804,10 @@ router bfd
 mpls ip
 !
 mpls ldp
-   interface disabled default
    router-id 100.70.0.5
-   no shutdown
    transport-address interface Loopback0
+   interface disabled default
+   no shutdown
 ```
 
 ### MPLS Interfaces

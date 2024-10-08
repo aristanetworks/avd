@@ -45,7 +45,7 @@ router_bgp:
   - ip_address: 10.255.251.20
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: AUTO_BGP_ASN_LEAF7A
-    description: AUTO_BGP_ASN_LEAF7A
+    description: AUTO_BGP_ASN_LEAF7A_Vlan4093
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -94,35 +94,34 @@ management_api_http:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
-  - LEAF_PEER_L3
+  - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   mtu: 9214
   ip_address: 10.255.251.21/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
   ip_address: 10.255.252.21/31
 port_channel_interfaces:
 - name: Port-Channel3
-  description: MLAG_PEER_AUTO_BGP_ASN_LEAF7A_Po3
+  description: MLAG_AUTO_BGP_ASN_LEAF7A_Port-Channel3
   switchport:
     enabled: true
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
   shutdown: false
 ethernet_interfaces:
@@ -130,7 +129,7 @@ ethernet_interfaces:
   peer: AUTO_BGP_ASN_LEAF7A
   peer_interface: Ethernet3
   peer_type: mlag_peer
-  description: MLAG_PEER_AUTO_BGP_ASN_LEAF7A_Ethernet3
+  description: MLAG_AUTO_BGP_ASN_LEAF7A_Ethernet3
   shutdown: false
   channel_group:
     id: 3
@@ -139,7 +138,7 @@ ethernet_interfaces:
   peer: AUTO_BGP_ASN_LEAF7A
   peer_interface: Ethernet4
   peer_type: mlag_peer
-  description: MLAG_PEER_AUTO_BGP_ASN_LEAF7A_Ethernet4
+  description: MLAG_AUTO_BGP_ASN_LEAF7A_Ethernet4
   shutdown: false
   channel_group:
     id: 3

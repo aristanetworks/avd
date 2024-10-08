@@ -18,7 +18,7 @@ router_bgp:
     type: ipv4
     remote_as: '65108'
     next_hop_self: true
-    description: DC1-CL1B
+    description: MLAG_PEER_DC1-CL1B
     password: 15AwQNBEJ1nyF/kBEtoAGw==
     maximum_routes: 12000
     send_community: all
@@ -362,8 +362,8 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       groups:
-      - LEAF_PEER_L3
       - MLAG
+      - LEAF_PEER_L3
       allowed_vlan: 1-4094
   shutdown: false
 ethernet_interfaces:

@@ -625,7 +625,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
 - name: Ethernet10
   peer: server01_MLAG
@@ -785,7 +785,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 110-111,210-211
 - name: Port-Channel26
-  description: PHONE03_port_channel_Port-Channel to Phone
+  description: PHONE03_port_channel Port-Channel to phone
   shutdown: false
   switchport:
     enabled: true
@@ -821,7 +821,7 @@ loopback_interfaces:
 
     '
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

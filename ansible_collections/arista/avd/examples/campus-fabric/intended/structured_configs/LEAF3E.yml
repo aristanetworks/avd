@@ -63,7 +63,7 @@ ethernet_interfaces:
   peer: LEAF3A
   peer_interface: Ethernet98/1
   peer_type: l2leaf
-  description: LEAF3A_Ethernet98/1
+  description: L2_LEAF3A_Ethernet98/1
   shutdown: false
   channel_group:
     id: 971
@@ -72,13 +72,12 @@ ethernet_interfaces:
   peer: LEAF3B
   peer_interface: Ethernet98/1
   peer_type: l2leaf
-  description: LEAF3B_Ethernet98/1
+  description: L2_LEAF3B_Ethernet98/1
   shutdown: false
   channel_group:
     id: 971
     mode: active
 - name: Ethernet1
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -111,7 +110,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet2
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -144,7 +142,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet3
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -177,7 +174,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet4
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -210,7 +206,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet5
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -243,7 +238,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet6
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -276,7 +270,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet7
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -309,7 +302,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet8
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -342,7 +334,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet9
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -375,7 +366,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet10
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -408,7 +398,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet11
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -441,7 +430,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet12
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -474,7 +462,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet13
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -507,7 +494,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet14
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -540,7 +526,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet15
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -573,7 +558,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet16
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -606,7 +590,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet17
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -639,7 +622,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet18
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -672,7 +654,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet19
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -705,7 +686,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet20
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -738,7 +718,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet21
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -771,7 +750,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet22
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -804,7 +782,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet23
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -837,7 +814,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet24
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -870,7 +846,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet25
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -903,7 +878,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet26
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -936,7 +910,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet27
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -969,7 +942,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet28
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1002,7 +974,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet29
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1035,7 +1006,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet30
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1068,7 +1038,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet31
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1101,7 +1070,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet32
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1134,7 +1102,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet33
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1167,7 +1134,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet34
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1200,7 +1166,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet35
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1233,7 +1198,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet36
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1266,7 +1230,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet37
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1299,7 +1262,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet38
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1332,7 +1294,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet39
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1365,7 +1326,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet40
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1398,7 +1358,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet41
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1431,7 +1390,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet42
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1464,7 +1422,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet43
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1497,7 +1454,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet44
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1530,7 +1486,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet45
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1563,7 +1518,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet46
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1596,7 +1550,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet47
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1629,7 +1582,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet48
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1662,7 +1614,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet49
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1695,7 +1646,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet50
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1728,7 +1678,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet51
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1761,7 +1710,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet52
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1794,7 +1742,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet53
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1827,7 +1774,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet54
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1860,7 +1806,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet55
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1893,7 +1838,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet56
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1926,7 +1870,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet57
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1959,7 +1902,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet58
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -1992,7 +1934,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet59
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2025,7 +1966,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet60
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2058,7 +1998,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet61
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2091,7 +2030,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet62
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2124,7 +2062,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet63
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2157,7 +2094,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet64
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2190,7 +2126,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet65
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2223,7 +2158,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet66
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2256,7 +2190,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet67
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2289,7 +2222,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet68
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2322,7 +2254,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet69
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2355,7 +2286,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet70
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2388,7 +2318,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet71
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2421,7 +2350,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet72
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2454,7 +2382,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet73
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2487,7 +2414,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet74
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2520,7 +2446,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet75
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2553,7 +2478,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet76
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2586,7 +2510,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet77
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2619,7 +2542,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet78
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2652,7 +2574,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet79
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2685,7 +2606,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet80
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2718,7 +2638,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet81
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2751,7 +2670,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet82
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2784,7 +2702,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet83
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2817,7 +2734,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet84
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2850,7 +2766,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet85
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2883,7 +2798,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet86
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2916,7 +2830,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet87
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2949,7 +2862,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet88
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -2982,7 +2894,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet89
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3015,7 +2926,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet90
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3048,7 +2958,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet91
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3081,7 +2990,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet92
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3114,7 +3022,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet93
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3147,7 +3054,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet94
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3180,7 +3086,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet95
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3213,7 +3118,6 @@ ethernet_interfaces:
       action: allow
       allow_vlan: 330
 - name: Ethernet96
-  peer: IDF3 Standard Port
   peer_type: network_port
   port_profile: PP-DOT1X
   description: IDF3 Standard Port
@@ -3247,7 +3151,7 @@ ethernet_interfaces:
       allow_vlan: 330
 port_channel_interfaces:
 - name: Port-Channel971
-  description: IDF3_AGG_Po981
+  description: L2_IDF3_AGG_Port-Channel981
   switchport:
     enabled: true
     mode: trunk

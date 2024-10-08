@@ -12,17 +12,24 @@ class AristaAvdError(Exception):
         path = ""
         for index, elem in enumerate(json_path):
             if isinstance(elem, int):
-                path += "[" + str(elem) + "]"
+                path += f"[{elem}]"
             else:
                 if index == 0:
                     path += elem
                     continue
-                path += "." + elem
+                path += f".{elem}"
         return path
 
 
+class AristaAvdInvalidInputsError(AristaAvdError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message)
+
+
 class AristaAvdMissingVariableError(AristaAvdError):
-    pass
+    def __init__(self, variable: str | None = None) -> None:
+        self.message = f"'{variable}' is required but was not found."
+        super().__init__(self.message)
 
 
 class AvdSchemaError(AristaAvdError):

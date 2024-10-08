@@ -274,7 +274,7 @@ vlan internal order ascending range 1006 1199
 
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
-| 2 | MLAG_iBGP_Tenant_C_OP_Zone | LEAF_PEER_L3 |
+| 2 | MLAG_L3_VRF_Tenant_C_OP_Zone | MLAG |
 | 110 | Tenant_A_OP_Zone_1 | - |
 | 111 | Tenant_A_OP_Zone_2 | - |
 | 120 | Tenant_A_WEB_Zone_1 | - |
@@ -292,24 +292,24 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 3009 | MLAG_iBGP_Tenant_A_OP_Zone | LEAF_PEER_L3 |
-| 3010 | MLAG_iBGP_Tenant_A_WEB_Zone | LEAF_PEER_L3 |
-| 3011 | MLAG_iBGP_Tenant_A_APP_Zone | LEAF_PEER_L3 |
-| 3012 | MLAG_iBGP_Tenant_A_DB_Zone | LEAF_PEER_L3 |
-| 3013 | MLAG_iBGP_Tenant_A_WAN_Zone | LEAF_PEER_L3 |
-| 3019 | MLAG_iBGP_Tenant_B_OP_Zone | LEAF_PEER_L3 |
-| 3020 | MLAG_iBGP_Tenant_B_WAN_Zone | LEAF_PEER_L3 |
-| 3030 | MLAG_iBGP_Tenant_C_WAN_Zone | LEAF_PEER_L3 |
-| 4093 | LEAF_PEER_L3 | LEAF_PEER_L3 |
-| 4094 | MLAG_PEER | MLAG |
+| 3009 | MLAG_L3_VRF_Tenant_A_OP_Zone | MLAG |
+| 3010 | MLAG_L3_VRF_Tenant_A_WEB_Zone | MLAG |
+| 3011 | MLAG_L3_VRF_Tenant_A_APP_Zone | MLAG |
+| 3012 | MLAG_L3_VRF_Tenant_A_DB_Zone | MLAG |
+| 3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | MLAG |
+| 3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | MLAG |
+| 3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | MLAG |
+| 3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | MLAG |
+| 4093 | MLAG_L3 | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
 ```eos
 !
 vlan 2
-   name MLAG_iBGP_Tenant_C_OP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_C_OP_Zone
+   trunk group MLAG
 !
 vlan 110
    name Tenant_A_OP_Zone_1
@@ -363,43 +363,43 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 !
 vlan 3009
-   name MLAG_iBGP_Tenant_A_OP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_OP_Zone
+   trunk group MLAG
 !
 vlan 3010
-   name MLAG_iBGP_Tenant_A_WEB_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_WEB_Zone
+   trunk group MLAG
 !
 vlan 3011
-   name MLAG_iBGP_Tenant_A_APP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_APP_Zone
+   trunk group MLAG
 !
 vlan 3012
-   name MLAG_iBGP_Tenant_A_DB_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_DB_Zone
+   trunk group MLAG
 !
 vlan 3013
-   name MLAG_iBGP_Tenant_A_WAN_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_A_WAN_Zone
+   trunk group MLAG
 !
 vlan 3019
-   name MLAG_iBGP_Tenant_B_OP_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_B_OP_Zone
+   trunk group MLAG
 !
 vlan 3020
-   name MLAG_iBGP_Tenant_B_WAN_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_B_WAN_Zone
+   trunk group MLAG
 !
 vlan 3030
-   name MLAG_iBGP_Tenant_C_WAN_Zone
-   trunk group LEAF_PEER_L3
+   name MLAG_L3_VRF_Tenant_C_WAN_Zone
+   trunk group MLAG
 !
 vlan 4093
-   name LEAF_PEER_L3
-   trunk group LEAF_PEER_L3
+   name MLAG_L3
+   trunk group MLAG
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -413,16 +413,16 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet5 | MLAG_PEER_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet6 | MLAG_PEER_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *LEAF_PEER_L3, MLAG | 5 |
-| Ethernet7 | DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet8 | DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
-| Ethernet11 | server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet12 | server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
-| Ethernet13 | server06_override_profile_Eth2 | access | 210 | - | - | - |
-| Ethernet14 | server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
-| Ethernet15 | server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
-| Ethernet16 | server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
+| Ethernet5 | MLAG_DC1-SVC3A_Ethernet5 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet6 | MLAG_DC1-SVC3A_Ethernet6 | *trunk | *- | *- | *MLAG | 5 |
+| Ethernet7 | L2_DC1-L2LEAF2A_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet8 | L2_DC1-L2LEAF2B_Ethernet2 | *trunk | *110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | *- | *- | 7 |
+| Ethernet11 | SERVER_server04_inherit_all_from_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet12 | SERVER_server05_no_profile_Eth2 | trunk | 1-4094 | - | - | - |
+| Ethernet13 | SERVER_server06_override_profile_Eth2 | access | 210 | - | - | - |
+| Ethernet14 | SERVER_server07_inherit_all_from_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 14 |
+| Ethernet15 | SERVER_server08_no_profile_port_channel_Eth2 | *trunk | *1-4094 | *- | *- | 15 |
+| Ethernet16 | SERVER_server09_override_profile_no_port_channel_Eth2 | access | 210 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -430,65 +430,65 @@ vlan 4094
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-SPINE2_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-SPINE3_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_LINK_TO_DC1-SPINE4_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_DC1-SPINE1_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_DC1-SPINE2_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_DC1-SPINE3_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_DC1-SPINE4_Ethernet5 | - | - | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-SPINE1_Ethernet5
+   description P2P_DC1-SPINE1_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-SPINE2_Ethernet5
+   description P2P_DC1-SPINE2_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-SPINE3_Ethernet5
+   description P2P_DC1-SPINE3_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC1-SPINE4_Ethernet5
+   description P2P_DC1-SPINE4_Ethernet5
    no shutdown
    mtu 1500
    no switchport
    ipv6 enable
 !
 interface Ethernet5
-   description MLAG_PEER_DC1-SVC3A_Ethernet5
+   description MLAG_DC1-SVC3A_Ethernet5
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet6
-   description MLAG_PEER_DC1-SVC3A_Ethernet6
+   description MLAG_DC1-SVC3A_Ethernet6
    no shutdown
    channel-group 5 mode active
 !
 interface Ethernet7
-   description DC1-L2LEAF2A_Ethernet2
+   description L2_DC1-L2LEAF2A_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description DC1-L2LEAF2B_Ethernet2
+   description L2_DC1-L2LEAF2B_Ethernet2
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet11
-   description server04_inherit_all_from_profile_Eth2
+   description SERVER_server04_inherit_all_from_profile_Eth2
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -501,7 +501,7 @@ interface Ethernet11
    spanning-tree bpdufilter enable
 !
 interface Ethernet12
-   description server05_no_profile_Eth2
+   description SERVER_server05_no_profile_Eth2
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -514,7 +514,7 @@ interface Ethernet12
    spanning-tree bpdufilter enable
 !
 interface Ethernet13
-   description server06_override_profile_Eth2
+   description SERVER_server06_override_profile_Eth2
    no shutdown
    switchport access vlan 210
    switchport mode access
@@ -527,17 +527,17 @@ interface Ethernet13
    spanning-tree bpduguard enable
 !
 interface Ethernet14
-   description server07_inherit_all_from_profile_port_channel_Eth2
+   description SERVER_server07_inherit_all_from_profile_port_channel_Eth2
    no shutdown
    channel-group 14 mode active
 !
 interface Ethernet15
-   description server08_no_profile_port_channel_Eth2
+   description SERVER_server08_no_profile_port_channel_Eth2
    no shutdown
    channel-group 15 mode on
 !
 interface Ethernet16
-   description server09_override_profile_no_port_channel_Eth2
+   description SERVER_server09_override_profile_no_port_channel_Eth2
    no shutdown
    switchport access vlan 210
    switchport mode access
@@ -558,25 +558,24 @@ interface Ethernet16
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel5 | MLAG_PEER_DC1-SVC3A_Po5 | trunk | - | - | LEAF_PEER_L3, MLAG | - | - | - | - |
-| Port-Channel7 | DC1_L2LEAF2_Po1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
-| Port-Channel14 | server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
-| Port-Channel15 | server08_no_profile_port_channel_server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
+| Port-Channel5 | MLAG_DC1-SVC3A_Port-Channel5 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel7 | L2_DC1_L2LEAF2_Port-Channel1 | trunk | 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350 | - | - | - | - | 7 | - |
+| Port-Channel14 | ALL_WITH_SECURITY_PORT_CHANNEL | trunk | 1-4094 | - | - | - | - | 14 | - |
+| Port-Channel15 | server08_no_profile_port_channel | trunk | 1-4094 | - | - | - | - | 15 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel5
-   description MLAG_PEER_DC1-SVC3A_Po5
+   description MLAG_DC1-SVC3A_Port-Channel5
    no shutdown
    switchport mode trunk
-   switchport trunk group LEAF_PEER_L3
    switchport trunk group MLAG
    switchport
 !
 interface Port-Channel7
-   description DC1_L2LEAF2_Po1
+   description L2_DC1_L2LEAF2_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 110-111,120-121,130-131,140-141,150,160-161,210-211,250,310-311,350
    switchport mode trunk
@@ -584,7 +583,7 @@ interface Port-Channel7
    mlag 7
 !
 interface Port-Channel14
-   description server07_inherit_all_from_profile_port_channel_ALL_WITH_SECURITY_PORT_CHANNEL
+   description ALL_WITH_SECURITY_PORT_CHANNEL
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -598,7 +597,7 @@ interface Port-Channel14
    storm-control unknown-unicast level 2
 !
 interface Port-Channel15
-   description server08_no_profile_port_channel_server08_no_profile_port_channel
+   description server08_no_profile_port_channel
    no shutdown
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
@@ -622,7 +621,7 @@ interface Port-Channel15
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 192.168.255.9/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 192.168.254.8/32 |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | 10.255.1.9/32 |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 10.255.1.9/32 |
 
 ##### IPv6
 
@@ -630,7 +629,7 @@ interface Port-Channel15
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | Tenant_A_OP_Zone_VTEP_DIAGNOSTICS | Tenant_A_OP_Zone | - |
+| Loopback100 | DIAG_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -647,7 +646,7 @@ interface Loopback1
    ip address 192.168.254.8/32
 !
 interface Loopback100
-   description Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+   description DIAG_VRF_Tenant_A_OP_Zone
    no shutdown
    vrf Tenant_A_OP_Zone
    ip address 10.255.1.9/32
@@ -659,7 +658,7 @@ interface Loopback100
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan2 | MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
+| Vlan2 | MLAG_L3_VRF_Tenant_C_OP_Zone | Tenant_C_OP_Zone | 1500 | False |
 | Vlan110 | Tenant_A_OP_Zone_1 | Tenant_A_OP_Zone | - | False |
 | Vlan111 | Tenant_A_OP_Zone_2 | Tenant_A_OP_Zone | - | False |
 | Vlan120 | Tenant_A_WEB_Zone_1 | Tenant_A_WEB_Zone | - | False |
@@ -675,16 +674,16 @@ interface Loopback100
 | Vlan310 | Tenant_C_OP_Zone_1 | Tenant_C_OP_Zone | - | False |
 | Vlan311 | Tenant_C_OP_Zone_2 | Tenant_C_OP_Zone | - | False |
 | Vlan350 | Tenant_C_WAN_Zone_1 | Tenant_C_WAN_Zone | - | False |
-| Vlan3009 | MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
-| Vlan3010 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone | Tenant_A_WEB_Zone | 1500 | False |
-| Vlan3011 | MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
-| Vlan3012 | MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
-| Vlan3013 | MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
-| Vlan3019 | MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
-| Vlan3020 | MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
-| Vlan3030 | MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
-| Vlan4093 | MLAG_PEER_L3_PEERING | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan3009 | MLAG_L3_VRF_Tenant_A_OP_Zone | Tenant_A_OP_Zone | 1500 | False |
+| Vlan3010 | MLAG_L3_VRF_Tenant_A_WEB_Zone | Tenant_A_WEB_Zone | 1500 | False |
+| Vlan3011 | MLAG_L3_VRF_Tenant_A_APP_Zone | Tenant_A_APP_Zone | 1500 | False |
+| Vlan3012 | MLAG_L3_VRF_Tenant_A_DB_Zone | Tenant_A_DB_Zone | 1500 | False |
+| Vlan3013 | MLAG_L3_VRF_Tenant_A_WAN_Zone | Tenant_A_WAN_Zone | 1500 | False |
+| Vlan3019 | MLAG_L3_VRF_Tenant_B_OP_Zone | Tenant_B_OP_Zone | 1500 | False |
+| Vlan3020 | MLAG_L3_VRF_Tenant_B_WAN_Zone | Tenant_B_WAN_Zone | 1500 | False |
+| Vlan3030 | MLAG_L3_VRF_Tenant_C_WAN_Zone | Tenant_C_WAN_Zone | 1500 | False |
+| Vlan4093 | MLAG_L3 | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -722,7 +721,7 @@ interface Loopback100
 ```eos
 !
 interface Vlan2
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_OP_Zone
+   description MLAG_L3_VRF_Tenant_C_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_OP_Zone
@@ -822,69 +821,69 @@ interface Vlan350
    ip address virtual 10.3.50.1/24
 !
 interface Vlan3009
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_OP_Zone
+   description MLAG_L3_VRF_Tenant_A_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_OP_Zone
    ipv6 enable
 !
 interface Vlan3010
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WEB_Zone
+   description MLAG_L3_VRF_Tenant_A_WEB_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WEB_Zone
    ipv6 enable
 !
 interface Vlan3011
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_APP_Zone
+   description MLAG_L3_VRF_Tenant_A_APP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_APP_Zone
    ipv6 enable
 !
 interface Vlan3012
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_DB_Zone
+   description MLAG_L3_VRF_Tenant_A_DB_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_DB_Zone
    ipv6 enable
 !
 interface Vlan3013
-   description MLAG_PEER_L3_iBGP: vrf Tenant_A_WAN_Zone
+   description MLAG_L3_VRF_Tenant_A_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_A_WAN_Zone
    ipv6 enable
 !
 interface Vlan3019
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_OP_Zone
+   description MLAG_L3_VRF_Tenant_B_OP_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_OP_Zone
    ipv6 enable
 !
 interface Vlan3020
-   description MLAG_PEER_L3_iBGP: vrf Tenant_B_WAN_Zone
+   description MLAG_L3_VRF_Tenant_B_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_B_WAN_Zone
    ipv6 enable
 !
 interface Vlan3030
-   description MLAG_PEER_L3_iBGP: vrf Tenant_C_WAN_Zone
+   description MLAG_L3_VRF_Tenant_C_WAN_Zone
    no shutdown
    mtu 1500
    vrf Tenant_C_WAN_Zone
    ipv6 enable
 !
 interface Vlan4093
-   description MLAG_PEER_L3_PEERING
+   description MLAG_L3
    no shutdown
    mtu 1500
    ipv6 enable
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
@@ -1238,16 +1237,16 @@ router bgp 65103
    neighbor interface Vlan4093 peer-group MLAG_PEER remote-as 65103
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.1 remote-as 65001
-   neighbor 192.168.255.1 description DC1-SPINE1
+   neighbor 192.168.255.1 description DC1-SPINE1_Loopback0
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 remote-as 65001
-   neighbor 192.168.255.2 description DC1-SPINE2
+   neighbor 192.168.255.2 description DC1-SPINE2_Loopback0
    neighbor 192.168.255.3 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.3 remote-as 65001
-   neighbor 192.168.255.3 description DC1-SPINE3
+   neighbor 192.168.255.3 description DC1-SPINE3_Loopback0
    neighbor 192.168.255.4 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.4 remote-as 65001
-   neighbor 192.168.255.4 description DC1-SPINE4
+   neighbor 192.168.255.4 description DC1-SPINE4_Loopback0
    redistribute connected route-map RM-CONN-2-BGP
    !
    vlan-aware-bundle Tenant_A_APP_Zone
@@ -1333,7 +1332,7 @@ router bgp 65103
       route-target export evpn 12:12
       router-id 192.168.255.9
       neighbor interface Vlan3011 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_DB_Zone
       rd 192.168.255.9:13
@@ -1341,7 +1340,7 @@ router bgp 65103
       route-target export evpn 13:13
       router-id 192.168.255.9
       neighbor interface Vlan3012 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_OP_Zone
       rd 192.168.255.9:10
@@ -1349,7 +1348,7 @@ router bgp 65103
       route-target export evpn 10:10
       router-id 192.168.255.9
       neighbor interface Vlan3009 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.9:14
@@ -1357,7 +1356,7 @@ router bgp 65103
       route-target export evpn 14:14
       router-id 192.168.255.9
       neighbor interface Vlan3013 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_A_WEB_Zone
       rd 192.168.255.9:11
@@ -1365,7 +1364,7 @@ router bgp 65103
       route-target export evpn 11:11
       router-id 192.168.255.9
       neighbor interface Vlan3010 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_OP_Zone
       rd 192.168.255.9:20
@@ -1373,7 +1372,7 @@ router bgp 65103
       route-target export evpn 20:20
       router-id 192.168.255.9
       neighbor interface Vlan3019 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_B_WAN_Zone
       rd 192.168.255.9:21
@@ -1381,7 +1380,7 @@ router bgp 65103
       route-target export evpn 21:21
       router-id 192.168.255.9
       neighbor interface Vlan3020 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_OP_Zone
       rd 192.168.255.9:30
@@ -1389,7 +1388,7 @@ router bgp 65103
       route-target export evpn 30:30
       router-id 192.168.255.9
       neighbor interface Vlan2 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
    !
    vrf Tenant_C_WAN_Zone
       rd 192.168.255.9:31
@@ -1397,7 +1396,7 @@ router bgp 65103
       route-target export evpn 31:31
       router-id 192.168.255.9
       neighbor interface Vlan3030 peer-group MLAG_PEER remote-as 65103
-      redistribute connected
+      redistribute connected route-map RM-CONN-2-BGP-VRFS
 ```
 
 ## BFD

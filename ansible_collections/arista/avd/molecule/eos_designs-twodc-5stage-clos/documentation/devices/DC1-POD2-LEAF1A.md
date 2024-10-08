@@ -250,16 +250,16 @@ vlan 2601
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
+| Ethernet1 | P2P_DC1-POD2-SPINE1_Ethernet3 | - | 172.17.120.1/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC1-POD2-SPINE2_Ethernet3 | - | 172.17.120.3/31 | default | - | False | - | - |
+| Ethernet3 | P2P_DC1-RS2_Ethernet3 | - | 172.17.10.12/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet3
+   description P2P_DC1-POD2-SPINE1_Ethernet3
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -268,7 +268,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet3
+   description P2P_DC1-POD2-SPINE2_Ethernet3
    no shutdown
    mac security profile MACSEC_PROFILE
    no switchport
@@ -277,7 +277,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC1-RS2_Ethernet3
+   description P2P_DC1-RS2_Ethernet3
    no shutdown
    no switchport
    ip address 172.17.10.12/31
@@ -294,8 +294,8 @@ interface Ethernet3
 | --------- | ----------- | --- | ---------- |
 | Loopback0 | ROUTER_ID | default | 172.16.120.3/32 |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | 172.18.120.3/32 |
-| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | 10.101.102.3/32 |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | 10.100.0.3/32 |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | 10.101.102.3/32 |
 
 ##### IPv6
 
@@ -303,8 +303,8 @@ interface Ethernet3
 | --------- | ----------- | --- | ------------ |
 | Loopback0 | ROUTER_ID | default | - |
 | Loopback1 | VXLAN_TUNNEL_SOURCE | default | - |
-| Loopback100 | vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_overlapping_pool | - |
-| Loopback101 | vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS | vrf_with_loopbacks_from_pod_pools | - |
+| Loopback100 | DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool | vrf_with_loopbacks_from_overlapping_pool | - |
+| Loopback101 | DIAG_VRF_vrf_with_loopbacks_from_pod_pools | vrf_with_loopbacks_from_pod_pools | - |
 
 #### Loopback Interfaces Device Configuration
 
@@ -321,13 +321,13 @@ interface Loopback1
    ip address 172.18.120.3/32
 !
 interface Loopback100
-   description vrf_with_loopbacks_from_overlapping_pool_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_from_overlapping_pool
    no shutdown
    vrf vrf_with_loopbacks_from_overlapping_pool
    ip address 10.100.0.3/32
 !
 interface Loopback101
-   description vrf_with_loopbacks_from_pod_pools_VTEP_DIAGNOSTICS
+   description DIAG_VRF_vrf_with_loopbacks_from_pod_pools
    no shutdown
    vrf vrf_with_loopbacks_from_pod_pools
    ip address 10.101.102.3/32
@@ -634,11 +634,11 @@ router bgp 65121
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor 172.16.120.1 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.1 remote-as 65120
-   neighbor 172.16.120.1 description DC1-POD2-SPINE1
+   neighbor 172.16.120.1 description DC1-POD2-SPINE1_Loopback0
    neighbor 172.16.120.1 route-map RM-EVPN-FILTER-AS65120 out
    neighbor 172.16.120.2 peer group EVPN-OVERLAY-PEERS
    neighbor 172.16.120.2 remote-as 65120
-   neighbor 172.16.120.2 description DC1-POD2-SPINE2
+   neighbor 172.16.120.2 description DC1-POD2-SPINE2_Loopback0
    neighbor 172.16.120.2 route-map RM-EVPN-FILTER-AS65120 out
    neighbor 172.17.10.13 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.13 remote-as 65102

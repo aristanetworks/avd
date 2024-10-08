@@ -110,8 +110,9 @@ router_bgp:
       neighbors:
         - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-        - source_protocol: connected
+      redistribute:
+        connected:
+          enabled: true
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       rd: "192.168.255.3:12"
@@ -127,5 +128,6 @@ router_bgp:
       neighbors:
         - ip_address: 10.255.251.1
           peer_group: MLAG-IPv4-UNDERLAY-PEER
-      redistribute_routes:
-        - source_protocol: connected
+      redistribute:
+        connected:
+          enabled: true
