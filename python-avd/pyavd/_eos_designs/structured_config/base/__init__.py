@@ -48,7 +48,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
 
         router_bgp set based on switch.bgp_as, switch.bgp_defaults, router_id facts and aggregating the values of bgp_maximum_paths and bgp_ecmp variables.
         """
-        if self.shared_utils.bgp_as is None and not self.shared_utils.l3_interfaces_bgp_neighbors:
+        if self.shared_utils.bgp_as is None:
             return None
 
         platform_bgp_update_wait_for_convergence = (

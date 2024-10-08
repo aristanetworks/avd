@@ -53,6 +53,8 @@ class RoutingMixin:
                 )
                 or self.bgp_in_network_services
             )
+            # We want to configured BGP if any L3 interfaces is configured with BPG peers.
+            or self.l3_interfaces_bgp_neighbors
         )
 
     @cached_property

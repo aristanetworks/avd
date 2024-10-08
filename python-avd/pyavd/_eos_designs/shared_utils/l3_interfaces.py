@@ -111,8 +111,4 @@ class L3InterfacesMixin:
 
             neighbors.append(neighbor)
 
-        if neighbors and self.bgp_as is None:
-            msg = "`bgp_as` is required when configuring `l3_interfaces` with BGP neighbors. Either set it globally or under the node variables."
-            raise AristaAvdInvalidInputsError(msg)
-
         return neighbors
