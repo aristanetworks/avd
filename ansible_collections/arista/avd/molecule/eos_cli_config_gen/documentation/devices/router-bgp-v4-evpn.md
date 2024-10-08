@@ -224,10 +224,10 @@ router bgp 65101
    neighbor 192.168.255.1 peer group EVPN-OVERLAY-PEERS
    neighbor 192.168.255.2 peer group EVPN-OVERLAY-PEERS
    redistribute connected route-map RM-CONN-2-BGP
-   redistribute dynamic rcf RCF-CONN-2-BGP()
    redistribute isis level-2 include leaked rcf RCF-CONN-2-BGP()
    redistribute ospfv3 match internal include leaked route-map RM-CONN-2-BGP
-   redistribute ospfv3 match nssa-external route-map RM-CONN-2-BGP
+   redistribute ospfv3 match nssa-external include leaked route-map RM-CONN-2-BGP
+   redistribute dynamic rcf RCF-CONN-2-BGP()
    !
    vlan-aware-bundle B-ELAN-201
       rd 192.168.255.3:20201
@@ -280,18 +280,18 @@ router bgp 65101
       redistribute isis level-1-2 rcf RCF_Address_Family_IPV6_ISIS()
       redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
       redistribute ospfv3 match external include leaked
-      redistribute ospfv3 match nssa-external 1 route-map RM-REDISTRIBUTE-OSPF-NSSA-EXTERNAL
+      redistribute ospfv3 match nssa-external 1 include leaked route-map RM-REDISTRIBUTE-OSPF-NSSA-EXTERNAL
       redistribute static route-map RM-IPV6-STATIC-TO-BGP
    !
    address-family ipv6 multicast
       redistribute connected route-map RM-address_family_ipv6_multicast-Connected
       redistribute isis include leaked route-map RM-address_family_ipv6_multicast-ISIS
       redistribute ospf route-map RM-address_family_ipv6_multicast-OSPF
-      redistribute ospf match external route-map RM-address_family_ipv6_multicast-OSPF-External
-      redistribute ospf match nssa-external 2 route-map RM-address_family_ipv6_multicast-OSPF-External
       redistribute ospfv3 route-map RM-address_family_ipv6_multicast-OSPFv3
       redistribute ospfv3 match external route-map RM-address_family_ipv6_multicast-OSPFv3-External
       redistribute ospfv3 match nssa-external 2 route-map RM-address_family_ipv6_multicast-OSPFv3-External
+      redistribute ospf match external route-map RM-address_family_ipv6_multicast-OSPF-External
+      redistribute ospf match nssa-external 2 route-map RM-address_family_ipv6_multicast-OSPF-External
       redistribute static route-map RM-address_family_ipv6_multicast-Static
    !
    vrf TENANT_A_PROJECT01

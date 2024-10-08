@@ -476,20 +476,6 @@ router bgp {{ router_bgp.as }}
 {%     endfor %}
 {%     if router_bgp.redistribute is arista.avd.defined %}
 {%         set redistribute_var = router_bgp.redistribute %}
-{%         if redistribute_var.attached_host.enabled is arista.avd.defined(true) %}
-{%             set redistribute_host = "redistribute attached-host" %}
-{%             if redistribute_var.attached_host.route_map is arista.avd.defined %}
-{%                 set redistribute_host = redistribute_host ~ " route-map " ~ redistribute_var.attached_host.route_map %}
-{%             endif %}
-   {{ redistribute_host }}
-{%         endif %}
-{%         if redistribute_var.bgp.enabled is arista.avd.defined(true) %}
-{%             set redistribute_bgp = "redistribute bgp leaked" %}
-{%             if redistribute_var.bgp.route_map is arista.avd.defined %}
-{%                 set redistribute_bgp = redistribute_bgp ~ " route-map " ~ redistribute_var.bgp.route_map %}
-{%             endif %}
-   {{ redistribute_bgp }}
-{%         endif %}
 {%         if redistribute_var.connected.enabled is arista.avd.defined(true) %}
 {%             set redistribute_conn = "redistribute connected" %}
 {%             if redistribute_var.connected.include_leaked is arista.avd.defined(true) %}
@@ -501,15 +487,6 @@ router bgp {{ router_bgp.as }}
 {%                 set redistribute_conn = redistribute_conn ~ " rcf " ~ redistribute_var.connected.rcf %}
 {%             endif %}
    {{ redistribute_conn }}
-{%         endif %}
-{%         if redistribute_var.dynamic.enabled is arista.avd.defined(true) %}
-{%             set redistribute_dynamic = "redistribute dynamic" %}
-{%             if redistribute_var.dynamic.route_map is arista.avd.defined %}
-{%                 set redistribute_dynamic = redistribute_dynamic ~ " route-map " ~ redistribute_var.dynamic.route_map %}
-{%             elif redistribute_var.dynamic.rcf is arista.avd.defined %}
-{%                 set redistribute_dynamic = redistribute_dynamic ~ " rcf " ~ redistribute_var.dynamic.rcf %}
-{%             endif %}
-   {{ redistribute_dynamic }}
 {%         endif %}
 {%         if redistribute_var.isis.enabled is arista.avd.defined(true) %}
 {%             set redistribute_isis = "redistribute isis" %}
@@ -603,19 +580,12 @@ router bgp {{ router_bgp.as }}
 {%                 set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " " ~ redistribute_var.ospfv3.match_nssa_external.nssa_type %}
 {%             endif %}
 {%             if redistribute_var.ospfv3.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                 set redistribute_ospfv3 = redistribute_ospfv3 ~ " include leaked" %}
+{%                 set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " include leaked" %}
 {%             endif %}
 {%             if redistribute_var.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
 {%                 set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%             endif %}
    {{ redistribute_ospfv3_match }}
-{%         endif %}
-{%         if redistribute_var.rip.enabled is arista.avd.defined(true) %}
-{%             set redistribute_rip = "redistribute rip" %}
-{%             if redistribute_var.rip.route_map is arista.avd.defined %}
-{%                 set redistribute_rip = redistribute_rip ~ " route-map " ~ redistribute_var.rip.route_map %}
-{%             endif %}
-   {{ redistribute_rip }}
 {%         endif %}
 {%         if redistribute_var.static.enabled is arista.avd.defined(true) %}
 {%             set redistribute_static = "redistribute static" %}
@@ -628,6 +598,36 @@ router bgp {{ router_bgp.as }}
 {%                 set redistribute_static = redistribute_static ~ " rcf " ~ redistribute_var.static.rcf %}
 {%             endif %}
    {{ redistribute_static }}
+{%         endif %}
+{%         if redistribute_var.rip.enabled is arista.avd.defined(true) %}
+{%             set redistribute_rip = "redistribute rip" %}
+{%             if redistribute_var.rip.route_map is arista.avd.defined %}
+{%                 set redistribute_rip = redistribute_rip ~ " route-map " ~ redistribute_var.rip.route_map %}
+{%             endif %}
+   {{ redistribute_rip }}
+{%         endif %}
+{%         if redistribute_var.attached_host.enabled is arista.avd.defined(true) %}
+{%             set redistribute_host = "redistribute attached-host" %}
+{%             if redistribute_var.attached_host.route_map is arista.avd.defined %}
+{%                 set redistribute_host = redistribute_host ~ " route-map " ~ redistribute_var.attached_host.route_map %}
+{%             endif %}
+   {{ redistribute_host }}
+{%         endif %}
+{%         if redistribute_var.dynamic.enabled is arista.avd.defined(true) %}
+{%             set redistribute_dynamic = "redistribute dynamic" %}
+{%             if redistribute_var.dynamic.route_map is arista.avd.defined %}
+{%                 set redistribute_dynamic = redistribute_dynamic ~ " route-map " ~ redistribute_var.dynamic.route_map %}
+{%             elif redistribute_var.dynamic.rcf is arista.avd.defined %}
+{%                 set redistribute_dynamic = redistribute_dynamic ~ " rcf " ~ redistribute_var.dynamic.rcf %}
+{%             endif %}
+   {{ redistribute_dynamic }}
+{%         endif %}
+{%         if redistribute_var.bgp.enabled is arista.avd.defined(true) %}
+{%             set redistribute_bgp = "redistribute bgp leaked" %}
+{%             if redistribute_var.bgp.route_map is arista.avd.defined %}
+{%                 set redistribute_bgp = redistribute_bgp ~ " route-map " ~ redistribute_var.bgp.route_map %}
+{%             endif %}
+   {{ redistribute_bgp }}
 {%         endif %}
 {%         if redistribute_var.user.enabled is arista.avd.defined(true) %}
 {%             set redistribute_user = "redistribute user" %}
@@ -1244,6 +1244,13 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ redistribute_dynamic }}
 {%             endif %}
+{%             if redistribute_var.user.enabled is arista.avd.defined(true) %}
+{%                 set redistribute_user = "redistribute user" %}
+{%                 if redistribute_var.user.rcf is arista.avd.defined %}
+{%                     set redistribute_user = redistribute_user ~ " rcf " ~ redistribute_var.user.rcf %}
+{%                 endif %}
+      {{ redistribute_user }}
+{%             endif %}
 {%             if redistribute_var.isis.enabled is arista.avd.defined(true) %}
 {%                 set redistribute_isis = "redistribute isis" %}
 {%                 if redistribute_var.isis.isis_level is arista.avd.defined %}
@@ -1277,29 +1284,6 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_ospf = redistribute_ospf ~ " route-map " ~ redistribute_var.ospf.match_internal.route_map %}
 {%                 endif %}
       {{ redistribute_ospf }}
-{%             endif %}
-{%             if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
-{%                 set redistribute_ospf_match = "redistribute ospf match external" %}
-{%                 if redistribute_var.ospf.match_external.include_leaked is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
-{%                 endif %}
-      {{ redistribute_ospf_match }}
-{%             endif %}
-{%             if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                 set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
-{%                 if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
-{%                 endif %}
-      {{ redistribute_ospf_match }}
 {%             endif %}
 {%             if redistribute_var.ospfv3.enabled is arista.avd.defined(true) %}
 {%                 set redistribute_ospfv3 = "redistribute ospfv3" %}
@@ -1336,12 +1320,35 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " " ~ redistribute_var.ospfv3.match_nssa_external.nssa_type %}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                     set redistribute_ospfv3 = redistribute_ospfv3 ~ " include leaked" %}
+{%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " include leaked" %}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%                 endif %}
       {{ redistribute_ospfv3_match }}
+{%             endif %}
+{%             if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
+{%                 set redistribute_ospf_match = "redistribute ospf match external" %}
+{%                 if redistribute_var.ospf.match_external.include_leaked is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
+{%                 endif %}
+      {{ redistribute_ospf_match }}
+{%             endif %}
+{%             if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%                 set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
+{%                 if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_nssa_external.include_leaked is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
+{%                 endif %}
+      {{ redistribute_ospf_match }}
 {%             endif %}
 {%             if redistribute_var.rip.enabled is arista.avd.defined(true) %}
 {%                 set redistribute_rip = "redistribute rip" %}
@@ -1361,13 +1368,6 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_static = redistribute_static ~ " rcf " ~ redistribute_var.static.rcf %}
 {%                 endif %}
       {{ redistribute_static }}
-{%             endif %}
-{%             if redistribute_var.user.enabled is arista.avd.defined(true) %}
-{%                 set redistribute_user = "redistribute user" %}
-{%                 if redistribute_var.user.rcf is arista.avd.defined %}
-{%                     set redistribute_user = redistribute_user ~ " rcf " ~ redistribute_var.user.rcf %}
-{%                 endif %}
-      {{ redistribute_user }}
 {%             endif %}
 {%         elif router_bgp.address_family_ipv4.redistribute_routes is arista.avd.defined %}
 {%             for redistribute_route in router_bgp.address_family_ipv4.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
@@ -2109,7 +2109,7 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " " ~ redistribute_var.ospfv3.match_nssa_external.nssa_type %}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                     set redistribute_ospfv3 = redistribute_ospfv3 ~ " include leaked" %}
+{%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " include leaked" %}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
@@ -2247,23 +2247,6 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ redistribute_ospf }}
 {%             endif %}
-{%             if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
-{%                 set redistribute_ospf_match = "redistribute ospf match external" %}
-{%                 if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
-{%                 endif %}
-      {{ redistribute_ospf_match }}
-{%             endif %}
-{%             if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                 set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
-{%                 if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
-{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
-{%                 endif %}
-      {{ redistribute_ospf_match }}
-{%             endif %}
 {%             if redistribute_var.ospfv3.enabled is arista.avd.defined(true) %}
 {%                 set redistribute_ospfv3 = "redistribute ospfv3" %}
 {%                 if redistribute_var.ospfv3.route_map is arista.avd.defined %}
@@ -2293,6 +2276,23 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%                 endif %}
       {{ redistribute_ospfv3_match }}
+{%             endif %}
+{%             if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
+{%                 set redistribute_ospf_match = "redistribute ospf match external" %}
+{%                 if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
+{%                 endif %}
+      {{ redistribute_ospf_match }}
+{%             endif %}
+{%             if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%                 set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
+{%                 if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
+{%                     set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
+{%                 endif %}
+      {{ redistribute_ospf_match }}
 {%             endif %}
 {%             if redistribute_var.static.enabled is arista.avd.defined(true) %}
 {%                 set redistribute_static = "redistribute static" %}
@@ -3051,7 +3051,7 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " " ~ redistribute_var.ospfv3.match_nssa_external.nssa_type %}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                     set redistribute_ospfv3 = redistribute_ospfv3 ~ " include leaked" %}
+{%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " include leaked" %}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
@@ -3266,6 +3266,13 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
          {{ redistribute_dynamic }}
 {%                 endif %}
+{%                 if redistribute_var.user.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_user = "redistribute user" %}
+{%                     if redistribute_var.user.rcf is arista.avd.defined %}
+{%                         set redistribute_user = redistribute_user ~ " rcf " ~ redistribute_var.user.rcf %}
+{%                     endif %}
+         {{ redistribute_user }}
+{%                 endif %}
 {%                 if redistribute_var.isis.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_isis = "redistribute isis" %}
 {%                     if redistribute_var.isis.isis_level is arista.avd.defined %}
@@ -3299,29 +3306,6 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_ospf = redistribute_ospf ~ " route-map " ~ redistribute_var.ospf.match_internal.route_map %}
 {%                     endif %}
          {{ redistribute_ospf }}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = "redistribute ospf match external" %}
-{%                     if redistribute_var.ospf.match_external.include_leaked is arista.avd.defined(true) %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
-{%                     endif %}
-{%                     if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
-{%                     endif %}
-         {{ redistribute_ospf_match }}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
-{%                     if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
-{%                     endif %}
-{%                     if redistribute_var.ospf.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
-{%                     endif %}
-{%                     if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
-{%                     endif %}
-         {{ redistribute_ospf_match }}
 {%                 endif %}
 {%                 if redistribute_var.ospfv3.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_ospfv3 = "redistribute ospfv3" %}
@@ -3358,12 +3342,35 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " " ~ redistribute_var.ospfv3.match_nssa_external.nssa_type %}
 {%                     endif %}
 {%                     if redistribute_var.ospfv3.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                         set redistribute_ospfv3 = redistribute_ospfv3 ~ " include leaked" %}
+{%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " include leaked" %}
 {%                     endif %}
 {%                     if redistribute_var.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
 {%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%                     endif %}
          {{ redistribute_ospfv3_match }}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = "redistribute ospf match external" %}
+{%                     if redistribute_var.ospf.match_external.include_leaked is arista.avd.defined(true) %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
+{%                     endif %}
+{%                     if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
+{%                     endif %}
+         {{ redistribute_ospf_match }}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
+{%                     if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
+{%                     endif %}
+{%                     if redistribute_var.ospf.match_nssa_external.include_leaked is arista.avd.defined(true) %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " include leaked" %}
+{%                     endif %}
+{%                     if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
+{%                     endif %}
+         {{ redistribute_ospf_match }}
 {%                 endif %}
 {%                 if redistribute_var.rip.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_rip = "redistribute rip" %}
@@ -3383,13 +3390,6 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_static = redistribute_static ~ " rcf " ~ redistribute_var.static.rcf %}
 {%                     endif %}
          {{ redistribute_static }}
-{%                 endif %}
-{%                 if redistribute_var.user.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_user = "redistribute user" %}
-{%                     if redistribute_var.user.rcf is arista.avd.defined %}
-{%                         set redistribute_user = redistribute_user ~ " rcf " ~ redistribute_var.user.rcf %}
-{%                     endif %}
-         {{ redistribute_user }}
 {%                 endif %}
 {%             elif vrf.address_family_ipv4.redistribute_routes is arista.avd.defined %}
 {%                 for redistribute_route in vrf.address_family_ipv4.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
@@ -3492,23 +3492,6 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
          {{ redistribute_ospf }}
 {%                 endif %}
-{%                 if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = "redistribute ospf match external" %}
-{%                     if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
-{%                     endif %}
-         {{ redistribute_ospf_match }}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
-{%                     if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
-{%                     endif %}
-{%                     if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
-{%                     endif %}
-         {{ redistribute_ospf_match }}
-{%                 endif %}
 {%                 if redistribute_var.ospfv3.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_ospfv3 = "redistribute ospfv3" %}
 {%                     if redistribute_var.ospfv3.route_map is arista.avd.defined %}
@@ -3538,6 +3521,23 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%                     endif %}
          {{ redistribute_ospfv3_match }}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = "redistribute ospf match external" %}
+{%                     if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
+{%                     endif %}
+         {{ redistribute_ospf_match }}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
+{%                     if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
+{%                     endif %}
+{%                     if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
+{%                     endif %}
+         {{ redistribute_ospf_match }}
 {%                 endif %}
 {%                 if redistribute_var.static.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_static = "redistribute static" %}
@@ -3665,6 +3665,13 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
          {{ redistribute_bgp }}
 {%                 endif %}
+{%                 if redistribute_var.dhcp.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_dhcp = "redistribute dhcp" %}
+{%                     if redistribute_var.dhcp.route_map is arista.avd.defined %}
+{%                         set redistribute_dhcp = redistribute_dhcp ~ " route-map " ~ redistribute_var.dhcp.route_map %}
+{%                     endif %}
+         {{ redistribute_dhcp }}
+{%                 endif %}
 {%                 if redistribute_var.connected.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_conn = "redistribute connected" %}
 {%                     if redistribute_var.connected.include_leaked is arista.avd.defined(true) %}
@@ -3677,13 +3684,6 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
          {{ redistribute_conn }}
 {%                 endif %}
-{%                 if redistribute_var.dhcp.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_dhcp = "redistribute dhcp" %}
-{%                     if redistribute_var.dhcp.route_map is arista.avd.defined %}
-{%                         set redistribute_dhcp = redistribute_dhcp ~ " route-map " ~ redistribute_var.dhcp.route_map %}
-{%                     endif %}
-         {{ redistribute_dhcp }}
-{%                 endif %}
 {%                 if redistribute_var.dynamic.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_dynamic = "redistribute dynamic" %}
 {%                     if redistribute_var.dynamic.route_map is arista.avd.defined %}
@@ -3692,6 +3692,13 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_dynamic = redistribute_dynamic ~ " rcf " ~ redistribute_var.dynamic.rcf %}
 {%                     endif %}
          {{ redistribute_dynamic }}
+{%                 endif %}
+{%                 if redistribute_var.user.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_user = "redistribute user" %}
+{%                     if redistribute_var.user.rcf is arista.avd.defined %}
+{%                         set redistribute_user = redistribute_user ~ " rcf " ~ redistribute_var.user.rcf %}
+{%                     endif %}
+         {{ redistribute_user }}
 {%                 endif %}
 {%                 if redistribute_var.isis.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_isis = "redistribute isis" %}
@@ -3743,7 +3750,7 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " " ~ redistribute_var.ospfv3.match_nssa_external.nssa_type %}
 {%                     endif %}
 {%                     if redistribute_var.ospfv3.match_nssa_external.include_leaked is arista.avd.defined(true) %}
-{%                         set redistribute_ospfv3 = redistribute_ospfv3 ~ " include leaked" %}
+{%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " include leaked" %}
 {%                     endif %}
 {%                     if redistribute_var.ospfv3.match_nssa_external.route_map is arista.avd.defined %}
 {%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
@@ -3761,13 +3768,6 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_static = redistribute_static ~ " rcf " ~ redistribute_var.static.rcf %}
 {%                     endif %}
          {{ redistribute_static }}
-{%                 endif %}
-{%                 if redistribute_var.user.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_user = "redistribute user" %}
-{%                     if redistribute_var.user.rcf is arista.avd.defined %}
-{%                         set redistribute_user = redistribute_user ~ " rcf " ~ redistribute_var.user.rcf %}
-{%                     endif %}
-         {{ redistribute_user }}
 {%                 endif %}
 {%             elif vrf.address_family_ipv6.redistribute_routes is arista.avd.defined %}
 {%                 for redistribute_route in vrf.address_family_ipv6.redistribute_routes | arista.avd.natural_sort('source_protocol') %}
@@ -3863,23 +3863,6 @@ router bgp {{ router_bgp.as }}
 {%                     endif %}
          {{ redistribute_ospf }}
 {%                 endif %}
-{%                 if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = "redistribute ospf match external" %}
-{%                     if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
-{%                     endif %}
-         {{ redistribute_ospf_match }}
-{%                 endif %}
-{%                 if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
-{%                     set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
-{%                     if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
-{%                     endif %}
-{%                     if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
-{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
-{%                     endif %}
-         {{ redistribute_ospf_match }}
-{%                 endif %}
 {%                 if redistribute_var.ospfv3.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_ospfv3 = "redistribute ospfv3" %}
 {%                     if redistribute_var.ospfv3.route_map is arista.avd.defined %}
@@ -3909,6 +3892,23 @@ router bgp {{ router_bgp.as }}
 {%                         set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%                     endif %}
          {{ redistribute_ospfv3_match }}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_external.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = "redistribute ospf match external" %}
+{%                     if redistribute_var.ospf.match_external.route_map is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_external.route_map %}
+{%                     endif %}
+         {{ redistribute_ospf_match }}
+{%                 endif %}
+{%                 if redistribute_var.ospf.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%                     set redistribute_ospf_match = "redistribute ospf match nssa-external" %}
+{%                     if redistribute_var.ospf.match_nssa_external.nssa_type is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " " ~ redistribute_var.ospf.match_nssa_external.nssa_type %}
+{%                     endif %}
+{%                     if redistribute_var.ospf.match_nssa_external.route_map is arista.avd.defined %}
+{%                         set redistribute_ospf_match = redistribute_ospf_match ~ " route-map " ~ redistribute_var.ospf.match_nssa_external.route_map %}
+{%                     endif %}
+         {{ redistribute_ospf_match }}
 {%                 endif %}
 {%                 if redistribute_var.static.enabled is arista.avd.defined(true) %}
 {%                     set redistribute_static = "redistribute static" %}
