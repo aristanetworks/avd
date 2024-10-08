@@ -156,7 +156,7 @@ By default the mode is set to `path-selection` and can be changed using:
 
 ```yaml
 ---
-wan_encapsulaton: vxlan | path-selection # default: path-selection
+wan_encapsulation: vxlan | path-selection # default: path-selection
 ```
 
 !!! note
