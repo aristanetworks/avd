@@ -263,13 +263,13 @@ ethernet_interfaces:
   speed: forced 10000full
 - name: Ethernet6.10
   peer_type: l3_interface
-  ip_address: 123.1.1.0/31
+  ip_address: 10.123.1.0/31
   shutdown: false
   description: TENANT_B_SITE_3_INTRA_L3VPN
   encapsulation_dot1q:
     vlan: 10
   vrf: TENANT_B_INTRA
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
   ospf_cost: 10
 - name: Ethernet6
@@ -468,7 +468,7 @@ router_ospf:
   - id: 19
     vrf: TENANT_B_INTRA
     passive_interface_default: true
-    router_id: 123.1.1.0
+    router_id: 10.123.1.0
     no_passive_interfaces:
     - Ethernet6.10
     max_lsa: 10000

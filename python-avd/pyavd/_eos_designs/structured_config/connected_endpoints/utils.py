@@ -39,7 +39,7 @@ class UtilsMixin:
                 filtered_adapters = []
                 for adapter_index, adapter in enumerate(connected_endpoint["adapters"]):
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(
-                        adapter, context=f"{connected_endpoints_key['key']}[{connected_endpoint['name']}].adapters[{adapter_index}]"
+                        adapter, context=f"{connected_endpoints_key['key']}[name={connected_endpoint['name']}].adapters[{adapter_index}]"
                     )
 
                     if self.shared_utils.hostname not in adapter_settings.get("switches", []):
@@ -125,7 +125,9 @@ class UtilsMixin:
     def _get_adapter_trunk_groups(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, connected_endpoint: dict) -> dict | None:
         """Return trunk_groups for one adapter."""
         if self.shared_utils.enable_trunk_groups and "trunk" in adapter.get("mode", ""):
-            return get(adapter, "trunk_groups", required=True, org_key=f"'trunk_groups' for the connected_endpoint {connected_endpoint['name']}")
+            return get(
+                adapter, "trunk_groups", required=True, custom_error_msg=f"'trunk_groups' for the connected_endpoint {connected_endpoint['name']} is required."
+            )
 
         return None
 
@@ -175,7 +177,7 @@ class UtilsMixin:
                 adapter_ethernet_segment,
                 "designated_forwarder_preferences",
                 required=True,
-                org_key=f"ethernet_segment.designated_forwarder_preferences for the connected_endpoint {connected_endpoint['name']}",
+                custom_error_msg=f"ethernet_segment.designated_forwarder_preferences for the connected_endpoint {connected_endpoint['name']}.",
             )
             evpn_ethernet_segment["designated_forwarder_election"] = {
                 "algorithm": "preference",

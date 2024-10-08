@@ -526,7 +526,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: Tenant_A_WAN_Zone
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
   ospf_cost: 100
   ospf_authentication: message-digest
