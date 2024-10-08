@@ -42,9 +42,6 @@ router ospf {{ process_id.id }}
    no passive-interface {{ interface }}
 {%         endfor %}
 {%     endif %}
-{%     if process_id.distribute_list_in.route_map is arista.avd.defined %}
-   distribute-list route-map {{ process_id.distribute_list_in.route_map }} in
-{%     endif %}
 {%     if process_id.redistribute.bgp.enabled is arista.avd.defined(true) %}
 {%         set redistribute_bgp_cli = "redistribute bgp" %}
 {%         if process_id.redistribute.bgp.include_leaked is arista.avd.defined(true) %}
@@ -74,6 +71,9 @@ router ospf {{ process_id.id }}
 {%             set redistribute_static_cli = redistribute_static_cli ~ " route-map " ~  process_id.redistribute.static.route_map %}
 {%         endif %}
    {{ redistribute_static_cli }}
+{%     endif %}
+{%     if process_id.distribute_list_in.route_map is arista.avd.defined %}
+   distribute-list route-map {{ process_id.distribute_list_in.route_map }} in
 {%     endif %}
 {%     for area in process_id.areas | arista.avd.natural_sort('id') %}
 {# OSPF stub area configuration #}

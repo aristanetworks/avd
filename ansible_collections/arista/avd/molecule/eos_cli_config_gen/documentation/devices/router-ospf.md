@@ -242,10 +242,10 @@ router ospf 100
    no passive-interface Ethernet1
    no passive-interface Ethernet2
    no passive-interface Vlan4093
-   distribute-list route-map RM-OSPF-DIST-IN in
    redistribute bgp
    redistribute connected
    redistribute static
+   distribute-list route-map RM-OSPF-DIST-IN in
    network 198.51.100.0/24 area 0.0.0.1
    network 203.0.113.0/24 area 0.0.0.2
    max-lsa 12000
