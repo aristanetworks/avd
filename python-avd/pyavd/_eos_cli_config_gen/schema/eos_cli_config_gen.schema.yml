@@ -13472,6 +13472,17 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                next_hop:
+                  type: dict
+                  keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        originate:
+                          type: bool
           redistribute_routes:
             type: list
             primary_key: source_protocol
