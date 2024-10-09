@@ -98,6 +98,13 @@ ASN Notation: asplain
 | ---------- | -------- | ------------- |
 | EVPN-OVERLAY-PEERS | True | default |
 
+##### EVPN Neighbors
+
+| Neighbor | Activate | Encapsulation |
+| -------- | -------- | ------------- |
+| 192.168.255.3 | True | default |
+| 192.168.255.4 | False | default |
+
 ##### EVPN Neighbor Default Encapsulation
 
 | Neighbor Default Encapsulation | Next-hop-self Source Interface |

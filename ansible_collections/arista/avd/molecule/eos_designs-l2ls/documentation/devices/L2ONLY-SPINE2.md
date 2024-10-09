@@ -129,7 +129,7 @@ vlan internal order ascending range 1006 1199
 | VLAN ID | Name | Trunk Groups |
 | ------- | ---- | ------------ |
 | 100 | L2VLAN_100 | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -139,7 +139,7 @@ vlan 100
    name L2VLAN_100
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -153,8 +153,8 @@ vlan 4094
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet1 | L2ONLY-LEAF1_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
-| Ethernet2 | L2ONLY-LEAF2_Ethernet2 | *trunk | *100,4092 | *- | *- | 2 |
+| Ethernet1 | L2_L2ONLY-LEAF1_Ethernet2 | *trunk | *100,4092 | *- | *- | 1 |
+| Ethernet2 | L2_L2ONLY-LEAF2_Ethernet2 | *trunk | *100,4092 | *- | *- | 2 |
 | Ethernet3 | MLAG_L2ONLY-SPINE1_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_L2ONLY-SPINE1_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
@@ -165,12 +165,12 @@ vlan 4094
 ```eos
 !
 interface Ethernet1
-   description L2ONLY-LEAF1_Ethernet2
+   description L2_L2ONLY-LEAF1_Ethernet2
    no shutdown
    channel-group 1 mode active
 !
 interface Ethernet2
-   description L2ONLY-LEAF2_Ethernet2
+   description L2_L2ONLY-LEAF2_Ethernet2
    no shutdown
    channel-group 2 mode active
 !
@@ -193,8 +193,8 @@ interface Ethernet4
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2ONLY-LEAF1_Po1 | trunk | 100,4092 | - | - | - | - | 1 | - |
-| Port-Channel2 | L2ONLY-LEAF2_Po1 | trunk | 100,4092 | - | - | - | - | 2 | - |
+| Port-Channel1 | L2_L2ONLY-LEAF1_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 1 | - |
+| Port-Channel2 | L2_L2ONLY-LEAF2_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 2 | - |
 | Port-Channel3 | MLAG_L2ONLY-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -202,7 +202,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description L2ONLY-LEAF1_Po1
+   description L2_L2ONLY-LEAF1_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
@@ -210,7 +210,7 @@ interface Port-Channel1
    mlag 1
 !
 interface Port-Channel2
-   description L2ONLY-LEAF2_Po1
+   description L2_L2ONLY-LEAF2_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 100,4092
    switchport mode trunk
@@ -231,7 +231,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4094 | MLAG_PEER | default | 9214 | False |
+| Vlan4094 | MLAG | default | 9214 | False |
 
 ##### IPv4
 
@@ -244,7 +244,7 @@ interface Port-Channel3
 ```eos
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 9214
    no autostate

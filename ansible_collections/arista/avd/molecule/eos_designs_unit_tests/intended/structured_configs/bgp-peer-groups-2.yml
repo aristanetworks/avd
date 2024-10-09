@@ -58,11 +58,11 @@ router_bgp:
   - ip_address: 192.168.253.204
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: bgp-peer-groups-1
-    description: bgp-peer-groups-1
+    description: bgp-peer-groups-1_Vlan4094
   - ip_address: 192.168.255.111
     peer_group: EVPN-OVERLAY-PEERS
     peer: bgp-peer-groups-1
-    description: bgp-peer-groups-1
+    description: bgp-peer-groups-1_Loopback0
   redistribute_routes:
   - source_protocol: connected
     route_map: RM-CONN-2-BGP
@@ -104,12 +104,12 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214

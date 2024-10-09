@@ -56,7 +56,7 @@ router_bgp:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.3
     peer: cv-pathfinder-edge2B
     description: cv-pathfinder-edge2B
@@ -152,6 +152,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
     neighbor_default:
@@ -160,6 +161,7 @@ router_bgp:
     neighbors:
     - ip_address: 192.168.142.3
       activate: true
+      encapsulation: path-selection
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -178,8 +180,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
 service_routing_protocols_model: multi-agent
 ip_routing: true
 aaa_root:
@@ -211,7 +212,7 @@ ethernet_interfaces:
   peer: site-ha-enabled-leaf2A
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -222,7 +223,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1.1000_vrf_IT
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -233,7 +234,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1.142_vrf_PROD
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -244,7 +245,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.666
   peer_type: l3leaf
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2A_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_site-ha-enabled-leaf2A_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666
@@ -254,7 +255,7 @@ ethernet_interfaces:
   peer: site-ha-enabled-leaf2B
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -265,7 +266,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.1000
   peer_type: l3leaf
   vrf: IT
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1.1000_vrf_IT
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1.1000_VRF_IT
   shutdown: false
   encapsulation_dot1q:
     vlan: 1000
@@ -276,7 +277,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.142
   peer_type: l3leaf
   vrf: PROD
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1.142_vrf_PROD
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1.142_VRF_PROD
   shutdown: false
   encapsulation_dot1q:
     vlan: 142
@@ -287,7 +288,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1.666
   peer_type: l3leaf
   vrf: ATTRACTED-VRF-FROM-UPLINK
-  description: P2P_LINK_TO_SITE-HA-ENABLED-LEAF2B_Ethernet1.666_vrf_ATTRACTED-VRF-FROM-UPLINK
+  description: P2P_site-ha-enabled-leaf2B_Ethernet1.666_VRF_ATTRACTED-VRF-FROM-UPLINK
   shutdown: false
   encapsulation_dot1q:
     vlan: 666

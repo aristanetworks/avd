@@ -30,6 +30,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
@@ -54,8 +55,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   vrfs:
   - name: VRF1
     rd: 192.168.1.1:123
@@ -109,7 +109,7 @@ ethernet_interfaces:
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet1 VLAN 10
   peer_type: l2leaf
-  description: UPLINK_LAN_L2LEAF_Ethernet1
+  description: L2_uplink_lan_l2leaf_Ethernet1
   shutdown: false
   switchport:
     enabled: false

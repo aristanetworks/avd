@@ -36,11 +36,11 @@ router_bgp:
   - ip_address: 10.255.2.1
     peer_group: MPLS-OVERLAY-PEERS
     peer: rr1
-    description: rr1
+    description: rr1_Loopback0
   - ip_address: 10.255.2.2
     peer_group: MPLS-OVERLAY-PEERS
     peer: rr2
-    description: rr2
+    description: rr2_Loopback0
   vrfs:
   - name: C1_VRF1
     rd: 10.255.1.2:10
@@ -167,7 +167,6 @@ ethernet_interfaces:
   peer: p2
   peer_interface: Ethernet1
   peer_type: p
-  description: P2P_LINK_TO_p2_Ethernet1
   switchport:
     enabled: false
   shutdown: false
@@ -185,11 +184,11 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_p2_Ethernet1
 - name: Ethernet2
   peer: p1
   peer_interface: Ethernet2
   peer_type: p
-  description: P2P_LINK_TO_p1_Ethernet2
   switchport:
     enabled: false
   shutdown: false
@@ -207,6 +206,7 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_p1_Ethernet2
 - name: Ethernet4.10
   peer_type: l3_interface
   ip_address: 10.0.1.2/29
@@ -215,7 +215,7 @@ ethernet_interfaces:
   encapsulation_dot1q:
     vlan: 10
   vrf: C1_VRF1
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: false
 - name: Ethernet4.20
   peer_type: l3_interface

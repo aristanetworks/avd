@@ -37,11 +37,11 @@ router_bgp:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE1-RR1
-    description: SITE1-RR1
+    description: SITE1-RR1_Loopback0
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE2-RR1
-    description: SITE2-RR1
+    description: SITE2-RR1_Loopback0
   vrfs:
   - name: TENANT_B_INTRA
     rd: 100.70.0.5:19
@@ -211,7 +211,6 @@ ethernet_interfaces:
   peer: SITE1-LSR1
   peer_interface: Ethernet1
   peer_type: p
-  description: P2P_LINK_TO_SITE1-LSR1_Ethernet1
   switchport:
     enabled: false
   shutdown: false
@@ -233,12 +232,12 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE1-LSR1_Ethernet1
   speed: forced 40gfull
 - name: Ethernet2
   peer: SITE1-LER2
   peer_interface: Ethernet2
   peer_type: pe
-  description: P2P_LINK_TO_SITE1-LER2_Ethernet2
   switchport:
     enabled: false
   shutdown: false
@@ -260,16 +259,17 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE1-LER2_Ethernet2
   speed: forced 10000full
 - name: Ethernet6.10
   peer_type: l3_interface
-  ip_address: 123.1.1.0/31
+  ip_address: 10.123.1.0/31
   shutdown: false
   description: TENANT_B_SITE_3_INTRA_L3VPN
   encapsulation_dot1q:
     vlan: 10
   vrf: TENANT_B_INTRA
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
   ospf_cost: 10
 - name: Ethernet6
@@ -468,7 +468,7 @@ router_ospf:
   - id: 19
     vrf: TENANT_B_INTRA
     passive_interface_default: true
-    router_id: 123.1.1.0
+    router_id: 10.123.1.0
     no_passive_interfaces:
     - Ethernet6.10
     max_lsa: 10000
