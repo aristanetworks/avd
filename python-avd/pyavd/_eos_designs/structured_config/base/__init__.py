@@ -796,8 +796,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                         "match": [f"ip address prefix-list {prefix_list_in}"],
                     },
                 ]
-                # set no advertise is set only for wan neighbors, which will also have
-                # prefix_list_in
+                # set no advertise is set only for WAN neighbors, which will also have prefix_list_in
                 if neighbor.get("set_no_advertise"):
                     sequence_numbers[0]["set"] = ["community no-advertise additive"]
 
