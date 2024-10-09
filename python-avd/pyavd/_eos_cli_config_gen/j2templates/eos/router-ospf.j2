@@ -120,7 +120,9 @@ router ospf {{ process_id.id }}
 {%         endif %}
 {%     endfor %}
 {%     for network_prefix in process_id.network_prefixes | arista.avd.natural_sort('ipv4_prefix') %}
+{%         if network_prefix.area is arista.avd.defined %}
    network {{ network_prefix.ipv4_prefix }} area {{ network_prefix.area }}
+{%         endif %}
 {%     endfor %}
 {%     if process_id.max_lsa is arista.avd.defined %}
    max-lsa {{ process_id.max_lsa }}
