@@ -5390,7 +5390,7 @@ $defs:
                   - both
                 access_group:
                   type: dict
-                  description: This can be set only when `session_settings.access_group`
+                  description: This can only be set when `session_settings.access_group`
                     is not set.
                   keys:
                     type:
