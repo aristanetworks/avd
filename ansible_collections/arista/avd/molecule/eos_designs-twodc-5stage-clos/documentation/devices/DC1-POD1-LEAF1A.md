@@ -181,18 +181,18 @@ vlan 4085
 interface Ethernet1
    description P2P_DC1-POD1-SPINE1_Ethernet3
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.1/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet2
    description P2P_DC1-POD1-SPINE2_Ethernet3
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.3/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
