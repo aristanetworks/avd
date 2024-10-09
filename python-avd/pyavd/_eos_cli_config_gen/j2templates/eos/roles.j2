@@ -8,7 +8,7 @@
 !
 role {{ role.name }}
 {%     if role.sequence_numbers is arista.avd.defined %}
-{%         for sequence in role.sequence_numbers | arista.avd.natural_sort %}
+{%         for sequence in role.sequence_numbers %}
 {%             if sequence.action is arista.avd.defined and sequence.command is arista.avd.defined %}
 {%                 set sequence_cli = "" %}
 {%                 if sequence.sequence is arista.avd.defined %}
