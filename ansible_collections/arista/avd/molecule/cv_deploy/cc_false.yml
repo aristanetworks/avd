@@ -49,6 +49,7 @@
         that:
           # Change control
           - cv_deploy_results.change_control.requested_state == "pending approval"
+          - cv_deploy_results.change_control.requested_state == cv_deploy_results.change_control.state
 
     - name: Cleanup orphan CC
       run_once: true

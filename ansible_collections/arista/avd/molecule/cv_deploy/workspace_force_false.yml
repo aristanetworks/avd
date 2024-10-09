@@ -42,7 +42,7 @@
           ansible.builtin.import_role:
             name: arista.avd.cv_deploy
           vars:
-            cv_devices: [ avd-ci-core1 ]
+            cv_devices: [ avd-ci-leaf1, avd-ci-core1 ]
             cv_submit_workspace_force: false
       rescue:
         - name: Check CVP returns
@@ -85,6 +85,7 @@
       retries: 3
       delay: 3
       ignore_errors: True
+      when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
 
     - name: Cleanup
       run_once: true
@@ -92,8 +93,13 @@
       ansible.builtin.import_role:
         name: arista.avd.cv_deploy
       vars:
+        cv_devices: "{{ ansible_play_hosts_all }}"
         eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
         structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
         cv_submit_workspace: true
         cv_submit_workspace_force: true
         cv_run_change_control: true
+
+    # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
+    - name: Reset ansible_play_hosts for next playbook (no impact within running playbook)
+      ansible.builtin.meta: clear_host_errors

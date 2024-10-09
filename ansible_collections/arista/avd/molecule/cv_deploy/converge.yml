@@ -5,11 +5,11 @@
 - name: Test Provisions with Workspace Pending
   import_playbook: workspace_pending.yml
 
-- name: Test Change Control False
-  import_playbook: cc_false.yml
-
 - name: Test Workspace Force True
   import_playbook: workspace_force_true.yml
 
 - name: Test Workspace Force False
   import_playbook: workspace_force_false.yml
+
+- name: Test Change Control False
+  import_playbook: cc_false.yml
