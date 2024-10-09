@@ -1636,6 +1636,10 @@ keys:
                   keys:
                     v4_mapped_v6_translation:
                       type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -1751,6 +1755,10 @@ keys:
                   keys:
                     v4_mapped_v6_translation:
                       type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
