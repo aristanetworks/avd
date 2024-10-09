@@ -3,7 +3,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
   },
@@ -11,7 +11,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAcctDefaultMethods",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
   },
@@ -19,7 +19,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAuthenMethods",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
   },
@@ -27,7 +27,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAuthzMethods",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
   },
@@ -35,7 +35,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTacacsServerGroups",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies if the provided TACACS server group(s) are configured."
   },
@@ -43,7 +43,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTacacsServers",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies TACACS servers are configured for a specified VRF."
   },
@@ -51,7 +51,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTacacsSourceIntf",
     "categories": [
-      "AAA"
+      "aaa"
     ],
     "description": "Verifies TACACS source-interface for a specified VRF."
   },
@@ -59,7 +59,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc2-leaf1a (IP: 10.255.128.13)"
@@ -68,7 +68,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc2-leaf1b (IP: 10.255.128.14)"
@@ -77,7 +77,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc2-leaf2a (IP: 10.255.128.15)"
@@ -86,7 +86,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc2-leaf2b (IP: 10.255.128.16)"
@@ -95,7 +95,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc2-leaf3a.arista.com (IP: 10.255.128.17)"
@@ -104,7 +104,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP EVPN Peer: dc2-leaf3b.arista.com (IP: 10.255.128.18)"
@@ -113,7 +113,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf1a (IP: 10.255.255.107)"
@@ -122,7 +122,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf1b (IP: 10.255.255.111)"
@@ -131,7 +131,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf2a (IP: 10.255.255.115)"
@@ -140,7 +140,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf2b (IP: 10.255.255.119)"
@@ -149,7 +149,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf3a.arista.com (IP: 10.255.255.123)"
@@ -158,7 +158,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBGPSpecificPeers",
     "categories": [
-      "BGP"
+      "bgp"
     ],
     "description": "Verifies the health of specific BGP peer(s).",
     "custom_field": "BGP IPv4 Unicast Peer: dc2-leaf3b.arista.com (IP: 10.255.255.127)"
@@ -167,7 +167,7 @@
     "name": "dc2-spine2",
     "test": "VerifyRunningConfigDiffs",
     "categories": [
-      "Configuration"
+      "configuration"
     ],
     "description": "Verifies there is no difference between the running-config and the startup-config"
   },
@@ -175,7 +175,7 @@
     "name": "dc2-spine2",
     "test": "VerifyZeroTouch",
     "categories": [
-      "Configuration"
+      "configuration"
     ],
     "description": "Verifies ZeroTouch is disabled"
   },
@@ -183,7 +183,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet1 - Remote: dc2-leaf1a Ethernet2"
@@ -192,7 +192,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet2 - Remote: dc2-leaf1b Ethernet2"
@@ -201,7 +201,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet3 - Remote: dc2-leaf2a Ethernet2"
@@ -210,7 +210,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet4 - Remote: dc2-leaf2b Ethernet2"
@@ -219,7 +219,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet5 - Remote: dc2-leaf3a.arista.com Ethernet2"
@@ -228,7 +228,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet6 - Remote: dc2-leaf3b.arista.com Ethernet2"
@@ -237,7 +237,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReachability",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: P2P Interface Ethernet1 (IP: 10.255.255.106) - Destination: dc2-leaf1a Ethernet2 (IP: 10.255.255.107)"
@@ -246,7 +246,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReachability",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: P2P Interface Ethernet2 (IP: 10.255.255.110) - Destination: dc2-leaf1b Ethernet2 (IP: 10.255.255.111)"
@@ -255,7 +255,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReachability",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: P2P Interface Ethernet3 (IP: 10.255.255.114) - Destination: dc2-leaf2a Ethernet2 (IP: 10.255.255.115)"
@@ -264,7 +264,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReachability",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: P2P Interface Ethernet4 (IP: 10.255.255.118) - Destination: dc2-leaf2b Ethernet2 (IP: 10.255.255.119)"
@@ -273,7 +273,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReachability",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: P2P Interface Ethernet5 (IP: 10.255.255.122) - Destination: dc2-leaf3a.arista.com Ethernet2 (IP: 10.255.255.123)"
@@ -282,7 +282,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReachability",
     "categories": [
-      "Connectivity"
+      "connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: P2P Interface Ethernet6 (IP: 10.255.255.126) - Destination: dc2-leaf3b.arista.com Ethernet2 (IP: 10.255.255.127)"
@@ -291,7 +291,7 @@
     "name": "dc2-spine2",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
-      "Field Notices"
+      "field notices"
     ],
     "description": "Verifies that the device is using the correct Aboot version per FN0044."
   },
@@ -299,7 +299,7 @@
     "name": "dc2-spine2",
     "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "Field Notices"
+      "field notices"
     ],
     "description": "Verifies if the device is exposed to FN0072, and if the issue has been mitigated."
   },
@@ -307,7 +307,7 @@
     "name": "dc2-spine2",
     "test": "VerifyGreenT",
     "categories": [
-      "Greent"
+      "greent"
     ],
     "description": "Verifies if a GreenT policy is created."
   },
@@ -315,7 +315,7 @@
     "name": "dc2-spine2",
     "test": "VerifyGreenTCounters",
     "categories": [
-      "Greent"
+      "greent"
     ],
     "description": "Verifies if the GreenT counters are incremented."
   },
@@ -323,7 +323,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAdverseDrops",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
@@ -331,7 +331,7 @@
     "name": "dc2-spine2",
     "test": "VerifyEnvironmentCooling",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays."
   },
@@ -339,7 +339,7 @@
     "name": "dc2-spine2",
     "test": "VerifyEnvironmentCooling",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays.",
     "custom_field": "Accepted States: 'ok'"
@@ -348,7 +348,7 @@
     "name": "dc2-spine2",
     "test": "VerifyEnvironmentPower",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the power supplies status."
   },
@@ -356,7 +356,7 @@
     "name": "dc2-spine2",
     "test": "VerifyEnvironmentPower",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the power supplies status.",
     "custom_field": "Accepted States: 'ok'"
@@ -365,7 +365,7 @@
     "name": "dc2-spine2",
     "test": "VerifyEnvironmentSystemCooling",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the system cooling status."
   },
@@ -373,7 +373,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTemperature",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the device temperature."
   },
@@ -381,7 +381,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTemperature",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the device temperature."
   },
@@ -389,7 +389,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers."
   },
@@ -397,7 +397,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers.",
     "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
@@ -406,7 +406,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTransceiversTemperature",
     "categories": [
-      "Hardware"
+      "hardware"
     ],
     "description": "Verifies the transceivers temperature."
   },
@@ -414,7 +414,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet1 - P2P_dc2-leaf1a_Ethernet2 = 'up'"
@@ -423,7 +423,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet2 - P2P_dc2-leaf1b_Ethernet2 = 'up'"
@@ -432,7 +432,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet3 - P2P_dc2-leaf2a_Ethernet2 = 'up'"
@@ -441,7 +441,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet4 - P2P_dc2-leaf2b_Ethernet2 = 'up'"
@@ -450,7 +450,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet5 - P2P_dc2-leaf3a.arista.com_Ethernet2 = 'up'"
@@ -459,7 +459,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet6 - P2P_dc2-leaf3b.arista.com_Ethernet2 = 'up'"
@@ -468,7 +468,7 @@
     "name": "dc2-spine2",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "Interfaces"
+      "interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Loopback0 - ROUTER_ID = 'up'"
@@ -477,7 +477,7 @@
     "name": "dc2-spine2",
     "test": "VerifyLANZ",
     "categories": [
-      "LANZ"
+      "lanz"
     ],
     "description": "Verifies if LANZ is enabled."
   },
@@ -485,7 +485,7 @@
     "name": "dc2-spine2",
     "test": "VerifyPtpGMStatus",
     "categories": [
-      "PTP"
+      "ptp"
     ],
     "description": "Verifies that the device is locked to a valid PTP Grandmaster."
   },
@@ -493,7 +493,7 @@
     "name": "dc2-spine2",
     "test": "VerifyPtpLockStatus",
     "categories": [
-      "PTP"
+      "ptp"
     ],
     "description": "Verifies that the device was locked to the upstream PTP GM in the last minute."
   },
@@ -501,7 +501,7 @@
     "name": "dc2-spine2",
     "test": "VerifyPtpModeStatus",
     "categories": [
-      "PTP"
+      "ptp"
     ],
     "description": "Verifies that the device is configured as a PTP Boundary Clock."
   },
@@ -509,7 +509,7 @@
     "name": "dc2-spine2",
     "test": "VerifyPtpOffset",
     "categories": [
-      "PTP"
+      "ptp"
     ],
     "description": "Verifies that the PTP timing offset is within +/- 1000ns from the master clock."
   },
@@ -517,7 +517,7 @@
     "name": "dc2-spine2",
     "test": "VerifyPtpPortModeStatus",
     "categories": [
-      "PTP"
+      "ptp"
     ],
     "description": "Verifies the PTP interfaces state."
   },
@@ -525,7 +525,7 @@
     "name": "dc2-spine2",
     "test": "VerifyRoutingProtocolModel",
     "categories": [
-      "Routing"
+      "routing"
     ],
     "description": "Verifies the configured routing protocol model.",
     "custom_field": "Routing protocol model: multi-agent"
@@ -534,7 +534,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if the eAPI has a valid SSL profile."
   },
@@ -542,7 +542,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if the eAPI has a valid SSL profile.",
     "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
@@ -551,7 +551,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAPIHttpStatus",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if eAPI HTTP server is disabled globally."
   },
@@ -559,7 +559,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAPIIPv4Acl",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if eAPI has the right number IPv4 ACL(s) configured for a specified VRF."
   },
@@ -567,7 +567,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAPIIPv6Acl",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if eAPI has the right number IPv6 ACL(s) configured for a specified VRF."
   },
@@ -575,7 +575,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAPISSLCertificate",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies the eAPI SSL certificate expiry, common subject name, encryption algorithm and key size."
   },
@@ -583,7 +583,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBannerLogin",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies the login banner of a device."
   },
@@ -591,7 +591,7 @@
     "name": "dc2-spine2",
     "test": "VerifyBannerMotd",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies the motd banner of a device."
   },
@@ -599,7 +599,7 @@
     "name": "dc2-spine2",
     "test": "VerifyIPSecConnHealth",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies all IPv4 security connections."
   },
@@ -607,7 +607,7 @@
     "name": "dc2-spine2",
     "test": "VerifyIPv4ACL",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies the configuration of IPv4 ACLs."
   },
@@ -615,7 +615,7 @@
     "name": "dc2-spine2",
     "test": "VerifySpecificIPSecConn",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies IPv4 security connections for a peer."
   },
@@ -623,7 +623,7 @@
     "name": "dc2-spine2",
     "test": "VerifySSHIPv4Acl",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if the SSHD agent has IPv4 ACL(s) configured."
   },
@@ -631,7 +631,7 @@
     "name": "dc2-spine2",
     "test": "VerifySSHIPv6Acl",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if the SSHD agent has IPv6 ACL(s) configured."
   },
@@ -639,7 +639,7 @@
     "name": "dc2-spine2",
     "test": "VerifySSHStatus",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if the SSHD agent is disabled in the default VRF."
   },
@@ -647,7 +647,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTelnetStatus",
     "categories": [
-      "Security"
+      "security"
     ],
     "description": "Verifies if Telnet is disabled in the default VRF."
   },
@@ -655,7 +655,7 @@
     "name": "dc2-spine2",
     "test": "VerifyDNSLookup",
     "categories": [
-      "Services"
+      "services"
     ],
     "description": "Verifies the DNS name to IP address resolution."
   },
@@ -663,7 +663,7 @@
     "name": "dc2-spine2",
     "test": "VerifyDNSServers",
     "categories": [
-      "Services"
+      "services"
     ],
     "description": "Verifies if the DNS servers are correctly configured."
   },
@@ -671,7 +671,7 @@
     "name": "dc2-spine2",
     "test": "VerifyErrdisableRecovery",
     "categories": [
-      "Services"
+      "services"
     ],
     "description": "Verifies the errdisable recovery reason, status, and interval."
   },
@@ -679,7 +679,7 @@
     "name": "dc2-spine2",
     "test": "VerifyHostname",
     "categories": [
-      "Services"
+      "services"
     ],
     "description": "Verifies the hostname of a device."
   },
@@ -687,7 +687,7 @@
     "name": "dc2-spine2",
     "test": "VerifySnmpIPv4Acl",
     "categories": [
-      "SNMP"
+      "snmp"
     ],
     "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
   },
@@ -695,7 +695,7 @@
     "name": "dc2-spine2",
     "test": "VerifySnmpIPv6Acl",
     "categories": [
-      "SNMP"
+      "snmp"
     ],
     "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
   },
@@ -703,7 +703,7 @@
     "name": "dc2-spine2",
     "test": "VerifySnmpStatus",
     "categories": [
-      "SNMP"
+      "snmp"
     ],
     "description": "Verifies if the SNMP agent is enabled."
   },
@@ -711,7 +711,7 @@
     "name": "dc2-spine2",
     "test": "VerifyEOSVersion",
     "categories": [
-      "Software"
+      "software"
     ],
     "description": "Verifies the EOS version of the device."
   },
@@ -719,7 +719,7 @@
     "name": "dc2-spine2",
     "test": "VerifyTerminAttrVersion",
     "categories": [
-      "Software"
+      "software"
     ],
     "description": "Verifies the TerminAttr version of the device."
   },
@@ -727,7 +727,7 @@
     "name": "dc2-spine2",
     "test": "VerifyStunClient",
     "categories": [
-      "STUN"
+      "stun"
     ],
     "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
   },
@@ -735,7 +735,7 @@
     "name": "dc2-spine2",
     "test": "VerifyAgentLogs",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies there are no agent crash reports."
   },
@@ -743,7 +743,7 @@
     "name": "dc2-spine2",
     "test": "VerifyCoredump",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies there are no core dump files."
   },
@@ -751,7 +751,7 @@
     "name": "dc2-spine2",
     "test": "VerifyCPUUtilization",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies whether the CPU utilization is below 75%."
   },
@@ -759,7 +759,7 @@
     "name": "dc2-spine2",
     "test": "VerifyFileSystemUtilization",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies that no partition is utilizing more than 75% of its disk space."
   },
@@ -767,7 +767,7 @@
     "name": "dc2-spine2",
     "test": "VerifyMemoryUtilization",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
   },
@@ -775,7 +775,7 @@
     "name": "dc2-spine2",
     "test": "VerifyNTP",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies if NTP is synchronised."
   },
@@ -783,7 +783,7 @@
     "name": "dc2-spine2",
     "test": "VerifyNTP",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies if NTP is synchronised."
   },
@@ -791,7 +791,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReloadCause",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies the last reload cause of the device."
   },
@@ -799,7 +799,7 @@
     "name": "dc2-spine2",
     "test": "VerifyReloadCause",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies the last reload cause of the device."
   },
@@ -807,7 +807,7 @@
     "name": "dc2-spine2",
     "test": "VerifyUptime",
     "categories": [
-      "System"
+      "system"
     ],
     "description": "Verifies the device uptime."
   },
@@ -815,7 +815,7 @@
     "name": "dc2-spine2",
     "test": "VerifyVlanInternalPolicy",
     "categories": [
-      "VLAN"
+      "vlan"
     ],
     "description": "Verifies the VLAN internal allocation policy and the range of VLANs."
   }
