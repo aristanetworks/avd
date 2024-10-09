@@ -9679,8 +9679,9 @@ $defs:
           description: 'Enables deviation of the routing protocol used on this link
             from the fabric underlay default.
 
-            If routing_protocol is ''ebgp'' and include_in_underlay_protocol is ''false''
-            then the bgp peering will not be included in the underlay peer group.
+            If routing_protocol is ''ebgp'', include_in_underlay_protocol is ''true''
+            and the fabric underlay is RFC5549 then this neighbor will override the
+            underlay peer group for ''next-hop ipv6 originate''.
 
             - ebgp: Enforce plain IPv4 BGP peering'
         structured_config:
