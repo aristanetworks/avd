@@ -18,7 +18,6 @@ l3spine:
       loopback_ipv4_pool: 192.168.255.0/24
       id: 1
       bgp_as: 65000
-      # Having uplink type lan will set underlay_router to False in shared_utils
       uplink_type: lan
       l3_interfaces:
         - # triggering bgp
