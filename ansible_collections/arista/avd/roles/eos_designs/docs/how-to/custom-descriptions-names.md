@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: Custom string formatter syntax
+title: Custom descriptions and names
 ---
 <!--
   ~ Copyright (c) 2023-2024 Arista Networks, Inc.
@@ -8,9 +8,12 @@ title: Custom string formatter syntax
   ~ that can be found in the LICENSE file.
   -->
 
-# Custom string formatter syntax
+# Custom descriptions and names
 
 The `eos_designs` role provides the capability to customize various field descriptions and names leveraging AVD's custom string formatter syntax.
+
+## AVD string formatter syntax
+
 The AVD string formatter is based on Python's [custom string formatter class](https://docs.python.org/3/library/string.html#custom-string-formatting) syntax.
 It provides extra protection from malicious format strings and adds support for prefixes and suffixes per field.
 
