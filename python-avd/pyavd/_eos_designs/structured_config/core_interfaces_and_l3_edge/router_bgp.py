@@ -43,12 +43,12 @@ class RouterBgpMixin(UtilsMixin):
                 "remote_as": p2p_link["data"]["peer_bgp_as"],
                 "peer": p2p_link["data"]["peer"],
                 "description": p2p_link["data"]["peer"],
+                "peer_group": self.shared_utils.bgp_peer_groups["ipv4_underlay_peers"]["name"],
             }
 
             # RFC5549
             if self.shared_utils.underlay_rfc5549:
                 if p2p_link.get("routing_protocol") == "ebgp":
-                    # neighbor.next_hop.address_family_ipv6.enabled
                     address_family_ipv4_neighbor = {
                         "ip_address": get_ip_from_ip_prefix(p2p_link["data"]["peer_ip"]),
                         "next_hop": {
