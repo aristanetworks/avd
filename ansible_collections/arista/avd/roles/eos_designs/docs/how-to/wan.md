@@ -1042,6 +1042,8 @@ wan_virtual_topologies:
 | AvdTestIPSecurity | VerifySpecificIPSecConn | Validate the establishment of IP security connections for each static peer under the `router path-selection` section of the configuration. |
 | AvdTestStun | VerifyStunClient | Validate the presence of a STUN client translation for a given source IPv4 address and port. The list of expected translations for each device is built by searching local interfaces in each path-group. |
 | AvdTestDpsReachability | VerifyReachability | Validate DPS reachability between devices. |
+| AvdTestAvtPath | VerifyAVTSpecificPath | Validate that the status is active and the type is direct for an Adaptive Virtual Topology (AVT) path in a specified VRF for the static peers. |
+| AvdTestAvtRole | VerifyAVTRole | Validate the Adaptive Virtual Topology (AVT) role of a device. |
 
 !!! note
     More WAN-related tests are available directly in ANTA and can be added using custom catalogs.
