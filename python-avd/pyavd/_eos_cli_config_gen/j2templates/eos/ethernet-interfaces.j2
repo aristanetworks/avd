@@ -764,6 +764,12 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}
+{%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort('id') %}
+{%         include 'eos/ethernet-interface-tx-queues.j2' %}
+{%     endfor %}
+{%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
+{%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
+{%     endfor %}
 {%     if ethernet_interface.sflow is arista.avd.defined %}
 {%         if ethernet_interface.sflow.enable is arista.avd.defined(true) %}
    sflow enable
@@ -952,12 +958,6 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ frequency_cli }}
 {%     endif %}
-{%     for tx_queue in ethernet_interface.tx_queues | arista.avd.natural_sort('id') %}
-{%         include 'eos/ethernet-interface-tx-queues.j2' %}
-{%     endfor %}
-{%     for uc_tx_queue in ethernet_interface.uc_tx_queues | arista.avd.natural_sort('id') %}
-{%         include 'eos/ethernet-interface-uc-tx-queues.j2' %}
-{%     endfor %}
 {%     if ethernet_interface.dot1x is arista.avd.defined %}
 {%         if ethernet_interface.dot1x.pae.mode is arista.avd.defined %}
    dot1x pae {{ ethernet_interface.dot1x.pae.mode }}
