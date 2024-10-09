@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING
 
 from pyavd._utils import append_if_not_duplicate, get, groupby, merge, strip_null_from_data
 from pyavd.j2filters import range_expand
-
+from pyavd._errors import AristaAvdError
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -46,13 +46,20 @@ class MonitorSessionsMixin(UtilsMixin):
                     "name": session["interface"],
                     "direction": get(session, "source_settings.direction"),
                 }
-                if get(merged_settings, "session_settings.access_group") is None:
-                    if (access_group := get(session, "source_settings.access_group")) is not None:
-                        source["access_group"] = {
-                            "type": access_group.get("type"),
-                            "name": access_group.get("name"),
-                            "priority": access_group.get("priority"),
-                        }
+
+                if get(merged_settings, "session_settings.access_group") is not None:
+                    if get(session, "source_settings.access_group") is not None:
+                        msg = (
+                            f"For {self.shared_utils.hostname}, an ACL is set on {session["interface"]} even though ACL is set for session {session_name}."
+                        )
+                        raise AristaAvdError(msg)
+
+                elif (access_group := get(session, "source_settings.access_group")) is not None:
+                    source["access_group"] = {
+                        "type": access_group.get("type"),
+                        "name": access_group.get("name"),
+                        "priority": access_group.get("priority"),
+                    }
                 append_if_not_duplicate(
                     list_of_dicts=monitor_session["sources"],
                     primary_key="name",
