@@ -11,7 +11,8 @@ title: Custom string formatter syntax
 # Custom string formatter syntax
 
 The `eos_designs` role provides the capability to customize various field descriptions and names leveraging AVD's custom string formatter syntax.
-The AVD string formatter is based on Python's [custom string formatter class](https://docs.python.org/3/library/string.html#custom-string-formatting) syntax, provides extra protection from malicious format strings and support for prefixes and suffixes per field.
+The AVD string formatter is based on Python's [custom string formatter class](https://docs.python.org/3/library/string.html#custom-string-formatting) syntax.
+It provides extra protection from malicious format strings and adds support for prefixes and suffixes per field.
 
 The following syntax is supported: `"{" [field_name] ["?"] ["<" prefix] [">" suffix] ["!" conversion] [":" format_spec] "}"`:
 
@@ -30,27 +31,25 @@ Given the following syntax: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel
 1. Server with Port-channel:
 
     Template fields:
-
-    - endpoint_type: servers
-    - endpoint: server1
-    - endpoint_port_channel: Po1
+      - endpoint_type: servers
+      - endpoint: server1
+      - endpoint_port_channel: Po1
 
     results in: `SERVERS_server1_Po1`
 
 2. Server without port-channel:
 
     Template fields:
-
-    - endpoint_type: servers
-    - endpoint: server2
-    - endpoint_port_channel: none
+      - endpoint_type: servers
+      - endpoint: server2
+      - endpoint_port_channel: none
 
     results in: `SERVERS_server2`
 
 ## Default description or name values
 
-To facilitate customizing description and names of values, here a complete list of input variable and default values.
-Please consult the `eos_designs` input variables documentation to obtain available template field (`[field_name]`).
+To facilitate customizing the description and names of values, here is a complete list of input variables and default values.
+Please consult the `eos_designs` input variables documentation to obtain the available template field (`[field_name]`).
 
 ```yaml
 # Loopback interfaces description
