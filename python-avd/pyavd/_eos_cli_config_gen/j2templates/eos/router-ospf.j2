@@ -38,7 +38,7 @@ router ospf {{ process_id.id }}
    passive-interface default
 {%     endif %}
 {%     if process_id.no_passive_interfaces is arista.avd.defined %}
-{%         for interface in process_id.no_passive_interfaces %}
+{%         for interface in process_id.no_passive_interfaces | arista.avd.natural_sort %}
    no passive-interface {{ interface }}
 {%         endfor %}
 {%     endif %}
