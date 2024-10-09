@@ -132,8 +132,8 @@ l2-protocol
 !
 interface Ethernet1
    description L2PF test
-   switchport
    l2-protocol forwarding profile TEST1
+   switchport
 ```
 
 ### Port-Channel Interfaces

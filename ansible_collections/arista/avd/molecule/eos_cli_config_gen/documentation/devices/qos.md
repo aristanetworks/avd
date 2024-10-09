@@ -78,10 +78,10 @@ interface Ethernet1
    mtu 1500
    no switchport
    ip address 172.31.255.1/31
-   qos trust dscp
-   qos dscp 48
    service-policy type qos input pmap_test1
    service-profile test
+   qos trust dscp
+   qos dscp 48
 !
 interface Ethernet3
    description MLAG_PEER_DC1-LEAF1B_Ethernet3
@@ -96,9 +96,9 @@ interface Ethernet6
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   service-profile experiment
    qos trust cos
    qos cos 2
-   service-profile experiment
    !
    tx-queue 2
       random-detect ecn count
