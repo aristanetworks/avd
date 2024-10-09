@@ -16,7 +16,7 @@ monitor session {{ monitor_session.name }} {{ monitor_session.access_group.type 
 {%             if source.direction is arista.avd.defined %}
 {%                 set source_cli = source_cli ~ " " ~ source.direction %}
 {%             endif %}
-{%             if session_ag | arista.avd.default(false) is arista.avd.defined(false) %}
+{%             if session_ag is not arista.avd.defined %}
 {%                 if source.access_group.type is arista.avd.defined and source.access_group.name is arista.avd.defined %}
 {%                     set source_cli = source_cli ~ " " ~ source.access_group.type ~ " access-group " ~ source.access_group.name %}
 {%                     if source.access_group.priority is arista.avd.defined %}

@@ -94,6 +94,24 @@ interface Management1
 | -------- | ------ |
 | Destinations | - |
 
+##### myMonitoringSession4
+
+####### myMonitoringSession4 Sources
+
+| Sources | Direction | Access Group Type | Access Group Name | Access Group Priority |
+| ------- | --------- | ----------------- | ----------------- | --------------------- |
+| Ethernet3, Ethernet5 | rx | - | - | - |
+| Ethernet10-15 | rx | - | - | - |
+| Ethernet12 | rx | - | - | - |
+| Ethernet18 | tx | mac | macACL | 100 |
+
+####### myMonitoringSession4 Destinations and Session Settings
+
+| Settings | Values |
+| -------- | ------ |
+| Destinations | Cpu, Ethernet50 |
+| Encapsulation Gre Metadata Tx | True |
+
 #### Monitor Sessions Device Configuration
 
 ```eos
@@ -114,4 +132,11 @@ monitor session myMonitoringSession2 destination Ethernet50
 monitor session myMonitoringSession2 sample 50
 monitor session myMonitoringSession2 encapsulation gre metadata tx
 monitor session myMonitoringSession3 source Ethernet20 both ip access-group ipv4ACL priority 10
+monitor session myMonitoringSession4 source Ethernet3, Ethernet5 rx
+monitor session myMonitoringSession4 source Ethernet10-15 rx
+monitor session myMonitoringSession4 source Ethernet12 rx
+monitor session myMonitoringSession4 source Ethernet18 tx mac access-group macACL priority 100
+monitor session myMonitoringSession4 destination Cpu
+monitor session myMonitoringSession4 destination Ethernet50
+monitor session myMonitoringSession4 encapsulation gre metadata tx
 ```
