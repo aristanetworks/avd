@@ -1187,7 +1187,7 @@ router bgp {{ router_bgp.as }}
       neighbor {{ peer.name }} next-hop-self source-interface {{ peer.next_hop_self_source_interface }}
 {%             endif %}
 {%             if peer.maximum_advertised_routes is arista.avd.defined %}
-{%                 set maximum_routes_cli = "neighbor " ~peer.name ~ " maximum-routes " ~peer.maximum_advertised_routes %}
+{%                 set maximum_routes_cli = "neighbor " ~peer.name ~ " maximum-advertised-routes " ~peer.maximum_advertised_routes %}
 {%                 if peer.maximum_advertised_routes_warning_limit is arista.avd.defined %}
 {%                     set maximum_routes_cli = maximum_routes_cli ~ " warning-limit " ~ peer.maximum_advertised_routes_warning_limit %}
 {%                 endif %}
@@ -1791,13 +1791,6 @@ router bgp {{ router_bgp.as }}
 {%                     set redistribute_ospfv3_match = redistribute_ospfv3_match ~ " route-map " ~ redistribute_var.ospfv3.match_nssa_external.route_map %}
 {%                 endif %}
       {{ redistribute_ospfv3_match }}
-{%             endif %}
-{%             if redistribute_var.rip.enabled is arista.avd.defined(true) %}
-{%                 set redistribute_rip = "redistribute rip" %}
-{%                 if redistribute_var.rip.route_map is arista.avd.defined %}
-{%                     set redistribute_rip = redistribute_rip ~ " route-map " ~ redistribute_var.rip.route_map %}
-{%                 endif %}
-      {{ redistribute_rip }}
 {%             endif %}
 {%             if redistribute_var.static.enabled is arista.avd.defined(true) %}
 {%                 set redistribute_static = "redistribute static" %}
