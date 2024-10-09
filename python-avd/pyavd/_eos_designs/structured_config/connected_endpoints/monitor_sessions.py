@@ -46,12 +46,13 @@ class MonitorSessionsMixin(UtilsMixin):
                     "name": session["interface"],
                     "direction": get(session, "source_settings.direction"),
                 }
-                if (access_group := get(session, "source_settings.access_group")) is not None:
-                    source["access_group"] = {
-                        "type": access_group.get("type"),
-                        "name": access_group.get("name"),
-                        "priority": access_group.get("priority"),
-                    }
+                if get(merged_settings, "session_settings.access_group") is None:
+                    if (access_group := get(session, "source_settings.access_group")) is not None:
+                        source["access_group"] = {
+                            "type": access_group.get("type"),
+                            "name": access_group.get("name"),
+                            "priority": access_group.get("priority"),
+                        }
                 append_if_not_duplicate(
                     list_of_dicts=monitor_session["sources"],
                     primary_key="name",

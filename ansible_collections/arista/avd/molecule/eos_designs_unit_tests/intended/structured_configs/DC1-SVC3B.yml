@@ -1629,16 +1629,8 @@ monitor_sessions:
   sources:
   - name: Ethernet25
     direction: rx
-    access_group:
-      type: ip
-      name: MyIpACL
-      priority: 5
   - name: Port-Channel27
     direction: tx
-    access_group:
-      type: mac
-      name: MyMacACL
-      priority: 5
   destinations:
   - Ethernet26
   - Port-Channel42
