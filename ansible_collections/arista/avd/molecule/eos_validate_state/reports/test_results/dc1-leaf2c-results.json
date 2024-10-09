@@ -3,7 +3,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAcctConsoleMethods",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies the AAA accounting console method lists for different accounting types (system, exec, commands, dot1x)."
   },
@@ -11,7 +11,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAcctDefaultMethods",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies the AAA accounting default method lists for different accounting types (system, exec, commands, dot1x)."
   },
@@ -19,7 +19,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAuthenMethods",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies the AAA authentication method lists for different authentication types (login, enable, dot1x)."
   },
@@ -27,7 +27,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAuthzMethods",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies the AAA authorization method lists for different authorization types (commands, exec)."
   },
@@ -35,7 +35,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTacacsServerGroups",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies if the provided TACACS server group(s) are configured."
   },
@@ -43,7 +43,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTacacsServers",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies TACACS servers are configured for a specified VRF."
   },
@@ -51,7 +51,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTacacsSourceIntf",
     "categories": [
-      "aaa"
+      "AAA"
     ],
     "description": "Verifies TACACS source-interface for a specified VRF."
   },
@@ -59,7 +59,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRunningConfigDiffs",
     "categories": [
-      "configuration"
+      "Configuration"
     ],
     "description": "Verifies there is no difference between the running-config and the startup-config"
   },
@@ -67,7 +67,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyZeroTouch",
     "categories": [
-      "configuration"
+      "Configuration"
     ],
     "description": "Verifies ZeroTouch is disabled"
   },
@@ -75,7 +75,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyLLDPNeighbors",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Verifies that the provided LLDP neighbors are connected properly.",
     "custom_field": "Local: Ethernet1 - Remote: dc1-leaf2a Ethernet8"
@@ -84,7 +84,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-leaf1a Loopback0 (IP: 10.255.0.3)"
@@ -93,7 +93,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-leaf1b Loopback0 (IP: 10.255.0.4)"
@@ -102,7 +102,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-leaf2a Loopback0 (IP: 10.255.0.5)"
@@ -111,7 +111,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-spine1 Loopback0 (IP: 10.255.0.1)"
@@ -120,7 +120,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-spine2 Loopback0 (IP: 10.255.0.2)"
@@ -129,7 +129,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-svc-leaf1a Loopback0 (IP: 10.33.0.5)"
@@ -138,7 +138,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-svc-leaf1b Loopback0 (IP: 10.33.0.6)"
@@ -147,7 +147,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-wan1 Loopback0 (IP: 10.255.2.1)"
@@ -156,7 +156,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc1-wan2 Loopback0 (IP: 10.255.2.2)"
@@ -165,7 +165,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-leaf1a Loopback0 (IP: 10.255.128.13)"
@@ -174,7 +174,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-leaf1b Loopback0 (IP: 10.255.128.14)"
@@ -183,7 +183,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-leaf2a Loopback0 (IP: 10.255.128.15)"
@@ -192,7 +192,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-leaf2b Loopback0 (IP: 10.255.128.16)"
@@ -201,7 +201,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-leaf3a.arista.com Loopback0 (IP: 10.255.128.17)"
@@ -210,7 +210,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-leaf3b.arista.com Loopback0 (IP: 10.255.128.18)"
@@ -219,7 +219,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-spine1 Loopback0 (IP: 10.255.128.11)"
@@ -228,7 +228,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReachability",
     "categories": [
-      "connectivity"
+      "Connectivity"
     ],
     "description": "Test the network reachability to one or many destination IP(s).",
     "custom_field": "Source: Inband MGMT SVI Vlan4085 (IP: 172.21.110.5) - Destination: dc2-spine2 Loopback0 (IP: 10.255.128.12)"
@@ -237,7 +237,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyFieldNotice44Resolution",
     "categories": [
-      "field notices"
+      "Field Notices"
     ],
     "description": "Verifies that the device is using the correct Aboot version per FN0044."
   },
@@ -245,7 +245,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyFieldNotice72Resolution",
     "categories": [
-      "field notices"
+      "Field Notices"
     ],
     "description": "Verifies if the device is exposed to FN0072, and if the issue has been mitigated."
   },
@@ -253,7 +253,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyGreenT",
     "categories": [
-      "greent"
+      "Greent"
     ],
     "description": "Verifies if a GreenT policy is created."
   },
@@ -261,7 +261,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyGreenTCounters",
     "categories": [
-      "greent"
+      "Greent"
     ],
     "description": "Verifies if the GreenT counters are incremented."
   },
@@ -269,7 +269,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAdverseDrops",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies there are no adverse drops on DCS-7280 and DCS-7500 family switches."
   },
@@ -277,7 +277,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyEnvironmentCooling",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays."
   },
@@ -285,7 +285,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyEnvironmentCooling",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays.",
     "custom_field": "Accepted States: 'ok'"
@@ -294,7 +294,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyEnvironmentPower",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the power supplies status."
   },
@@ -302,7 +302,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyEnvironmentPower",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the power supplies status.",
     "custom_field": "Accepted States: 'ok'"
@@ -311,7 +311,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyEnvironmentSystemCooling",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the system cooling status."
   },
@@ -319,7 +319,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTemperature",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the device temperature."
   },
@@ -327,7 +327,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTemperature",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the device temperature."
   },
@@ -335,7 +335,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers."
   },
@@ -343,7 +343,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTransceiversManufacturers",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies if all transceivers come from approved manufacturers.",
     "custom_field": "Accepted Manufacturers: 'Arista Networks', 'Arastra, Inc.', 'Not Present'"
@@ -352,7 +352,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTransceiversTemperature",
     "categories": [
-      "hardware"
+      "Hardware"
     ],
     "description": "Verifies the transceivers temperature."
   },
@@ -360,7 +360,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "interfaces"
+      "Interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet1 - L2_dc1-leaf2a_Ethernet8 = 'up'"
@@ -369,7 +369,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "interfaces"
+      "Interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet2 - L2_dc1-leaf2b_Ethernet8 = 'adminDown'"
@@ -378,7 +378,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "interfaces"
+      "Interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Ethernet5 - SERVER_dc1-leaf2-server1_iLO = 'up'"
@@ -387,7 +387,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "interfaces"
+      "Interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Port-Channel1 - L2_DC1_L3_LEAF2_Port-Channel8 = 'up'"
@@ -396,7 +396,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "interfaces"
+      "Interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Vlan4085 - L2LEAF_INBAND_MGMT = 'up'"
@@ -405,7 +405,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyInterfacesStatus",
     "categories": [
-      "interfaces"
+      "Interfaces"
     ],
     "description": "Verifies the status of the provided interfaces.",
     "custom_field": "Interface Vxlan1 = 'up'"
@@ -414,7 +414,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyLANZ",
     "categories": [
-      "lanz"
+      "LANZ"
     ],
     "description": "Verifies if LANZ is enabled."
   },
@@ -422,7 +422,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyPtpGMStatus",
     "categories": [
-      "ptp"
+      "PTP"
     ],
     "description": "Verifies that the device is locked to a valid PTP Grandmaster."
   },
@@ -430,7 +430,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyPtpLockStatus",
     "categories": [
-      "ptp"
+      "PTP"
     ],
     "description": "Verifies that the device was locked to the upstream PTP GM in the last minute."
   },
@@ -438,7 +438,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyPtpModeStatus",
     "categories": [
-      "ptp"
+      "PTP"
     ],
     "description": "Verifies that the device is configured as a PTP Boundary Clock."
   },
@@ -446,7 +446,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyPtpOffset",
     "categories": [
-      "ptp"
+      "PTP"
     ],
     "description": "Verifies that the PTP timing offset is within +/- 1000ns from the master clock."
   },
@@ -454,7 +454,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyPtpPortModeStatus",
     "categories": [
-      "ptp"
+      "PTP"
     ],
     "description": "Verifies the PTP interfaces state."
   },
@@ -462,7 +462,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.0.1 - Peer: dc1-spine1"
@@ -471,7 +471,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.0.2 - Peer: dc1-spine2"
@@ -480,7 +480,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.0.3 - Peer: dc1-leaf1a"
@@ -489,7 +489,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.0.4 - Peer: dc1-leaf1b"
@@ -498,7 +498,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.0.5 - Peer: dc1-leaf2a"
@@ -507,7 +507,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.1.3 - Peer: dc1-leaf1a"
@@ -516,7 +516,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.1.5 - Peer: dc1-leaf2a"
@@ -525,7 +525,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.11 - Peer: dc2-spine1"
@@ -534,7 +534,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.12 - Peer: dc2-spine2"
@@ -543,7 +543,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.13 - Peer: dc2-leaf1a"
@@ -552,7 +552,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.14 - Peer: dc2-leaf1b"
@@ -561,7 +561,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.15 - Peer: dc2-leaf2a"
@@ -570,7 +570,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.16 - Peer: dc2-leaf2b"
@@ -579,7 +579,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.17 - Peer: dc2-leaf3a.arista.com"
@@ -588,7 +588,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.128.18 - Peer: dc2-leaf3b.arista.com"
@@ -597,7 +597,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.129.13 - Peer: dc2-leaf1a"
@@ -606,7 +606,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.129.15 - Peer: dc2-leaf2a"
@@ -615,7 +615,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.129.17 - Peer: dc2-leaf3a.arista.com"
@@ -624,7 +624,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.2.1 - Peer: dc1-wan1"
@@ -633,7 +633,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.255.2.2 - Peer: dc1-wan2"
@@ -642,7 +642,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.33.0.5 - Peer: dc1-svc-leaf1a"
@@ -651,7 +651,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.33.0.6 - Peer: dc1-svc-leaf1b"
@@ -660,7 +660,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyRoutingTableEntry",
     "categories": [
-      "routing"
+      "Routing"
     ],
     "description": "Verifies that the provided routes are present in the routing table of a specified VRF.",
     "custom_field": "Route: 10.33.1.5 - Peer: dc1-svc-leaf1a"
@@ -669,7 +669,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if the eAPI has a valid SSL profile."
   },
@@ -677,7 +677,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAPIHttpsSSL",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if the eAPI has a valid SSL profile.",
     "custom_field": "eAPI HTTPS SSL Profile: eAPI_SSL_Profile"
@@ -686,7 +686,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAPIHttpStatus",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if eAPI HTTP server is disabled globally."
   },
@@ -694,7 +694,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAPIIPv4Acl",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if eAPI has the right number IPv4 ACL(s) configured for a specified VRF."
   },
@@ -702,7 +702,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAPIIPv6Acl",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if eAPI has the right number IPv6 ACL(s) configured for a specified VRF."
   },
@@ -710,7 +710,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAPISSLCertificate",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies the eAPI SSL certificate expiry, common subject name, encryption algorithm and key size."
   },
@@ -718,7 +718,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyBannerLogin",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies the login banner of a device."
   },
@@ -726,7 +726,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyBannerMotd",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies the motd banner of a device."
   },
@@ -734,7 +734,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyIPSecConnHealth",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies all IPv4 security connections."
   },
@@ -742,7 +742,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyIPv4ACL",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies the configuration of IPv4 ACLs."
   },
@@ -750,7 +750,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySpecificIPSecConn",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies IPv4 security connections for a peer."
   },
@@ -758,7 +758,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySSHIPv4Acl",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if the SSHD agent has IPv4 ACL(s) configured."
   },
@@ -766,7 +766,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySSHIPv6Acl",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if the SSHD agent has IPv6 ACL(s) configured."
   },
@@ -774,7 +774,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySSHStatus",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if the SSHD agent is disabled in the default VRF."
   },
@@ -782,7 +782,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTelnetStatus",
     "categories": [
-      "security"
+      "Security"
     ],
     "description": "Verifies if Telnet is disabled in the default VRF."
   },
@@ -790,7 +790,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyDNSLookup",
     "categories": [
-      "services"
+      "Services"
     ],
     "description": "Verifies the DNS name to IP address resolution."
   },
@@ -798,7 +798,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyDNSServers",
     "categories": [
-      "services"
+      "Services"
     ],
     "description": "Verifies if the DNS servers are correctly configured."
   },
@@ -806,7 +806,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyErrdisableRecovery",
     "categories": [
-      "services"
+      "Services"
     ],
     "description": "Verifies the errdisable recovery reason, status, and interval."
   },
@@ -814,7 +814,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyHostname",
     "categories": [
-      "services"
+      "Services"
     ],
     "description": "Verifies the hostname of a device."
   },
@@ -822,7 +822,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySnmpIPv4Acl",
     "categories": [
-      "snmp"
+      "SNMP"
     ],
     "description": "Verifies if the SNMP agent has IPv4 ACL(s) configured."
   },
@@ -830,7 +830,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySnmpIPv6Acl",
     "categories": [
-      "snmp"
+      "SNMP"
     ],
     "description": "Verifies if the SNMP agent has IPv6 ACL(s) configured."
   },
@@ -838,7 +838,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifySnmpStatus",
     "categories": [
-      "snmp"
+      "SNMP"
     ],
     "description": "Verifies if the SNMP agent is enabled."
   },
@@ -846,7 +846,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyEOSVersion",
     "categories": [
-      "software"
+      "Software"
     ],
     "description": "Verifies the EOS version of the device."
   },
@@ -854,7 +854,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyTerminAttrVersion",
     "categories": [
-      "software"
+      "Software"
     ],
     "description": "Verifies the TerminAttr version of the device."
   },
@@ -862,7 +862,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyStunClient",
     "categories": [
-      "stun"
+      "STUN"
     ],
     "description": "Verifies the STUN client is configured with the specified IPv4 source address and port. Validate the public IP and port if provided."
   },
@@ -870,7 +870,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyAgentLogs",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies there are no agent crash reports."
   },
@@ -878,7 +878,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyCoredump",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies there are no core dump files."
   },
@@ -886,7 +886,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyCPUUtilization",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies whether the CPU utilization is below 75%."
   },
@@ -894,7 +894,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyFileSystemUtilization",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies that no partition is utilizing more than 75% of its disk space."
   },
@@ -902,7 +902,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyMemoryUtilization",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies whether the memory utilization is below 75%."
   },
@@ -910,7 +910,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyNTP",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies if NTP is synchronised."
   },
@@ -918,7 +918,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyNTP",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies if NTP is synchronised."
   },
@@ -926,7 +926,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReloadCause",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies the last reload cause of the device."
   },
@@ -934,7 +934,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyReloadCause",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies the last reload cause of the device."
   },
@@ -942,7 +942,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyUptime",
     "categories": [
-      "system"
+      "System"
     ],
     "description": "Verifies the device uptime."
   },
@@ -950,7 +950,7 @@
     "name": "dc1-leaf2c",
     "test": "VerifyVlanInternalPolicy",
     "categories": [
-      "vlan"
+      "VLAN"
     ],
     "description": "Verifies the VLAN internal allocation policy and the range of VLANs."
   }

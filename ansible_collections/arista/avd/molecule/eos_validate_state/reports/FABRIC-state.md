@@ -1507,8 +1507,8 @@
 | 1424 | dc2-leaf1a | Logging | VerifyLoggingHosts | Verifies logging hosts (syslog servers) for a specified VRF. | - | NOT RUN | - |
 | 1425 | dc2-leaf1a | Logging | VerifyLoggingLogsGeneration | Verifies if logs are generated. | - | NOT RUN | - |
 | 1426 | dc2-leaf1a | Logging | VerifyLoggingPersistent | Verifies if logging persistent is enabled and logs are saved in flash. | - | NOT RUN | - |
-| 1427 | dc2-leaf1a | Logging | VerifyLoggingSourceInt | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
-| 1428 | dc2-leaf1a | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the riate timestamp. | - | NOT RUN | - |
+| 1427 | dc2-leaf1a | Logging | VerifyLoggingSourceIntf | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
+| 1428 | dc2-leaf1a | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the appropriate timestamp. | - | NOT RUN | - |
 | 1429 | dc2-leaf1a | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | - | NOT RUN | - |
 | 1430 | dc2-leaf1a | MLAG | VerifyMlagDualPrimary | Verifies the MLAG dual-primary detection parameters. | - | NOT RUN | - |
 | 1431 | dc2-leaf1a | MLAG | VerifyMlagInterfaces | Verifies there are no inactive or active-partial MLAG ports. | - | NOT RUN | - |
@@ -1669,8 +1669,8 @@
 | 1586 | dc2-leaf1b | Logging | VerifyLoggingHosts | Verifies logging hosts (syslog servers) for a specified VRF. | - | NOT RUN | - |
 | 1587 | dc2-leaf1b | Logging | VerifyLoggingLogsGeneration | Verifies if logs are generated. | - | NOT RUN | - |
 | 1588 | dc2-leaf1b | Logging | VerifyLoggingPersistent | Verifies if logging persistent is enabled and logs are saved in flash. | - | NOT RUN | - |
-| 1589 | dc2-leaf1b | Logging | VerifyLoggingSourceInt | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
-| 1590 | dc2-leaf1b | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the riate timestamp. | - | NOT RUN | - |
+| 1589 | dc2-leaf1b | Logging | VerifyLoggingSourceIntf | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
+| 1590 | dc2-leaf1b | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the appropriate timestamp. | - | NOT RUN | - |
 | 1591 | dc2-leaf1b | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | - | NOT RUN | - |
 | 1592 | dc2-leaf1b | MLAG | VerifyMlagDualPrimary | Verifies the MLAG dual-primary detection parameters. | - | NOT RUN | - |
 | 1593 | dc2-leaf1b | MLAG | VerifyMlagInterfaces | Verifies there are no inactive or active-partial MLAG ports. | - | NOT RUN | - |
@@ -1908,8 +1908,8 @@
 | 1825 | dc2-leaf2a | Logging | VerifyLoggingHosts | Verifies logging hosts (syslog servers) for a specified VRF. | - | NOT RUN | - |
 | 1826 | dc2-leaf2a | Logging | VerifyLoggingLogsGeneration | Verifies if logs are generated. | - | NOT RUN | - |
 | 1827 | dc2-leaf2a | Logging | VerifyLoggingPersistent | Verifies if logging persistent is enabled and logs are saved in flash. | - | NOT RUN | - |
-| 1828 | dc2-leaf2a | Logging | VerifyLoggingSourceInt | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
-| 1829 | dc2-leaf2a | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the riate timestamp. | - | NOT RUN | - |
+| 1828 | dc2-leaf2a | Logging | VerifyLoggingSourceIntf | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
+| 1829 | dc2-leaf2a | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the appropriate timestamp. | - | NOT RUN | - |
 | 1830 | dc2-leaf2a | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | - | NOT RUN | - |
 | 1831 | dc2-leaf2a | MLAG | VerifyMlagDualPrimary | Verifies the MLAG dual-primary detection parameters. | - | NOT RUN | - |
 | 1832 | dc2-leaf2a | MLAG | VerifyMlagInterfaces | Verifies there are no inactive or active-partial MLAG ports. | - | NOT RUN | - |
@@ -2071,8 +2071,8 @@
 | 1988 | dc2-leaf2b | Logging | VerifyLoggingHosts | Verifies logging hosts (syslog servers) for a specified VRF. | - | NOT RUN | - |
 | 1989 | dc2-leaf2b | Logging | VerifyLoggingLogsGeneration | Verifies if logs are generated. | - | NOT RUN | - |
 | 1990 | dc2-leaf2b | Logging | VerifyLoggingPersistent | Verifies if logging persistent is enabled and logs are saved in flash. | - | NOT RUN | - |
-| 1991 | dc2-leaf2b | Logging | VerifyLoggingSourceInt | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
-| 1992 | dc2-leaf2b | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the riate timestamp. | - | NOT RUN | - |
+| 1991 | dc2-leaf2b | Logging | VerifyLoggingSourceIntf | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
+| 1992 | dc2-leaf2b | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the appropriate timestamp. | - | NOT RUN | - |
 | 1993 | dc2-leaf2b | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | - | NOT RUN | - |
 | 1994 | dc2-leaf2b | MLAG | VerifyMlagDualPrimary | Verifies the MLAG dual-primary detection parameters. | - | NOT RUN | - |
 | 1995 | dc2-leaf2b | MLAG | VerifyMlagInterfaces | Verifies there are no inactive or active-partial MLAG ports. | - | NOT RUN | - |
@@ -2312,8 +2312,8 @@
 | 2229 | dc2-leaf3a.arista.com | Logging | VerifyLoggingHosts | Verifies logging hosts (syslog servers) for a specified VRF. | - | NOT RUN | - |
 | 2230 | dc2-leaf3a.arista.com | Logging | VerifyLoggingLogsGeneration | Verifies if logs are generated. | - | NOT RUN | - |
 | 2231 | dc2-leaf3a.arista.com | Logging | VerifyLoggingPersistent | Verifies if logging persistent is enabled and logs are saved in flash. | - | NOT RUN | - |
-| 2232 | dc2-leaf3a.arista.com | Logging | VerifyLoggingSourceInt | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
-| 2233 | dc2-leaf3a.arista.com | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the riate timestamp. | - | NOT RUN | - |
+| 2232 | dc2-leaf3a.arista.com | Logging | VerifyLoggingSourceIntf | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
+| 2233 | dc2-leaf3a.arista.com | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the appropriate timestamp. | - | NOT RUN | - |
 | 2234 | dc2-leaf3a.arista.com | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | - | NOT RUN | - |
 | 2235 | dc2-leaf3a.arista.com | MLAG | VerifyMlagDualPrimary | Verifies the MLAG dual-primary detection parameters. | - | NOT RUN | - |
 | 2236 | dc2-leaf3a.arista.com | MLAG | VerifyMlagInterfaces | Verifies there are no inactive or active-partial MLAG ports. | - | NOT RUN | - |
@@ -2471,8 +2471,8 @@
 | 2388 | dc2-leaf3b.arista.com | Logging | VerifyLoggingHosts | Verifies logging hosts (syslog servers) for a specified VRF. | - | NOT RUN | - |
 | 2389 | dc2-leaf3b.arista.com | Logging | VerifyLoggingLogsGeneration | Verifies if logs are generated. | - | NOT RUN | - |
 | 2390 | dc2-leaf3b.arista.com | Logging | VerifyLoggingPersistent | Verifies if logging persistent is enabled and logs are saved in flash. | - | NOT RUN | - |
-| 2391 | dc2-leaf3b.arista.com | Logging | VerifyLoggingSourceInt | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
-| 2392 | dc2-leaf3b.arista.com | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the riate timestamp. | - | NOT RUN | - |
+| 2391 | dc2-leaf3b.arista.com | Logging | VerifyLoggingSourceIntf | Verifies logging source-interface for a specified VRF. | - | NOT RUN | - |
+| 2392 | dc2-leaf3b.arista.com | Logging | VerifyLoggingTimestamp | Verifies if logs are generated with the appropriate timestamp. | - | NOT RUN | - |
 | 2393 | dc2-leaf3b.arista.com | MLAG | VerifyMlagConfigSanity | Verifies there are no MLAG config-sanity inconsistencies. | - | NOT RUN | - |
 | 2394 | dc2-leaf3b.arista.com | MLAG | VerifyMlagDualPrimary | Verifies the MLAG dual-primary detection parameters. | - | NOT RUN | - |
 | 2395 | dc2-leaf3b.arista.com | MLAG | VerifyMlagInterfaces | Verifies there are no inactive or active-partial MLAG ports. | - | NOT RUN | - |
