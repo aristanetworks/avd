@@ -7,9 +7,10 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
+from pyavd._errors import AristaAvdError
 from pyavd._utils import append_if_not_duplicate, get, groupby, merge, strip_null_from_data
 from pyavd.j2filters import range_expand
-from pyavd._errors import AristaAvdError
+
 from .utils import UtilsMixin
 
 if TYPE_CHECKING:
@@ -49,9 +50,7 @@ class MonitorSessionsMixin(UtilsMixin):
 
                 if get(merged_settings, "session_settings.access_group") is not None:
                     if get(session, "source_settings.access_group") is not None:
-                        msg = (
-                            f"For {self.shared_utils.hostname}, an ACL is set on {session["interface"]} even though ACL is set for session {session_name}."
-                        )
+                        msg = f"For {self.shared_utils.hostname}, an ACL is set on {session["interface"]} even though ACL is set for session {session_name}."
                         raise AristaAvdError(msg)
 
                 elif (access_group := get(session, "source_settings.access_group")) is not None:
