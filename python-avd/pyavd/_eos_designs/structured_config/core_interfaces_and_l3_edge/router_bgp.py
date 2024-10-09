@@ -48,7 +48,7 @@ class RouterBgpMixin(UtilsMixin):
             # RFC5549
             if self.shared_utils.underlay_rfc5549:
                 if p2p_link.get("routing_protocol") == "ebgp":
-                    #neighbor.next_hop.address_family_ipv6.enabled
+                    # neighbor.next_hop.address_family_ipv6.enabled
                     address_family_ipv4_neighbor = {
                         "ip_address": get_ip_from_ip_prefix(p2p_link["data"]["peer_ip"]),
                         "next_hop": {
