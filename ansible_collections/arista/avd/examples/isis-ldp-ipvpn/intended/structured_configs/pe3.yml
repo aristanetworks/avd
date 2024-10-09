@@ -215,7 +215,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: C1_VRF1
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: false
 - name: Ethernet4
   peer_type: l3_interface

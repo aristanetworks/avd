@@ -300,6 +300,7 @@ keys:
             type: str
   aaa_server_groups:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
@@ -702,6 +703,7 @@ keys:
         - string
       access_lists:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -4812,6 +4814,13 @@ keys:
               vlan_mask:
                 type: str
                 description: 0x000-0xFFF VLAN mask.
+        permit_response_traffic:
+          type: str
+          valid_values:
+          - nat
+          description: 'Permit response traffic automatically based on NAT translations.
+
+            Minimum EOS version requirement 4.32.2F.'
   ip_access_lists_max_entries:
     type: int
     convert_types:
@@ -5168,6 +5177,7 @@ keys:
       keys:
         ip_address:
           type: str
+          required: true
           description: IPv4 or IPv6 address for DNS server.
         vrf:
           description: VRF Name.
@@ -6723,6 +6733,7 @@ keys:
         keys:
           grpc:
             type: list
+            primary_key: name
             items:
               type: dict
               keys:
@@ -11444,6 +11455,7 @@ keys:
         description: Redundancy Protocol.
   roles:
     type: list
+    primary_key: name
     items:
       type: dict
       keys:
@@ -12903,6 +12915,9 @@ keys:
                         Example: MyFunction(myarg).'
                     route_map:
                       type: str
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 encapsulation:
                   type: str
                   valid_values:
@@ -12960,32 +12975,7 @@ keys:
                   description: Transport encapsulation for the peer-group.
                 additional_paths:
                   type: dict
-                  keys:
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -13035,6 +13025,10 @@ keys:
             type: bool
           bgp_additional_paths:
             type: dict
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: bgp.additional_paths
             description: BGP additional-paths commands.
             keys:
               receive:
@@ -13067,6 +13061,12 @@ keys:
                     - str
                     min: 2
                     max: 64
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
@@ -13120,6 +13120,16 @@ keys:
           bgp:
             type: dict
             keys:
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                keys:
+                  install:
+                    type: bool
+                    description: Install BGP backup path.
+                  install_ecmp_primary:
+                    type: bool
+                    description: Allow additional path with ECMP primary path.
               redistribute_internal:
                 type: bool
                 description: Allow redistribution of iBGP routes into an Interior
@@ -13165,6 +13175,14 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
                 next_hop:
                   type: dict
                   keys:
@@ -13222,6 +13240,14 @@ keys:
                       type: bool
                     route_map:
                       type: str
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -13685,6 +13711,14 @@ keys:
       address_family_ipv4_multicast:
         type: dict
         keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -13702,6 +13736,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           neighbors:
             type: list
             primary_key: ip_address
@@ -13718,6 +13757,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -13962,6 +14006,16 @@ keys:
                 type: bool
                 description: Allow redistribution of iBGP routes into an Interior
                   Gateway Protocol (IGP). EOS default is true.
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                keys:
+                  install:
+                    type: bool
+                    description: Install BGP backup path.
+                  install_ecmp_primary:
+                    type: bool
+                    description: Allow additional path with ECMP primary path.
           peer_groups:
             type: list
             primary_key: name
@@ -13995,6 +14049,14 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
           neighbors:
             type: list
             primary_key: ip_address
@@ -14027,6 +14089,14 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -14290,6 +14360,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -14301,6 +14376,11 @@ keys:
                   description: Peer-group name.
                 activate:
                   type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           networks:
             type: list
             primary_key: prefix
@@ -14568,32 +14648,7 @@ keys:
             keys:
               additional_paths:
                 type: dict
-                keys:
-                  receive:
-                    type: bool
-                  send:
-                    type: dict
-                    keys:
-                      any:
-                        type: bool
-                      backup:
-                        type: bool
-                      ecmp:
-                        type: bool
-                      ecmp_limit:
-                        type: int
-                        description: Amount of ECMP paths to send.
-                        convert_types:
-                        - str
-                        min: 2
-                        max: 64
-                      limit:
-                        type: int
-                        description: Amount of paths to send.
-                        convert_types:
-                        - str
-                        min: 2
-                        max: 64
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           neighbors:
             type: list
             primary_key: ip_address
@@ -14606,36 +14661,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           peer_groups:
             type: list
             primary_key: name
@@ -14649,36 +14675,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -14885,6 +14882,16 @@ keys:
                   type: bool
                   description: Allow redistribution of iBGP routes into an Interior
                     Gateway Protocol (IGP). EOS default is true.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
             rd:
               type: str
               description: Route distinguisher.
@@ -15258,6 +15265,9 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  additional_paths:
+                    type: dict
+                    $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name.
@@ -15624,36 +15634,14 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
+                      $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                       keys:
                         install:
                           type: bool
+                          description: Install BGP backup path.
                         install_ecmp_primary:
                           type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
+                          description: Allow additional path with ECMP primary path.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -15701,6 +15689,9 @@ keys:
                                 required: true
                               originate:
                                 type: bool
+                      additional_paths:
+                        type: dict
+                        $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 networks:
                   type: list
                   primary_key: prefix
@@ -15784,36 +15775,14 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
+                      $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                       keys:
                         install:
                           type: bool
+                          description: Install BGP backup path.
                         install_ecmp_primary:
                           type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
+                          description: Allow additional path with ECMP primary path.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -15850,6 +15819,9 @@ keys:
                       prefix_list_out:
                         type: str
                         description: Outbound prefix-list name.
+                      additional_paths:
+                        type: dict
+                        $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 networks:
                   type: list
                   primary_key: prefix
@@ -15950,6 +15922,11 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      additional_paths:
+                        type: dict
+                        keys:
+                          receive:
+                            type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -16048,6 +16025,11 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      additional_paths:
+                        type: dict
+                        keys:
+                          receive:
+                            type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -20399,26 +20381,17 @@ $defs:
 
           limit: Limit to n eligible paths.
 
-          disabled: Disable sending any path.'
+          disabled: Disable sending any paths.'
         valid_values:
         - any
         - backup
         - ecmp
         - limit
         - disabled
-      send_ecmp_limit:
-        type: int
-        description: Amount of ECMP paths to send. `send` must be set to `ecmp` for
-          this setting. If this key-value pair is not set, it will send all paths
-          in best ECMP group.
-        convert_types:
-        - str
-        min: 2
-        max: 64
       send_limit:
         type: int
-        description: Number of paths to send through bgp updates. `send` must be set
-          to `limit` for this setting.
+        description: Number of paths to send through bgp updates. For this setting,
+          `send` must be set to `limit` or `ecmp`.
         convert_types:
         - str
         min: 2

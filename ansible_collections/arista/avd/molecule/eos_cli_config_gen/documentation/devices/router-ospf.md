@@ -131,10 +131,10 @@ interface Loopback2
 ```eos
 !
 interface Vlan24
-   ip ospf network point-to-point
-   ip ospf area 0.0.0.24
    ip ospf cost 99
+   ip ospf network point-to-point
    ip ospf authentication message-digest
+   ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
 ```
 
