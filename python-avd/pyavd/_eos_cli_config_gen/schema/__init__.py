@@ -39163,6 +39163,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "originate": {"type": bool}}
                         enabled: bool
+                        """Enables advertising the Extended Next Hop Encoding capability."""
                         originate: bool | None
 
                         if TYPE_CHECKING:
@@ -39175,7 +39176,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled: Enables advertising the Extended Next Hop Encoding capability.
                                     originate: originate
 
                                 """

@@ -1299,10 +1299,9 @@ class EosDesigns(EosDesignsRootModel):
             routing_protocol: Literal["ebgp"] | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
-            If
-            routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-            be included in the underlay peer group.
-            - ebgp: Enforce plain IPv4 BGP peering
+            -
+            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -1426,10 +1425,9 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
-                           If
-                           routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-                           be included in the underlay peer group.
-                           - ebgp: Enforce plain IPv4 BGP peering
+                           -
+                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -1844,10 +1842,9 @@ class EosDesigns(EosDesignsRootModel):
             routing_protocol: Literal["ebgp"] | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
-            If
-            routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-            be included in the underlay peer group.
-            - ebgp: Enforce plain IPv4 BGP peering
+            -
+            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -1971,10 +1968,9 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
-                           If
-                           routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-                           be included in the underlay peer group.
-                           - ebgp: Enforce plain IPv4 BGP peering
+                           -
+                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -5207,10 +5203,9 @@ class EosDesigns(EosDesignsRootModel):
             routing_protocol: Literal["ebgp"] | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
-            If
-            routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-            be included in the underlay peer group.
-            - ebgp: Enforce plain IPv4 BGP peering
+            -
+            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5334,10 +5329,9 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
-                           If
-                           routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-                           be included in the underlay peer group.
-                           - ebgp: Enforce plain IPv4 BGP peering
+                           -
+                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -5752,10 +5746,9 @@ class EosDesigns(EosDesignsRootModel):
             routing_protocol: Literal["ebgp"] | None
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
-            If
-            routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-            be included in the underlay peer group.
-            - ebgp: Enforce plain IPv4 BGP peering
+            -
+            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5879,10 +5872,9 @@ class EosDesigns(EosDesignsRootModel):
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
-                           If
-                           routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not
-                           be included in the underlay peer group.
-                           - ebgp: Enforce plain IPv4 BGP peering
+                           -
+                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by

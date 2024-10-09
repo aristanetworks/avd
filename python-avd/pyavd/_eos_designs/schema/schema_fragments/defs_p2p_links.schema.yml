@@ -216,8 +216,7 @@ $defs:
             - ebgp
           description: |-
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
-            If routing_protocol is 'ebgp' and include_in_underlay_protocol is 'false' then the bgp peering will not be included in the underlay peer group.
-            - ebgp: Enforce plain IPv4 BGP peering
+            - ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if configured.
         structured_config:
           type: dict
           relaxed_validation: true
