@@ -37,9 +37,9 @@ class UtilsMixin:
             f"avd_switch_facts..{peer_name}..switch",
             separator="..",
             required=required,
-            org_key=(
+            custom_error_msg=(
                 f"Facts not found for node '{peer_name}'. Something in the input vars is pointing to this node. "
-                f"Check that '{peer_name}' is in the inventory and is part of the group set by 'fabric_name'. Node"
+                f"Check that '{peer_name}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
             ),
         )
 
