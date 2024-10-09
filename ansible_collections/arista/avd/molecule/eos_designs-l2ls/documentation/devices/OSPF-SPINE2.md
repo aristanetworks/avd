@@ -416,8 +416,8 @@ ip route 10.0.0.0/8 10.1.100.100
 router ospf 100
    router-id 192.168.255.2
    passive-interface default
-   no passive-interface Vlan4094
    no passive-interface Ethernet5
+   no passive-interface Vlan4094
    redistribute connected
    redistribute static
    max-lsa 12000
