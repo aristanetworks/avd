@@ -1269,6 +1269,11 @@ router bgp {{ router_bgp.as }}
 {%             if neighbor.next_hop_self is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} next-hop-self
 {%             endif %}
+{%             if neighbor.next_hop_self_v4_mapped_v6_source_interface is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} next-hop-self v4-mapped-v6 source-interface {{ neighbor.next_hop_self_v4_mapped_v6_source_interface }}
+{%             elif neighbor.next_hop_self_source_interface is arista.avd.defined %}
+      neighbor {{ neighbor.ip_address }} next-hop-self source-interface {{ neighbor.next_hop_self_source_interface }}
+{%             endif %}
 {%             if neighbor.maximum_advertised_routes is arista.avd.defined %}
 {%                 set maximum_routes_cli = "neighbor " ~ neighbor.ip_address ~ " maximum-advertised-routes " ~ neighbor.maximum_advertised_routes %}
 {%                 if neighbor.maximum_advertised_routes_warning_limit is arista.avd.defined %}
@@ -1304,11 +1309,6 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.multi_path is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} multi-path
-{%             endif %}
-{%             if neighbor.next_hop_resolution.v4_mapped_v6_translation is arista.avd.defined(true) %}
-      neighbor {{ neighbor.ip_address }} next-hop resolution v4-mapped-v6 translation
-{%             elif neighbor.next_hop_resolution.v4_mapped_v6_translation is arista.avd.defined(false) %}
-      neighbor {{ neighbor.ip_address }} next-hop resolution v4-mapped-v6 translation disabled
 {%             endif %}
 {%         endfor %}
 {%         if router_bgp.address_family_ipv4_labeled_unicast.networks is arista.avd.defined %}
