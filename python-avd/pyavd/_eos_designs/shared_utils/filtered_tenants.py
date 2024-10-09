@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, get, get_item, merge, unique
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -230,7 +230,7 @@ class FilteredTenantsMixin:
                                 rp_entry,
                                 "rps",
                                 required=True,
-                                org_key=f"pim_rp_addresses.rps under VRF '{vrf['name']}' in Tenant '{tenant['name']}'",
+                                custom_error_msg=f"'pim_rp_addresses.rps' under VRF '{vrf['name']}' in Tenant '{tenant['name']}' is required.",
                             ):
                                 rp_address = {"address": rp_ip}
                                 if (rp_groups := get(rp_entry, "groups")) is not None:
@@ -370,7 +370,7 @@ class FilteredTenantsMixin:
         if vrf_id is None:
             if required:
                 msg = f"'vrf_id' or 'vrf_vni' for VRF '{vrf['name']} must be set."
-                raise AristaAvdMissingVariableError(msg)
+                raise AristaAvdInvalidInputsError(msg)
             return None
         return int(vrf_id)
 
@@ -379,7 +379,7 @@ class FilteredTenantsMixin:
         vrf_vni = default(vrf.get("vrf_vni"), vrf.get("vrf_id"))
         if vrf_vni is None:
             msg = f"'vrf_vni' or 'vrf_id' for VRF '{vrf['name']} must be set."
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdInvalidInputsError(msg)
         return int(vrf_vni)
 
     @cached_property
@@ -418,7 +418,7 @@ class FilteredTenantsMixin:
         if get(svi, "ospf.enabled") is True and get(vrf, "ospf.enabled") is True:
             svi_config.update(
                 {
-                    "ospf_area": svi["ospf"].get("area", "0"),
+                    "ospf_area": svi["ospf"].get("area", "0.0.0.0"),  # noqa: S104
                     "ospf_network_point_to_point": svi["ospf"].get("point_to_point", False),
                     "ospf_cost": svi["ospf"].get("cost"),
                 },

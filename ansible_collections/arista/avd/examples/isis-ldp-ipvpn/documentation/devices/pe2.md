@@ -246,7 +246,7 @@ interface Ethernet4.10
    encapsulation dot1q vlan 10
    vrf C1_VRF1
    ip address 10.0.1.2/29
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet4.20
    description C2_L3_SERVICE
@@ -380,7 +380,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet4.10 | 0 | - | False |
+| Ethernet4.10 | 0.0.0.0 | - | False |
 
 #### Router OSPF Device Configuration
 
@@ -427,8 +427,8 @@ router ospf 10 vrf C1_VRF1
 !
 router isis CORE
    net 49.0001.0102.5500.1002.00
-   is-type level-2
    router-id ipv4 10.255.1.2
+   is-type level-2
    log-adjacency-changes
    mpls ldp sync default
    !
