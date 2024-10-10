@@ -107,7 +107,9 @@ router bgp 65001
       redistribute bgp leaked route-map RM_VRF_BGP
       redistribute connected include leaked rcf RCF_VRF_CONNECTED()
       redistribute isis level-2 rcf RCF_VRF_ISIS()
-      redistribute ospf match nssa-external route-map RM_VRF_OSPFV3
+      redistribute ospf match internal include leaked route-map RM_VRF_OSPF
+      redistribute ospf match external include leaked route-map RM_VRF_OSPF
+      redistribute ospf match nssa-external 1 include leaked route-map RM_VRF_OSPF
       redistribute ospfv3 match internal include leaked route-map RM_VRF_OSPF
       redistribute rip route-map RM_VRF_RIP
       redistribute static route-map RM_VRF_STATIC
@@ -136,11 +138,20 @@ router bgp 65001
          neighbor 1.2.3.4 additional-paths send any
          network 2.3.4.0/24 route-map BARFOO
          no bgp redistribute-internal
-         redistribute connected rcf VRF_AFIPV4_RCF_CONNECTED_1()
-         redistribute ospf match external
-         redistribute ospf match nssa-external 1
-         redistribute ospfv3 match internal
-         redistribute static route-map VRF_AFIPV4_RM_STATIC_1
+         redistribute attached-host route-map VRF_AFIPV4_RM_HOST
+         redistribute bgp leaked route-map VRF_AFIPV4_RM_BGP
+         redistribute connected include leaked rcf VRF_AFIPV4_RCF_CONNECTED_1()
+         redistribute dynamic route-map VRF_AFIPV4_RM_DYNAMIC
+         redistribute user rcf VRF_AFIPV4_RCF_USER()
+         redistribute isis level-1 include leaked rcf VRF_AFIPV4_RCF_ISIS()
+         redistribute ospf include leaked route-map VRF_AFIPV4_RM_OSPF
+         redistribute ospfv3 match internal include leaked route-map VRF_AFIPV4_RM_OSPF
+         redistribute ospfv3 match external include leaked route-map VRF_AFIPV4_RM_OSPF
+         redistribute ospfv3 match nssa-external 2 include leaked route-map VRF_AFIPV4_RM_OSPF
+         redistribute ospf match external include leaked route-map VRF_AFIPV4_RM_OSPF
+         redistribute ospf match nssa-external 1 include leaked route-map VRF_AFIPV4_RM_OSPF
+         redistribute rip route-map VRF_AFIPV4_RM_RIP
+         redistribute static include leaked route-map VRF_AFIPV4_RM_STATIC_1
       !
       address-family ipv4 multicast
          bgp missing-policy direction in action permit
@@ -150,10 +161,15 @@ router bgp 65001
          neighbor 1.2.3.4 route-map BAR out
          neighbor 1.2.3.4 additional-paths receive
          network 239.0.0.0/24 route-map BARFOO
-         redistribute connected
-         redistribute ospf match internal
-         redistribute ospf match nssa-external 2
-         redistribute ospfv3 match external
+         redistribute attached-host route-map VRF_AFIPV4MULTI_RM_HOST
+         redistribute connected route-map VRF_AFIPV4MULTI_RM_CONNECTED
+         redistribute isis level-1 include leaked route-map VRF_AFIPV4MULTI_RM_ISIS
+         redistribute ospf match internal route-map VRF_AFIPV4MULTI_RM_OSPF
+         redistribute ospfv3 match internal route-map VRF_AFIPV4MULTI_RM_OSPFv3
+         redistribute ospfv3 match external route-map VRF_AFIPV4MULTI_RM_OSPFv3
+         redistribute ospfv3 match nssa-external 1 route-map VRF_AFIPV4MULTI_RM_OSPFv3
+         redistribute ospf match external route-map VRF_AFIPV4MULTI_RM_OSPF
+         redistribute ospf match nssa-external 2 route-map VRF_AFIPV4MULTI_RM_OSPF
          redistribute static route-map VRF_AFIPV4MULTI_RM_STATIC
       !
       address-family ipv6
@@ -174,8 +190,8 @@ router bgp 65001
          no bgp redistribute-internal
          redistribute connected rcf VRF_AFIPV6_RCF_CONNECTED()
          redistribute isis include leaked
-         redistribute ospfv3 match external
          redistribute ospfv3 match internal include leaked
+         redistribute ospfv3 match external
          redistribute ospfv3 match nssa-external
          redistribute static route-map VRF_AFIPV6_RM_STATIC
       !
@@ -185,24 +201,30 @@ router bgp 65001
          bgp additional-paths receive
          neighbor aa::1 additional-paths receive
          network ff08:1::/64
-         redistribute connected
-         redistribute ospf match external
-         redistribute ospf match nssa-external
-         redistribute ospfv3 match internal
+         redistribute connected route-map VRF_AFIPV6MULTI_RM_CONNECTED
+         redistribute isis level-1-2 include leaked route-map VRF_AFIPV6MULTI_RM_ISIS
+         redistribute ospf route-map VRF_AFIPV6MULTI_RM_OSPF
+         redistribute ospfv3 match internal route-map VRF_AFIPV6MULTI_RM_OSPFv3
+         redistribute ospfv3 match external route-map VRF_AFIPV6MULTI_RM_OSPFv3
+         redistribute ospfv3 match nssa-external 1 route-map VRF_AFIPV6MULTI_RM_OSPFv3
+         redistribute ospf match external route-map VRF_AFIPV6MULTI_RM_OSPF
+         redistribute ospf match nssa-external 1 route-map VRF_AFIPV6MULTI_RM_OSPF
          redistribute static route-map VRF_AFIPV6MULTI_RM_STATIC
    !
    vrf VRF02
       neighbor 1.1.1.1 additional-paths receive
       neighbor 1.1.1.1 additional-paths send ecmp limit 24
-      redistribute attached-host
-      redistribute bgp leaked
-      redistribute connected
-      redistribute dynamic
-      redistribute isis level-2 route-map RM_VRF_ISIS
-      redistribute ospf include leaked
-      redistribute ospfv3 match external
+      redistribute attached-host route-map RM_VRF_HOST
+      redistribute bgp leaked route-map RM_VRF_BGP
+      redistribute connected include leaked route-map RM_VRF_CONNECTED
+      redistribute dynamic route-map RM_VRF_DYNAMIC
+      redistribute isis level-2 include leaked route-map RM_VRF_ISIS
+      redistribute ospf include leaked route-map RM_VRF_OSPF
+      redistribute ospfv3 include leaked route-map RM_VRF_OSPFv3
+      redistribute ospfv3 match external include leaked route-map RM_VRF_OSPFv3
+      redistribute ospfv3 match nssa-external 1 include leaked route-map RM_VRF_OSPFv3
       redistribute rip
-      redistribute static
+      redistribute static include leaked
       redistribute user
       !
       address-family ipv4
