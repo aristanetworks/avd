@@ -805,8 +805,8 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.poe.link_down.action is arista.avd.defined %}
 {%         set poe_link_down_action_cli = 'poe link down action ' ~ ethernet_interface.poe.link_down.action %}
-{%         if ethernet_interface.poe.link_down.power_off_delay is arista.avd.defined %}
-{%             set poe_link_down_action_cli = poe_link_down_action_cli ~ ' ' ~ ethernet_interface.poe.link_down.power_off_delay %}
+{%         if ethernet_interface.poe.link_down.power_off_delay is arista.avd.defined and ethernet_interface.poe.link_down.action == 'power-off' %}
+{%             set poe_link_down_action_cli = poe_link_down_action_cli ~ ' ' ~ ethernet_interface.poe.link_down.power_off_delay ~ ' seconds' %}
 {%         endif %}
    {{ poe_link_down_action_cli }}
 {%     endif %}
