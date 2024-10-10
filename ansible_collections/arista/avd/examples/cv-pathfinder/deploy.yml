@@ -6,7 +6,7 @@
   tasks:
     - name: Deploy Configurations to Devices
       vars:
-        # Autoomatically execute the Change Control
+        # Automatically execute the Change Control
         cv_run_change_control: true
       ansible.builtin.import_role:
         # By default this will use ansible_host and ansible_password
