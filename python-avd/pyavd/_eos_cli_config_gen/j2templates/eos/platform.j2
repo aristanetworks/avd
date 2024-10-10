@@ -6,6 +6,11 @@
 {# eos - platform #}
 {% if platform is arista.avd.defined %}
 !
+{%     if platform.trident.l3 is arista.avd.defined %}
+{%         if platform.trident.l3.routing_mac_address_per_vlan is arista.avd.defined(true) %}
+platform trident l3 routing mac-address per-vlan
+{%         endif %}
+{%     endif %}
 {%     if platform.trident.forwarding_table_partition is arista.avd.defined %}
 platform trident forwarding-table partition {{ platform.trident.forwarding_table_partition }}
 {%     endif %}

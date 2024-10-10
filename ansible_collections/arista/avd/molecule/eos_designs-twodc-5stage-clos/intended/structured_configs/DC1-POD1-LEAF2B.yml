@@ -11,6 +11,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+  - source_protocol: attached-host
   updates:
     wait_install: true
   peer_groups:
@@ -108,9 +111,6 @@ router_bgp:
     peer_group: IPv4-UNDERLAY-PEERS
     bfd: true
     local_as: '65120'
-  redistribute_routes:
-  - source_protocol: connected
-  - source_protocol: attached-host
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
