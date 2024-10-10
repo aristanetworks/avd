@@ -11,8 +11,11 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  redistribute_routes:
-  - source_protocol: connected
+  redistribute:
+    connected:
+      enabled: true
+    attached_host:
+      enabled: true
   updates:
     wait_install: true
   peer_groups:
@@ -300,9 +303,6 @@ router_bgp:
     rd_evpn_domain:
       domain: remote
       rd: 172.16.110.5:32600
-  redistribute:
-    attached_host:
-      enabled: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

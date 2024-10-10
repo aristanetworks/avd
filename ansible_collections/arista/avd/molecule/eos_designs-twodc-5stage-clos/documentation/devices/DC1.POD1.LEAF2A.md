@@ -927,6 +927,7 @@ router bgp 65112.100
    neighbor 172.17.110.14 description DC1-POD1-SPINE2_Ethernet7
    neighbor 172.20.110.3 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 172.20.110.3 description DC1-POD1-LEAF2B_Vlan4094
+   redistribute connected
    redistribute attached-host
    !
    vlan 110

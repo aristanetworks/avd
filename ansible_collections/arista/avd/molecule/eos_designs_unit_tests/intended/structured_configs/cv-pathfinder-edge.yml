@@ -8,9 +8,13 @@ router_bgp:
       ipv4_unicast: false
   maximum_paths:
     paths: 16
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+    static:
+      enabled: true
+      route_map: RM-STATIC-2-BGP
   updates:
     wait_install: true
   neighbors:
@@ -163,10 +167,6 @@ router_bgp:
       additional_paths:
         receive: true
         send: any
-  redistribute:
-    static:
-      enabled: true
-      route_map: RM-STATIC-2-BGP
 service_routing_protocols_model: multi-agent
 ip_routing: true
 aaa_root:

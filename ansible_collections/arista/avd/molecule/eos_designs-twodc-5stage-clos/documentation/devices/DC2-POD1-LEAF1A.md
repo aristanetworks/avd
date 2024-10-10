@@ -590,6 +590,7 @@ router bgp 65211
    neighbor 172.17.210.2 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.2 remote-as 65210
    neighbor 172.17.210.2 description DC2-POD1-SPINE2_Ethernet3
+   redistribute connected route-map RM-CONN-2-BGP
    redistribute attached-host
    !
    address-family evpn
