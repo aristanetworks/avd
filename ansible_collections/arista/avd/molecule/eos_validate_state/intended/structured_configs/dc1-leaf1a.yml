@@ -9,6 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -78,12 +81,6 @@ router_bgp:
   - ip_address: 10.1.1.1
     description: External peer
     peer_group: EVPN-OVERLAY-PEERS
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
-    attached_host:
-      enabled: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -178,6 +175,9 @@ router_bgp:
       - 13402:13402
     redistribute_routes:
     - learned
+  redistribute:
+    attached_host:
+      enabled: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

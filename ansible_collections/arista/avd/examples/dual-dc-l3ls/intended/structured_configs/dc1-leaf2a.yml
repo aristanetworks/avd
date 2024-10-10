@@ -9,6 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -84,10 +87,6 @@ router_bgp:
     peer: dc2-leaf2a
     description: dc2-leaf2a
     peer_group: IPv4-UNDERLAY-PEERS
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:

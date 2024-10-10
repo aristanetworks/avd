@@ -8,12 +8,11 @@ router_bgp:
       ipv4_unicast: false
   maximum_paths:
     paths: 16
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
@@ -106,6 +105,9 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  redistribute:
+    connected:
+      enabled: true
 service_routing_protocols_model: multi-agent
 ip_routing: true
 aaa_root:

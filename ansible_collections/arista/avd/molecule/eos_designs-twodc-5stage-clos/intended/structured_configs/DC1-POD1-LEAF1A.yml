@@ -11,6 +11,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
   updates:
     wait_install: true
   peer_groups:
@@ -34,11 +36,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute:
-    connected:
-      enabled: true
-    attached_host:
-      enabled: true
   neighbors:
   - ip_address: 172.17.110.0
     peer_group: IPv4-UNDERLAY-PEERS
@@ -102,6 +99,9 @@ router_bgp:
       activate: true
       default_route_target:
         only: true
+  redistribute:
+    attached_host:
+      enabled: true
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0

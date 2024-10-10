@@ -9,6 +9,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
   updates:
     wait_install: true
   peer_groups:
@@ -41,8 +43,6 @@ router_bgp:
     description: DUMMY-CORE
     peer_group: IPv4-UNDERLAY-PEERS
   redistribute:
-    connected:
-      enabled: true
     attached_host:
       enabled: true
 static_routes:

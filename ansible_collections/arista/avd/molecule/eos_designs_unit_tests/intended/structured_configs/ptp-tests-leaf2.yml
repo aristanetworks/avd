@@ -9,6 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -57,10 +60,6 @@ router_bgp:
     peer: ptp-tests-spine1
     description: ptp-tests-spine1_Loopback0
     remote_as: '65200'
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

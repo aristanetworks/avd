@@ -9,6 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -44,10 +47,6 @@ router_bgp:
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: trunk-group-tests-l3leaf2a
     description: trunk-group-tests-l3leaf2a_Vlan4093
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS

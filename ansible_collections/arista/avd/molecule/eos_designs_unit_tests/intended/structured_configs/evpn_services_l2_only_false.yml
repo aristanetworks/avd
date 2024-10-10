@@ -9,6 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -31,12 +34,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
-    ospf:
-      enabled: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -225,6 +222,9 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  redistribute:
+    ospf:
+      enabled: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.109:12
