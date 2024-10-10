@@ -8630,6 +8630,13 @@ keys:
             type: str
             convert_types:
             - int
+          l3:
+            type: dict
+            keys:
+              routing_mac_address_per_vlan:
+                type: bool
+                description: Enable bridging of packets with destination MAC being
+                  a Router MAC in VLANs without routing.
           mmu:
             type: dict
             description: 'Memory Management Unit settings.
@@ -13941,9 +13948,10 @@ keys:
                   type: bool
                 next_hop_resolution:
                   type: dict
-                  keys:
-                    v4_mapped_v6_translation:
-                      type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:
@@ -14068,9 +14076,10 @@ keys:
                   type: bool
                 next_hop_resolution:
                   type: dict
-                  keys:
-                    v4_mapped_v6_translation:
-                      type: bool
+                  deprecation:
+                    warning: true
+                    removed: true
+                    remove_in_version: 5.0.0
                 next_hop_self:
                   type: bool
                 next_hop_self_source_interface:

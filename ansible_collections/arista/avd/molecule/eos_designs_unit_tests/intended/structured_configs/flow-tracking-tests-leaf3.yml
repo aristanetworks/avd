@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  - source_protocol: attached-host
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -62,10 +66,6 @@ router_bgp:
     peer: flow-tracking-tests-spine2
     description: flow-tracking-tests-spine2_Loopback0
     remote_as: '65200'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: attached-host
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
