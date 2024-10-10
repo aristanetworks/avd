@@ -86,7 +86,7 @@ class LoopbackInterfacesMixin(UtilsMixin):
                         description=get(self._hostvars, "vtep_loopback_description", default="VXLAN_TUNNEL_SOURCE"),
                     )
                 ),
-                "shutdown": False
+                "shutdown": False,
             }
             if not self.shared_utils.underlay_ipv4:
                 vtep_loopback["ipv6_address"] = f"{self.shared_utils.vtep_ipv6}/{self.shared_utils.loopback_ipv6_prefix_length}"
