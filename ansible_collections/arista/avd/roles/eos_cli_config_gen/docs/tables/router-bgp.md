@@ -597,8 +597,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_path</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].multi_path") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_resolution") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v4_mapped_v6_translation</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_resolution.v4_mapped_v6_translation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_resolution") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_self_source_interface") | String |  |  |  | Source interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_v4_mapped_v6_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.peer_groups.[].next_hop_self_v4_mapped_v6_source_interface") | String |  |  |  | v4-mapped-v6 source interface name. Takes precedence over the next_hop_self_source_interface. |
@@ -632,8 +631,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_prefix_list</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_prefix_list") | Boolean |  |  |  | Include prefix-list references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;include_sub_route_map</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].missing_policy.direction_out.include_sub_route_map") | Boolean |  |  |  | Include sub-route-map references in missing policy decision. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multi_path</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].multi_path") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_resolution") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;v4_mapped_v6_translation</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_resolution.v4_mapped_v6_translation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_resolution</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_resolution") <span style="color:red">removed</span> | Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version 5.0.0.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self_source_interface") | String |  |  |  | Source interface name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_v4_mapped_v6_source_interface</samp>](## "router_bgp.address_family_ipv4_labeled_unicast.neighbors.[].next_hop_self_v4_mapped_v6_source_interface") | String |  |  |  | v4-mapped-v6 source interface name. Takes precedence over the next_hop_self_source_interface. |
@@ -2819,8 +2817,6 @@
                 # Include sub-route-map references in missing policy decision.
                 include_sub_route_map: <bool>
             multi_path: <bool>
-            next_hop_resolution:
-              v4_mapped_v6_translation: <bool>
             next_hop_self: <bool>
 
             # Source interface name.
@@ -2906,8 +2902,6 @@
                 # Include sub-route-map references in missing policy decision.
                 include_sub_route_map: <bool>
             multi_path: <bool>
-            next_hop_resolution:
-              v4_mapped_v6_translation: <bool>
             next_hop_self: <bool>
 
             # Source interface name.
