@@ -248,6 +248,7 @@ sFlow is disabled.
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet2 | SRV-POD02_Eth1 | - | 10.1.255.3/24 | default | - | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
@@ -396,6 +397,14 @@ interface Ethernet1
    switchport phone trunk tagged
    switchport vlan translation in required
    switchport dot1q vlan tag required
+   switchport trunk allowed vlan 110-111,210-211
+   switchport mode dot1q-tunnel
+   switchport dot1q ethertype 1536
+   switchport vlan forwarding accept all
+   switchport trunk group g1
+   switchport trunk group g2
+   no switchport
+   switchport source-interface tx
    switchport vlan translation 12 20
    switchport vlan translation 24 inner 78 network 46
    switchport vlan translation 24 inner 78 46
@@ -406,14 +415,6 @@ interface Ethernet1
    switchport vlan translation out 34 50
    switchport vlan translation out 10 45 inner 34
    switchport vlan translation out 45 dot1q-tunnel all
-   switchport trunk allowed vlan 110-111,210-211
-   switchport mode dot1q-tunnel
-   switchport dot1q ethertype 1536
-   switchport vlan forwarding accept all
-   switchport trunk group g1
-   switchport trunk group g2
-   no switchport
-   switchport source-interface tx
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
    ip address 172.31.255.1/31
@@ -455,6 +456,11 @@ interface Ethernet2
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   ip address 10.1.255.3/24
+   ip address 1.1.1.3/24 secondary
+   ip address 1.1.1.4/24 secondary
+   ip address 10.0.0.254/24 secondary
+   ip address 192.168.1.1/24 secondary
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
@@ -473,9 +479,9 @@ interface Ethernet3
    description P2P_LINK_TO_DC1-SPINE2_Ethernet2
    mtu 1500
    switchport trunk native vlan 5
-   switchport vlan translation out 23 dot1q-tunnel 50
    switchport mode trunk
    no switchport
+   switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
    ip address 172.31.128.1/31
    ipv6 enable
@@ -657,10 +663,10 @@ interface Ethernet15
 interface Ethernet16
    description PVLAN Promiscuous Trunk - vlan translation out
    switchport vlan translation out required
-   switchport vlan translation out 111-112 110
    switchport trunk allowed vlan 110-112
    switchport mode trunk
    switchport
+   switchport vlan translation out 111-112 110
 !
 interface Ethernet17
    description PVLAN Secondary Trunk
@@ -859,8 +865,8 @@ interface Ethernet43
 interface Ethernet44
    description DOT1X Testing - reauthorization_request_limit
    switchport
-   dot1x reauthorization request limit 3
    dot1x eapol disabled
+   dot1x reauthorization request limit 3
 !
 interface Ethernet45
    description DOT1X Testing - all features
