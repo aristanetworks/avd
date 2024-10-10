@@ -10,7 +10,7 @@ title: Custom descriptions and names
 
 # Custom descriptions and names
 
-The `eos_designs` role provides the capability to customize various field descriptions and names leveraging AVD's custom string formatter syntax.
+The `eos_designs` role allows customization of various field descriptions and names leveraging AVD's custom string formatter syntax.
 
 ## AVD string formatter syntax
 
@@ -22,7 +22,7 @@ The following syntax is supported: `"{" [field_name] ["?"] ["<" prefix] [">" suf
 - `[field_name]`: Template field or variable, as per `eos_designs` input variables documentation.
 - `["?"]`: The literal `?` signals that the field is optional and will not be printed if the value is missing or None.
 - `["<" prefix]`: Prefix string including spaces which will be inserted before the field value. Most useful in combination with `?`. Prefix should not contain `"<"`, `">"`, `"!"` or `":"`.
-- `[">" suffix]`: Suffix string including spaces which will be inserted after the field value. Most useful in combination with `?`. Suffix should not contain `"<"`, `">"`, `"!"` or `":"`.
+- `[">" suffix]`: The suffix string including spaces which will be inserted after the field value. Most useful in combination with `?`. The suffix should not contain `"<"`, `">"`, `"!"` or `":"`.
 - `["!" conversion]`: Convert string to supported methods. Note the regular Python conversions "!r", "!s", "!a" have been removed.
   - `"!u"`: convert all characters to upper case. Symbols and numbers are ignored.
 - `[":" format_spec]`: Format specifications are used within replacement fields contained within a format string to define how individual values are presented. Please consult [Format Specification Mini-Language](https://docs.python.org/3/library/string.html#grammar-token-format-spec-format_spec) for usage details.
@@ -53,7 +53,7 @@ results in: `SERVERS_server2`
 
 ## Default description or name values
 
-To facilitate customizing the description and names of values, here is a complete list of input variables and default values.
+Below is a complete list of input variables and default values to facilitate customizing the description and names of values.
 Please consult the `eos_designs` input variables documentation to obtain the available template field(s) (`[field_name]`).
 
 ```yaml
