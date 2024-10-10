@@ -8,6 +8,9 @@ router_bgp:
       ipv4_unicast: false
   maximum_paths:
     paths: 16
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -39,9 +42,6 @@ router_bgp:
       activate: true
     - name: WAN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 172.17.0.2
     peer_group: IPv4-UNDERLAY-PEERS
