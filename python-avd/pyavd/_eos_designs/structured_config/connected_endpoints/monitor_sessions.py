@@ -52,7 +52,7 @@ class MonitorSessionsMixin(UtilsMixin):
                     if get(session, "source_settings.access_group") is not None:
                         msg = (
                             f"For {self.shared_utils.hostname}, an ACL is set on {session['interface']}"
-                            f"even though ACL is set for monitor session {session_name}."
+                            f" even though ACL is set for monitor session {session_name} in connected endpoints settings."
                         )
                         raise AristaAvdError(msg)
                 elif (access_group := get(session, "source_settings.access_group")) is not None:
