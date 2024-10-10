@@ -11,6 +11,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
+  - source_protocol: attached-host
   updates:
     wait_install: true
   peer_groups:
@@ -32,10 +36,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: attached-host
   neighbors:
   - ip_address: 172.17.210.0
     peer_group: IPv4-UNDERLAY-PEERS

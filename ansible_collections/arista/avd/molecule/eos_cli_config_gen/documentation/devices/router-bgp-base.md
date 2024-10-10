@@ -226,13 +226,12 @@ router bgp 65101
    aggregate-address 1.1.1.0/24 advertise-only
    aggregate-address 1.12.1.0/24 as-set summary-only attribute-map RM-ATTRIBUTE match-map RM-MATCH advertise-only
    aggregate-address 2.2.1.0/24
-   redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
    redistribute connected rcf Router_BGP_Connected()
-   redistribute ospf include leaked
    redistribute ospf match internal
    redistribute ospf match external
    redistribute ospf match nssa-external 1 include leaked route-map RM-REDISTRIBUTE-OSPF-NSSA-1
    redistribute static rcf Router_BGP_Static()
+   redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
    neighbor interface Ethernet2 peer-group PG-FOO-v4 remote-as 65102
    neighbor interface Ethernet3 peer-group PG-FOO-v4 peer-filter PF-BAR-v4
    !
