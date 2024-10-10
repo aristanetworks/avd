@@ -33,7 +33,7 @@
 {%         endif %}
 {%         if nat.group is arista.avd.defined %}
 {%             set nat_cli = nat_cli ~ ' group ' ~ nat.group %}
-{%             set sort_key = 'b_' ~ nat.group %}
+{%             set sort_key = 'c_' ~ nat.group %}
 {%         endif %}
 {%         if nat.comment is arista.avd.defined %}
 {%             set nat_cli = nat_cli ~ ' comment ' ~ nat.comment %}

@@ -176,8 +176,8 @@ ip nat profile NAT-PROFILE-NO-VRF-2
    ip nat source ingress static 3.0.0.8 4.0.0.8
    ip nat destination egress static 239.0.0.1 239.0.0.2
    ip nat source static 3.0.0.5 22 4.0.0.5 23 protocol tcp group 1
-   ip nat source static 3.0.0.6 22 4.0.0.6 23 protocol tcp group 2 comment Comment Test
    ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
+   ip nat source static 3.0.0.6 22 4.0.0.6 23 protocol tcp group 2 comment Comment Test
    ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test
    ip nat destination dynamic access-list ACL1 pool POOL1
    ip nat source dynamic access-list ACL11 pool POOL11
