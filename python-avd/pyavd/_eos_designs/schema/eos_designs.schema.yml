@@ -6400,7 +6400,7 @@ $defs:
                           convert_types:
                           - int
                           description: OSPF area ID.
-                          default: '0'
+                          default: 0.0.0.0
                         cost:
                           type: int
                           convert_types:
@@ -6508,7 +6508,7 @@ $defs:
                           convert_types:
                           - int
                           description: OSPF area ID.
-                          default: '0'
+                          default: 0.0.0.0
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Loopback interface
@@ -9616,7 +9616,7 @@ $defs:
             convert_types:
             - int
             description: OSPF area ID.
-            default: '0'
+            default: 0.0.0.0
           cost:
             type: int
             convert_types:

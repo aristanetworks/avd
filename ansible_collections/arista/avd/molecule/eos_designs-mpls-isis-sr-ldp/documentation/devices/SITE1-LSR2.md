@@ -349,8 +349,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 !
 router isis CORE
    net 49.0001.1000.7000.0002.00
-   is-type level-2
    router-id ipv4 100.70.0.2
+   is-type level-2
    log-adjacency-changes
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes

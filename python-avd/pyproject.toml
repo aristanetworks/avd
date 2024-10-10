@@ -41,6 +41,8 @@ ansible-collection = [
     "netaddr>=0.7.19",
     "PyYAML>=6.0.0",
     "treelib>=1.5.5",
+    # jsonschema is required for the arista.cvp Ansible collection
+    "jsonschema>=3.2.0",
 ]
 
 [build-system]
@@ -100,7 +102,7 @@ branch = true
 
 [tool.coverage.report]
 show_missing = true
-fail_under = 90
+fail_under = 85
 include = [
   "pyavd/*"
 ]

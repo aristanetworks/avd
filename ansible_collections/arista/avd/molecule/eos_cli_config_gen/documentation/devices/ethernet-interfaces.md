@@ -942,7 +942,7 @@ interface Ethernet56
    switchport
    poe priority low
    poe reboot action power-off
-   poe link down action power-off 10
+   poe link down action power-off 10 seconds
    poe shutdown action maintain
    poe limit 30.00 watts
    poe negotiation lldp disabled

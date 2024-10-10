@@ -53,8 +53,7 @@ class UplinksMixin:
             # check that port-channel IDs are the same as on primary
             if uplink_port_channel_id is not None and uplink_port_channel_id != peer_uplink_port_channel_id:
                 msg = (
-                    f"'uplink_port_channel_id' on '{self.shared_utils.hostname}' is set to {uplink_port_channel_id} and is not matching"
-                    f" {peer_uplink_port_channel_id} set on MLAG peer."
+                    f"'uplink_port_channel_id' is set to {uplink_port_channel_id} and is not matching {peer_uplink_port_channel_id} set on MLAG peer."
                     " The 'uplink_port_channel_id' must be matching on MLAG peers."
                 )
                 raise AristaAvdError(msg)
@@ -67,7 +66,7 @@ class UplinksMixin:
 
         # produce an error if the switch is MLAG and port-channel ID is above 2000
         if self.shared_utils.mlag and not 1 <= uplink_port_channel_id <= 2000:
-            msg = f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}' on '{self.shared_utils.hostname}'."
+            msg = f"'uplink_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_port_channel_id}'."
             raise AristaAvdError(msg)
 
         return uplink_port_channel_id
@@ -93,9 +92,8 @@ class UplinksMixin:
             # check that port-channel IDs are the same as on primary
             if uplink_switch_port_channel_id is not None and uplink_switch_port_channel_id != peer_uplink_switch_port_channel_id:
                 msg = (
-                    f"'uplink_switch_port_channel_id'expected_error_message on '{self.shared_utils.hostname}' is set to {uplink_switch_port_channel_id} and"
-                    f" is not matching {peer_uplink_switch_port_channel_id} set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG"
-                    " peers."
+                    f"'uplink_switch_port_channel_id' is set to {uplink_switch_port_channel_id} and is not matching {peer_uplink_switch_port_channel_id} "
+                    "set on MLAG peer. The 'uplink_switch_port_channel_id' must be matching on MLAG peers."
                 )
                 raise AristaAvdError(msg)
             return peer_uplink_switch_port_channel_id
@@ -109,10 +107,7 @@ class UplinksMixin:
         uplink_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(self.shared_utils.uplink_switches[0], required=True)
 
         if uplink_switch_facts.shared_utils.mlag and not 1 <= uplink_switch_port_channel_id <= 2000:
-            msg = (
-                f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}' on"
-                f" '{self.shared_utils.hostname}'."
-            )
+            msg = f"'uplink_switch_port_channel_id' must be between 1 and 2000 for MLAG switches. Got '{uplink_switch_port_channel_id}'."
             raise AristaAvdError(msg)
 
         return uplink_switch_port_channel_id
