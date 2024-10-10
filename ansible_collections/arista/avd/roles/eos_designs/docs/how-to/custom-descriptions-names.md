@@ -34,6 +34,7 @@ Given the following syntax: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel
 1. Server with Port-channel:
 
     Template fields:
+
       - endpoint_type: servers
       - endpoint: server1
       - endpoint_port_channel: Po1
@@ -43,6 +44,7 @@ Given the following syntax: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel
 2. Server without port-channel:
 
     Template fields:
+
       - endpoint_type: servers
       - endpoint: server2
       - endpoint_port_channel: none
@@ -52,7 +54,7 @@ Given the following syntax: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel
 ## Default description or name values
 
 To facilitate customizing the description and names of values, here is a complete list of input variables and default values.
-Please consult the `eos_designs` input variables documentation to obtain the available template field (`[field_name]`).
+Please consult the `eos_designs` input variables documentation to obtain the available template field(s) (`[field_name]`).
 
 ```yaml
 # Loopback interfaces description
