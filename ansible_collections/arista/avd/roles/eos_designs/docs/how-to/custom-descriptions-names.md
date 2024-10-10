@@ -31,7 +31,7 @@ Example:
 
 Given the following syntax: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"`
 
-**Server with Port-channel:**
+**Server with port-channel:**
 
 Template fields:
 
