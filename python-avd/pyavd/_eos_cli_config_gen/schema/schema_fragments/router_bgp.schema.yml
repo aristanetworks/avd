@@ -1633,9 +1633,6 @@ keys:
                   type: bool
                 next_hop_resolution:
                   type: dict
-                  keys:
-                    v4_mapped_v6_translation:
-                      type: bool
                   deprecation:
                     warning: true
                     removed: true
@@ -1752,9 +1749,6 @@ keys:
                   type: bool
                 next_hop_resolution:
                   type: dict
-                  keys:
-                    v4_mapped_v6_translation:
-                      type: bool
                   deprecation:
                     warning: true
                     removed: true
