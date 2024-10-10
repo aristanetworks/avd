@@ -31,25 +31,25 @@ Example:
 
 Given the following syntax: `"{endpoint_type!u}_{endpoint}{endpoint_port_channel?<_}"`
 
-1. Server with Port-channel:
+**Server with Port-channel:**
 
-    Template fields:
+Template fields:
 
-      - endpoint_type: servers
-      - endpoint: server1
-      - endpoint_port_channel: Po1
+- endpoint_type: servers
+- endpoint: server1
+- endpoint_port_channel: Po1
 
-    results in: `SERVERS_server1_Po1`
+results in: `SERVERS_server1_Po1`
 
-2. Server without port-channel:
+**Server without port-channel:**
 
-    Template fields:
+Template fields:
 
-      - endpoint_type: servers
-      - endpoint: server2
-      - endpoint_port_channel: none
+- endpoint_type: servers
+- endpoint: server2
+- endpoint_port_channel: none
 
-    results in: `SERVERS_server2`
+results in: `SERVERS_server2`
 
 ## Default description or name values
 
