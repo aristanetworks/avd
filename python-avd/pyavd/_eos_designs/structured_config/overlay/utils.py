@@ -261,7 +261,7 @@ class UtilsMixin:
                 peer_facts,
                 "overlay.peering_address",
                 required=True,
-                org_key=f"switch.overlay.peering_address for {peer_name}",
+                custom_error_msg=f"switch.overlay.peering_address for {peer_name} is required.",
             ),
             "overlay_peering_interface": "Loopback0",
         }

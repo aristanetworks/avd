@@ -218,7 +218,7 @@ interface Ethernet2
    no switchport
    vrf C1_VRF1
    ip address 10.0.1.9/30
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet3
    description P2P_p4_Ethernet3
@@ -369,7 +369,7 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet2 | 0 | - | False |
+| Ethernet2 | 0.0.0.0 | - | False |
 
 #### Router OSPF Device Configuration
 
@@ -416,8 +416,8 @@ router ospf 10 vrf C1_VRF1
 !
 router isis CORE
    net 49.0001.0102.5500.1003.00
-   is-type level-2
    router-id ipv4 10.255.1.3
+   is-type level-2
    log-adjacency-changes
    mpls ldp sync default
    !
