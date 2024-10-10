@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, NoReturn
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import append_if_not_duplicate, default, get, get_item, unique
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -161,7 +161,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                     "use the VRF filter 'deny_vrfs' under the node settings."
                 )
                 wan_vrf = get_item(self._filtered_wan_vrfs, "name", vrf_name, required=True, custom_error_msg=error_message)
-                vni = get(wan_vrf, "wan_vni", required=True, org_key=error_message)
+                vni = get(wan_vrf, "wan_vni", required=True, custom_error_msg=error_message)
             else:
                 vni = default(
                     vrf.get("vrf_vni"),
@@ -186,7 +186,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                             tenant,
                             "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool",
                             required=True,
-                            org_key=f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant['name']}",
+                            custom_error_msg=f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant['name']} is required.",
                         )
                         underlay_l3_mcast_group_ipv4_pool_offset = get(tenant, "evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool_offset", default=0)
                         vrf_data["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
@@ -228,7 +228,9 @@ class VxlanInterfaceMixin(UtilsMixin):
         if (vni_override := vlan.get("vni_override")) is not None:
             vxlan_interface_vlan["vni"] = int(vni_override)
         else:
-            mac_vrf_vni_base = int(get(tenant, "mac_vrf_vni_base", required=True, org_key=f"'mac_vrf_vni_base' for Tenant: {tenant['name']}"))
+            mac_vrf_vni_base = int(
+                get(tenant, "mac_vrf_vni_base", required=True, custom_error_msg=f"'mac_vrf_vni_base' for Tenant: {tenant['name']} is required.")
+            )
             vxlan_interface_vlan["vni"] = mac_vrf_vni_base + vlan_id
 
         vlan_evpn_l2_multicast_enabled = (
@@ -239,7 +241,7 @@ class VxlanInterfaceMixin(UtilsMixin):
                 tenant,
                 "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool",
                 required=True,
-                org_key=f"'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: {tenant['name']}",
+                custom_error_msg=f"'evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: {tenant['name']} is required.",
             )
             underlay_l2_multicast_group_ipv4_pool_offset = get(tenant, "evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset", default=0)
             vxlan_interface_vlan["multicast_group"] = self.shared_utils.ip_addressing.evpn_underlay_l2_multicast_group(
@@ -279,7 +281,7 @@ class VxlanInterfaceMixin(UtilsMixin):
 
         if overlay_her_flood_list_scope == "dc" and self.shared_utils.dc_name is None:
             msg = "'dc_name' is required with 'overlay_her_flood_list_scope: dc'"
-            raise AristaAvdMissingVariableError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         for peer in self.shared_utils.all_fabric_devices:
             if peer == self.shared_utils.hostname:

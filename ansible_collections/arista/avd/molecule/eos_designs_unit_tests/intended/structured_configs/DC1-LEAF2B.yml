@@ -11,6 +11,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
+    route_map: RM-CONN-2-BGP
   updates:
     wait_for_convergence: true
     wait_install: true
@@ -34,9 +37,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 172.31.254.64
     peer_group: UNDERLAY-PEERS
@@ -625,7 +625,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
   ospf_network_point_to_point: true
 - name: Ethernet10
   peer: server01_MLAG
@@ -821,7 +821,7 @@ loopback_interfaces:
 
     '
   vrf: Tenant_A_OSPF
-  ospf_area: '0'
+  ospf_area: 0.0.0.0
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

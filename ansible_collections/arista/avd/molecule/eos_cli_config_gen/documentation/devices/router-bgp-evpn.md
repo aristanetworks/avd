@@ -218,6 +218,18 @@ router bgp 65101
    neighbor 192.168.255.3 allowas-in 5
    neighbor 192.168.255.3 maximum-routes 52000 warning-limit 2000 warning-only
    neighbor 192.168.255.3 missing-policy address-family all direction in action deny
+   redistribute connected include leaked
+   redistribute isis level-2 include leaked route-map RM_BGP_EVPN
+   redistribute ospf match internal include leaked route-map RM_BGP_EVPN
+   redistribute ospf match external include leaked route-map RM_BGP_EVPN
+   redistribute ospfv3 include leaked route-map RM_BGP_EVPN
+   redistribute ospfv3 match external include leaked route-map RM_BGP_EVPN
+   redistribute ospfv3 match nssa-external include leaked route-map RM_BGP_EVPN
+   redistribute static include leaked
+   redistribute rip route-map RM_BGP_EVPN
+   redistribute attached-host route-map RM_BGP_EVPN
+   redistribute dynamic route-map RM_BGP_EVPN
+   redistribute user rcf RCF_BGP_EVPN()
    !
    vlan 2488
       rd 145.245.21.0:1
@@ -288,7 +300,7 @@ router bgp 65101
       neighbor ADDITIONAL-PATH-PG-5 activate
       neighbor ADDITIONAL-PATH-PG-5 additional-paths send limit 42
       neighbor ADDITIONAL-PATH-PG-6 activate
-      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send any
+      no neighbor ADDITIONAL-PATH-PG-6 additional-paths send
       neighbor EVPN-OVERLAY-PEERS default-route
       neighbor EVPN-OVERLAY-PEERS activate
       neighbor EVPN-OVERLAY-PEERS domain remote
@@ -299,7 +311,9 @@ router bgp 65101
       neighbor TEST-ENCAPSULATION-2 activate
       neighbor TEST-ENCAPSULATION-2 encapsulation path-selection
       neighbor 10.100.100.1 activate
+      neighbor 10.100.100.1 additional-paths receive
       neighbor 10.100.100.1 default-route
+      neighbor 10.100.100.1 additional-paths send any
       neighbor 10.100.100.2 activate
       neighbor 10.100.100.2 default-route route-map RM_DEFAULT_ROUTE
       neighbor 10.100.100.3 activate
@@ -317,6 +331,26 @@ router bgp 65101
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
+      redistribute attached-host route-map RM_BGP_EVPN_IPV4
+      redistribute bgp leaked route-map RM_BGP_EVPN_IPV4
+      redistribute connected route-map RM_BGP_EVPN_IPV4
+      redistribute dynamic rcf RCF_BGP_EVPN_IPV4()
+      redistribute user rcf RCF_BGP_EVPN_IPV4()
+      redistribute isis level-1 include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute ospf include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute ospfv3 include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute ospfv3 match external include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute ospfv3 match nssa-external 2 include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute ospf match external include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute ospf match nssa-external 1 include leaked route-map RM_BGP_EVPN_IPV4
+      redistribute rip route-map RM_BGP_EVPN_IPV4
+      redistribute static include leaked route-map RM_BGP_EVPN_IPV4
+   !
+   address-family ipv4 multicast
+      redistribute ospf route-map RM_BGP_EVPN_IPV4M
+      redistribute ospfv3 match internal route-map RM_BGP_EVPN_IPV4M
+      redistribute ospfv3 match external route-map RM_BGP_EVPN_IPV4M
+      redistribute ospfv3 match nssa-external 1 route-map RM_BGP_EVPN_IPV4M
    !
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11
