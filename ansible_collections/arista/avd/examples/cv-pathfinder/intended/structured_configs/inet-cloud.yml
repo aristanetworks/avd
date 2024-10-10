@@ -9,6 +9,8 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute_routes:
+  - source_protocol: connected
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -18,8 +20,6 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
-  redistribute_routes:
-  - source_protocol: connected
   neighbors:
   - ip_address: 100.64.21.2
     remote_as: '65000'
