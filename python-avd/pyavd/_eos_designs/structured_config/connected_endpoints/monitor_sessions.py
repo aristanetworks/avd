@@ -55,13 +55,12 @@ class MonitorSessionsMixin(UtilsMixin):
                     )
                     raise AristaAvdError(msg)
 
-                else:
-                    if (access_group := get(session, "source_settings.access_group")) is not None:
-                        source["access_group"] = {
-                            "type": access_group.get("type"),
-                            "name": access_group.get("name"),
-                            "priority": access_group.get("priority"),
-                        }
+                if (access_group := get(session, "source_settings.access_group")) is not None:
+                    source["access_group"] = {
+                        "type": access_group.get("type"),
+                        "name": access_group.get("name"),
+                        "priority": access_group.get("priority"),
+                    }
                 append_if_not_duplicate(
                     list_of_dicts=monitor_session["sources"],
                     primary_key="name",
