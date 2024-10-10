@@ -105,10 +105,7 @@ platform sand lag hardware-only
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
-!
 platform sand multicast replication default ingress
-!
 platform sand mdb profile l3-xxl
-!
 platform sfe data-plane cpu allocation maximum 42
 ```
