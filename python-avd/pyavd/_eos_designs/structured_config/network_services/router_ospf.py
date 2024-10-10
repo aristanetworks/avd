@@ -74,12 +74,12 @@ class RouterOspfMixin(UtilsMixin):
                 process_redistribute = {}
 
                 if get(vrf, "ospf.redistribute_bgp.enabled", default=True) is True:
-                    process_redistribute["bgp"] = {}
+                    process_redistribute["bgp"] = {"enabled": True}
                     if (route_map := get(vrf, "ospf.redistribute_bgp.route_map")) is not None:
                         process_redistribute["bgp"]["route_map"] = route_map
 
                 if get(vrf, "ospf.redistribute_connected.enabled", default=False) is True:
-                    process_redistribute["connected"] = {}
+                    process_redistribute["connected"] = {"enabled": True}
                     if (route_map := get(vrf, "ospf.redistribute_connected.route_map")) is not None:
                         process_redistribute["connected"]["route_map"] = route_map
 
@@ -99,7 +99,7 @@ class RouterOspfMixin(UtilsMixin):
         # If we have static_routes in default VRF and not EPVN, and underlay is OSPF
         # Then add redistribute static to the underlay OSPF process.
         if self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_routing_protocol in ["ospf", "ospf-ldp"]:
-            ospf_processes.append({"id": int(self.shared_utils.underlay_ospf_process_id), "redistribute": {"static": {}}})
+            ospf_processes.append({"id": int(self.shared_utils.underlay_ospf_process_id), "redistribute": {"static": {"enabled": True}}})
         if ospf_processes:
             return {"process_ids": ospf_processes}
 

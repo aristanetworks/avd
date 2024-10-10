@@ -138,7 +138,7 @@ interface {{ ethernet_interface.name }}
 {%         elif ethernet_interface.encapsulation_vlan.client.dot1q.inner is arista.avd.defined and ethernet_interface.encapsulation_vlan.client.dot1q.outer is arista.avd.defined %}
 {%             set encapsulation_cli = "client dot1q outer " ~ ethernet_interface.encapsulation_vlan.client.dot1q.outer ~ " inner " ~ ethernet_interface.encapsulation_vlan.client.dot1q.inner %}
 {%             if ethernet_interface.encapsulation_vlan.network.dot1q.inner is arista.avd.defined and ethernet_interface.encapsulation_vlan.network.dot1q.outer is arista.avd.defined %}
-{%                 set encapsulation_cli = encapsulation_cli ~ " network dot1q outer " ~ ethernet_interface.encapsulation_vlan.network.dot1q.inner ~ " inner " ~ ethernet_interface.encapsulation_vlan.network.dot1q.outer %}
+{%                 set encapsulation_cli = encapsulation_cli ~ " network dot1q outer " ~ ethernet_interface.encapsulation_vlan.network.dot1q.outer ~ " inner " ~ ethernet_interface.encapsulation_vlan.network.dot1q.inner %}
 {%             elif ethernet_interface.encapsulation_vlan.network.dot1q.client is arista.avd.defined(true) %}
 {%                 set encapsulation_cli = encapsulation_cli ~ " network client" %}
 {%             endif %}
@@ -159,6 +159,58 @@ interface {{ ethernet_interface.name }}
 {%     endif %}
 {%     if ethernet_interface.pvlan_mapping is arista.avd.defined %}
    switchport pvlan mapping {{ ethernet_interface.pvlan_mapping }}
+{%     endif %}
+{%     if ethernet_interface.vlan_id is arista.avd.defined and ethernet_interface.type | arista.avd.default != 'l2dot1q' %}
+   vlan id {{ ethernet_interface.vlan_id }}
+{%     endif %}
+{%     if ethernet_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
+{%         set encapsulation_dot1q_cli = 'encapsulation dot1q vlan ' ~ ethernet_interface.encapsulation_dot1q.vlan %}
+{%         if ethernet_interface.encapsulation_dot1q.inner_vlan is arista.avd.defined %}
+{%             set encapsulation_dot1q_cli = encapsulation_dot1q_cli ~ ' inner ' ~ ethernet_interface.encapsulation_dot1q.inner_vlan %}
+{%         endif %}
+   {{ encapsulation_dot1q_cli }}
+{%     elif ethernet_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined %}
+{%         set client_encapsulation = ethernet_interface.encapsulation_vlan.client.encapsulation %}
+{%         set network_flag = False %}
+{%         if client_encapsulation in ['dot1q', 'dot1ad'] %}
+{%             if ethernet_interface.encapsulation_vlan.client.vlan is arista.avd.defined %}
+{%                 set encapsulation_cli = 'client ' ~ client_encapsulation ~ ' ' ~ ethernet_interface.encapsulation_vlan.client.vlan %}
+{%             elif ethernet_interface.encapsulation_vlan.client.outer_vlan is arista.avd.defined and ethernet_interface.encapsulation_vlan.client.inner_vlan is arista.avd.defined %}
+{%                 if ethernet_interface.encapsulation_vlan.client.inner_encapsulation is arista.avd.defined %}
+{%                     set encapsulation_cli = 'client ' ~ client_encapsulation ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.client.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.client.inner_encapsulation ~ ' ' ~ ethernet_interface.encapsulation_vlan.client.inner_vlan %}
+{%                 else %}
+{%                     set encapsulation_cli = 'client ' ~ client_encapsulation ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.client.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.client.inner_vlan %}
+{%                 endif %}
+{%                 if ethernet_interface.encapsulation_vlan.network.encapsulation | arista.avd.default == 'client inner' %}
+{%                     set network_flag = True %}
+{%                     set encapsulation_cli = encapsulation_cli ~ ' network ' ~ ethernet_interface.encapsulation_vlan.network.encapsulation %}
+{%                 endif %}
+{%             endif %}
+{%         elif client_encapsulation in ['untagged', 'unmatched'] %}
+{%             set encapsulation_cli = 'client ' ~ ethernet_interface.encapsulation_vlan.client.encapsulation %}
+{%         endif %}
+{%         if encapsulation_cli is arista.avd.defined %}
+{%             if client_encapsulation in ['dot1q', 'dot1ad', 'untagged'] and ethernet_interface.encapsulation_vlan.network.encapsulation is arista.avd.defined and not network_flag %}
+{%                 set network_encapsulation = ethernet_interface.encapsulation_vlan.network.encapsulation %}
+{%                 if network_encapsulation in ['dot1q', 'dot1ad'] %}
+{%                     if ethernet_interface.encapsulation_vlan.network.vlan is arista.avd.defined %}
+{%                         set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_encapsulation ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.vlan %}
+{%                     elif ethernet_interface.encapsulation_vlan.network.outer_vlan is arista.avd.defined and ethernet_interface.encapsulation_vlan.network.inner_vlan is arista.avd.defined %}
+{%                         if ethernet_interface.encapsulation_vlan.network.inner_encapsulation is arista.avd.defined %}
+{%                             set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_encapsulation ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_encapsulation ~ ' ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
+{%                         else %}
+{%                             set encapsulation_cli = encapsulation_cli ~ ' network ' ~ network_encapsulation ~ ' outer ' ~ ethernet_interface.encapsulation_vlan.network.outer_vlan ~ ' inner ' ~ ethernet_interface.encapsulation_vlan.network.inner_vlan %}
+{%                         endif %}
+{%                     endif %}
+{%                 elif network_encapsulation == 'untagged' and client_encapsulation == 'untagged' %}
+{%                     set encapsulation_cli = encapsulation_cli ~ ' network untagged' %}
+{%                 elif network_encapsulation == 'client' and client_encapsulation != "untagged" %}
+{%                     set encapsulation_cli = encapsulation_cli ~ " network client" %}
+{%                 endif %}
+{%             endif %}
+   encapsulation vlan
+      {{ encapsulation_cli }}
+{%         endif %}
 {%     endif %}
 {%     if ethernet_interface.switchport.access_vlan is arista.avd.defined %}
    switchport access vlan {{ ethernet_interface.switchport.access_vlan }}
@@ -317,6 +369,59 @@ interface {{ ethernet_interface.name }}
    dot1x authentication failure action traffic drop
 {%             endif %}
 {%         endif %}
+{%         if ethernet_interface.dot1x.aaa.unresponsive is arista.avd.defined %}
+{%             set aaa_config = "dot1x aaa unresponsive" %}
+{%             set actions = ethernet_interface.dot1x.aaa.unresponsive %}
+{%             for action in actions | sort(reverse=True) %}
+{%                 if action == "phone_action" %}
+{%                     set aaa_action_config = aaa_config ~ " phone action" %}
+{%                 elif action == "action" %}
+{%                     set aaa_action_config = aaa_config ~ " action" %}
+{%                 endif %}
+{%                 if aaa_action_config is arista.avd.defined %}
+{%                     if actions[action].apply_cached_results is arista.avd.defined(true) %}
+{%                         set action_apply_config = "apply cached-results" %}
+{%                         if actions[action].cached_results_timeout.time_duration is arista.avd.defined and actions[action].cached_results_timeout.time_duration_unit is arista.avd.defined %}
+{%                             set aaa_action_config = aaa_action_config ~ " " ~ action_apply_config ~ " timeout " ~ actions[action].cached_results_timeout.time_duration ~ " " ~ actions[action].cached_results_timeout.time_duration_unit %}
+{%                         endif %}
+{%                     endif %}
+{%                     if actions[action].traffic_allow is arista.avd.defined(true) %}
+{%                         if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                             set aaa_action_config = aaa_action_config ~ " else traffic allow" %}
+{%                         else %}
+{%                             set aaa_action_config = aaa_action_config ~ " traffic allow" %}
+{%                         endif %}
+{%                     else %}
+{%                         if actions[action].traffic_allow_vlan is arista.avd.defined and actions[action].traffic_allow_access_list is arista.avd.defined %}
+{%                             if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                                 set aaa_action_config = aaa_action_config ~ " else traffic allow vlan " ~ actions[action].traffic_allow_vlan ~ " access-list " ~ actions[action].traffic_allow_access_list %}
+{%                             else %}
+{%                                 set aaa_action_config = aaa_action_config ~ " traffic allow vlan " ~ actions[action].traffic_allow_vlan ~ " access-list " ~ actions[action].traffic_allow_access_list %}
+{%                             endif %}
+{%                         else %}
+{%                             if actions[action].traffic_allow_vlan is arista.avd.defined %}
+{%                                 if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                                     set aaa_action_config = aaa_action_config ~ " else traffic allow vlan " ~ actions[action].traffic_allow_vlan %}
+{%                                 else %}
+{%                                     set aaa_action_config = aaa_action_config ~ " traffic allow vlan " ~ actions[action].traffic_allow_vlan %}
+{%                                 endif %}
+{%                             endif %}
+{%                             if actions[action].traffic_allow_access_list is arista.avd.defined %}
+{%                                 if actions[action].apply_alternate is arista.avd.defined(true) %}
+{%                                     set aaa_action_config = aaa_action_config ~ " else traffic allow access list " ~ actions[action].traffic_allow_access_list %}
+{%                                 else %}
+{%                                     set aaa_action_config = aaa_action_config ~ " traffic allow access list " ~ actions[action].traffic_allow_access_list %}
+{%                                 endif %}
+{%                             endif %}
+{%                         endif %}
+{%                     endif %}
+   {{ aaa_action_config }}
+{%                 endif %}
+{%             endfor %}
+{%         endif %}
+{%         if ethernet_interface.dot1x.aaa.unresponsive.eap_response is arista.avd.defined %}
+   {{ aaa_config }} eap response {{ ethernet_interface.dot1x.aaa.unresponsive.eap_response }}
+{%         endif %}
 {%         if ethernet_interface.dot1x.reauthentication is arista.avd.defined(true) %}
    dot1x reauthentication
 {%         endif %}
@@ -338,6 +443,9 @@ interface {{ ethernet_interface.name }}
 {%                 endif %}
    {{ host_mode_cli }}
 {%             endif %}
+{%         endif %}
+{%         if ethernet_interface.dot1x.mac_based_access_list is arista.avd.defined(true) %}
+   dot1x mac based access-list
 {%         endif %}
 {%         if ethernet_interface.dot1x.mac_based_authentication.enabled is arista.avd.defined(true) %}
 {%             if ethernet_interface.dot1x.mac_based_authentication.host_mode_common is arista.avd.defined(true) %}

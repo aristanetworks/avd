@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -255,6 +255,24 @@ router bgp 65101
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
       neighbor TEST_PEER_GRP next-hop address-family ipv6 originate
       neighbor TEST_PEER_GRP activate
+   !
+   address-family ipv4 multicast
+      redistribute attached-host route-map AFIPV4M_ATTACHED_HOST
+      redistribute connected route-map AFIPV4M_CONNECTED
+      redistribute isis level-1-2 include leaked route-map AFIPV4M_ISIS
+      redistribute ospf match internal route-map AFIPV4M_OSPF_INTERNAL
+      redistribute ospf match external route-map AFIPV4M_OSPF_EXTERNAL
+      redistribute ospf match nssa-external route-map AFIPV4M_OSPF_NSSA
+      redistribute ospfv3 route-map AFIPV4M_OSPFV3
+      redistribute static route-map AFIPV4M_STATIC
+   !
+   address-family ipv6
+      redistribute bgp leaked route-map RM-REDISTRIBUTE-BGP
+      redistribute connected rcf Address_Family_IPV6_Connected()
+      redistribute ospfv3 match internal include leaked route-map RM-REDISTRIBUTE-OSPF-INTERNAL
+      redistribute ospfv3 match external include leaked
+      redistribute ospfv3 match nssa-external 1
+      redistribute static route-map RM-IPV6-STATIC-TO-BGP
    !
    vrf TENANT_A_PROJECT01
       rd 192.168.255.3:11

@@ -43,20 +43,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 192.168.1.21/24 | 192.168.1.254 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.1.21/24 | 192.168.1.254 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 192.168.1.21/24
@@ -171,18 +171,18 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2 | - | 172.16.21.3/31 | default | - | False | - | - |
-| Ethernet2 | P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2 | - | 172.16.21.67/31 | default | - | False | - | - |
-| Ethernet3 | P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2 | - | 172.17.210.2/31 | default | - | False | - | - |
-| Ethernet4 | P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2 | - | 172.17.210.6/31 | default | - | False | - | - |
-| Ethernet5 | P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4 | - | 200.200.200.201/24 | default | - | False | - | - |
+| Ethernet1 | P2P_DC2-SUPER-SPINE1_Ethernet2 | - | 172.16.21.3/31 | default | - | False | - | - |
+| Ethernet2 | P2P_DC2-SUPER-SPINE2_Ethernet2 | - | 172.16.21.67/31 | default | - | False | - | - |
+| Ethernet3 | P2P_DC2-POD1-LEAF1A_Ethernet2 | - | 172.17.210.2/31 | default | - | False | - | - |
+| Ethernet4 | P2P_DC2-POD1-LEAF2A_Ethernet2 | - | 172.17.210.6/31 | default | - | False | - | - |
+| Ethernet5 | P2P_DC1-POD2-SPINE2_Ethernet4 | - | 200.200.200.201/24 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet2
+   description P2P_DC2-SUPER-SPINE1_Ethernet2
    no shutdown
    no switchport
    ip address 172.16.21.3/31
@@ -190,7 +190,7 @@ interface Ethernet1
    service-profile QOS-PROFILE
 !
 interface Ethernet2
-   description P2P_LINK_TO_DC2-SUPER-SPINE2_Ethernet2
+   description P2P_DC2-SUPER-SPINE2_Ethernet2
    no shutdown
    no switchport
    ip address 172.16.21.67/31
@@ -198,7 +198,7 @@ interface Ethernet2
    service-profile QOS-PROFILE
 !
 interface Ethernet3
-   description P2P_LINK_TO_DC2-POD1-LEAF1A_Ethernet2
+   description P2P_DC2-POD1-LEAF1A_Ethernet2
    no shutdown
    no switchport
    ip address 172.17.210.2/31
@@ -206,7 +206,7 @@ interface Ethernet3
    service-profile QOS-PROFILE
 !
 interface Ethernet4
-   description P2P_LINK_TO_DC2-POD1-LEAF2A_Ethernet2
+   description P2P_DC2-POD1-LEAF2A_Ethernet2
    no shutdown
    no switchport
    ip address 172.17.210.6/31
@@ -214,7 +214,7 @@ interface Ethernet4
    service-profile QOS-PROFILE
 !
 interface Ethernet5
-   description P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet4
+   description P2P_DC1-POD2-SPINE2_Ethernet4
    no shutdown
    no switchport
    ip address 200.200.200.201/24
@@ -229,20 +229,20 @@ interface Ethernet5
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | EVPN_Overlay_Peering | default | 172.16.210.2/32 |
+| Loopback0 | ROUTER_ID | default | 172.16.210.2/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | EVPN_Overlay_Peering | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description EVPN_Overlay_Peering
+   description ROUTER_ID
    no shutdown
    ip address 172.16.210.2/32
 ```

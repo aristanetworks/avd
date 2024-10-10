@@ -47,20 +47,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 172.16.100.109/24 | 172.16.100.1 |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.109/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management0
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.100.109/24
@@ -341,8 +341,8 @@ vlan 330
 | Ethernet94 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
 | Ethernet95 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
 | Ethernet96 | IDF3 Standard Port | trunk phone | - | 310 | - | - |
-| Ethernet97/1 | LEAF3A_Ethernet97/4 | *trunk | *10,310,320,330 | *- | *- | 971 |
-| Ethernet97/2 | LEAF3B_Ethernet97/4 | *trunk | *10,310,320,330 | *- | *- | 971 |
+| Ethernet97/1 | L2_LEAF3A_Ethernet97/4 | *trunk | *10,310,320,330 | *- | *- | 971 |
+| Ethernet97/2 | L2_LEAF3B_Ethernet97/4 | *trunk | *10,310,320,330 | *- | *- | 971 |
 
 *Inherited from Port-Channel Interface
 
@@ -2372,12 +2372,12 @@ interface Ethernet96
    spanning-tree bpduguard enable
 !
 interface Ethernet97/1
-   description LEAF3A_Ethernet97/4
+   description L2_LEAF3A_Ethernet97/4
    no shutdown
    channel-group 971 mode active
 !
 interface Ethernet97/2
-   description LEAF3B_Ethernet97/4
+   description L2_LEAF3B_Ethernet97/4
    no shutdown
    channel-group 971 mode active
 ```
@@ -2390,18 +2390,18 @@ interface Ethernet97/2
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel971 | IDF3_AGG_Po974 | trunk | 10,310,320,330 | - | - | - | - | - | - |
+| Port-Channel971 | L2_IDF3_AGG_Port-Channel974 | trunk | 10,310,320,330 | - | - | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel971
-   description IDF3_AGG_Po974
+   description L2_IDF3_AGG_Port-Channel974
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,310,320,330
    switchport mode trunk
+   switchport
 ```
 
 ### VLAN Interfaces

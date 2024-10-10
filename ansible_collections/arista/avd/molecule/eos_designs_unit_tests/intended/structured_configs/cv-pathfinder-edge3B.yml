@@ -43,6 +43,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
     neighbor_default:
@@ -51,6 +52,7 @@ router_bgp:
     neighbors:
     - ip_address: 192.168.142.6
       activate: true
+      encapsulation: path-selection
   address_family_ipv4_sr_te:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -69,13 +71,12 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   neighbors:
   - ip_address: 192.168.144.1
     peer_group: WAN-OVERLAY-PEERS
     peer: cv-pathfinder-pathfinder
-    description: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
   - ip_address: 192.168.142.6
     peer: cv-pathfinder-edge3A
     description: cv-pathfinder-edge3A
@@ -99,7 +100,6 @@ router_bgp:
         - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: IT
-    router_id: 192.168.42.7
     rd: 192.168.42.7:1000
     route_targets:
       import:
@@ -110,10 +110,10 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 1000:1000
+    router_id: 192.168.42.7
     redistribute_routes:
     - source_protocol: connected
   - name: PROD
-    router_id: 192.168.42.7
     rd: 192.168.42.7:142
     route_targets:
       import:
@@ -124,6 +124,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 142:142
+    router_id: 192.168.42.7
     redistribute_routes:
     - source_protocol: connected
 service_routing_protocols_model: multi-agent
@@ -154,19 +155,23 @@ ethernet_interfaces:
   peer_type: l3_interface
   ip_address: 172.15.6.6/31
   shutdown: false
-  type: routed
+  switchport:
+    enabled: false
   description: Colt_10423
 - name: Ethernet52
-  type: routed
+  switchport:
+    enabled: false
   peer_type: l3_interface
   peer: cv-pathfinder-edge3A
   shutdown: false
-  description: DIRECT LAN HA LINK
-  ip_address: 10.10.10.1/31
-  flow_tracker: null
+  description: WAN_HA_cv-pathfinder-edge3A_Ethernet52
+  ip_address: 10.10.10.2/24
+  flow_tracker:
+    hardware: FLOW-TRACKER
+  mtu: 9100
 loopback_interfaces:
 - name: Loopback0
-  description: Router_ID
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.7/32
 prefix_lists:
@@ -416,7 +421,7 @@ router_path_selection:
     - router_ip: 192.168.142.6
       name: cv-pathfinder-edge3A
       ipv4_addresses:
-      - 10.10.10.0
+      - 10.10.10.1
     ipsec_profile: DP-PROFILE
   load_balance_policies:
   - name: LB-DEFAULT-AVT-POLICY-CONTROL-PLANE
@@ -525,7 +530,7 @@ application_traffic_recognition:
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
-  mtu: 9214
+  mtu: 9194
   ip_address: 192.168.142.7/32
   flow_tracker:
     hardware: FLOW-TRACKER

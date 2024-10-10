@@ -28,20 +28,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -699,8 +699,8 @@ Priority Flow Control is **Off** on all interfaces.
 ```eos
 !
 priority-flow-control all off
-priority-flow-control pause watchdog action no-drop
 priority-flow-control pause watchdog default timeout 0.05
-priority-flow-control pause watchdog default polling-interval 10.001
 priority-flow-control pause watchdog default recovery-time 1.22
+priority-flow-control pause watchdog default polling-interval 10.001
+priority-flow-control pause watchdog action no-drop
 ```

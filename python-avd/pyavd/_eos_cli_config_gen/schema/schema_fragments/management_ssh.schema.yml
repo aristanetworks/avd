@@ -10,6 +10,19 @@ keys:
   management_ssh:
     type: dict
     keys:
+      authentication:
+        type: dict
+        keys:
+          empty_passwords:
+            type: str
+            valid_values: ["auto", "deny", "permit"]
+            description: Permit or deny empty passwords for SSH authentication.
+          protocols:
+            type: list
+            items:
+              type: str
+              valid_values: ["keyboard-interactive", "password", "public-key"]
+            description: Allowed SSH authentication methods.
       access_groups:
         type: list
         items:

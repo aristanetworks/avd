@@ -57,14 +57,15 @@ ethernet_interfaces:
   peer: UNDERLAY_FILTER_PEER_AS_L3LEAF1
   peer_interface: Ethernet1
   peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet1
+  description: P2P_UNDERLAY_FILTER_PEER_AS_L3LEAF1_Ethernet1
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 192.168.0.0/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.255.1/32
 prefix_lists:

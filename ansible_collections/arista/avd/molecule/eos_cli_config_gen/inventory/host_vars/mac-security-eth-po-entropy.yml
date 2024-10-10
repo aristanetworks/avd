@@ -64,7 +64,6 @@ port_channel_interfaces:
 # Children interfaces
 ethernet_interfaces:
   - name: Ethernet3
-    type: port-channel-member
     peer: DC1-AGG01
     peer_interface: Ethernet3
     peer_type: l3leaf
@@ -76,7 +75,8 @@ ethernet_interfaces:
       mode: active
 # Routed Interfaces
   - name: Ethernet1
-    type: routed
+    switchport:
+      enabled: false
     ip_address: 1.1.1.1/24
     mac_security:
       profile: A1

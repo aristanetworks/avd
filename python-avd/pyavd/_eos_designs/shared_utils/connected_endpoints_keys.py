@@ -11,22 +11,6 @@ from pyavd._utils import get
 if TYPE_CHECKING:
     from . import SharedUtils
 
-# NOTE: there is a static list of default endpoint keys in the fabric connected endpoints documentation templates.
-DEFAULT_CONNECTED_ENDPOINTS_KEYS = [
-    {"key": "servers", "type": "server", "description": "Server"},
-    {"key": "firewalls", "type": "firewall", "description": "Firewall"},
-    {"key": "routers", "type": "router", "description": "Router"},
-    {"key": "load_balancers", "type": "load_balancer", "description": "Load Balancer"},
-    {"key": "storage_arrays", "type": "storage_array", "description": "Storage Array"},
-    {"key": "cpes", "type": "cpe", "description": "CPE"},
-    {"key": "workstations", "type": "workstation", "description": "Workstation"},
-    {"key": "access_points", "type": "access_point", "description": "Access Point"},
-    {"key": "phones", "type": "phone", "description": "Phone"},
-    {"key": "printers", "type": "printer", "description": "Printer"},
-    {"key": "cameras", "type": "camera", "description": "Camera"},
-    {"key": "generic_devices", "type": "generic_device", "description": "Generic Device"},
-]
-
 
 class ConnectedEndpointsKeysMixin:
     """
@@ -44,6 +28,7 @@ class ConnectedEndpointsKeysMixin:
         NOTE: This method is called _before_ any schema validation, since we need to resolve connected_endpoints_keys dynamically
         """
         connected_endpoints_keys = []
-        # Support legacy data model by converting nested dict to list of dict
-        connected_endpoints_keys = get(self.hostvars, "connected_endpoints_keys", default=DEFAULT_CONNECTED_ENDPOINTS_KEYS)
+        # Reading default value from schema
+        default_connected_endpoint_keys = self.schema.get_default_value(["connected_endpoints_keys"])
+        connected_endpoints_keys = get(self.hostvars, "connected_endpoints_keys", default=default_connected_endpoint_keys)
         return [entry for entry in connected_endpoints_keys if entry.get("key") is not None and self.hostvars.get(entry["key"]) is not None]

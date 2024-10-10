@@ -99,12 +99,13 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE1_Ethernet1
+  description: P2P_DC1-POD1-SPINE1_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.11.0/31
@@ -112,12 +113,13 @@ ethernet_interfaces:
   peer: DC1-POD1-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD1-SPINE2_Ethernet1
+  description: P2P_DC1-POD1-SPINE2_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.11.2/31
@@ -125,12 +127,13 @@ ethernet_interfaces:
   peer: DC1-POD2-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD2-SPINE1_Ethernet1
+  description: P2P_DC1-POD2-SPINE1_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.12.0/31
@@ -138,12 +141,13 @@ ethernet_interfaces:
   peer: DC1-POD2-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_DC1-POD2-SPINE2_Ethernet1
+  description: P2P_DC1-POD2-SPINE2_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
   mac_security:
     profile: MACSEC_PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ptp:
     enable: true
   ip_address: 172.16.12.2/31
@@ -151,26 +155,28 @@ ethernet_interfaces:
   peer: DC1-RS1
   peer_interface: Ethernet1
   peer_type: overlay-controller
-  description: P2P_LINK_TO_DC1-RS1_Ethernet1
+  description: P2P_DC1-RS1_Ethernet1
   shutdown: false
   service_profile: QOS-PROFILE
-  type: routed
+  switchport:
+    enabled: false
   ip_address: 172.17.10.0/31
 - name: Ethernet6
   peer: DC2-SUPER-SPINE1
   peer_interface: Ethernet4
   peer_type: super-spine
-  description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet4
-  type: routed
+  switchport:
+    enabled: false
   shutdown: false
   ip_address: 11.1.2.0/31
   mac_security:
     profile: MACSEC_PROFILE
+  description: P2P_DC2-SUPER-SPINE1_Ethernet4
   ptp:
     enable: true
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 172.16.100.1/32
 prefix_lists:

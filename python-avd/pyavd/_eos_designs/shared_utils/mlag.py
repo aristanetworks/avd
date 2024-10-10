@@ -190,6 +190,14 @@ class MlagMixin:
         return get(self.switch_data_combined, "mlag_port_channel_id", default_mlag_port_channel_id)
 
     @cached_property
+    def mlag_peer_port_channel_id(self: SharedUtils) -> int:
+        return get(self.mlag_peer_facts, "mlag_port_channel_id", default=self.mlag_port_channel_id)
+
+    @cached_property
+    def mlag_peer_interfaces(self: SharedUtils) -> list:
+        return get(self.mlag_peer_facts, "mlag_interfaces", default=self.mlag_interfaces)
+
+    @cached_property
     def mlag_peer_vlan_structured_config(self: SharedUtils) -> dict | None:
         return get(self.switch_data_combined, "mlag_peer_vlan_structured_config")
 

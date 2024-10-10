@@ -44,7 +44,7 @@ router_bgp:
   - ip_address: 10.255.0.1
     peer_group: EVPN-OVERLAY-PEERS
     peer: sflow-tests-spine1
-    description: sflow-tests-spine1
+    description: sflow-tests-spine1_Loopback0
     remote_as: '65200'
   address_family_evpn:
     peer_groups:
@@ -52,7 +52,6 @@ router_bgp:
       activate: true
   vrfs:
   - name: VRF1
-    router_id: 10.254.1.2
     rd: 10.254.1.2:1
     route_targets:
       import:
@@ -63,6 +62,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '1:1'
+    router_id: 10.254.1.2
     redistribute_routes:
     - source_protocol: connected
   vlans:
@@ -104,7 +104,7 @@ vrfs:
   ip_routing: true
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.0.102/24
@@ -119,10 +119,11 @@ ethernet_interfaces:
   peer: sflow-tests-spine1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet3
+  description: P2P_sflow-tests-spine1_Ethernet3
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.5/31
@@ -130,20 +131,21 @@ ethernet_interfaces:
   peer: sflow-tests-spine1
   peer_interface: Ethernet4
   peer_type: spine
-  description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet4
+  description: P2P_sflow-tests-spine1_Ethernet4
   shutdown: false
   mtu: 9214
-  type: routed
+  switchport:
+    enabled: false
   sflow:
     enable: true
   ip_address: 10.254.2.7/31
 loopback_interfaces:
 - name: Loopback0
-  description: EVPN_Overlay_Peering
+  description: ROUTER_ID
   shutdown: false
   ip_address: 10.254.1.2/32
 - name: Loopback1
-  description: VTEP_VXLAN_Tunnel_Source
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
   ip_address: 10.254.11.2/32
 prefix_lists:

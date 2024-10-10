@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdMissingVariableError
-from pyavd._utils import get
+from pyavd._utils import default, get
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 from .utils import UtilsMixin
@@ -31,28 +31,23 @@ class LoopbackInterfacesMixin(UtilsMixin):
 
         loopback_interfaces = []
         # Loopback 0
+        loopback0 = {
+            "name": "Loopback0",
+            "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
+                InterfaceDescriptionData(
+                    shared_utils=self.shared_utils,
+                    interface="Loopback0",
+                    description=default(
+                        get(self._hostvars, "router_id_loopback_description"), get(self._hostvars, "overlay_loopback_description"), "ROUTER_ID"
+                    ),
+                ),
+            ),
+            "shutdown": False,
+        }
         if not self.shared_utils.underlay_ipv4:
-            loopback0 = {
-                "name": "Loopback0",
-                "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
-                    InterfaceDescriptionData(
-                        shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
-                    ),
-                ),
-                "shutdown": False,
-                "ipv6_address": f"{self.shared_utils.ipv6_router_id}/{self.shared_utils.loopback_ipv6_prefix_length}",
-            }
+            loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/{self.shared_utils.loopback_ipv6_prefix_length}"
         else:
-            loopback0 = {
-                "name": "Loopback0",
-                "description": self.shared_utils.interface_descriptions.router_id_loopback_interface(
-                    InterfaceDescriptionData(
-                        shared_utils=self.shared_utils, interface="Loopback0", description=get(self._hostvars, "overlay_loopback_description")
-                    ),
-                ),
-                "shutdown": False,
-                "ip_address": f"{self.shared_utils.router_id}/32",
-            }
+            loopback0["ip_address"] = f"{self.shared_utils.router_id}/32"
 
         if self.shared_utils.ipv6_router_id is not None:
             loopback0["ipv6_address"] = f"{self.shared_utils.ipv6_router_id}/{self.shared_utils.loopback_ipv6_prefix_length}"
@@ -82,24 +77,21 @@ class LoopbackInterfacesMixin(UtilsMixin):
             and self.shared_utils.vtep_loopback.lower() != "loopback0"
             and self.shared_utils.vtep_loopback.lower().startswith("lo")
         ):
+            vtep_loopback = {
+                "name": self.shared_utils.vtep_loopback,
+                "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
+                    InterfaceDescriptionData(
+                        shared_utils=self.shared_utils,
+                        interface=self.shared_utils.vtep_loopback,
+                        description=get(self._hostvars, "vtep_loopback_description", default="VXLAN_TUNNEL_SOURCE"),
+                    )
+                ),
+                "shutdown": False
+            }
             if not self.shared_utils.underlay_ipv4:
-                vtep_loopback = {
-                    "name": self.shared_utils.vtep_loopback,
-                    "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
-                        InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
-                    ),
-                    "shutdown": False,
-                    "ipv6_address": f"{self.shared_utils.vtep_ipv6}/{self.shared_utils.loopback_ipv6_prefix_length}",
-                }
+                vtep_loopback["ipv6_address"] = f"{self.shared_utils.vtep_ipv6}/{self.shared_utils.loopback_ipv6_prefix_length}"
             else:
-                vtep_loopback = {
-                    "name": self.shared_utils.vtep_loopback,
-                    "description": self.shared_utils.interface_descriptions.vtep_loopback_interface(
-                        InterfaceDescriptionData(shared_utils=self.shared_utils, interface=self.shared_utils.vtep_loopback)
-                    ),
-                    "shutdown": False,
-                    "ip_address": f"{self.shared_utils.vtep_ip}/32",
-                }
+                vtep_loopback["ip_address"] = f"{self.shared_utils.vtep_ip}/32"
 
             if self.shared_utils.network_services_l3 is True and self.shared_utils.vtep_vvtep_ip is not None:
                 vtep_loopback["ip_address_secondaries"] = [self.shared_utils.vtep_vvtep_ip]

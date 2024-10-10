@@ -50,20 +50,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management0 | oob_management | oob | MGMT | 172.16.100.103/24 | 172.16.100.1 |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | 172.16.100.103/24 | 172.16.100.1 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management0 | oob_management | oob | MGMT | - | - |
+| Management0 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management0
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.100.103/24
@@ -248,7 +248,7 @@ vlan internal order ascending range 1006 1199
 | 110 | IDF1-Data | - |
 | 120 | IDF1-Voice | - |
 | 130 | IDF1-Guest | - |
-| 4094 | MLAG_PEER | MLAG |
+| 4094 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -267,7 +267,7 @@ vlan 130
    name IDF1-Guest
 !
 vlan 4094
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -329,9 +329,9 @@ vlan 4094
 | Ethernet46 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet47 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
 | Ethernet48 | IDF1 Standard Port | trunk phone | - | 110 | - | - |
-| Ethernet51 | SPINE1_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
-| Ethernet53 | MLAG_PEER_LEAF1B_Ethernet53 | *trunk | *- | *- | *MLAG | 53 |
-| Ethernet54 | MLAG_PEER_LEAF1B_Ethernet54 | *trunk | *- | *- | *MLAG | 53 |
+| Ethernet51 | L2_SPINE1_Ethernet1 | *trunk | *10,110,120,130 | *- | *- | 51 |
+| Ethernet53 | MLAG_LEAF1B_Ethernet53 | *trunk | *- | *- | *MLAG | 53 |
+| Ethernet54 | MLAG_LEAF1B_Ethernet54 | *trunk | *- | *- | *MLAG | 53 |
 
 *Inherited from Port-Channel Interface
 
@@ -1353,17 +1353,17 @@ interface Ethernet48
    spanning-tree bpduguard enable
 !
 interface Ethernet51
-   description SPINE1_Ethernet1
+   description L2_SPINE1_Ethernet1
    no shutdown
    channel-group 51 mode active
 !
 interface Ethernet53
-   description MLAG_PEER_LEAF1B_Ethernet53
+   description MLAG_LEAF1B_Ethernet53
    no shutdown
    channel-group 53 mode active
 !
 interface Ethernet54
-   description MLAG_PEER_LEAF1B_Ethernet54
+   description MLAG_LEAF1B_Ethernet54
    no shutdown
    channel-group 53 mode active
 ```
@@ -1376,27 +1376,27 @@ interface Ethernet54
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel51 | SPINES_Po1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
-| Port-Channel53 | MLAG_PEER_LEAF1B_Po53 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel51 | L2_SPINES_Port-Channel1 | trunk | 10,110,120,130 | - | - | - | - | 51 | - |
+| Port-Channel53 | MLAG_LEAF1B_Port-Channel53 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
 !
 interface Port-Channel51
-   description SPINES_Po1
+   description L2_SPINES_Port-Channel1
    no shutdown
-   switchport
    switchport trunk allowed vlan 10,110,120,130
    switchport mode trunk
+   switchport
    mlag 51
 !
 interface Port-Channel53
-   description MLAG_PEER_LEAF1B_Po53
+   description MLAG_LEAF1B_Port-Channel53
    no shutdown
-   switchport
    switchport mode trunk
    switchport trunk group MLAG
+   switchport
 ```
 
 ### VLAN Interfaces
@@ -1406,7 +1406,7 @@ interface Port-Channel53
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
 | Vlan10 | Inband Management | default | 1500 | False |
-| Vlan4094 | MLAG_PEER | default | 1500 | False |
+| Vlan4094 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -1426,7 +1426,7 @@ interface Vlan10
    ip address 10.10.10.6/24
 !
 interface Vlan4094
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate

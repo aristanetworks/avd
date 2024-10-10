@@ -149,13 +149,13 @@ anta.tests.interfaces:
     - name: Ethernet1
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet1 - P2P_LINK_TO_DC1-LEAF1A_Ethernet7 = 'up'
+      custom_field: Interface Ethernet1 - P2P_dc1-leaf1a_Ethernet7 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet2
       status: up
     result_overwrite:
-      custom_field: Interface Ethernet2 - P2P_LINK_TO_DC1-LEAF1B_Ethernet7 = 'up'
+      custom_field: Interface Ethernet2 - P2P_dc1-leaf1b_Ethernet7 = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Ethernet3
@@ -173,7 +173,7 @@ anta.tests.interfaces:
     - name: Loopback0
       status: up
     result_overwrite:
-      custom_field: Interface Loopback0 - Router_ID = 'up'
+      custom_field: Interface Loopback0 - ROUTER_ID = 'up'
 - VerifyInterfacesStatus:
     interfaces:
     - name: Dps1

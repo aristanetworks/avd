@@ -17,20 +17,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -141,7 +141,7 @@ ASN Notation: asplain
 
 | VRF | Route-Distinguisher | Redistribute |
 | --- | ------------------- | ------------ |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>ospfv3<br>connected |
+| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected |
 | Tenant_B | 10.50.64.15:30002 | - |
 
 #### Router BGP Device Configuration
@@ -240,10 +240,14 @@ router bgp 65100
       neighbor IPV4-UNDERLAY activate
       neighbor IPV4-UNDERLAY-MLAG activate
       redistribute attached-host
+      redistribute connected
       redistribute isis rcf Router_BGP_Isis()
-      redistribute ospf match external
       redistribute ospf match internal
+      redistribute ospf match external
       redistribute ospf match nssa-external 2
+      redistribute ospfv3 match internal
+      redistribute ospfv3 match external
+      redistribute ospfv3 match nssa-external 2
    !
    address-family ipv6
       neighbor IPV6-UNDERLAY route-map RM-HIDE-AS-PATH in
@@ -252,6 +256,16 @@ router bgp 65100
       neighbor IPV6-UNDERLAY-MLAG activate
       neighbor TEST_RCF rcf in Address_Family_IPV6_In()
       neighbor TEST_RCF rcf out Address_Family_IPV6_Out()
+      redistribute attached-host route-map RM-Address_Family_IPV6_Attached-Host
+      redistribute bgp leaked
+      redistribute connected route-map RM-Address_Family_IPV6_Connected
+      redistribute dhcp route-map RM-Address_Family_IPV6_DHCP
+      redistribute dynamic rcf RCF_Address_Family_IPV6_Dynamic()
+      redistribute isis include leaked route-map RM-Address_Family_IPV6_ISIS
+      redistribute ospfv3 include leaked route-map RM-REDISTRIBUTE-OSPFV3
+      redistribute ospfv3 match external include leaked route-map RM-REDISTRIBUTE-OSPFV3-EXTERNAL
+      redistribute static include leaked rcf RCF_IPV6_STATIC_TO_BGP{}
+      redistribute user rcf RCF_Address_Family_IPV6_User()
    !
    vrf Tenant_A
       rd 10.50.64.15:30001
@@ -264,7 +278,7 @@ router bgp 65100
       route-target export evpn rcf RT_EXPORT_AF_RCF()
       redistribute connected
       redistribute ospf match external include leaked
-      redistribute ospfv3 match internal
+      redistribute ospfv3
       redistribute ospfv3 match nssa-external
    !
    vrf Tenant_B

@@ -1556,6 +1556,26 @@ keys:
             max: 300
             convert_types:
             - str
+      radius_av_pair_username_format:
+        type: dict
+        description: RADIUS AV-pair username settings.
+        keys:
+          delimiter:
+            type: str
+            description: Delimiter to use in MAC address string.
+            required: true
+            valid_values:
+            - colon
+            - hyphen
+            - none
+            - period
+          mac_string_case:
+            type: str
+            description: MAC address string in lowercase/uppercase.
+            required: true
+            valid_values:
+            - lowercase
+            - uppercase
       radius_av_pair:
         type: dict
         keys:
@@ -1856,7 +1876,13 @@ keys:
       of the final EOS configuration.
   eos_cli_config_gen_configuration:
     type: dict
+    documentation_options:
+      table: role-settings
     keys:
+      enable:
+        type: bool
+        description: Generate device EOS configurations.
+        default: true
       hide_passwords:
         type: bool
         description: 'Replace the input data using the `hide_passwords` filter in
@@ -1866,7 +1892,13 @@ keys:
         default: false
   eos_cli_config_gen_documentation:
     type: dict
+    documentation_options:
+      table: role-settings
     keys:
+      enable:
+        type: bool
+        description: Generate device Markdown documentation.
+        default: true
       hide_passwords:
         type: bool
         description: 'Replace the input data using the `hide_passwords` filter in
@@ -2074,6 +2106,10 @@ keys:
             new_key: ethernet_interfaces[].switchport.trunk.groups
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
           - routed
           - switched
@@ -2204,24 +2240,61 @@ keys:
           convert_types:
           - str
           description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        encapsulation_dot1q:
+          description: 'Warning: `encapsulation_dot1q` should not be combined with
+            `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type:
+            l2dot1q`.'
+          type: dict
+          keys:
+            vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              required: true
+              description: VLAD ID.
+            inner_vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              description: Inner VLAN ID. This setting can only be applied to sub-interfaces
+                on EOS.
         encapsulation_vlan:
           type: dict
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type:
+            l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.'
           keys:
             client:
               type: dict
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client Outer VLAN ID.
                     inner:
                       type: int
@@ -2230,32 +2303,129 @@ keys:
                       description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                encapsulation:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - unmatched
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Client VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Client Outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Client Inner VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                inner_encapsulation:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
             network:
               type: dict
               description: Network encapsulations are all optional and skipped if
                 using client unmatched.
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network inner VLAN ID.
                 client:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                encapsulation:
+                  description: '`untagged` (no encapsulation) is applicable for `untagged`
+                    client only.
+
+                    `client` and `client inner` (retain client encapsulation) is not
+                    applicable for `untagged` client.'
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - client
+                  - client inner
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Network VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Network outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Network inner VLAN ID.  Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                inner_encapsulation:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
         vlan_id:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type
+            == l2dot1q`.'
           type: int
           min: 1
           max: 4094
@@ -2908,6 +3078,9 @@ keys:
                   type: bool
                 host_mode_common:
                   type: bool
+            mac_based_access_list:
+              type: bool
+              description: Operate interface in per-mac access-list mode.
             timeout:
               type: dict
               keys:
@@ -2965,6 +3138,30 @@ keys:
                       max: 65535
                       convert_types:
                       - str
+            aaa:
+              type: dict
+              keys:
+                unresponsive:
+                  type: dict
+                  description: Configure AAA timeout options.
+                  keys:
+                    eap_response:
+                      type: str
+                      description: EAP response to send. EOS default is `success`.
+                      valid_values:
+                      - success
+                      - disabled
+                    action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/action
+                      keys:
+                        traffic_allow_access_list:
+                          type: str
+                          description: Name of standard access-list to apply when
+                            AAA times out.
+                    phone_action:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/dot1x/keys/aaa/keys/unresponsive/keys/phone_action
         service_profile:
           type: str
           description: QOS profile.
@@ -4220,7 +4417,7 @@ keys:
           default: false
   generate_default_config:
     type: bool
-    default: true
+    default: false
     description: 'The `generate_default_config` knob allows to omit default EOS configuration.
 
       This can be useful when leveraging `eos_cli_config_gen` to generate configlets
@@ -4233,7 +4430,8 @@ keys:
 
       - RANCID Content Type
 
-      - Hostname
+      - Hostname (even if `hostname` variable is not set. Then the hostname is picked
+      up from `inventory_hostname`)
 
       - Default configuration for `aaa`
 
@@ -4244,9 +4442,20 @@ keys:
       - End of configuration delimiter
 
       '
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      url: https://avd.arista.com/devel/docs/porting-guides/5.x.x.html#default-eos-configuration-is-no-longer-automatically-generated
   generate_device_documentation:
     type: bool
+    documentation_options:
+      table: role-settings
     default: true
+    deprecation:
+      warning: true
+      removed: false
+      remove_in_version: 6.0.0
+      new_key: eos_cli_config_gen_documentation.enable
   hardware:
     type: dict
     keys:
@@ -4272,6 +4481,19 @@ keys:
             serdes:
               type: str
               description: Serdes speed like "10g" or "25g".
+      port_groups:
+        type: list
+        primary_key: port_group
+        items:
+          type: dict
+          keys:
+            port_group:
+              type: str
+              convert_types:
+              - int
+            select:
+              type: str
+              description: Select Ports to activate
   hardware_counters:
     type: dict
     keys:
@@ -5243,8 +5465,7 @@ keys:
           keys:
             name:
               type: str
-              description: Name of the SA policy. The "null" value is deprecated and
-                will be removed in AVD 5.0.0.
+              description: Name of the SA policy.
             sa_lifetime:
               type: dict
               keys:
@@ -5878,9 +6099,7 @@ keys:
         - alerts
         - emergencies
         - disabled
-        description: 'Console logging severity level.
-
-          '
+        description: Console logging severity level.
       monitor:
         type: str
         valid_values:
@@ -5893,9 +6112,7 @@ keys:
         - alerts
         - emergencies
         - disabled
-        description: 'Monitor logging severity level.
-
-          '
+        description: Monitor logging severity level.
       buffered:
         type: dict
         keys:
@@ -5917,9 +6134,10 @@ keys:
             - notifications
             - warnings
             - disabled
-            description: 'Buffer logging severity level.
-
-              '
+            description: Buffer logging severity level.
+      repeat_messages:
+        type: bool
+        description: Summarize concurrent repeat messages.
       trap:
         type: str
         valid_values:
@@ -5933,9 +6151,7 @@ keys:
         - system
         - warnings
         - disabled
-        description: 'Trap logging severity level.
-
-          '
+        description: Trap logging severity level.
       synchronous:
         type: dict
         keys:
@@ -5952,9 +6168,7 @@ keys:
             - notifications
             - warnings
             - disabled
-            description: 'Synchronous logging severity level.
-
-              '
+            description: Synchronous logging severity level.
             default: critical
       format:
         type: dict
@@ -5978,14 +6192,10 @@ keys:
               line. (default EOS CLI behaviour).
           sequence_numbers:
             type: bool
-            description: 'Add sequence numbers to log messages.
-
-              '
+            description: Add sequence numbers to log messages.
           rfc5424:
             type: bool
-            description: 'Forward logs in RFC5424 format.
-
-              '
+            description: Forward logs in RFC5424 format.
       facility:
         type: str
         valid_values:
@@ -6073,6 +6283,15 @@ keys:
       event:
         type: dict
         keys:
+          congestion_drops_interval:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 65535
+            description: Logging interval in seconds.
+          global_link_status:
+            type: bool
           storm_control:
             type: dict
             keys:
@@ -7063,6 +7282,25 @@ keys:
   management_ssh:
     type: dict
     keys:
+      authentication:
+        type: dict
+        keys:
+          empty_passwords:
+            type: str
+            valid_values:
+            - auto
+            - deny
+            - permit
+            description: Permit or deny empty passwords for SSH authentication.
+          protocols:
+            type: list
+            items:
+              type: str
+              valid_values:
+              - keyboard-interactive
+              - password
+              - public-key
+            description: Allowed SSH authentication methods.
       access_groups:
         type: list
         items:
@@ -7809,6 +8047,8 @@ keys:
             description: Some platforms support only the `logging transceiver` command.
               `enabled` key configures this command.
   monitor_session_default_encapsulation_gre:
+    documentation_options:
+      table: monitor-sessions
     type: dict
     keys:
       payload:
@@ -7903,6 +8143,8 @@ keys:
               convert_types:
               - str
   monitor_telemetry_influx:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       vrf:
@@ -7977,6 +8219,8 @@ keys:
               required: true
               description: Value of the global tag pair.
   monitor_telemetry_postcard_policy:
+    documentation_options:
+      table: monitor-telemetry
     type: dict
     keys:
       disabled:
@@ -8864,6 +9108,10 @@ keys:
           type: bool
         type:
           type: str
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            url: https://avd.arista.com/stable/docs/release-notes/5.x.x.html#removal-of-type-key-dependency-for-rendering-ethernetport-channel-interfaces-configuration-and-documentation
           valid_values:
           - routed
           - switched
@@ -8878,21 +9126,54 @@ keys:
             '
         encapsulation_dot1q_vlan:
           type: int
-          description: VLAN tag to configure on sub-interface.
           convert_types:
           - str
+          description: VLAN tag to configure on sub-interface.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: encapsulation_dot1q.vlan
+        encapsulation_dot1q:
+          description: 'Warning: `encapsulation_dot1q` should not be combined with
+            `ethernet_interfaces[].type: l3dot1q` or `ethernet_interfaces[].type:
+            l2dot1q`.'
+          type: dict
+          keys:
+            vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              required: true
+              description: VLAD ID.
+            inner_vlan:
+              type: int
+              convert_types:
+              - str
+              min: 1
+              max: 4094
+              description: Inner VLAN ID. This setting can only be applied to sub-interfaces
+                on EOS.
         vrf:
           type: str
           description: VRF name.
           convert_types:
           - int
         encapsulation_vlan:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `encapsulation_vlan` should not be combined with `ethernet_interfaces[].type:
+            l3dot1q` or `ethernet_interfaces[].type: l2dot1q`.'
           type: dict
           keys:
             client:
               type: dict
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
@@ -8904,40 +9185,141 @@ keys:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Client Inner VLAN ID.
                 unmatched:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                encapsulation:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - unmatched
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Client VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Client Outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Client Inner VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: unmatched`.'
+                inner_encapsulation:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
             network:
               type: dict
               description: Network encapsulation are all optional, and skipped if
                 using client unmatched.
               keys:
                 dot1q:
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
                   type: dict
                   keys:
                     vlan:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network VLAN ID.
                     outer:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network Outer VLAN ID.
                     inner:
                       type: int
                       convert_types:
                       - str
+                      min: 1
+                      max: 4094
                       description: Network Inner VLAN ID.
                 client:
                   type: bool
+                  deprecation:
+                    warning: true
+                    remove_in_version: 6.0.0
+                encapsulation:
+                  description: '`untagged` (no encapsulation) is applicable for `untagged`
+                    client only.
+
+                    `client` and `client inner` (retain client encapsulation) is not
+                    applicable for `untagged` client.'
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
+                  - client
+                  - client inner
+                  - untagged
+                vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Network VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                outer_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Network outer VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                inner_vlan:
+                  type: int
+                  convert_types:
+                  - str
+                  min: 1
+                  max: 4094
+                  description: 'Network inner VLAN ID. Not applicable for `encapsulation:
+                    untagged` or `encapsulation: client`.'
+                inner_encapsulation:
+                  type: str
+                  valid_values:
+                  - dot1q
+                  - dot1ad
         vlan_id:
+          description: 'This setting can only be applied to sub-interfaces on EOS.
+
+            Warning: `vlan_id` should not be combined with `ethernet_interfaces[].type
+            == l2dot1q`.'
           type: int
           convert_types:
           - str
@@ -11163,6 +11545,12 @@ keys:
         - pathfinder
         - transit region
         - transit zone
+      gateway_vxlan:
+        description: 'Enables VXLAN gateway router profile.
+
+          Only applicable for `topology_role: edge`, `topology_role: transit region`
+          or `topology_role: transit zone`.'
+        type: bool
       region:
         type: dict
         description: Region name and ID.
@@ -11226,11 +11614,7 @@ keys:
       policies:
         type: list
         primary_key: name
-        description: 'A sequence of application profiles mapped to some virtual topologies.
-
-
-          When `wan_mode` is set to `autovpn`, the rules are indexed using 10*<index>
-          in the list.'
+        description: A sequence of application profiles mapped to some virtual topologies.
         items:
           type: dict
           keys:
@@ -11530,6 +11914,9 @@ keys:
             keys:
               d_path:
                 type: bool
+          additional_paths:
+            type: dict
+            $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           redistribute_internal:
             type: bool
             description: Allow redistribution of iBGP routes into an Interior Gateway
@@ -12450,6 +12837,8 @@ keys:
                 valid_values:
                 - vxlan
                 - mpls
+                - path-selection
+                description: Transport encapsulation for neighbor.
               next_hop_self_source_interface:
                 description: Source interface name.
                 type: str
@@ -12514,6 +12903,16 @@ keys:
                         Example: MyFunction(myarg).'
                     route_map:
                       type: str
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                encapsulation:
+                  type: str
+                  valid_values:
+                  - vxlan
+                  - mpls
+                  - path-selection
+                  description: Transport encapsulation for the neighbor.
           peer_groups:
             type: list
             primary_key: name
@@ -12560,34 +12959,11 @@ keys:
                   valid_values:
                   - vxlan
                   - mpls
+                  - path-selection
+                  description: Transport encapsulation for the peer-group.
                 additional_paths:
                   type: dict
-                  keys:
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           evpn_hostflap_detection:
             type: dict
             keys:
@@ -12637,6 +13013,10 @@ keys:
             type: bool
           bgp_additional_paths:
             type: dict
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: bgp.additional_paths
             description: BGP additional-paths commands.
             keys:
               receive:
@@ -12669,6 +13049,12 @@ keys:
                     - str
                     min: 2
                     max: 64
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           layer_2_fec_in_place_update:
             type: dict
             description: BGP layer-2 in-place FEC operation.
@@ -12722,6 +13108,16 @@ keys:
           bgp:
             type: dict
             keys:
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                keys:
+                  install:
+                    type: bool
+                    description: Install BGP backup path.
+                  install_ecmp_primary:
+                    type: bool
+                    description: Allow additional path with ECMP primary path.
               redistribute_internal:
                 type: bool
                 description: Allow redistribution of iBGP routes into an Interior
@@ -12767,6 +13163,14 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
                 next_hop:
                   type: dict
                   keys:
@@ -12824,6 +13228,14 @@ keys:
                       type: bool
                     route_map:
                       type: str
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
           redistribute_routes:
             type: list
             primary_key: source_protocol
@@ -12875,9 +13287,426 @@ keys:
                     ''ospfv3''.
 
                     '
+      address_family_ipv4_labeled_unicast:
+        type: dict
+        keys:
+          aigp_session:
+            type: dict
+            keys:
+              confederation:
+                type: bool
+              ebgp:
+                type: bool
+              ibgp:
+                type: bool
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+              missing_policy:
+                type: dict
+                description: Missing policy configuration for all address-families.
+                keys:
+                  direction_in:
+                    description: Missing policy inbound direction.
+                    type: dict
+                    keys:
+                      action:
+                        description: Missing policy action.
+                        type: str
+                        required: true
+                        valid_values:
+                        - deny
+                        - permit
+                        - deny-in-out
+                      include_community_list:
+                        type: bool
+                        description: Include community-list references in missing
+                          policy decision.
+                      include_prefix_list:
+                        type: bool
+                        description: Include prefix-list references in missing policy
+                          decision.
+                      include_sub_route_map:
+                        type: bool
+                        description: Include sub-route-map references in missing policy
+                          decision.
+                  direction_out:
+                    description: Missing policy outbound direction.
+                    type: dict
+                    keys:
+                      action:
+                        description: Missing policy action.
+                        type: str
+                        required: true
+                        valid_values:
+                        - deny
+                        - permit
+                        - deny-in-out
+                      include_community_list:
+                        type: bool
+                        description: Include community-list references in missing
+                          policy decision.
+                      include_prefix_list:
+                        type: bool
+                        description: Include prefix-list references in missing policy
+                          decision.
+                      include_sub_route_map:
+                        type: bool
+                        description: Include sub-route-map references in missing policy
+                          decision.
+              next_hop_unchanged:
+                type: bool
+          graceful_restart:
+            type: bool
+          label_local_termination:
+            type: str
+            valid_values:
+            - explicit-null
+            - implicit-null
+          lfib_entry_installation_skipped:
+            type: bool
+            description: Skip LFIB entry installation and next hop self route advertisements.
+          neighbor_default:
+            type: dict
+            keys:
+              next_hop_self:
+                type: bool
+          peer_groups:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Peer-group name.
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                aigp_session:
+                  type: bool
+                graceful_restart:
+                  type: bool
+                graceful_restart_helper:
+                  type: dict
+                  keys:
+                    stale_route_map:
+                      type: str
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                  convert_types:
+                  - str
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of routes after which a warning is
+                    issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
+                missing_policy:
+                  type: dict
+                  description: Missing policy configuration for BGP Labeled-Unicast
+                    neighbor.
+                  keys:
+                    direction_in:
+                      description: Missing policy inbound direction.
+                      type: dict
+                      keys:
+                        action:
+                          description: Missing policy action.
+                          type: str
+                          required: true
+                          valid_values:
+                          - deny
+                          - permit
+                          - deny-in-out
+                        include_community_list:
+                          type: bool
+                          description: Include community-list references in missing
+                            policy decision.
+                        include_prefix_list:
+                          type: bool
+                          description: Include prefix-list references in missing policy
+                            decision.
+                        include_sub_route_map:
+                          type: bool
+                          description: Include sub-route-map references in missing
+                            policy decision.
+                    direction_out:
+                      description: Missing policy outbound direction.
+                      type: dict
+                      keys:
+                        action:
+                          description: Missing policy action.
+                          type: str
+                          required: true
+                          valid_values:
+                          - deny
+                          - permit
+                          - deny-in-out
+                        include_community_list:
+                          type: bool
+                          description: Include community-list references in missing
+                            policy decision.
+                        include_prefix_list:
+                          type: bool
+                          description: Include prefix-list references in missing policy
+                            decision.
+                        include_sub_route_map:
+                          type: bool
+                          description: Include sub-route-map references in missing
+                            policy decision.
+                multi_path:
+                  type: bool
+                next_hop_resolution:
+                  type: dict
+                  keys:
+                    v4_mapped_v6_translation:
+                      type: bool
+                next_hop_self:
+                  type: bool
+                next_hop_self_source_interface:
+                  description: Source interface name.
+                  type: str
+                next_hop_self_v4_mapped_v6_source_interface:
+                  description: v4-mapped-v6 source interface name. Takes precedence
+                    over the next_hop_self_source_interface.
+                  type: str
+                next_hop_unchanged:
+                  type: bool
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name.
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name.
+          neighbors:
+            type: list
+            primary_key: ip_address
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                activate:
+                  type: bool
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                aigp_session:
+                  type: bool
+                graceful_restart:
+                  type: bool
+                graceful_restart_helper:
+                  type: dict
+                  keys:
+                    stale_route_map:
+                      type: str
+                maximum_advertised_routes:
+                  type: int
+                  description: Maximum number of routes (0 means unlimited).
+                  min: 0
+                  max: 4294967294
+                  convert_types:
+                  - str
+                maximum_advertised_routes_warning_limit:
+                  type: str
+                  convert_types:
+                  - int
+                  description: 'Maximum number of routes after which a warning is
+                    issued (0 means never warn) or
+
+                    Percentage of maximum number of routes at which to warn ("<1-100>
+                    percent").
+
+                    '
+                missing_policy:
+                  type: dict
+                  description: Missing policy configuration for BGP Labeled-Unicast
+                    neighbor.
+                  keys:
+                    direction_in:
+                      description: Missing policy inbound direction.
+                      type: dict
+                      keys:
+                        action:
+                          description: Missing policy action.
+                          type: str
+                          required: true
+                          valid_values:
+                          - deny
+                          - permit
+                          - deny-in-out
+                        include_community_list:
+                          type: bool
+                          description: Include community-list references in missing
+                            policy decision.
+                        include_prefix_list:
+                          type: bool
+                          description: Include prefix-list references in missing policy
+                            decision.
+                        include_sub_route_map:
+                          type: bool
+                          description: Include sub-route-map references in missing
+                            policy decision.
+                    direction_out:
+                      description: Missing policy outbound direction.
+                      type: dict
+                      keys:
+                        action:
+                          description: Missing policy action.
+                          type: str
+                          required: true
+                          valid_values:
+                          - deny
+                          - permit
+                          - deny-in-out
+                        include_community_list:
+                          type: bool
+                          description: Include community-list references in missing
+                            policy decision.
+                        include_prefix_list:
+                          type: bool
+                          description: Include prefix-list references in missing policy
+                            decision.
+                        include_sub_route_map:
+                          type: bool
+                          description: Include sub-route-map references in missing
+                            policy decision.
+                multi_path:
+                  type: bool
+                next_hop_resolution:
+                  type: dict
+                  keys:
+                    v4_mapped_v6_translation:
+                      type: bool
+                next_hop_self:
+                  type: bool
+                next_hop_self_source_interface:
+                  description: Source interface name.
+                  type: str
+                next_hop_self_v4_mapped_v6_source_interface:
+                  description: v4-mapped-v6 source interface name. Takes precedence
+                    over the next_hop_self_source_interface.
+                  type: str
+                next_hop_unchanged:
+                  type: bool
+                rcf_in:
+                  type: str
+                  description: 'Inbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                rcf_out:
+                  type: str
+                  description: 'Outbound RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+                route_map_in:
+                  type: str
+                  description: Inbound route-map name.
+                route_map_out:
+                  type: str
+                  description: Outbound route-map name.
+          networks:
+            type: list
+            primary_key: prefix
+            min_length: 1
+            items:
+              type: dict
+              keys:
+                prefix:
+                  description: IPv4 prefix "A.B.C.D/E" or IPv6 prefix "A:B:C:D:E:F:G:H/I".
+                  type: str
+                route_map:
+                  description: Route-map name.
+                  type: str
+          next_hops:
+            type: list
+            primary_key: ip_address
+            min_length: 1
+            items:
+              type: dict
+              keys:
+                ip_address:
+                  type: str
+                lfib_backup_ip_forwarding:
+                  type: bool
+          next_hop_resolution_ribs:
+            type: list
+            min_length: 1
+            max_length: 3
+            description: Specify the RIBs used to resolve next-hops. The order of
+              this list determines the order of RIB lookups.
+            items:
+              type: dict
+              keys:
+                rib_type:
+                  type: str
+                  required: true
+                  valid_values:
+                  - system-connected
+                  - tunnel-rib-colored
+                  - tunnel-rib
+                  description: Type of RIB. For 'tunnel-rib', use 'rib_name' to specify
+                    the name of the Tunnel-RIB to use.
+                rib_name:
+                  type: str
+                  description: The name of the tunnel-rib to use when using 'tunnel-rib'
+                    type.
+          tunnel_source_protocols:
+            type: list
+            min_length: 1
+            max_length: 2
+            primary_key: protocol
+            items:
+              type: dict
+              keys:
+                protocol:
+                  type: str
+                  valid_values:
+                  - isis segment-routing
+                  - ldp
+                rcf:
+                  type: str
+                  description: 'Optional RCF function name with parenthesis.
+
+                    Example: MyFunction(myarg).'
+          update_wait_for_convergence:
+            type: bool
+            description: Wait for BGP to converge before sending out any route updates.
       address_family_ipv4_multicast:
         type: dict
         keys:
+          bgp:
+            type: dict
+            keys:
+              additional_paths:
+                type: dict
+                keys:
+                  receive:
+                    type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -12895,6 +13724,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           neighbors:
             type: list
             primary_key: ip_address
@@ -12911,10 +13745,163 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
+          redistribute:
+            type: dict
+            description: Redistribute routes in to BGP.
+            keys:
+              attached_host:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  isis_level:
+                    type: str
+                    description: Redistribute IS-IS route level.
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              ospf:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Redistribute OSPF routes.
+                  match_external:
+                    description: Redistribute OSPF routes learned from external sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  match_internal:
+                    description: Redistribute OSPF routes learned from internal sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  match_nssa_external:
+                    description: Redistribute OSPF routes learned from external NSSA
+                      sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      nssa_type:
+                        description: NSSA External Type Number.
+                        type: int
+                        convert_types:
+                        - str
+                        valid_values:
+                        - 1
+                        - 2
+                      route_map:
+                        type: str
+                  route_map:
+                    type: str
+              ospfv3:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Redistribute OSPFv3 routes.
+                  match_external:
+                    description: Redistribute OSPFv3 routes learned from external
+                      sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  match_internal:
+                    description: Redistribute OSPFv3 routes learned from internal
+                      sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                  match_nssa_external:
+                    description: Redistribute OSPFv3 routes learned from external
+                      NSSA sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      nssa_type:
+                        description: NSSA External Type Number.
+                        type: int
+                        convert_types:
+                        - str
+                        valid_values:
+                        - 1
+                        - 2
+                      route_map:
+                        type: str
+                  route_map:
+                    type: str
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
           redistribute_routes:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: redistribute
             items:
               type: dict
               keys:
@@ -13007,6 +13994,16 @@ keys:
                 type: bool
                 description: Allow redistribution of iBGP routes into an Interior
                   Gateway Protocol (IGP). EOS default is true.
+              additional_paths:
+                type: dict
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                keys:
+                  install:
+                    type: bool
+                    description: Install BGP backup path.
+                  install_ecmp_primary:
+                    type: bool
+                    description: Allow additional path with ECMP primary path.
           peer_groups:
             type: list
             primary_key: name
@@ -13040,6 +14037,14 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
           neighbors:
             type: list
             primary_key: ip_address
@@ -13072,10 +14077,202 @@ keys:
                 prefix_list_out:
                   type: str
                   description: Outbound prefix-list name.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    prefix_list:
+                      type: str
+                      description: Apply the configurations only to the routes matching
+                        the prefix list.
+          redistribute:
+            type: dict
+            description: Redistribute routes in to BGP.
+            keys:
+              attached_host:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              bgp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              connected:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              dhcp:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+              dynamic:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+              isis:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  isis_level:
+                    type: str
+                    description: Redistribute IS-IS route level.
+                    valid_values:
+                    - level-1
+                    - level-2
+                    - level-1-2
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              ospfv3:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Redistribute OSPFv3 routes.
+                  match_external:
+                    description: Redistribute OSPFv3 routes learned from external
+                      sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                      include_leaked:
+                        description: Include following routes while redistributing.
+                        type: bool
+                  match_internal:
+                    description: Redistribute OSPFv3 routes learned from internal
+                      sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      route_map:
+                        type: str
+                      include_leaked:
+                        description: Include following routes while redistributing.
+                        type: bool
+                  match_nssa_external:
+                    description: Redistribute OSPFv3 routes learned from external
+                      NSSA sources.
+                    type: dict
+                    keys:
+                      enabled:
+                        type: bool
+                        required: true
+                      nssa_type:
+                        description: NSSA External Type Number.
+                        type: int
+                        convert_types:
+                        - str
+                        valid_values:
+                        - 1
+                        - 2
+                      route_map:
+                        type: str
+                      include_leaked:
+                        description: Include following routes while redistributing.
+                        type: bool
+                  route_map:
+                    type: str
+                  include_leaked:
+                    description: Include following routes while redistributing.
+                    type: bool
+              static:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  route_map:
+                    type: str
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
+                  include_leaked:
+                    type: bool
+                    description: Include following routes while redistributing.
+              user:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    required: true
+                  rcf:
+                    type: str
+                    description: 'RCF function name with parenthesis.
+
+                      Example: MyFunction(myarg).
+
+                      `route_map` and `rcf` are mutually exclusive. `route_map` takes
+                      precedence.'
           redistribute_routes:
             type: list
             primary_key: source_protocol
             allow_duplicate_primary_key: true
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: redistribute
             items:
               type: dict
               keys:
@@ -13151,6 +14348,11 @@ keys:
                 route_map_out:
                   type: str
                   description: Outbound route-map name.
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           peer_groups:
             type: list
             primary_key: name
@@ -13162,6 +14364,11 @@ keys:
                   description: Peer-group name.
                 activate:
                   type: bool
+                additional_paths:
+                  type: dict
+                  keys:
+                    receive:
+                      type: bool
           networks:
             type: list
             primary_key: prefix
@@ -13429,32 +14636,7 @@ keys:
             keys:
               additional_paths:
                 type: dict
-                keys:
-                  receive:
-                    type: bool
-                  send:
-                    type: dict
-                    keys:
-                      any:
-                        type: bool
-                      backup:
-                        type: bool
-                      ecmp:
-                        type: bool
-                      ecmp_limit:
-                        type: int
-                        description: Amount of ECMP paths to send.
-                        convert_types:
-                        - str
-                        min: 2
-                        max: 64
-                      limit:
-                        type: int
-                        description: Amount of paths to send.
-                        convert_types:
-                        - str
-                        min: 2
-                        max: 64
+                $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           neighbors:
             type: list
             primary_key: ip_address
@@ -13467,36 +14649,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
           peer_groups:
             type: list
             primary_key: name
@@ -13510,36 +14663,7 @@ keys:
                   type: bool
                 additional_paths:
                   type: dict
-                  keys:
-                    install:
-                      type: bool
-                    install_ecmp_primary:
-                      type: bool
-                    receive:
-                      type: bool
-                    send:
-                      type: dict
-                      keys:
-                        any:
-                          type: bool
-                        backup:
-                          type: bool
-                        ecmp:
-                          type: bool
-                        ecmp_limit:
-                          type: int
-                          description: Amount of ECMP paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
-                        limit:
-                          type: int
-                          description: Amount of paths to send.
-                          convert_types:
-                          - str
-                          min: 2
-                          max: 64
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
       address_family_vpn_ipv4:
         type: dict
         keys:
@@ -13746,6 +14870,16 @@ keys:
                   type: bool
                   description: Allow redistribution of iBGP routes into an Interior
                     Gateway Protocol (IGP). EOS default is true.
+                additional_paths:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
+                  keys:
+                    install:
+                      type: bool
+                      description: Install BGP backup path.
+                    install_ecmp_primary:
+                      type: bool
+                      description: Allow additional path with ECMP primary path.
             rd:
               type: str
               description: Route distinguisher.
@@ -14119,6 +15253,9 @@ keys:
                   route_map_out:
                     type: str
                     description: Outbound route-map name.
+                  additional_paths:
+                    type: dict
+                    $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                   prefix_list_in:
                     type: str
                     description: Inbound prefix-list name.
@@ -14163,10 +15300,252 @@ keys:
                     description: Peer-filter name.
                   description:
                     type: str
+            redistribute:
+              type: dict
+              description: Redistribute routes in to BGP.
+              keys:
+                attached_host:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                bgp:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                connected:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                dynamic:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                isis:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    isis_level:
+                      type: str
+                      description: Redistribute IS-IS route level.
+                      valid_values:
+                      - level-1
+                      - level-2
+                      - level-1-2
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                ospf:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      description: Redistribute OSPF routes.
+                    match_external:
+                      description: Redistribute OSPF routes learned from external
+                        sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_internal:
+                      description: Redistribute OSPF routes learned from internal
+                        sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_nssa_external:
+                      description: Redistribute OSPF routes learned from external
+                        NSSA sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        nssa_type:
+                          description: NSSA External Type Number.
+                          type: int
+                          convert_types:
+                          - str
+                          valid_values:
+                          - 1
+                          - 2
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                ospfv3:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      description: Redistribute OSPFv3 routes.
+                    match_external:
+                      description: Redistribute OSPFv3 routes learned from external
+                        sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_internal:
+                      description: Redistribute OSPFv3 routes learned from internal
+                        sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    match_nssa_external:
+                      description: Redistribute OSPFv3 routes learned from external
+                        NSSA sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        nssa_type:
+                          description: NSSA External Type Number.
+                          type: int
+                          convert_types:
+                          - str
+                          valid_values:
+                          - 1
+                          - 2
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include following routes while redistributing.
+                          type: bool
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include following routes while redistributing.
+                      type: bool
+                rip:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                static:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
+                    include_leaked:
+                      type: bool
+                      description: Include following routes while redistributing.
+                user:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    rcf:
+                      type: str
+                      description: 'RCF function name with parenthesis.
+
+                        Example: MyFunction(myarg).
+
+                        `route_map` and `rcf` are mutually exclusive. `route_map`
+                        takes precedence.'
             redistribute_routes:
               type: list
               primary_key: source_protocol
               allow_duplicate_primary_key: true
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: redistribute
               items:
                 type: dict
                 keys:
@@ -14243,36 +15622,14 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
+                      $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                       keys:
                         install:
                           type: bool
+                          description: Install BGP backup path.
                         install_ecmp_primary:
                           type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
+                          description: Allow additional path with ECMP primary path.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -14320,6 +15677,9 @@ keys:
                                 required: true
                               originate:
                                 type: bool
+                      additional_paths:
+                        type: dict
+                        $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 networks:
                   type: list
                   primary_key: prefix
@@ -14403,36 +15763,14 @@ keys:
                           - permit
                     additional_paths:
                       type: dict
+                      $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                       keys:
                         install:
                           type: bool
+                          description: Install BGP backup path.
                         install_ecmp_primary:
                           type: bool
-                        receive:
-                          type: bool
-                        send:
-                          type: dict
-                          keys:
-                            any:
-                              type: bool
-                            backup:
-                              type: bool
-                            ecmp:
-                              type: bool
-                            ecmp_limit:
-                              type: int
-                              description: Amount of ECMP paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
-                            limit:
-                              type: int
-                              description: Amount of paths to send.
-                              convert_types:
-                              - str
-                              min: 2
-                              max: 64
+                          description: Allow additional path with ECMP primary path.
                     redistribute_internal:
                       type: bool
                       description: Allow redistribution of iBGP routes into an Interior
@@ -14469,6 +15807,9 @@ keys:
                       prefix_list_out:
                         type: str
                         description: Outbound prefix-list name.
+                      additional_paths:
+                        type: dict
+                        $ref: eos_cli_config_gen#/$defs/bgp_additional_paths
                 networks:
                   type: list
                   primary_key: prefix
@@ -14569,6 +15910,11 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      additional_paths:
+                        type: dict
+                        keys:
+                          receive:
+                            type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -14667,6 +16013,11 @@ keys:
                       route_map_out:
                         type: str
                         description: Outbound route-map name.
+                      additional_paths:
+                        type: dict
+                        keys:
+                          receive:
+                            type: bool
                 networks:
                   type: list
                   primary_key: prefix
@@ -15200,6 +16551,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
@@ -15243,6 +16595,7 @@ keys:
         keys:
           enabled:
             type: bool
+            required: true
           maximum_paths:
             type: int
             convert_types:
@@ -15889,6 +17242,9 @@ keys:
                 static:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -15897,6 +17253,9 @@ keys:
                 connected:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -15905,6 +17264,9 @@ keys:
                 bgp:
                   type: dict
                   keys:
+                    enabled:
+                      type: bool
+                      required: true
                     route_map:
                       type: str
                       description: Route Map Name.
@@ -16055,7 +17417,7 @@ keys:
                   name:
                     type: str
                     description: Local interface name.
-                    pattern: ^Ethernet\d+(/\d+)*(\.\d+)?$
+                    pattern: ^(Port-Channel|Ethernet(\d+/)*)\d+(\.\d+)?$
                   public_address:
                     type: str
                     description: Public IP assigned by NAT.
@@ -17439,24 +18801,28 @@ keys:
                 description: Segment size.
           ipv4_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
                   - int
           ipv6_access_groups:
             type: list
-            primary_key: acl_name
+            unique_keys:
+            - vrf
             items:
               type: dict
               keys:
                 acl_name:
                   type: str
+                  required: true
                 vrf:
                   type: str
                   convert_types:
@@ -17724,6 +19090,7 @@ keys:
                     valid_values:
                     - ipv4
                     - ipv6
+                    required: true
                   source:
                     type: dict
                     keys:
@@ -17796,6 +19163,10 @@ keys:
                           type: list
                           items:
                             type: str
+                        enforce_gtsm:
+                          type: bool
+                          description: Enforce the GTSM for BGP speakers. Only supported
+                            when protocol is set to 'neighbors'.
                   actions:
                     type: dict
                     keys:
@@ -18985,6 +20356,40 @@ $defs:
           When the `protocols` list contain both `tcp` and `udp`, this key value
 
           must be the same as `udp_dest_port_set_name`.'
+  bgp_additional_paths:
+    type: dict
+    keys:
+      receive:
+        type: bool
+        description: Enable or disable reception of additional-paths.
+      send:
+        type: str
+        description: 'Select an option to send multiple paths for same prefix through
+          bgp updates.
+
+          any: Send any eligible path.
+
+          backup: Best path and installed backup path.
+
+          ecmp: All paths in best path ECMP group.
+
+          limit: Limit to n eligible paths.
+
+          disabled: Disable sending any paths.'
+        valid_values:
+        - any
+        - backup
+        - ecmp
+        - limit
+        - disabled
+      send_limit:
+        type: int
+        description: Number of paths to send through bgp updates. For this setting,
+          `send` must be set to `limit` or `ecmp`.
+        convert_types:
+        - str
+        min: 2
+        max: 64
   flow_tracking:
     type: dict
     keys:
