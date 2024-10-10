@@ -4,9 +4,9 @@
  that can be found in the LICENSE file.
 #}
 {# doc - hardware #}
-{% if hardware is arista.avd.defined %}
-### Hardware
+{% if hardware is arista.avd.defined or hardware_counters is arista.avd.defined %}
 
+### Hardware
 {%     if hardware_counters is arista.avd.defined %}
 
 #### Hardware Counters
