@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import get
 from pyavd.j2filters import range_expand
 
@@ -103,7 +103,7 @@ class RoutingMixin:
 
                 if self.id is None:
                     msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
-                    raise AristaAvdMissingVariableError(msg)
+                    raise AristaAvdInvalidInputsError(msg)
                 return bgp_as_range_expanded[self.id - 1]
             except IndexError as exc:
                 msg = f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"

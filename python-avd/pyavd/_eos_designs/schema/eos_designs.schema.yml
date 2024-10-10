@@ -3493,6 +3493,7 @@ keys:
     documentation_options:
       table: ptp_settings
     type: list
+    primary_key: profile
     items:
       type: dict
       keys:
@@ -3536,27 +3537,27 @@ keys:
           valid_values:
           - ipv4
     default:
-    - announce:
+    - profile: aes67-r16-2016
+      announce:
         interval: 0
         timeout: 3
       delay_req: -3
-      profile: aes67-r16-2016
       sync_message:
         interval: -3
       transport: ipv4
-    - announce:
+    - profile: smpte2059-2
+      announce:
         interval: -2
         timeout: 3
       delay_req: -4
-      profile: smpte2059-2
       sync_message:
         interval: -4
       transport: ipv4
-    - announce:
+    - profile: aes67
+      announce:
         interval: 2
         timeout: 3
       delay_req: 0
-      profile: aes67
       sync_message:
         interval: 0
       transport: ipv4
@@ -3570,11 +3571,9 @@ keys:
         type: bool
       profile:
         type: str
-        valid_values:
-        - aes67
-        - smpte2059-2
-        - aes67-r16-2016
         default: aes67-r16-2016
+        description: "Default available profiles are:\n  - \"aes67\"\n  - \"aes67-r16-2016\"\n
+          \ - \"smpte2059-2\""
       domain:
         type: int
         $ref: eos_cli_config_gen#/keys/ptp/keys/domain
@@ -5199,10 +5198,8 @@ $defs:
           profile:
             type: str
             default: aes67-r16-2016
-            valid_values:
-            - aes67
-            - aes67-r16-2016
-            - smpte2059-2
+            description: "Default available profiles are:\n  - \"aes67\"\n  - \"aes67-r16-2016\"\n
+              \ - \"smpte2059-2\""
       sflow:
         type: bool
         description: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints`
@@ -6756,7 +6753,7 @@ $defs:
                           convert_types:
                           - int
                           description: OSPF area ID.
-                          default: '0'
+                          default: 0.0.0.0
                         cost:
                           type: int
                           convert_types:
@@ -6864,7 +6861,7 @@ $defs:
                           convert_types:
                           - int
                           description: OSPF area ID.
-                          default: '0'
+                          default: 0.0.0.0
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Loopback interface
@@ -8858,10 +8855,8 @@ $defs:
                 default: false
               profile:
                 type: str
-                valid_values:
-                - aes67
-                - smpte2059-2
-                - aes67-r16-2016
+                description: "Default available profiles are:\n  - \"aes67\"\n  -
+                  \"aes67-r16-2016\"\n  - \"smpte2059-2\""
                 default: aes67-r16-2016
               mlag:
                 description: Configure PTP on the MLAG peer-link port-channel when
@@ -9989,7 +9984,7 @@ $defs:
             convert_types:
             - int
             description: OSPF area ID.
-            default: '0'
+            default: 0.0.0.0
           cost:
             type: int
             convert_types:

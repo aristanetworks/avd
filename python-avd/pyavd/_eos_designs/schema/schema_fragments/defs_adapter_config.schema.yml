@@ -145,10 +145,11 @@ $defs:
           profile:
             type: str
             default: "aes67-r16-2016"
-            valid_values:
-              - "aes67"
-              - "aes67-r16-2016"
-              - "smpte2059-2"
+            description: |-
+              Default available profiles are:
+                - "aes67"
+                - "aes67-r16-2016"
+                - "smpte2059-2"
       sflow:
         type: bool
         description: |-
