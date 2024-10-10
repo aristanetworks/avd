@@ -661,7 +661,7 @@ router bgp {{ router_bgp.as }}
 {%     endfor %}
 {# L2VPNs - (vxlan) vlan based #}
 {%     if router_bgp.vlans is arista.avd.defined %}
-{%         for vlan in router_bgp.vlans | arista.avd.natural_sort%}
+{%         for vlan in router_bgp.vlans | arista.avd.natural_sort %}
    !
    vlan {{ vlan.id }}
 {%             if vlan.rd is arista.avd.defined %}
