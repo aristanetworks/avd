@@ -192,7 +192,7 @@ class RouterBgpMixin(UtilsMixin):
 
     @cached_property
     def _router_bgp_redistribute_routes(self: AvdStructuredConfigUnderlay) -> dict:
-        """Return structured config for router_bgp.redistribute_routes."""
+        """Return structured config for router_bgp.redistribute."""
         if self.shared_utils.overlay_routing_protocol == "none" or not self.shared_utils.underlay_filter_redistribute_connected:
             return {"connected": {"enabled": True}}
 

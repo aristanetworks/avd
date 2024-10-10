@@ -865,7 +865,7 @@ class RouterBgpMixin(UtilsMixin):
     @cached_property
     def _router_bgp_redistribute_routes(self: AvdStructuredConfigNetworkServices) -> dict | None:
         """
-        Return structured config for router_bgp.redistribute_routes.
+        Return structured config for router_bgp.redistribute.
 
         Add redistribute static to default if either "redistribute_in_overlay" is set or
         "redistribute_in_underlay" and underlay protocol is BGP.
