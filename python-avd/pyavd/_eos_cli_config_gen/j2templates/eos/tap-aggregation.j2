@@ -15,6 +15,7 @@ tap aggregation
 {%             endif %}
    {{ mode_cli }}
 {%         endif %}
+{%     endif %}
 {%     if tap_aggregation.encapsulation_dot1br_strip is arista.avd.defined(true) %}
    encapsulation dot1br strip
 {%     endif %}
@@ -24,10 +25,9 @@ tap aggregation
 {%     if tap_aggregation.protocol_lldp_trap is arista.avd.defined(true) %}
    protocol lldp trap
 {%     endif %}
-{%         for interface in tap_aggregation.mode.exclusive.no_errdisable | arista.avd.natural_sort %}
+{%     for interface in tap_aggregation.mode.exclusive.no_errdisable | arista.avd.natural_sort %}
    mode exclusive no-errdisable {{ interface }}
-{%         endfor %}
-{%     endif %}
+{%     endfor %}
 {%     if tap_aggregation.truncation_size is arista.avd.defined %}
    truncation size {{ tap_aggregation.truncation_size }}
 {%     endif %}
