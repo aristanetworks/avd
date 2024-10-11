@@ -675,9 +675,9 @@ ASN Notation: asplain
 !
 router bgp 65105
    router-id 192.168.255.15
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -729,8 +729,8 @@ router bgp 65105
       vlan 250
    !
    address-family evpn
-      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
+      no host-flap detection
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
@@ -747,30 +747,30 @@ router bgp 65105
       router-id 192.168.255.15
       update wait-install
       neighbor 123.1.1.10 remote-as 1234
-      neighbor 123.1.1.10 password 7 <removed>
       neighbor 123.1.1.10 local-as 123 no-prepend replace-as
+      neighbor 123.1.1.10 update-source Loopback123
       neighbor 123.1.1.10 description External IPv4 BGP peer
       neighbor 123.1.1.10 ebgp-multihop 3
+      neighbor 123.1.1.10 route-map RM-123-1-1-10-IN in
+      neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
+      neighbor 123.1.1.10 password 7 <removed>
+      neighbor 123.1.1.10 default-originate route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
       neighbor 123.1.1.10 send-community standard extended
       neighbor 123.1.1.10 maximum-routes 0
-      neighbor 123.1.1.10 default-originate route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-      neighbor 123.1.1.10 update-source Loopback123
-      neighbor 123.1.1.10 route-map RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT out
-      neighbor 123.1.1.10 route-map RM-123-1-1-10-IN in
       neighbor 123.1.1.11 remote-as 1234
-      neighbor 123.1.1.11 password 7 <removed>
       neighbor 123.1.1.11 local-as 123 no-prepend replace-as
+      neighbor 123.1.1.11 update-source Loopback123
       neighbor 123.1.1.11 description External IPv4 BGP peer
       neighbor 123.1.1.11 ebgp-multihop 3
+      neighbor 123.1.1.11 route-map RM-123-1-1-11-IN in
+      neighbor 123.1.1.11 route-map RM-123-1-1-11-OUT out
+      neighbor 123.1.1.11 password 7 <removed>
+      neighbor 123.1.1.11 default-originate
       neighbor 123.1.1.11 send-community standard extended
       neighbor 123.1.1.11 maximum-routes 0
-      neighbor 123.1.1.11 default-originate
-      neighbor 123.1.1.11 update-source Loopback123
-      neighbor 123.1.1.11 route-map RM-123-1-1-11-OUT out
-      neighbor 123.1.1.11 route-map RM-123-1-1-11-IN in
       neighbor fd5a:fe45:8831:06c5::a remote-as 12345
-      neighbor fd5a:fe45:8831:06c5::a send-community
       neighbor fd5a:fe45:8831:06c5::a route-map RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT out
+      neighbor fd5a:fe45:8831:06c5::a send-community
       neighbor fd5a:fe45:8831:06c5::b remote-as 12345
       redistribute connected
       redistribute static
