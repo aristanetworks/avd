@@ -28,5 +28,4 @@ servers:
                 name: acl1
 
 expected_error_message: >-
-  For connected-endpoints-monitor-session-mismatch-acl,
-  an ACL is set on Port-Channel14 even though ACL is set for monitor session DMF in connected endpoints settings.
+  Can not set ACL for connected-endpoints-monitor-session-mismatch-acl on interface Port-Channel14 since it is already present on monitor session DMF in connected endpoints settings.
