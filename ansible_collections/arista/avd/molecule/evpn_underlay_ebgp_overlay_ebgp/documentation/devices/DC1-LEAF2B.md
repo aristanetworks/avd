@@ -13,6 +13,7 @@
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [SNMP](#snmp)
+  - [Hardware](#hardware)
 - [Hardware TCAM Profile](#hardware-tcam-profile)
   - [Hardware TCAM Device Configuration](#hardware-tcam-device-configuration)
 - [Spanning Tree](#spanning-tree)
@@ -208,6 +209,18 @@ daemon TerminAttr
 !
 snmp-server contact example@example.com
 snmp-server location DC1_FABRIC rackD DC1-LEAF2B
+```
+
+### Hardware
+
+#### Hardware Device Configuration
+
+```eos
+!
+hardware speed-group 1 serdes 10G
+hardware speed-group 2 serdes 25G
+hardware speed-group 3 serdes 25G
+hardware speed-group 4 serdes 10G
 ```
 
 ## Hardware TCAM Profile
