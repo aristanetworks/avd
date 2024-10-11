@@ -607,8 +607,8 @@ router ospf 99 vrf TENANT_B_WAN
    router-id 192.168.48.4
    passive-interface default
    no passive-interface Ethernet6.100
-   max-lsa 10000
    redistribute bgp
+   max-lsa 10000
 ```
 
 ### Router ISIS
@@ -781,9 +781,9 @@ ASN Notation: asplain
 !
 router bgp 65000
    router-id 100.70.0.7
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
@@ -870,8 +870,8 @@ router bgp 65000
       router-id 100.70.0.7
       update wait-install
       neighbor 192.168.48.3 remote-as 65202
-      neighbor 192.168.48.3 password 7 <removed>
       neighbor 192.168.48.3 description TENANT_B_CPE_SITE5
+      neighbor 192.168.48.3 password 7 <removed>
       redistribute connected
       redistribute ospf
       !
