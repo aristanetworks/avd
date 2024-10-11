@@ -366,9 +366,9 @@ ASN Notation: asplain
 !
 router bgp 65120
    router-id 172.16.120.1
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS next-hop-unchanged
@@ -396,8 +396,8 @@ router bgp 65120
    neighbor 172.16.120.3 description DC1-POD2-LEAF1A_Loopback0
    neighbor 172.17.10.11 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.10.11 remote-as 65102
-   neighbor 172.17.10.11 description DC1-RS2_Ethernet2
    neighbor 172.17.10.11 bfd
+   neighbor 172.17.10.11 description DC1-RS2_Ethernet2
    neighbor 172.17.120.1 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.120.1 remote-as 65121
    neighbor 172.17.120.1 description DC1-POD2-LEAF1A_Ethernet1
@@ -406,13 +406,13 @@ router bgp 65120
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
    !
-   address-family rt-membership
-      neighbor EVPN-OVERLAY-PEERS activate
-      neighbor EVPN-OVERLAY-PEERS default-route-target only
-   !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
+   !
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS default-route-target only
 ```
 
 ## BFD

@@ -459,9 +459,9 @@ ASN Notation: asplain
 !
 router bgp 65212
    router-id 172.16.210.4
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -487,12 +487,12 @@ router bgp 65212
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
    !
-   address-family rt-membership
-      neighbor EVPN-OVERLAY-PEERS activate
-   !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor IPv4-UNDERLAY-PEERS activate
+   !
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-PEERS activate
 ```
 
 ## BFD

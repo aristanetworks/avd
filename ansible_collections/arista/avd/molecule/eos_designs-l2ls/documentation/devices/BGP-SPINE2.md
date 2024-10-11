@@ -465,9 +465,9 @@ ASN Notation: asplain
 !
 router bgp 65001
    router-id 192.168.255.2
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS send-community
    neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
@@ -475,9 +475,9 @@ router bgp 65001
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65001
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description BGP-SPINE1
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
-   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 192.168.253.7 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.253.7 remote-as 65000
    neighbor 192.168.253.7 description DUMMY-CORE

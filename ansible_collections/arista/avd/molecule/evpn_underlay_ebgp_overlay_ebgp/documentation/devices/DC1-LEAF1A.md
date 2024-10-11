@@ -666,9 +666,9 @@ ASN Notation: asplain
 !
 router bgp 65101
    router-id 192.168.255.9
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -720,8 +720,8 @@ router bgp 65101
       vlan 120-124
    !
    address-family evpn
-      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
+      no host-flap detection
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

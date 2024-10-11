@@ -367,9 +367,9 @@ ASN Notation: asplain
 !
 router bgp 65110.100
    router-id 172.16.110.2
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
