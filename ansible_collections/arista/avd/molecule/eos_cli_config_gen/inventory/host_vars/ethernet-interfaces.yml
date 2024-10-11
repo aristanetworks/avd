@@ -232,6 +232,8 @@ ethernet_interfaces:
         vlans:
           - range: 1-3
             mac_address_maximum: 3
+          - range: 41,2,22
+            mac_address_maximum: 4
       vlan_translations:
         out_required: false
         direction_out:
