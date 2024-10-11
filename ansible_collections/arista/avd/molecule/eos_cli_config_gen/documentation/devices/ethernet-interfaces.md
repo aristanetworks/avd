@@ -248,6 +248,7 @@ sFlow is disabled.
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet2 | SRV-POD02_Eth1 | - | 10.1.255.3/24 | default | - | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
@@ -386,10 +387,10 @@ sFlow is disabled.
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
-   speed forced 100gfull
+   bgp session tracker ST1
    l2 mtu 8000
    l2 mru 8000
-   bgp session tracker ST1
+   speed forced 100gfull
    switchport access vlan 200
    switchport trunk native vlan tag
    switchport phone vlan 110
@@ -417,12 +418,6 @@ interface Ethernet1
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
    ip address 172.31.255.1/31
-   switchport backup-link Ethernet5 prefer vlan 10
-   switchport backup preemption-delay 35
-   switchport backup mac-move-burst 20
-   switchport backup mac-move-burst-interval 30
-   switchport backup initial-mac-move-delay 10
-   switchport backup dest-macaddr 01:00:00:00:00:00
    ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
@@ -443,6 +438,12 @@ interface Ethernet1
    switchport port-security mac-address maximum disabled
    priority-flow-control on
    priority-flow-control priority 5 drop
+   switchport backup-link Ethernet5 prefer vlan 10
+   switchport backup preemption-delay 35
+   switchport backup mac-move-burst 20
+   switchport backup mac-move-burst-interval 30
+   switchport backup initial-mac-move-delay 10
+   switchport backup dest-macaddr 01:00:00:00:00:00
    link tracking group EVPN_MH_ES1 upstream
    comment
    Comment created from eos_cli under ethernet_interfaces.Ethernet1
@@ -455,6 +456,11 @@ interface Ethernet2
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   ip address 10.1.255.3/24
+   ip address 1.1.1.3/24 secondary
+   ip address 1.1.1.4/24 secondary
+   ip address 10.0.0.254/24 secondary
+   ip address 192.168.1.1/24 secondary
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
@@ -463,9 +469,9 @@ interface Ethernet2
    switchport port-security mac-address maximum 100
    priority-flow-control on
    priority-flow-control priority 5 no-drop
-   storm-control all level 10
    storm-control broadcast level pps 500
    storm-control unknown-unicast level 1
+   storm-control all level 10
    spanning-tree bpduguard disable
    spanning-tree bpdufilter disable
 !
@@ -478,7 +484,6 @@ interface Ethernet3
    switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
    ip address 172.31.128.1/31
-   switchport backup-link Ethernet4
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
@@ -489,10 +494,14 @@ interface Ethernet3
    no switchport port-security mac-address maximum disabled
    switchport port-security vlan 1 mac-address maximum 3
    switchport port-security vlan 2 mac-address maximum 3
+   switchport port-security vlan 2 mac-address maximum 4
    switchport port-security vlan 3 mac-address maximum 3
+   switchport port-security vlan 22 mac-address maximum 4
+   switchport port-security vlan 41 mac-address maximum 4
    switchport port-security vlan default mac-address maximum 2
    no priority-flow-control
    spanning-tree guard root
+   switchport backup-link Ethernet4
    link tracking group EVPN_MH_ES2 downstream
 !
 interface Ethernet4
@@ -551,35 +560,35 @@ interface Ethernet6
    description SRV-POD02_Eth1
    logging event link-status
    logging event congestion-drops
-   logging event spanning-tree
-   logging event storm-control discards
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   logging event storm-control discards
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
+   logging event spanning-tree
 !
 interface Ethernet7
    description Molecule L2
    no shutdown
    mtu 7000
    switchport
+   ptp enable
+   ptp announce interval 10
+   ptp announce timeout 30
+   ptp delay-mechanism p2p
+   ptp delay-req interval 20
+   ptp role master
+   ptp sync-message interval 5
+   ptp transport layer2
+   ptp vlan all
+   service-profile QoS
    qos trust cos
    qos cos 5
-   storm-control all level 75
    storm-control broadcast level pps 10
    storm-control multicast level 50
    storm-control unknown-unicast level 10
-   ptp enable
-   ptp sync-message interval 5
-   ptp delay-mechanism p2p
-   ptp announce interval 10
-   ptp transport layer2
-   ptp announce timeout 30
-   ptp delay-req interval 20
-   ptp role master
-   ptp vlan all
-   service-profile QoS
+   storm-control all level 75
    spanning-tree portfast
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
@@ -632,13 +641,13 @@ interface Ethernet13
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
-   no logging event spanning-tree
-   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
+   no logging event storm-control discards
+   no logging event spanning-tree
 !
 interface Ethernet14
    description SRV-POD02_Eth1
@@ -756,6 +765,7 @@ interface Ethernet26.500
 interface Ethernet27
    description EVPN-Vxlan single-active redundancy
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
@@ -767,6 +777,7 @@ interface Ethernet27
 interface Ethernet28
    description EVPN-MPLS multihoming
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
       mpls tunnel flood filter time 100
@@ -859,8 +870,8 @@ interface Ethernet43
 interface Ethernet44
    description DOT1X Testing - reauthorization_request_limit
    switchport
-   dot1x reauthorization request limit 3
    dot1x eapol disabled
+   dot1x reauthorization request limit 3
 !
 interface Ethernet45
    description DOT1X Testing - all features
@@ -933,9 +944,9 @@ interface Ethernet55
    description DHCPv6 Relay Testing
    no shutdown
    no switchport
-   ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
+   ipv6 address a0::1/64
 !
 interface Ethernet56
    description Interface with poe commands and limit in class
@@ -1001,25 +1012,25 @@ interface Ethernet61
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
-   no logging event spanning-tree
-   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
    switchport mode trunk phone
    switchport
+   no logging event storm-control discards
+   no logging event spanning-tree
 !
 interface Ethernet62
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
-   no logging event spanning-tree
-   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone
    switchport mode trunk phone
    switchport
+   no logging event storm-control discards
+   no logging event spanning-tree
 !
 interface Ethernet63
    description DHCP client interface

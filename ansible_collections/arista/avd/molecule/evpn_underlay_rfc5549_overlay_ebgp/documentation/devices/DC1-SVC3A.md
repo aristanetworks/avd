@@ -499,10 +499,10 @@ interface Ethernet11
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    switchport
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -512,10 +512,10 @@ interface Ethernet12
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    switchport
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -525,10 +525,10 @@ interface Ethernet13
    switchport access vlan 210
    switchport mode access
    switchport
-   storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level pps 20
    spanning-tree portfast network
    spanning-tree bpduguard enable
 !
@@ -548,10 +548,10 @@ interface Ethernet16
    switchport access vlan 210
    switchport mode access
    switchport
-   storm-control all level pps 20
    storm-control broadcast level 200
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level pps 20
    spanning-tree portfast network
    spanning-tree bpduguard enable
 ```

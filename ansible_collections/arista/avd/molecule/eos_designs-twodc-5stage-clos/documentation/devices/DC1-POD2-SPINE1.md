@@ -186,27 +186,27 @@ vlan internal order ascending range 1006 1199
 interface Ethernet1
    description P2P_DC1-SUPER-SPINE1_Ethernet3
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.12.1/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet2
    description P2P_DC1-SUPER-SPINE2_Ethernet3
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.16.12.65/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet3
    description P2P_DC1-POD2-LEAF1A_Ethernet1
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.120.0/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
