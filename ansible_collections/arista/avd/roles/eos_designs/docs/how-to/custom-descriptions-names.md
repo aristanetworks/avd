@@ -10,7 +10,10 @@ title: Custom descriptions and names
 
 # Custom descriptions and names
 
-The `eos_designs` role allows customization of various field descriptions and names leveraging AVD's custom string formatter syntax.
+The `eos_designs` role provides the capability to customize various field descriptions and names leveraging the following methods:
+
+- [AVD string formatter syntax](#avd-string-formatter-syntax) (Recommended).
+- [Node type customization](../input-variables.md#node-type-customization) with custom Jinja2 template or Python class.
 
 ## AVD string formatter syntax
 
