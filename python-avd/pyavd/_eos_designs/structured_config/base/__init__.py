@@ -78,7 +78,7 @@ class AvdStructuredConfigBase(AvdFacts, NtpMixin, SnmpServerMixin):
                 "paths": get(self._hostvars, "bgp_maximum_paths", default=default_maximum_paths),
                 "ecmp": get(self._hostvars, "bgp_ecmp", default=default_ecmp),
             },
-            "redistribute_routes": self._router_bgp_redistribute_routes,
+            "redistribute": self._router_bgp_redistribute_routes,
         }
         if get(self._hostvars, "bgp_update_wait_for_convergence", default=False) is True and platform_bgp_update_wait_for_convergence:
             router_bgp.setdefault("updates", {})["wait_for_convergence"] = True

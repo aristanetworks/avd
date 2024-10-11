@@ -1369,9 +1369,9 @@ ASN Notation: asplain
 !
 router bgp 65103
    router-id 192.168.255.13
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
@@ -1384,10 +1384,10 @@ router bgp 65103
    neighbor MLAG-PEERS remote-as 65103
    neighbor MLAG-PEERS next-hop-self
    neighbor MLAG-PEERS description DC1-SVC3A
+   neighbor MLAG-PEERS route-map RM-MLAG-PEER-IN in
    neighbor MLAG-PEERS password 7 <removed>
    neighbor MLAG-PEERS send-community
    neighbor MLAG-PEERS maximum-routes 12000
-   neighbor MLAG-PEERS route-map RM-MLAG-PEER-IN in
    neighbor UNDERLAY-PEERS peer group
    neighbor UNDERLAY-PEERS password 7 <removed>
    neighbor UNDERLAY-PEERS send-community
@@ -1487,8 +1487,8 @@ router bgp 65103
       vlan 310-311
    !
    address-family evpn
-      no host-flap detection
       neighbor EVPN-OVERLAY-PEERS activate
+      no host-flap detection
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate

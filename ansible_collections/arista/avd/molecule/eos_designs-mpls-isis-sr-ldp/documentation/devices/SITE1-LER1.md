@@ -544,8 +544,8 @@ router ospf 19 vrf TENANT_B_INTRA
    router-id 10.123.1.0
    passive-interface default
    no passive-interface Ethernet6.10
-   max-lsa 10000
    redistribute bgp
+   max-lsa 10000
 ```
 
 ### Router ISIS
@@ -701,9 +701,9 @@ ASN Notation: asplain
 !
 router bgp 65000
    router-id 100.70.0.5
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000
