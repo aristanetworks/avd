@@ -607,8 +607,8 @@ router ospf 99 vrf TENANT_B_WAN
    router-id 192.168.48.4
    passive-interface default
    no passive-interface Ethernet6.100
-   max-lsa 10000
    redistribute bgp
+   max-lsa 10000
 ```
 
 ### Router ISIS
