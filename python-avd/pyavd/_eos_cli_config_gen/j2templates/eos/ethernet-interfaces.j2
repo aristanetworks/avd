@@ -178,16 +178,17 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.switchport.enabled is arista.avd.defined(false) %}
    no switchport
 {%     endif %}
-{%     if ethernet_interface.vlan_id is arista.avd.defined and ethernet_interface.type | arista.avd.default != 'l2dot1q' %}
-   vlan id {{ ethernet_interface.vlan_id }}
-{%     endif %}
 {%     if ethernet_interface.encapsulation_dot1q.vlan is arista.avd.defined %}
 {%         set encapsulation_dot1q_cli = 'encapsulation dot1q vlan ' ~ ethernet_interface.encapsulation_dot1q.vlan %}
 {%         if ethernet_interface.encapsulation_dot1q.inner_vlan is arista.avd.defined %}
 {%             set encapsulation_dot1q_cli = encapsulation_dot1q_cli ~ ' inner ' ~ ethernet_interface.encapsulation_dot1q.inner_vlan %}
 {%         endif %}
    {{ encapsulation_dot1q_cli }}
-{%     elif ethernet_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined %}
+{%     endif %}
+{%     if ethernet_interface.vlan_id is arista.avd.defined and ethernet_interface.type | arista.avd.default != 'l2dot1q' %}
+   vlan id {{ ethernet_interface.vlan_id }}
+{%     endif %}
+{%     if ethernet_interface.encapsulation_vlan.client.encapsulation is arista.avd.defined and ethernet_interface.encapsulation_dot1q.vlan is not arista.avd.defined %}
 {%         set client_encapsulation = ethernet_interface.encapsulation_vlan.client.encapsulation %}
 {%         set network_flag = False %}
 {%         if client_encapsulation in ['dot1q', 'dot1ad'] %}
