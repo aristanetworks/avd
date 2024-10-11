@@ -74,9 +74,9 @@ interface Ethernet1
 ```eos
 !
 interface Port-Channel2
-   no switchport
    traffic-policy input BLUE-C1-POLICY
    traffic-policy output BLUE-C2-POLICY
+   no switchport
 ```
 
 ### Traffic Policies information

@@ -603,6 +603,7 @@ interface Port-Channel10
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -615,12 +616,12 @@ interface Port-Channel14
    switchport mode trunk
    switchport
    mlag 14
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel15
    description server08_no_profile_port_channel
@@ -629,12 +630,12 @@ interface Port-Channel15
    switchport mode trunk
    switchport
    mlag 15
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 ```
 
 ### Loopback Interfaces

@@ -155,10 +155,10 @@ interface Port-Channel5
    mlag 5
    ptp enable
    ptp mpass
-   ptp profile g8275.1 destination mac-address forwardable
    ptp delay-mechanism e2e
-   ptp sync-message interval 1
+   ptp profile g8275.1 destination mac-address forwardable
    ptp role dynamic
-   ptp vlan 2
+   ptp sync-message interval 1
    ptp transport layer2
+   ptp vlan 2
 ```

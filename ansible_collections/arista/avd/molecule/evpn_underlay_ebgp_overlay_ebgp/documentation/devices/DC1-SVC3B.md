@@ -674,6 +674,7 @@ interface Port-Channel10
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:1234:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -687,12 +688,12 @@ interface Port-Channel14
    switchport
    l2 mtu 8000
    mlag 14
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel15
    description CUSTOM_server08_no_profile_port_channel_server08_no_profile_port_channel
@@ -701,12 +702,12 @@ interface Port-Channel15
    switchport mode trunk
    switchport
    mlag 15
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel17
    description CUSTOM_server10_no_profile_port_channel_lacp_fallback_server10_no_profile_port_channel_lacp_fallback
@@ -714,15 +715,15 @@ interface Port-Channel17
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    switchport
-   port-channel lacp fallback timeout 90
    port-channel lacp fallback static
+   port-channel lacp fallback timeout 90
    mlag 17
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel18
    description CUSTOM_server11_inherit_profile_port_channel_lacp_fallback_ALL_WITH_SECURITY_PORT_CHANNEL
@@ -730,16 +731,16 @@ interface Port-Channel18
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    switchport
-   l2 mtu 8000
-   port-channel lacp fallback timeout 10
    port-channel lacp fallback static
+   port-channel lacp fallback timeout 10
+   l2 mtu 8000
    mlag 18
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel19
    description CUSTOM_server12_inherit_nested_profile_port_channel_lacp_fallback_NESTED_ALL_WITH_SECURITY_PORT_CHANNEL
@@ -747,16 +748,16 @@ interface Port-Channel19
    switchport trunk allowed vlan 1-4094
    switchport mode trunk
    switchport
-   l2 mtu 8000
-   port-channel lacp fallback timeout 10
    port-channel lacp fallback static
+   port-channel lacp fallback timeout 10
+   l2 mtu 8000
    mlag 19
-   spanning-tree portfast
-   spanning-tree bpdufilter enable
-   storm-control all level 10
    storm-control broadcast level pps 100
    storm-control multicast level 1
    storm-control unknown-unicast level 2
+   storm-control all level 10
+   spanning-tree portfast
+   spanning-tree bpdufilter enable
 !
 interface Port-Channel22
    description CUSTOM_server15_port_channel_disabled_interfaces_
