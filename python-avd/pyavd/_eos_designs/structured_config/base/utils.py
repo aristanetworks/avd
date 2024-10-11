@@ -66,13 +66,13 @@ class UtilsMixin:
         return source_interfaces
 
     @cached_property
-    def _router_bgp_redistribute_routes(self: AvdStructuredConfigBase) -> list | None:
-        """Return structured config for router_bgp.redistribute_routes."""
+    def _router_bgp_redistribute_routes(self: AvdStructuredConfigBase) -> dict | None:
+        """Return structured config for router_bgp.redistribute."""
         if not (self.shared_utils.underlay_bgp or self.shared_utils.is_wan_router or self.shared_utils.l3_interfaces_bgp_neighbors):
             return None
 
         if self.shared_utils.overlay_routing_protocol != "none" and self.shared_utils.underlay_filter_redistribute_connected:
             # Use route-map for redistribution
-            return [{"source_protocol": "connected", "route_map": "RM-CONN-2-BGP"}]
+            return {"connected": {"enabled": True, "route_map": "RM-CONN-2-BGP"}}
 
-        return [{"source_protocol": "connected"}]
+        return {"connected": {"enabled": True}}

@@ -481,8 +481,8 @@ router bgp 65212
    neighbor 172.17.210.6 peer group IPv4-UNDERLAY-PEERS
    neighbor 172.17.210.6 remote-as 65210
    neighbor 172.17.210.6 description DC2-POD1-SPINE2_Ethernet4
-   redistribute attached-host
    redistribute connected route-map RM-CONN-2-BGP
+   redistribute attached-host
    !
    address-family evpn
       neighbor EVPN-OVERLAY-PEERS activate
