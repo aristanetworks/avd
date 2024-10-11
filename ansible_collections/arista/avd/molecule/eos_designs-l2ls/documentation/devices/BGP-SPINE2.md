@@ -483,9 +483,9 @@ router bgp 65001
    neighbor 192.168.253.7 description DUMMY-CORE
    neighbor 192.168.254.0 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 192.168.254.0 description BGP-SPINE1_Vlan4094
-   redistribute attached-host
    redistribute connected
    redistribute static
+   redistribute attached-host
    !
    address-family ipv4
       neighbor IPv4-UNDERLAY-PEERS activate
