@@ -294,18 +294,18 @@ vlan 4094
 interface Ethernet1
    description P2P_DC1-POD1-SPINE1_Ethernet4
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.9/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet2
    description P2P_DC1-POD1-SPINE2_Ethernet4
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.11/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
@@ -338,18 +338,18 @@ interface Ethernet7
 interface Ethernet11
    description P2P_DC1-POD1-SPINE1_Ethernet7
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.13/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
 interface Ethernet12
    description P2P_DC1-POD1-SPINE2_Ethernet7
    no shutdown
-   mac security profile MACSEC_PROFILE
    no switchport
    ip address 172.17.110.15/31
+   mac security profile MACSEC_PROFILE
    ptp enable
    service-profile QOS-PROFILE
 !
