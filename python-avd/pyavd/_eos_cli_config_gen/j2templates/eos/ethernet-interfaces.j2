@@ -377,6 +377,9 @@ interface {{ ethernet_interface.name }}
    ip address {{ ip_address_secondary }} secondary
 {%         endfor %}
 {%     endif %}
+{%     if ethernet_interface.ip_address is arista.avd.defined("dhcp") and ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
+   dhcp client accept default-route
+{%     endif %}
 {%     if ethernet_interface.ip_verify_unicast_source_reachable_via is arista.avd.defined %}
    ip verify unicast source reachable-via {{ ethernet_interface.ip_verify_unicast_source_reachable_via }}
 {%     endif %}
@@ -390,6 +393,16 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.bfd.echo is arista.avd.defined(false) %}
    no bfd echo
 {%     endif %}
+{%     for ip_helper in ethernet_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
+{%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
+{%         if ip_helper.vrf is arista.avd.defined %}
+{%             set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
+{%         endif %}
+{%         if ip_helper.source_interface is arista.avd.defined %}
+{%             set ip_helper_cli = ip_helper_cli ~ " source-interface " ~ ip_helper.source_interface %}
+{%         endif %}
+   {{ ip_helper_cli }}
+{%     endfor %}
 {%     for destination in ethernet_interface.ipv6_dhcp_relay_destinations | arista.avd.natural_sort('address') %}
 {%         set destination_cli = "ipv6 dhcp relay destination " ~ destination.address %}
 {%         if destination.vrf is arista.avd.defined %}
@@ -405,19 +418,6 @@ interface {{ ethernet_interface.name }}
 {%         endif %}
    {{ destination_cli }}
 {%     endfor %}
-{%     for ip_helper in ethernet_interface.ip_helpers | arista.avd.natural_sort('ip_helper') %}
-{%         set ip_helper_cli = "ip helper-address " ~ ip_helper.ip_helper %}
-{%         if ip_helper.vrf is arista.avd.defined %}
-{%             set ip_helper_cli = ip_helper_cli ~ " vrf " ~ ip_helper.vrf %}
-{%         endif %}
-{%         if ip_helper.source_interface is arista.avd.defined %}
-{%             set ip_helper_cli = ip_helper_cli ~ " source-interface " ~ ip_helper.source_interface %}
-{%         endif %}
-   {{ ip_helper_cli }}
-{%     endfor %}
-{%     if ethernet_interface.ip_address is arista.avd.defined("dhcp") and ethernet_interface.dhcp_client_accept_default_route is arista.avd.defined(true) %}
-   dhcp client accept default-route
-{%     endif %}
 {%     if ethernet_interface.dhcp_server_ipv4 is arista.avd.defined(true) %}
    dhcp server ipv4
 {%     endif %}
@@ -858,17 +858,17 @@ interface {{ ethernet_interface.name }}
 {%     elif ethernet_interface.spanning_tree_bpdufilter is arista.avd.defined("disabled") %}
    spanning-tree bpdufilter disable
 {%     endif %}
-{%     if ethernet_interface.logging.event.spanning_tree is arista.avd.defined(true) %}
-   logging event spanning-tree
-{%     elif ethernet_interface.logging.event.spanning_tree is arista.avd.defined(false) %}
-   no logging event spanning-tree
-{%     endif %}
 {%     if ethernet_interface.spanning_tree_guard is arista.avd.defined %}
 {%         if ethernet_interface.spanning_tree_guard == 'disabled' %}
    spanning-tree guard none
 {%         else %}
    spanning-tree guard {{ ethernet_interface.spanning_tree_guard }}
 {%         endif %}
+{%     endif %}
+{%     if ethernet_interface.logging.event.spanning_tree is arista.avd.defined(true) %}
+   logging event spanning-tree
+{%     elif ethernet_interface.logging.event.spanning_tree is arista.avd.defined(false) %}
+   no logging event spanning-tree
 {%     endif %}
 {%     if ethernet_interface.switchport.backup_link.interface is arista.avd.defined %}
 {%         set backup_link_cli = "switchport backup-link " ~ ethernet_interface.switchport.backup_link.interface %}
