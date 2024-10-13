@@ -4,14 +4,14 @@ type: l2leaf
 l2leaf:
   defaults:
   nodes:
-    - name: connected-endpoints-monitor-session-mismatch-acl
+    - name: connected-endpoints-monitor-session-connected-endpoint-acl
 
 servers:
   - name: INDIVIDUAL_1
     adapters:
-      - switches: [connected-endpoints-monitor-session-mismatch-acl]
+      - switches: [connected-endpoints-monitor-session-connected-endpoint-acl]
         switch_ports: [Ethernet14]
-        description: Monitor port-channel 44
+        description: Monitor port-channel 14
         port_channel:
           channel_id: 14
           mode: active
@@ -28,4 +28,5 @@ servers:
                 name: acl1
 
 expected_error_message: >-
-  Can not set ACL for connected-endpoints-monitor-session-mismatch-acl on interface Port-Channel14 since it is already present on monitor session DMF in connected endpoints settings.
+  Cannot set an ACL for both session_settings and source_settings under the monitor session 'DMF'
+  for adapter connected_endpoints[0]['adapters'][0].
