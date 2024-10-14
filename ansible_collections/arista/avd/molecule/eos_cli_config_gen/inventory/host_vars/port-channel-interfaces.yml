@@ -91,7 +91,7 @@ port_channel_interfaces:
           - from: 23
             dot1q_tunnel_to: 22
       backup_link:
-        interface: Port-Channel100.102
+        interface: Port-Channel100
         prefer_vlan: 20
 
   - name: Port-Channel3
