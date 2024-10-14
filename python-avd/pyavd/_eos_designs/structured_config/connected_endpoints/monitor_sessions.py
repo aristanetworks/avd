@@ -7,7 +7,7 @@ import re
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import append_if_not_duplicate, get, groupby, merge, strip_null_from_data
 from pyavd.j2filters import range_expand
 
