@@ -40,10 +40,11 @@ class MonitorSessionsMixin(UtilsMixin):
             if get(merged_settings, "session_settings.access_group"):
                 for session in session_configs_list:
                     if get(session, "source_settings.access_group"):
-                        raise AristaAvdInvalidInputsError(
+                        msg = (
                             f"Cannot set an ACL for both session_settings and source_settings"
                             f" under the monitor session '{session['name']}' for adapter {session['context']}."
                         )
+                        raise AristaAvdInvalidInputsError(msg)
 
             monitor_session = {
                 "name": session_name,
