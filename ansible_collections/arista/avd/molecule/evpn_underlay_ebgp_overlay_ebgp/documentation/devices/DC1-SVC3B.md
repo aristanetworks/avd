@@ -1244,8 +1244,8 @@ ip routing vrf Tenant_C_WAN_Zone
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ip route vrf Tenant_A_WAN_Zone 10.3.5.0/24 Null0
+ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```
 
 ### Router BGP
