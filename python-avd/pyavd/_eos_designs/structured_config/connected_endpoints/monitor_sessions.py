@@ -98,7 +98,7 @@ class MonitorSessionsMixin(UtilsMixin):
                 if "monitor_sessions" not in adapter:
                     continue
 
-                context = f"connected_endpoints[{self._filtered_connected_endpoints.index(connected_endpoint)}]['adapters'][{connected_endpoint['adapters'].index(adapter)}]"
+                context = f"connected_endpoints[{self._filtered_connected_endpoints.index(connected_endpoint)}]['adapters']" + f"[{connected_endpoint['adapters'].index(adapter)}]"
 
                 # Monitor session on Port-channel interface
                 if get(adapter, "port_channel.mode") is not None:
