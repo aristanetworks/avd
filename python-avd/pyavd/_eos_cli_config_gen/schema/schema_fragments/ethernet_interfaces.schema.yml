@@ -1919,6 +1919,7 @@ keys:
                             - 1-10
                       mac_address_maximum:
                         type: int
+                        required: true
                         convert_types:
                           - str
         eos_cli:
