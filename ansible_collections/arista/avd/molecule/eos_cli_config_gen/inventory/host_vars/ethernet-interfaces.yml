@@ -1429,8 +1429,8 @@ ethernet_interfaces:
             - port-channel10
             - ethernet4
         identity:
-          port_id: 3
-          inner_port_id: 5
+          id: 3
+          inner_vlan: 5
         mpls_pop_all: true
         native_vlan: 10
         truncation:
@@ -1485,7 +1485,7 @@ ethernet_interfaces:
     switchport:
       tap:
         identity:
-          port_id: 5
+          id: 5
         mac_address:
           dest: 01:00:00:00:00:00
         encapsulation:

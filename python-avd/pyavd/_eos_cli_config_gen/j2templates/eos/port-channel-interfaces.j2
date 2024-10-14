@@ -729,10 +729,10 @@ interface {{ port_channel_interface.name }}
 {%     if port_channel_interface.switchport.tap.native_vlan is arista.avd.defined %}
    switchport tap native vlan {{ port_channel_interface.switchport.tap.native_vlan }}
 {%     endif %}
-{%     if port_channel_interface.switchport.tap.identity.port_id is arista.avd.defined %}
-{%         set tap_identity_cli = "switchport tap identity " ~ port_channel_interface.switchport.tap.identity.port_id %}
-{%         if port_channel_interface.switchport.tap.identity.inner_port_id is arista.avd.defined %}
-{%             set tap_identity_cli = tap_identity_cli ~ " inner " ~ port_channel_interface.switchport.tap.identity.inner_port_id %}
+{%     if port_channel_interface.switchport.tap.identity.id is arista.avd.defined %}
+{%         set tap_identity_cli = "switchport tap identity " ~ port_channel_interface.switchport.tap.identity.id %}
+{%         if port_channel_interface.switchport.tap.identity.inner_vlan is arista.avd.defined %}
+{%             set tap_identity_cli = tap_identity_cli ~ " inner " ~ port_channel_interface.switchport.tap.identity.inner_vlan %}
 {%         endif %}
    {{ tap_identity_cli }}
 {%     endif %}

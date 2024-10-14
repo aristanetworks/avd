@@ -503,8 +503,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop_groups</samp>](## "ethernet_interfaces.[].switchport.tap.default.nexthop_groups") | List, items: String |  |  |  | Default nexthop-group names. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ethernet_interfaces.[].switchport.tap.default.nexthop_groups.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identity</samp>](## "ethernet_interfaces.[].switchport.tap.identity") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_id</samp>](## "ethernet_interfaces.[].switchport.tap.identity.port_id") | Integer |  |  | Min: 1<br>Max: 4094 | Tap port ID tag. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_port_id</samp>](## "ethernet_interfaces.[].switchport.tap.identity.inner_port_id") | Integer |  |  | Min: 1<br>Max: 4094 | Inner tap port ID tag. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "ethernet_interfaces.[].switchport.tap.identity.id") | Integer |  |  | Min: 1<br>Max: 65535 | Tap port VLAN ID (1-4094) or DzGRE extended ID (1-65535). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inner_vlan</samp>](## "ethernet_interfaces.[].switchport.tap.identity.inner_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Tap port inner VLAN ID. Only applicable if `id` is a VLAN ID (1-4094). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_pop_all</samp>](## "ethernet_interfaces.[].switchport.tap.mpls_pop_all") | Boolean |  |  |  | Pop all MPLS labels. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;native_vlan</samp>](## "ethernet_interfaces.[].switchport.tap.native_vlan") | Integer |  |  | Min: 1<br>Max: 4094 | Native VLAN ID when interface is in tap mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;truncation</samp>](## "ethernet_interfaces.[].switchport.tap.truncation") | Dictionary |  |  |  |  |
@@ -1602,11 +1602,11 @@
                 - <str>
             identity:
 
-              # Tap port ID tag.
-              port_id: <int; 1-4094>
+              # Tap port VLAN ID (1-4094) or DzGRE extended ID (1-65535).
+              id: <int; 1-65535>
 
-              # Inner tap port ID tag.
-              inner_port_id: <int; 1-4094>
+              # Tap port inner VLAN ID. Only applicable if `id` is a VLAN ID (1-4094).
+              inner_vlan: <int; 1-4094>
 
             # Pop all MPLS labels.
             mpls_pop_all: <bool>

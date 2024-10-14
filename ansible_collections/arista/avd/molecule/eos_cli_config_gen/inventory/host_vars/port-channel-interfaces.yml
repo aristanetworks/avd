@@ -240,8 +240,8 @@ port_channel_interfaces:
     switchport:
       tap:
         identity:
-          port_id: 3
-          inner_port_id: 10
+          id: 3
+          inner_vlan: 10
         mac_address:
           dest: 01:00:00:00:00:00
         encapsulation:
@@ -772,7 +772,7 @@ port_channel_interfaces:
             - port-channel10
             - ethernet4
         identity:
-          port_id: 3
+          id: 3
         mpls_pop_all: true
         native_vlan: 10
         truncation:

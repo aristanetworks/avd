@@ -1374,15 +1374,15 @@ keys:
                 identity:
                   type: dict
                   keys:
-                    port_id:
+                    id:
                       type: int
                       convert_types:
                         - str
                       min: 1
-                      max: 4094
-                      description: Tap port ID tag.
-                    inner_port_id:
-                      description: Inner tap port ID tag.
+                      max: 65535
+                      description: Tap port VLAN ID (1-4094) or DzGRE extended ID (1-65535).
+                    inner_vlan:
+                      description: Tap port inner VLAN ID. Only applicable if `id` is a VLAN ID (1-4094).
                       type: int
                       convert_types:
                         - str
