@@ -25,4 +25,4 @@ network_ports:
 
 expected_error_message: >-
   Cannot set an ACL for both `session_settings` and `source_settings` under the monitor session 'DMF'
-  for adapter network_ports[0].
+  for network_ports[0].
