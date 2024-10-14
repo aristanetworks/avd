@@ -41,7 +41,7 @@ class MonitorSessionsMixin(UtilsMixin):
                 for session in session_configs_list:
                     if get(session, "source_settings.access_group"):
                         msg = (
-                            f"Cannot set an ACL for both session_settings and source_settings"
+                            f"Cannot set an ACL for both `session_settings` and `source_settings`"
                             f" under the monitor session '{session['name']}' for adapter {session['context']}."
                         )
                         raise AristaAvdInvalidInputsError(msg)
@@ -98,11 +98,6 @@ class MonitorSessionsMixin(UtilsMixin):
                 if "monitor_sessions" not in adapter:
                     continue
 
-                context = (
-                    f"connected_endpoints[{self._filtered_connected_endpoints.index(connected_endpoint)}]['adapters']"
-                    f"[{connected_endpoint['adapters'].index(adapter)}]"
-                )
-
                 # Monitor session on Port-channel interface
                 if get(adapter, "port_channel.mode") is not None:
                     default_channel_group_id = int("".join(re.findall(r"\d", adapter["switch_ports"][0])))
@@ -110,7 +105,10 @@ class MonitorSessionsMixin(UtilsMixin):
 
                     port_channel_interface_name = f"Port-Channel{channel_group_id}"
                     monitor_session_configs.extend(
-                        [dict(monitor_session, interface=port_channel_interface_name, context=context) for monitor_session in adapter["monitor_sessions"]],
+                        [
+                            dict(monitor_session, interface=port_channel_interface_name, context=adapter["context"])
+                            for monitor_session in adapter["monitor_sessions"]
+                        ],
                     )
                     continue
 
@@ -121,14 +119,15 @@ class MonitorSessionsMixin(UtilsMixin):
 
                     ethernet_interface_name = adapter["switch_ports"][node_index]
                     monitor_session_configs.extend(
-                        [dict(monitor_session, interface=ethernet_interface_name, context=context) for monitor_session in adapter["monitor_sessions"]],
+                        [
+                            dict(monitor_session, interface=ethernet_interface_name, context=adapter["context"])
+                            for monitor_session in adapter["monitor_sessions"]
+                        ],
                     )
 
         for network_port in self._filtered_network_ports:
             if "monitor_sessions" not in network_port:
                 continue
-
-            context = f"network_ports[{self._filtered_network_ports.index(network_port)}]"
 
             for ethernet_interface_name in range_expand(network_port["switch_ports"]):
                 # Monitor session on Port-channel interface
@@ -138,13 +137,19 @@ class MonitorSessionsMixin(UtilsMixin):
 
                     port_channel_interface_name = f"Port-Channel{channel_group_id}"
                     monitor_session_configs.extend(
-                        [dict(monitor_session, interface=port_channel_interface_name, context=context) for monitor_session in network_port["monitor_sessions"]],
+                        [
+                            dict(monitor_session, interface=port_channel_interface_name, context=network_port["context"])
+                            for monitor_session in network_port["monitor_sessions"]
+                        ],
                     )
                     continue
 
                 # Monitor session on Ethernet interface
                 monitor_session_configs.extend(
-                    [dict(monitor_session, interface=ethernet_interface_name, context=context) for monitor_session in network_port["monitor_sessions"]],
+                    [
+                        dict(monitor_session, interface=ethernet_interface_name, context=network_port["context"])
+                        for monitor_session in network_port["monitor_sessions"]
+                    ],
                 )
 
         return monitor_session_configs

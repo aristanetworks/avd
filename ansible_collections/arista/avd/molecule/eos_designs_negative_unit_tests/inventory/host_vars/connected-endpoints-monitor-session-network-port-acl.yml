@@ -24,5 +24,5 @@ network_ports:
             name: acl1
 
 expected_error_message: >-
-  Cannot set an ACL for both session_settings and source_settings under the monitor session 'DMF'
+  Cannot set an ACL for both `session_settings` and `source_settings` under the monitor session 'DMF'
   for adapter network_ports[0].
