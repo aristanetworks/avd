@@ -580,8 +580,8 @@ ipv6 unicast-routing
 
 ```eos
 !
-ip route vrf TENANT_B_INTRA 123.0.10.0/24 Ethernet6.10 123.1.1.3 name TENANT_B_SITE_5_SUBNET
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf TENANT_B_INTRA 123.0.10.0/24 Ethernet6.10 123.1.1.3 name TENANT_B_SITE_5_SUBNET
 ```
 
 ### Router OSPF

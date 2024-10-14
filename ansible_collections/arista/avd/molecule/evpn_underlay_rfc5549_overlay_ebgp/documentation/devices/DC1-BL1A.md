@@ -544,8 +544,8 @@ ipv6 unicast-routing
 
 ```eos
 !
-ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 ip route vrf MGMT 0.0.0.0/0 192.168.200.5
+ip route vrf Tenant_A_WAN_Zone 10.3.4.0/24 1.2.3.4
 ```
 
 ### Router General

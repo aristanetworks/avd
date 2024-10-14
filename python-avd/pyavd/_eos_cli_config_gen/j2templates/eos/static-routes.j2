@@ -7,7 +7,7 @@
 {% if static_routes is arista.avd.defined %}
 !
 {%     if static_routes is arista.avd.defined %}
-{%         set with_vrf_non_default = static_routes | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort('vrf') | arista.avd.natural_sort %}
+{%         set with_vrf_non_default = static_routes | selectattr('vrf', 'arista.avd.defined') | rejectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort | arista.avd.natural_sort('vrf') %}
 {%         set without_vrf = static_routes | rejectattr('vrf', 'arista.avd.defined') | arista.avd.natural_sort %}
 {%         set with_vrf_default = static_routes | selectattr('vrf', 'arista.avd.defined') | selectattr('vrf', 'equalto', 'default') | arista.avd.natural_sort %}
 {%         set sorted_static_routes =  without_vrf | list + with_vrf_default | list + with_vrf_non_default | list %}
