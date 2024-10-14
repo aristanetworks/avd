@@ -193,6 +193,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                     raise AristaAvdInvalidInputsError(msg)
 
                 profile = self.shared_utils.get_merged_port_profile(profile_name, context=f"{adapter['context']}.port_channel.lacp_fallback.individual")
+                profile["context"] = adapter["context"]
 
                 ethernet_interface = self._update_ethernet_interface_cfg(profile, ethernet_interface, connected_endpoint)
 
