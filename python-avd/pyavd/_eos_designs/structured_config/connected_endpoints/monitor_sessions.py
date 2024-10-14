@@ -42,7 +42,8 @@ class MonitorSessionsMixin(UtilsMixin):
                     if get(session, "source_settings.access_group"):
                         raise AristaAvdInvalidInputsError(
                             f"Cannot set an ACL for both session_settings and source_settings"
-                            f" under the monitor session '{session['name']}' for adapter {session['context']}."                            )
+                            f" under the monitor session '{session['name']}' for adapter {session['context']}."
+                        )
 
             monitor_session = {
                 "name": session_name,
@@ -96,7 +97,7 @@ class MonitorSessionsMixin(UtilsMixin):
                 if "monitor_sessions" not in adapter:
                     continue
 
-                context = f"connected_endpoints[{self._filtered_connected_endpoints.index(connected_endpoint)}]['adapters'][{connected_endpoint['adapters'].index(adapter)}]"         
+                context = f"connected_endpoints[{self._filtered_connected_endpoints.index(connected_endpoint)}]['adapters'][{connected_endpoint['adapters'].index(adapter)}]"
 
                 # Monitor session on Port-channel interface
                 if get(adapter, "port_channel.mode") is not None:
