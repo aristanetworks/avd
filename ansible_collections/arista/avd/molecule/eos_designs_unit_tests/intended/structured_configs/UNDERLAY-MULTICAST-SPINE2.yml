@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -30,9 +34,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 172.31.255.3
     peer_group: IPv4-UNDERLAY-PEERS
@@ -117,7 +118,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L3LEAF1A
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet2
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF1A_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -127,7 +128,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L3LEAF1B
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet2
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF1B_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -137,7 +138,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L3LEAF2A
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet2
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF2A_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:
@@ -147,7 +148,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L3LEAF2B
   peer_interface: Ethernet2
   peer_type: l3leaf
-  description: P2P_LINK_TO_UNDERLAY-MULTICAST-L3LEAF2B_Ethernet2
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF2B_Ethernet2
   shutdown: false
   mtu: 9214
   switchport:

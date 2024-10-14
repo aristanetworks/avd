@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -64,9 +68,6 @@ router_bgp:
     peer: UNDERLAY-MULTICAST-SPINE2
     description: UNDERLAY-MULTICAST-SPINE2_Loopback0
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -145,7 +146,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel6
-  description: UNDERLAY-MULTICAST-L2LEAF1A_Po1
+  description: L2_UNDERLAY-MULTICAST-L2LEAF1A_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -175,7 +176,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE1_Ethernet1
+  description: P2P_UNDERLAY-MULTICAST-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -188,7 +189,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-SPINE2
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_UNDERLAY-MULTICAST-SPINE2_Ethernet1
+  description: P2P_UNDERLAY-MULTICAST-SPINE2_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -198,7 +199,7 @@ ethernet_interfaces:
   peer: UNDERLAY-MULTICAST-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: UNDERLAY-MULTICAST-L2LEAF1A_Ethernet1
+  description: L2_UNDERLAY-MULTICAST-L2LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 6

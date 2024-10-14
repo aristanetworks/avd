@@ -11,6 +11,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -38,9 +42,6 @@ router_bgp:
           originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbor_interfaces:
   - name: Ethernet1
     peer_group: UNDERLAY_PEERS
@@ -189,7 +190,7 @@ ethernet_interfaces:
   peer: DC1-LEAF1A
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-LEAF1A_Ethernet3
+  description: P2P_DC1-LEAF1A_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -199,7 +200,7 @@ ethernet_interfaces:
   peer: DC1-LEAF2A
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-LEAF2A_Ethernet3
+  description: P2P_DC1-LEAF2A_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -209,7 +210,7 @@ ethernet_interfaces:
   peer: DC1-LEAF2B
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-LEAF2B_Ethernet3
+  description: P2P_DC1-LEAF2B_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -219,7 +220,7 @@ ethernet_interfaces:
   peer: DC1-SVC3A
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-SVC3A_Ethernet3
+  description: P2P_DC1-SVC3A_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -229,7 +230,7 @@ ethernet_interfaces:
   peer: DC1-SVC3B
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-SVC3B_Ethernet3
+  description: P2P_DC1-SVC3B_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -239,7 +240,7 @@ ethernet_interfaces:
   peer: DC1-BL1A
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-BL1A_Ethernet3
+  description: P2P_DC1-BL1A_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -249,7 +250,7 @@ ethernet_interfaces:
   peer: DC1-BL1B
   peer_interface: Ethernet3
   peer_type: l3leaf
-  description: P2P_LINK_TO_DC1-BL1B_Ethernet3
+  description: P2P_DC1-BL1B_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:

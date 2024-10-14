@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -54,9 +58,6 @@ router_bgp:
     peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
     description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Loopback0
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -136,7 +137,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel5
-  description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1_Po1
+  description: L2_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -173,7 +174,7 @@ ethernet_interfaces:
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
   peer_interface: Ethernet1
   peer_type: spine
-  description: P2P_LINK_TO_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
+  description: P2P_UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
   shutdown: false
   mtu: 9214
   switchport:
@@ -186,7 +187,7 @@ ethernet_interfaces:
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet1
+  description: L2_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1A_Ethernet1
   shutdown: false
   channel_group:
     id: 5
@@ -195,7 +196,7 @@ ethernet_interfaces:
   peer: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B_Ethernet1
+  description: L2_UPLINK-MLAG-STRUCTURED-CONFIG-L2LEAF1B_Ethernet1
   shutdown: false
   channel_group:
     id: 5

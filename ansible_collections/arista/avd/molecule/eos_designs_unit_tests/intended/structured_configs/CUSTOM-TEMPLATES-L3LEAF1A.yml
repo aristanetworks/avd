@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -54,9 +58,6 @@ router_bgp:
     peer: CUSTOM-TEMPLATES-SPINE1
     description: CUSTOM-TEMPLATES-SPINE1_Loopback0
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -74,8 +75,10 @@ router_bgp:
         route_targets:
         - '1:1'
     router_id: 192.168.255.21
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.240.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -186,7 +189,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel5
-  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Po5_To_Po1_CUSTOM_TEMPLATES_L2LEAF1
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L2LEAF1A_Po5_To_Po1_
   switchport:
     enabled: true
     mode: trunk
@@ -271,6 +274,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: TEST_CUSTOM_PREFIX_EVPN_Overlay_Peering_L3LEAF
@@ -287,6 +298,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.240.10/31
 router_bfd:
   multihop:
     interval: 300

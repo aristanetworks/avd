@@ -9,6 +9,12 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+    attached_host:
+      enabled: true
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -57,10 +63,6 @@ router_bgp:
     peer: sflow-tests-spine1
     description: sflow-tests-spine1_Loopback0
     remote_as: '65200'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
-  - source_protocol: attached-host
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -78,8 +80,10 @@ router_bgp:
         route_targets:
         - '1:1'
     router_id: 10.254.1.5
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.254.1.105
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -207,7 +211,7 @@ port_channel_interfaces:
   spanning_tree_portfast: edge
   mlag: 11
 - name: Port-Channel16
-  description: SFLOW-TESTS-L2-LEAF1_Po1
+  description: L2_sflow-tests-l2-leaf1_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -218,7 +222,7 @@ port_channel_interfaces:
     enable: true
   mlag: 16
 - name: Port-Channel17
-  description: SFLOW-TESTS-L2-LEAF2_Po1
+  description: L2_sflow-tests-l2-leaf2_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -273,7 +277,7 @@ ethernet_interfaces:
   peer: sflow-tests-spine1
   peer_interface: Ethernet5
   peer_type: spine
-  description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet5
+  description: P2P_sflow-tests-spine1_Ethernet5
   shutdown: false
   mtu: 9214
   switchport:
@@ -285,7 +289,7 @@ ethernet_interfaces:
   peer: sflow-tests-spine1
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_SFLOW-TESTS-SPINE1_Ethernet6
+  description: P2P_sflow-tests-spine1_Ethernet6
   shutdown: false
   mtu: 9214
   switchport:
@@ -297,7 +301,7 @@ ethernet_interfaces:
   peer: sflow-tests-l2-leaf1
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: SFLOW-TESTS-L2-LEAF1_Ethernet1
+  description: L2_sflow-tests-l2-leaf1_Ethernet1
   shutdown: false
   channel_group:
     id: 16
@@ -306,7 +310,7 @@ ethernet_interfaces:
   peer: sflow-tests-l2-leaf2
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: SFLOW-TESTS-L2-LEAF2_Ethernet1
+  description: L2_sflow-tests-l2-leaf2_Ethernet1
   shutdown: false
   channel_group:
     id: 17
@@ -354,6 +358,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-L2LEAF-INBAND-MGMT
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -370,6 +382,10 @@ prefix_lists:
     action: permit 10.254.1.0/27 eq 32
   - sequence: 20
     action: permit 10.254.11.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.1.104/31
 - name: PL-L2LEAF-INBAND-MGMT
   sequence_numbers:
   - sequence: 10

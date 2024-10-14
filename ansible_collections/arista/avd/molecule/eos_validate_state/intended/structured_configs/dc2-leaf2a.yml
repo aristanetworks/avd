@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -84,9 +88,6 @@ router_bgp:
     peer: dc1-leaf2a
     description: dc1-leaf2a
     peer_group: IPv4-UNDERLAY-PEERS
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     neighbor_default:
       next_hop_self_received_evpn_routes:
@@ -111,8 +112,10 @@ router_bgp:
         route_targets:
         - '10:10'
     router_id: 10.255.128.15
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.129.121
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -129,8 +132,10 @@ router_bgp:
         route_targets:
         - '11:11'
     router_id: 10.255.128.15
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.129.121
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -376,7 +381,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel8
-  description: DC2-LEAF2C_Po1
+  description: L2_dc2-leaf2c_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -418,7 +423,7 @@ ethernet_interfaces:
   peer: dc2-spine1
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE1_Ethernet3
+  description: P2P_dc2-spine1_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -428,7 +433,7 @@ ethernet_interfaces:
   peer: dc2-spine2
   peer_interface: Ethernet3
   peer_type: spine
-  description: P2P_LINK_TO_DC2-SPINE2_Ethernet3
+  description: P2P_dc2-spine2_Ethernet3
   shutdown: false
   mtu: 1500
   switchport:
@@ -438,7 +443,7 @@ ethernet_interfaces:
   peer: dc2-leaf2c
   peer_interface: Ethernet1
   peer_type: l2leaf
-  description: DC2-LEAF2C_Ethernet1
+  description: L2_dc2-leaf2c_Ethernet1
   shutdown: false
   channel_group:
     id: 8
@@ -447,12 +452,12 @@ ethernet_interfaces:
   peer: dc1-leaf2a
   peer_interface: Ethernet6
   peer_type: l3leaf
-  description: P2P_LINK_TO_dc1-leaf2a_Ethernet6
   switchport:
     enabled: false
   shutdown: false
   mtu: 1500
   ip_address: 192.168.100.1/31
+  description: P2P_dc1-leaf2a_Ethernet6
 - name: Ethernet5
   peer: dc2-leaf2-server1
   peer_interface: PCI1
@@ -483,6 +488,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -493,12 +506,12 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.255.129.15/32
 - name: Loopback10
-  description: VRF10_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_VRF10
   shutdown: false
   vrf: VRF10
   ip_address: 10.255.10.15/32
 - name: Loopback11
-  description: VRF11_VTEP_DIAGNOSTICS
+  description: DIAG_VRF_VRF11
   shutdown: false
   vrf: VRF11
   ip_address: 10.255.11.15/32
@@ -509,6 +522,10 @@ prefix_lists:
     action: permit 10.255.128.0/27 eq 32
   - sequence: 20
     action: permit 10.255.129.0/27 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.129.120/31
 router_bfd:
   multihop:
     interval: 300

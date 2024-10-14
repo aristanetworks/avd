@@ -11,6 +11,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -89,9 +93,6 @@ router_bgp:
     peer: DC1-SPINE4
     description: DC1-SPINE4_Loopback0
     remote_as: '65001'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -109,8 +110,10 @@ router_bgp:
         route_targets:
         - '14:14'
     router_id: 192.168.255.10
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -129,8 +132,10 @@ router_bgp:
         route_targets:
         - '21:21'
     router_id: 192.168.255.10
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -149,8 +154,10 @@ router_bgp:
         route_targets:
         - '31:31'
     router_id: 192.168.255.10
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
     neighbors:
     - ip_address: 10.255.251.11
       peer_group: MLAG-IPv4-UNDERLAY-PEER
@@ -389,7 +396,7 @@ ethernet_interfaces:
   peer: DC1-SPINE1
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+  description: P2P_DC1-SPINE1_Ethernet6
   shutdown: false
   mtu: 1500
   switchport:
@@ -399,7 +406,7 @@ ethernet_interfaces:
   peer: DC1-SPINE2
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
+  description: P2P_DC1-SPINE2_Ethernet6
   shutdown: false
   mtu: 1500
   switchport:
@@ -409,7 +416,7 @@ ethernet_interfaces:
   peer: DC1-SPINE3
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE3_Ethernet6
+  description: P2P_DC1-SPINE3_Ethernet6
   shutdown: false
   mtu: 1500
   switchport:
@@ -419,7 +426,7 @@ ethernet_interfaces:
   peer: DC1-SPINE4
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE4_Ethernet6
+  description: P2P_DC1-SPINE4_Ethernet6
   shutdown: false
   mtu: 1500
   switchport:
@@ -446,6 +453,14 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
@@ -462,6 +477,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.251.10/31
 router_bfd:
   multihop:
     interval: 1200

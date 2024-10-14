@@ -188,16 +188,16 @@ vlan 2020
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
-| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 123.1.1.0/31 | TENANT_B_INTRA | - | False | - | - |
+| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | 100.64.48.0/31 | default | 9178 | False | - | - |
+| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | 100.64.48.4/31 | default | 9178 | False | - | - |
+| Ethernet6.10 | TENANT_B_SITE_3_INTRA_L3VPN | - | 10.123.1.0/31 | TENANT_B_INTRA | - | False | - | - |
 
 ##### IPv6
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_LINK_TO_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
-| Ethernet2 | P2P_LINK_TO_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet1 | P2P_SITE1-LSR1_Ethernet1 | - | - | default | 9178 | False | - | - | - | - |
+| Ethernet2 | P2P_SITE1-LER2_Ethernet2 | - | - | default | 9178 | False | - | - | - | - |
 
 ##### ISIS
 
@@ -211,7 +211,7 @@ vlan 2020
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_SITE1-LSR1_Ethernet1
+   description P2P_SITE1-LSR1_Ethernet1
    no shutdown
    mtu 9178
    speed forced 40gfull
@@ -232,7 +232,7 @@ interface Ethernet1
 
 !
 interface Ethernet2
-   description P2P_LINK_TO_SITE1-LER2_Ethernet2
+   description P2P_SITE1-LER2_Ethernet2
    no shutdown
    mtu 9178
    speed forced 10000full
@@ -271,10 +271,10 @@ interface Ethernet6.10
    no shutdown
    encapsulation dot1q vlan 10
    vrf TENANT_B_INTRA
-   ip address 123.1.1.0/31
+   ip address 10.123.1.0/31
    ip ospf cost 10
    ip ospf network point-to-point
-   ip ospf area 0
+   ip ospf area 0.0.0.0
 !
 interface Ethernet8
    description CPE_CPE_TENANT_A_SITE1_Ethernet1
@@ -319,6 +319,7 @@ interface Ethernet8
 interface Port-Channel3
    no shutdown
    no switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0102:0000:0034
       route-target import 01:02:00:00:00:34
@@ -326,26 +327,31 @@ interface Port-Channel3
 !
 interface Port-Channel3.1000
    no shutdown
+   !
    encapsulation vlan
       client dot1q 1000 network client
 !
 interface Port-Channel3.1001
    no shutdown
+   !
    encapsulation vlan
       client dot1q 1001 network client
 !
 interface Port-Channel3.1002
    no shutdown
+   !
    encapsulation vlan
       client dot1q 1002 network client
 !
 interface Port-Channel3.1003
    no shutdown
+   !
    encapsulation vlan
       client dot1q 1003 network client
 !
 interface Port-Channel3.1004
    no shutdown
+   !
    encapsulation vlan
       client dot1q 1004 network client
 !
@@ -356,16 +362,19 @@ interface Port-Channel8
 !
 interface Port-Channel8.111
    vlan id 111
+   !
    encapsulation vlan
       client dot1q 111 network client
 !
 interface Port-Channel8.222
    vlan id 222
+   !
    encapsulation vlan
       client dot1q 222 network client
 !
 interface Port-Channel8.333
    vlan id 434
+   !
    encapsulation vlan
       client dot1q 333 network client
 ```
@@ -513,7 +522,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Process ID | Router ID | Default Passive Interface | No Passive Interface | BFD | Max LSA | Default Information Originate | Log Adjacency Changes Detail | Auto Cost Reference Bandwidth | Maximum Paths | MPLS LDP Sync Default | Distribute List In |
 | ---------- | --------- | ------------------------- | -------------------- | --- | ------- | ----------------------------- | ---------------------------- | ----------------------------- | ------------- | --------------------- | ------------------ |
-| 19 | 123.1.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
+| 19 | 10.123.1.0 | enabled | Ethernet6.10 <br> | disabled | 10000 | disabled | disabled | - | - | - | - |
 
 #### Router OSPF Router Redistribution
 
@@ -525,18 +534,18 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | Area | Cost | Point To Point |
 | -------- | -------- | -------- | -------- |
-| Ethernet6.10 | 0 | 10 | True |
+| Ethernet6.10 | 0.0.0.0 | 10 | True |
 
 #### Router OSPF Device Configuration
 
 ```eos
 !
 router ospf 19 vrf TENANT_B_INTRA
-   router-id 123.1.1.0
+   router-id 10.123.1.0
    passive-interface default
    no passive-interface Ethernet6.10
-   max-lsa 10000
    redistribute bgp
+   max-lsa 10000
 ```
 
 ### Router ISIS
@@ -591,8 +600,8 @@ router ospf 19 vrf TENANT_B_INTRA
 !
 router isis CORE
    net 49.0001.1000.7000.0005.00
-   is-type level-1-2
    router-id ipv4 100.70.0.5
+   is-type level-1-2
    log-adjacency-changes
    mpls ldp sync default
    timers local-convergence-delay 15000 protected-prefixes
@@ -692,9 +701,9 @@ ASN Notation: asplain
 !
 router bgp 65000
    router-id 100.70.0.5
-   maximum-paths 4 ecmp 4
    update wait-install
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    distance bgp 20 200 200
    neighbor MPLS-OVERLAY-PEERS peer group
    neighbor MPLS-OVERLAY-PEERS remote-as 65000

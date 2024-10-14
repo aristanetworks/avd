@@ -11,6 +11,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -32,9 +36,6 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   neighbors:
   - ip_address: 172.17.20.0
     peer_group: IPv4-UNDERLAY-PEERS
@@ -124,7 +125,7 @@ ethernet_interfaces:
   peer: DC2-SUPER-SPINE1
   peer_interface: Ethernet3
   peer_type: super-spine
-  description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet3
+  description: P2P_DC2-SUPER-SPINE1_Ethernet3
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:
@@ -134,7 +135,7 @@ ethernet_interfaces:
   peer: DC2-SUPER-SPINE1
   peer_interface: Ethernet6
   peer_type: super-spine
-  description: P2P_LINK_TO_DC2-SUPER-SPINE1_Ethernet6
+  description: P2P_DC2-SUPER-SPINE1_Ethernet6
   shutdown: false
   service_profile: QOS-PROFILE
   switchport:

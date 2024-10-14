@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   peer_groups:
   - name: MLAG-IPv4-UNDERLAY-PEER
     type: ipv4
@@ -65,9 +69,6 @@ router_bgp:
     peer: dc1-spine2
     description: dc1-spine2_Loopback0
     remote_as: '65100'
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -176,7 +177,7 @@ ethernet_interfaces:
   peer: dc1-spine1
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet6
+  description: P2P_dc1-spine1_Ethernet6
   shutdown: false
   mtu: 1500
   switchport:
@@ -186,7 +187,7 @@ ethernet_interfaces:
   peer: dc1-spine2
   peer_interface: Ethernet6
   peer_type: spine
-  description: P2P_LINK_TO_DC1-SPINE2_Ethernet6
+  description: P2P_dc1-spine2_Ethernet6
   shutdown: false
   mtu: 1500
   switchport:

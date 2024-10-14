@@ -44,10 +44,12 @@ class PortChannelInterfacesMixin(UtilsMixin):
                     InterfaceDescriptionData(
                         shared_utils=self.shared_utils,
                         interface=port_channel_name,
+                        link_type="underlay_l2",
                         peer=link["peer"],
+                        peer_interface=f"Port-Channel{link['peer_channel_group_id']}",
                         peer_channel_group_id=link["peer_channel_group_id"],
                         port_channel_id=link["channel_group_id"],
-                        port_channel_description=link.get("channel_description"),
+                        peer_node_group=link.get("peer_node_group"),
                     ),
                 ),
                 "switchport": {
