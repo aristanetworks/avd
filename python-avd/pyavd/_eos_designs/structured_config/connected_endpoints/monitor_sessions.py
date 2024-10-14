@@ -58,14 +58,7 @@ class MonitorSessionsMixin(UtilsMixin):
                     "direction": get(session, "source_settings.direction"),
                 }
 
-                if get(merged_settings, "session_settings.access_group") is not None:
-                    if get(session, "source_settings.access_group") is not None:
-                        msg = (
-                            f"Can not set ACL for {self.shared_utils.hostname} on interface {session['interface']} since it is already"
-                            f" present on monitor session {session_name} in connected endpoints settings."
-                        )
-                        raise AristaAvdError(msg)
-                elif (access_group := get(session, "source_settings.access_group")) is not None:
+                if (access_group := get(session, "source_settings.access_group")) is not None:
                     source["access_group"] = {
                         "type": access_group.get("type"),
                         "name": access_group.get("name"),
