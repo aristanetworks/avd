@@ -2,8 +2,9 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+import logging
 from pathlib import Path
-from sys import path
+from sys import path, argv
 from textwrap import indent
 
 import jsonschema
@@ -26,7 +27,7 @@ FRAGMENTS_PATTERN = "*.yml"
 def combine_schemas() -> None:
     """Combine all schema fragments into a single YAML file."""
     for schema_name, fragments_path in SCHEMA_FRAGMENTS_PATHS.items():
-        print("Combining fragments", fragments_path)
+        logging.info("Combining fragments %s", fragments_path)
         if schema_name not in SCHEMA_PATHS:
             msg = f"Invalid schema name '{schema_name}'"
             raise KeyError(msg)
@@ -50,7 +51,7 @@ def validate_schemas(schema_store: dict) -> None:
     """Validate schemas according to metaschema."""
     schema_validator = jsonschema.Draft7Validator(schema_store["avd_meta_schema"])
     for schema_name in SCHEMA_FRAGMENTS_PATHS:
-        print(f"Validating schema '{schema_name}'")
+        logging.info("Validating schema '%s'", schema_name)
         schema_validator.validate(schema_store[schema_name])
 
 
@@ -64,7 +65,7 @@ def build_schema_tables(schema_store: dict) -> None:
         table_names = sorted(schema._descendant_tables)
         output_dir = DOCS_PATHS[schema_name].joinpath("tables")
         for table_name in table_names:
-            print(f"Building table: {table_name} from schema {schema_name}")
+            logging.debug("Building table: %s from schema %s", table_name, schema_name)
             table_file = output_dir.joinpath(f"{table_name}.md")
             with Path(table_file).open(mode="w", encoding="UTF-8") as file:
                 file.write(get_md_tabs(schema, table_name))
@@ -72,22 +73,29 @@ def build_schema_tables(schema_store: dict) -> None:
         # Clean up other markdown files not covered by the tables.
         remove_files = [file for file in output_dir.glob("*.md") if file.is_file() and file.name.removesuffix(".md") not in table_names]
         for file in remove_files:
-            print(f"Deleting file {file.absolute()}")
+            logging.info("Deleting file %s", file.absolute())
             file.unlink()
 
 
-def main() -> None:
+def main(log_level: int = logging.INFO) -> None:
     """
     Main entrypoint for the script.
 
     It combines the schema fragments, and rebuild the pickled schemas.
+
     """
+    logging.basicConfig(level=log_level, format="[build_schemas] - %(message)s")
+
+    logging.info("Rebuilding schemas...")
     combine_schemas()
-    print("Rebuilding pickled schemas")
+    logging.info("Rebuilding pickled schemas")
     schema_store = create_store(force_rebuild=True)
     validate_schemas(schema_store)
+    logging.info("Rebuilding schemas documentation tables...")
     build_schema_tables(schema_store)
 
 
 if __name__ == "__main__":
-    main()
+    log_level_str = argv[1].upper() if len(argv) > 1 else "INFO"
+    log_level = logging.getLevelName(log_level_str)
+    main(log_level)

@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+import logging
+from functools import partial
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -13,6 +15,8 @@ from .constants import JINJA2_EXTENSIONS, RUNNING_FROM_SRC
 if TYPE_CHECKING:
     import os
     from collections.abc import Sequence
+
+LOGGER = logging.getLogger(__name__)
 
 
 class Undefined(StrictUndefined):
@@ -112,7 +116,7 @@ class Templar:
     def render_template_from_file(self, template_file: str, template_vars: dict) -> str:
         return self.environment.get_template(template_file).render(template_vars)
 
-    def compile_templates_in_paths(self, precompiled_templates_path: str, searchpaths: list[str]) -> None:
+    def compile_templates_in_paths(self, precompiled_templates_path: str, searchpaths: list[str], log_level: int = logging.DEBUG) -> None:
         """
         Compile the Jinja2 templates in the path.
 
@@ -126,7 +130,7 @@ class Templar:
         self.environment.loader = ExtensionFileSystemLoader(searchpaths)
         self.environment.compile_templates(
             zip=None,
-            log_function=print,
+            log_function=partial(LOGGER.log, log_level),
             target=precompiled_templates_path,
             ignore_errors=False,
         )

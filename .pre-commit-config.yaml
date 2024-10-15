@@ -198,7 +198,7 @@ repos:
 
       - id: schemas
         name: Build AVD schemas and documentation.
-        entry: sh -c 'exec python-avd/scripts/build-schemas.py'
+        entry: sh -c 'exec python-avd/scripts/build_schemas.py debug'
         language: python
         files: python-avd/pyavd/[a-z_]+/schema
         pass_filenames: false
@@ -206,7 +206,7 @@ repos:
 
       - id: templates
         name: Precompile Jinja2 templates
-        entry: sh -c 'python-avd/scripts/compile_templates.py'
+        entry: sh -c 'python-avd/scripts/compile_templates.py debug'
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
