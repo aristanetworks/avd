@@ -12785,7 +12785,7 @@ keys:
         deprecation:
           warning: true
           remove_in_version: 6.0.0
-          new_key: router_bgp.redistribute
+          new_key: redistribute
         items:
           type: dict
           keys:
@@ -13480,7 +13480,7 @@ keys:
             deprecation:
               warning: true
               remove_in_version: 6.0.0
-              new_key: router_bgp.address_family_ipv4.redistribute
+              new_key: redistribute
             items:
               type: dict
               keys:
@@ -14236,7 +14236,7 @@ keys:
             deprecation:
               warning: true
               remove_in_version: 6.0.0
-              new_key: router_bgp.address_family_ipv4_multicast.redistribute
+              new_key: redistribute
             items:
               type: dict
               keys:
@@ -14751,7 +14751,7 @@ keys:
             deprecation:
               warning: true
               remove_in_version: 6.0.0
-              new_key: router_bgp.address_family_ipv6.redistribute
+              new_key: redistribute
             items:
               type: dict
               keys:
@@ -14866,7 +14866,7 @@ keys:
             deprecation:
               warning: true
               remove_in_version: 6.0.0
-              new_key: router_bgp.address_family_ipv6_multicast.redistribute
+              new_key: redistribute
             items:
               type: dict
               keys:
@@ -16164,7 +16164,7 @@ keys:
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
-                new_key: router_bgp.vrfs[].redistribute
+                new_key: redistribute
               items:
                 type: dict
                 keys:
@@ -16317,7 +16317,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                    new_key: router_bgp.vrfs[].address_family_ipv4.redistribute
+                    new_key: redistribute
                   items:
                     type: dict
                     keys:
@@ -16689,7 +16689,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                    new_key: router_bgp.vrfs[].address_family_ipv6.redistribute
+                    new_key: redistribute
                   items:
                     type: dict
                     keys:
@@ -17136,7 +17136,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                    new_key: router_bgp.vrfs[].address_family_ipv4_multicast.redistribute
+                    new_key: redistribute
                   items:
                     type: dict
                     keys:
@@ -17243,7 +17243,7 @@ keys:
                   deprecation:
                     warning: true
                     remove_in_version: 6.0.0
-                    new_key: router_bgp.vrfs[].address_family_ipv6_multicast.redistribute
+                    new_key: redistribute
                   items:
                     type: dict
                     keys:
