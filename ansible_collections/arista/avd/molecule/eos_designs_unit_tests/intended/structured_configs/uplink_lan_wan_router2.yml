@@ -8,11 +8,12 @@ router_bgp:
       ipv4_unicast: false
   maximum_paths:
     paths: 16
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
@@ -30,6 +31,7 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      encapsulation: path-selection
       route_map_in: RM-EVPN-SOO-IN
       route_map_out: RM-EVPN-SOO-OUT
   address_family_ipv4:
@@ -54,8 +56,7 @@ router_bgp:
     bgp:
       additional_paths:
         receive: true
-        send:
-          any: true
+        send: any
   vrfs:
   - name: VRF1
     rd: 192.168.1.2:123
@@ -69,8 +70,9 @@ router_bgp:
         route_targets:
         - 123:123
     router_id: 192.168.1.2
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
   - name: default
     rd: 192.168.1.2:1
     route_targets:
@@ -109,7 +111,7 @@ ethernet_interfaces:
   peer: uplink_lan_l2leaf
   peer_interface: Ethernet2
   peer_type: l2leaf
-  description: UPLINK_LAN_L2LEAF_Ethernet2
+  description: L2_uplink_lan_l2leaf_Ethernet2
   shutdown: false
   switchport:
     enabled: false

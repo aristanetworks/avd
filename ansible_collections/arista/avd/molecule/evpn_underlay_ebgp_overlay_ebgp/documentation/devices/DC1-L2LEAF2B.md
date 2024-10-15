@@ -288,7 +288,7 @@ vlan internal order ascending range 1006 1199
 | 310 | Tenant_C_OP_Zone_1 | - |
 | 311 | Tenant_C_OP_Zone_2 | - |
 | 350 | Tenant_C_WAN_Zone_1 | - |
-| 4091 | MLAG_PEER | MLAG |
+| 4091 | MLAG | MLAG |
 
 ### VLANs Device Configuration
 
@@ -358,7 +358,7 @@ vlan 350
    name Tenant_C_WAN_Zone_1
 !
 vlan 4091
-   name MLAG_PEER
+   name MLAG
    trunk group MLAG
 ```
 
@@ -412,7 +412,7 @@ interface Ethernet4
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | CUSTOM_DC1_SVC3_Po7 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 1 | - |
+| Port-Channel1 | CUSTOM_DC1-SVC3A_Po7 | trunk | 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_DC1-L2LEAF2A_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -420,7 +420,7 @@ interface Ethernet4
 ```eos
 !
 interface Port-Channel1
-   description CUSTOM_DC1_SVC3_Po7
+   description CUSTOM_DC1-SVC3A_Po7
    no shutdown
    switchport trunk allowed vlan 110-111,120-124,130-131,140-141,150,160-162,210-211,250,310-311,350
    switchport mode trunk
@@ -441,7 +441,7 @@ interface Port-Channel3
 
 | Interface | Description | VRF |  MTU | Shutdown |
 | --------- | ----------- | --- | ---- | -------- |
-| Vlan4091 | MLAG_PEER | default | 1500 | False |
+| Vlan4091 | MLAG | default | 1500 | False |
 
 ##### IPv4
 
@@ -454,7 +454,7 @@ interface Port-Channel3
 ```eos
 !
 interface Vlan4091
-   description MLAG_PEER
+   description MLAG
    no shutdown
    mtu 1500
    no autostate
@@ -524,6 +524,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 queue-monitor length
+!
 queue-monitor length log 5
 ```
 

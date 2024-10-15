@@ -78,7 +78,7 @@ snmp_server:
 vlans:
 - id: 4091
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 130
@@ -146,7 +146,7 @@ vlans:
   tenant: Tenant_C
 vlan_interfaces:
 - name: Vlan4091
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -162,7 +162,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: CUSTOM_DC1_SVC3_Po7
+  description: CUSTOM_DC1-SVC3A_Po7
   switchport:
     enabled: true
     mode: trunk

@@ -62,7 +62,7 @@ ntp:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 110
@@ -79,7 +79,7 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -101,7 +101,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel51
-  description: SPINES_Po1
+  description: L2_SPINES_Port-Channel1
   switchport:
     enabled: true
     mode: trunk
@@ -132,7 +132,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet1
   peer_type: l3spine
-  description: SPINE1_Ethernet1
+  description: L2_SPINE1_Ethernet1
   shutdown: false
   channel_group:
     id: 51

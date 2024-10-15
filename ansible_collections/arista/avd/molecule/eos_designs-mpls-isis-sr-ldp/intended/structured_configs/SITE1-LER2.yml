@@ -49,19 +49,19 @@ router_bgp:
   - ip_address: 100.70.0.8
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE1-RR1
-    description: SITE1-RR1
+    description: SITE1-RR1_Loopback0
   - ip_address: 100.70.0.9
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE2-RR1
-    description: SITE2-RR1
+    description: SITE2-RR1_Loopback0
   - ip_address: 100.70.0.5
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE1-LER1
-    description: SITE1-LER1
+    description: SITE1-LER1_Loopback0
   - ip_address: 100.70.0.7
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE2-LER1
-    description: SITE2-LER1
+    description: SITE2-LER1_Loopback0
   vrfs:
   - name: TENANT_B_INTRA
     rd: 100.70.0.6:19
@@ -75,8 +75,9 @@ router_bgp:
         route_targets:
         - '65000:19'
     router_id: 100.70.0.6
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
   - name: TENANT_B_WAN
     rd: 100.70.0.6:20
     route_targets:
@@ -95,8 +96,9 @@ router_bgp:
         route_targets:
         - '65000:20'
     router_id: 100.70.0.6
-    redistribute_routes:
-    - source_protocol: connected
+    redistribute:
+      connected:
+        enabled: true
     address_family_ipv4:
       neighbors:
       - ip_address: 192.168.48.1
@@ -256,7 +258,6 @@ ethernet_interfaces:
   peer: SITE1-LSR2
   peer_interface: Ethernet1
   peer_type: p
-  description: P2P_LINK_TO_SITE1-LSR2_Ethernet1
   switchport:
     enabled: false
   shutdown: false
@@ -278,12 +279,12 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE1-LSR2_Ethernet1
   speed: forced 100gfull
 - name: Ethernet2
   peer: SITE1-LER1
   peer_interface: Ethernet2
   peer_type: pe
-  description: P2P_LINK_TO_SITE1-LER1_Ethernet2
   switchport:
     enabled: false
   shutdown: false
@@ -305,6 +306,7 @@ ethernet_interfaces:
     ldp:
       interface: true
       igp_sync: true
+  description: P2P_SITE1-LER1_Ethernet2
   speed: forced 10000full
 - name: Ethernet5.100
   peer_type: l3_interface

@@ -7,7 +7,7 @@ import ipaddress
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, get, get_item
 from pyavd.j2filters import natural_sort
 
@@ -157,9 +157,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
             vrf_id = vrf.get("vrf_id", vrf.get("vrf_vni"))
             if vrf_id is None:
                 msg = f"Unable to assign MLAG VRF Peering VLAN for vrf {vrf['name']}.Set either 'mlag_ibgp_peering_vlan' or 'vrf_id' or 'vrf_vni' on the VRF"
-                raise AristaAvdMissingVariableError(
-                    msg,
-                )
+                raise AristaAvdInvalidInputsError(msg)
             vlan_id = base_vlan + int(vrf_id) - 1
 
         return vlan_id
@@ -172,7 +170,7 @@ class UtilsMixin(UtilsWanMixin, UtilsZscalerMixin):
 
         Does _not_ include checks if the peering is enabled at all, so that should be checked first.
         """
-        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), True) is True  # noqa: FBT003
+        return default(vrf.get("redistribute_mlag_ibgp_peering_vrfs"), tenant.get("redistribute_mlag_ibgp_peering_vrfs"), False) is True  # noqa: FBT003
 
     @cached_property
     def _configure_bgp_mlag_peer_group(self: AvdStructuredConfigNetworkServices) -> bool:

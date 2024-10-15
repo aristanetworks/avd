@@ -72,7 +72,7 @@ ntp:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 130
@@ -128,7 +128,7 @@ vlans:
   tenant: Tenant_C
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -144,7 +144,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: DC1_SVC3_Po7
+  description: L2_DC1_SVC3_Port-Channel7
   switchport:
     enabled: true
     mode: trunk
@@ -175,7 +175,7 @@ ethernet_interfaces:
   peer: DC1-SVC3A
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: DC1-SVC3A_Ethernet7
+  description: L2_DC1-SVC3A_Ethernet7
   shutdown: false
   channel_group:
     id: 1
@@ -184,7 +184,7 @@ ethernet_interfaces:
   peer: DC1-SVC3B
   peer_interface: Ethernet7
   peer_type: l3leaf
-  description: DC1-SVC3B_Ethernet7
+  description: L2_DC1-SVC3B_Ethernet7
   shutdown: false
   channel_group:
     id: 1
