@@ -8069,7 +8069,7 @@ keys:
           threshold_failure:
             type: int
             description: Number of consecutive failed probes before a server is marked
-              as dead
+              as dead.
             convert_types:
             - str
             min: 1
@@ -8083,7 +8083,7 @@ keys:
             - access-request
           access_request:
             type: dict
-            description: Use RADIUS Access-Request packets as probes.
+            description: This can only be set when `method` is `access_request`.
             keys:
               username:
                 type: str
