@@ -4033,6 +4033,7 @@ keys:
                           \ - 3\n  - 1,3\n  - 1-10\n"
                       mac_address_maximum:
                         type: int
+                        required: true
                         convert_types:
                         - str
         eos_cli:
