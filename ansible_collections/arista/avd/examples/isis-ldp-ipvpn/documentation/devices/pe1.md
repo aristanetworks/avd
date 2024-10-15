@@ -218,6 +218,7 @@ interface Ethernet1
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   isis authentication key 7 <removed>
 !
 interface Ethernet2
    description P2P_p2_Ethernet2
@@ -234,6 +235,7 @@ interface Ethernet2
    isis hello padding
    isis network point-to-point
    isis authentication mode md5
+   isis authentication key 7 <removed>
    isis authentication key 7 <removed>
 !
 interface Ethernet3
