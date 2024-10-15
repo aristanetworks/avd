@@ -33,20 +33,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -146,20 +146,31 @@ sFlow is disabled.
 
 ##### Encapsulation Dot1q Interfaces
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 101 | - |
+| Ethernet67.1 | Test_encapsulation_dot1q | - | 4 | 34 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
-| Ethernet26.100 | TENANT_A pseudowire 1 interface | - | False | 100 | - | - | True | - | - | - |
-| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | False | 200 | - | - | False | - | - | - |
-| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | False | 300 | - | - | False | 400 | - | - |
-| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | False | - | 500 | 50 | True | - | - | - |
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
+| Ethernet26.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
+| Ethernet26.100 | TENANT_A pseudowire 1 interface | 10 | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Ethernet26.200 | TENANT_A pseudowire 2 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
+| Ethernet26.300 | TENANT_A pseudowire 3 interface | - | dot1q | - | 300 | - | - | dot1q | - | 400 | - | - |
+| Ethernet26.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 400 | 20 | dot1q | - | - | 401 | 21 |
+| Ethernet26.500 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 500 | 50 | client | - | - | - | - |
+| Ethernet68.1 | Test_encapsulation_vlan1 | - | dot1q | dot1q | - | 23 | 45 | dot1ad | dot1ad | - | 32 | 54 |
+| Ethernet68.2 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | - | - | dot1q | - | - | 32 | 54 |
+| Ethernet68.3 | Test_encapsulation_vlan3 | - | dot1ad | - | 12 | - | - | dot1q | - | 25 | - | - |
+| Ethernet68.4 | Test_encapsulation_vlan4 | - | dot1ad | dot1q | - | 35 | 60 | dot1q | dot1ad | - | 53 | 6 |
+| Ethernet68.5 | Test_encapsulation_vlan5 | - | dot1ad | - | - | 35 | 60 | dot1ad | - | - | 52 | 62 |
+| Ethernet68.6 | Test_encapsulation_vlan6 | - | dot1ad | - | - | 35 | 60 | client | - | - | - | - |
+| Ethernet68.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | - | dot1ad | - | - | 35 | 60 |
+| Ethernet68.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | - | dot1q | - | - | 35 | 60 |
+| Ethernet68.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | - | untagged | - | - | - | - |
+| Ethernet68.10 | Test_encapsulation_vlan9 | - | dot1q | - | - | 14 | 11 | client inner | - | - | - | - |
 
 ##### Private VLAN
 
@@ -237,6 +248,7 @@ sFlow is disabled.
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1 | P2P_LINK_TO_DC1-SPINE1_Ethernet1 | - | 172.31.255.1/31 | default | 1500 | - | - | - |
+| Ethernet2 | SRV-POD02_Eth1 | - | 10.1.255.3/24 | default | - | - | - | - |
 | Ethernet3 | P2P_LINK_TO_DC1-SPINE2_Ethernet2 | - | 172.31.128.1/31 | default | 1500 | - | - | - |
 | Ethernet8.101 | to WAN-ISP-01 Ethernet2.101 - VRF-C1 | - | 172.31.128.1/31 | default | - | - | - | - |
 | Ethernet9 | interface_with_mpls_enabled | - | 172.31.128.9/31 | default | - | - | - | - |
@@ -375,10 +387,10 @@ sFlow is disabled.
 interface Ethernet1
    description P2P_LINK_TO_DC1-SPINE1_Ethernet1
    mtu 1500
-   speed forced 100gfull
+   bgp session tracker ST1
    l2 mtu 8000
    l2 mru 8000
-   bgp session tracker ST1
+   speed forced 100gfull
    switchport access vlan 200
    switchport trunk native vlan tag
    switchport phone vlan 110
@@ -406,12 +418,6 @@ interface Ethernet1
    switchport trunk private-vlan secondary
    switchport pvlan mapping 20-30
    ip address 172.31.255.1/31
-   switchport backup-link Ethernet5 prefer vlan 10
-   switchport backup preemption-delay 35
-   switchport backup mac-move-burst 20
-   switchport backup mac-move-burst-interval 30
-   switchport backup initial-mac-move-delay 10
-   switchport backup dest-macaddr 01:00:00:00:00:00
    ip verify unicast source reachable-via rx
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
@@ -432,6 +438,12 @@ interface Ethernet1
    switchport port-security mac-address maximum disabled
    priority-flow-control on
    priority-flow-control priority 5 drop
+   switchport backup-link Ethernet5 prefer vlan 10
+   switchport backup preemption-delay 35
+   switchport backup mac-move-burst 20
+   switchport backup mac-move-burst-interval 30
+   switchport backup initial-mac-move-delay 10
+   switchport backup dest-macaddr 01:00:00:00:00:00
    link tracking group EVPN_MH_ES1 upstream
    comment
    Comment created from eos_cli under ethernet_interfaces.Ethernet1
@@ -444,6 +456,11 @@ interface Ethernet2
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   ip address 10.1.255.3/24
+   ip address 1.1.1.3/24 secondary
+   ip address 1.1.1.4/24 secondary
+   ip address 10.0.0.254/24 secondary
+   ip address 192.168.1.1/24 secondary
    tcp mss ceiling ipv4 70 ingress
    multicast ipv4 boundary ACL_MULTICAST
    multicast ipv6 boundary ACL_V6_MULTICAST out
@@ -452,9 +469,9 @@ interface Ethernet2
    switchport port-security mac-address maximum 100
    priority-flow-control on
    priority-flow-control priority 5 no-drop
-   storm-control all level 10
    storm-control broadcast level pps 500
    storm-control unknown-unicast level 1
+   storm-control all level 10
    spanning-tree bpduguard disable
    spanning-tree bpdufilter disable
 !
@@ -467,7 +484,6 @@ interface Ethernet3
    switchport vlan translation out 23 dot1q-tunnel 50
    no snmp trap link-change
    ip address 172.31.128.1/31
-   switchport backup-link Ethernet4
    ipv6 enable
    ipv6 address 2002:ABDC::1/64
    ipv6 nd prefix 2345:ABCD:3FE0::1/96 infinite 50 no-autoconfig
@@ -478,10 +494,14 @@ interface Ethernet3
    no switchport port-security mac-address maximum disabled
    switchport port-security vlan 1 mac-address maximum 3
    switchport port-security vlan 2 mac-address maximum 3
+   switchport port-security vlan 2 mac-address maximum 4
    switchport port-security vlan 3 mac-address maximum 3
+   switchport port-security vlan 22 mac-address maximum 4
+   switchport port-security vlan 41 mac-address maximum 4
    switchport port-security vlan default mac-address maximum 2
    no priority-flow-control
    spanning-tree guard root
+   switchport backup-link Ethernet4
    link tracking group EVPN_MH_ES2 downstream
 !
 interface Ethernet4
@@ -540,35 +560,35 @@ interface Ethernet6
    description SRV-POD02_Eth1
    logging event link-status
    logging event congestion-drops
-   logging event spanning-tree
-   logging event storm-control discards
    switchport trunk allowed vlan 110-111,210-211
    switchport mode trunk
    switchport
+   logging event storm-control discards
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
+   logging event spanning-tree
 !
 interface Ethernet7
    description Molecule L2
    no shutdown
    mtu 7000
    switchport
+   ptp enable
+   ptp announce interval 10
+   ptp announce timeout 30
+   ptp delay-mechanism p2p
+   ptp delay-req interval 20
+   ptp role master
+   ptp sync-message interval 5
+   ptp transport layer2
+   ptp vlan all
+   service-profile QoS
    qos trust cos
    qos cos 5
-   storm-control all level 75
    storm-control broadcast level pps 10
    storm-control multicast level 50
    storm-control unknown-unicast level 10
-   ptp enable
-   ptp sync-message interval 5
-   ptp delay-mechanism p2p
-   ptp announce interval 10
-   ptp transport layer2
-   ptp announce timeout 30
-   ptp delay-req interval 20
-   ptp role master
-   ptp vlan all
-   service-profile QoS
+   storm-control all level 75
    spanning-tree portfast
    spanning-tree bpduguard enable
    spanning-tree bpdufilter enable
@@ -621,13 +641,13 @@ interface Ethernet13
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
-   no logging event spanning-tree
-   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged
    switchport mode trunk phone
    switchport
+   no logging event storm-control discards
+   no logging event spanning-tree
 !
 interface Ethernet14
    description SRV-POD02_Eth1
@@ -718,6 +738,7 @@ interface Ethernet26.1
 !
 interface Ethernet26.100
    description TENANT_A pseudowire 1 interface
+   vlan id 10
    encapsulation vlan
       client dot1q 100 network client
 !
@@ -734,16 +755,17 @@ interface Ethernet26.300
 interface Ethernet26.400
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
-      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+      client dot1q outer 400 inner 20 network dot1q outer 401 inner 21
 !
 interface Ethernet26.500
    description TENANT_A pseudowire 3 interface
    encapsulation vlan
-      client dot1q outer 500 inner 50
+      client dot1q outer 500 inner 50 network client
 !
 interface Ethernet27
    description EVPN-Vxlan single-active redundancy
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
@@ -755,6 +777,7 @@ interface Ethernet27
 interface Ethernet28
    description EVPN-MPLS multihoming
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
       mpls tunnel flood filter time 100
@@ -847,8 +870,8 @@ interface Ethernet43
 interface Ethernet44
    description DOT1X Testing - reauthorization_request_limit
    switchport
-   dot1x reauthorization request limit 3
    dot1x eapol disabled
+   dot1x reauthorization request limit 3
 !
 interface Ethernet45
    description DOT1X Testing - all features
@@ -921,16 +944,16 @@ interface Ethernet55
    description DHCPv6 Relay Testing
    no shutdown
    no switchport
-   ipv6 address a0::1/64
    ipv6 dhcp relay destination a0::2 link-address a0::3
    ipv6 dhcp relay destination a0::4 vrf TEST local-interface Loopback55 link-address a0::5
+   ipv6 address a0::1/64
 !
 interface Ethernet56
    description Interface with poe commands and limit in class
    switchport
    poe priority low
    poe reboot action power-off
-   poe link down action power-off 10
+   poe link down action power-off 10 seconds
    poe shutdown action maintain
    poe limit 30.00 watts
    poe negotiation lldp disabled
@@ -953,14 +976,23 @@ interface Ethernet58
 interface Ethernet60
    description IP NAT Testing
    switchport
+   ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat destination static 1.0.0.2 22 2.0.0.2
+   ip nat destination static 1.0.0.3 22 2.0.0.3 23
+   ip nat destination static 1.0.0.4 22 2.0.0.4 23 protocol udp
+   ip nat destination static 1.0.0.7 access-list ACL21 2.0.0.7
    ip nat source static 3.0.0.1 4.0.0.1
    ip nat source static 3.0.0.2 22 4.0.0.2
    ip nat source static 3.0.0.3 22 4.0.0.3 23
    ip nat source static 3.0.0.4 22 4.0.0.4 23 protocol udp
-   ip nat source static 3.0.0.5 22 4.0.0.5 23 protocol tcp group 1
-   ip nat source static 3.0.0.6 22 4.0.0.6 23 protocol tcp group 2 comment Comment Test
    ip nat source static 3.0.0.7 access-list ACL21 4.0.0.7
    ip nat source ingress static 3.0.0.8 4.0.0.8
+   ip nat destination egress static 239.0.0.1 239.0.0.2
+   ip nat source static 3.0.0.5 22 4.0.0.5 23 protocol tcp group 1
+   ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
+   ip nat source static 3.0.0.6 22 4.0.0.6 23 protocol tcp group 2 comment Comment Test
+   ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test
+   ip nat destination dynamic access-list ACL1 pool POOL1
    ip nat source dynamic access-list ACL11 pool POOL11
    ip nat source dynamic access-list ACL12 pool POOL11 comment POOL11 shared with ACL11/12
    ip nat source dynamic access-list ACL13 pool POOL13 priority 10
@@ -970,15 +1002,6 @@ interface Ethernet60
    ip nat source dynamic access-list ACL17 overload priority 10 comment Priority_10
    ip nat source dynamic access-list ACL18 pool POOL18 address-only priority 10 comment Priority_10
    ip nat source dynamic access-list ACL19 pool POOL19 full-cone priority 10 comment Priority_10
-   ip nat destination static 1.0.0.1 2.0.0.1
-   ip nat destination static 1.0.0.2 22 2.0.0.2
-   ip nat destination static 1.0.0.3 22 2.0.0.3 23
-   ip nat destination static 1.0.0.4 22 2.0.0.4 23 protocol udp
-   ip nat destination static 1.0.0.5 22 2.0.0.5 23 protocol tcp group 1
-   ip nat destination static 1.0.0.6 22 2.0.0.6 23 protocol tcp group 2 comment Comment Test
-   ip nat destination static 1.0.0.7 access-list ACL21 2.0.0.7
-   ip nat destination egress static 239.0.0.1 239.0.0.2
-   ip nat destination dynamic access-list ACL1 pool POOL1
    ip nat destination dynamic access-list ACL2 pool POOL1 comment POOL1 shared with ACL1/2
    ip nat destination dynamic access-list ACL3 pool POOL3 priority 10
    ip nat destination dynamic access-list ACL4 pool POOL4 priority 1 comment Priority low end
@@ -989,25 +1012,25 @@ interface Ethernet61
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
-   no logging event spanning-tree
-   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk untagged phone
    switchport mode trunk phone
    switchport
+   no logging event storm-control discards
+   no logging event spanning-tree
 !
 interface Ethernet62
    description interface_in_mode_access_with_voice
    no logging event link-status
    no logging event congestion-drops
-   no logging event spanning-tree
-   no logging event storm-control discards
    switchport trunk native vlan 100
    switchport phone vlan 70
    switchport phone trunk tagged phone
    switchport mode trunk phone
    switchport
+   no logging event storm-control discards
+   no logging event spanning-tree
 !
 interface Ethernet63
    description DHCP client interface
@@ -1064,6 +1087,10 @@ interface Ethernet67
    switchport
    transceiver frequency 190050.000
 !
+interface Ethernet67.1
+   description Test_encapsulation_dot1q
+   encapsulation dot1q vlan 4 inner 34
+!
 interface Ethernet68
    description Custom_Transceiver_Frequency
    no shutdown
@@ -1071,10 +1098,83 @@ interface Ethernet68
    transceiver media override 100gbase-ar4
    transceiver frequency 190080.000 ghz
 !
+interface Ethernet68.1
+   description Test_encapsulation_vlan1
+   encapsulation vlan
+      client dot1q outer 23 inner dot1q 45 network dot1ad outer 32 inner dot1ad 54
+!
+interface Ethernet68.2
+   description Test_encapsulation_vlan2
+   encapsulation vlan
+      client dot1q 10 network dot1q outer 32 inner 54
+!
+interface Ethernet68.3
+   description Test_encapsulation_vlan3
+   encapsulation vlan
+      client dot1ad 12 network dot1q 25
+!
+interface Ethernet68.4
+   description Test_encapsulation_vlan4
+   encapsulation vlan
+      client dot1ad outer 35 inner dot1q 60 network dot1q outer 53 inner dot1ad 6
+!
+interface Ethernet68.5
+   description Test_encapsulation_vlan5
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1ad outer 52 inner 62
+!
+interface Ethernet68.6
+   description Test_encapsulation_vlan6
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network client
+!
+interface Ethernet68.7
+   description Test_encapsulation_vlan7
+   encapsulation vlan
+      client untagged network dot1ad outer 35 inner 60
+!
+interface Ethernet68.8
+   description Test_encapsulation_vlan8
+   encapsulation vlan
+      client untagged network dot1q outer 35 inner 60
+!
+interface Ethernet68.9
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client untagged network untagged
+!
+interface Ethernet68.10
+   description Test_encapsulation_vlan9
+   encapsulation vlan
+      client dot1q outer 14 inner 11 network client inner
+!
 interface Ethernet69
    description IP NAT service-profile
    switchport
    ip nat service-profile TEST-NAT-PROFILE
+!
+interface Ethernet70
+   description dot1x_aaa_unresponsive
+   no shutdown
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours else traffic allow
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
+!
+interface Ethernet71
+   description dot1x_aaa_unresponsive1
+   no shutdown
+   dot1x aaa unresponsive phone action apply cached-results timeout 10 hours
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
+!
+interface Ethernet72
+   description dot1x_aaa_unresponsive2
+   no shutdown
+   dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
+   dot1x aaa unresponsive eap response success
+   dot1x mac based access-list
 ```
 
 ## BFD
@@ -1129,6 +1229,9 @@ interface Ethernet69
 | Ethernet43 | - | - | - | - | - | - | - | - |
 | Ethernet44 | - | - | - | - | - | - | - | - |
 | Ethernet45 | authenticator | auto | - | True | allow vlan 800 | multi-host | True | True |
+| Ethernet70 | - | - | - | - | - | - | - | - |
+| Ethernet71 | - | - | - | - | - | - | - | - |
+| Ethernet72 | - | - | - | - | - | - | - | - |
 
 ## Power Over Ethernet (PoE)
 

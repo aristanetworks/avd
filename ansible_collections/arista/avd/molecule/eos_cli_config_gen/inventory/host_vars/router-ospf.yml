@@ -19,8 +19,11 @@ router_ospf:
       default_information_originate:
       redistribute:
         static:
+          enabled: true
         connected:
+          enabled: true
         bgp:
+          enabled: true
       auto_cost_reference_bandwidth: 100
       maximum_paths: 10
       mpls_ldp_sync_default: true
@@ -73,12 +76,15 @@ router_ospf:
         metric: 100
       redistribute:
         static:
+          enabled: true
           route_map: rm-ospf-static
           include_leaked: true
         connected:
+          enabled: true
           route_map: rm-ospf-connected
           include_leaked: true
         bgp:
+          enabled: true
           route_map: rm-ospf-bgp
           include_leaked: true
       areas:
@@ -99,10 +105,13 @@ router_ospf:
         router_lsa:
       redistribute:
         static:
+          enabled: true
           route_map: rm-ospf-static
         connected:
+          enabled: true
           route_map: rm-ospf-connected
         bgp:
+          enabled: true
           route_map: rm-ospf-bgp
     - id: 400
       max_metric:
@@ -113,10 +122,13 @@ router_ospf:
           summary_lsa:
       redistribute:
         static:
+          enabled: true
           include_leaked: true
         connected:
+          enabled: true
           include_leaked: true
         bgp:
+          enabled: true
           include_leaked: true
     - id: 500
       max_metric:
@@ -126,6 +138,13 @@ router_ospf:
           on_startup: 222
           summary_lsa:
             override_metric: 456
+      redistribute:
+        static:
+          enabled: false
+        connected:
+          enabled: false
+        bgp:
+          enabled: false
     - id: 600
       areas:
         - id: 0.0.0.1
@@ -162,7 +181,8 @@ router_ospf:
 
 ethernet_interfaces:
   - name: Ethernet1
-    type: routed
+    switchport:
+      enabled: false
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.1
     ospf_cost: 99
@@ -176,7 +196,8 @@ loopback_interfaces:
     ospf_area: 0.0.0.2
 port_channel_interfaces:
   - name: Port-Channel12
-    type: routed
+    switchport:
+      enabled: false
     ospf_network_point_to_point: true
     ospf_area: 0.0.0.12
     ospf_cost: 99

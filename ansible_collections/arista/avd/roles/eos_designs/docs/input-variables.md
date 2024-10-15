@@ -429,6 +429,7 @@ underlay_port_channel_interfaces:
 
 - `{{ link.channel_description }}`
 - `{{ link.channel_group_id }}`
+- `{{ link.peer }}`
 - `{{ link.peer_channel_group_id }}`
 - All group/hostvars
 
@@ -440,20 +441,35 @@ mlag_ethernet_interfaces:
 
 mlag_port_channel_interfaces:
 
-- `{{ mlag_interfaces }}`
+- `{{ mlag_interfaces }}` (list of strings)
 - `{{ mlag_peer }}`
+- `{{ mlag_port_channel_id }}`
 - All group/hostvars
 
 connected_endpoints_ethernet_interfaces:
 
 - `{{ peer }}`
 - `{{ peer_interface }}`
+- `{{ adapter_description }}`
 - All group/hostvars
 
 connected_endpoints_port_channel_interfaces:
 
 - `{{ peer }}`
+- `{{ adapter_port_channel_id }}`
 - `{{ adapter_port_channel_description }}`
+- `{{ adapter_description }}`
+- All group/hostvars
+
+router_id_loopback_interfaces (replacing overlay_loopback_interface):
+
+- `{{ router_id_loopback_description }}`
+- `{{ overlay_loopback_description }}` (deprecated - use `router_id_loopback_description` instead)
+- All group/hostvars
+
+vtep_loopback_interface:
+
+- `{{ vtep_loopback_description }}`
 - All group/hostvars
 
 While all templates can leverage the internal switch facts (switch.*) to customize the interface descriptions,
@@ -991,7 +1007,6 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-LEAF2A, DC1-LEAF2B ]
             profile: DB_Clusters
             port_channel:
-              description: PortChanne1
               mode: active
 
       - name: server03
@@ -1005,7 +1020,6 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-SVC3A, DC1-SVC3B ]
             profile: VM_Servers
             port_channel:
-              description: PortChanne1
               mode: active
     # Firewall
     firewalls:
@@ -1017,7 +1031,7 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-LEAF2A, DC1-LEAF2B ]
             profile: TENANT_A_B
             port_channel:
-              description: PortChanne1
+              endpoint_port_channel: Bond0
               mode: active
 
     # Routers
@@ -1063,7 +1077,7 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-SVC3A, DC1-SVC3B ]
             profile: VM_Servers
             port_channel:
-              description: PortChanne1
+              endpoint_port_channel: Bond0
               mode: active
     ```
 
@@ -1101,7 +1115,7 @@ Both data models support variable inheritance from profiles defined under [`port
             switches: [ DC1-SVC3A, DC1-SVC4A ]
             profile: VM_Servers
             port_channel:
-              description: PortChanne1
+              endpoint_port_channel: Bond0
               mode: active
             ethernet_segment:
               short_esi: 0303:0202:0101
@@ -1109,6 +1123,14 @@ Both data models support variable inheritance from profiles defined under [`port
 
 --8<--
 roles/eos_designs/docs/tables/connected-endpoints.md
+--8<--
+
+### Connected endpoints default description or description template settings
+
+Connected endpoints support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-connected-endpoints-description.md
 --8<--
 
 ### Network ports settings
@@ -1153,14 +1175,14 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
         switch_ports:
           - Ethernet1-2
         profile: pc
-        description: PCs
+        endpoint: PCs
 
       - switches:
           - network-ports-tests-2$
         switch_ports:
           - Ethernet1-2
         profile: ap_with_port_channel
-        description: AP1 with port_channel
+        endpoint: AP1 with port_channel
 
       - switches:
           - network-ports-[est]{5}-.*
@@ -1168,7 +1190,7 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
           - Ethernet3-4
           - Ethernet2/1-48
         profile: pc
-        description: PCs
+        endpoint: PCs
     ```
 
 ??? example "Example using network ports to configure multiple ports in the same port-channel"
@@ -1218,6 +1240,14 @@ All ranges defined under `switch_ports` will be expanded to individual port conf
 
 --8<--
 roles/eos_designs/docs/tables/network-ports.md
+--8<--
+
+### Network ports default description or description template settings
+
+Network ports support the customization of generated descriptions with a static value or template.
+
+--8<--
+roles/eos_designs/docs/tables/default-network-ports-description.md
 --8<--
 
 ### Port profiles settings

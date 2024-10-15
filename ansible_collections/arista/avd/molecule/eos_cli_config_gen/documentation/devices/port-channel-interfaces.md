@@ -28,20 +28,20 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.73.255.122/24 | 10.73.255.2 |
 
 ##### IPv6
 
 | Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
 ```
@@ -221,6 +221,7 @@ interface Ethernet50
 | Port-Channel5 | DC1_L2LEAF1_Po1 | trunk | 110,201 | - | - | - | - | 5 | - |
 | Port-Channel10 | SRV01_bond0 | trunk | 2-3000 | - | - | - | - | - | 0000:0000:0404:0404:0303 |
 | Port-Channel12 | interface_in_mode_access_with_voice | trunk phone | - | 100 | - | - | - | - | - |
+| Port-Channel13 | EVPN-Vxlan single-active redundancy | - | - | - | - | - | - | - | 0000:0000:0000:0102:0304 |
 | Port-Channel14 | EVPN-MPLS multihoming | - | - | - | - | - | - | - | 0000:0000:0000:0102:0305 |
 | Port-Channel15 | DC1_L2LEAF3_Po1 | trunk | 110,201 | - | - | - | - | 15 | - |
 | Port-Channel16 | DC1_L2LEAF4_Po1 | trunk | 110,201 | 10 | - | - | - | 16 | - |
@@ -241,26 +242,37 @@ interface Ethernet50
 | Port-Channel115 | native-vlan-tag-precedence | trunk | - | tag | - | - | - | - | - |
 | Port-Channel121 | access_port_with_no_vlans | access | - | - | - | - | - | - | - |
 | Port-Channel122 | trunk_port_with_no_vlans | trunk | - | - | - | - | - | - | - |
+| Port-Channel130 | IP NAT Testing | - | - | - | - | - | - | - | - |
 | Port-Channel131 | dot1q-tunnel mode | dot1q-tunnel | 115 | - | - | - | - | - | - |
 
 ##### Encapsulation Dot1q
 
-| Interface | Description | Vlan ID | Dot1q VLAN Tag |
-| --------- | ----------- | ------- | -------------- |
-| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 101 |
-| Port-Channel100.101 | IFL for TENANT01 | - | 101 |
-| Port-Channel100.102 | IFL for TENANT02 | - | 102 |
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Port-Channel8.101 | to Dev02 Port-Channel8.101 - VRF-C1 | - | 101 | - |
+| Port-Channel100.101 | IFL for TENANT01 | - | 101 | - |
+| Port-Channel100.102 | IFL for TENANT02 | - | 102 | 110 |
 
 ##### Flexible Encapsulation Interfaces
 
-| Interface | Description | Vlan ID | Client Unmatched | Client Dot1q VLAN | Client Dot1q Outer Tag | Client Dot1q Inner Tag | Network Retain Client Encapsulation | Network Dot1q VLAN | Network Dot1q Outer Tag | Network Dot1q Inner Tag |
-| --------- | ----------- | ------- | -----------------| ----------------- | ---------------------- | ---------------------- | ----------------------------------- | ------------------ | ----------------------- | ----------------------- |
-| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | True | - | - | - | False | - | - | - |
-| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | False | 100 | - | - | True | - | - | - |
-| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | False | 200 | - | - | False | - | - | - |
-| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | False | 300 | - | - | False | 400 | - | - |
-| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | False | - | 400 | 20 | False | - | 401 | 21 |
-| Port-Channel111.1000 | L2 Subinterface | 1000 | False | 100 | - | - | True | - | - | - |
+| Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
+| --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- | ------------ | ---------------------- | ---------------------- |
+| Port-Channel111.1 | TENANT_A pseudowire 1 interface | - | unmatched | - | - | - | - | - | - | - | - | - |
+| Port-Channel111.100 | TENANT_A pseudowire 2 interface | - | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Port-Channel111.200 | TENANT_A pseudowire 3 interface | - | dot1q | - | 200 | - | - | - | - | - | - | - |
+| Port-Channel111.300 | TENANT_A pseudowire 4 interface | - | dot1q | - | 300 | - | - | dot1q | - | 400 | - | - |
+| Port-Channel111.400 | TENANT_A pseudowire 3 interface | - | dot1q | - | - | 400 | 20 | dot1q | - | - | 401 | 21 |
+| Port-Channel111.1000 | L2 Subinterface | 1000 | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Port-Channel131.1 | Test_encapsulation_vlan1 | - | dot1q | dot1q | - | 23 | 45 | dot1ad | dot1ad | - | 32 | 54 |
+| Port-Channel131.2 | Test_encapsulation_vlan2 | - | dot1q | - | 10 | - | - | dot1q | - | - | 32 | 54 |
+| Port-Channel131.3 | Test_encapsulation_vlan3 | - | dot1ad | - | 12 | - | - | dot1q | - | 25 | - | - |
+| Port-Channel131.4 | Test_encapsulation_vlan4 | - | dot1ad | dot1q | - | 35 | 60 | dot1q | dot1ad | - | 53 | 6 |
+| Port-Channel131.5 | Test_encapsulation_vlan5 | - | dot1ad | - | - | 35 | 60 | dot1ad | - | - | 52 | 62 |
+| Port-Channel131.6 | Test_encapsulation_vlan6 | - | dot1ad | - | - | 35 | 60 | client | - | - | - | - |
+| Port-Channel131.7 | Test_encapsulation_vlan7 | - | untagged | - | - | - | - | dot1ad | - | - | 35 | 60 |
+| Port-Channel131.8 | Test_encapsulation_vlan8 | - | untagged | - | - | - | - | dot1q | - | - | 35 | 60 |
+| Port-Channel131.9 | Test_encapsulation_vlan9 | - | untagged | - | - | - | - | untagged | - | - | - | - |
+| Port-Channel131.10 | Test_encapsulation_vlan9 | - | dot1q | - | - | 14 | 11 | client inner | - | - | - | - |
 
 ##### Private VLAN
 
@@ -383,6 +395,7 @@ interface Port-Channel5
    switchport trunk allowed vlan 110,201
    switchport mode trunk
    switchport
+   ip verify unicast source reachable-via rx
    ip igmp host-proxy
    ip igmp host-proxy 239.0.0.1
    ip igmp host-proxy 239.0.0.2 exclude 10.0.2.1
@@ -398,7 +411,6 @@ interface Port-Channel5
    l2 mtu 8000
    l2 mru 8000
    mlag 5
-   ip verify unicast source reachable-via rx
    storm-control broadcast level 1
    storm-control multicast level 1
    storm-control unknown-unicast level 1
@@ -420,18 +432,19 @@ interface Port-Channel8.101
 !
 interface Port-Channel9
    no switchport
-   spanning-tree guard root
    ip address 10.9.2.3/31
    bfd interval 500 min-rx 500 multiplier 5
    bfd echo
    bfd neighbor 10.1.2.4
    bfd per-link rfc-7130
+   spanning-tree guard root
 !
 interface Port-Channel10
    description SRV01_bond0
    switchport trunk allowed vlan 2-3000
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0404:0404:0303
       route-target import 04:04:03:03:02:02
@@ -448,6 +461,7 @@ interface Port-Channel12
 interface Port-Channel13
    description EVPN-Vxlan single-active redundancy
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0304
       redundancy single-active
@@ -459,6 +473,7 @@ interface Port-Channel13
 interface Port-Channel14
    description EVPN-MPLS multihoming
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0000:0102:0305
       mpls tunnel flood filter time 100
@@ -507,6 +522,7 @@ interface Port-Channel50
    switchport trunk allowed vlan 1-4000
    switchport mode trunk
    switchport
+   !
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -517,13 +533,13 @@ interface Port-Channel51
    switchport trunk allowed vlan 1-500
    switchport mode trunk
    switchport
+   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
    switchport port-security
    no switchport port-security mac-address maximum disabled
    switchport port-security vlan 1 mac-address maximum 3
    switchport port-security vlan 2 mac-address maximum 3
    switchport port-security vlan 3 mac-address maximum 3
    switchport port-security vlan default mac-address maximum 2
-   ipv6 nd prefix a1::/64 infinite infinite no-autoconfig
 !
 interface Port-Channel99
    description MCAST
@@ -575,19 +591,19 @@ interface Port-Channel100
 !
 interface Port-Channel100.101
    description IFL for TENANT01
-   logging event link-status
    mtu 1500
+   logging event link-status
    encapsulation dot1q vlan 101
    ip address 10.1.1.3/31
 !
 interface Port-Channel100.102
    description IFL for TENANT02
-   no logging event link-status
-   logging event storm-control discards
    mtu 1500
-   encapsulation dot1q vlan 102
+   no logging event link-status
+   encapsulation dot1q vlan 102 inner 110
    vrf C2
    ip address 10.1.2.3/31
+   logging event storm-control discards
 !
 interface Port-Channel101
    description PVLAN Promiscuous Access - only one secondary
@@ -617,8 +633,8 @@ interface Port-Channel104
    switchport trunk allowed vlan 112
    switchport mode trunk
    switchport
-   port-channel lacp fallback timeout 300
    port-channel lacp fallback individual
+   port-channel lacp fallback timeout 300
 !
 interface Port-Channel105
    description bpdu disabled
@@ -661,8 +677,8 @@ interface Port-Channel110
    isis bfd
    isis circuit-type level-2
    isis metric 99
-   isis network point-to-point
    isis hello padding
+   isis network point-to-point
    isis authentication mode text
    isis authentication key 7 <removed>
 !
@@ -672,34 +688,41 @@ interface Port-Channel111
 !
 interface Port-Channel111.1
    description TENANT_A pseudowire 1 interface
+   !
    encapsulation vlan
       client unmatched
 !
 interface Port-Channel111.100
    description TENANT_A pseudowire 2 interface
+   !
    encapsulation vlan
       client dot1q 100 network client
 !
 interface Port-Channel111.200
    description TENANT_A pseudowire 3 interface
+   !
    encapsulation vlan
       client dot1q 200
 !
 interface Port-Channel111.300
    description TENANT_A pseudowire 4 interface
+   !
    encapsulation vlan
       client dot1q 300 network dot1q 400
 !
 interface Port-Channel111.400
    description TENANT_A pseudowire 3 interface
+   !
    encapsulation vlan
-      client dot1q outer 400 inner 20 network dot1q outer 21 inner 401
+      client dot1q outer 400 inner 20 network dot1q outer 401 inner 21
 !
 interface Port-Channel111.1000
    description L2 Subinterface
    vlan id 1000
+   !
    encapsulation vlan
       client dot1q 100 network client
+   !
    evpn ethernet-segment
       identifier 0000:0000:0303:0202:0101
       route-target import 03:03:02:02:01:01
@@ -710,23 +733,23 @@ interface Port-Channel112
    switchport trunk allowed vlan 112
    switchport mode trunk
    switchport
-   port-channel lacp fallback timeout 5
    port-channel lacp fallback individual
+   port-channel lacp fallback timeout 5
 !
 interface Port-Channel113
    description interface_with_mpls_enabled
    no switchport
    ip address 172.31.128.9/31
-   mpls ip
-   mpls ldp interface
    mpls ldp igp sync
+   mpls ldp interface
+   mpls ip
 !
 interface Port-Channel114
    description interface_with_mpls_disabled
    no switchport
    ip address 172.31.128.10/31
-   no mpls ip
    no mpls ldp interface
+   no mpls ip
 !
 interface Port-Channel115
    description native-vlan-tag-precedence
@@ -771,16 +794,76 @@ interface Port-Channel122
 interface Port-Channel130
    description IP NAT Testing
    switchport
-   ip nat source static 3.0.0.1 4.0.0.1
-   ip nat source dynamic access-list ACL2 pool POOL2
    ip nat destination static 1.0.0.1 2.0.0.1
+   ip nat source static 3.0.0.1 4.0.0.1
    ip nat destination dynamic access-list ACL1 pool POOL1
+   ip nat source dynamic access-list ACL2 pool POOL2
 !
 interface Port-Channel131
    description dot1q-tunnel mode
    switchport access vlan 115
    switchport mode dot1q-tunnel
    switchport
+!
+interface Port-Channel131.1
+   description Test_encapsulation_vlan1
+   !
+   encapsulation vlan
+      client dot1q outer 23 inner dot1q 45 network dot1ad outer 32 inner dot1ad 54
+!
+interface Port-Channel131.2
+   description Test_encapsulation_vlan2
+   !
+   encapsulation vlan
+      client dot1q 10 network dot1q outer 32 inner 54
+!
+interface Port-Channel131.3
+   description Test_encapsulation_vlan3
+   !
+   encapsulation vlan
+      client dot1ad 12 network dot1q 25
+!
+interface Port-Channel131.4
+   description Test_encapsulation_vlan4
+   !
+   encapsulation vlan
+      client dot1ad outer 35 inner dot1q 60 network dot1q outer 53 inner dot1ad 6
+!
+interface Port-Channel131.5
+   description Test_encapsulation_vlan5
+   !
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network dot1ad outer 52 inner 62
+!
+interface Port-Channel131.6
+   description Test_encapsulation_vlan6
+   !
+   encapsulation vlan
+      client dot1ad outer 35 inner 60 network client
+!
+interface Port-Channel131.7
+   description Test_encapsulation_vlan7
+   !
+   encapsulation vlan
+      client untagged network dot1ad outer 35 inner 60
+!
+interface Port-Channel131.8
+   description Test_encapsulation_vlan8
+   !
+   encapsulation vlan
+      client untagged network dot1q outer 35 inner 60
+!
+interface Port-Channel131.9
+   description Test_encapsulation_vlan9
+   !
+   encapsulation vlan
+      client untagged network untagged
+!
+interface Port-Channel131.10
+   description Test_encapsulation_vlan9
+   !
+   encapsulation vlan
+      client dot1q outer 14 inner 11 network client inner
 ```
 
 ## BFD

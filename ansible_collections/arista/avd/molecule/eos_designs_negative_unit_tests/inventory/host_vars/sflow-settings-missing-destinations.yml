@@ -1,0 +1,15 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: sflow-settings-missing-destinations
+      id: 1
+
+servers:
+  - name: test
+    adapters:
+      - switches: [sflow-settings-missing-destinations]
+        switch_ports: [Ethernet1]
+        sflow: true
+
+expected_error_message: >-
+  `sflow_settings.destinations` is required to configure `sflow`.
