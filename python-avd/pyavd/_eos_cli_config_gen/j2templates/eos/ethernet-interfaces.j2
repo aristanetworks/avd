@@ -822,9 +822,6 @@ interface {{ ethernet_interface.name }}
 {%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
    isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
-{%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
-   isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
-{%     endif %}
 {%     if ethernet_interface.isis_authentication.both.mode is arista.avd.defined
           and (ethernet_interface.isis_authentication.both.mode in ["md5", "text"]
                or (ethernet_interface.isis_authentication.both.mode == "sha" and ethernet_interface.isis_authentication.both.sha.key_id is arista.avd.defined)
