@@ -9,8 +9,9 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
-  redistribute_routes:
-  - source_protocol: connected
+  redistribute:
+    connected:
+      enabled: true
   peer_groups:
   - name: IPv4-UNDERLAY-PEERS
     type: ipv4
@@ -30,7 +31,7 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.90.226.1
+  gateway: 192.168.17.1
 service_routing_protocols_model: multi-agent
 ip_routing: true
 daemon_terminattr:
@@ -57,8 +58,6 @@ transceiver_qsfp_default_mode_4x10: true
 ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT
-- ip_address: 10.14.0.1
-  vrf: MGMT
 spanning_tree:
   mode: none
 local_users:
@@ -79,7 +78,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.17.31/24
-  gateway: 10.90.226.1
+  gateway: 192.168.17.1
   type: oob
   lldp:
     transmit: false

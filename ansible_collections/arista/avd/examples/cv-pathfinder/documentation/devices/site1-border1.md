@@ -60,7 +60,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.14/24 | 10.90.226.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.14/24 | 192.168.17.1 |
 
 ##### IPv6
 
@@ -99,12 +99,10 @@ dns domain wan.example.local
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
 | 192.168.17.1 | MGMT | - |
-| 10.14.0.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 10.14.0.1
 ip name-server vrf MGMT 192.168.17.1
 ```
 
@@ -660,13 +658,13 @@ ip routing vrf RED
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 10.90.226.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 10.90.226.1
+ip route vrf MGMT 0.0.0.0/0 192.168.17.1
 ```
 
 ### Router BGP
@@ -757,8 +755,8 @@ ASN Notation: asplain
 !
 router bgp 65101
    router-id 192.168.255.5
-   maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
    neighbor EVPN-OVERLAY-PEERS update-source Loopback0
    neighbor EVPN-OVERLAY-PEERS bfd
@@ -772,9 +770,9 @@ router bgp 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER remote-as 65101
    neighbor MLAG-IPv4-UNDERLAY-PEER next-hop-self
    neighbor MLAG-IPv4-UNDERLAY-PEER description site1-border2
+   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor MLAG-IPv4-UNDERLAY-PEER send-community
    neighbor MLAG-IPv4-UNDERLAY-PEER maximum-routes 12000
-   neighbor MLAG-IPv4-UNDERLAY-PEER route-map RM-MLAG-PEER-IN in
    neighbor 10.0.1.9 peer group IPv4-UNDERLAY-PEERS
    neighbor 10.0.1.9 remote-as 65000
    neighbor 10.0.1.9 description site1-wan1_Ethernet1
@@ -808,11 +806,11 @@ router bgp 65101
       route-target import evpn 100:100
       route-target export evpn 100:100
       router-id 192.168.255.5
-      neighbor 10.0.1.9 remote-as 65000
       neighbor 10.0.1.9 peer group IPv4-UNDERLAY-PEERS
+      neighbor 10.0.1.9 remote-as 65000
       neighbor 10.0.1.9 description site1-wan1_Ethernet1.100_vrf_BLUE
-      neighbor 10.0.1.13 remote-as 65000
       neighbor 10.0.1.13 peer group IPv4-UNDERLAY-PEERS
+      neighbor 10.0.1.13 remote-as 65000
       neighbor 10.0.1.13 description site1-wan2_Ethernet1.100_vrf_BLUE
       neighbor 10.255.251.9 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.9 description site1-border2_Vlan3099
@@ -823,11 +821,11 @@ router bgp 65101
       route-target import evpn 101:101
       route-target export evpn 101:101
       router-id 192.168.255.5
-      neighbor 10.0.1.9 remote-as 65000
       neighbor 10.0.1.9 peer group IPv4-UNDERLAY-PEERS
+      neighbor 10.0.1.9 remote-as 65000
       neighbor 10.0.1.9 description site1-wan1_Ethernet1.101_vrf_RED
-      neighbor 10.0.1.13 remote-as 65000
       neighbor 10.0.1.13 peer group IPv4-UNDERLAY-PEERS
+      neighbor 10.0.1.13 remote-as 65000
       neighbor 10.0.1.13 description site1-wan2_Ethernet1.101_vrf_RED
       neighbor 10.255.251.9 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.9 description site1-border2_Vlan3100

@@ -91,7 +91,7 @@ agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=1
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.17/24 | 10.90.226.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.17/24 | 192.168.17.1 |
 
 ##### IPv6
 
@@ -130,12 +130,10 @@ dns domain wan.example.local
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
 | 192.168.17.1 | MGMT | - |
-| 10.14.0.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 10.14.0.1
 ip name-server vrf MGMT 192.168.17.1
 ```
 
@@ -590,13 +588,13 @@ ip routing vrf RED
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 10.90.226.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 10.90.226.1
+ip route vrf MGMT 0.0.0.0/0 192.168.17.1
 ```
 
 ### Router Adaptive Virtual Topology
@@ -894,13 +892,13 @@ ASN Notation: asplain
 !
 router bgp 65000
    router-id 192.168.255.8
-   maximum-paths 16
    no bgp default ipv4-unicast
+   maximum-paths 16
    neighbor IPv4-UNDERLAY-PEERS peer group
-   neighbor IPv4-UNDERLAY-PEERS send-community
-   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-IN in
    neighbor IPv4-UNDERLAY-PEERS route-map RM-BGP-UNDERLAY-PEERS-OUT out
+   neighbor IPv4-UNDERLAY-PEERS send-community
+   neighbor IPv4-UNDERLAY-PEERS maximum-routes 12000
    neighbor WAN-OVERLAY-PEERS peer group
    neighbor WAN-OVERLAY-PEERS remote-as 65000
    neighbor WAN-OVERLAY-PEERS update-source Dps1
@@ -922,18 +920,18 @@ router bgp 65000
    neighbor 192.168.42.2 peer group WAN-OVERLAY-PEERS
    neighbor 192.168.42.2 description pf2_Dps1
    neighbor 192.168.42.7 remote-as 65000
+   neighbor 192.168.42.7 update-source Dps1
    neighbor 192.168.42.7 description site2-wan1
    neighbor 192.168.42.7 route-reflector-client
-   neighbor 192.168.42.7 update-source Dps1
    neighbor 192.168.42.7 route-map RM-WAN-HA-PEER-IN in
    neighbor 192.168.42.7 route-map RM-WAN-HA-PEER-OUT out
    neighbor 192.168.42.7 send-community
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn
+      neighbor WAN-OVERLAY-PEERS activate
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-IN in
       neighbor WAN-OVERLAY-PEERS route-map RM-EVPN-SOO-OUT out
-      neighbor WAN-OVERLAY-PEERS activate
       neighbor WAN-OVERLAY-PEERS encapsulation path-selection
       neighbor 192.168.42.7 activate
       neighbor 192.168.42.7 encapsulation path-selection
@@ -961,8 +959,8 @@ router bgp 65000
       route-target import evpn 100:100
       route-target export evpn 100:100
       router-id 192.168.255.8
-      neighbor 10.0.2.14 remote-as 65102
       neighbor 10.0.2.14 peer group IPv4-UNDERLAY-PEERS
+      neighbor 10.0.2.14 remote-as 65102
       neighbor 10.0.2.14 description site2-leaf2_Ethernet3.100_vrf_BLUE
       redistribute connected
    !
@@ -977,8 +975,8 @@ router bgp 65000
       route-target import evpn 101:101
       route-target export evpn 101:101
       router-id 192.168.255.8
-      neighbor 10.0.2.14 remote-as 65102
       neighbor 10.0.2.14 peer group IPv4-UNDERLAY-PEERS
+      neighbor 10.0.2.14 remote-as 65102
       neighbor 10.0.2.14 description site2-leaf2_Ethernet3.101_vrf_RED
       redistribute connected
 ```

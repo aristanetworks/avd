@@ -8,9 +8,10 @@ router_bgp:
       ipv4_unicast: false
   maximum_paths:
     paths: 16
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   bgp_cluster_id: 192.168.255.2
   listen_ranges:
   - prefix: 192.168.42.0/24
@@ -110,7 +111,7 @@ router_bgp:
 static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
-  gateway: 10.90.226.1
+  gateway: 192.168.17.1
 - destination_address_prefix: 172.18.0.0/16
   gateway: 172.18.200.1
 - destination_address_prefix: 0.0.0.0/0
@@ -136,8 +137,6 @@ transceiver_qsfp_default_mode_4x10: false
 ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT
-- ip_address: 10.14.0.1
-  vrf: MGMT
 spanning_tree:
   mode: none
 local_users:
@@ -158,7 +157,7 @@ management_interfaces:
   shutdown: false
   vrf: MGMT
   ip_address: 192.168.17.11/24
-  gateway: 10.90.226.1
+  gateway: 192.168.17.1
   type: oob
   lldp:
     transmit: false
