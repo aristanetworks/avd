@@ -116,7 +116,7 @@ class EthernetInterfacesMixin(UtilsMixin):
         )
         return strip_null_from_data(ethernet_interface, strip_values_tuple=(None, "", {}))
 
-    def _get_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict, node_index: int, connected_endpoint: dict) -> dict:
+    def _get_ethernet_interface_cfg(self: AvdStructuredConfigConnectedEndpoints, adapter: dict | ChainMap, node_index: int, connected_endpoint: dict) -> dict:
         """Return structured_config for one ethernet_interface."""
         peer = connected_endpoint["name"]
         endpoint_ports: list = default(
@@ -172,14 +172,10 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # Port-channel member
         if (port_channel_mode := get(adapter, "port_channel.mode")) is not None:
-            ethernet_interface.update(
-                {
-                    "channel_group": {
-                        "id": channel_group_id,
-                        "mode": port_channel_mode,
-                    },
-                },
-            )
+            ethernet_interface["channel_group"] = {
+                "id": channel_group_id,
+                "mode": port_channel_mode,
+            }
             if get(adapter, "port_channel.lacp_fallback.mode") == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
 
@@ -203,7 +199,6 @@ class EthernetInterfacesMixin(UtilsMixin):
                     "multiplier": get(adapter, "port_channel.lacp_timer.multiplier"),
                 }
 
-        # NOT a port-channel member
         else:
             ethernet_interface = self._update_ethernet_interface_cfg(adapter, ethernet_interface, connected_endpoint)
             ethernet_interface["evpn_ethernet_segment"] = self._get_adapter_evpn_ethernet_segment_cfg(
