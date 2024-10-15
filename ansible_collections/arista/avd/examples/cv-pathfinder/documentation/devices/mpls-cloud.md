@@ -48,7 +48,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.30/24 | 192.168.17.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.30/24 | 10.90.226.1 |
 
 ##### IPv6
 
@@ -87,10 +87,12 @@ dns domain wan.example.local
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
 | 192.168.17.1 | MGMT | - |
+| 10.14.0.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
+ip name-server vrf MGMT 10.14.0.1
 ip name-server vrf MGMT 192.168.17.1
 ```
 
@@ -358,13 +360,13 @@ no ip routing vrf MGMT
 
 | VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
-| MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
+| MGMT | 0.0.0.0/0 | 10.90.226.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 192.168.17.1
+ip route vrf MGMT 0.0.0.0/0 10.90.226.1
 ```
 
 ### Router BGP
