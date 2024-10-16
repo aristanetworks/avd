@@ -41,10 +41,10 @@ interface Management1
 
 #### VM Tracer Summary
 
-| Session | URL | Username | Autovlan | Source Interface |
-| ------- | --- | -------- | -------- | ---------------- |
-| session_1 | https://192.168.0.10 | user1 | disabled | Management1 |
-| session_2 | https://192.168.0.10 | user1 | enabled | - |
+| Session | URL | Username | Autovlan | VRF | Source Interface |
+| ------- | --- | -------- | -------- | --- | ---------------- |
+| session_1 | https://192.168.0.10 | user1 | disabled | MGMT | Management1 |
+| session_2 | https://192.168.0.10 | user1 | enabled | - | - |
 
 #### VM Tracer Device Configuration
 
