@@ -61,7 +61,7 @@ ipv4_acls:
       - sequence: 1
         remark: "Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface"
       - sequence: 10
-        # IPSEC traffic from anywhere
+        # IPSec traffic from anywhere
         action: permit
         protocol: udp
         source: any
