@@ -4,8 +4,8 @@
 
 from pyavd._schema.models import AvdBase
 from pyavd._utils import Undefined, UndefinedType
-from typing import Any
 from typing import ClassVar
+from typing import Any
 
 class EosCliConfigGen(AvdBase):
     class AaaAccounting(AvdBase):
