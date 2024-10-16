@@ -30,8 +30,9 @@ class RouterBgpMixin(UtilsMixin):
 
         neighbors = []
         neighbor_interfaces = []
+        address_family_ipv4_neighbors = []
         for p2p_link in self._filtered_p2p_links:
-            if p2p_link.get("include_in_underlay_protocol", True) is not True:
+            if p2p_link.get("include_in_underlay_protocol", True) is not True and p2p_link.get("routing_protocol") != "ebgp":
                 continue
 
             if p2p_link["data"]["bgp_as"] is None or p2p_link["data"]["peer_bgp_as"] is None:
@@ -46,9 +47,20 @@ class RouterBgpMixin(UtilsMixin):
             }
 
             # RFC5549
-            if self.shared_utils.underlay_rfc5549 and p2p_link.get("routing_protocol") != "ebgp":
-                neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
-                continue
+            if self.shared_utils.underlay_rfc5549:
+                if p2p_link.get("routing_protocol") == "ebgp":
+                    address_family_ipv4_neighbor = {
+                        "ip_address": get_ip_from_ip_prefix(p2p_link["data"]["peer_ip"]),
+                        "next_hop": {
+                            "address_family_ipv6": {
+                                "enabled": False,
+                            },
+                        },
+                    }
+                    address_family_ipv4_neighbors.append(address_family_ipv4_neighbor)
+                else:
+                    neighbor_interfaces.append({"name": p2p_link["data"]["interface"], **neighbor})
+                    continue
 
             # Regular BGP Neighbors
             if p2p_link["data"]["ip"] is None or p2p_link["data"]["peer_ip"] is None:
@@ -70,6 +82,11 @@ class RouterBgpMixin(UtilsMixin):
 
         if neighbor_interfaces:
             router_bgp["neighbor_interfaces"] = neighbor_interfaces
+
+        if address_family_ipv4_neighbors:
+            router_bgp["address_family_ipv4"] = {
+                "neighbors": address_family_ipv4_neighbors,
+            }
 
         if router_bgp:
             return router_bgp

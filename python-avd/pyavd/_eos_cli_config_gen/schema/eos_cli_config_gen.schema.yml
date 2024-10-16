@@ -13473,6 +13473,21 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                next_hop:
+                  type: dict
+                  keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                          description: Enables advertising the Extended Next Hop Encoding
+                            capability.
+                        originate:
+                          type: bool
+                          description: Advertise locally originated IPv4 NRLIs using
+                            the local IPv6 peering address as the next-hop.
           redistribute_routes:
             type: list
             primary_key: source_protocol
