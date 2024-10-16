@@ -14,7 +14,7 @@ $defs:
         id:
           type: int
           convert_types:
-          - str
+            - str
           description: |
             Unique id per subnet_summary. Used to calculate ip addresses.
             Required with ip_pool. ID starting from 1.
@@ -62,7 +62,7 @@ $defs:
           items:
             type: str
             convert_types:
-            - int
+              - int
             description: The values can be like ["node_a_as", "node_b_as"].
         descriptions:
           type: list
@@ -89,18 +89,18 @@ $defs:
         isis_metric:
           type: int
           convert_types:
-          - str
+            - str
         isis_circuit_type:
           type: str
           valid_values:
-          - level-1
-          - level-2
-          - level-1-2
+            - level-1
+            - level-2
+            - level-1-2
         isis_authentication_mode:
           type: str
           valid_values:
-          - md5
-          - text
+            - md5
+            - text
         isis_authentication_key:
           type: str
           description: Type-7 encrypted password.
@@ -113,7 +113,7 @@ $defs:
         mtu:
           type: int
           convert_types:
-          - str
+            - str
           description: MTU for this P2P link. Default value same as p2p_uplinks_mtu.
         bfd:
           type: bool
@@ -181,7 +181,7 @@ $defs:
                   channel_id:
                     type: int
                     convert_types:
-                    - str
+                      - str
                     description: Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.
         raw_eos_cli:
           type: str
@@ -189,7 +189,7 @@ $defs:
         routing_protocol:
           type: str
           valid_values:
-          - ebgp
+            - ebgp
           description: |-
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             If routing_protocol is 'ebgp', include_in_underlay_protocol is 'true' and the fabric underlay is RFC5549 then this neighbor will override the underlay peer group for 'next-hop ipv6 originate'.
