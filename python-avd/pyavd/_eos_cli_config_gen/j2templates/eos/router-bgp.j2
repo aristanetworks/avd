@@ -1178,11 +1178,6 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
       {{ ipv6_originate_cli }}
 {%             endif %}
-{%             if neighbor.activate is arista.avd.defined(true) %}
-      neighbor {{ neighbor.ip_address }} activate
-{%             elif neighbor.activate is arista.avd.defined(false) %}
-      no neighbor {{ neighbor.ip_address }} activate
-{%             endif %}
 {%         endfor %}
 {%         for network in router_bgp.address_family_ipv4.networks | arista.avd.natural_sort('prefix') %}
 {%             if network.route_map is arista.avd.defined %}
