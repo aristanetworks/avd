@@ -204,6 +204,14 @@ repos:
         pass_filenames: false
         additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs', 'referencing>=0.35.0']
 
+      - id: schemas
+        name: Build Python Classes from AVD Schemas
+        entry: sh -c 'exec python-avd/scripts/build-python-classes.py'
+        language: python
+        files: python-avd/pyavd/[a-z_]+/schema
+        pass_filenames: false
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'referencing>=0.35.0']
+
       - id: templates
         name: Precompile Jinja2 templates
         entry: sh -c 'python-avd/scripts/compile_templates.py'
@@ -211,13 +219,6 @@ repos:
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
-
-      - id: schemas
-        name: Build Python Classes from AVD Schemas
-        entry: sh -c 'exec python-avd/scripts/build-python-classes.py'
-        language: system
-        files: python-avd/pyavd/[a-z_]+/schema
-        pass_filenames: false
 
   - repo: https://github.com/igorshubovych/markdownlint-cli
     rev: v0.42.0
