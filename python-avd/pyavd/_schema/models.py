@@ -13,7 +13,7 @@ from .loader import loader
 if TYPE_CHECKING:
     from typing import Any, TypeVar
 
-    T = TypeVar("T", bound="AvdBase")
+    T_AvdBase = TypeVar("T_AvdBase", bound="AvdBase")
 
 
 class AvdBase:
@@ -23,7 +23,7 @@ class AvdBase:
     _required_fields: tuple[str, ...]
 
     @classmethod
-    def _from_dict(cls: type[T], data: dict) -> T:
+    def _from_dict(cls: type[T_AvdBase], data: dict) -> T_AvdBase:
         """Returns a new instance loaded with the data from the given dict."""
         return loader(cls, data)
 
@@ -108,7 +108,7 @@ class AvdBase:
 
         return as_dict
 
-    def _update(self: T, other: T) -> None:
+    def _update(self: T_AvdBase, other: T_AvdBase) -> None:
         """Update instance by shallow merging the other instance in."""
         cls = type(self)
         if not isinstance(other, cls):
@@ -123,10 +123,10 @@ class AvdBase:
                 continue
             setattr(self, field, new_value)
 
-    def _deepcopy(self: T) -> T:
+    def _deepcopy(self: T_AvdBase) -> T_AvdBase:
         return deepcopy(self)
 
-    def _deepmerge(self: T, other: T, list_merge: Literal["append", "replace"] = "append") -> None:
+    def _deepmerge(self: T_AvdBase, other: T_AvdBase, list_merge: Literal["append", "replace"] = "append") -> None:
         """Update instance by deepmerging the other instance in."""
         cls = type(self)
         if not isinstance(other, cls):
@@ -156,13 +156,13 @@ class AvdBase:
             else:
                 setattr(self, field, new_value)
 
-    def _deepmerged(self: T, other: T, list_merge: Literal["append", "replace"] = "append") -> T:
+    def _deepmerged(self: T_AvdBase, other: T_AvdBase, list_merge: Literal["append", "replace"] = "append") -> T_AvdBase:
         """Return new instance with the result of the deepmerge of "other" on this instance."""
         new_instance = self._deepcopy()
         new_instance._deepmerge(other=other, list_merge=list_merge)
         return new_instance
 
-    def _inherit(self: T, other: T) -> None:
+    def _inherit(self: T_AvdBase, other: T_AvdBase) -> None:
         """Update unset fields on this instance with fields from other instance. No merging."""
         cls = type(self)
         if not isinstance(other, cls):
@@ -178,7 +178,7 @@ class AvdBase:
 
             setattr(self, field, new_value)
 
-    def _deepinherit(self: T, other: T) -> None:
+    def _deepinherit(self: T_AvdBase, other: T_AvdBase) -> None:
         """Update instance by recursively inheriting unset fields from other instance. Lists are not merged."""
         cls = type(self)
         if not isinstance(other, cls):
@@ -203,13 +203,13 @@ class AvdBase:
             if old_value is Undefined:
                 setattr(self, field, new_value)
 
-    def _deepinherited(self: T, other: T) -> T:
+    def _deepinherited(self: T_AvdBase, other: T_AvdBase) -> T_AvdBase:
         """Return new instance with the result of recursively inheriting unset fields from other instance. Lists are not merged."""
         new_instance = self._deepcopy()
         new_instance._deepinherit(other=other)
         return new_instance
 
-    def _cast_as(self, new_type: type[T], ignore_extra_keys: bool = False) -> T:
+    def _cast_as(self, new_type: type[T_AvdBase], ignore_extra_keys: bool = False) -> T_AvdBase:
         """
         Recast a class instance as another AvdBase subclass if they are compatible.
 
