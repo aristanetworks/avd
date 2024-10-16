@@ -124,6 +124,7 @@ class AvdBase:
             setattr(self, field, new_value)
 
     def _deepcopy(self: T_AvdBase) -> T_AvdBase:
+        """Return a copy including all nested models."""
         return deepcopy(self)
 
     def _deepmerge(self: T_AvdBase, other: T_AvdBase, list_merge: Literal["append", "replace"] = "append") -> None:
