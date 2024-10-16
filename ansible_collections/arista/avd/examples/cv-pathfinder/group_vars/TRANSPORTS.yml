@@ -1,4 +1,6 @@
 ---
+# Variables for the routers mpls-cloud and inet-cloud.
+# These routers are used to mock Service Providers in the example.
 spine:
   defaults:
     loopback_ipv4_pool: 172.31.255.0/24
@@ -55,8 +57,8 @@ spine:
             dhcp_server_ipv4: true
       structured_config:
         router_bgp:
-          neighbors:
           # Neighbor definition for site2-wan2
+           neighbors:
             - ip_address: 100.64.21.2
               remote_as: 65000
               peer_group: IPv4-UNDERLAY-PEERS

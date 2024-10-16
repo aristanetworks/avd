@@ -1,5 +1,5 @@
 ---
-# WAN Pathfinder nodes
+# WAN Pathfinder nodes variables
 wan_rr:
   defaults:
     data_plane_cpu_allocation_max: 1  # (1)

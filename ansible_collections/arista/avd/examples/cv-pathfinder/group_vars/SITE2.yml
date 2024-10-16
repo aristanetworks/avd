@@ -1,7 +1,6 @@
 ---
-# Site2 variables
-# Use eBGP for underlay routing protocol on site1
-# default is none for WAN routers.
+# SITE2 variables
+# Use eBGP as underlay routing protocol on SITE2, the default is 'none' for WAN routers.
 underlay_routing_protocol: ebgp
 
 ipv4_prefix_list_catalog:
@@ -17,7 +16,7 @@ ipv4_acls:
       - sequence: 1
         remark: "Not for PRODUCTION: This ACL is built this way because the lab has an out-of-band interface"
       - sequence: 10
-        # IPSEC traffic from anywhere
+        # IPSec traffic from anywhere
         action: permit
         protocol: udp
         source: any
@@ -86,7 +85,7 @@ wan_router:
         ha_interfaces: [Ethernet5]
         ha_ipv4_pool: 10.42.0.0/24
         use_port_channel_for_direct_ha: false
-        # Can disable ipsec on WAN HA tunnel using this knob
+        # Use this knob to disable IPSec on WAN HA tunnel(s)
         # ipsec: false
       nodes:
         - name: site2-wan1
@@ -113,12 +112,7 @@ wan_router:
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION2-INTERNET-CORP
               wan_circuit_id: inet-site2-wan2
+              # Configure a BGP peering with the Service Provider.
               bgp:
                 peer_as: 65666
                 ipv4_prefix_list_in: ALLOW-DEFAULT
-          structured_config:
-            router_bgp:
-              address_family_ipv4:
-                neighbors:
-                  - ip_address: 100.64.21.1
-                    activate: true

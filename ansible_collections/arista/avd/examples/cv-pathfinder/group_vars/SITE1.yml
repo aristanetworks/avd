@@ -1,7 +1,6 @@
 ---
-# Site1 variables
-# Use eBGP for underlay routing protocol on site1
-# default is none for WAN routers.
+# SITE1 variables
+# Use eBGP as underlay routing protocol on SITE1, the default is 'none' for WAN routers.
 underlay_routing_protocol: ebgp
 
 l3leaf:
@@ -43,7 +42,7 @@ wan_router:
       cv_pathfinder_transit_mode: region # (2)
       wan_ha:
         enabled: true
-        # Can disable ipsec on WAN HA tunnel using this knob
+        # Use this knob to disable IPSec on WAN HA tunnel(s)
         # ipsec: false
       nodes:
         - name: site1-wan1
