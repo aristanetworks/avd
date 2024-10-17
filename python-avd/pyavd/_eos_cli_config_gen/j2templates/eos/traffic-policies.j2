@@ -77,7 +77,7 @@ traffic-policies
 {#                 -- PROTOCOL MANAGEMENT -- #}
 {%                 if match.protocols is arista.avd.defined %}
 {%                     set bgp_flag = True %}
-{%                     for protocol in match.protocols | arista.avd.natural_sort('protocol') %}
+{%                     for protocol in match.protocols %}
 {%                         if protocol.protocol | lower in ['neighbors', 'bgp'] and bgp_flag %}
 {%                             if protocol.protocol | lower == 'neighbors' %}
 {%                                 set protocol_neighbors_cli = 'protocol neighbors bgp' %}
