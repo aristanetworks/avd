@@ -68,7 +68,7 @@ interface Management1
 | Ethernet3, Ethernet5 | rx | - | - | - |
 | Ethernet10-15 | rx | - | - | - |
 | Ethernet12 | rx | - | - | - |
-| Ethernet18 | tx | mac | macACL | 100 |
+| Ethernet18 | tx | - | - | 100 |
 
 ####### myMonitoringSession2 Destinations and Session Settings
 
