@@ -14,12 +14,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "system.control_plane.tcp_mss.ipv6") | Integer |  |  |  | Segment size. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4_access_groups</samp>](## "system.control_plane.ipv4_access_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;acl_name</samp>](## "system.control_plane.ipv4_access_groups.[].acl_name") | String | Required |  |  | Access list name.<br>String "ingress" could be access list name as well. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv4_access_groups.[].vrf") | String |  |  |  | Keys `vrf` and `ingress_default` are mutual exclusive. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_default</samp>](## "system.control_plane.ipv4_access_groups.[].ingress_default") | Boolean |  |  |  | Keys `vrf` and `ingress_default` are mutual exclusive. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv4_access_groups.[].vrf") | String |  |  |  | Keys `vrf` and `ingress_default` are mutually exclusive. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_default</samp>](## "system.control_plane.ipv4_access_groups.[].ingress_default") | Boolean |  |  |  | Keys `vrf` and `ingress_default` are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_groups</samp>](## "system.control_plane.ipv6_access_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;acl_name</samp>](## "system.control_plane.ipv6_access_groups.[].acl_name") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv6_access_groups.[].vrf") | String |  |  |  | 'vrf' and 'ingress_default' are mutual exclusive. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_default</samp>](## "system.control_plane.ipv6_access_groups.[].ingress_default") | Boolean |  |  |  | 'vrf' and 'ingress_default' are mutual exclusive. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "system.control_plane.ipv6_access_groups.[].vrf") | String |  |  |  | 'vrf' and 'ingress_default' are mutually exclusive. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress_default</samp>](## "system.control_plane.ipv6_access_groups.[].ingress_default") | Boolean |  |  |  | 'vrf' and 'ingress_default' are mutually exclusive. |
     | [<samp>&nbsp;&nbsp;l1</samp>](## "system.l1") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_speed_action</samp>](## "system.l1.unsupported_speed_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unsupported_error_correction_action</samp>](## "system.l1.unsupported_error_correction_action") | String |  |  | Valid Values:<br>- <code>error</code><br>- <code>warn</code> |  |
@@ -42,18 +42,18 @@
             # String "ingress" could be access list name as well.
           - acl_name: <str; required>
 
-            # Keys `vrf` and `ingress_default` are mutual exclusive.
+            # Keys `vrf` and `ingress_default` are mutually exclusive.
             vrf: <str>
 
-            # Keys `vrf` and `ingress_default` are mutual exclusive.
+            # Keys `vrf` and `ingress_default` are mutually exclusive.
             ingress_default: <bool>
         ipv6_access_groups:
           - acl_name: <str; required>
 
-            # 'vrf' and 'ingress_default' are mutual exclusive.
+            # 'vrf' and 'ingress_default' are mutually exclusive.
             vrf: <str>
 
-            # 'vrf' and 'ingress_default' are mutual exclusive.
+            # 'vrf' and 'ingress_default' are mutually exclusive.
             ingress_default: <bool>
       l1:
         unsupported_speed_action: <str; "error" | "warn">
