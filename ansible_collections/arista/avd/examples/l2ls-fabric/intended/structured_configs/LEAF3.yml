@@ -64,7 +64,7 @@ ntp:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 10
@@ -75,7 +75,7 @@ vlans:
   tenant: MY_FABRIC
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -91,7 +91,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: SPINES_Po3
+  description: L2_SPINES_Port-Channel3
   switchport:
     enabled: true
     mode: trunk
@@ -122,7 +122,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet3
   peer_type: l2spine
-  description: SPINE1_Ethernet3
+  description: L2_SPINE1_Ethernet3
   shutdown: false
   channel_group:
     id: 1
@@ -131,7 +131,7 @@ ethernet_interfaces:
   peer: SPINE2
   peer_interface: Ethernet3
   peer_type: l2spine
-  description: SPINE2_Ethernet3
+  description: L2_SPINE2_Ethernet3
   shutdown: false
   channel_group:
     id: 1

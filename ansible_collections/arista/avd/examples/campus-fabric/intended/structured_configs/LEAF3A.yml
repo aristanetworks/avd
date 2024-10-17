@@ -62,7 +62,7 @@ ntp:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 - id: 310
@@ -79,7 +79,7 @@ vlans:
   name: INBAND_MGMT
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 1500
@@ -101,7 +101,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel971
-  description: SPINES_Po501
+  description: L2_SPINES_Port-Channel501
   switchport:
     enabled: true
     mode: trunk
@@ -110,7 +110,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 971
 - name: Port-Channel973
-  description: LEAF3C_Po971
+  description: L2_LEAF3C_Port-Channel971
   switchport:
     enabled: true
     mode: trunk
@@ -119,7 +119,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 973
 - name: Port-Channel974
-  description: LEAF3D_Po971
+  description: L2_LEAF3D_Port-Channel971
   switchport:
     enabled: true
     mode: trunk
@@ -128,7 +128,7 @@ port_channel_interfaces:
   shutdown: false
   mlag: 974
 - name: Port-Channel981
-  description: LEAF3E_Po971
+  description: L2_LEAF3E_Port-Channel971
   switchport:
     enabled: true
     mode: trunk
@@ -159,7 +159,7 @@ ethernet_interfaces:
   peer: SPINE1
   peer_interface: Ethernet50/1
   peer_type: l3spine
-  description: SPINE1_Ethernet50/1
+  description: L2_SPINE1_Ethernet50/1
   shutdown: false
   channel_group:
     id: 971
@@ -168,7 +168,7 @@ ethernet_interfaces:
   peer: SPINE2
   peer_interface: Ethernet50/1
   peer_type: l3spine
-  description: SPINE2_Ethernet50/1
+  description: L2_SPINE2_Ethernet50/1
   shutdown: false
   channel_group:
     id: 971
@@ -177,7 +177,7 @@ ethernet_interfaces:
   peer: LEAF3C
   peer_interface: Ethernet97/1
   peer_type: l2leaf
-  description: LEAF3C_Ethernet97/1
+  description: L2_LEAF3C_Ethernet97/1
   shutdown: false
   channel_group:
     id: 973
@@ -186,7 +186,7 @@ ethernet_interfaces:
   peer: LEAF3D
   peer_interface: Ethernet97/1
   peer_type: l2leaf
-  description: LEAF3D_Ethernet97/1
+  description: L2_LEAF3D_Ethernet97/1
   shutdown: false
   channel_group:
     id: 974
@@ -195,7 +195,7 @@ ethernet_interfaces:
   peer: LEAF3E
   peer_interface: Ethernet97/1
   peer_type: l2leaf
-  description: LEAF3E_Ethernet97/1
+  description: L2_LEAF3E_Ethernet97/1
   shutdown: false
   channel_group:
     id: 981

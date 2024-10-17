@@ -36,12 +36,12 @@ spanning_tree:
 vlans:
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   mtu: 9214
@@ -57,7 +57,7 @@ port_channel_interfaces:
       - MLAG
   shutdown: false
 - name: Port-Channel1
-  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L3LEAF1A_Po1_To_Po5_CUSTOM_TEMPLATES_L3LEAF1
+  description: TEST_CUSTOM_PREFIX_CUSTOM-TEMPLATES-L3LEAF1A_Po1_To_Po5_
   switchport:
     enabled: true
     mode: trunk

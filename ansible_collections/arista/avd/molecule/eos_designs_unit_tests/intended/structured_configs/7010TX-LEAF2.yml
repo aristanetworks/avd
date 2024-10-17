@@ -9,6 +9,10 @@ router_bgp:
   maximum_paths:
     paths: 4
     ecmp: 4
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
   updates:
     wait_install: true
   peer_groups:
@@ -43,10 +47,7 @@ router_bgp:
   - ip_address: 10.10.224.4
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: 7010TX-LEAF1
-    description: 7010TX-LEAF1
-  redistribute_routes:
-  - source_protocol: connected
-    route_map: RM-CONN-2-BGP
+    description: 7010TX-LEAF1_Vlan4093
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -84,21 +85,21 @@ spanning_tree:
 vlans:
 - id: 4093
   tenant: system
-  name: LEAF_PEER_L3
+  name: MLAG_L3
   trunk_groups:
   - MLAG
 - id: 4094
   tenant: system
-  name: MLAG_PEER
+  name: MLAG
   trunk_groups:
   - MLAG
 vlan_interfaces:
 - name: Vlan4093
-  description: MLAG_PEER_L3_PEERING
+  description: MLAG_L3
   shutdown: false
   ip_address: 10.10.224.5/31
 - name: Vlan4094
-  description: MLAG_PEER
+  description: MLAG
   shutdown: false
   no_autostate: true
   ip_address: 10.10.255.5/31
