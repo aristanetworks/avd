@@ -5,7 +5,7 @@
 wan_mode: cv-pathfinder
 
 # WAN hierarchy
-cv_pathfinder_regions:  # (1)
+cv_pathfinder_regions:  # (1)!
   - name: REGION1
     id: 1
     sites:
@@ -22,18 +22,18 @@ cv_pathfinder_regions:  # (1)
         id: 203
         location: Milan, Italy
 
-cv_pathfinder_global_sites:  # (2)
+cv_pathfinder_global_sites:  # (2)!
   - name: PF1-GLOBAL
     location: Santa Clara, CA, USA
   - name: PF2-GLOBAL
     location: Coulomiers, France
 
-wan_route_servers: # (3)
+wan_route_servers: # (3)!
   - hostname: pf1
   - hostname: pf2
 
 # IPSec configuration
-wan_ipsec_profiles: # (4)
+wan_ipsec_profiles: # (4)!
   control_plane:
     shared_key: 045A190F1C354D
   data_plane:
@@ -45,7 +45,7 @@ wan_ipsec_profiles: # (4)
 # wan_stun_dtls_disable: true
 
 # Fabric Flow tracking - by default only enabled for the Dps1 interface
-fabric_flow_tracking: # (5)
+fabric_flow_tracking: # (5)!
   uplinks:
     enabled: true
   downlinks:
@@ -75,7 +75,7 @@ bgp_password: !vault |
  6430
 
 # BGP settings
-bgp_peer_groups: # (6)
+bgp_peer_groups: # (6)!
   wan_overlay_peers:
     password: "{{ bgp_password | arista.avd.encrypt(passwd_type='bgp', key='WAN-OVERLAY-PEERS') }}"
     listen_range_prefixes:
@@ -84,7 +84,7 @@ bgp_peer_groups: # (6)
     password: "{{ bgp_password | arista.avd.encrypt(passwd_type='bgp', key='WAN-RR-OVERLAY-PEERS') }}"
 
 # WAN path groups
-wan_carriers: # (7)
+wan_carriers: # (7)!
   - name: ACME-MPLS-INC
     path_group: MPLS
     trusted: true
@@ -95,14 +95,14 @@ wan_carriers: # (7)
   - name: REGION2-INTERNET-CORP
     path_group: INTERNET
 
-wan_path_groups: # (8)
+wan_path_groups: # (8)!
   - name: MPLS
     id: 101
   - name: INTERNET
     id: 102
 
 # WAN virtual topologies
-wan_virtual_topologies: # (9)
+wan_virtual_topologies: # (9)!
   vrfs:
     - name: BLUE
       policy: BLUE-POLICY
@@ -118,7 +118,7 @@ wan_virtual_topologies: # (9)
           path_groups:
             - names: [INTERNET]
               preference: preferred
-            - names: [MPLS] # (10)
+            - names: [MPLS] # (10)!
               preference: alternate
         - application_profile: VOICE
           id: 3

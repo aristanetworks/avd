@@ -12,15 +12,13 @@ title: AVD example for CV Pathfinder
 
 ## Introduction
 
-This example goes over how to use the CV Pathfinder models in AVD in an introductory way.
-
 !!! important
     - CVaaS is required to run this example. Without it, only configuration generation is possible.
-    - Minimum EOS version 4.32.2F is required to run this example.
+    - Minimum EOS version 4.32.2F is required.
     - The devices must be able to reach CVaaS via their Management Interface.
-    - Proper licenses are required for all nodes.
+    - Proper licenses are required for all nodes  (IPSec and throughput).
 
-This example aims to present the basic configuration blocks required to deploy CV Pathfinder but does not cover all CV Pathfinder features. In particular, it does not cover:
+This example aims to present the basic configuration blocks required to deploy CV Pathfinder using AVD but does not cover all CV Pathfinder features. In particular, it does not cover:
 
 - Internet Exits
 - WAN routers behind NAT
@@ -35,49 +33,25 @@ This example will go over the following:
 
 ## Installation
 
-Requirements to use this example:
-
-- Follow the [installation guide](../../docs/installation/collection-installation.md) for AVD
-- Run the following playbook to copy the AVD **examples** to your current working directory, for example `ansible-avd-examples`:
-
-```shell
-ansible-playbook arista.avd.install_examples
-```
-
-This will show the following:
-
-```shell
- ~/ansible-avd-examples# ansible-playbook arista.avd.install_examples
-
-PLAY [Install Examples]**********************************************************************************************
-
-TASK [Copy all examples to ~/ansible-avd-examples]*******************************************************************
-changed: [localhost]
-
-PLAY RECAP
-*********************************************************************************************************************
-localhost                  : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
-```
-
-After the playbook has run successfully, the directory structure of the example should look like below, the contents of which will be covered in later sections:
+--8<--
+examples/common/installation.md
+--8<--
 
 ```shell
 ansible-avd-examples/ (or wherever the playbook was run)
-  cv-pathfinder
-  ├── README.md
-  ├── ansible.cfg
-  ├── build.yml
-  ├── deploy.yml
-  ├── documentation
-  ├── group_vars
-  ├── host_vars
-  ├── images
-  ├── intended
-  └── inventory.yml
+  ├── cv-pathfinder
+    ├── ansible.cfg
+    ├── build.yml
+    ├── deploy.yml
+    ├── documentation
+    ├── group_vars
+    ├── host_vars
+    ├── images
+    ├── intended
+    ├── inventory.yml
+    ├── README.md
+    └── switch-basic-configurations
 ```
-
-!!! info
-    If the content of any file is ***modified*** and the playbook is rerun, the file ***will not*** be overwritten. However, if any file in the example is ***deleted*** and the playbook is rerun, Ansible will re-create the file.
 
 ## Overall design overview
 
@@ -214,7 +188,7 @@ examples/cv-pathfinder/ansible.cfg
 
 !!! danger
     The `.vault` file is included in the example in order to be able to run it.
-    It **MUST** never be pushed to any public repository as it allows anyone
+    It **must** never be pushed to any public repository as it allows anyone
     with read access to decrypt all the secrets.
 
 ## Basic EOS config
@@ -239,25 +213,9 @@ examples/cv-pathfinder/switch-basic-configurations/site1-border1-basic-configura
 To define device types, required by AVD, this example leverages the `default_node_types` key:
 
 ```yaml title="groups_vars/all.yml"
-# define default node types based on hostnames
-default_node_types:
-  - node_type: wan_rr
-    match_hostnames:
-      - pf.*
-  - node_type: wan_router
-    match_hostnames:
-      - site.*-wan.*
-  - node_type: l2leaf
-    match_hostnames:
-      - site3-leaf.*
-  - node_type: l3leaf
-    match_hostnames:
-      - site.*-border.*
-      - site.*-leaf.*
-  # Transport routers # (1)!
-  - node_type: spine
-    match_hostnames:
-      - .*-cloud
+--8<--
+examples/cv-pathfinder/group_vars/all.yml:19:
+--8<--
 ```
 
 1. Using node type `spine` for transport routers.
@@ -392,14 +350,14 @@ wan_router:
         - name: site1-wan1
           id: 3
           l3_interfaces:
-            - name: Ethernet3  # (1)
+            - name: Ethernet3  # (1)!
               profile: MPLS-WAN-INTERFACE
               peer_interface: Ethernet5
               peer_ip: 172.18.10.1
               ip_address: 172.18.10.2/24
               wan_carrier: ACME-MPLS-INC
               wan_circuit_id: mpls-site1-wan1
-            - name: Ethernet42 # (2)
+            - name: Ethernet42 # (2)!
               ip_address: 100.64.10.2/24
 ```
 
@@ -583,7 +541,7 @@ user@ubuntu:~/cv-pathfinder$ ansible-playbook build.yml
 PLAY [Build Configs] ***************************************************************************
 
 TASK [arista.avd.eos_designs : Verify Requirements] ********************************************
-AVD version 5.0.0-dev6
+AVD version 5.0.0
 ok: [pf1 -> localhost]
 
 TASK [arista.avd.eos_designs : Create required output directories if not present] **************

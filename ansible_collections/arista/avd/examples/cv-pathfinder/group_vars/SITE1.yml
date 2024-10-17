@@ -32,14 +32,14 @@ wan_router:
       always_include_vrfs_in_tenants: [all]
     uplink_interfaces: [Ethernet1, Ethernet2]
     uplink_switches: [site1-border1, site1-border2]
-    uplink_type: p2p-vrfs # (1)
+    uplink_type: p2p-vrfs # (1)!
     bgp_as: 65000
   node_groups:
     - group: SITE1
       cv_pathfinder_region: REGION1
       cv_pathfinder_site: SITE1
       # Making this site a transit site
-      cv_pathfinder_transit_mode: region # (2)
+      cv_pathfinder_transit_mode: region # (2)!
       wan_ha:
         enabled: true
         # Use this knob to disable IPSec on WAN HA tunnel(s)
