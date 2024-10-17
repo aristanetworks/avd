@@ -816,10 +816,10 @@ interface {{ ethernet_interface.name }}
    isis network point-to-point
 {%     endif %}
 {%     if ethernet_interface.isis_authentication_mode is arista.avd.defined and
-          ethernet_interface.isis_authentication_mode in ["text", "md5"] %}
+          ethernet_interface.isis_authentication_mode in ["text", "md5"] and ethernet_interface.isis_authentication is not arista.avd.defined %}
    isis authentication mode {{ ethernet_interface.isis_authentication_mode }}
 {%     endif %}
-{%     if ethernet_interface.isis_authentication_key is arista.avd.defined %}
+{%     if ethernet_interface.isis_authentication_key is arista.avd.defined and ethernet_interface.isis_authentication is not arista.avd.defined %}
    isis authentication key 7 {{ ethernet_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if ethernet_interface.isis_authentication.both.mode is arista.avd.defined
