@@ -20158,10 +20158,17 @@ keys:
                 acl_name:
                   type: str
                   required: true
+                  description: 'Access list name.
+
+                    String "ingress" could be access list name as well.'
                 vrf:
                   type: str
                   convert_types:
                   - int
+                  description: Keys `vrf` and `ingress_default` are mutually exclusive.
+                ingress_default:
+                  type: bool
+                  description: Keys `vrf` and `ingress_default` are mutually exclusive.
           ipv6_access_groups:
             type: list
             unique_keys:
@@ -20176,6 +20183,10 @@ keys:
                   type: str
                   convert_types:
                   - int
+                  description: '''vrf'' and ''ingress_default'' are mutually exclusive.'
+                ingress_default:
+                  type: bool
+                  description: '''vrf'' and ''ingress_default'' are mutually exclusive.'
       l1:
         type: dict
         keys:
