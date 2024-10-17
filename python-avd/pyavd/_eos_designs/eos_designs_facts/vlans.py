@@ -115,7 +115,7 @@ class VlansMixin:
                     # Skip entry if no match
                     continue
 
-                network_port_item["context"] = f"network_ports[{index}]"
+                network_port_item._context = f"network_ports[{index}]"
                 adapter_settings = self.shared_utils.get_merged_adapter_settings(network_port_item)
                 adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                 vlans.update(adapter_vlans)
