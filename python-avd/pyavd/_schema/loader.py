@@ -65,7 +65,7 @@ def coerce_type(value: Any, target_type: type[T], list_items_type: type[TT] | No
         # We got a type with items types like list[str] so we coerce every list item accordingly and return as a new list.
         return [coerce_type(item_value, list_items_type) for item_value in value]
 
-    if isinstance(value, target_type) or target_type is Any:
+    if target_type is Any or isinstance(value, target_type):
         return value
 
     if target_type in ACCEPTED_COERCION_MAP and isinstance(value, ACCEPTED_COERCION_MAP[target_type]):
