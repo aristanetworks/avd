@@ -197,6 +197,7 @@ management api http-commands
 
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
+| ansible | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
 
@@ -204,6 +205,7 @@ management api http-commands
 
 ```eos
 !
+username ansible privilege 15 role network-admin secret sha512 <removed>
 username arista privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 ```

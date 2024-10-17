@@ -258,7 +258,7 @@ The `management.yml` file contains the configuration for:
 - The management gateway
 - NTP
 - Terminattr to configure the connection to CVaaS.
-- Local users (arista/arista and cvpadmin/cvpadmin)
+- Local users (ansible/ansible, arista/arista and cvpadmin/cvpadmin)
 - `ipv4_acls`: a list of ACLs used for Internet-facing WAN interfaces
 - DNS
 - AAA
