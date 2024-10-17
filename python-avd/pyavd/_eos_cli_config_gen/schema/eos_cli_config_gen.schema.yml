@@ -13150,6 +13150,10 @@ keys:
                   - mpls
                   - path-selection
                   description: Transport encapsulation for the neighbor.
+                next_hop_self_source_interface:
+                  type: str
+                  description: Source interface name for MPLS encapsulation. Requires
+                    `encapsulation` to be set as `mpls`.
           peer_groups:
             type: list
             primary_key: name
