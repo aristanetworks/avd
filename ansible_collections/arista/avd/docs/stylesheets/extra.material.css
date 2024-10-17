@@ -81,10 +81,6 @@
     .md-header__inner, .md-footer-meta__inner{
         max-width: 100%;
    }
-    .md-typeset a:hover {
-        background-color: var(--md-typeset-a-color-bg);
-        color: var(--md-typeset-a-color-fg);
-   }
     .md-footer-nav {
         background-color: var(--md-default-bg-color--light);
         color: var(--md-accent-fg-color--transparent)
