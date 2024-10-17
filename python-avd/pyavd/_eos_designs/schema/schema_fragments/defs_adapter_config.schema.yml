@@ -65,7 +65,7 @@ $defs:
         max: 4094
       native_vlan_tag:
         type: bool
-        default: false
+        # default: false
         description: If both `native_vlan` and `native_vlan_tag`, `native_vlan_tag` takes precedence.
       phone_vlan:
         type: int

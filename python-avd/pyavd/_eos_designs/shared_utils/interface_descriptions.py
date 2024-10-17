@@ -32,17 +32,17 @@ class InterfaceDescriptionsMixin:
         """
         module_path = self.interface_descriptions_templates.get("python_module")
         if module_path is None:
-            return AvdInterfaceDescriptions(hostvars=self.hostvars, shared_utils=self)
+            return AvdInterfaceDescriptions(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
 
         class_name = self.interface_descriptions_templates.get("python_class_name", DEFAULT_AVD_INTERFACE_DESCRIPTIONS_PYTHON_CLASS_NAME)
 
-        cls = load_python_class(
+        cls: type[AvdInterfaceDescriptions] = load_python_class(
             module_path,
             class_name,
             AvdInterfaceDescriptions,
         )
 
-        return cls(hostvars=self.hostvars, shared_utils=self)
+        return cls(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
 
     @cached_property
     def interface_descriptions_templates(self: SharedUtils) -> dict:

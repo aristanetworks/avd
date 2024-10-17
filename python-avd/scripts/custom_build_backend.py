@@ -67,6 +67,12 @@ def get_requires_for_build_wheel(config_settings: dict | None = None) -> list[st
             msg = "Something went wrong during 'make dep'"
             raise RuntimeError(msg)
 
+    print("Running 'build-python-classes.py' to regenerate Python Classes from schemas")
+    with Popen("./scripts/build-python-classes.py", shell=True) as make_process:  # noqa: S602
+        if make_process.wait() != 0:
+            msg = "Something went wrong during 'build-python-classes.py'"
+            raise RuntimeError(msg)
+
     return _orig.get_requires_for_build_wheel(config_settings)
 
 
