@@ -39,7 +39,7 @@
    /* Link color */
     --md-typeset-a-color: #4473a9;
     --md-typeset-a-color-fg: #FFFFFF;
-    --md-typeset-a-color-bg: #16325B;
+    --md-typeset-a-color-bg: var(--md-default-bg-color);
 }
 [data-md-color-scheme="default"] {
    /* Primary color shades */
@@ -55,7 +55,7 @@
    /* Link color */
     --md-typeset-a-color: #146095;
     --md-typeset-a-color-fg: #FFFFFF;
-    --md-typeset-a-color-bg: #146095;
+    --md-typeset-a-color-bg: #FFFFFF;
    /* Code block color shades */
     --md-code-bg-color: #E6E6E6;
     --md-code-border-color: #0000004f;
