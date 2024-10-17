@@ -1,0 +1,59 @@
+---
+cvp_devices:
+  - fqdn: amber-leaf1
+    serialNumber: "JPE20302333"
+    parentContainerName: AMBER_LEAVES
+    configlets:
+      - AVD-MEDIA-FABRIC_amber-leaf1
+  - fqdn: amber-leaf2
+    serialNumber: "JPE20302208"
+    parentContainerName: AMBER_LEAVES
+    configlets:
+      - AVD-MEDIA-FABRIC_amber-leaf2
+  - fqdn: amber-spine1
+    serialNumber: "JPE20244151"
+    parentContainerName: AMBER_SPINES
+    configlets:
+      - AVD-MEDIA-FABRIC_amber-spine1
+  - fqdn: blue-leaf1
+    serialNumber: "JPE20282733"
+    parentContainerName: BLUE_LEAVES
+    configlets:
+      - AVD-MEDIA-FABRIC_blue-leaf1
+  - fqdn: blue-leaf2
+    serialNumber: "JPE19363421"
+    parentContainerName: BLUE_LEAVES
+    configlets:
+      - AVD-MEDIA-FABRIC_blue-leaf2
+  - fqdn: blue-spine1
+    serialNumber: "JPE21090526"
+    parentContainerName: BLUE_SPINES
+    configlets:
+      - AVD-MEDIA-FABRIC_blue-spine1
+  - fqdn: media-PTP-1
+    serialNumber: "JPE20284615"
+    parentContainerName: PTP_LEAVES
+    configlets:
+      - AVD-MEDIA-FABRIC_media-PTP-1
+  - fqdn: media-PTP-2
+    serialNumber: "JPE20284734"
+    parentContainerName: PTP_LEAVES
+    configlets:
+      - AVD-MEDIA-FABRIC_media-PTP-2
+cvp_containers:
+  AMBER:
+    parentContainerName: MEDIA_FABRIC
+  AMBER_LEAVES:
+    parentContainerName: AMBER
+  AMBER_SPINES:
+    parentContainerName: AMBER
+  BLUE:
+    parentContainerName: MEDIA_FABRIC
+  BLUE_LEAVES:
+    parentContainerName: BLUE
+  BLUE_SPINES:
+    parentContainerName: BLUE
+  MEDIA_FABRIC:
+    parentContainerName: Tenant
+  PTP_LEAVES:
+    parentContainerName: MEDIA_FABRIC
