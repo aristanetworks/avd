@@ -627,8 +627,8 @@ ip routing vrf RED
 
 ```eos
 !
-ip route vrf MGMT 0.0.0.0/0 192.168.17.1
 ip route 172.18.0.0/16 172.18.10.1
+ip route vrf MGMT 0.0.0.0/0 192.168.17.1
 ```
 
 ### Router Adaptive Virtual Topology
