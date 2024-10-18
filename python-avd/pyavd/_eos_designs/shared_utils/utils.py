@@ -80,10 +80,14 @@ class UtilsMixin:
             adapter_or_network_port_settings: can either be an adapter of a connected endpoint or one item under network_ports.
             context: a context string for error messages.
         """
+        # Deepcopy to avoid modifying the original.
+        adapter_or_network_port_settings = adapter_or_network_port_settings._deepcopy()
+
         if (profile_name := adapter_or_network_port_settings.profile) is None:
             # No profile to apply
-            return adapter_or_network_port_settings._deepcopy()
+            return adapter_or_network_port_settings
 
         adapter_profile = self.get_merged_port_profile(profile_name, adapter_or_network_port_settings._context)
         profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
-        return profile_as_adapter_or_network_port_settings._deepmerged(adapter_or_network_port_settings, list_merge="replace")
+        adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
+        return adapter_or_network_port_settings

@@ -42,7 +42,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         non_overwritable_ethernet_interfaces = []
 
-        for index, network_port in enumerate(self._filtered_network_ports):
+        for network_port in self._filtered_network_ports:
             connected_endpoint = EosDesigns._DynamicKeys.DynamicConnectedEndpointsKeys.ConnectedEndpointsKeysKeyItem(name=network_port.endpoint or Undefined)
             connected_endpoint._type = "network_port"
             network_port_as_adapter = network_port._cast_as(
@@ -52,8 +52,7 @@ class EthernetInterfacesMixin(UtilsMixin):
                 # Override switches and switch_ports to only render for a single interface
                 network_port_as_adapter.switch_ports = [ethernet_interface_name]
                 network_port_as_adapter.switches = [self.shared_utils.hostname]
-                context = f"network_ports[{index}]"
-                ethernet_interface = self._get_ethernet_interface_cfg(network_port_as_adapter, 0, connected_endpoint, context)
+                ethernet_interface = self._get_ethernet_interface_cfg(network_port_as_adapter, 0, connected_endpoint)
                 replace_or_append_item(ethernet_interfaces, "name", ethernet_interface)
 
         for connected_endpoint in self._filtered_connected_endpoints:
@@ -171,7 +170,7 @@ class EthernetInterfacesMixin(UtilsMixin):
 
         # Port-channel member
         if adapter.port_channel and adapter.port_channel.mode:
-            ethernet_interface["channel_group"] = ({"id": channel_group_id, "mode": adapter.port_channel.mode},)
+            ethernet_interface["channel_group"] = {"id": channel_group_id, "mode": adapter.port_channel.mode}
 
             if (lacp_fallback_mode := adapter.port_channel.lacp_fallback.mode) == "static":
                 ethernet_interface["lacp_port_priority"] = 8192 if node_index == 0 else 32768
