@@ -6075,7 +6075,12 @@ class EosCliConfigGen(AvdBase):
                         setattr(self, arg, arg_value)
 
             class Limit(AvdBase):
-                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "field_class": {"type": int}, "watts": {"type": str}, "fixed": {"type": bool}}
+                _fields: ClassVar[dict] = {
+                    "_custom_data": {"type": dict},
+                    "field_class": {"type": int, "key": "class"},
+                    "watts": {"type": str},
+                    "fixed": {"type": bool},
+                }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
                 field_class: int | None
@@ -6608,7 +6613,7 @@ class EosCliConfigGen(AvdBase):
         class VlanTranslationsItem(AvdBase):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
-                "field_from": {"type": str},
+                "field_from": {"type": str, "key": "from"},
                 "to": {"type": int},
                 "direction": {"type": str, "default": "both"},
             }
@@ -8599,7 +8604,7 @@ class EosCliConfigGen(AvdBase):
                 class DirectionInItem(AvdBase):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
-                        "field_from": {"type": str},
+                        "field_from": {"type": str, "key": "from"},
                         "to": {"type": int},
                         "dot1q_tunnel": {"type": bool},
                         "inner_vlan_from": {"type": int},
@@ -8643,7 +8648,7 @@ class EosCliConfigGen(AvdBase):
                 class DirectionOutItem(AvdBase):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
-                        "field_from": {"type": str},
+                        "field_from": {"type": str, "key": "from"},
                         "to": {"type": int},
                         "dot1q_tunnel_to": {"type": str},
                         "inner_vlan_to": {"type": int},
@@ -8695,7 +8700,7 @@ class EosCliConfigGen(AvdBase):
                 class DirectionBothItem(AvdBase):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
-                        "field_from": {"type": str},
+                        "field_from": {"type": str, "key": "from"},
                         "to": {"type": int},
                         "dot1q_tunnel": {"type": bool},
                         "inner_vlan_from": {"type": int},
@@ -14676,7 +14681,7 @@ class EosCliConfigGen(AvdBase):
         class Event(AvdBase):
             class StormControl(AvdBase):
                 class Discards(AvdBase):
-                    _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "field_global": {"type": bool}, "interval": {"type": int}}
+                    _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "field_global": {"type": bool, "key": "global"}, "interval": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
                     field_global: bool | None
@@ -22639,7 +22644,7 @@ class EosCliConfigGen(AvdBase):
         class VlanTranslationsItem(AvdBase):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
-                "field_from": {"type": str},
+                "field_from": {"type": str, "key": "from"},
                 "to": {"type": int},
                 "direction": {"type": str, "default": "both"},
             }
@@ -24146,7 +24151,7 @@ class EosCliConfigGen(AvdBase):
                 class DirectionInItem(AvdBase):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
-                        "field_from": {"type": str},
+                        "field_from": {"type": str, "key": "from"},
                         "to": {"type": int},
                         "dot1q_tunnel": {"type": bool},
                         "inner_vlan_from": {"type": int},
@@ -24190,7 +24195,7 @@ class EosCliConfigGen(AvdBase):
                 class DirectionOutItem(AvdBase):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
-                        "field_from": {"type": str},
+                        "field_from": {"type": str, "key": "from"},
                         "to": {"type": int},
                         "dot1q_tunnel_to": {"type": str},
                         "inner_vlan_to": {"type": int},
@@ -24242,7 +24247,7 @@ class EosCliConfigGen(AvdBase):
                 class DirectionBothItem(AvdBase):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
-                        "field_from": {"type": str},
+                        "field_from": {"type": str, "key": "from"},
                         "to": {"type": int},
                         "dot1q_tunnel": {"type": bool},
                         "inner_vlan_from": {"type": int},
@@ -27316,7 +27321,7 @@ class EosCliConfigGen(AvdBase):
                 "match": {"type": list, "items": str},
                 "set": {"type": list, "items": str},
                 "sub_route_map": {"type": str},
-                "field_continue": {"type": Continue},
+                "field_continue": {"type": Continue, "key": "continue"},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "sequence", "type")
             _custom_data: dict[str, Any]
@@ -30663,7 +30668,7 @@ class EosCliConfigGen(AvdBase):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "both": {"type": list, "items": str},
-                    "field_import": {"type": list, "items": str},
+                    "field_import": {"type": list, "key": "import", "items": str},
                     "export": {"type": list, "items": str},
                     "import_evpn_domains": {"type": list, "items": ImportEvpnDomainsItem},
                     "export_evpn_domains": {"type": list, "items": ExportEvpnDomainsItem},
@@ -30905,7 +30910,7 @@ class EosCliConfigGen(AvdBase):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "both": {"type": list, "items": str},
-                    "field_import": {"type": list, "items": str},
+                    "field_import": {"type": list, "key": "import", "items": str},
                     "export": {"type": list, "items": str},
                     "import_evpn_domains": {"type": list, "items": ImportEvpnDomainsItem},
                     "export_evpn_domains": {"type": list, "items": ExportEvpnDomainsItem},
@@ -39362,7 +39367,7 @@ class EosCliConfigGen(AvdBase):
 
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
-                    "field_import": {"type": list, "items": ImportItem},
+                    "field_import": {"type": list, "key": "import", "items": ImportItem},
                     "export": {"type": list, "items": ExportItem},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
@@ -45056,7 +45061,7 @@ class EosCliConfigGen(AvdBase):
 
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
-            "field_as": {"type": str},
+            "field_as": {"type": str, "key": "as"},
             "as_notation": {"type": str},
             "router_id": {"type": str},
             "distance": {"type": Distance},
@@ -49825,7 +49830,7 @@ class EosCliConfigGen(AvdBase):
                             setattr(self, arg, arg_value)
 
                 class PoliciesItem(AvdBase):
-                    _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "field_from": {"type": str}, "policy": {"type": str}}
+                    _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "field_from": {"type": str, "key": "from"}, "policy": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data", "field_from")
                     _custom_data: dict[str, Any]
                     field_from: str
@@ -56965,7 +56970,7 @@ class EosCliConfigGen(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "vxlan1": {"type": Vxlan1}, "field_Vxlan1": {"type": Vxlan1}}
+        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "vxlan1": {"type": Vxlan1}, "field_Vxlan1": {"type": Vxlan1, "key": "Vxlan1"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
         vxlan1: Vxlan1
