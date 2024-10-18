@@ -931,6 +931,9 @@ router bgp {{ router_bgp.as }}
 {%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
       domain identifier {{ router_bgp.address_family_evpn.domain_identifier }}
 {%         endif %}
+{%         if router_bgp.address_family_evpn.domain_identifier_remote is arista.avd.defined %}
+      domain identifier {{ router_bgp.address_family_evpn.domain_identifier_remote }} remote
+{%         endif %}
 {%         if router_bgp.address_family_evpn.next_hop.resolution_disabled is arista.avd.defined(true) %}
       next-hop resolution disabled
 {%         endif %}

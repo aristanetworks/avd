@@ -146,6 +146,7 @@ ASN Notation: asplain
 
 | Settings | Value |
 | -------- | ----- |
+| Local Domain | 65101:0 |
 | Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
 | L3 Gateway Configured | True |
 | L3 Gateway Inter-domain | True |

@@ -46,6 +46,8 @@ router_bgp:
       - rib_type: "tunnel-rib"
         rib_name: "test-rib"
       - rib_type: "system-connected"
+    domain_identifier: "1:1"
+    domain_identifier_remote: "2:2"
     neighbor_default:
       encapsulation: mpls
       next_hop_self_source_interface: Loopback0

@@ -645,6 +645,12 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 
 | Settings | Value |
 | -------- | ----- |
+{%         if router_bgp.address_family_evpn.domain_identifier is arista.avd.defined %}
+| Local Domain | {{ router_bgp.address_family_evpn.domain_identifier }} |
+{%         endif %}
+{%         if router_bgp.address_family_evpn.domain_identifier_remote is arista.avd.defined %}
+| Remote Domain | {{ router_bgp.address_family_evpn.domain_identifier_remote }} |
+{%         endif %}
 {%         if evpn_gw_config.peer_groups | length > 0 %}
 | Remote Domain Peer Groups | {{ evpn_gw_config.peer_groups | join(", ") }} |
 {%         endif %}

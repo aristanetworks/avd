@@ -1248,6 +1248,8 @@ keys:
         keys:
           domain_identifier:
             type: str
+          domain_identifier_remote:
+            type: str
           neighbor_default:
             type: dict
             keys:
