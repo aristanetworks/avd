@@ -2183,8 +2183,11 @@ keys:
               required: true
             groups:
               type: list
-              description: Group names.
+              description: Link state group(s) an interface belongs to.
               required: true
+              items:
+                type: str
+                description: Group names.
         evpn_ethernet_segment:
           type: dict
           keys:
@@ -9405,8 +9408,11 @@ keys:
               required: true
             groups:
               type: list
-              description: Group names.
+              description: Link state group(s) an interface belongs to.
               required: true
+              items:
+                type: str
+                description: Group names.
         phone:
           type: dict
           deprecation:
