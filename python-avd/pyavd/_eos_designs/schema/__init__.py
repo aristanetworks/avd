@@ -983,7 +983,7 @@ class EosDesigns(AvdBase):
                 "ipv6_enable": {"type": bool, "default": False},
                 "nodes": {"type": list, "items": str},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "items": str},
+                "field_as": {"type": list, "key": "as", "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -1376,7 +1376,7 @@ class EosDesigns(AvdBase):
                 "ip": {"type": list, "items": str},
                 "ipv6_enable": {"type": bool, "default": False},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "items": str},
+                "field_as": {"type": list, "key": "as", "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -4467,7 +4467,7 @@ class EosDesigns(AvdBase):
                 "ipv6_enable": {"type": bool, "default": False},
                 "nodes": {"type": list, "items": str},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "items": str},
+                "field_as": {"type": list, "key": "as", "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -4860,7 +4860,7 @@ class EosDesigns(AvdBase):
                 "ip": {"type": list, "items": str},
                 "ipv6_enable": {"type": bool, "default": False},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "items": str},
+                "field_as": {"type": list, "key": "as", "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -17079,7 +17079,10 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": list, "items": ConnectedEndpointsKeysKeyItem}}
+            _fields: ClassVar[dict] = {
+                "key": {"type": str},
+                "value": {"type": list, "key": "connected_endpoints_keys_key", "items": ConnectedEndpointsKeysKeyItem},
+            }
             _required_fields: ClassVar[tuple] = ("key",)
             key: str
             """Key used as dynamic key"""
@@ -28763,7 +28766,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomNodeTypeKeysKey}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomNodeTypeKeysKey, "key": "custom_node_type_keys_key"}}
             _required_fields: ClassVar[tuple] = ("key",)
             key: str
             """Key used as dynamic key"""
@@ -34287,7 +34290,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": list, "items": NetworkServicesKeysNameItem}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": list, "key": "network_services_keys_name", "items": NetworkServicesKeysNameItem}}
             _required_fields: ClassVar[tuple] = ("key",)
             key: str
             """Key used as dynamic key"""
@@ -45971,7 +45974,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NodeTypeKeysKey}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NodeTypeKeysKey, "key": "node_type_keys_key"}}
             _required_fields: ClassVar[tuple] = ("key",)
             key: str
             """Key used as dynamic key"""

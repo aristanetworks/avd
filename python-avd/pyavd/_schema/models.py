@@ -97,14 +97,18 @@ class AvdBase:
         for field, field_info in self._fields.items() or ():
             if (value := self._get_defined_attr(field)) is Undefined:
                 continue
+
+            # Removing field_ prefix if needed.
+            key = field_info.get("key", field)
+
             if issubclass(field_info["type"], AvdBase) and isinstance(value, AvdBase):
-                as_dict[field] = value._as_dict()
+                as_dict[key] = value._as_dict()
                 continue
             if field_info["type"] is list and issubclass(field_info["items"], AvdBase) and isinstance(value, list):
-                as_dict[field] = [item._as_dict() for item in value if isinstance(item, AvdBase)]
+                as_dict[key] = [item._as_dict() for item in value if isinstance(item, AvdBase)]
                 continue
 
-            as_dict[field] = value
+            as_dict[key] = value
 
         return as_dict
 

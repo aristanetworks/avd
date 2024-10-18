@@ -42,6 +42,7 @@ class SrcGenBase:
 
         return FieldSrc(
             name=self.get_field_name(),
+            key=self.get_key(),
             type_hints=self.get_type_hints(),
             optional=not (bool(self.schema.required) or self.schema._is_primary_key),
             default_value=self.get_default(),

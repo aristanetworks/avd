@@ -28,6 +28,7 @@ class FieldSrc:
 
     name: str
     type_hints: list[FieldTypeHintSrc]
+    key: str | None = None
     description: str | None = None
     optional: bool = True
     default_value: str | None = None
@@ -85,6 +86,8 @@ class FieldSrc:
             field_type = "dict"
 
         dict_fields_src = [f'"type": {field_type}']
+        if self.key is not None and self.key != self.name:
+            dict_fields_src.append(f'"key": "{self.key}"')
         if field_type == "list":
             items_type = self.type_hints[0].list_item_type
             dict_fields_src.append(f'"items": {items_type}')
