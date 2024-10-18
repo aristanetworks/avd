@@ -924,11 +924,9 @@ router bgp {{ router_bgp.as }}
       neighbor {{ neighbor.ip_address }} additional-paths send {{ neighbor.additional_paths.send }}
 {%                 endif %}
 {%             endif %}
-{%             if neighbor.encapsulation is arista.avd.defined and neighbor.encapsulation in ["vxlan", "path-selection"] %}
-      neighbor {{ neighbor.ip_address }} encapsulation {{ neighbor.encapsulation }}
-{%             elif neighbor.encapsulation is arista.avd.defined("mpls") %}
-{%                 set encapsulation_cli = "neighbor " ~  neighbor.ip_address ~ " encapsulation mpls" %}
-{%                 if neighbor.next_hop_self_source_interface is arista.avd.defined %}
+{%             if neighbor.encapsulation is arista.avd.defined  %}
+{%                 set encapsulation_cli =  "neighbor " ~ neighbor.ip_address ~ " encapsulation " ~ neighbor.encapsulation %}
+{%                 if neighbor.encapsulation == "mpls" and neighbor.next_hop_self_source_interface is arista.avd.defined %}
 {%                     set encapsulation_cli = encapsulation_cli ~ " next-hop-self source-interface " ~ neighbor.next_hop_self_source_interface %}
 {%                 endif %}
       {{ encapsulation_cli }}
