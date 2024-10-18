@@ -199,7 +199,7 @@ class PortChannelInterfacesMixin(UtilsMixin):
             port_channel_interface.update(
                 {
                     "lacp_fallback_mode": lacp_fallback_mode,
-                    "lacp_fallback_timeout": adapter.port_channel.lacp_fallback.timeout,
+                    "lacp_fallback_timeout": adapter.port_channel.lacp_fallback.timeout or 90,
                 },
             )
 
