@@ -661,18 +661,13 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | L3 Gateway Inter-domain | True |
 {%         endif %}
 {%         if router_bgp.address_family_evpn.evpn_ethernet_segment is arista.avd.defined %}
-{%             set domain_list = ['all', 'local','remote'] %}
-{%             for domain in domain_list %}
-{%                 for segment in router_bgp.address_family_evpn.evpn_ethernet_segment %}
-{%                     if segment.domain == domain %}
-{%                         if segment.identifier is arista.avd.defined %}
+{%             for segment in router_bgp.address_family_evpn.evpn_ethernet_segment | avd.natural_sort('domain') %}
+{%                 if segment.identifier is arista.avd.defined %}
 | Domain {{ domain | title }}: Ethernet-Segment Identifier | {{ segment.identifier }} |
-{%                         endif %}
-{%                         if segment.route_target_import is arista.avd.defined %}
+{%                 endif %}
+{%                 if segment.route_target_import is arista.avd.defined %}
 | Domain {{ domain | title }}: Ethernet-Segment Route-Target | {{ segment.route_target_import }} |
-{%                         endif %}
-{%                     endif %}
-{%                 endfor %}
+{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     endif %}

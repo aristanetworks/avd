@@ -975,19 +975,14 @@ router bgp {{ router_bgp.as }}
       route import overlay-index gateway
 {%         endif %}
 {%         if router_bgp.address_family_evpn.evpn_ethernet_segment is arista.avd.defined %}
-{%             set domain_list = ['all', 'local','remote'] %}
-{%             for domain in domain_list %}
-{%                 for segment in router_bgp.address_family_evpn.evpn_ethernet_segment %}
-{%                     if segment.domain == domain %}
+{%             for segment in router_bgp.address_family_evpn.evpn_ethernet_segment | arista.avd.natural_sort('domain') %}
       evpn ethernet-segment domain {{ segment.domain }}
-{%                         if segment.identifier is arista.avd.defined %}
+{%                 if segment.identifier is arista.avd.defined %}
           identifier {{ segment.identifier }}
-{%                         endif %}
-{%                         if segment.route_target_import is arista.avd.defined %}
+{%                 endif %}
+{%                 if segment.route_target_import is arista.avd.defined %}
           route-target import {{ segment.route_target_import }}
-{%                         endif %}
-{%                     endif %}
-{%                 endfor %}
+{%                 endif %}
 {%             endfor %}
 {%         endif %}
 {%     endif %}
