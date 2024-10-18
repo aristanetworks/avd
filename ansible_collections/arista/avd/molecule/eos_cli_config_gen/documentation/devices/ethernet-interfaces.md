@@ -1175,6 +1175,46 @@ interface Ethernet72
    dot1x aaa unresponsive action traffic allow vlan 10 access-list acl1
    dot1x aaa unresponsive eap response success
    dot1x mac based access-list
+!
+interface Ethernet73
+   description Switchport_tap_tool
+   switchport tap native vlan 10
+   switchport tap identity 3 inner 5
+   switchport tap mac-address dest 01:00:00:00:00:00 src 01:23:45:67:89:ab
+   switchport tap mpls pop all
+   switchport tap encapsulation gre strip
+   switchport tap encapsulation gre destination 1.1.1.1 source 1.1.1.2 protocol 0x0000 strip
+   switchport tap encapsulation gre protocol 0x0001 strip
+   switchport tap encapsulation gre destination 2.1.1.2 protocol 0x0010 strip
+   switchport tap encapsulation gre destination 2.1.1.3 source 2.1.1.4 strip
+   switchport tap encapsulation gre protocol 0x0002 feature header length 3 strip
+   switchport tap encapsulation gre protocol 0x0003 feature header length 2 strip re-encapsulation ethernet
+   switchport tool mpls pop all
+   switchport tool encapsulation vn-tag strip
+   switchport tool encapsulation dot1br strip
+   switchport tap allowed vlan 25
+   switchport tool allowed vlan 23
+   switchport tool identity qinq
+   switchport tool identity dot1q source dzgre port
+   switchport tap truncation 150
+   switchport tool truncation
+   switchport tap default group g1 group g2 group g3
+   switchport tap default nexthop-group nexthop_g1 nexthop_g2 nexthop_g3
+   switchport tap default interface ethernet4
+   switchport tap default interface port-channel10
+   switchport tool group set group1 group2 group3
+   switchport tool dot1q remove outer 1
+   switchport tool dzgre preserve
+!
+interface Ethernet74
+   description Test_tap_tool
+   switchport tap identity 5
+   switchport tap mac-address dest 01:00:00:00:00:00
+   switchport tap encapsulation vxlan strip
+   switchport tool identity dot1q
+   switchport tool identity qinq source dzgre policy inner port
+   switchport tap truncation
+   switchport tool truncation 160
 ```
 
 ## BFD
