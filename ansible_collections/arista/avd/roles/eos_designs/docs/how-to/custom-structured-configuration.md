@@ -117,9 +117,9 @@ name_servers:
 
 custom_structured_configuration_ip_name_servers:
   - ip_address: 1.1.1.1
-    vrf: CUSTOM_STRUCT
-  - ip_address: 2.2.2.2
-    vrf: CUSTOM_STRUCT
+    vrf: EOS_CLI
+  - ip_address: 192.168.42.10
+    vrf: EOS_CLI
 ```
 
 will generate as intended config:
