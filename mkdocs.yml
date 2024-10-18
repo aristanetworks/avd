@@ -23,6 +23,7 @@ theme:
     - content.tabs.link
     - header.autohide
     - navigation.instant
+    - navigation.prune
     - navigation.top
     - search.highlight
     # - toc.integrate
