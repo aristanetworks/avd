@@ -1,0 +1,120 @@
+---
+# Port Profiles
+# Common settings inherited to network_ports
+port_profiles:
+  - profile: AMBER_111
+    mode: access
+    enabled: false
+    vlans: "111"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+  - profile: AMBER_112
+    mode: access
+    enabled: false
+    vlans: "112"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+  - profile: BLUE_211
+    mode: access
+    enabled: false
+    vlans: "211"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+  - profile: BLUE_212
+    mode: access
+    enabled: false
+    vlans: "212"
+    spanning_tree_portfast: edge
+    spanning_tree_bpdufilter: enabled
+    ptp:
+      enabled: true
+
+# Network Ports
+# All switch_ports ranges are expanded into individual port configurations
+# Switches are matched with regex matching the full hostname.
+network_ports:
+  # Generic Port Settings
+  - switches:
+      - amber-leaf1
+    switch_ports:
+      - Ethernet3-48
+    profile: AMBER_111
+    description: AMBER_VLAN111
+
+  - switches:
+      - amber-leaf2
+    switch_ports:
+      - Ethernet3-48
+    profile: AMBER_112
+    description: AMBER_VLAN112
+
+  - switches:
+      - blue-leaf1
+    switch_ports:
+      - Ethernet3-48
+    profile: BLUE_211
+    description: BLUE_VLAN211
+
+  - switches:
+      - blue-leaf2
+    switch_ports:
+      - Ethernet3-48
+    profile: BLUE_212
+    description: BLUE_VLAN212
+
+  # media-PTP-1
+  - switches:
+      - media-PTP-1
+    switch_ports:
+      - Ethernet6-48
+    enabled: false
+    description: Routed Endpoints
+    speed: forced 1000full
+    structured_config:
+      type: routed
+
+  - switches:
+      - media-PTP-1
+    switch_ports:
+      - Ethernet5
+    enabled: true
+    description: PTP Grandmaster 1
+    speed: forced 1000full
+    mode: access
+    vlans: 131
+    ptp:
+      enabled: true
+      endpoint_role: bmca
+
+  # media-PTP-2
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet6-48
+    enabled: false
+    description: Routed Endpoints
+    speed: forced 1000full
+    structured_config:
+      type: routed
+
+  - switches:
+      - media-PTP-2
+    switch_ports:
+      - Ethernet5
+    enabled: true
+    description: PTP Grandmaster 2
+    speed: forced 1000full
+    mode: access
+    vlans: 132
+    ptp:
+      enabled: true
+      endpoint_role: bmca
