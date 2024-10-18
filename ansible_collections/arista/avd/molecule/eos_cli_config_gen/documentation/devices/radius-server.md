@@ -39,6 +39,8 @@ interface Management1
 
 ### RADIUS Server
 
+- Time to skip a non-responsive server is 10 minutes
+
 - Attribute 32 is included in access requests using hostname
 
 - Global RADIUS TLS SSL profile is GLOBAL_RADIUS_SSL_PROFILE
