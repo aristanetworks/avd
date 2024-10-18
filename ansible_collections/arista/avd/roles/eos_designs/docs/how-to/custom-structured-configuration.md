@@ -68,20 +68,20 @@ ip name-server vrf MGMT 192.168.42.40
 # Only ip_name_servers from eos_ci_config_gen.
 # The variables will make it to the intended config
 ip_name_servers:
-  - ip_address: 8.8.8.8
+  - ip_address: 1.1.1.1
     vrf: EOS_CLI
-  - ip_address: 4.4.4.4
+  - ip_address: 192.168.42.10
     vrf: EOS_CLI
 ```
 
 will generate as intended config:
 
 ```eos
-ip name-server vrf EOS_CLI 4.4.4.4
-ip name-server vrf EOS_CLI 8.8.8.8
+ip name-server vrf EOS_CLI 1.1.1.1
+ip name-server vrf EOS_CLI 192.168.42.10
 ```
 
-#### eos_cli_config_gen variables overwritten by eos_designs variables
+#### eos_cli_config_gen variables and eos_designs variables
 
 ```yaml
 # Both name_servers from eos_designs and ip_name_servers from
@@ -92,9 +92,9 @@ name_servers:
   - 192.168.42.40
 
 ip_name_servers:
-  - ip_address: 8.8.8.8
+  - ip_address: 1.1.1.1
     vrf: EOS_CLI
-  - ip_address: 4.4.4.4
+  - ip_address: 192.168.42.10
     vrf: EOS_CLI
 ```
 
@@ -105,13 +105,12 @@ ip name-server vrf MGMT 192.168.42.10
 ip name-server vrf MGMT 192.168.42.40
 ```
 
-#### eos_designs variables overwritten by custom_structured_configuration
+#### eos_designs variables and custom_structured_configuration when primary_key is not used
 
 ```yaml
 ---
-# Both name_servers from eos_designs and leveraging the
-# custom_structured_configuration ONLY custom_struct will make it
-# except if using merge
+# Both name_servers from eos_designs and ip_name_servers from
+# custom_structured_configuration will make it to the intended config
 name_servers:
   - 192.168.42.10
   - 192.168.42.40
@@ -126,37 +125,92 @@ custom_structured_configuration_ip_name_servers:
 will generate as intended config:
 
 ```eos
-ip name-server vrf CUSTOM_STRUCT 1.1.1.1
-ip name-server vrf CUSTOM_STRUCT 2.2.2.2
+ip name-server vrf EOS_CLI 1.1.1.1
+ip name-server vrf MGMT 192.168.42.10
+ip name-server vrf EOS_CLI 192.168.42.10
+ip name-server vrf MGMT 192.168.42.40
 ```
 
-*NOTE:* as described in the custom_structured_configuration section, it is possible to leverage a merge on lists in this case. This example describes the default behavior
+Due to the default `custom_structured_configuration_list_merge` behavior (`append_rp`) and the fact that `custom_structured_configuration_ip_name_servers`'s items don't have primary key defined - resulting CLI configuration is a merge/concatenation of the two lists.
 
-#### eos_cli_config_gen variables overwritten by eos_designs custom_structured_configuration
+#### eos_designs variables with custom_structured_configuration when primary_key is used
+
+To understand default behavior in case `eos_designs` is used together with `eos_cli_config_gen` data with `primary_key` set in the data schema - let's review the following example which uses `eos_designs`'s `ipv4_acls` and `eos_cli_config_gen`'s `ip_access_lists`:
 
 ```yaml
 ---
-# Both ip_name_servers from eos_cli_config_gen and leveraging the
-# custom_structured_configuration only custom_struct  will make it
-ip_name_servers:
-  - ip_address: 8.8.8.8
-    vrf: EOS_CLI
-  - ip_address: 4.4.4.4
-    vrf: EOS_CLI
+custom_structured_configuration_prefix:
+  - 'csc_1_'
+  - 'csc_2_'
 
-custom_structured_configuration_ip_name_servers:
-  - ip_address: 1.1.1.1
-    vrf: CUSTOM_STRUCT
-  - ip_address: 2.2.2.2
-    vrf: CUSTOM_STRUCT
+ipv4_acls:  # primary_key: name
+  - name: acl_1  # Collides with csc_1_acl_1
+    entries:
+      - remark: eos_designs_acl_1
+  - name: acl_2  # Collides with csc_2_acl_2
+    entries:
+      - remark: eos_designs_acl_2
+  - name: acl_3  # Collides with both csc_1_acl_1 and csc_2_acl_2
+    entries:
+      - remark: eos_designs_acl_3
+  - name: acl_4  # No collisions
+    entries:
+      - remark: eos_designs_acl_4
+
+csc_1_ip_access_lists:
+- name: acl_1
+  entries:
+  - remark: csc_1_acl_1
+- name: acl_3
+  entries:
+  - remark: csc_1_acl_3
+- name: acl_11
+  entries:
+  - remark: csc_1_acl_11
+
+csc_2_ip_access_lists:
+- name: acl_2
+  entries:
+  - remark: csc_2_acl_2
+- name: acl_3
+  entries:
+  - remark: csc_2_acl_3
+- name: acl_12
+  entries:
+  - remark: csc_2_acl_12
 ```
 
-will generate as intended config:
+This input data will generate the following intended config:
 
 ```eos
-ip name-server vrf CUSTOM_STRUCT 1.1.1.1
-ip name-server vrf CUSTOM_STRUCT 2.2.2.2
+ip access-list acl_1
+   remark eos_designs_acl_1
+   remark csc_1_acl_1
+!
+ip access-list acl_2
+   remark eos_designs_acl_2
+   remark csc_2_acl_2
+!
+ip access-list acl_3
+   remark eos_designs_acl_3
+   remark csc_1_acl_3
+   remark csc_2_acl_3
+!
+ip access-list acl_4
+   remark eos_designs_acl_4
+!
+ip access-list acl_11
+   remark csc_1_acl_11
+!
+ip access-list acl_12
+   remark csc_2_acl_12
 ```
+
+Important things to note:
+
+- Rendered CLI configuration has only one `acl_1`. Although `acl_1` was defined by both `ipv4_acls` and `csc_1_ip_access_lists` - both dictionaries are merged/updated due to the same value of the primary key `name`. Same is applicable to ACLs `acl_2` (defined by `ipv4_acls` and `csc_2_ip_access_lists`) and `acl_3` (defined by `ipv4_acls` and both `csc_1_ip_access_lists` and `csc_2_ip_access_lists`).
+- ACLs merged/updated from multiple data sources (like `acl_1`, `acl_2` and `acl_3`) concatenate ACEs (`remark` statements) from all sources. This is due to the fact that data model for individual ACEs has no primary key defined. Therefore all ACEs are concatenated together under the same parent ACL.
+- ACLs `acl_4` (from `ipv4_acls`), `acl_11` (from `csc_1_ip_access_lists`) and `acl_12` (from `csc_2_ip_access_lists`) all made their way to the intended config in the original format due to the fact that their names (primary keys) were unique across all three data sources.
 
 ## `structured_config` in `eos_designs` data models
 
@@ -239,7 +293,7 @@ All `structured_config` knobs honor the `list_merge` strategy set in `custom_str
 Custom EOS Structured Configuration keys can be set on any group or host_var level using the name
 of the corresponding `eos_cli_config_gen` key prefixed with content of `custom_structured_configuration_prefix`.
 The content of Custom Structured Configuration variables will be combined with the structured config generated by the eos_designs role.
-By default Lists are replaced and Dictionaries are updated. The combine is done recursively, so it is possible to update a sub-key of a variable set by
+By default Lists are merged/concatenated and Dictionaries are updated. The combine is done recursively, so it is possible to update a sub-key of a variable set by
 `eos_designs` role already.
 The List-merge strategy can be changed using `custom_structured_configuration_list_merge`. Since most data models move towards lists and
 input data is auto-converted from dicts to lists, it is more likely that `custom_structured_configuration_list_merge: replace` will
@@ -271,8 +325,8 @@ custom_structured_configuration_ethernet_interfaces:
     peer_type: my_precious
 ```
 
-In this example the contents of the `ip_name_servers` variable in the Structured Configuration will be replaced by the list `[ 10.2.3.4 ]`
-and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary in the Structured Configuration.
+In this example the contents of the `ip_name_servers` variable in the Structured Configuration will be concatenated with the list `[ 10.2.3.4 ]`
+and `Ethernet4000` will be added to the `ethernet_interfaces` dictionary (in case item with `name: Ethernet4000` is not yet defined, otherwise existing item will be updated) in the Structured Configuration.
 
 `custom_structured_configuration_prefix` allows the user to customize the prefix for Custom Structured Configuration variables.
 Default value is `custom_structured_configuration_`. Remember to include any delimiter like the last `_` in this case.
@@ -300,40 +354,3 @@ my_special_dci_ethernet_interfaces:
 ```
 
 In this example `Ethernet4000` will be added to the `ethernet_interfaces` list in the Structured Configuration and the ip_address will be `10.3.2.1/21` since ip_adddress was overridden on the later `custom_structured_configuration_prefix`
-
-#### Example with `append` list_merge strategy
-
-```yaml
-name_servers:
-  - 10.10.10.10
-  - 10.10.10.11
-
-custom_structured_configuration_list_merge: append
-custom_structured_configuration_prefix: [ override_ ]
-
-override_ip_name_servers:
-  - ip_address: 10.10.10.12
-    vrf: MGMT
-```
-
-In this example the `name_servers` variable will be read by `eos_designs` templates and the `ip_name_servers` structured configuration will be generated accordingly:
-
-```yaml
-ip_name_servers:
-  - ip_address: 10.10.10.10
-    vrf: MGMT
-  - ip_address: 10.10.10.11
-    vrf: MGMT
-```
-
-The `override_ip_name_servers` list will be `appended` to `ip_name_servers` list resulting in:
-
-```yaml
-ip_name_servers:
-  - ip_address: 10.10.10.10
-    vrf: MGMT
-  - ip_address: 10.10.10.11
-    vrf: MGMT
-  - ip_address: 10.10.10.12
-    vrf: MGMT
-```
