@@ -39,9 +39,7 @@ class UtilsMixin:
                 filtered_adapters = []
                 for adapter_index, adapter in enumerate(connected_endpoint.adapters):
                     adapter._context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
-                    adapter_settings = self.shared_utils.get_merged_adapter_settings(
-                        adapter
-                    )
+                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
                     if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
                         continue
 
@@ -208,8 +206,7 @@ class UtilsMixin:
         ]
 
     def _get_adapter_ptp(
-        self: AvdStructuredConfigConnectedEndpoints,
-        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsKeys.ConnectedEndpointsKeysKeyItem.AdaptersItem
+        self: AvdStructuredConfigConnectedEndpoints, adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsKeys.ConnectedEndpointsKeysKeyItem.AdaptersItem
     ) -> dict | None:
         """Return ptp for one adapter."""
         if not adapter.ptp.enabled:
