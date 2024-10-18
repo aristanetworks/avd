@@ -8,7 +8,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import append_if_not_duplicate, get, groupby_obj, merge, strip_null_from_data
+from pyavd._utils import append_if_not_duplicate, groupby_obj, strip_null_from_data
 from pyavd.j2filters import range_expand
 
 from .utils import UtilsMixin
