@@ -6,9 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING
 
-from pyavd._utils import get
-
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import SharedUtils
 
 
@@ -21,14 +21,7 @@ class ConnectedEndpointsKeysMixin:
     """
 
     @cached_property
-    def connected_endpoints_keys(self: SharedUtils) -> list:
-        """
-        Return connected_endpoints_keys filtered for invalid entries and unused keys.
-
-        NOTE: This method is called _before_ any schema validation, since we need to resolve connected_endpoints_keys dynamically
-        """
-        connected_endpoints_keys = []
-        # Reading default value from schema
-        default_connected_endpoint_keys = self.schema.get_default_value(["connected_endpoints_keys"])
-        connected_endpoints_keys = get(self.hostvars, "connected_endpoints_keys", default=default_connected_endpoint_keys)
-        return [entry for entry in connected_endpoints_keys if entry.get("key") is not None and self.hostvars.get(entry["key"]) is not None]
+    def connected_endpoints_keys(self: SharedUtils) -> list[EosDesigns.ConnectedEndpointsKeysItem]:
+        """Return connected_endpoints_keys filtered for invalid entries and unused keys."""
+        used_connected_endpoints_keys = [entry.key for entry in self.inputs._dynamic_keys.connected_endpoints_keys]
+        return [entry for entry in self.inputs.connected_endpoints_keys if entry.key in used_connected_endpoints_keys]

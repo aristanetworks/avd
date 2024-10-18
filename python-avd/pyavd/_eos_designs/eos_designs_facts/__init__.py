@@ -214,13 +214,13 @@ class EosDesignsFacts(AvdFacts, MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin
         return self.shared_utils.pod_name or self.shared_utils.dc_name or self.shared_utils.fabric_name
 
     @cached_property
-    def connected_endpoints_keys(self) -> list:
+    def connected_endpoints_keys(self) -> list[dict]:
         """
         Exposed in avd_switch_facts.
 
         Used for fabric docs
         """
-        return self.shared_utils.connected_endpoints_keys
+        return [entry._as_dict() for entry in self.shared_utils.connected_endpoints_keys]
 
     @cached_property
     def port_profile_names(self) -> list:

@@ -211,8 +211,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -220,6 +220,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -229,9 +232,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet2
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -243,8 +243,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -252,6 +252,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -261,9 +264,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet3
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -275,8 +275,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -284,6 +284,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -293,9 +296,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet4
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -307,8 +307,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -316,6 +316,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -325,9 +328,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet5
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -339,8 +339,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -348,6 +348,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -357,9 +360,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet6
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -371,8 +371,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -380,6 +380,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -389,9 +392,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet7
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -403,8 +403,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -412,6 +412,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -421,9 +424,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet8
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -435,8 +435,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -444,6 +444,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -453,9 +456,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet9
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -467,8 +467,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -476,6 +476,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -485,9 +488,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet10
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -499,8 +499,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -508,6 +508,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -517,9 +520,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet11
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -531,8 +531,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -540,6 +540,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -549,9 +552,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet12
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -563,8 +563,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -572,6 +572,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -581,9 +584,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet13
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -595,8 +595,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -604,6 +604,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -613,9 +616,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet14
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -627,8 +627,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -636,6 +636,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -645,9 +648,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet15
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -659,8 +659,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -668,6 +668,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -677,9 +680,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet16
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -691,8 +691,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -700,6 +700,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -709,9 +712,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet17
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -723,8 +723,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -732,6 +732,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -741,9 +744,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet18
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -755,8 +755,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -764,6 +764,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -773,9 +776,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet19
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -787,8 +787,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -796,6 +796,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -805,9 +808,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet20
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -819,8 +819,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -828,6 +828,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -837,9 +840,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet21
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -851,8 +851,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -860,6 +860,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -869,9 +872,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet22
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -883,8 +883,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -892,6 +892,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -901,9 +904,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet23
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -915,8 +915,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -924,6 +924,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -933,9 +936,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet24
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -947,8 +947,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -956,6 +956,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -965,9 +968,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet25
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -979,8 +979,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -988,6 +988,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -997,9 +1000,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet26
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1011,8 +1011,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1020,6 +1020,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1029,9 +1032,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet27
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1043,8 +1043,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1052,6 +1052,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1061,9 +1064,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet28
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1075,8 +1075,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1084,6 +1084,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1093,9 +1096,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet29
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1107,8 +1107,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1116,6 +1116,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1125,9 +1128,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet30
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1139,8 +1139,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1148,6 +1148,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1157,9 +1160,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet31
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1171,8 +1171,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1180,6 +1180,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1189,9 +1192,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet32
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1203,8 +1203,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1212,6 +1212,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1221,9 +1224,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet33
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1235,8 +1235,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1244,6 +1244,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1253,9 +1256,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet34
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1267,8 +1267,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1276,6 +1276,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1285,9 +1288,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet35
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1299,8 +1299,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1308,6 +1308,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1317,9 +1320,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet36
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1331,8 +1331,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1340,6 +1340,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1349,9 +1352,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet37
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1363,8 +1363,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1372,6 +1372,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1381,9 +1384,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet38
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1395,8 +1395,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1404,6 +1404,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1413,9 +1416,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet39
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1427,8 +1427,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1436,6 +1436,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1445,9 +1448,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet40
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1459,8 +1459,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1468,6 +1468,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1477,9 +1480,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet41
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1491,8 +1491,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1500,6 +1500,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1509,9 +1512,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet42
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1523,8 +1523,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1532,6 +1532,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1541,9 +1544,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet43
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1555,8 +1555,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1564,6 +1564,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1573,9 +1576,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet44
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1587,8 +1587,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1596,6 +1596,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1605,9 +1608,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet45
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1619,8 +1619,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1628,6 +1628,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1637,9 +1640,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet46
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1651,8 +1651,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1660,6 +1660,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1669,9 +1672,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet47
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1683,8 +1683,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1692,6 +1692,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1701,9 +1704,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet48
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1715,8 +1715,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1724,6 +1724,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1733,9 +1736,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet49
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1747,8 +1747,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1756,6 +1756,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1765,9 +1768,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet50
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1779,8 +1779,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1788,6 +1788,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1797,9 +1800,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet51
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1811,8 +1811,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1820,6 +1820,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1829,9 +1832,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet52
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1843,8 +1843,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1852,6 +1852,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1861,9 +1864,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet53
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1875,8 +1875,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1884,6 +1884,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1893,9 +1896,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet54
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1907,8 +1907,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1916,6 +1916,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1925,9 +1928,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet55
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1939,8 +1939,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1948,6 +1948,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1957,9 +1960,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet56
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -1971,8 +1971,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -1980,6 +1980,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -1989,9 +1992,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet57
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2003,8 +2003,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2012,6 +2012,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2021,9 +2024,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet58
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2035,8 +2035,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2044,6 +2044,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2053,9 +2056,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet59
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2067,8 +2067,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2076,6 +2076,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2085,9 +2088,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet60
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2099,8 +2099,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2108,6 +2108,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2117,9 +2120,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet61
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2131,8 +2131,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2140,6 +2140,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2149,9 +2152,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet62
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2163,8 +2163,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2172,6 +2172,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2181,9 +2184,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet63
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2195,8 +2195,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2204,6 +2204,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2213,9 +2216,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet64
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2227,8 +2227,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2236,6 +2236,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2245,9 +2248,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet65
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2259,8 +2259,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2268,6 +2268,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2277,9 +2280,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet66
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2291,8 +2291,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2300,6 +2300,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2309,9 +2312,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet67
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2323,8 +2323,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2332,6 +2332,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2341,9 +2344,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet68
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2355,8 +2355,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2364,6 +2364,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2373,9 +2376,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet69
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2387,8 +2387,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2396,6 +2396,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2405,9 +2408,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet70
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2419,8 +2419,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2428,6 +2428,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2437,9 +2440,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet71
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2451,8 +2451,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2460,6 +2460,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2469,9 +2472,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet72
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2483,8 +2483,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2492,6 +2492,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2501,9 +2504,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet73
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2515,8 +2515,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2524,6 +2524,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2533,9 +2536,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet74
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2547,8 +2547,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2556,6 +2556,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2565,9 +2568,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet75
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2579,8 +2579,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2588,6 +2588,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2597,9 +2600,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet76
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2611,8 +2611,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2620,6 +2620,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2629,9 +2632,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet77
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2643,8 +2643,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2652,6 +2652,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2661,9 +2664,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet78
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2675,8 +2675,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2684,6 +2684,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2693,9 +2696,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet79
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2707,8 +2707,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2716,6 +2716,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2725,9 +2728,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet80
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2739,8 +2739,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2748,6 +2748,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2757,9 +2760,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet81
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2771,8 +2771,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2780,6 +2780,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2789,9 +2792,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet82
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2803,8 +2803,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2812,6 +2812,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2821,9 +2824,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet83
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2835,8 +2835,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2844,6 +2844,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2853,9 +2856,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet84
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2867,8 +2867,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2876,6 +2876,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2885,9 +2888,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet85
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2899,8 +2899,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2908,6 +2908,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2917,9 +2920,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet86
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2931,8 +2931,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2940,6 +2940,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2949,9 +2952,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet87
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2963,8 +2963,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -2972,6 +2972,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -2981,9 +2984,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet88
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -2995,8 +2995,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3004,6 +3004,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3013,9 +3016,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet89
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3027,8 +3027,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3036,6 +3036,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3045,9 +3048,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet90
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3059,8 +3059,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3068,6 +3068,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3077,9 +3080,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet91
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3091,8 +3091,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3100,6 +3100,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3109,9 +3112,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet92
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3123,8 +3123,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3132,6 +3132,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3141,9 +3144,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet93
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3155,8 +3155,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3164,6 +3164,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3173,9 +3176,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet94
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3187,8 +3187,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3196,6 +3196,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3205,9 +3208,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet95
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3219,8 +3219,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3228,6 +3228,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3237,9 +3240,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 - name: Ethernet96
   peer_type: network_port
   port_profile: PP-DOT1X
@@ -3251,8 +3251,8 @@ ethernet_interfaces:
     trunk:
       native_vlan: 310
     phone:
-      trunk: untagged
       vlan: 320
+      trunk: untagged
   spanning_tree_portfast: edge
   spanning_tree_bpduguard: enabled
   dot1x:
@@ -3260,6 +3260,9 @@ ethernet_interfaces:
     reauthentication: true
     pae:
       mode: authenticator
+    authentication_failure:
+      action: allow
+      allow_vlan: 330
     host_mode:
       mode: multi-host
       multi_host_authenticated: true
@@ -3269,9 +3272,6 @@ ethernet_interfaces:
       reauth_period: server
       tx_period: 3
     reauthorization_request_limit: 3
-    authentication_failure:
-      action: allow
-      allow_vlan: 330
 mlag_configuration:
   domain_id: IDF3_AGG
   local_interface: Vlan4094
