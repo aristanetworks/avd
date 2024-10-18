@@ -64,6 +64,7 @@ interface Management1
 
 ```eos
 !
+radius-server deadtime 10
 radius-server attribute 32 include-in-access-req hostname
 radius-server dynamic-authorization port 1700
 radius-server tls ssl-profile GLOBAL_RADIUS_SSL_PROFILE
