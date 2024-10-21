@@ -19,12 +19,12 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.schema import EosDesigns
 
-    from .models import AvdCollection, AvdModel
+    from .models import AvdIndexedList, AvdModel
 
     T = TypeVar("T")
     TT = TypeVar("TT")
     T_AvdModel = TypeVar("T_AvdModel", bound=AvdModel)
-    T_AvdCollection = TypeVar("T_AvdCollection", bound=AvdCollection)
+    T_AvdIndexedList = TypeVar("T_AvdIndexedList", bound=AvdIndexedList)
 
 
 def nullifiy_class(cls: type) -> type:
@@ -77,7 +77,7 @@ def coerce_type(value: Any, target_type: type[T], list_items_type: type[TT] | No
     elif hasattr(target_type, "_is_avd_model") and isinstance(value, Mapping):
         return load_model(target_type, value)
 
-    # Identify subclass of AvdCollection without importing AvdCollection (circular import)
+    # Identify subclass of AvdIndexedList without importing AvdIndexedList (circular import)
     elif hasattr(target_type, "_is_avd_collection") and isinstance(value, Sequence):
         return load_collection(target_type, value)
 
@@ -191,7 +191,7 @@ def get_dynamic_keys(cls: type[EosDesigns], data: Mapping) -> EosDesigns._Dynami
     return coerce_type(get_dynamic_keys_as_dict(cls, data), dynamic_keys_cls)
 
 
-def loader(cls: type[T_AvdModel | T_AvdCollection], data: Mapping | Sequence) -> T_AvdData:
+def loader(cls: type[T_AvdModel | T_AvdIndexedList], data: Mapping | Sequence) -> T_AvdData:
     # Using hasattr to avoid importing the BaseClass which would lead to circular imports.
     if hasattr(cls, "_is_avd_class"):
         if hasattr(cls, "_is_avd_model"):
@@ -199,7 +199,7 @@ def loader(cls: type[T_AvdModel | T_AvdCollection], data: Mapping | Sequence) ->
         if hasattr(cls, "_is_avd_collection"):
             return load_collection(cls, data)
 
-    msg = f"'cls' must be a subclass of 'AvdModel' or 'AvdCollection'. Got '{type(cls)}'"
+    msg = f"'cls' must be a subclass of 'AvdModel' or 'AvdIndexedList'. Got '{type(cls)}'"
     raise TypeError(msg)
 
 
@@ -250,7 +250,7 @@ def load_model(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
     return cls(**cls_args)
 
 
-def load_collection(cls: type[T_AvdCollection], data: Sequence) -> T_AvdCollection:
+def load_collection(cls: type[T_AvdIndexedList], data: Sequence) -> T_AvdIndexedList:
     if not isinstance(data, Sequence):
         msg = f"Expecting 'data' as a 'Sequence' when loading data into '{cls.__name__}'. Got '{type(data)}"
         raise TypeError(msg)

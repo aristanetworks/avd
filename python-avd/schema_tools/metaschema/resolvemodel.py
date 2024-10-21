@@ -25,16 +25,8 @@ def merge_schema_from_ref(schema: dict, resolve_schema: bool | str | None = None
     if "$ref" not in schema:
         return schema
 
-    if (
-        {"type", "$ref", "description", "documentation_options"}.issuperset(schema.keys())
-        and schema["type"] != "list"  # This is a workaround because we don't have a proper class for lists yet
-        and isinstance(resolve_schema, str)
-        and not schema["$ref"].startswith(f"{resolve_schema}#")
-    ):
-        return schema
-
     schema = deepcopy(schema)
-    ref: str = schema.pop("$ref")
+    ref: str = schema["$ref"]
     ref_schema = merge_schema_from_ref(get_schema_from_ref(ref), resolve_schema)
     if ref_schema["type"] != schema["type"]:
         # TODO: Consider if this should be a pyavd specific error
@@ -44,6 +36,20 @@ def merge_schema_from_ref(schema: dict, resolve_schema: bool | str | None = None
         )
         raise ValueError(msg)
 
+    pure_ref_schema = (
+        {"type", "$ref", "description", "documentation_options"}.issuperset(schema.keys())
+        and isinstance(resolve_schema, str)
+        and not schema["$ref"].startswith(f"{resolve_schema}#")
+    )
+
+    # If this is a pure ref schema we will not resolve it unless it is a native list.
+    # This ensures that the generated classes will use the class created in the ref.
+    # Some lists can be built as an AvdIndexedList, so we don't have to resolve it.
+    if pure_ref_schema and (schema["type"] != "list" or (ref_schema.get("primary_key") and not ref_schema.get("allow_duplicate_primary_key"))):
+        schema.setdefault("description", ref_schema.get("description"))
+        return schema
+
+    schema.pop("$ref")
     return conservative_merger.merge(schema, ref_schema)
 
 

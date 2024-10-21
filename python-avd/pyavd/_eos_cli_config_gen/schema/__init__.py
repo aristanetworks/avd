@@ -4,7 +4,7 @@
 
 from typing import Any, ClassVar
 
-from pyavd._schema.models import AvdCollection, AvdModel
+from pyavd._schema.models import AvdIndexedList, AvdModel
 from pyavd._utils import Undefined, UndefinedType
 
 
@@ -968,7 +968,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class AaaServerGroups(AvdCollection[str, AaaServerGroupsItem]):
+    class AaaServerGroups(AvdIndexedList[str, AaaServerGroupsItem]):
         _primary_key: ClassVar[str] = "name"
 
     AaaServerGroups._item_type = AaaServerGroupsItem
@@ -1010,7 +1010,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -1064,7 +1064,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class AccessLists(AvdCollection[str, AccessListsItem]):
+    class AccessLists(AvdIndexedList[str, AccessListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     AccessLists._item_type = AccessListsItem
@@ -1210,7 +1210,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EnvironmentVariables(AvdCollection[str, EnvironmentVariablesItem]):
+        class EnvironmentVariables(AvdIndexedList[str, EnvironmentVariablesItem]):
             _primary_key: ClassVar[str] = "name"
 
         EnvironmentVariables._item_type = EnvironmentVariablesItem
@@ -1244,7 +1244,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Agents(AvdCollection[str, AgentsItem]):
+    class Agents(AvdIndexedList[str, AgentsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Agents._item_type = AgentsItem
@@ -1325,7 +1325,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Categories(AvdCollection[str, CategoriesItem]):
+        class Categories(AvdIndexedList[str, CategoriesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Categories._item_type = CategoriesItem
@@ -1361,7 +1361,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class L4Ports(AvdCollection[str, L4PortsItem]):
+            class L4Ports(AvdIndexedList[str, L4PortsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             L4Ports._item_type = L4PortsItem
@@ -1396,7 +1396,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Ipv4Prefixes(AvdCollection[str, Ipv4PrefixesItem]):
+            class Ipv4Prefixes(AvdIndexedList[str, Ipv4PrefixesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Ipv4Prefixes._item_type = Ipv4PrefixesItem
@@ -1584,7 +1584,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Ipv4Applications(AvdCollection[str, Ipv4ApplicationsItem]):
+            class Ipv4Applications(AvdIndexedList[str, Ipv4ApplicationsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Ipv4Applications._item_type = Ipv4ApplicationsItem
@@ -1713,7 +1713,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class L4Applications(AvdCollection[str, L4ApplicationsItem]):
+            class L4Applications(AvdIndexedList[str, L4ApplicationsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             L4Applications._item_type = L4ApplicationsItem
@@ -2132,7 +2132,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class AccessLists(AvdCollection[str, AccessListsItem]):
+        class AccessLists(AvdIndexedList[str, AccessListsItem]):
             _primary_key: ClassVar[str] = "name"
 
         AccessLists._item_type = AccessListsItem
@@ -2238,7 +2238,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class BgpGroups(AvdCollection[str, BgpGroupsItem]):
+    class BgpGroups(AvdIndexedList[str, BgpGroupsItem]):
         _primary_key: ClassVar[str] = "name"
 
     BgpGroups._item_type = BgpGroupsItem
@@ -2343,7 +2343,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Pbr(AvdCollection[str, PbrItem]):
+        class Pbr(AvdIndexedList[str, PbrItem]):
             _primary_key: ClassVar[str] = "name"
 
         Pbr._item_type = PbrItem
@@ -2440,7 +2440,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Qos(AvdCollection[str, QosItem]):
+        class Qos(AvdIndexedList[str, QosItem]):
             _primary_key: ClassVar[str] = "name"
 
         Qos._item_type = QosItem
@@ -2522,7 +2522,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CommunityLists(AvdCollection[str, CommunityListsItem]):
+    class CommunityLists(AvdIndexedList[str, CommunityListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     CommunityLists._item_type = CommunityListsItem
@@ -2848,7 +2848,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Clusters(AvdCollection[str, ClustersItem]):
+        class Clusters(AvdIndexedList[str, ClustersItem]):
             _primary_key: ClassVar[str] = "name"
 
         Clusters._item_type = ClustersItem
@@ -3165,7 +3165,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Daemons(AvdCollection[str, DaemonsItem]):
+    class Daemons(AvdIndexedList[str, DaemonsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Daemons._item_type = DaemonsItem
@@ -3381,7 +3381,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SubOptions(AvdCollection[int, SubOptionsItem]):
+            class SubOptions(AvdIndexedList[int, SubOptionsItem]):
                 _primary_key: ClassVar[str] = "code"
 
             SubOptions._item_type = SubOptionsItem
@@ -3414,7 +3414,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv4VendorOptions(AvdCollection[str, Ipv4VendorOptionsItem]):
+        class Ipv4VendorOptions(AvdIndexedList[str, Ipv4VendorOptionsItem]):
             _primary_key: ClassVar[str] = "vendor_id"
 
         Ipv4VendorOptions._item_type = Ipv4VendorOptionsItem
@@ -3535,7 +3535,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Reservations(AvdCollection[str, ReservationsItem]):
+            class Reservations(AvdIndexedList[str, ReservationsItem]):
                 _primary_key: ClassVar[str] = "mac_address"
 
             Reservations._item_type = ReservationsItem
@@ -3594,7 +3594,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Subnets(AvdCollection[str, SubnetsItem]):
+        class Subnets(AvdIndexedList[str, SubnetsItem]):
             _primary_key: ClassVar[str] = "subnet"
 
         Subnets._item_type = SubnetsItem
@@ -3675,7 +3675,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class DhcpServers(AvdCollection[str, DhcpServersItem]):
+    class DhcpServers(AvdIndexedList[str, DhcpServersItem]):
         _primary_key: ClassVar[str] = "vrf"
 
     DhcpServers._item_type = DhcpServersItem
@@ -4154,7 +4154,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Profiles(AvdCollection[str, ProfilesItem]):
+            class Profiles(AvdIndexedList[str, ProfilesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Profiles._item_type = ProfilesItem
@@ -4397,7 +4397,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class DpsInterfaces(AvdCollection[str, DpsInterfacesItem]):
+    class DpsInterfaces(AvdIndexedList[str, DpsInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     DpsInterfaces._item_type = DpsInterfacesItem
@@ -4875,7 +4875,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class LinkTrackingGroups(AvdCollection[str, LinkTrackingGroupsItem]):
+        class LinkTrackingGroups(AvdIndexedList[str, LinkTrackingGroupsItem]):
             _primary_key: ClassVar[str] = "name"
 
         LinkTrackingGroups._item_type = LinkTrackingGroupsItem
@@ -5292,7 +5292,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpHelpers(AvdCollection[str, IpHelpersItem]):
+        class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
             _primary_key: ClassVar[str] = "ip_helper"
 
         IpHelpers._item_type = IpHelpersItem
@@ -5340,7 +5340,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -5508,7 +5508,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -5702,7 +5702,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv6NdPrefixes(AvdCollection[str, Ipv6NdPrefixesItem]):
+        class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
             _primary_key: ClassVar[str] = "ipv6_prefix"
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
@@ -5756,7 +5756,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv6DhcpRelayDestinations(AvdCollection[str, Ipv6DhcpRelayDestinationsItem]):
+        class Ipv6DhcpRelayDestinations(AvdIndexedList[str, Ipv6DhcpRelayDestinationsItem]):
             _primary_key: ClassVar[str] = "address"
 
         Ipv6DhcpRelayDestinations._item_type = Ipv6DhcpRelayDestinationsItem
@@ -5933,7 +5933,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class OspfMessageDigestKeys(AvdCollection[int, OspfMessageDigestKeysItem]):
+        class OspfMessageDigestKeys(AvdIndexedList[int, OspfMessageDigestKeysItem]):
             _primary_key: ClassVar[str] = "id"
 
         OspfMessageDigestKeys._item_type = OspfMessageDigestKeysItem
@@ -7480,7 +7480,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Priorities(AvdCollection[int, PrioritiesItem]):
+            class Priorities(AvdIndexedList[int, PrioritiesItem]):
                 _primary_key: ClassVar[str] = "priority"
 
             Priorities._item_type = PrioritiesItem
@@ -7844,7 +7844,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Exclude(AvdCollection[str, ExcludeItem]):
+                class Exclude(AvdIndexedList[str, ExcludeItem]):
                     _primary_key: ClassVar[str] = "source"
 
                 Exclude._item_type = ExcludeItem
@@ -7870,7 +7870,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Include(AvdCollection[str, IncludeItem]):
+                class Include(AvdIndexedList[str, IncludeItem]):
                     _primary_key: ClassVar[str] = "source"
 
                 Include._item_type = IncludeItem
@@ -7909,7 +7909,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Groups(AvdCollection[str, GroupsItem]):
+            class Groups(AvdIndexedList[str, GroupsItem]):
                 _primary_key: ClassVar[str] = "group"
 
             Groups._item_type = GroupsItem
@@ -7935,7 +7935,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AccessLists(AvdCollection[str, AccessListsItem]):
+            class AccessLists(AvdIndexedList[str, AccessListsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             AccessLists._item_type = AccessListsItem
@@ -8212,7 +8212,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class UcTxQueues(AvdCollection[int, UcTxQueuesItem]):
+        class UcTxQueues(AvdIndexedList[int, UcTxQueuesItem]):
             _primary_key: ClassVar[str] = "id"
 
         UcTxQueues._item_type = UcTxQueuesItem
@@ -8349,7 +8349,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TxQueues(AvdCollection[int, TxQueuesItem]):
+        class TxQueues(AvdIndexedList[int, TxQueuesItem]):
             _primary_key: ClassVar[str] = "id"
 
         TxQueues._item_type = TxQueuesItem
@@ -8514,7 +8514,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class TrackedObject(AvdCollection[str, TrackedObjectItem]):
+            class TrackedObject(AvdIndexedList[str, TrackedObjectItem]):
                 _primary_key: ClassVar[str] = "name"
 
             TrackedObject._item_type = TrackedObjectItem
@@ -8629,7 +8629,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class VrrpIds(AvdCollection[int, VrrpIdsItem]):
+        class VrrpIds(AvdIndexedList[int, VrrpIdsItem]):
             _primary_key: ClassVar[str] = "id"
 
         VrrpIds._item_type = VrrpIdsItem
@@ -9170,7 +9170,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vlans(AvdCollection[str, VlansItem]):
+                class Vlans(AvdIndexedList[str, VlansItem]):
                     _primary_key: ClassVar[str] = "range"
 
                 Vlans._item_type = VlansItem
@@ -9888,7 +9888,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EthernetInterfaces(AvdCollection[str, EthernetInterfacesItem]):
+    class EthernetInterfaces(AvdIndexedList[str, EthernetInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     EthernetInterfaces._item_type = EthernetInterfacesItem
@@ -10212,7 +10212,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EventHandlers(AvdCollection[str, EventHandlersItem]):
+    class EventHandlers(AvdIndexedList[str, EventHandlersItem]):
         _primary_key: ClassVar[str] = "name"
 
     EventHandlers._item_type = EventHandlersItem
@@ -10447,7 +10447,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Exporters(AvdCollection[str, ExportersItem]):
+                class Exporters(AvdIndexedList[str, ExportersItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Exporters._item_type = ExportersItem
@@ -10494,7 +10494,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Trackers(AvdCollection[str, TrackersItem]):
+            class Trackers(AvdIndexedList[str, TrackersItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Trackers._item_type = TrackersItem
@@ -10705,7 +10705,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Exporters(AvdCollection[str, ExportersItem]):
+                class Exporters(AvdIndexedList[str, ExportersItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Exporters._item_type = ExportersItem
@@ -10747,7 +10747,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Trackers(AvdCollection[str, TrackersItem]):
+            class Trackers(AvdIndexedList[str, TrackersItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Trackers._item_type = TrackersItem
@@ -10868,7 +10868,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SpeedGroups(AvdCollection[str, SpeedGroupsItem]):
+        class SpeedGroups(AvdIndexedList[str, SpeedGroupsItem]):
             _primary_key: ClassVar[str] = "speed_group"
 
         SpeedGroups._item_type = SpeedGroupsItem
@@ -10903,7 +10903,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PortGroups(AvdCollection[str, PortGroupsItem]):
+        class PortGroups(AvdIndexedList[str, PortGroupsItem]):
             _primary_key: ClassVar[str] = "port_group"
 
         PortGroups._item_type = PortGroupsItem
@@ -11246,7 +11246,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class InterfaceGroups(AvdCollection[str, InterfaceGroupsItem]):
+    class InterfaceGroups(AvdIndexedList[str, InterfaceGroupsItem]):
         _primary_key: ClassVar[str] = "name"
 
     InterfaceGroups._item_type = InterfaceGroupsItem
@@ -11281,7 +11281,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class InterfaceProfiles(AvdCollection[str, InterfaceProfilesItem]):
+    class InterfaceProfiles(AvdIndexedList[str, InterfaceProfilesItem]):
         _primary_key: ClassVar[str] = "name"
 
     InterfaceProfiles._item_type = InterfaceProfilesItem
@@ -11498,7 +11498,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class IpAccessLists(AvdCollection[str, IpAccessListsItem]):
+    class IpAccessLists(AvdIndexedList[str, IpAccessListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     IpAccessLists._item_type = IpAccessListsItem
@@ -11598,7 +11598,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class IpCommunityLists(AvdCollection[str, IpCommunityListsItem]):
+    class IpCommunityLists(AvdIndexedList[str, IpCommunityListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     IpCommunityLists._item_type = IpCommunityListsItem
@@ -11772,7 +11772,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SourceInterfaces(AvdCollection[str, SourceInterfacesItem]):
+        class SourceInterfaces(AvdIndexedList[str, SourceInterfacesItem]):
             _primary_key: ClassVar[str] = "name"
 
         SourceInterfaces._item_type = SourceInterfacesItem
@@ -11864,7 +11864,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class IpExtcommunityLists(AvdCollection[str, IpExtcommunityListsItem]):
+    class IpExtcommunityLists(AvdIndexedList[str, IpExtcommunityListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     IpExtcommunityLists._item_type = IpExtcommunityListsItem
@@ -11929,7 +11929,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class IpExtcommunityListsRegexp(AvdCollection[str, IpExtcommunityListsRegexpItem]):
+    class IpExtcommunityListsRegexp(AvdIndexedList[str, IpExtcommunityListsRegexpItem]):
         _primary_key: ClassVar[str] = "name"
 
     IpExtcommunityListsRegexp._item_type = IpExtcommunityListsRegexpItem
@@ -12255,7 +12255,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vlans(AvdCollection[int, VlansItem]):
+        class Vlans(AvdIndexedList[int, VlansItem]):
             _primary_key: ClassVar[str] = "id"
 
         Vlans._item_type = VlansItem
@@ -12401,7 +12401,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -12569,7 +12569,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -12724,7 +12724,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Profiles(AvdCollection[str, ProfilesItem]):
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Profiles._item_type = ProfilesItem
@@ -12838,7 +12838,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Pools(AvdCollection[str, PoolsItem]):
+        class Pools(AvdIndexedList[str, PoolsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Pools._item_type = PoolsItem
@@ -13025,7 +13025,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class IpLimits(AvdCollection[str, IpLimitsItem]):
+                class IpLimits(AvdIndexedList[str, IpLimitsItem]):
                     _primary_key: ClassVar[str] = "ip"
 
                 IpLimits._item_type = IpLimitsItem
@@ -13091,7 +13091,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Timeouts(AvdCollection[str, TimeoutsItem]):
+            class Timeouts(AvdIndexedList[str, TimeoutsItem]):
                 _primary_key: ClassVar[str] = "protocol"
 
             Timeouts._item_type = TimeoutsItem
@@ -13288,7 +13288,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IkePolicies(AvdCollection[str, IkePoliciesItem]):
+        class IkePolicies(AvdIndexedList[str, IkePoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         IkePolicies._item_type = IkePoliciesItem
@@ -13409,7 +13409,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SaPolicies(AvdCollection[str, SaPoliciesItem]):
+        class SaPolicies(AvdIndexedList[str, SaPoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         SaPolicies._item_type = SaPoliciesItem
@@ -13534,7 +13534,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Profiles(AvdCollection[str, ProfilesItem]):
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Profiles._item_type = ProfilesItem
@@ -13773,7 +13773,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -13815,7 +13815,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv6AccessLists(AvdCollection[str, Ipv6AccessListsItem]):
+    class Ipv6AccessLists(AvdIndexedList[str, Ipv6AccessListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Ipv6AccessLists._item_type = Ipv6AccessListsItem
@@ -14129,7 +14129,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -14163,7 +14163,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv6PrefixLists(AvdCollection[str, Ipv6PrefixListsItem]):
+    class Ipv6PrefixLists(AvdIndexedList[str, Ipv6PrefixListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Ipv6PrefixLists._item_type = Ipv6PrefixListsItem
@@ -14205,7 +14205,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -14247,7 +14247,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv6StandardAccessLists(AvdCollection[str, Ipv6StandardAccessListsItem]):
+    class Ipv6StandardAccessLists(AvdIndexedList[str, Ipv6StandardAccessListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Ipv6StandardAccessLists._item_type = Ipv6StandardAccessListsItem
@@ -14360,7 +14360,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Protocols(AvdCollection[str, ProtocolsItem]):
+            class Protocols(AvdIndexedList[str, ProtocolsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Protocols._item_type = ProtocolsItem
@@ -14393,7 +14393,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class ForwardingProfiles(AvdCollection[str, ForwardingProfilesItem]):
+        class ForwardingProfiles(AvdIndexedList[str, ForwardingProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         ForwardingProfiles._item_type = ForwardingProfilesItem
@@ -14566,7 +14566,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class LinkTrackingGroups(AvdCollection[str, LinkTrackingGroupsItem]):
+    class LinkTrackingGroups(AvdIndexedList[str, LinkTrackingGroupsItem]):
         _primary_key: ClassVar[str] = "name"
 
     LinkTrackingGroups._item_type = LinkTrackingGroupsItem
@@ -14601,7 +14601,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Tlvs(AvdCollection[str, TlvsItem]):
+        class Tlvs(AvdIndexedList[str, TlvsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Tlvs._item_type = TlvsItem
@@ -14771,7 +14771,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class LocalUsers(AvdCollection[str, LocalUsersItem]):
+    class LocalUsers(AvdIndexedList[str, LocalUsersItem]):
         _primary_key: ClassVar[str] = "name"
 
     LocalUsers._item_type = LocalUsersItem
@@ -14913,7 +14913,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Hosts(AvdCollection[str, HostsItem]):
+            class Hosts(AvdIndexedList[str, HostsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Hosts._item_type = HostsItem
@@ -14951,7 +14951,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -14988,7 +14988,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class MatchLists(AvdCollection[str, MatchListsItem]):
+                class MatchLists(AvdIndexedList[str, MatchListsItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 MatchLists._item_type = MatchListsItem
@@ -15181,7 +15181,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Level(AvdCollection[str, LevelItem]):
+        class Level(AvdIndexedList[str, LevelItem]):
             _primary_key: ClassVar[str] = "facility"
 
         Level._item_type = LevelItem
@@ -15443,7 +15443,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class LoopbackInterfaces(AvdCollection[str, LoopbackInterfacesItem]):
+    class LoopbackInterfaces(AvdIndexedList[str, LoopbackInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     LoopbackInterfaces._item_type = LoopbackInterfacesItem
@@ -15515,7 +15515,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class MacAccessLists(AvdCollection[str, MacAccessListsItem]):
+    class MacAccessLists(AvdIndexedList[str, MacAccessListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     MacAccessLists._item_type = MacAccessListsItem
@@ -15671,7 +15671,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class ConnectionKeys(AvdCollection[str, ConnectionKeysItem]):
+            class ConnectionKeys(AvdIndexedList[str, ConnectionKeysItem]):
                 _primary_key: ClassVar[str] = "id"
 
             ConnectionKeys._item_type = ConnectionKeysItem
@@ -15884,7 +15884,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Profiles(AvdCollection[str, ProfilesItem]):
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Profiles._item_type = ProfilesItem
@@ -16016,7 +16016,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class InterfaceProfiles(AvdCollection[str, InterfaceProfilesItem]):
+        class InterfaceProfiles(AvdIndexedList[str, InterfaceProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         InterfaceProfiles._item_type = InterfaceProfilesItem
@@ -16075,7 +16075,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class BgpProfiles(AvdCollection[str, BgpProfilesItem]):
+        class BgpProfiles(AvdIndexedList[str, BgpProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         BgpProfiles._item_type = BgpProfilesItem
@@ -16132,7 +16132,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class UnitProfiles(AvdCollection[str, UnitProfilesItem]):
+        class UnitProfiles(AvdIndexedList[str, UnitProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         UnitProfiles._item_type = UnitProfilesItem
@@ -16213,7 +16213,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Units(AvdCollection[str, UnitsItem]):
+        class Units(AvdIndexedList[str, UnitsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Units._item_type = UnitsItem
@@ -16396,7 +16396,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Grpc(AvdCollection[str, GrpcItem]):
+            class Grpc(AvdIndexedList[str, GrpcItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Grpc._item_type = GrpcItem
@@ -16556,7 +16556,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class GrpcTunnels(AvdCollection[str, GrpcTunnelsItem]):
+            class GrpcTunnels(AvdIndexedList[str, GrpcTunnelsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             GrpcTunnels._item_type = GrpcTunnelsItem
@@ -16653,7 +16653,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EnableVrfs(AvdCollection[str, EnableVrfsItem]):
+        class EnableVrfs(AvdIndexedList[str, EnableVrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         EnableVrfs._item_type = EnableVrfsItem
@@ -17057,7 +17057,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class ManagementInterfaces(AvdCollection[str, ManagementInterfacesItem]):
+    class ManagementInterfaces(AvdIndexedList[str, ManagementInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     ManagementInterfaces._item_type = ManagementInterfacesItem
@@ -17215,7 +17215,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Policies(AvdCollection[str, PoliciesItem]):
+            class Policies(AvdIndexedList[str, PoliciesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Policies._item_type = PoliciesItem
@@ -17702,7 +17702,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Secrets(AvdCollection[str, SecretsItem]):
+            class Secrets(AvdIndexedList[str, SecretsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Secrets._item_type = SecretsItem
@@ -17735,7 +17735,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SharedSecretProfiles(AvdCollection[str, SharedSecretProfilesItem]):
+        class SharedSecretProfiles(AvdIndexedList[str, SharedSecretProfilesItem]):
             _primary_key: ClassVar[str] = "profile"
 
         SharedSecretProfiles._item_type = SharedSecretProfilesItem
@@ -17977,7 +17977,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -18246,7 +18246,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PrefixIpv4(AvdCollection[str, PrefixIpv4Item]):
+        class PrefixIpv4(AvdIndexedList[str, PrefixIpv4Item]):
             _primary_key: ClassVar[str] = "name"
 
         PrefixIpv4._item_type = PrefixIpv4Item
@@ -18282,7 +18282,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PrefixIpv6(AvdCollection[str, PrefixIpv6Item]):
+        class PrefixIpv6(AvdIndexedList[str, PrefixIpv6Item]):
             _primary_key: ClassVar[str] = "name"
 
         PrefixIpv6._item_type = PrefixIpv6Item
@@ -18319,7 +18319,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+            class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
                 _primary_key: ClassVar[str] = "sequence"
 
             SequenceNumbers._item_type = SequenceNumbersItem
@@ -18353,7 +18353,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class String(AvdCollection[str, StringItem]):
+        class String(AvdIndexedList[str, StringItem]):
             _primary_key: ClassVar[str] = "name"
 
         String._item_type = StringItem
@@ -19744,7 +19744,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Hosts(AvdCollection[str, HostsItem]):
+        class Hosts(AvdIndexedList[str, HostsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Hosts._item_type = HostsItem
@@ -19841,7 +19841,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Hosts(AvdCollection[str, HostsItem]):
+            class Hosts(AvdIndexedList[str, HostsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Hosts._item_type = HostsItem
@@ -19907,7 +19907,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -20354,7 +20354,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Destinations(AvdCollection[str, DestinationsItem]):
+        class Destinations(AvdIndexedList[str, DestinationsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Destinations._item_type = DestinationsItem
@@ -20393,7 +20393,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SourceSockets(AvdCollection[str, SourceSocketsItem]):
+        class SourceSockets(AvdIndexedList[str, SourceSocketsItem]):
             _primary_key: ClassVar[str] = "name"
 
         SourceSockets._item_type = SourceSocketsItem
@@ -20425,7 +20425,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Tags(AvdCollection[str, TagsItem]):
+        class Tags(AvdIndexedList[str, TagsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Tags._item_type = TagsItem
@@ -20666,7 +20666,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Profiles(AvdCollection[str, ProfilesItem]):
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Profiles._item_type = ProfilesItem
@@ -20738,7 +20738,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Protocols(AvdCollection[str, ProtocolsItem]):
+                class Protocols(AvdIndexedList[str, ProtocolsItem]):
                     _primary_key: ClassVar[str] = "protocol"
 
                 Protocols._item_type = ProtocolsItem
@@ -20800,7 +20800,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class MatchRules(AvdCollection[str, MatchRulesItem]):
+            class MatchRules(AvdIndexedList[str, MatchRulesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             MatchRules._item_type = MatchRulesItem
@@ -20833,7 +20833,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SamplePolicies(AvdCollection[str, SamplePoliciesItem]):
+        class SamplePolicies(AvdIndexedList[str, SamplePoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         SamplePolicies._item_type = SamplePoliciesItem
@@ -21139,7 +21139,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class AuthenticationKeys(AvdCollection[int, AuthenticationKeysItem]):
+        class AuthenticationKeys(AvdIndexedList[int, AuthenticationKeysItem]):
             _primary_key: ClassVar[str] = "id"
 
         AuthenticationKeys._item_type = AuthenticationKeysItem
@@ -21374,7 +21374,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Connectors(AvdCollection[str, ConnectorsItem]):
+            class Connectors(AvdIndexedList[str, ConnectorsItem]):
                 _primary_key: ClassVar[str] = "id"
 
             Connectors._item_type = ConnectorsItem
@@ -21411,7 +21411,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Patches(AvdCollection[str, PatchesItem]):
+        class Patches(AvdIndexedList[str, PatchesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Patches._item_type = PatchesItem
@@ -21481,7 +21481,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -21515,7 +21515,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PeerFilters(AvdCollection[str, PeerFiltersItem]):
+    class PeerFilters(AvdIndexedList[str, PeerFiltersItem]):
         _primary_key: ClassVar[str] = "name"
 
     PeerFilters._item_type = PeerFiltersItem
@@ -21636,7 +21636,7 @@ class EosCliConfigGen(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class MulticastQueues(AvdCollection[int, MulticastQueuesItem]):
+                    class MulticastQueues(AvdIndexedList[int, MulticastQueuesItem]):
                         _primary_key: ClassVar[str] = "id"
 
                     MulticastQueues._item_type = MulticastQueuesItem
@@ -21729,7 +21729,7 @@ class EosCliConfigGen(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UnicastQueues(AvdCollection[int, UnicastQueuesItem]):
+                    class UnicastQueues(AvdIndexedList[int, UnicastQueuesItem]):
                         _primary_key: ClassVar[str] = "id"
 
                     UnicastQueues._item_type = UnicastQueuesItem
@@ -21770,7 +21770,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class QueueProfiles(AvdCollection[str, QueueProfilesItem]):
+                class QueueProfiles(AvdIndexedList[str, QueueProfilesItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 QueueProfiles._item_type = QueueProfilesItem
@@ -22195,7 +22195,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Classes(AvdCollection[str, ClassesItem]):
+            class Classes(AvdIndexedList[str, ClassesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Classes._item_type = ClassesItem
@@ -22229,7 +22229,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Pbr(AvdCollection[str, PbrItem]):
+        class Pbr(AvdIndexedList[str, PbrItem]):
             _primary_key: ClassVar[str] = "name"
 
         Pbr._item_type = PbrItem
@@ -22415,7 +22415,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Classes(AvdCollection[str, ClassesItem]):
+            class Classes(AvdIndexedList[str, ClassesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Classes._item_type = ClassesItem
@@ -22449,7 +22449,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Qos(AvdCollection[str, QosItem]):
+        class Qos(AvdIndexedList[str, QosItem]):
             _primary_key: ClassVar[str] = "name"
 
         Qos._item_type = QosItem
@@ -22499,7 +22499,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Classes(AvdCollection[str, ClassesItem]):
+            class Classes(AvdIndexedList[str, ClassesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Classes._item_type = ClassesItem
@@ -22891,7 +22891,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class LinkTrackingGroups(AvdCollection[str, LinkTrackingGroupsItem]):
+        class LinkTrackingGroups(AvdIndexedList[str, LinkTrackingGroupsItem]):
             _primary_key: ClassVar[str] = "name"
 
         LinkTrackingGroups._item_type = LinkTrackingGroupsItem
@@ -23820,7 +23820,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -23988,7 +23988,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -24173,7 +24173,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv6NdPrefixes(AvdCollection[str, Ipv6NdPrefixesItem]):
+        class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
             _primary_key: ClassVar[str] = "ipv6_prefix"
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
@@ -24314,7 +24314,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class OspfMessageDigestKeys(AvdCollection[int, OspfMessageDigestKeysItem]):
+        class OspfMessageDigestKeys(AvdIndexedList[int, OspfMessageDigestKeysItem]):
             _primary_key: ClassVar[str] = "id"
 
         OspfMessageDigestKeys._item_type = OspfMessageDigestKeysItem
@@ -24395,7 +24395,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Exclude(AvdCollection[str, ExcludeItem]):
+                class Exclude(AvdIndexedList[str, ExcludeItem]):
                     _primary_key: ClassVar[str] = "source"
 
                 Exclude._item_type = ExcludeItem
@@ -24421,7 +24421,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Include(AvdCollection[str, IncludeItem]):
+                class Include(AvdIndexedList[str, IncludeItem]):
                     _primary_key: ClassVar[str] = "source"
 
                 Include._item_type = IncludeItem
@@ -24460,7 +24460,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Groups(AvdCollection[str, GroupsItem]):
+            class Groups(AvdIndexedList[str, GroupsItem]):
                 _primary_key: ClassVar[str] = "group"
 
             Groups._item_type = GroupsItem
@@ -24486,7 +24486,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AccessLists(AvdCollection[str, AccessListsItem]):
+            class AccessLists(AvdIndexedList[str, AccessListsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             AccessLists._item_type = AccessListsItem
@@ -25131,7 +25131,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vlans(AvdCollection[str, VlansItem]):
+                class Vlans(AvdIndexedList[str, VlansItem]):
                     _primary_key: ClassVar[str] = "range"
 
                 Vlans._item_type = VlansItem
@@ -25729,7 +25729,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PortChannelInterfaces(AvdCollection[str, PortChannelInterfacesItem]):
+    class PortChannelInterfaces(AvdIndexedList[str, PortChannelInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     PortChannelInterfaces._item_type = PortChannelInterfacesItem
@@ -25771,7 +25771,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -25805,7 +25805,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PrefixLists(AvdCollection[str, PrefixListsItem]):
+    class PrefixLists(AvdIndexedList[str, PrefixListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     PrefixLists._item_type = PrefixListsItem
@@ -26802,7 +26802,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TxQueues(AvdCollection[int, TxQueuesItem]):
+        class TxQueues(AvdIndexedList[int, TxQueuesItem]):
             _primary_key: ClassVar[str] = "id"
 
         TxQueues._item_type = TxQueuesItem
@@ -27076,7 +27076,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class UcTxQueues(AvdCollection[int, UcTxQueuesItem]):
+        class UcTxQueues(AvdIndexedList[int, UcTxQueuesItem]):
             _primary_key: ClassVar[str] = "id"
 
         UcTxQueues._item_type = UcTxQueuesItem
@@ -27159,7 +27159,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class McTxQueues(AvdCollection[int, McTxQueuesItem]):
+        class McTxQueues(AvdIndexedList[int, McTxQueuesItem]):
             _primary_key: ClassVar[str] = "id"
 
         McTxQueues._item_type = McTxQueuesItem
@@ -27325,7 +27325,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Priorities(AvdCollection[int, PrioritiesItem]):
+            class Priorities(AvdIndexedList[int, PrioritiesItem]):
                 _primary_key: ClassVar[str] = "priority"
 
             Priorities._item_type = PrioritiesItem
@@ -27435,7 +27435,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class QosProfiles(AvdCollection[str, QosProfilesItem]):
+    class QosProfiles(AvdIndexedList[str, QosProfilesItem]):
         _primary_key: ClassVar[str] = "name"
 
     QosProfiles._item_type = QosProfilesItem
@@ -27779,7 +27779,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Hosts(AvdCollection[str, HostsItem]):
+        class Hosts(AvdIndexedList[str, HostsItem]):
             _primary_key: ClassVar[str] = "host"
 
         Hosts._item_type = HostsItem
@@ -27921,7 +27921,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Roles(AvdCollection[str, RolesItem]):
+    class Roles(AvdIndexedList[str, RolesItem]):
         _primary_key: ClassVar[str] = "name"
 
     Roles._item_type = RolesItem
@@ -28013,7 +28013,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -28047,7 +28047,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class RouteMaps(AvdCollection[str, RouteMapsItem]):
+    class RouteMaps(AvdIndexedList[str, RouteMapsItem]):
         _primary_key: ClassVar[str] = "name"
 
     RouteMaps._item_type = RouteMapsItem
@@ -28168,7 +28168,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Profiles(AvdCollection[str, ProfilesItem]):
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Profiles._item_type = ProfilesItem
@@ -28248,7 +28248,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Policies(AvdCollection[str, PoliciesItem]):
+        class Policies(AvdIndexedList[str, PoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Policies._item_type = PoliciesItem
@@ -28285,7 +28285,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Profiles(AvdCollection[int, ProfilesItem]):
+            class Profiles(AvdIndexedList[int, ProfilesItem]):
                 _primary_key: ClassVar[str] = "id"
 
             Profiles._item_type = ProfilesItem
@@ -28324,7 +28324,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -29692,7 +29692,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+        class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
             _primary_key: ClassVar[str] = "name"
 
         PeerGroups._item_type = PeerGroupsItem
@@ -30299,7 +30299,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Neighbors(AvdCollection[str, NeighborsItem]):
+        class Neighbors(AvdIndexedList[str, NeighborsItem]):
             _primary_key: ClassVar[str] = "ip_address"
 
         Neighbors._item_type = NeighborsItem
@@ -30366,7 +30366,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class NeighborInterfaces(AvdCollection[str, NeighborInterfacesItem]):
+        class NeighborInterfaces(AvdIndexedList[str, NeighborInterfacesItem]):
             _primary_key: ClassVar[str] = "name"
 
         NeighborInterfaces._item_type = NeighborInterfacesItem
@@ -30423,7 +30423,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class AggregateAddresses(AvdCollection[str, AggregateAddressesItem]):
+        class AggregateAddresses(AvdIndexedList[str, AggregateAddressesItem]):
             _primary_key: ClassVar[str] = "prefix"
 
         AggregateAddresses._item_type = AggregateAddressesItem
@@ -31477,7 +31477,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class VlanAwareBundles(AvdCollection[str, VlanAwareBundlesItem]):
+        class VlanAwareBundles(AvdIndexedList[str, VlanAwareBundlesItem]):
             _primary_key: ClassVar[str] = "name"
 
         VlanAwareBundles._item_type = VlanAwareBundlesItem
@@ -31713,7 +31713,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vlans(AvdCollection[int, VlansItem]):
+        class Vlans(AvdIndexedList[int, VlansItem]):
             _primary_key: ClassVar[str] = "id"
 
         Vlans._item_type = VlansItem
@@ -31776,7 +31776,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Pseudowires(AvdCollection[str, PseudowiresItem]):
+            class Pseudowires(AvdIndexedList[str, PseudowiresItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Pseudowires._item_type = PseudowiresItem
@@ -31835,7 +31835,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vpws(AvdCollection[str, VpwsItem]):
+        class Vpws(AvdIndexedList[str, VpwsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vpws._item_type = VpwsItem
@@ -32101,7 +32101,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -32282,7 +32282,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -32734,7 +32734,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -32791,7 +32791,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Networks(AvdCollection[str, NetworksItem]):
+            class Networks(AvdIndexedList[str, NetworksItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             Networks._item_type = NetworksItem
@@ -33137,7 +33137,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -33319,7 +33319,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -34776,7 +34776,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -35105,7 +35105,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -35141,7 +35141,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Networks(AvdCollection[str, NetworksItem]):
+            class Networks(AvdIndexedList[str, NetworksItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             Networks._item_type = NetworksItem
@@ -35175,7 +35175,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class NextHops(AvdCollection[str, NextHopsItem]):
+            class NextHops(AvdIndexedList[str, NextHopsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             NextHops._item_type = NextHopsItem
@@ -35246,7 +35246,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class TunnelSourceProtocols(AvdCollection[str, TunnelSourceProtocolsItem]):
+            class TunnelSourceProtocols(AvdIndexedList[str, TunnelSourceProtocolsItem]):
                 _primary_key: ClassVar[str] = "protocol"
 
             TunnelSourceProtocols._item_type = TunnelSourceProtocolsItem
@@ -35449,7 +35449,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -35522,7 +35522,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -36165,7 +36165,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -36214,7 +36214,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -36279,7 +36279,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Networks(AvdCollection[str, NetworksItem]):
+            class Networks(AvdIndexedList[str, NetworksItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             Networks._item_type = NetworksItem
@@ -36535,7 +36535,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -36684,7 +36684,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -37518,7 +37518,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -37582,7 +37582,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -37617,7 +37617,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Networks(AvdCollection[str, NetworksItem]):
+            class Networks(AvdIndexedList[str, NetworksItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             Networks._item_type = NetworksItem
@@ -38231,7 +38231,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -38280,7 +38280,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -38433,7 +38433,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -38504,7 +38504,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -38689,7 +38689,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -38724,7 +38724,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -38847,7 +38847,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -38882,7 +38882,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -39098,7 +39098,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -39198,7 +39198,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -39346,7 +39346,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -39479,7 +39479,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -39658,7 +39658,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PeerGroups(AvdCollection[str, PeerGroupsItem]):
+            class PeerGroups(AvdIndexedList[str, PeerGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PeerGroups._item_type = PeerGroupsItem
@@ -39791,7 +39791,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -40104,7 +40104,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class DefaultRouteExports(AvdCollection[str, DefaultRouteExportsItem]):
+            class DefaultRouteExports(AvdIndexedList[str, DefaultRouteExportsItem]):
                 _primary_key: ClassVar[str] = "address_family"
 
             DefaultRouteExports._item_type = DefaultRouteExportsItem
@@ -40177,7 +40177,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Import(AvdCollection[str, ImportItem]):
+                class Import(AvdIndexedList[str, ImportItem]):
                     _primary_key: ClassVar[str] = "address_family"
 
                 Import._item_type = ImportItem
@@ -40249,7 +40249,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Export(AvdCollection[str, ExportItem]):
+                class Export(AvdIndexedList[str, ExportItem]):
                     _primary_key: ClassVar[str] = "address_family"
 
                 Export._item_type = ExportItem
@@ -40312,7 +40312,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Networks(AvdCollection[str, NetworksItem]):
+            class Networks(AvdIndexedList[str, NetworksItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             Networks._item_type = NetworksItem
@@ -40883,7 +40883,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Neighbors(AvdCollection[str, NeighborsItem]):
+            class Neighbors(AvdIndexedList[str, NeighborsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             Neighbors._item_type = NeighborsItem
@@ -40946,7 +40946,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class NeighborInterfaces(AvdCollection[str, NeighborInterfacesItem]):
+            class NeighborInterfaces(AvdIndexedList[str, NeighborInterfacesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             NeighborInterfaces._item_type = NeighborInterfacesItem
@@ -41808,7 +41808,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AggregateAddresses(AvdCollection[str, AggregateAddressesItem]):
+            class AggregateAddresses(AvdIndexedList[str, AggregateAddressesItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             AggregateAddresses._item_type = AggregateAddressesItem
@@ -42151,7 +42151,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Neighbors(AvdCollection[str, NeighborsItem]):
+                class Neighbors(AvdIndexedList[str, NeighborsItem]):
                     _primary_key: ClassVar[str] = "ip_address"
 
                 Neighbors._item_type = NeighborsItem
@@ -42186,7 +42186,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Networks(AvdCollection[str, NetworksItem]):
+                class Networks(AvdIndexedList[str, NetworksItem]):
                     _primary_key: ClassVar[str] = "prefix"
 
                 Networks._item_type = NetworksItem
@@ -43322,7 +43322,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Neighbors(AvdCollection[str, NeighborsItem]):
+                class Neighbors(AvdIndexedList[str, NeighborsItem]):
                     _primary_key: ClassVar[str] = "ip_address"
 
                 Neighbors._item_type = NeighborsItem
@@ -43357,7 +43357,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Networks(AvdCollection[str, NetworksItem]):
+                class Networks(AvdIndexedList[str, NetworksItem]):
                     _primary_key: ClassVar[str] = "prefix"
 
                 Networks._item_type = NetworksItem
@@ -44191,7 +44191,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Neighbors(AvdCollection[str, NeighborsItem]):
+                class Neighbors(AvdIndexedList[str, NeighborsItem]):
                     _primary_key: ClassVar[str] = "ip_address"
 
                 Neighbors._item_type = NeighborsItem
@@ -44226,7 +44226,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Networks(AvdCollection[str, NetworksItem]):
+                class Networks(AvdIndexedList[str, NetworksItem]):
                     _primary_key: ClassVar[str] = "prefix"
 
                 Networks._item_type = NetworksItem
@@ -45009,7 +45009,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Neighbors(AvdCollection[str, NeighborsItem]):
+                class Neighbors(AvdIndexedList[str, NeighborsItem]):
                     _primary_key: ClassVar[str] = "ip_address"
 
                 Neighbors._item_type = NeighborsItem
@@ -45044,7 +45044,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Networks(AvdCollection[str, NetworksItem]):
+                class Networks(AvdIndexedList[str, NetworksItem]):
                     _primary_key: ClassVar[str] = "prefix"
 
                 Networks._item_type = NetworksItem
@@ -45692,7 +45692,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Neighbors(AvdCollection[str, NeighborsItem]):
+                class Neighbors(AvdIndexedList[str, NeighborsItem]):
                     _primary_key: ClassVar[str] = "ip_address"
 
                 Neighbors._item_type = NeighborsItem
@@ -45807,7 +45807,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Neighbors(AvdCollection[str, NeighborsItem]):
+                class Neighbors(AvdIndexedList[str, NeighborsItem]):
                     _primary_key: ClassVar[str] = "ip_address"
 
                 Neighbors._item_type = NeighborsItem
@@ -45983,7 +45983,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -46019,7 +46019,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SessionTrackers(AvdCollection[str, SessionTrackersItem]):
+        class SessionTrackers(AvdIndexedList[str, SessionTrackersItem]):
             _primary_key: ClassVar[str] = "name"
 
         SessionTrackers._item_type = SessionTrackersItem
@@ -46379,7 +46379,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -46429,7 +46429,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class CodeUnits(AvdCollection[str, CodeUnitsItem]):
+            class CodeUnits(AvdIndexedList[str, CodeUnitsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             CodeUnits._item_type = CodeUnitsItem
@@ -46552,7 +46552,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -46668,7 +46668,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Policies(AvdCollection[str, PoliciesItem]):
+        class Policies(AvdIndexedList[str, PoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Policies._item_type = PoliciesItem
@@ -46747,7 +46747,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class ExitGroups(AvdCollection[str, ExitGroupsItem]):
+        class ExitGroups(AvdIndexedList[str, ExitGroupsItem]):
             _primary_key: ClassVar[str] = "name"
 
         ExitGroups._item_type = ExitGroupsItem
@@ -46983,7 +46983,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class KeyIds(AvdCollection[int, KeyIdsItem]):
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 KeyIds._item_type = KeyIdsItem
@@ -47146,7 +47146,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class KeyIds(AvdCollection[int, KeyIdsItem]):
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 KeyIds._item_type = KeyIdsItem
@@ -47309,7 +47309,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class KeyIds(AvdCollection[int, KeyIdsItem]):
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 KeyIds._item_type = KeyIdsItem
@@ -48182,7 +48182,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class GroupLimits(AvdCollection[str, GroupLimitsItem]):
+        class GroupLimits(AvdIndexedList[str, GroupLimitsItem]):
             _primary_key: ClassVar[str] = "source_prefix"
 
         GroupLimits._item_type = GroupLimitsItem
@@ -48240,7 +48240,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class MeshGroups(AvdCollection[str, MeshGroupsItem]):
+            class MeshGroups(AvdIndexedList[str, MeshGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             MeshGroups._item_type = MeshGroupsItem
@@ -48369,7 +48369,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Peers(AvdCollection[str, PeersItem]):
+        class Peers(AvdIndexedList[str, PeersItem]):
             _primary_key: ClassVar[str] = "ipv4_address"
 
         Peers._item_type = PeersItem
@@ -48406,7 +48406,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class GroupLimits(AvdCollection[str, GroupLimitsItem]):
+            class GroupLimits(AvdIndexedList[str, GroupLimitsItem]):
                 _primary_key: ClassVar[str] = "source_prefix"
 
             GroupLimits._item_type = GroupLimitsItem
@@ -48464,7 +48464,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class MeshGroups(AvdCollection[str, MeshGroupsItem]):
+                class MeshGroups(AvdIndexedList[str, MeshGroupsItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 MeshGroups._item_type = MeshGroupsItem
@@ -48593,7 +48593,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Peers(AvdCollection[str, PeersItem]):
+            class Peers(AvdIndexedList[str, PeersItem]):
                 _primary_key: ClassVar[str] = "ipv4_address"
 
             Peers._item_type = PeersItem
@@ -48653,7 +48653,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -48943,7 +48943,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -49042,7 +49042,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class NetworkPrefixes(AvdCollection[str, NetworkPrefixesItem]):
+            class NetworkPrefixes(AvdIndexedList[str, NetworkPrefixesItem]):
                 _primary_key: ClassVar[str] = "ipv4_prefix"
 
             NetworkPrefixes._item_type = NetworkPrefixesItem
@@ -49273,7 +49273,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SummaryAddresses(AvdCollection[str, SummaryAddressesItem]):
+            class SummaryAddresses(AvdIndexedList[str, SummaryAddressesItem]):
                 _primary_key: ClassVar[str] = "prefix"
 
             SummaryAddresses._item_type = SummaryAddressesItem
@@ -49534,7 +49534,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Areas(AvdCollection[str, AreasItem]):
+            class Areas(AvdIndexedList[str, AreasItem]):
                 _primary_key: ClassVar[str] = "id"
 
             Areas._item_type = AreasItem
@@ -49770,7 +49770,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class ProcessIds(AvdCollection[int, ProcessIdsItem]):
+        class ProcessIds(AvdIndexedList[int, ProcessIdsItem]):
             _primary_key: ClassVar[str] = "id"
 
         ProcessIds._item_type = ProcessIdsItem
@@ -49855,7 +49855,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class LocalInterfaces(AvdCollection[str, LocalInterfacesItem]):
+            class LocalInterfaces(AvdIndexedList[str, LocalInterfacesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             LocalInterfaces._item_type = LocalInterfacesItem
@@ -49917,7 +49917,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class LocalIps(AvdCollection[str, LocalIpsItem]):
+            class LocalIps(AvdIndexedList[str, LocalIpsItem]):
                 _primary_key: ClassVar[str] = "ip_address"
 
             LocalIps._item_type = LocalIpsItem
@@ -49997,7 +49997,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class StaticPeers(AvdCollection[str, StaticPeersItem]):
+            class StaticPeers(AvdIndexedList[str, StaticPeersItem]):
                 _primary_key: ClassVar[str] = "router_ip"
 
             StaticPeers._item_type = StaticPeersItem
@@ -50107,7 +50107,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PathGroups(AvdCollection[str, PathGroupsItem]):
+        class PathGroups(AvdIndexedList[str, PathGroupsItem]):
             _primary_key: ClassVar[str] = "name"
 
         PathGroups._item_type = PathGroupsItem
@@ -50149,7 +50149,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PathGroups(AvdCollection[str, PathGroupsItem]):
+            class PathGroups(AvdIndexedList[str, PathGroupsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             PathGroups._item_type = PathGroupsItem
@@ -50213,7 +50213,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class LoadBalancePolicies(AvdCollection[str, LoadBalancePoliciesItem]):
+        class LoadBalancePolicies(AvdIndexedList[str, LoadBalancePoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         LoadBalancePolicies._item_type = LoadBalancePoliciesItem
@@ -50280,7 +50280,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Rules(AvdCollection[int, RulesItem]):
+            class Rules(AvdIndexedList[int, RulesItem]):
                 _primary_key: ClassVar[str] = "id"
 
             Rules._item_type = RulesItem
@@ -50317,7 +50317,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Policies(AvdCollection[str, PoliciesItem]):
+        class Policies(AvdIndexedList[str, PoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Policies._item_type = PoliciesItem
@@ -50353,7 +50353,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -50541,7 +50541,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class OtherAnycastRpAddresses(AvdCollection[str, OtherAnycastRpAddressesItem]):
+                class OtherAnycastRpAddresses(AvdIndexedList[str, OtherAnycastRpAddressesItem]):
                     _primary_key: ClassVar[str] = "address"
 
                 OtherAnycastRpAddresses._item_type = OtherAnycastRpAddressesItem
@@ -50579,7 +50579,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AnycastRps(AvdCollection[str, AnycastRpsItem]):
+            class AnycastRps(AvdIndexedList[str, AnycastRpsItem]):
                 _primary_key: ClassVar[str] = "address"
 
             AnycastRps._item_type = AnycastRpsItem
@@ -50732,7 +50732,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -50823,7 +50823,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+            class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
                 _primary_key: ClassVar[str] = "sequence"
 
             SequenceNumbers._item_type = SequenceNumbersItem
@@ -50857,7 +50857,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Policies(AvdCollection[str, PoliciesItem]):
+        class Policies(AvdIndexedList[str, PoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Policies._item_type = PoliciesItem
@@ -50915,7 +50915,7 @@ class EosCliConfigGen(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class MatchLists(AvdCollection[str, MatchListsItem]):
+                    class MatchLists(AvdIndexedList[str, MatchListsItem]):
                         _primary_key: ClassVar[str] = "address_family"
 
                     MatchLists._item_type = MatchListsItem
@@ -50986,7 +50986,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Policies(AvdCollection[str, PoliciesItem]):
+                class Policies(AvdIndexedList[str, PoliciesItem]):
                     _primary_key: ClassVar[str] = "from"
 
                 Policies._item_type = PoliciesItem
@@ -51039,7 +51039,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Segments(AvdCollection[str, SegmentsItem]):
+            class Segments(AvdIndexedList[str, SegmentsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Segments._item_type = SegmentsItem
@@ -51072,7 +51072,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -51246,7 +51246,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Connections(AvdCollection[str, ConnectionsItem]):
+        class Connections(AvdIndexedList[str, ConnectionsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Connections._item_type = ConnectionsItem
@@ -51441,7 +51441,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Colors(AvdCollection[int, ColorsItem]):
+                class Colors(AvdIndexedList[int, ColorsItem]):
                     _primary_key: ClassVar[str] = "value"
 
                 Colors._item_type = ColorsItem
@@ -51626,7 +51626,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Destinations(AvdCollection[str, DestinationsItem]):
+            class Destinations(AvdIndexedList[str, DestinationsItem]):
                 _primary_key: ClassVar[str] = "destination"
 
             Destinations._item_type = DestinationsItem
@@ -51680,7 +51680,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -51716,7 +51716,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Destinations(AvdCollection[str, DestinationsItem]):
+        class Destinations(AvdIndexedList[str, DestinationsItem]):
             _primary_key: ClassVar[str] = "destination"
 
         Destinations._item_type = DestinationsItem
@@ -51752,7 +51752,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Extensions(AvdCollection[str, ExtensionsItem]):
+        class Extensions(AvdIndexedList[str, ExtensionsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Extensions._item_type = ExtensionsItem
@@ -51873,7 +51873,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Modules(AvdCollection[str, ModulesItem]):
+            class Modules(AvdIndexedList[str, ModulesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Modules._item_type = ModulesItem
@@ -52150,7 +52150,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Communities(AvdCollection[str, CommunitiesItem]):
+        class Communities(AvdIndexedList[str, CommunitiesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Communities._item_type = CommunitiesItem
@@ -52245,7 +52245,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class LocalInterfaces(AvdCollection[str, LocalInterfacesItem]):
+        class LocalInterfaces(AvdIndexedList[str, LocalInterfacesItem]):
             _primary_key: ClassVar[str] = "name"
 
         LocalInterfaces._item_type = LocalInterfacesItem
@@ -52595,7 +52595,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -52781,7 +52781,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Instances(AvdCollection[int, InstancesItem]):
+                class Instances(AvdIndexedList[int, InstancesItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 Instances._item_type = InstancesItem
@@ -52876,7 +52876,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MstInstances(AvdCollection[str, MstInstancesItem]):
+        class MstInstances(AvdIndexedList[str, MstInstancesItem]):
             _primary_key: ClassVar[str] = "id"
 
         MstInstances._item_type = MstInstancesItem
@@ -52916,7 +52916,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class RapidPvstInstances(AvdCollection[str, RapidPvstInstancesItem]):
+        class RapidPvstInstances(AvdIndexedList[str, RapidPvstInstancesItem]):
             _primary_key: ClassVar[str] = "id"
 
         RapidPvstInstances._item_type = RapidPvstInstancesItem
@@ -53024,7 +53024,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -53066,7 +53066,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class StandardAccessLists(AvdCollection[str, StandardAccessListsItem]):
+    class StandardAccessLists(AvdIndexedList[str, StandardAccessListsItem]):
         _primary_key: ClassVar[str] = "name"
 
     StandardAccessLists._item_type = StandardAccessListsItem
@@ -53182,7 +53182,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class ServerProfiles(AvdCollection[str, ServerProfilesItem]):
+            class ServerProfiles(AvdIndexedList[str, ServerProfilesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             ServerProfiles._item_type = ServerProfilesItem
@@ -54019,7 +54019,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Profiles(AvdCollection[str, ProfilesItem]):
+        class Profiles(AvdIndexedList[str, ProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Profiles._item_type = ProfilesItem
@@ -54122,7 +54122,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Trackers(AvdCollection[str, TrackersItem]):
+    class Trackers(AvdIndexedList[str, TrackersItem]):
         _primary_key: ClassVar[str] = "name"
 
     Trackers._item_type = TrackersItem
@@ -54182,7 +54182,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Ipv4(AvdCollection[str, Ipv4Item]):
+            class Ipv4(AvdIndexedList[str, Ipv4Item]):
                 _primary_key: ClassVar[str] = "name"
 
             Ipv4._item_type = Ipv4Item
@@ -54217,7 +54217,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Ipv6(AvdCollection[str, Ipv6Item]):
+            class Ipv6(AvdIndexedList[str, Ipv6Item]):
                 _primary_key: ClassVar[str] = "name"
 
             Ipv6._item_type = Ipv6Item
@@ -54253,7 +54253,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Ports(AvdCollection[str, PortsItem]):
+            class Ports(AvdIndexedList[str, PortsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Ports._item_type = PortsItem
@@ -54443,7 +54443,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Protocols(AvdCollection[str, ProtocolsItem]):
+                class Protocols(AvdIndexedList[str, ProtocolsItem]):
                     _primary_key: ClassVar[str] = "protocol"
 
                 Protocols._item_type = ProtocolsItem
@@ -54562,7 +54562,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Matches(AvdCollection[str, MatchesItem]):
+            class Matches(AvdIndexedList[str, MatchesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Matches._item_type = MatchesItem
@@ -54729,7 +54729,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Policies(AvdCollection[str, PoliciesItem]):
+        class Policies(AvdIndexedList[str, PoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Policies._item_type = PoliciesItem
@@ -54949,7 +54949,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class TunnelInterfaces(AvdCollection[str, TunnelInterfacesItem]):
+    class TunnelInterfaces(AvdIndexedList[str, TunnelInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     TunnelInterfaces._item_type = TunnelInterfacesItem
@@ -54985,7 +54985,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class VirtualSourceNatVrfs(AvdCollection[str, VirtualSourceNatVrfsItem]):
+    class VirtualSourceNatVrfs(AvdIndexedList[str, VirtualSourceNatVrfsItem]):
         _primary_key: ClassVar[str] = "name"
 
     VirtualSourceNatVrfs._item_type = VirtualSourceNatVrfsItem
@@ -55056,7 +55056,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Exclude(AvdCollection[str, ExcludeItem]):
+                class Exclude(AvdIndexedList[str, ExcludeItem]):
                     _primary_key: ClassVar[str] = "source"
 
                 Exclude._item_type = ExcludeItem
@@ -55082,7 +55082,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Include(AvdCollection[str, IncludeItem]):
+                class Include(AvdIndexedList[str, IncludeItem]):
                     _primary_key: ClassVar[str] = "source"
 
                 Include._item_type = IncludeItem
@@ -55121,7 +55121,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Groups(AvdCollection[str, GroupsItem]):
+            class Groups(AvdIndexedList[str, GroupsItem]):
                 _primary_key: ClassVar[str] = "group"
 
             Groups._item_type = GroupsItem
@@ -55147,7 +55147,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AccessLists(AvdCollection[str, AccessListsItem]):
+            class AccessLists(AvdIndexedList[str, AccessListsItem]):
                 _primary_key: ClassVar[str] = "name"
 
             AccessLists._item_type = AccessListsItem
@@ -55234,7 +55234,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpHelpers(AvdCollection[str, IpHelpersItem]):
+        class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
             _primary_key: ClassVar[str] = "ip_helper"
 
         IpHelpers._item_type = IpHelpersItem
@@ -55282,7 +55282,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -55450,7 +55450,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Dynamic(AvdCollection[str, DynamicItem]):
+                class Dynamic(AvdIndexedList[str, DynamicItem]):
                     _primary_key: ClassVar[str] = "access_list"
 
                 Dynamic._item_type = DynamicItem
@@ -55676,7 +55676,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv6NdPrefixes(AvdCollection[str, Ipv6NdPrefixesItem]):
+        class Ipv6NdPrefixes(AvdIndexedList[str, Ipv6NdPrefixesItem]):
             _primary_key: ClassVar[str] = "ipv6_prefix"
 
         Ipv6NdPrefixes._item_type = Ipv6NdPrefixesItem
@@ -55730,7 +55730,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv6DhcpRelayDestinations(AvdCollection[str, Ipv6DhcpRelayDestinationsItem]):
+        class Ipv6DhcpRelayDestinations(AvdIndexedList[str, Ipv6DhcpRelayDestinationsItem]):
             _primary_key: ClassVar[str] = "address"
 
         Ipv6DhcpRelayDestinations._item_type = Ipv6DhcpRelayDestinationsItem
@@ -55767,7 +55767,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Boundaries(AvdCollection[str, BoundariesItem]):
+                class Boundaries(AvdIndexedList[str, BoundariesItem]):
                     _primary_key: ClassVar[str] = "boundary"
 
                 Boundaries._item_type = BoundariesItem
@@ -55866,7 +55866,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Boundaries(AvdCollection[str, BoundariesItem]):
+                class Boundaries(AvdIndexedList[str, BoundariesItem]):
                     _primary_key: ClassVar[str] = "boundary"
 
                 Boundaries._item_type = BoundariesItem
@@ -56003,7 +56003,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class OspfMessageDigestKeys(AvdCollection[int, OspfMessageDigestKeysItem]):
+        class OspfMessageDigestKeys(AvdIndexedList[int, OspfMessageDigestKeysItem]):
             _primary_key: ClassVar[str] = "id"
 
         OspfMessageDigestKeys._item_type = OspfMessageDigestKeysItem
@@ -56166,7 +56166,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class KeyIds(AvdCollection[int, KeyIdsItem]):
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 KeyIds._item_type = KeyIdsItem
@@ -56329,7 +56329,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class KeyIds(AvdCollection[int, KeyIdsItem]):
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 KeyIds._item_type = KeyIdsItem
@@ -56492,7 +56492,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class KeyIds(AvdCollection[int, KeyIdsItem]):
+                class KeyIds(AvdIndexedList[int, KeyIdsItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 KeyIds._item_type = KeyIdsItem
@@ -56804,7 +56804,7 @@ class EosCliConfigGen(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class TrackedObject(AvdCollection[str, TrackedObjectItem]):
+            class TrackedObject(AvdIndexedList[str, TrackedObjectItem]):
                 _primary_key: ClassVar[str] = "name"
 
             TrackedObject._item_type = TrackedObjectItem
@@ -56919,7 +56919,7 @@ class EosCliConfigGen(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class VrrpIds(AvdCollection[int, VrrpIdsItem]):
+        class VrrpIds(AvdIndexedList[int, VrrpIdsItem]):
             _primary_key: ClassVar[str] = "id"
 
         VrrpIds._item_type = VrrpIdsItem
@@ -57385,7 +57385,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class VlanInterfaces(AvdCollection[str, VlanInterfacesItem]):
+    class VlanInterfaces(AvdIndexedList[str, VlanInterfacesItem]):
         _primary_key: ClassVar[str] = "name"
 
     VlanInterfaces._item_type = VlanInterfacesItem
@@ -57532,7 +57532,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Vlans(AvdCollection[int, VlansItem]):
+    class Vlans(AvdIndexedList[int, VlansItem]):
         _primary_key: ClassVar[str] = "id"
 
     Vlans._item_type = VlansItem
@@ -57588,7 +57588,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class VmtracerSessions(AvdCollection[str, VmtracerSessionsItem]):
+    class VmtracerSessions(AvdIndexedList[str, VmtracerSessionsItem]):
         _primary_key: ClassVar[str] = "name"
 
     VmtracerSessions._item_type = VmtracerSessionsItem
@@ -57644,7 +57644,7 @@ class EosCliConfigGen(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Vrfs(AvdCollection[str, VrfsItem]):
+    class Vrfs(AvdIndexedList[str, VrfsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Vrfs._item_type = VrfsItem
@@ -57818,7 +57818,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vlans(AvdCollection[int, VlansItem]):
+                class Vlans(AvdIndexedList[int, VlansItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 Vlans._item_type = VlansItem
@@ -57857,7 +57857,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vrfs(AvdCollection[str, VrfsItem]):
+                class Vrfs(AvdIndexedList[str, VrfsItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Vrfs._item_type = VrfsItem
@@ -58157,7 +58157,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vlans(AvdCollection[int, VlansItem]):
+                class Vlans(AvdIndexedList[int, VlansItem]):
                     _primary_key: ClassVar[str] = "id"
 
                 Vlans._item_type = VlansItem
@@ -58196,7 +58196,7 @@ class EosCliConfigGen(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vrfs(AvdCollection[str, VrfsItem]):
+                class Vrfs(AvdIndexedList[str, VrfsItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Vrfs._item_type = VrfsItem

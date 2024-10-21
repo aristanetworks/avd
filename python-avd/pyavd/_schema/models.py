@@ -15,7 +15,7 @@ from .loader import loader
 
 T = TypeVar("T")
 T_AvdModel = TypeVar("T_AvdModel", bound="AvdModel")
-T_AvdCollection = TypeVar("T_AvdCollection", bound="AvdCollection")
+T_AvdIndexedList = TypeVar("T_AvdIndexedList", bound="AvdIndexedList")
 T_PrimaryKey = TypeVar("T_PrimaryKey", int, str)
 
 
@@ -115,15 +115,15 @@ class AvdModel(AvdBase):
             if issubclass(field_info["type"], AvdModel) and isinstance(value, AvdModel):
                 as_dict[key] = value._as_dict()
                 continue
-            if issubclass(field_info["type"], AvdCollection) and isinstance(value, AvdCollection):
+            if issubclass(field_info["type"], AvdIndexedList) and isinstance(value, AvdIndexedList):
                 as_dict[key] = value._as_list()
                 continue
             if field_info["type"] is list and isinstance(value, list):
                 if issubclass(field_info["items"], AvdModel):
                     as_dict[key] = [item._as_dict() for item in value if isinstance(item, AvdModel)]
                     continue
-                if issubclass(field_info["items"], AvdCollection):
-                    as_dict[key] = [item._as_list() for item in value if isinstance(item, AvdCollection)]
+                if issubclass(field_info["items"], AvdIndexedList):
+                    as_dict[key] = [item._as_list() for item in value if isinstance(item, AvdIndexedList)]
                     continue
 
             as_dict[key] = value
@@ -169,7 +169,7 @@ class AvdModel(AvdBase):
             field_type = field_info["type"]
             if field_type is list and list_merge == "append":
                 setattr(self, field, old_value + new_value)
-            elif issubclass(field_type, (AvdModel, AvdCollection)) and isinstance(old_value, field_type):
+            elif issubclass(field_type, (AvdModel, AvdIndexedList)) and isinstance(old_value, field_type):
                 # Merge in to the existing object
                 old_value._deepmerge(new_value, list_merge=list_merge)
             else:
@@ -252,13 +252,13 @@ class AvdModel(AvdBase):
                 msg = f"Unable to cast '{cls}' as type '{new_type}' since the field '{field}' is missing from the new class. "
                 raise TypeError(msg)
             if field_info != new_type._fields[field]:
-                if field_info["type"] is list and issubclass(field_info["items"], (AvdModel, AvdCollection)) and isinstance(value, list):
+                if field_info["type"] is list and issubclass(field_info["items"], (AvdModel, AvdIndexedList)) and isinstance(value, list):
                     # TODO: Consider using the TypeError we raise below to ensure we know the outer type.
                     # TODO: with suppress(TypeError):
                     new_args[field] = [
                         item._cast_as(new_type._fields[field]["items"], ignore_extra_keys=ignore_extra_keys)
                         for item in value
-                        if isinstance(item, (AvdModel, AvdCollection))
+                        if isinstance(item, (AvdModel, AvdIndexedList))
                     ]
                     continue
 
@@ -277,7 +277,7 @@ class AvdModel(AvdBase):
         return new_type(**new_args)
 
 
-class AvdCollection(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):
+class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):
     _is_avd_collection = True
     _item_type: ClassVar[type[AvdModel]]
     _primary_key: ClassVar[str]
@@ -369,17 +369,17 @@ class AvdCollection(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Avd
         new_instance._deepmerge(other=other, list_merge=list_merge)
         return new_instance
 
-    def _cast_as(self, new_type: type[T_AvdCollection], ignore_extra_keys: bool = False) -> T_AvdCollection:
+    def _cast_as(self, new_type: type[T_AvdIndexedList], ignore_extra_keys: bool = False) -> T_AvdIndexedList:
         """
-        Recast a class instance as another AvdCollection subclass if they are compatible.
+        Recast a class instance as another AvdIndexedList subclass if they are compatible.
 
         The classes are compatible if the items of the new class is a superset of the current class.
 
         Useful when inheriting from profiles.
         """
         cls = type(self)
-        if not issubclass(new_type, AvdCollection):
-            msg = f"Unable to cast '{cls}' as type '{new_type}' since '{new_type}' is not an AvdCollection subclass."
+        if not issubclass(new_type, AvdIndexedList):
+            msg = f"Unable to cast '{cls}' as type '{new_type}' since '{new_type}' is not an AvdIndexedList subclass."
             raise TypeError(msg)
 
         return new_type([item._cast_as(new_type._item_type, ignore_extra_keys=ignore_extra_keys) for item in self])

@@ -12,7 +12,7 @@ from schema_tools.constants import LICENSE_HEADER
 SRC_HEADER = indent(LICENSE_HEADER + "\n\n", "# ")
 
 BASE_IMPORTS = """\
-from pyavd._schema.models import AvdCollection, AvdModel
+from pyavd._schema.models import AvdIndexedList, AvdModel
 from pyavd._utils import Undefined, UndefinedType
 """
 BASE_MODEL_NAME = "AvdModel"
@@ -289,7 +289,7 @@ class CollectionSrc:
 
     name: str
     base_class: str
-    item_type: str
+    item_type: str | None = None
     class_vars: list[ClassVarSrc] | None = None
     imports: set[str] | None = None
     description: str | None = None
@@ -308,7 +308,11 @@ class CollectionSrc:
         if class_vars := self._render_class_vars():
             classsrc += f"{class_vars}\n"
 
-        classsrc += f"\n{self.name}._item_type = {self.item_type}\n"
+        if self.item_type:
+            classsrc += f"\n{self.name}._item_type = {self.item_type}\n"
+
+        if not (self.description or class_vars or self.item_type):
+            classsrc += "    pass\n"
 
         return classsrc
 

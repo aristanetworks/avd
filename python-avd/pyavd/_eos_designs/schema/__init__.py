@@ -6,7 +6,7 @@ from typing import Any, ClassVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._schema.loader import coerce_type
-from pyavd._schema.models import AvdCollection, AvdModel
+from pyavd._schema.models import AvdIndexedList, AvdModel
 from pyavd._utils import Undefined, UndefinedType
 
 
@@ -759,7 +759,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class ConnectedEndpointsKeys(AvdCollection[str, ConnectedEndpointsKeysItem]):
+    class ConnectedEndpointsKeys(AvdIndexedList[str, ConnectedEndpointsKeysItem]):
         _primary_key: ClassVar[str] = "key"
 
     ConnectedEndpointsKeys._item_type = ConnectedEndpointsKeysItem
@@ -805,7 +805,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksIpPools(AvdCollection[str, P2pLinksIpPoolsItem]):
+        class P2pLinksIpPools(AvdIndexedList[str, P2pLinksIpPoolsItem]):
             _primary_key: ClassVar[str] = "name"
 
         P2pLinksIpPools._item_type = P2pLinksIpPoolsItem
@@ -908,7 +908,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                class NodesChildInterfaces(AvdIndexedList[str, NodesChildInterfacesItem]):
                     _primary_key: ClassVar[str] = "node"
 
                 NodesChildInterfaces._item_type = NodesChildInterfacesItem
@@ -1208,7 +1208,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksProfiles(AvdCollection[str, P2pLinksProfilesItem]):
+        class P2pLinksProfiles(AvdIndexedList[str, P2pLinksProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         P2pLinksProfiles._item_type = P2pLinksProfilesItem
@@ -1311,7 +1311,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                class NodesChildInterfaces(AvdIndexedList[str, NodesChildInterfacesItem]):
                     _primary_key: ClassVar[str] = "node"
 
                 NodesChildInterfaces._item_type = NodesChildInterfacesItem
@@ -1681,7 +1681,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvPathfinderGlobalSites(AvdCollection[str, CvPathfinderGlobalSitesItem]):
+    class CvPathfinderGlobalSites(AvdIndexedList[str, CvPathfinderGlobalSitesItem]):
         _primary_key: ClassVar[str] = "name"
 
     CvPathfinderGlobalSites._item_type = CvPathfinderGlobalSitesItem
@@ -1850,7 +1850,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvPathfinderInternetExitPolicies(AvdCollection[str, CvPathfinderInternetExitPoliciesItem]):
+    class CvPathfinderInternetExitPolicies(AvdIndexedList[str, CvPathfinderInternetExitPoliciesItem]):
         _primary_key: ClassVar[str] = "name"
 
     CvPathfinderInternetExitPolicies._item_type = CvPathfinderInternetExitPoliciesItem
@@ -1915,7 +1915,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Sites(AvdCollection[str, SitesItem]):
+        class Sites(AvdIndexedList[str, SitesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Sites._item_type = SitesItem
@@ -1962,7 +1962,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvPathfinderRegions(AvdCollection[str, CvPathfinderRegionsItem]):
+    class CvPathfinderRegions(AvdIndexedList[str, CvPathfinderRegionsItem]):
         _primary_key: ClassVar[str] = "name"
 
     CvPathfinderRegions._item_type = CvPathfinderRegionsItem
@@ -2000,7 +2000,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Interfaces(AvdCollection[str, InterfacesItem]):
+        class Interfaces(AvdIndexedList[str, InterfacesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Interfaces._item_type = InterfacesItem
@@ -2036,7 +2036,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvTopology(AvdCollection[str, CvTopologyItem]):
+    class CvTopology(AvdIndexedList[str, CvTopologyItem]):
         _primary_key: ClassVar[str] = "hostname"
 
     CvTopology._item_type = CvTopologyItem
@@ -2129,7 +2129,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class DefaultNodeTypes(AvdCollection[str, DefaultNodeTypesItem]):
+    class DefaultNodeTypes(AvdIndexedList[str, DefaultNodeTypesItem]):
         _primary_key: ClassVar[str] = "node_type"
 
     DefaultNodeTypes._item_type = DefaultNodeTypesItem
@@ -2279,329 +2279,8 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EventHandlersItem(AvdModel):
-        class Actions(AvdModel):
-            _fields: ClassVar[dict] = {
-                "_custom_data": {"type": dict},
-                "bash_command": {"type": str},
-                "log": {"type": bool},
-                "increment_device_health_metric": {"type": str},
-            }
-            _required_fields: ClassVar[tuple] = ("_custom_data",)
-            _custom_data: dict[str, Any]
-            bash_command: str | None
-            """Define BASH command action. Command could be multiline also."""
-            log: bool | None
-            """Log a message when the event is triggered."""
-            increment_device_health_metric: str | None
-            """Name of device-health metric."""
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                bash_command: str | None | UndefinedType = Undefined,
-                log: bool | None | UndefinedType = Undefined,
-                increment_device_health_metric: str | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                Actions.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    bash_command: Define BASH command action. Command could be multiline also.
-                    log: Log a message when the event is triggered.
-                    increment_device_health_metric: Name of device-health metric.
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class TriggerOnCounters(AvdModel):
-            _fields: ClassVar[dict] = {
-                "_custom_data": {"type": dict},
-                "condition": {"type": str},
-                "granularity_per_source": {"type": bool},
-                "poll_interval": {"type": int},
-            }
-            _required_fields: ClassVar[tuple] = ("_custom_data",)
-            _custom_data: dict[str, Any]
-            condition: str | None
-            """Set the logical expression to evaluate."""
-            granularity_per_source: bool | None
-            """
-            Set the granularity of event counting for a wildcarded condition.
-            Example -
-              condition (
-            Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
-              [* wildcard is used
-            here]
-            """
-            poll_interval: int | None
-            """Set the polling interval in seconds."""
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                condition: str | None | UndefinedType = Undefined,
-                granularity_per_source: bool | None | UndefinedType = Undefined,
-                poll_interval: int | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                TriggerOnCounters.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    condition: Set the logical expression to evaluate.
-                    granularity_per_source:
-                       Set the granularity of event counting for a wildcarded condition.
-                       Example -
-                         condition (
-                       Arad*.IptCrcErrCnt.delta > 100 ) and ( Arad*.UcFifoFullDrop.delta > 100 )
-                         [* wildcard is used
-                       here]
-                    poll_interval: Set the polling interval in seconds.
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class TriggerOnLogging(AvdModel):
-            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "poll_interval": {"type": int}, "regex": {"type": str}}
-            _required_fields: ClassVar[tuple] = ("_custom_data",)
-            _custom_data: dict[str, Any]
-            poll_interval: int | None
-            """Set the polling interval in seconds."""
-            regex: str | None
-            """Regular expression to use for searching log messages."""
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                poll_interval: int | None | UndefinedType = Undefined,
-                regex: str | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                TriggerOnLogging.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    poll_interval: Set the polling interval in seconds.
-                    regex: Regular expression to use for searching log messages.
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class TriggerOnIntf(AvdModel):
-            _fields: ClassVar[dict] = {
-                "_custom_data": {"type": dict},
-                "interface": {"type": str},
-                "ip": {"type": bool},
-                "ipv6": {"type": bool},
-                "operstatus": {"type": bool},
-            }
-            _required_fields: ClassVar[tuple] = ("_custom_data", "interface")
-            _custom_data: dict[str, Any]
-            interface: str
-            """
-            Interface name.
-            Example - Ethernet4
-                      Loopback4-6
-                      Port-channel4,7
-            """
-            ip: bool | None
-            """Action is triggered upon changes to interface IP address assignment."""
-            ipv6: bool | None
-            """Action is triggered upon changes to interface ipv6 address assignment."""
-            operstatus: bool | None
-            """Action is triggered upon changes to interface operStatus."""
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                interface: str | UndefinedType = Undefined,
-                ip: bool | None | UndefinedType = Undefined,
-                ipv6: bool | None | UndefinedType = Undefined,
-                operstatus: bool | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                TriggerOnIntf.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    interface:
-                       Interface name.
-                       Example - Ethernet4
-                                 Loopback4-6
-                                 Port-channel4,7
-                    ip: Action is triggered upon changes to interface IP address assignment.
-                    ipv6: Action is triggered upon changes to interface ipv6 address assignment.
-                    operstatus: Action is triggered upon changes to interface operStatus.
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class TriggerOnMaintenance(AvdModel):
-            _fields: ClassVar[dict] = {
-                "_custom_data": {"type": dict},
-                "operation": {"type": str},
-                "bgp_peer": {"type": str},
-                "action": {"type": str},
-                "stage": {"type": str},
-                "vrf": {"type": str},
-                "interface": {"type": str},
-                "unit": {"type": str},
-            }
-            _required_fields: ClassVar[tuple] = ("_custom_data", "operation", "action")
-            _custom_data: dict[str, Any]
-            operation: str
-            bgp_peer: str | None
-            """
-            Ipv4/Ipv6 address or peer group name.
-            Trigger condition occurs on maintenance operation of specified
-            BGP peer.
-            """
-            action: str
-            """Action for maintenance operation."""
-            stage: str | None
-            """Action is triggered after/before specified stage."""
-            vrf: str | None
-            """VRF name. VRF can be defined for "bgp_peer" only."""
-            interface: str | None
-            """Trigger condition occurs on maintenance operation of specified interface."""
-            unit: str | None
-            """Name of unit. Trigger condition occurs on maintenance operation of specified unit"""
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                operation: str | UndefinedType = Undefined,
-                bgp_peer: str | None | UndefinedType = Undefined,
-                action: str | UndefinedType = Undefined,
-                stage: str | None | UndefinedType = Undefined,
-                vrf: str | None | UndefinedType = Undefined,
-                interface: str | None | UndefinedType = Undefined,
-                unit: str | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                TriggerOnMaintenance.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    operation: operation
-                    bgp_peer:
-                       Ipv4/Ipv6 address or peer group name.
-                       Trigger condition occurs on maintenance operation of specified
-                       BGP peer.
-                    action: Action for maintenance operation.
-                    stage: Action is triggered after/before specified stage.
-                    vrf: VRF name. VRF can be defined for "bgp_peer" only.
-                    interface: Trigger condition occurs on maintenance operation of specified interface.
-                    unit: Name of unit. Trigger condition occurs on maintenance operation of specified unit
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        _fields: ClassVar[dict] = {
-            "_custom_data": {"type": dict},
-            "name": {"type": str},
-            "actions": {"type": Actions},
-            "delay": {"type": int},
-            "trigger": {"type": str},
-            "trigger_on_counters": {"type": TriggerOnCounters},
-            "trigger_on_logging": {"type": TriggerOnLogging},
-            "trigger_on_intf": {"type": TriggerOnIntf},
-            "trigger_on_maintenance": {"type": TriggerOnMaintenance},
-            "asynchronous": {"type": bool, "default": False},
-        }
-        _required_fields: ClassVar[tuple] = ("_custom_data", "name")
-        _custom_data: dict[str, Any]
-        name: str
-        """Event Handler Name."""
-        actions: Actions
-        """Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`."""
-        delay: int | None
-        """Event-handler delay in seconds."""
-        trigger: str | None
-        """Configure event trigger condition."""
-        trigger_on_counters: TriggerOnCounters
-        trigger_on_logging: TriggerOnLogging
-        trigger_on_intf: TriggerOnIntf
-        """
-        Trigger condition occurs on specified interface changes.
-        Note: Any one of the `ip`, `ipv6` and
-        `operstatus` key needs to be defined along with the `interface`.
-        """
-        trigger_on_maintenance: TriggerOnMaintenance
-        """Settings required for trigger 'on-maintenance'."""
-        asynchronous: bool | None
-        """Set the action to be non-blocking."""
-
-        def __init__(
-            self,
-            *,
-            _custom_data: dict[str, Any] | UndefinedType = Undefined,
-            name: str | UndefinedType = Undefined,
-            actions: Actions | UndefinedType = Undefined,
-            delay: int | None | UndefinedType = Undefined,
-            trigger: str | None | UndefinedType = Undefined,
-            trigger_on_counters: TriggerOnCounters | UndefinedType = Undefined,
-            trigger_on_logging: TriggerOnLogging | UndefinedType = Undefined,
-            trigger_on_intf: TriggerOnIntf | UndefinedType = Undefined,
-            trigger_on_maintenance: TriggerOnMaintenance | UndefinedType = Undefined,
-            asynchronous: bool | None | UndefinedType = Undefined,
-        ) -> None:
-            """
-            EventHandlersItem.
-
-            Args:
-            -----
-                _custom_data: _custom_data
-                name: Event Handler Name.
-                actions: Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`.
-                delay: Event-handler delay in seconds.
-                trigger: Configure event trigger condition.
-                trigger_on_counters: trigger_on_counters
-                trigger_on_logging: trigger_on_logging
-                trigger_on_intf:
-                   Trigger condition occurs on specified interface changes.
-                   Note: Any one of the `ip`, `ipv6` and
-                   `operstatus` key needs to be defined along with the `interface`.
-                trigger_on_maintenance: Settings required for trigger 'on-maintenance'.
-                asynchronous: Set the action to be non-blocking.
-
-            """
-            for arg, arg_value in locals().items():
-                if arg_value is Undefined or arg in ("self", "kwargs"):
-                    continue
-                setattr(self, arg, arg_value)
-
-    class EventHandlers(AvdCollection[str, EventHandlersItem]):
-        _primary_key: ClassVar[str] = "name"
-
-    EventHandlers._item_type = EventHandlersItem
+    class EventHandlers(EosCliConfigGen.EventHandlers):
+        pass
 
     class EvpnHostflapDetection(AvdModel):
         _fields: ClassVar[dict] = {
@@ -2789,7 +2468,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EvpnVlanBundles(AvdCollection[str, EvpnVlanBundlesItem]):
+    class EvpnVlanBundles(AvdIndexedList[str, EvpnVlanBundlesItem]):
         _primary_key: ClassVar[str] = "name"
 
     EvpnVlanBundles._item_type = EvpnVlanBundlesItem
@@ -3678,7 +3357,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Exporters(AvdCollection[str, ExportersItem]):
+            class Exporters(AvdIndexedList[str, ExportersItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Exporters._item_type = ExportersItem
@@ -3725,7 +3404,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Trackers(AvdCollection[str, TrackersItem]):
+        class Trackers(AvdIndexedList[str, TrackersItem]):
             _primary_key: ClassVar[str] = "name"
 
         Trackers._item_type = TrackersItem
@@ -3831,7 +3510,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class InterfaceTags(AvdCollection[str, InterfaceTagsItem]):
+        class InterfaceTags(AvdIndexedList[str, InterfaceTagsItem]):
             _primary_key: ClassVar[str] = "name"
 
         InterfaceTags._item_type = InterfaceTagsItem
@@ -4217,7 +3896,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv4Acls(AvdCollection[str, Ipv4AclsItem]):
+    class Ipv4Acls(AvdIndexedList[str, Ipv4AclsItem]):
         _primary_key: ClassVar[str] = "name"
 
     Ipv4Acls._item_type = Ipv4AclsItem
@@ -4259,7 +3938,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+        class SequenceNumbers(AvdIndexedList[int, SequenceNumbersItem]):
             _primary_key: ClassVar[str] = "sequence"
 
         SequenceNumbers._item_type = SequenceNumbersItem
@@ -4293,7 +3972,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv4PrefixListCatalog(AvdCollection[str, Ipv4PrefixListCatalogItem]):
+    class Ipv4PrefixListCatalog(AvdIndexedList[str, Ipv4PrefixListCatalogItem]):
         _primary_key: ClassVar[str] = "name"
 
     Ipv4PrefixListCatalog._item_type = Ipv4PrefixListCatalogItem
@@ -4377,7 +4056,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksIpPools(AvdCollection[str, P2pLinksIpPoolsItem]):
+        class P2pLinksIpPools(AvdIndexedList[str, P2pLinksIpPoolsItem]):
             _primary_key: ClassVar[str] = "name"
 
         P2pLinksIpPools._item_type = P2pLinksIpPoolsItem
@@ -4480,7 +4159,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                class NodesChildInterfaces(AvdIndexedList[str, NodesChildInterfacesItem]):
                     _primary_key: ClassVar[str] = "node"
 
                 NodesChildInterfaces._item_type = NodesChildInterfacesItem
@@ -4780,7 +4459,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksProfiles(AvdCollection[str, P2pLinksProfilesItem]):
+        class P2pLinksProfiles(AvdIndexedList[str, P2pLinksProfilesItem]):
             _primary_key: ClassVar[str] = "name"
 
         P2pLinksProfiles._item_type = P2pLinksProfilesItem
@@ -4883,7 +4562,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                class NodesChildInterfaces(AvdIndexedList[str, NodesChildInterfacesItem]):
                     _primary_key: ClassVar[str] = "node"
 
                 NodesChildInterfaces._item_type = NodesChildInterfacesItem
@@ -5342,7 +5021,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Policies(AvdCollection[str, PoliciesItem]):
+            class Policies(AvdIndexedList[str, PoliciesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Policies._item_type = PoliciesItem
@@ -5664,102 +5343,13 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class L3InterfaceProfiles(AvdCollection[str, L3InterfaceProfilesItem]):
+    class L3InterfaceProfiles(AvdIndexedList[str, L3InterfaceProfilesItem]):
         _primary_key: ClassVar[str] = "profile"
 
     L3InterfaceProfiles._item_type = L3InterfaceProfilesItem
 
-    class LocalUsersItem(AvdModel):
-        _fields: ClassVar[dict] = {
-            "_custom_data": {"type": dict},
-            "name": {"type": str},
-            "disabled": {"type": bool},
-            "privilege": {"type": int},
-            "role": {"type": str},
-            "sha512_password": {"type": str},
-            "no_password": {"type": bool},
-            "ssh_key": {"type": str},
-            "secondary_ssh_key": {"type": str},
-            "shell": {"type": str},
-        }
-        _required_fields: ClassVar[tuple] = ("_custom_data", "name")
-        _custom_data: dict[str, Any]
-        name: str
-        """Username."""
-        disabled: bool | None
-        """
-        If true, the user will be removed and all other settings are ignored.
-        Useful for removing the
-        default "admin" user.
-        """
-        privilege: int | None
-        """Initial privilege level with local EXEC authorization."""
-        role: str | None
-        """EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator"."""
-        sha512_password: str | None
-        """
-        SHA512 Hash of Password.
-        Must be the hash of the password. By default EOS salts the password with
-        the username, so the simplest is to generate the hash on an EOS device using the same username.
-        """
-        no_password: bool | None
-        """
-        If set a password will not be configured for this user. "sha512_password" MUST not be defined for
-        this user.
-        """
-        ssh_key: str | None
-        secondary_ssh_key: str | None
-        shell: str | None
-        """Specify shell for the user."""
-
-        def __init__(
-            self,
-            *,
-            _custom_data: dict[str, Any] | UndefinedType = Undefined,
-            name: str | UndefinedType = Undefined,
-            disabled: bool | None | UndefinedType = Undefined,
-            privilege: int | None | UndefinedType = Undefined,
-            role: str | None | UndefinedType = Undefined,
-            sha512_password: str | None | UndefinedType = Undefined,
-            no_password: bool | None | UndefinedType = Undefined,
-            ssh_key: str | None | UndefinedType = Undefined,
-            secondary_ssh_key: str | None | UndefinedType = Undefined,
-            shell: str | None | UndefinedType = Undefined,
-        ) -> None:
-            """
-            LocalUsersItem.
-
-            Args:
-            -----
-                _custom_data: _custom_data
-                name: Username.
-                disabled:
-                   If true, the user will be removed and all other settings are ignored.
-                   Useful for removing the
-                   default "admin" user.
-                privilege: Initial privilege level with local EXEC authorization.
-                role: EOS RBAC Role to be assigned to the user such as "network-admin" or "network-operator".
-                sha512_password:
-                   SHA512 Hash of Password.
-                   Must be the hash of the password. By default EOS salts the password with
-                   the username, so the simplest is to generate the hash on an EOS device using the same username.
-                no_password:
-                   If set a password will not be configured for this user. "sha512_password" MUST not be defined for
-                   this user.
-                ssh_key: ssh_key
-                secondary_ssh_key: secondary_ssh_key
-                shell: Specify shell for the user.
-
-            """
-            for arg, arg_value in locals().items():
-                if arg_value is Undefined or arg in ("self", "kwargs"):
-                    continue
-                setattr(self, arg, arg_value)
-
-    class LocalUsers(AvdCollection[str, LocalUsersItem]):
-        _primary_key: ClassVar[str] = "name"
-
-    LocalUsers._item_type = LocalUsersItem
+    class LocalUsers(EosCliConfigGen.LocalUsers):
+        pass
 
     class MacAddressTable(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "aging_time": {"type": int}}
@@ -7221,7 +6811,9 @@ class EosDesigns(AvdModel):
         """Interface mode."""
         mtu: int | None
         l2_mtu: int | None
+        """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
+        """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
         native_vlan: int | None
         """
         Native VLAN for a trunk port.
@@ -7385,8 +6977,8 @@ class EosDesigns(AvdModel):
                    configuration.
                 mode: Interface mode.
                 mtu: mtu
-                l2_mtu: l2_mtu
-                l2_mru: l2_mru
+                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                 native_vlan:
                    Native VLAN for a trunk port.
                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
@@ -7461,7 +7053,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class NetworkServicesKeys(AvdCollection[str, NetworkServicesKeysItem]):
+    class NetworkServicesKeys(AvdIndexedList[str, NetworkServicesKeysItem]):
         _primary_key: ClassVar[str] = "name"
 
     NetworkServicesKeys._item_type = NetworkServicesKeysItem
@@ -7912,7 +7504,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CustomNodeTypeKeys(AvdCollection[str, CustomNodeTypeKeysItem]):
+    class CustomNodeTypeKeys(AvdIndexedList[str, CustomNodeTypeKeysItem]):
         _primary_key: ClassVar[str] = "key"
 
     CustomNodeTypeKeys._item_type = CustomNodeTypeKeysItem
@@ -8363,7 +7955,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class NodeTypeKeys(AvdCollection[str, NodeTypeKeysItem]):
+    class NodeTypeKeys(AvdIndexedList[str, NodeTypeKeysItem]):
         _primary_key: ClassVar[str] = "key"
 
     NodeTypeKeys._item_type = NodeTypeKeysItem
@@ -8383,11 +7975,14 @@ class EosDesigns(AvdModel):
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
             name: str | None
+            """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
             burst: bool | None
             iburst: bool | None
             key: int | None
             maxpoll: int | None
+            """Value of maxpoll between 3 - 17 (Logarithmic)."""
             minpoll: int | None
+            """Value of minpoll between 3 - 17 (Logarithmic)."""
             version: int | None
 
             def __init__(
@@ -8408,12 +8003,12 @@ class EosDesigns(AvdModel):
                 Args:
                 -----
                     _custom_data: _custom_data
-                    name: name
+                    name: IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org.
                     burst: burst
                     iburst: iburst
                     key: key
-                    maxpoll: maxpoll
-                    minpoll: minpoll
+                    maxpoll: Value of maxpoll between 3 - 17 (Logarithmic).
+                    minpoll: Value of minpoll between 3 - 17 (Logarithmic).
                     version: version
 
                 """
@@ -8422,53 +8017,8 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class AuthenticationKeysItem(AvdModel):
-            _fields: ClassVar[dict] = {
-                "_custom_data": {"type": dict},
-                "id": {"type": int},
-                "hash_algorithm": {"type": str},
-                "key": {"type": str},
-                "key_type": {"type": str},
-            }
-            _required_fields: ClassVar[tuple] = ("_custom_data", "id")
-            _custom_data: dict[str, Any]
-            id: int
-            """Key identifier."""
-            hash_algorithm: str | None
-            key: str | None
-            """Obfuscated key."""
-            key_type: str | None
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                id: int | UndefinedType = Undefined,
-                hash_algorithm: str | None | UndefinedType = Undefined,
-                key: str | None | UndefinedType = Undefined,
-                key_type: str | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                AuthenticationKeysItem.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    id: Key identifier.
-                    hash_algorithm: hash_algorithm
-                    key: Obfuscated key.
-                    key_type: key_type
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class AuthenticationKeys(AvdCollection[int, AuthenticationKeysItem]):
-            _primary_key: ClassVar[str] = "id"
-
-        AuthenticationKeys._item_type = AuthenticationKeysItem
+        class AuthenticationKeys(EosCliConfigGen.Ntp.AuthenticationKeys):
+            pass
 
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
@@ -8505,6 +8055,7 @@ class EosDesigns(AvdModel):
         authenticate_servers_only: bool | None
         authentication_keys: AuthenticationKeys
         trusted_keys: str | None
+        """List of trusted-keys as string ex. 10-12,15."""
 
         def __init__(
             self,
@@ -8543,7 +8094,7 @@ class EosDesigns(AvdModel):
                 authenticate: authenticate
                 authenticate_servers_only: authenticate_servers_only
                 authentication_keys: authentication_keys
-                trusted_keys: trusted_keys
+                trusted_keys: List of trusted-keys as string ex. 10-12,15.
 
             """
             for arg, arg_value in locals().items():
@@ -9361,7 +8912,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Speeds(AvdCollection[str, SpeedsItem]):
+        class Speeds(AvdIndexedList[str, SpeedsItem]):
             _primary_key: ClassVar[str] = "speed"
 
         Speeds._item_type = SpeedsItem
@@ -9394,7 +8945,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PlatformSpeedGroups(AvdCollection[str, PlatformSpeedGroupsItem]):
+    class PlatformSpeedGroups(AvdIndexedList[str, PlatformSpeedGroupsItem]):
         _primary_key: ClassVar[str] = "platform"
 
     PlatformSpeedGroups._item_type = PlatformSpeedGroupsItem
@@ -10757,7 +10308,9 @@ class EosDesigns(AvdModel):
         """Interface mode."""
         mtu: int | None
         l2_mtu: int | None
+        """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
         l2_mru: int | None
+        """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
         native_vlan: int | None
         """
         Native VLAN for a trunk port.
@@ -10907,8 +10460,8 @@ class EosDesigns(AvdModel):
                    configuration.
                 mode: Interface mode.
                 mtu: mtu
-                l2_mtu: l2_mtu
-                l2_mru: l2_mru
+                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                 native_vlan:
                    Native VLAN for a trunk port.
                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
@@ -10962,7 +10515,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PortProfiles(AvdCollection[str, PortProfilesItem]):
+    class PortProfiles(AvdIndexedList[str, PortProfilesItem]):
         _primary_key: ClassVar[str] = "profile"
 
     PortProfiles._item_type = PortProfilesItem
@@ -11065,7 +10618,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PtpProfiles(AvdCollection[str, PtpProfilesItem]):
+    class PtpProfiles(AvdIndexedList[str, PtpProfilesItem]):
         _primary_key: ClassVar[str] = "profile"
 
     PtpProfiles._item_type = PtpProfilesItem
@@ -11421,7 +10974,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -11463,40 +11016,8 @@ class EosDesigns(AvdModel):
                 setattr(self, arg, arg_value)
 
     class SnmpSettings(AvdModel):
-        class VrfsItem(AvdModel):
-            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "enable": {"type": bool}}
-            _required_fields: ClassVar[tuple] = ("_custom_data", "name")
-            _custom_data: dict[str, Any]
-            name: str
-            """VRF name."""
-            enable: bool | None
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                name: str | UndefinedType = Undefined,
-                enable: bool | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                VrfsItem.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    name: VRF name.
-                    enable: enable
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class Vrfs(AvdCollection[str, VrfsItem]):
-            _primary_key: ClassVar[str] = "name"
-
-        Vrfs._item_type = VrfsItem
+        class Vrfs(EosCliConfigGen.SnmpServer.Vrfs):
+            pass
 
         class UsersItem(AvdModel):
             _fields: ClassVar[dict] = {
@@ -11667,100 +11188,8 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class CommunitiesItem(AvdModel):
-            class AccessListIpv4(AvdModel):
-                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}}
-                _required_fields: ClassVar[tuple] = ("_custom_data",)
-                _custom_data: dict[str, Any]
-                name: str | None
-                """IPv4 access list name."""
-
-                def __init__(self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    AccessListIpv4.
-
-                    Args:
-                    -----
-                        _custom_data: _custom_data
-                        name: IPv4 access list name.
-
-                    """
-                    for arg, arg_value in locals().items():
-                        if arg_value is Undefined or arg in ("self", "kwargs"):
-                            continue
-                        setattr(self, arg, arg_value)
-
-            class AccessListIpv6(AvdModel):
-                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}}
-                _required_fields: ClassVar[tuple] = ("_custom_data",)
-                _custom_data: dict[str, Any]
-                name: str | None
-                """IPv6 access list name."""
-
-                def __init__(self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    AccessListIpv6.
-
-                    Args:
-                    -----
-                        _custom_data: _custom_data
-                        name: IPv6 access list name.
-
-                    """
-                    for arg, arg_value in locals().items():
-                        if arg_value is Undefined or arg in ("self", "kwargs"):
-                            continue
-                        setattr(self, arg, arg_value)
-
-            _fields: ClassVar[dict] = {
-                "_custom_data": {"type": dict},
-                "name": {"type": str},
-                "access": {"type": str},
-                "access_list_ipv4": {"type": AccessListIpv4},
-                "access_list_ipv6": {"type": AccessListIpv6},
-                "view": {"type": str},
-            }
-            _required_fields: ClassVar[tuple] = ("_custom_data", "name")
-            _custom_data: dict[str, Any]
-            name: str
-            """Community name."""
-            access: str | None
-            access_list_ipv4: AccessListIpv4
-            access_list_ipv6: AccessListIpv6
-            view: str | None
-
-            def __init__(
-                self,
-                *,
-                _custom_data: dict[str, Any] | UndefinedType = Undefined,
-                name: str | UndefinedType = Undefined,
-                access: str | None | UndefinedType = Undefined,
-                access_list_ipv4: AccessListIpv4 | UndefinedType = Undefined,
-                access_list_ipv6: AccessListIpv6 | UndefinedType = Undefined,
-                view: str | None | UndefinedType = Undefined,
-            ) -> None:
-                """
-                CommunitiesItem.
-
-                Args:
-                -----
-                    _custom_data: _custom_data
-                    name: Community name.
-                    access: access
-                    access_list_ipv4: access_list_ipv4
-                    access_list_ipv6: access_list_ipv6
-                    view: view
-
-                """
-                for arg, arg_value in locals().items():
-                    if arg_value is Undefined or arg in ("self", "kwargs"):
-                        continue
-                    setattr(self, arg, arg_value)
-
-        class Communities(AvdCollection[str, CommunitiesItem]):
-            _primary_key: ClassVar[str] = "name"
-
-        Communities._item_type = CommunitiesItem
+        class Communities(EosCliConfigGen.SnmpServer.Communities):
+            pass
 
         class Ipv4AclsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "vrf": {"type": str}}
@@ -12472,7 +11901,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class IpHelpers(AvdCollection[str, IpHelpersItem]):
+            class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
                 _primary_key: ClassVar[str] = "ip_helper"
 
             IpHelpers._item_type = IpHelpersItem
@@ -13042,7 +12471,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Nodes(AvdCollection[str, NodesItem]):
+        class Nodes(AvdIndexedList[str, NodesItem]):
             _primary_key: ClassVar[str] = "node"
 
         Nodes._item_type = NodesItem
@@ -13087,7 +12516,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpHelpers(AvdCollection[str, IpHelpersItem]):
+        class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
             _primary_key: ClassVar[str] = "ip_helper"
 
         IpHelpers._item_type = IpHelpersItem
@@ -13683,7 +13112,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class SviProfiles(AvdCollection[str, SviProfilesItem]):
+    class SviProfiles(AvdIndexedList[str, SviProfilesItem]):
         _primary_key: ClassVar[str] = "profile"
 
     SviProfiles._item_type = SviProfilesItem
@@ -13847,7 +13276,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Nodes(AvdCollection[str, NodesItem]):
+        class Nodes(AvdIndexedList[str, NodesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Nodes._item_type = NodesItem
@@ -13907,7 +13336,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class UnderlayMulticastRps(AvdCollection[str, UnderlayMulticastRpsItem]):
+    class UnderlayMulticastRps(AvdIndexedList[str, UnderlayMulticastRpsItem]):
         _primary_key: ClassVar[str] = "rp"
 
     UnderlayMulticastRps._item_type = UnderlayMulticastRpsItem
@@ -13962,7 +13391,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MessageDigestKeys(AvdCollection[int, MessageDigestKeysItem]):
+        class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
             _primary_key: ClassVar[str] = "id"
 
         MessageDigestKeys._item_type = MessageDigestKeysItem
@@ -14072,7 +13501,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanCarriers(AvdCollection[str, WanCarriersItem]):
+    class WanCarriers(AvdIndexedList[str, WanCarriersItem]):
         _primary_key: ClassVar[str] = "name"
 
     WanCarriers._item_type = WanCarriersItem
@@ -14439,7 +13868,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanPathGroups(AvdCollection[str, WanPathGroupsItem]):
+    class WanPathGroups(AvdIndexedList[str, WanPathGroupsItem]):
         _primary_key: ClassVar[str] = "name"
 
     WanPathGroups._item_type = WanPathGroupsItem
@@ -14477,7 +13906,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Interfaces(AvdCollection[str, InterfacesItem]):
+            class Interfaces(AvdIndexedList[str, InterfacesItem]):
                 _primary_key: ClassVar[str] = "name"
 
             Interfaces._item_type = InterfacesItem
@@ -14511,7 +13940,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PathGroups(AvdCollection[str, PathGroupsItem]):
+        class PathGroups(AvdIndexedList[str, PathGroupsItem]):
             _primary_key: ClassVar[str] = "name"
 
         PathGroups._item_type = PathGroupsItem
@@ -14550,7 +13979,7 @@ class EosDesigns(AvdModel):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanRouteServers(AvdCollection[str, WanRouteServersItem]):
+    class WanRouteServers(AvdIndexedList[str, WanRouteServersItem]):
         _primary_key: ClassVar[str] = "hostname"
 
     WanRouteServers._item_type = WanRouteServersItem
@@ -14634,7 +14063,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Vrfs(AvdCollection[str, VrfsItem]):
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
             _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
@@ -14645,8 +14074,14 @@ class EosDesigns(AvdModel):
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
                 jitter: int | None
+                """Jitter requirement for this load balance policy in milliseconds."""
                 latency: int | None
+                """One way delay requirement for this load balance policy in milliseconds."""
                 loss_rate: str | None
+                """
+                Loss Rate requirement in percentage for this load balance policy.
+                Value between 0.00 and 100.00.
+                """
 
                 def __init__(
                     self,
@@ -14662,9 +14097,11 @@ class EosDesigns(AvdModel):
                     Args:
                     -----
                         _custom_data: _custom_data
-                        jitter: jitter
-                        latency: latency
-                        loss_rate: loss_rate
+                        jitter: Jitter requirement for this load balance policy in milliseconds.
+                        latency: One way delay requirement for this load balance policy in milliseconds.
+                        loss_rate:
+                           Loss Rate requirement in percentage for this load balance policy.
+                           Value between 0.00 and 100.00.
 
                     """
                     for arg, arg_value in locals().items():
@@ -14780,7 +14217,9 @@ class EosDesigns(AvdModel):
             sourced from or destined to the WAN route servers.
             """
             traffic_class: int | None
+            """Set traffic-class for matched traffic."""
             dscp: int | None
+            """Set DSCP for matched traffic."""
             lowest_hop_count: bool | None
             """
             Prefer paths with lowest hop-count.
@@ -14821,8 +14260,8 @@ class EosDesigns(AvdModel):
                        If not overwritten elsewhere, the
                        application profile is generated matching one application matching the control plane traffic either
                        sourced from or destined to the WAN route servers.
-                    traffic_class: traffic_class
-                    dscp: dscp
+                    traffic_class: Set traffic-class for matched traffic.
+                    dscp: Set DSCP for matched traffic.
                     lowest_hop_count:
                        Prefer paths with lowest hop-count.
                        Only applicable for `wan_mode: "cv-pathfinder"`.
@@ -14843,8 +14282,14 @@ class EosDesigns(AvdModel):
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
                     jitter: int | None
+                    """Jitter requirement for this load balance policy in milliseconds."""
                     latency: int | None
+                    """One way delay requirement for this load balance policy in milliseconds."""
                     loss_rate: str | None
+                    """
+                    Loss Rate requirement in percentage for this load balance policy.
+                    Value between 0.00 and 100.00.
+                    """
 
                     def __init__(
                         self,
@@ -14860,9 +14305,11 @@ class EosDesigns(AvdModel):
                         Args:
                         -----
                             _custom_data: _custom_data
-                            jitter: jitter
-                            latency: latency
-                            loss_rate: loss_rate
+                            jitter: Jitter requirement for this load balance policy in milliseconds.
+                            latency: One way delay requirement for this load balance policy in milliseconds.
+                            loss_rate:
+                               Loss Rate requirement in percentage for this load balance policy.
+                               Value between 0.00 and 100.00.
 
                         """
                         for arg, arg_value in locals().items():
@@ -14979,7 +14426,9 @@ class EosDesigns(AvdModel):
                 `id` is required when `wan_mode` is 'cv-pathfinder'.
                 """
                 traffic_class: int | None
+                """Set traffic-class for matched traffic."""
                 dscp: int | None
+                """Set DSCP for matched traffic."""
                 lowest_hop_count: bool | None
                 """
                 Prefer paths with lowest hop-count.
@@ -15019,8 +14468,8 @@ class EosDesigns(AvdModel):
                            reserved for the default_virtual_toplogy.
                            ID 254 is reserved for the control_plane_virtual_topology.
                            `id` is required when `wan_mode` is 'cv-pathfinder'.
-                        traffic_class: traffic_class
-                        dscp: dscp
+                        traffic_class: Set traffic-class for matched traffic.
+                        dscp: Set DSCP for matched traffic.
                         lowest_hop_count:
                            Prefer paths with lowest hop-count.
                            Only applicable for `wan_mode: "cv-pathfinder"`.
@@ -15034,7 +14483,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class ApplicationVirtualTopologies(AvdCollection[str, ApplicationVirtualTopologiesItem]):
+            class ApplicationVirtualTopologies(AvdIndexedList[str, ApplicationVirtualTopologiesItem]):
                 _primary_key: ClassVar[str] = "application_profile"
 
             ApplicationVirtualTopologies._item_type = ApplicationVirtualTopologiesItem
@@ -15045,8 +14494,14 @@ class EosDesigns(AvdModel):
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
                     jitter: int | None
+                    """Jitter requirement for this load balance policy in milliseconds."""
                     latency: int | None
+                    """One way delay requirement for this load balance policy in milliseconds."""
                     loss_rate: str | None
+                    """
+                    Loss Rate requirement in percentage for this load balance policy.
+                    Value between 0.00 and 100.00.
+                    """
 
                     def __init__(
                         self,
@@ -15062,9 +14517,11 @@ class EosDesigns(AvdModel):
                         Args:
                         -----
                             _custom_data: _custom_data
-                            jitter: jitter
-                            latency: latency
-                            loss_rate: loss_rate
+                            jitter: Jitter requirement for this load balance policy in milliseconds.
+                            latency: One way delay requirement for this load balance policy in milliseconds.
+                            loss_rate:
+                               Loss Rate requirement in percentage for this load balance policy.
+                               Value between 0.00 and 100.00.
 
                         """
                         for arg, arg_value in locals().items():
@@ -15169,7 +14626,9 @@ class EosDesigns(AvdModel):
                 drop_unmatched: bool | None
                 """When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped."""
                 traffic_class: int | None
+                """Set traffic-class for matched traffic."""
                 dscp: int | None
+                """Set DSCP for matched traffic."""
                 lowest_hop_count: bool | None
                 """
                 Prefer paths with lowest hop-count.
@@ -15200,8 +14659,8 @@ class EosDesigns(AvdModel):
                         _custom_data: _custom_data
                         name: Optional name, if not set `<policy_name>-DEFAULT` is used.
                         drop_unmatched: When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped.
-                        traffic_class: traffic_class
-                        dscp: dscp
+                        traffic_class: Set traffic-class for matched traffic.
+                        dscp: Set DSCP for matched traffic.
                         lowest_hop_count:
                            Prefer paths with lowest hop-count.
                            Only applicable for `wan_mode: "cv-pathfinder"`.
@@ -15263,7 +14722,7 @@ class EosDesigns(AvdModel):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Policies(AvdCollection[str, PoliciesItem]):
+        class Policies(AvdIndexedList[str, PoliciesItem]):
             _primary_key: ClassVar[str] = "name"
 
         Policies._item_type = PoliciesItem
@@ -17064,7 +16523,9 @@ class EosDesigns(AvdModel):
                     """Interface mode."""
                     mtu: int | None
                     l2_mtu: int | None
+                    """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
                     l2_mru: int | None
+                    """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
                     native_vlan: int | None
                     """
                     Native VLAN for a trunk port.
@@ -17238,8 +16699,8 @@ class EosDesigns(AvdModel):
                                configuration.
                             mode: Interface mode.
                             mtu: mtu
-                            l2_mtu: l2_mtu
-                            l2_mru: l2_mru
+                            l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                            l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
                             native_vlan:
                                Native VLAN for a trunk port.
                                If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
@@ -17332,7 +16793,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class ConnectedEndpointsKeysKey(AvdCollection[str, ConnectedEndpointsKeysKeyItem]):
+            class ConnectedEndpointsKeysKey(AvdIndexedList[str, ConnectedEndpointsKeysKeyItem]):
                 _primary_key: ClassVar[str] = "name"
 
             ConnectedEndpointsKeysKey._item_type = ConnectedEndpointsKeysKeyItem
@@ -18579,7 +18040,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Policies(AvdCollection[str, PoliciesItem]):
+                            class Policies(AvdIndexedList[str, PoliciesItem]):
                                 _primary_key: ClassVar[str] = "name"
 
                             Policies._item_type = PoliciesItem
@@ -18898,7 +18359,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                    class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     L3Interfaces._item_type = L3InterfacesItem
@@ -21505,7 +20966,7 @@ class EosDesigns(AvdModel):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class Policies(AvdCollection[str, PoliciesItem]):
+                                class Policies(AvdIndexedList[str, PoliciesItem]):
                                     _primary_key: ClassVar[str] = "name"
 
                                 Policies._item_type = PoliciesItem
@@ -21824,7 +21285,7 @@ class EosDesigns(AvdModel):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                             _primary_key: ClassVar[str] = "name"
 
                         L3Interfaces._item_type = L3InterfacesItem
@@ -23185,7 +22646,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Nodes(AvdCollection[str, NodesItem]):
+                    class Nodes(AvdIndexedList[str, NodesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     Nodes._item_type = NodesItem
@@ -24407,7 +23868,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Policies(AvdCollection[str, PoliciesItem]):
+                            class Policies(AvdIndexedList[str, PoliciesItem]):
                                 _primary_key: ClassVar[str] = "name"
 
                             Policies._item_type = PoliciesItem
@@ -24726,7 +24187,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                    class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     L3Interfaces._item_type = L3InterfacesItem
@@ -26089,7 +25550,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodeGroups(AvdCollection[str, NodeGroupsItem]):
+                class NodeGroups(AvdIndexedList[str, NodeGroupsItem]):
                     _primary_key: ClassVar[str] = "group"
 
                 NodeGroups._item_type = NodeGroupsItem
@@ -27352,7 +26813,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Policies(AvdCollection[str, PoliciesItem]):
+                            class Policies(AvdIndexedList[str, PoliciesItem]):
                                 _primary_key: ClassVar[str] = "name"
 
                             Policies._item_type = PoliciesItem
@@ -27671,7 +27132,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                    class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     L3Interfaces._item_type = L3InterfacesItem
@@ -29032,7 +28493,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Nodes(AvdCollection[str, NodesItem]):
+                class Nodes(AvdIndexedList[str, NodesItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Nodes._item_type = NodesItem
@@ -29861,7 +29322,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class BgpPeerGroups(AvdCollection[str, BgpPeerGroupsItem]):
+                class BgpPeerGroups(AvdIndexedList[str, BgpPeerGroupsItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 BgpPeerGroups._item_type = BgpPeerGroupsItem
@@ -30156,7 +29617,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                    class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
                         _primary_key: ClassVar[str] = "ip_helper"
 
                     IpHelpers._item_type = IpHelpersItem
@@ -30597,7 +30058,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                            class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
                                 _primary_key: ClassVar[str] = "ip_helper"
 
                             IpHelpers._item_type = IpHelpersItem
@@ -31191,7 +30652,7 @@ class EosDesigns(AvdModel):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Nodes(AvdCollection[str, NodesItem]):
+                        class Nodes(AvdIndexedList[str, NodesItem]):
                             _primary_key: ClassVar[str] = "node"
 
                         Nodes._item_type = NodesItem
@@ -31236,7 +30697,7 @@ class EosDesigns(AvdModel):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                        class IpHelpers(AvdIndexedList[str, IpHelpersItem]):
                             _primary_key: ClassVar[str] = "ip_helper"
 
                         IpHelpers._item_type = IpHelpersItem
@@ -33821,7 +33282,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Vrfs(AvdCollection[str, VrfsItem]):
+                class Vrfs(AvdIndexedList[str, VrfsItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Vrfs._item_type = VrfsItem
@@ -34162,7 +33623,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Subinterfaces(AvdCollection[int, SubinterfacesItem]):
+                    class Subinterfaces(AvdIndexedList[int, SubinterfacesItem]):
                         _primary_key: ClassVar[str] = "number"
 
                     Subinterfaces._item_type = SubinterfacesItem
@@ -34300,7 +33761,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class PointToPointServices(AvdCollection[str, PointToPointServicesItem]):
+                class PointToPointServices(AvdIndexedList[str, PointToPointServicesItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 PointToPointServices._item_type = PointToPointServicesItem
@@ -34640,7 +34101,7 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            class NetworkServicesKeysName(AvdCollection[str, NetworkServicesKeysNameItem]):
+            class NetworkServicesKeysName(AvdIndexedList[str, NetworkServicesKeysNameItem]):
                 _primary_key: ClassVar[str] = "name"
 
             NetworkServicesKeysName._item_type = NetworkServicesKeysNameItem
@@ -35887,7 +35348,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Policies(AvdCollection[str, PoliciesItem]):
+                            class Policies(AvdIndexedList[str, PoliciesItem]):
                                 _primary_key: ClassVar[str] = "name"
 
                             Policies._item_type = PoliciesItem
@@ -36206,7 +35667,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                    class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     L3Interfaces._item_type = L3InterfacesItem
@@ -38813,7 +38274,7 @@ class EosDesigns(AvdModel):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class Policies(AvdCollection[str, PoliciesItem]):
+                                class Policies(AvdIndexedList[str, PoliciesItem]):
                                     _primary_key: ClassVar[str] = "name"
 
                                 Policies._item_type = PoliciesItem
@@ -39132,7 +38593,7 @@ class EosDesigns(AvdModel):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                             _primary_key: ClassVar[str] = "name"
 
                         L3Interfaces._item_type = L3InterfacesItem
@@ -40493,7 +39954,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Nodes(AvdCollection[str, NodesItem]):
+                    class Nodes(AvdIndexedList[str, NodesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     Nodes._item_type = NodesItem
@@ -41715,7 +41176,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Policies(AvdCollection[str, PoliciesItem]):
+                            class Policies(AvdIndexedList[str, PoliciesItem]):
                                 _primary_key: ClassVar[str] = "name"
 
                             Policies._item_type = PoliciesItem
@@ -42034,7 +41495,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                    class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     L3Interfaces._item_type = L3InterfacesItem
@@ -43397,7 +42858,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodeGroups(AvdCollection[str, NodeGroupsItem]):
+                class NodeGroups(AvdIndexedList[str, NodeGroupsItem]):
                     _primary_key: ClassVar[str] = "group"
 
                 NodeGroups._item_type = NodeGroupsItem
@@ -44660,7 +44121,7 @@ class EosDesigns(AvdModel):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Policies(AvdCollection[str, PoliciesItem]):
+                            class Policies(AvdIndexedList[str, PoliciesItem]):
                                 _primary_key: ClassVar[str] = "name"
 
                             Policies._item_type = PoliciesItem
@@ -44979,7 +44440,7 @@ class EosDesigns(AvdModel):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                    class L3Interfaces(AvdIndexedList[str, L3InterfacesItem]):
                         _primary_key: ClassVar[str] = "name"
 
                     L3Interfaces._item_type = L3InterfacesItem
@@ -46340,7 +45801,7 @@ class EosDesigns(AvdModel):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Nodes(AvdCollection[str, NodesItem]):
+                class Nodes(AvdIndexedList[str, NodesItem]):
                     _primary_key: ClassVar[str] = "name"
 
                 Nodes._item_type = NodesItem
@@ -46805,6 +46266,7 @@ class EosDesigns(AvdModel):
     _required_fields: ClassVar[tuple] = ("fabric_name", "_dynamic_keys")
     _allow_other_keys: ClassVar[bool] = True
     application_classification: ApplicationClassification
+    """Application traffic recognition configuration."""
     avd_data_validation_mode: str | None
     """
     Validation Mode for AVD input data validation.
@@ -46873,7 +46335,17 @@ class EosDesigns(AvdModel):
     Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
     """
     bgp_update_wait_install: bool | None
+    """
+    Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+    This
+    will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix
+    that may not yet be installed into the forwarding plane.
+    """
     bgp_update_wait_for_convergence: bool | None
+    """
+    Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
+    convergence state is reached.
+    """
     connected_endpoints_keys: ConnectedEndpointsKeys
     """
     Endpoints connecting to the fabric can be grouped by using separate keys.
@@ -48324,7 +47796,7 @@ class EosDesigns(AvdModel):
 
         Args:
         -----
-            application_classification: application_classification
+            application_classification: Application traffic recognition configuration.
             avd_data_validation_mode:
                Validation Mode for AVD input data validation.
                Input data validation will validate the input
@@ -48371,8 +47843,14 @@ class EosDesigns(AvdModel):
             bgp_peer_groups:
                Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.
                Note that the name of the peer groups use '-' instead of '_' in EOS configuration.
-            bgp_update_wait_install: bgp_update_wait_install
-            bgp_update_wait_for_convergence: bgp_update_wait_for_convergence
+            bgp_update_wait_install:
+               Do not advertise reachability to a prefix until that prefix has been installed in hardware.
+               This
+               will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix
+               that may not yet be installed into the forwarding plane.
+            bgp_update_wait_for_convergence:
+               Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
+               convergence state is reached.
             connected_endpoints_keys:
                Endpoints connecting to the fabric can be grouped by using separate keys.
                The keys can be customized
