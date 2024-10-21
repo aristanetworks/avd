@@ -660,16 +660,14 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         if router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes.inter_domain is arista.avd.defined(true) %}
 | L3 Gateway Inter-domain | True |
 {%         endif %}
-{%         if router_bgp.address_family_evpn.evpn_ethernet_segment is arista.avd.defined %}
-{%             for segment in router_bgp.address_family_evpn.evpn_ethernet_segment | avd.natural_sort('domain') %}
-{%                 if segment.identifier is arista.avd.defined %}
+{%         for segment in router_bgp.address_family_evpn.evpn_ethernet_segment | arista.avd.natural_sort('domain') %}
+{%             if segment.identifier is arista.avd.defined %}
 | Domain {{ domain | title }}: Ethernet-Segment Identifier | {{ segment.identifier }} |
-{%                 endif %}
-{%                 if segment.route_target_import is arista.avd.defined %}
+{%             endif %}
+{%             if segment.route_target_import is arista.avd.defined %}
 | Domain {{ domain | title }}: Ethernet-Segment Route-Target | {{ segment.route_target_import }} |
-{%                 endif %}
-{%             endfor %}
-{%         endif %}
+{%             endif %}
+{%         endfor %}
 {%     endif %}
 {%     if router_bgp.address_family_ipv4_labeled_unicast is arista.avd.defined %}
 
