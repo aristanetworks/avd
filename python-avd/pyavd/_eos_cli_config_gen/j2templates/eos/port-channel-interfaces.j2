@@ -643,10 +643,11 @@ interface {{ port_channel_interface.name }}
    isis network point-to-point
 {%     endif %}
 {%     if port_channel_interface.isis_authentication_mode is arista.avd.defined and
-          port_channel_interface.isis_authentication_mode in ["text", "md5"] %}
+          port_channel_interface.isis_authentication_mode in ["text", "md5"] and
+          port_channel_interface.isis_authentication is not arista.avd.defined %}
    isis authentication mode {{ port_channel_interface.isis_authentication_mode }}
 {%     endif %}
-{%     if port_channel_interface.isis_authentication_key is arista.avd.defined %}
+{%     if port_channel_interface.isis_authentication_key is arista.avd.defined and port_channel_interface.isis_authentication is not arista.avd.defined %}
    isis authentication key 7 {{ port_channel_interface.isis_authentication_key | arista.avd.hide_passwords(hide_passwords) }}
 {%     endif %}
 {%     if port_channel_interface.isis_authentication.both.mode is arista.avd.defined
