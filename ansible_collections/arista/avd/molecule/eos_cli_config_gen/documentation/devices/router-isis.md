@@ -282,6 +282,14 @@ interface Vlan4094
 | Router-ID | 192.168.255.3 |
 | Log Adjacency Changes | True |
 | Local Convergence Delay (ms) | 15000 |
+| CSN Packet Transmission Interval | 10 seconds |
+| CSN Packet P2P Links Disabled | True |
+| LSP Generation Maximum Interval | 30 seconds |
+| LSP Generation Initial Wait-time | 40 milliseconds |
+| LSP Generation Wait-time | 50 milliseconds |
+| LSP Out-delay | 20 milliseconds |
+| LSP Refresh Interval | 56 seconds |
+| LSP Minimum Remaining Lifetime | 78 seconds |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | False |
 | SPF Interval | 250 seconds |
