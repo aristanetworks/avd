@@ -6,7 +6,7 @@ from __future__ import annotations
 from keyword import iskeyword
 from typing import TYPE_CHECKING
 
-from .src_generators import ClassVarSrc, FieldSrc, FieldTypeHintSrc, ModelSrc, SrcData
+from .src_generators import ClassVarSrc, CollectionSrc, FieldSrc, FieldTypeHintSrc, ModelSrc, SrcData
 from .utils import generate_class_name, generate_class_name_from_ref
 
 if TYPE_CHECKING:
@@ -126,8 +126,44 @@ class SrcGenList(SrcGenBase):
 
     schema: AvdSchemaList
 
+    def generate_class_src(self, schema: AvdSchemaField, class_name: str | None = None) -> SrcData:
+        """
+        Returns SrcData for the given schema.
+
+        Recursively walks child schemas and creates nested classes and fields.
+        """
+        self.schema = schema
+        self.class_name = class_name
+
+        if schema.deprecation and schema.deprecation.removed:
+            return SrcData(field=None, cls=None)
+
+        return SrcData(field=self.get_field(), cls=self.get_class(), collection=self.get_collection())
+
+    def get_collection(self) -> CollectionSrc | None:
+        """Returns CollectionSrc for the given schema to be used for the class definition in the parent object."""
+        if not self.schema.primary_key or self.schema.allow_duplicate_primary_key:
+            return None
+
+        if not self.schema.items or self.schema.items.type != "dict" or not self.schema.items.keys:
+            # This should never happen but helps type system detect the relevant schema type below.
+            return None
+
+        primary_key_type = self.schema.items.keys[self.schema.primary_key].type
+        class_name = self.get_class_name()
+        item_class_name = f"{class_name}Item"
+
+        return CollectionSrc(
+            name=class_name,
+            base_class=f"AvdCollection[{primary_key_type}, {item_class_name}]",
+            item_type=item_class_name,
+            class_vars=[
+                ClassVarSrc("_primary_key", FieldTypeHintSrc("str"), f'"{self.schema.primary_key}"'),
+            ],
+        )
+
     def get_class(self) -> ModelSrc | None:
-        """Returns ModelSrc for the given schema to be used for the class definition in the parent object."""
+        """Returns ModelSrc for the items schema to be used for the class definition in the parent object."""
         if not self.schema.items:
             return None
 
@@ -151,13 +187,15 @@ class SrcGenList(SrcGenBase):
                     fields.append(fieldsrc.field)
                 if fieldsrc.cls:
                     classes.append(fieldsrc.cls)
+                if fieldsrc.collection:
+                    classes.append(fieldsrc.collection)
 
         return ModelSrc(
             name=f"{self.get_class_name()}Item",
-            base_classes=self.get_base_classes(),
+            base_classes=self.get_item_base_classes(),
             classes=classes,
             fields=fields,
-            allow_extra=self.schema.items.allow_other_keys,
+            allow_extra=self.schema.items.allow_other_keys is True,
             # TODO: figure out if we need this: description=self.get_description(),
         )
 
@@ -166,8 +204,10 @@ class SrcGenList(SrcGenBase):
         if not self.schema.items:
             return [FieldTypeHintSrc(field_type="list", list_item_type="Any")]
 
-        item_type = cls.name if (cls := self.get_class()) else self.schema.items.type
+        if collection := self.get_collection():
+            return [FieldTypeHintSrc(field_type=collection.name)]
 
+        item_type = cls.name if (cls := self.get_class()) else self.schema.items.type
         return [
             FieldTypeHintSrc(
                 field_type="list",
@@ -177,7 +217,7 @@ class SrcGenList(SrcGenBase):
             )
         ]
 
-    def get_base_classes(self) -> list[str]:
+    def get_item_base_classes(self) -> list[str]:
         """Return a list of base classes. Only used if there is an unresolved $ref in the schema."""
         if not self.schema.items or not self.schema.items.field_ref:
             return []
@@ -189,6 +229,10 @@ class SrcGenList(SrcGenBase):
         if self.schema.default is None:
             return None
         default_value_as_str = str(self.schema.default).replace("'", '"')
+
+        if self.get_collection():
+            return f"lambda cls: coerce_type({default_value_as_str}, target_type=cls)"
+
         item_type = self.get_type_hints()[0].list_item_type
         if isinstance(item_type, FieldTypeHintSrc) and item_type.field_type[0].isupper():
             item_type = f"self.__class__.{item_type.field_type}"
@@ -260,6 +304,8 @@ class SrcGenDict(SrcGenBase):
                     fields.append(fieldsrc.field)
                 if fieldsrc.cls:
                     classes.append(fieldsrc.cls)
+                if fieldsrc.collection:
+                    classes.append(fieldsrc.collection)
 
         return classes, fields
 
@@ -349,7 +395,7 @@ class SrcGenRootDict(SrcGenDict):
                 dyn_classes.append(
                     ModelSrc(
                         name=dynamic_key_model_name,
-                        classes=[fieldsrc.cls],
+                        classes=[cls for cls in [fieldsrc.cls, fieldsrc.collection] if cls is not None],
                         fields=[
                             FieldSrc(
                                 name="key",

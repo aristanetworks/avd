@@ -6,15 +6,15 @@ from typing import Any, ClassVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._schema.loader import coerce_type
-from pyavd._schema.models import AvdBase
+from pyavd._schema.models import AvdCollection, AvdModel
 from pyavd._utils import Undefined, UndefinedType
 
 
-class EosDesigns(AvdBase):
+class EosDesigns(AvdModel):
     class ApplicationClassification(EosCliConfigGen.ApplicationTrafficRecognition):
         pass
 
-    class BfdMultihop(AvdBase):
+    class BfdMultihop(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": int}, "min_rx": {"type": int}, "multiplier": {"type": int}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "interval", "min_rx", "multiplier")
         _custom_data: dict[str, Any]
@@ -49,7 +49,7 @@ class EosDesigns(AvdBase):
     class BgpDistance(EosCliConfigGen.RouterBgp.Distance):
         pass
 
-    class BgpGracefulRestart(AvdBase):
+    class BgpGracefulRestart(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}, "restart_time": {"type": int, "default": 300}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -80,8 +80,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class BgpPeerGroups(AvdBase):
-        class Ipv4UnderlayPeers(AvdBase):
+    class BgpPeerGroups(AvdModel):
+        class Ipv4UnderlayPeers(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -128,7 +128,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MlagIpv4UnderlayPeer(AvdBase):
+        class MlagIpv4UnderlayPeer(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -175,7 +175,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EvpnOverlayPeers(AvdBase):
+        class EvpnOverlayPeers(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -222,7 +222,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EvpnOverlayCore(AvdBase):
+        class EvpnOverlayCore(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -269,7 +269,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MplsOverlayPeers(AvdBase):
+        class MplsOverlayPeers(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -316,7 +316,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class RrOverlayPeers(AvdBase):
+        class RrOverlayPeers(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -363,7 +363,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpvpnGatewayPeers(AvdBase):
+        class IpvpnGatewayPeers(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.PeerGroupsItem):
                 pass
 
@@ -410,8 +410,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class WanOverlayPeers(AvdBase):
-            class BfdTimers(AvdBase):
+        class WanOverlayPeers(AvdModel):
+            class BfdTimers(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "interval": {"type": int, "default": 1000},
@@ -543,8 +543,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class WanRrOverlayPeers(AvdBase):
-            class BfdTimers(AvdBase):
+        class WanRrOverlayPeers(AvdModel):
+            class BfdTimers(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "interval": {"type": int, "default": 1000},
@@ -725,7 +725,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class ConnectedEndpointsKeysItem(AvdBase):
+    class ConnectedEndpointsKeysItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "key": {"type": str}, "type": {"type": str}, "description": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "key")
         _custom_data: dict[str, Any]
@@ -759,8 +759,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CoreInterfaces(AvdBase):
-        class P2pLinksIpPoolsItem(AvdBase):
+    class ConnectedEndpointsKeys(AvdCollection[str, ConnectedEndpointsKeysItem]):
+        _primary_key: ClassVar[str] = "key"
+
+    ConnectedEndpointsKeys._item_type = ConnectedEndpointsKeysItem
+
+    class CoreInterfaces(AvdModel):
+        class P2pLinksIpPoolsItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -800,8 +805,13 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksProfilesItem(AvdBase):
-            class Ptp(AvdBase):
+        class P2pLinksIpPools(AvdCollection[str, P2pLinksIpPoolsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        P2pLinksIpPools._item_type = P2pLinksIpPoolsItem
+
+        class P2pLinksProfilesItem(AvdModel):
+            class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -823,7 +833,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class FlowTracking(AvdBase):
+            class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -853,8 +863,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PortChannel(AvdBase):
-                class NodesChildInterfacesItem(AvdBase):
+            class PortChannel(AvdModel):
+                class NodesChildInterfacesItem(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "node": {"type": str},
@@ -898,11 +908,16 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                    _primary_key: ClassVar[str] = "node"
+
+                NodesChildInterfaces._item_type = NodesChildInterfacesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
-                    "nodes_child_interfaces": {"type": list, "items": NodesChildInterfacesItem},
+                    "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -928,7 +943,7 @@ class EosDesigns(AvdBase):
                 name and port_channel interface of the peer.
                 """
                 mode: str | None
-                nodes_child_interfaces: list[NodesChildInterfacesItem]
+                nodes_child_interfaces: NodesChildInterfaces
 
                 def __init__(
                     self,
@@ -936,7 +951,7 @@ class EosDesigns(AvdBase):
                     _custom_data: dict[str, Any] | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    nodes_child_interfaces: list[NodesChildInterfacesItem] | UndefinedType = Undefined,
+                    nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                 ) -> None:
                     """
                     PortChannel.
@@ -1193,8 +1208,13 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksItem(AvdBase):
-            class Ptp(AvdBase):
+        class P2pLinksProfiles(AvdCollection[str, P2pLinksProfilesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        P2pLinksProfiles._item_type = P2pLinksProfilesItem
+
+        class P2pLinksItem(AvdModel):
+            class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -1216,7 +1236,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class FlowTracking(AvdBase):
+            class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -1246,8 +1266,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PortChannel(AvdBase):
-                class NodesChildInterfacesItem(AvdBase):
+            class PortChannel(AvdModel):
+                class NodesChildInterfacesItem(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "node": {"type": str},
@@ -1291,11 +1311,16 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                    _primary_key: ClassVar[str] = "node"
+
+                NodesChildInterfaces._item_type = NodesChildInterfacesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
-                    "nodes_child_interfaces": {"type": list, "items": NodesChildInterfacesItem},
+                    "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -1321,7 +1346,7 @@ class EosDesigns(AvdBase):
                 name and port_channel interface of the peer.
                 """
                 mode: str | None
-                nodes_child_interfaces: list[NodesChildInterfacesItem]
+                nodes_child_interfaces: NodesChildInterfaces
 
                 def __init__(
                     self,
@@ -1329,7 +1354,7 @@ class EosDesigns(AvdBase):
                     _custom_data: dict[str, Any] | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    nodes_child_interfaces: list[NodesChildInterfacesItem] | UndefinedType = Undefined,
+                    nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                 ) -> None:
                     """
                     PortChannel.
@@ -1588,22 +1613,22 @@ class EosDesigns(AvdBase):
 
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
-            "p2p_links_ip_pools": {"type": list, "items": P2pLinksIpPoolsItem},
-            "p2p_links_profiles": {"type": list, "items": P2pLinksProfilesItem},
+            "p2p_links_ip_pools": {"type": P2pLinksIpPools},
+            "p2p_links_profiles": {"type": P2pLinksProfiles},
             "p2p_links": {"type": list, "items": P2pLinksItem},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
-        p2p_links_ip_pools: list[P2pLinksIpPoolsItem]
-        p2p_links_profiles: list[P2pLinksProfilesItem]
+        p2p_links_ip_pools: P2pLinksIpPools
+        p2p_links_profiles: P2pLinksProfiles
         p2p_links: list[P2pLinksItem]
 
         def __init__(
             self,
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
-            p2p_links_ip_pools: list[P2pLinksIpPoolsItem] | UndefinedType = Undefined,
-            p2p_links_profiles: list[P2pLinksProfilesItem] | UndefinedType = Undefined,
+            p2p_links_ip_pools: P2pLinksIpPools | UndefinedType = Undefined,
+            p2p_links_profiles: P2pLinksProfiles | UndefinedType = Undefined,
             p2p_links: list[P2pLinksItem] | UndefinedType = Undefined,
         ) -> None:
             """
@@ -1622,7 +1647,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvPathfinderGlobalSitesItem(AvdBase):
+    class CvPathfinderGlobalSitesItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "description": {"type": str}, "location": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
         _custom_data: dict[str, Any]
@@ -1656,9 +1681,14 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvPathfinderInternetExitPoliciesItem(AvdBase):
-        class Zscaler(AvdBase):
-            class Firewall(AvdBase):
+    class CvPathfinderGlobalSites(AvdCollection[str, CvPathfinderGlobalSitesItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    CvPathfinderGlobalSites._item_type = CvPathfinderGlobalSitesItem
+
+    class CvPathfinderInternetExitPoliciesItem(AvdModel):
+        class Zscaler(AvdModel):
+            class Firewall(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}, "ips": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -1820,8 +1850,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvPathfinderRegionsItem(AvdBase):
-        class SitesItem(AvdBase):
+    class CvPathfinderInternetExitPolicies(AvdCollection[str, CvPathfinderInternetExitPoliciesItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    CvPathfinderInternetExitPolicies._item_type = CvPathfinderInternetExitPoliciesItem
+
+    class CvPathfinderRegionsItem(AvdModel):
+        class SitesItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -1880,12 +1915,17 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class Sites(AvdCollection[str, SitesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Sites._item_type = SitesItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "name": {"type": str},
             "description": {"type": str},
             "id": {"type": int},
-            "sites": {"type": list, "items": SitesItem},
+            "sites": {"type": Sites},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "id")
         _custom_data: dict[str, Any]
@@ -1893,7 +1933,7 @@ class EosDesigns(AvdBase):
         description: str | None
         id: int
         """The region ID must be unique for the whole WAN deployment."""
-        sites: list[SitesItem]
+        sites: Sites
         """All sites are placed in a default zone "<region_name>-ZONE" with ID 1."""
 
         def __init__(
@@ -1903,7 +1943,7 @@ class EosDesigns(AvdBase):
             name: str | UndefinedType = Undefined,
             description: str | None | UndefinedType = Undefined,
             id: int | UndefinedType = Undefined,
-            sites: list[SitesItem] | UndefinedType = Undefined,
+            sites: Sites | UndefinedType = Undefined,
         ) -> None:
             """
             CvPathfinderRegionsItem.
@@ -1922,8 +1962,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CvTopologyItem(AvdBase):
-        class InterfacesItem(AvdBase):
+    class CvPathfinderRegions(AvdCollection[str, CvPathfinderRegionsItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    CvPathfinderRegions._item_type = CvPathfinderRegionsItem
+
+    class CvTopologyItem(AvdModel):
+        class InterfacesItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "neighbor": {"type": str}, "neighbor_interface": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
             _custom_data: dict[str, Any]
@@ -1955,17 +2000,17 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        _fields: ClassVar[dict] = {
-            "_custom_data": {"type": dict},
-            "hostname": {"type": str},
-            "platform": {"type": str},
-            "interfaces": {"type": list, "items": InterfacesItem},
-        }
+        class Interfaces(AvdCollection[str, InterfacesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Interfaces._item_type = InterfacesItem
+
+        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "hostname": {"type": str}, "platform": {"type": str}, "interfaces": {"type": Interfaces}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "platform", "interfaces")
         _custom_data: dict[str, Any]
         hostname: str
         platform: str
-        interfaces: list[InterfacesItem]
+        interfaces: Interfaces
 
         def __init__(
             self,
@@ -1973,7 +2018,7 @@ class EosDesigns(AvdBase):
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             hostname: str | UndefinedType = Undefined,
             platform: str | UndefinedType = Undefined,
-            interfaces: list[InterfacesItem] | UndefinedType = Undefined,
+            interfaces: Interfaces | UndefinedType = Undefined,
         ) -> None:
             """
             CvTopologyItem.
@@ -1991,7 +2036,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class DefaultInterfacesItem(AvdBase):
+    class CvTopology(AvdCollection[str, CvTopologyItem]):
+        _primary_key: ClassVar[str] = "hostname"
+
+    CvTopology._item_type = CvTopologyItem
+
+    class DefaultInterfacesItem(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "types": {"type": list, "items": str},
@@ -2048,7 +2098,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class DefaultNodeTypesItem(AvdBase):
+    class DefaultNodeTypesItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "node_type": {"type": str}, "match_hostnames": {"type": list, "items": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "node_type", "match_hostnames")
         _custom_data: dict[str, Any]
@@ -2079,7 +2129,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Design(AvdBase):
+    class DefaultNodeTypes(AvdCollection[str, DefaultNodeTypesItem]):
+        _primary_key: ClassVar[str] = "node_type"
+
+    DefaultNodeTypes._item_type = DefaultNodeTypesItem
+
+    class Design(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str, "default": "l3ls-evpn"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -2106,8 +2161,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EosDesignsCustomTemplatesItem(AvdBase):
-        class Options(AvdBase):
+    class EosDesignsCustomTemplatesItem(AvdModel):
+        class Options(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "list_merge": {"type": str, "default": "append_rp"},
@@ -2172,7 +2227,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EosDesignsDocumentation(AvdBase):
+    class EosDesignsDocumentation(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "enable": {"type": bool, "default": True},
@@ -2224,8 +2279,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EventHandlersItem(AvdBase):
-        class Actions(AvdBase):
+    class EventHandlersItem(AvdModel):
+        class Actions(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "bash_command": {"type": str},
@@ -2265,7 +2320,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TriggerOnCounters(AvdBase):
+        class TriggerOnCounters(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "condition": {"type": str},
@@ -2318,7 +2373,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TriggerOnLogging(AvdBase):
+        class TriggerOnLogging(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "poll_interval": {"type": int}, "regex": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2349,7 +2404,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TriggerOnIntf(AvdBase):
+        class TriggerOnIntf(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "interface": {"type": str},
@@ -2403,7 +2458,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TriggerOnMaintenance(AvdBase):
+        class TriggerOnMaintenance(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "operation": {"type": str},
@@ -2543,7 +2598,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EvpnHostflapDetection(AvdBase):
+    class EventHandlers(AvdCollection[str, EventHandlersItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    EventHandlers._item_type = EventHandlersItem
+
+    class EvpnHostflapDetection(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "enabled": {"type": bool, "default": True},
@@ -2588,8 +2648,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class EvpnVlanBundlesItem(AvdBase):
-        class Bgp(AvdBase):
+    class EvpnVlanBundlesItem(AvdModel):
+        class Bgp(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "raw_eos_cli": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2729,8 +2789,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class FabricFlowTracking(AvdBase):
-        class Uplinks(AvdBase):
+    class EvpnVlanBundles(AvdCollection[str, EvpnVlanBundlesItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    EvpnVlanBundles._item_type = EvpnVlanBundlesItem
+
+    class FabricFlowTracking(AvdModel):
+        class Uplinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2760,7 +2825,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Downlinks(AvdBase):
+        class Downlinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2790,7 +2855,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Endpoints(AvdBase):
+        class Endpoints(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2820,7 +2885,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class L3Edge(AvdBase):
+        class L3Edge(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2850,7 +2915,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class CoreInterfaces(AvdBase):
+        class CoreInterfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2880,7 +2945,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MlagInterfaces(AvdBase):
+        class MlagInterfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2910,7 +2975,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class L3Interfaces(AvdBase):
+        class L3Interfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2940,7 +3005,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DpsInterfaces(AvdBase):
+        class DpsInterfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -2970,7 +3035,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DirectWanHaLinks(AvdBase):
+        class DirectWanHaLinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -3069,8 +3134,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class FabricIpAddressing(AvdBase):
-        class Mlag(AvdBase):
+    class FabricIpAddressing(AvdModel):
+        class Mlag(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "algorithm": {"type": str, "default": "first_id"},
@@ -3141,7 +3206,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pUplinks(AvdBase):
+        class P2pUplinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4_prefix_length": {"type": int, "default": 31}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -3163,7 +3228,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class WanHa(AvdBase):
+        class WanHa(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4_prefix_length": {"type": int, "default": 31}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -3217,7 +3282,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class FabricSflow(AvdBase):
+    class FabricSflow(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "uplinks": {"type": bool},
@@ -3277,9 +3342,9 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class FlowTrackingSettings(AvdBase):
-        class Sampled(AvdBase):
-            class Encapsulation(AvdBase):
+    class FlowTrackingSettings(AvdModel):
+        class Sampled(AvdModel):
+            class Encapsulation(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4_ipv6": {"type": bool}, "mpls": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -3308,7 +3373,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class HardwareOffload(AvdBase):
+            class HardwareOffload(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4": {"type": bool}, "ipv6": {"type": bool}, "threshold_minimum": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -3379,8 +3444,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Hardware(AvdBase):
-            class Record(AvdBase):
+        class Hardware(AvdModel):
+            class Record(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "format_ipfix_standard_timestamps_counters": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -3427,9 +3492,9 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class TrackersItem(AvdBase):
-            class Sampled(AvdBase):
-                class RecordExport(AvdBase):
+        class TrackersItem(AvdModel):
+            class Sampled(AvdModel):
+                class RecordExport(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mpls": {"type": bool}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -3480,7 +3545,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class RecordExport(AvdBase):
+            class RecordExport(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -3511,8 +3576,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class ExportersItem(AvdBase):
-                class Collector(AvdBase):
+            class ExportersItem(AvdModel):
+                class Collector(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "host": {"type": str}, "port": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -3543,7 +3608,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Format(AvdBase):
+                class Format(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipfix_version": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -3613,12 +3678,17 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
+            class Exporters(AvdCollection[str, ExportersItem]):
+                _primary_key: ClassVar[str] = "name"
+
+            Exporters._item_type = ExportersItem
+
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
                 "sampled": {"type": Sampled},
                 "record_export": {"type": RecordExport},
-                "exporters": {"type": list, "items": ExportersItem},
+                "exporters": {"type": Exporters},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
             _custom_data: dict[str, Any]
@@ -3627,7 +3697,7 @@ class EosDesigns(AvdBase):
             sampled: Sampled
             """The options relevant only for flow tracker type sampled."""
             record_export: RecordExport
-            exporters: list[ExportersItem]
+            exporters: Exporters
 
             def __init__(
                 self,
@@ -3636,7 +3706,7 @@ class EosDesigns(AvdBase):
                 name: str | UndefinedType = Undefined,
                 sampled: Sampled | UndefinedType = Undefined,
                 record_export: RecordExport | UndefinedType = Undefined,
-                exporters: list[ExportersItem] | UndefinedType = Undefined,
+                exporters: Exporters | UndefinedType = Undefined,
             ) -> None:
                 """
                 TrackersItem.
@@ -3655,13 +3725,17 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class Trackers(AvdCollection[str, TrackersItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Trackers._item_type = TrackersItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "sampled": {"type": Sampled},
             "hardware": {"type": Hardware},
             "trackers": {
-                "type": list,
-                "items": TrackersItem,
+                "type": Trackers,
                 "default": lambda cls: coerce_type(
                     [
                         {
@@ -3672,8 +3746,7 @@ class EosDesigns(AvdBase):
                             ],
                         }
                     ],
-                    target_type=list,
-                    list_items_type=cls,
+                    target_type=cls,
                 ),
             },
         }
@@ -3683,7 +3756,7 @@ class EosDesigns(AvdBase):
         """The options relevant only for flow tracker type sampled."""
         hardware: Hardware
         """The options relevant only for flow tracker type hardware."""
-        trackers: list[TrackersItem]
+        trackers: Trackers
 
         def __init__(
             self,
@@ -3691,7 +3764,7 @@ class EosDesigns(AvdBase):
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             sampled: Sampled | UndefinedType = Undefined,
             hardware: Hardware | UndefinedType = Undefined,
-            trackers: list[TrackersItem] | UndefinedType = Undefined,
+            trackers: Trackers | UndefinedType = Undefined,
         ) -> None:
             """
             FlowTrackingSettings.
@@ -3709,8 +3782,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class GenerateCvTags(AvdBase):
-        class InterfaceTagsItem(AvdBase):
+    class GenerateCvTags(AvdModel):
+        class InterfaceTagsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "data_path": {"type": str}, "value": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
             _custom_data: dict[str, Any]
@@ -3758,7 +3831,12 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DeviceTagsItem(AvdBase):
+        class InterfaceTags(AvdCollection[str, InterfaceTagsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        InterfaceTags._item_type = InterfaceTagsItem
+
+        class DeviceTagsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "data_path": {"type": str}, "value": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
             _custom_data: dict[str, Any]
@@ -3809,14 +3887,14 @@ class EosDesigns(AvdBase):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "topology_hints": {"type": bool, "default": False},
-            "interface_tags": {"type": list, "items": InterfaceTagsItem},
+            "interface_tags": {"type": InterfaceTags},
             "device_tags": {"type": list, "items": DeviceTagsItem},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
         topology_hints: bool | None
         """Enable the generation of CloudVision Topology Tags (hints)."""
-        interface_tags: list[InterfaceTagsItem]
+        interface_tags: InterfaceTags
         """List of interface tags that should be generated."""
         device_tags: list[DeviceTagsItem]
         """List of device tags that should be generated."""
@@ -3826,7 +3904,7 @@ class EosDesigns(AvdBase):
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             topology_hints: bool | None | UndefinedType = Undefined,
-            interface_tags: list[InterfaceTagsItem] | UndefinedType = Undefined,
+            interface_tags: InterfaceTags | UndefinedType = Undefined,
             device_tags: list[DeviceTagsItem] | UndefinedType = Undefined,
         ) -> None:
             """
@@ -3848,8 +3926,8 @@ class EosDesigns(AvdBase):
     class HardwareCounters(EosCliConfigGen.HardwareCounters):
         pass
 
-    class InternalVlanOrder(AvdBase):
-        class Range(AvdBase):
+    class InternalVlanOrder(AvdModel):
+        class Range(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "beginning": {"type": int}, "ending": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "beginning", "ending")
             _custom_data: dict[str, Any]
@@ -3908,8 +3986,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv4AclsItem(AvdBase):
-        class EntriesItem(AvdBase):
+    class Ipv4AclsItem(AvdModel):
+        class EntriesItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "source": {"type": str},
@@ -4139,8 +4217,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Ipv4PrefixListCatalogItem(AvdBase):
-        class SequenceNumbersItem(AvdBase):
+    class Ipv4Acls(AvdCollection[str, Ipv4AclsItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv4Acls._item_type = Ipv4AclsItem
+
+    class Ipv4PrefixListCatalogItem(AvdModel):
+        class SequenceNumbersItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "sequence": {"type": int}, "action": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "sequence", "action")
             _custom_data: dict[str, Any]
@@ -4176,19 +4259,24 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "sequence_numbers": {"type": list, "items": SequenceNumbersItem}}
+        class SequenceNumbers(AvdCollection[int, SequenceNumbersItem]):
+            _primary_key: ClassVar[str] = "sequence"
+
+        SequenceNumbers._item_type = SequenceNumbersItem
+
+        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "sequence_numbers": {"type": SequenceNumbers}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "sequence_numbers")
         _custom_data: dict[str, Any]
         name: str
         """Prefix-list Name."""
-        sequence_numbers: list[SequenceNumbersItem]
+        sequence_numbers: SequenceNumbers
 
         def __init__(
             self,
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             name: str | UndefinedType = Undefined,
-            sequence_numbers: list[SequenceNumbersItem] | UndefinedType = Undefined,
+            sequence_numbers: SequenceNumbers | UndefinedType = Undefined,
         ) -> None:
             """
             Ipv4PrefixListCatalogItem.
@@ -4205,7 +4293,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class IsisTiLfa(AvdBase):
+    class Ipv4PrefixListCatalog(AvdCollection[str, Ipv4PrefixListCatalogItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    Ipv4PrefixListCatalog._item_type = Ipv4PrefixListCatalogItem
+
+    class IsisTiLfa(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "enabled": {"type": bool, "default": False},
@@ -4243,8 +4336,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class L3Edge(AvdBase):
-        class P2pLinksIpPoolsItem(AvdBase):
+    class L3Edge(AvdModel):
+        class P2pLinksIpPoolsItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -4284,8 +4377,13 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksProfilesItem(AvdBase):
-            class Ptp(AvdBase):
+        class P2pLinksIpPools(AvdCollection[str, P2pLinksIpPoolsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        P2pLinksIpPools._item_type = P2pLinksIpPoolsItem
+
+        class P2pLinksProfilesItem(AvdModel):
+            class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -4307,7 +4405,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class FlowTracking(AvdBase):
+            class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -4337,8 +4435,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PortChannel(AvdBase):
-                class NodesChildInterfacesItem(AvdBase):
+            class PortChannel(AvdModel):
+                class NodesChildInterfacesItem(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "node": {"type": str},
@@ -4382,11 +4480,16 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                    _primary_key: ClassVar[str] = "node"
+
+                NodesChildInterfaces._item_type = NodesChildInterfacesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
-                    "nodes_child_interfaces": {"type": list, "items": NodesChildInterfacesItem},
+                    "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -4412,7 +4515,7 @@ class EosDesigns(AvdBase):
                 name and port_channel interface of the peer.
                 """
                 mode: str | None
-                nodes_child_interfaces: list[NodesChildInterfacesItem]
+                nodes_child_interfaces: NodesChildInterfaces
 
                 def __init__(
                     self,
@@ -4420,7 +4523,7 @@ class EosDesigns(AvdBase):
                     _custom_data: dict[str, Any] | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    nodes_child_interfaces: list[NodesChildInterfacesItem] | UndefinedType = Undefined,
+                    nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                 ) -> None:
                     """
                     PortChannel.
@@ -4677,8 +4780,13 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class P2pLinksItem(AvdBase):
-            class Ptp(AvdBase):
+        class P2pLinksProfiles(AvdCollection[str, P2pLinksProfilesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        P2pLinksProfiles._item_type = P2pLinksProfilesItem
+
+        class P2pLinksItem(AvdModel):
+            class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -4700,7 +4808,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class FlowTracking(AvdBase):
+            class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -4730,8 +4838,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PortChannel(AvdBase):
-                class NodesChildInterfacesItem(AvdBase):
+            class PortChannel(AvdModel):
+                class NodesChildInterfacesItem(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "node": {"type": str},
@@ -4775,11 +4883,16 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class NodesChildInterfaces(AvdCollection[str, NodesChildInterfacesItem]):
+                    _primary_key: ClassVar[str] = "node"
+
+                NodesChildInterfaces._item_type = NodesChildInterfacesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
-                    "nodes_child_interfaces": {"type": list, "items": NodesChildInterfacesItem},
+                    "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -4805,7 +4918,7 @@ class EosDesigns(AvdBase):
                 name and port_channel interface of the peer.
                 """
                 mode: str | None
-                nodes_child_interfaces: list[NodesChildInterfacesItem]
+                nodes_child_interfaces: NodesChildInterfaces
 
                 def __init__(
                     self,
@@ -4813,7 +4926,7 @@ class EosDesigns(AvdBase):
                     _custom_data: dict[str, Any] | UndefinedType = Undefined,
                     description: str | None | UndefinedType = Undefined,
                     mode: str | None | UndefinedType = Undefined,
-                    nodes_child_interfaces: list[NodesChildInterfacesItem] | UndefinedType = Undefined,
+                    nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                 ) -> None:
                     """
                     PortChannel.
@@ -5072,22 +5185,22 @@ class EosDesigns(AvdBase):
 
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
-            "p2p_links_ip_pools": {"type": list, "items": P2pLinksIpPoolsItem},
-            "p2p_links_profiles": {"type": list, "items": P2pLinksProfilesItem},
+            "p2p_links_ip_pools": {"type": P2pLinksIpPools},
+            "p2p_links_profiles": {"type": P2pLinksProfiles},
             "p2p_links": {"type": list, "items": P2pLinksItem},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
-        p2p_links_ip_pools: list[P2pLinksIpPoolsItem]
-        p2p_links_profiles: list[P2pLinksProfilesItem]
+        p2p_links_ip_pools: P2pLinksIpPools
+        p2p_links_profiles: P2pLinksProfiles
         p2p_links: list[P2pLinksItem]
 
         def __init__(
             self,
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
-            p2p_links_ip_pools: list[P2pLinksIpPoolsItem] | UndefinedType = Undefined,
-            p2p_links_profiles: list[P2pLinksProfilesItem] | UndefinedType = Undefined,
+            p2p_links_ip_pools: P2pLinksIpPools | UndefinedType = Undefined,
+            p2p_links_profiles: P2pLinksProfiles | UndefinedType = Undefined,
             p2p_links: list[P2pLinksItem] | UndefinedType = Undefined,
         ) -> None:
             """
@@ -5106,8 +5219,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class L3InterfaceProfilesItem(AvdBase):
-        class Bgp(AvdBase):
+    class L3InterfaceProfilesItem(AvdModel):
+        class Bgp(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "peer_as": {"type": str},
@@ -5168,7 +5281,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class StaticRoutesItem(AvdBase):
+        class StaticRoutesItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
             _custom_data: dict[str, Any]
@@ -5190,8 +5303,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class CvPathfinderInternetExit(AvdBase):
-            class PoliciesItem(AvdBase):
+        class CvPathfinderInternetExit(AvdModel):
+            class PoliciesItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                 _custom_data: dict[str, Any]
@@ -5229,13 +5342,18 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+            class Policies(AvdCollection[str, PoliciesItem]):
+                _primary_key: ClassVar[str] = "name"
+
+            Policies._item_type = PoliciesItem
+
+            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
-            policies: list[PoliciesItem]
+            policies: Policies
             """List of Internet-exit policies using this interface as exit."""
 
-            def __init__(self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined) -> None:
+            def __init__(self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined) -> None:
                 """
                 CvPathfinderInternetExit.
 
@@ -5250,7 +5368,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class FlowTracking(AvdBase):
+        class FlowTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -5546,7 +5664,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class LocalUsersItem(AvdBase):
+    class L3InterfaceProfiles(AvdCollection[str, L3InterfaceProfilesItem]):
+        _primary_key: ClassVar[str] = "profile"
+
+    L3InterfaceProfiles._item_type = L3InterfaceProfilesItem
+
+    class LocalUsersItem(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "name": {"type": str},
@@ -5633,7 +5756,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class MacAddressTable(AvdBase):
+    class LocalUsers(AvdCollection[str, LocalUsersItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    LocalUsers._item_type = LocalUsersItem
+
+    class MacAddressTable(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "aging_time": {"type": int}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -5660,7 +5788,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class ManagementEapi(AvdBase):
+    class ManagementEapi(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "enable_http": {"type": bool, "default": False},
@@ -5697,7 +5825,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class MlagIbgpPeeringVrfs(AvdBase):
+    class MlagIbgpPeeringVrfs(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "base_vlan": {"type": int, "default": 3000}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -5718,8 +5846,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class NetworkPortsItem(AvdBase):
-        class Flowcontrol(AvdBase):
+    class NetworkPortsItem(AvdModel):
+        class Flowcontrol(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "received": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -5740,7 +5868,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ptp(AvdBase):
+        class Ptp(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "enabled": {"type": bool, "default": False},
@@ -5787,7 +5915,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class FlowTracking(AvdBase):
+        class FlowTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -5817,7 +5945,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class LinkTracking(AvdBase):
+        class LinkTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -5858,8 +5986,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Dot1x(AvdBase):
-            class Pae(AvdBase):
+        class Dot1x(AvdModel):
+            class Pae(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -5880,7 +6008,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AuthenticationFailure(AvdBase):
+            class AuthenticationFailure(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "action": {"type": str}, "allow_vlan": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -5909,7 +6037,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class HostMode(AvdBase):
+            class HostMode(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -5938,7 +6066,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class MacBasedAuthentication(AvdBase):
+            class MacBasedAuthentication(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "enabled": {"type": bool},
@@ -5975,7 +6103,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Timeout(AvdBase):
+            class Timeout(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "idle_host": {"type": int},
@@ -6021,7 +6149,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Unauthorized(AvdBase):
+            class Unauthorized(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "access_vlan_membership_egress": {"type": bool},
@@ -6121,8 +6249,8 @@ class EosDesigns(AvdBase):
         class Poe(EosCliConfigGen.EthernetInterfacesItem.Poe):
             pass
 
-        class StormControl(AvdBase):
-            class All(AvdBase):
+        class StormControl(AvdModel):
+            class All(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -6153,7 +6281,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Broadcast(AvdBase):
+            class Broadcast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -6184,7 +6312,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Multicast(AvdBase):
+            class Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -6215,7 +6343,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class UnknownUnicast(AvdBase):
+            class UnknownUnicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -6286,9 +6414,9 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MonitorSessionsItem(AvdBase):
-            class SourceSettings(AvdBase):
-                class AccessGroup(AvdBase):
+        class MonitorSessionsItem(AvdModel):
+            class SourceSettings(AvdModel):
+                class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -6350,8 +6478,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SessionSettings(AvdBase):
-                class AccessGroup(AvdBase):
+            class SessionSettings(AvdModel):
+                class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -6381,7 +6509,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Truncate(AvdBase):
+                class Truncate(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "size": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -6539,7 +6667,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EthernetSegment(AvdBase):
+        class EthernetSegment(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "short_esi": {"type": str},
@@ -6632,9 +6760,9 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PortChannel(AvdBase):
-            class LacpFallback(AvdBase):
-                class Individual(AvdBase):
+        class PortChannel(AvdModel):
+            class LacpFallback(AvdModel):
+                class Individual(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -6702,7 +6830,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class LacpTimer(AvdBase):
+            class LacpTimer(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multiplier": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -6733,8 +6861,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SubinterfacesItem(AvdBase):
-                class EncapsulationVlan(AvdBase):
+            class SubinterfacesItem(AvdModel):
+                class EncapsulationVlan(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "client_dot1q": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -7312,7 +7440,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class NetworkServicesKeysItem(AvdBase):
+    class NetworkServicesKeysItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
         _custom_data: dict[str, Any]
@@ -7333,8 +7461,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CustomNodeTypeKeysItem(AvdBase):
-        class NetworkServices(AvdBase):
+    class NetworkServicesKeys(AvdCollection[str, NetworkServicesKeysItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    NetworkServicesKeys._item_type = NetworkServicesKeysItem
+
+    class CustomNodeTypeKeysItem(AvdModel):
+        class NetworkServices(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "l1": {"type": bool, "default": False},
@@ -7379,7 +7512,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpAddressing(AvdBase):
+        class IpAddressing(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "python_module": {"type": str},
@@ -7474,7 +7607,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class InterfaceDescriptions(AvdBase):
+        class InterfaceDescriptions(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "python_module": {"type": str},
@@ -7779,8 +7912,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class NodeTypeKeysItem(AvdBase):
-        class NetworkServices(AvdBase):
+    class CustomNodeTypeKeys(AvdCollection[str, CustomNodeTypeKeysItem]):
+        _primary_key: ClassVar[str] = "key"
+
+    CustomNodeTypeKeys._item_type = CustomNodeTypeKeysItem
+
+    class NodeTypeKeysItem(AvdModel):
+        class NetworkServices(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "l1": {"type": bool, "default": False},
@@ -7825,7 +7963,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpAddressing(AvdBase):
+        class IpAddressing(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "python_module": {"type": str},
@@ -7920,7 +8058,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class InterfaceDescriptions(AvdBase):
+        class InterfaceDescriptions(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "python_module": {"type": str},
@@ -8225,8 +8363,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class NtpSettings(AvdBase):
-        class ServersItem(AvdBase):
+    class NodeTypeKeys(AvdCollection[str, NodeTypeKeysItem]):
+        _primary_key: ClassVar[str] = "key"
+
+    NodeTypeKeys._item_type = NodeTypeKeysItem
+
+    class NtpSettings(AvdModel):
+        class ServersItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -8279,7 +8422,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class AuthenticationKeysItem(AvdBase):
+        class AuthenticationKeysItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "id": {"type": int},
@@ -8322,13 +8465,18 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class AuthenticationKeys(AvdCollection[int, AuthenticationKeysItem]):
+            _primary_key: ClassVar[str] = "id"
+
+        AuthenticationKeys._item_type = AuthenticationKeysItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "server_vrf": {"type": str},
             "servers": {"type": list, "items": ServersItem},
             "authenticate": {"type": bool},
             "authenticate_servers_only": {"type": bool},
-            "authentication_keys": {"type": list, "items": AuthenticationKeysItem},
+            "authentication_keys": {"type": AuthenticationKeys},
             "trusted_keys": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
@@ -8355,7 +8503,7 @@ class EosDesigns(AvdBase):
         """The first server is always set as "preferred"."""
         authenticate: bool | None
         authenticate_servers_only: bool | None
-        authentication_keys: list[AuthenticationKeysItem]
+        authentication_keys: AuthenticationKeys
         trusted_keys: str | None
 
         def __init__(
@@ -8366,7 +8514,7 @@ class EosDesigns(AvdBase):
             servers: list[ServersItem] | UndefinedType = Undefined,
             authenticate: bool | None | UndefinedType = Undefined,
             authenticate_servers_only: bool | None | UndefinedType = Undefined,
-            authentication_keys: list[AuthenticationKeysItem] | UndefinedType = Undefined,
+            authentication_keys: AuthenticationKeys | UndefinedType = Undefined,
             trusted_keys: str | None | UndefinedType = Undefined,
         ) -> None:
             """
@@ -8403,7 +8551,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class OverlayRdType(AvdBase):
+    class OverlayRdType(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "admin_subfield": {"type": str, "default": "router_id"},
@@ -8548,7 +8696,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class OverlayRtType(AvdBase):
+    class OverlayRtType(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "admin_subfield": {"type": str, "default": "vrf_id"},
@@ -8673,8 +8821,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class CustomPlatformSettingsItem(AvdBase):
-        class ReloadDelay(AvdBase):
+    class CustomPlatformSettingsItem(AvdModel):
+        class ReloadDelay(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mlag": {"type": int}, "non_mlag": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -8705,7 +8853,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class FeatureSupport(AvdBase):
+        class FeatureSupport(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -8788,7 +8936,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SecurityEntropySources(AvdBase):
+        class SecurityEntropySources(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "hardware": {"type": bool},
@@ -8928,8 +9076,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PlatformSettingsItem(AvdBase):
-        class ReloadDelay(AvdBase):
+    class PlatformSettingsItem(AvdModel):
+        class ReloadDelay(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mlag": {"type": int}, "non_mlag": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -8960,7 +9108,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class FeatureSupport(AvdBase):
+        class FeatureSupport(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "queue_monitor_length_notify": {"type": bool, "default": True},
@@ -9043,7 +9191,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SecurityEntropySources(AvdBase):
+        class SecurityEntropySources(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "hardware": {"type": bool},
@@ -9183,8 +9331,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PlatformSpeedGroupsItem(AvdBase):
-        class SpeedsItem(AvdBase):
+    class PlatformSpeedGroupsItem(AvdModel):
+        class SpeedsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "speed": {"type": str}, "speed_groups": {"type": list, "items": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "speed")
             _custom_data: dict[str, Any]
@@ -9213,18 +9361,23 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "platform": {"type": str}, "speeds": {"type": list, "items": SpeedsItem}}
+        class Speeds(AvdCollection[str, SpeedsItem]):
+            _primary_key: ClassVar[str] = "speed"
+
+        Speeds._item_type = SpeedsItem
+
+        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "platform": {"type": str}, "speeds": {"type": Speeds}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "platform")
         _custom_data: dict[str, Any]
         platform: str
-        speeds: list[SpeedsItem]
+        speeds: Speeds
 
         def __init__(
             self,
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             platform: str | UndefinedType = Undefined,
-            speeds: list[SpeedsItem] | UndefinedType = Undefined,
+            speeds: Speeds | UndefinedType = Undefined,
         ) -> None:
             """
             PlatformSpeedGroupsItem.
@@ -9241,8 +9394,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PortProfilesItem(AvdBase):
-        class Flowcontrol(AvdBase):
+    class PlatformSpeedGroups(AvdCollection[str, PlatformSpeedGroupsItem]):
+        _primary_key: ClassVar[str] = "platform"
+
+    PlatformSpeedGroups._item_type = PlatformSpeedGroupsItem
+
+    class PortProfilesItem(AvdModel):
+        class Flowcontrol(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "received": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -9263,7 +9421,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ptp(AvdBase):
+        class Ptp(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "enabled": {"type": bool, "default": False},
@@ -9310,7 +9468,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class FlowTracking(AvdBase):
+        class FlowTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -9340,7 +9498,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class LinkTracking(AvdBase):
+        class LinkTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -9381,8 +9539,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Dot1x(AvdBase):
-            class Pae(AvdBase):
+        class Dot1x(AvdModel):
+            class Pae(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9403,7 +9561,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AuthenticationFailure(AvdBase):
+            class AuthenticationFailure(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "action": {"type": str}, "allow_vlan": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9432,7 +9590,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class HostMode(AvdBase):
+            class HostMode(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9461,7 +9619,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class MacBasedAuthentication(AvdBase):
+            class MacBasedAuthentication(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "enabled": {"type": bool},
@@ -9498,7 +9656,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Timeout(AvdBase):
+            class Timeout(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "idle_host": {"type": int},
@@ -9544,7 +9702,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Unauthorized(AvdBase):
+            class Unauthorized(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "access_vlan_membership_egress": {"type": bool},
@@ -9644,8 +9802,8 @@ class EosDesigns(AvdBase):
         class Poe(EosCliConfigGen.EthernetInterfacesItem.Poe):
             pass
 
-        class StormControl(AvdBase):
-            class All(AvdBase):
+        class StormControl(AvdModel):
+            class All(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9676,7 +9834,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Broadcast(AvdBase):
+            class Broadcast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9707,7 +9865,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Multicast(AvdBase):
+            class Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9738,7 +9896,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class UnknownUnicast(AvdBase):
+            class UnknownUnicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -9809,9 +9967,9 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MonitorSessionsItem(AvdBase):
-            class SourceSettings(AvdBase):
-                class AccessGroup(AvdBase):
+        class MonitorSessionsItem(AvdModel):
+            class SourceSettings(AvdModel):
+                class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -9873,8 +10031,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SessionSettings(AvdBase):
-                class AccessGroup(AvdBase):
+            class SessionSettings(AvdModel):
+                class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -9904,7 +10062,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class Truncate(AvdBase):
+                class Truncate(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "size": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -10062,7 +10220,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EthernetSegment(AvdBase):
+        class EthernetSegment(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "short_esi": {"type": str},
@@ -10155,9 +10313,9 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PortChannel(AvdBase):
-            class LacpFallback(AvdBase):
-                class Individual(AvdBase):
+        class PortChannel(AvdModel):
+            class LacpFallback(AvdModel):
+                class Individual(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -10225,7 +10383,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class LacpTimer(AvdBase):
+            class LacpTimer(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multiplier": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -10256,8 +10414,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class SubinterfacesItem(AvdBase):
-                class EncapsulationVlan(AvdBase):
+            class SubinterfacesItem(AvdModel):
+                class EncapsulationVlan(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "client_dot1q": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -10804,8 +10962,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PtpProfilesItem(AvdBase):
-        class Announce(AvdBase):
+    class PortProfiles(AvdCollection[str, PortProfilesItem]):
+        _primary_key: ClassVar[str] = "profile"
+
+    PortProfiles._item_type = PortProfilesItem
+
+    class PtpProfilesItem(AvdModel):
+        class Announce(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": int}, "timeout": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -10834,7 +10997,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SyncMessage(AvdBase):
+        class SyncMessage(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -10902,7 +11065,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class PtpSettings(AvdBase):
+    class PtpProfiles(AvdCollection[str, PtpProfilesItem]):
+        _primary_key: ClassVar[str] = "profile"
+
+    PtpProfiles._item_type = PtpProfilesItem
+
+    class PtpSettings(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "enabled": {"type": bool},
@@ -10953,8 +11121,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class QueueMonitorLength(AvdBase):
-        class DefaultThresholds(AvdBase):
+    class QueueMonitorLength(AvdModel):
+        class DefaultThresholds(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "high": {"type": int}, "low": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "high")
             _custom_data: dict[str, Any]
@@ -10990,8 +11158,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Cpu(AvdBase):
-            class Thresholds(AvdBase):
+        class Cpu(AvdModel):
+            class Thresholds(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "high": {"type": int}, "low": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "high")
                 _custom_data: dict[str, Any]
@@ -11096,7 +11264,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class Redundancy(AvdBase):
+    class Redundancy(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "protocol": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -11117,8 +11285,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class SflowSettings(AvdBase):
-        class Sample(AvdBase):
+    class SflowSettings(AvdModel):
+        class Sample(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "rate": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -11149,7 +11317,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DestinationsItem(AvdBase):
+        class DestinationsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "destination": {"type": str}, "port": {"type": int}, "vrf": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "destination")
             _custom_data: dict[str, Any]
@@ -11215,7 +11383,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class VrfsItem(AvdBase):
+        class VrfsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "source_interface": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
             _custom_data: dict[str, Any]
@@ -11253,17 +11421,22 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class Vrfs(AvdCollection[str, VrfsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "sample": {"type": Sample},
             "destinations": {"type": list, "items": DestinationsItem},
-            "vrfs": {"type": list, "items": VrfsItem},
+            "vrfs": {"type": Vrfs},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "destinations")
         _custom_data: dict[str, Any]
         sample: Sample
         destinations: list[DestinationsItem]
-        vrfs: list[VrfsItem]
+        vrfs: Vrfs
 
         def __init__(
             self,
@@ -11271,7 +11444,7 @@ class EosDesigns(AvdBase):
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             sample: Sample | UndefinedType = Undefined,
             destinations: list[DestinationsItem] | UndefinedType = Undefined,
-            vrfs: list[VrfsItem] | UndefinedType = Undefined,
+            vrfs: Vrfs | UndefinedType = Undefined,
         ) -> None:
             """
             SflowSettings.
@@ -11289,8 +11462,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class SnmpSettings(AvdBase):
-        class VrfsItem(AvdBase):
+    class SnmpSettings(AvdModel):
+        class VrfsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "enable": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
             _custom_data: dict[str, Any]
@@ -11320,7 +11493,12 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class UsersItem(AvdBase):
+        class Vrfs(AvdCollection[str, VrfsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        class UsersItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -11377,8 +11555,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class HostsItem(AvdBase):
-            class UsersItem(AvdBase):
+        class HostsItem(AvdModel):
+            class UsersItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "username": {"type": str}, "authentication_level": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -11489,8 +11667,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class CommunitiesItem(AvdBase):
-            class AccessListIpv4(AvdBase):
+        class CommunitiesItem(AvdModel):
+            class AccessListIpv4(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -11512,7 +11690,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class AccessListIpv6(AvdBase):
+            class AccessListIpv6(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -11579,7 +11757,12 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv4AclsItem(AvdBase):
+        class Communities(AvdCollection[str, CommunitiesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Communities._item_type = CommunitiesItem
+
+        class Ipv4AclsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "vrf": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -11609,7 +11792,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ipv6AclsItem(AvdBase):
+        class Ipv6AclsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "vrf": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -11639,7 +11822,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class ViewsItem(AvdBase):
+        class ViewsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "mib_family_name": {"type": str}, "included": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -11672,7 +11855,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class GroupsItem(AvdBase):
+        class GroupsItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -11732,7 +11915,7 @@ class EosDesigns(AvdBase):
             "_custom_data": {"type": dict},
             "contact": {"type": str},
             "location": {"type": bool, "default": False},
-            "vrfs": {"type": list, "items": VrfsItem},
+            "vrfs": {"type": Vrfs},
             "enable_mgmt_interface_vrf": {"type": bool},
             "enable_inband_mgmt_vrf": {"type": bool},
             "compute_local_engineid": {"type": bool, "default": False},
@@ -11740,7 +11923,7 @@ class EosDesigns(AvdBase):
             "compute_v3_user_localized_key": {"type": bool, "default": False},
             "users": {"type": list, "items": UsersItem},
             "hosts": {"type": list, "items": HostsItem},
-            "communities": {"type": list, "items": CommunitiesItem},
+            "communities": {"type": Communities},
             "ipv4_acls": {"type": list, "items": Ipv4AclsItem},
             "ipv6_acls": {"type": list, "items": Ipv6AclsItem},
             "views": {"type": list, "items": ViewsItem},
@@ -11756,7 +11939,7 @@ class EosDesigns(AvdBase):
         Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack>
         <inventory_hostname>".
         """
-        vrfs: list[VrfsItem]
+        vrfs: Vrfs
         """
         Enable/disable SNMP for one or more VRFs.
         Can be used in combination with
@@ -11808,7 +11991,7 @@ class EosDesigns(AvdBase):
         using `structured_config`.
         """
         hosts: list[HostsItem]
-        communities: list[CommunitiesItem]
+        communities: Communities
         ipv4_acls: list[Ipv4AclsItem]
         ipv6_acls: list[Ipv6AclsItem]
         views: list[ViewsItem]
@@ -11821,7 +12004,7 @@ class EosDesigns(AvdBase):
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             contact: str | None | UndefinedType = Undefined,
             location: bool | None | UndefinedType = Undefined,
-            vrfs: list[VrfsItem] | UndefinedType = Undefined,
+            vrfs: Vrfs | UndefinedType = Undefined,
             enable_mgmt_interface_vrf: bool | None | UndefinedType = Undefined,
             enable_inband_mgmt_vrf: bool | None | UndefinedType = Undefined,
             compute_local_engineid: bool | None | UndefinedType = Undefined,
@@ -11829,7 +12012,7 @@ class EosDesigns(AvdBase):
             compute_v3_user_localized_key: bool | None | UndefinedType = Undefined,
             users: list[UsersItem] | UndefinedType = Undefined,
             hosts: list[HostsItem] | UndefinedType = Undefined,
-            communities: list[CommunitiesItem] | UndefinedType = Undefined,
+            communities: Communities | UndefinedType = Undefined,
             ipv4_acls: list[Ipv4AclsItem] | UndefinedType = Undefined,
             ipv6_acls: list[Ipv6AclsItem] | UndefinedType = Undefined,
             views: list[ViewsItem] | UndefinedType = Undefined,
@@ -11898,8 +12081,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class SourceInterfaces(AvdBase):
-        class DomainLookup(AvdBase):
+    class SourceInterfaces(AvdModel):
+        class DomainLookup(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -11948,7 +12131,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class HttpClient(AvdBase):
+        class HttpClient(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -11997,7 +12180,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Radius(AvdBase):
+        class Radius(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -12046,7 +12229,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Snmp(AvdBase):
+        class Snmp(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -12095,7 +12278,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class SshClient(AvdBase):
+        class SshClient(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -12144,7 +12327,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Tacacs(AvdBase):
+        class Tacacs(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -12247,9 +12430,9 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class SviProfilesItem(AvdBase):
-        class NodesItem(AvdBase):
-            class IpHelpersItem(AvdBase):
+    class SviProfilesItem(AvdModel):
+        class NodesItem(AvdModel):
+            class IpHelpersItem(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "ip_helper": {"type": str},
@@ -12289,7 +12472,12 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class EvpnL2Multicast(AvdBase):
+            class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                _primary_key: ClassVar[str] = "ip_helper"
+
+            IpHelpers._item_type = IpHelpersItem
+
+            class EvpnL2Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "always_redistribute_igmp": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -12338,7 +12526,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class EvpnL3Multicast(AvdBase):
+            class EvpnL3Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -12359,7 +12547,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class IgmpSnoopingQuerier(AvdBase):
+            class IgmpSnoopingQuerier(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "enabled": {"type": bool},
@@ -12409,8 +12597,8 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Ospf(AvdBase):
-                class MessageDigestKeysItem(AvdBase):
+            class Ospf(AvdModel):
+                class MessageDigestKeysItem(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "id": {"type": int},
@@ -12503,7 +12691,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class Bgp(AvdBase):
+            class Bgp(AvdModel):
                 class StructuredConfig(EosCliConfigGen.RouterBgp.VlansItem):
                     pass
 
@@ -12563,7 +12751,7 @@ class EosDesigns(AvdBase):
                 "ipv6_virtual_router_addresses": {"type": list, "items": str},
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
-                "ip_helpers": {"type": list, "items": IpHelpersItem},
+                "ip_helpers": {"type": IpHelpers},
                 "vni_override": {"type": int},
                 "rt_override": {"type": str},
                 "rd_override": {"type": str},
@@ -12641,7 +12829,7 @@ class EosDesigns(AvdBase):
             The access-list must be defined
             under `ipv4_acls` and supports substitution of the field "interface_ip".
             """
-            ip_helpers: list[IpHelpersItem]
+            ip_helpers: IpHelpers
             """IP helper for DHCP relay."""
             vni_override: int | None
             """
@@ -12732,7 +12920,7 @@ class EosDesigns(AvdBase):
                 ipv6_virtual_router_addresses: list[str] | UndefinedType = Undefined,
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
-                ip_helpers: list[IpHelpersItem] | UndefinedType = Undefined,
+                ip_helpers: IpHelpers | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -12854,7 +13042,12 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IpHelpersItem(AvdBase):
+        class Nodes(AvdCollection[str, NodesItem]):
+            _primary_key: ClassVar[str] = "node"
+
+        Nodes._item_type = NodesItem
+
+        class IpHelpersItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "ip_helper": {"type": str},
@@ -12894,7 +13087,12 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EvpnL2Multicast(AvdBase):
+        class IpHelpers(AvdCollection[str, IpHelpersItem]):
+            _primary_key: ClassVar[str] = "ip_helper"
+
+        IpHelpers._item_type = IpHelpersItem
+
+        class EvpnL2Multicast(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "always_redistribute_igmp": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -12943,7 +13141,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class EvpnL3Multicast(AvdBase):
+        class EvpnL3Multicast(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -12964,7 +13162,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class IgmpSnoopingQuerier(AvdBase):
+        class IgmpSnoopingQuerier(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "enabled": {"type": bool},
@@ -13014,8 +13212,8 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Ospf(AvdBase):
-            class MessageDigestKeysItem(AvdBase):
+        class Ospf(AvdModel):
+            class MessageDigestKeysItem(AvdModel):
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "id": {"type": int},
@@ -13108,7 +13306,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Bgp(AvdBase):
+        class Bgp(AvdModel):
             class StructuredConfig(EosCliConfigGen.RouterBgp.VlansItem):
                 pass
 
@@ -13156,7 +13354,7 @@ class EosDesigns(AvdBase):
             "_custom_data": {"type": dict},
             "profile": {"type": str},
             "parent_profile": {"type": str},
-            "nodes": {"type": list, "items": NodesItem},
+            "nodes": {"type": Nodes},
             "name": {"type": str},
             "enabled": {"type": bool},
             "description": {"type": str},
@@ -13170,7 +13368,7 @@ class EosDesigns(AvdBase):
             "ipv6_virtual_router_addresses": {"type": list, "items": str},
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
-            "ip_helpers": {"type": list, "items": IpHelpersItem},
+            "ip_helpers": {"type": IpHelpers},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -13197,7 +13395,7 @@ class EosDesigns(AvdBase):
         svi_profiles can refer to another svi_profile to inherit settings
         in up to two levels (svi -> svi_profile -> svi_parent_profile).
         """
-        nodes: list[NodesItem]
+        nodes: Nodes
         """
         Define node specific configuration, such as unique IP addresses.
         Any keys set here will be merged
@@ -13261,7 +13459,7 @@ class EosDesigns(AvdBase):
         The access-list must be defined
         under `ipv4_acls` and supports substitution of the field "interface_ip".
         """
-        ip_helpers: list[IpHelpersItem]
+        ip_helpers: IpHelpers
         """IP helper for DHCP relay."""
         vni_override: int | None
         """
@@ -13340,7 +13538,7 @@ class EosDesigns(AvdBase):
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             profile: str | UndefinedType = Undefined,
             parent_profile: str | None | UndefinedType = Undefined,
-            nodes: list[NodesItem] | UndefinedType = Undefined,
+            nodes: Nodes | UndefinedType = Undefined,
             name: str | None | UndefinedType = Undefined,
             enabled: bool | None | UndefinedType = Undefined,
             description: str | None | UndefinedType = Undefined,
@@ -13354,7 +13552,7 @@ class EosDesigns(AvdBase):
             ipv6_virtual_router_addresses: list[str] | UndefinedType = Undefined,
             ipv4_acl_in: str | None | UndefinedType = Undefined,
             ipv4_acl_out: str | None | UndefinedType = Undefined,
-            ip_helpers: list[IpHelpersItem] | UndefinedType = Undefined,
+            ip_helpers: IpHelpers | UndefinedType = Undefined,
             vni_override: int | None | UndefinedType = Undefined,
             rt_override: str | None | UndefinedType = Undefined,
             rd_override: str | None | UndefinedType = Undefined,
@@ -13485,8 +13683,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class TrunkGroups(AvdBase):
-        class Mlag(AvdBase):
+    class SviProfiles(AvdCollection[str, SviProfilesItem]):
+        _primary_key: ClassVar[str] = "profile"
+
+    SviProfiles._item_type = SviProfilesItem
+
+    class TrunkGroups(AvdModel):
+        class Mlag(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str, "default": "MLAG"}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -13507,7 +13710,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class MlagL3(AvdBase):
+        class MlagL3(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str, "default": "MLAG"}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -13528,7 +13731,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Uplink(AvdBase):
+        class Uplink(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str, "default": "UPLINK"}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -13583,7 +13786,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class UnderlayMulticastAnycastRp(AvdBase):
+    class UnderlayMulticastAnycastRp(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str, "default": "pim"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -13604,8 +13807,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class UnderlayMulticastRpsItem(AvdBase):
-        class NodesItem(AvdBase):
+    class UnderlayMulticastRpsItem(AvdModel):
+        class NodesItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -13644,10 +13847,15 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class Nodes(AvdCollection[str, NodesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Nodes._item_type = NodesItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "rp": {"type": str},
-            "nodes": {"type": list, "items": NodesItem},
+            "nodes": {"type": Nodes},
             "groups": {"type": list, "items": str},
             "access_list_name": {"type": str},
         }
@@ -13655,7 +13863,7 @@ class EosDesigns(AvdBase):
         _custom_data: dict[str, Any]
         rp: str
         """RP IPv4 address."""
-        nodes: list[NodesItem]
+        nodes: Nodes
         """List of nodes where a Loopback interface with the RP address will be configured."""
         groups: list[str]
         """
@@ -13673,7 +13881,7 @@ class EosDesigns(AvdBase):
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             rp: str | UndefinedType = Undefined,
-            nodes: list[NodesItem] | UndefinedType = Undefined,
+            nodes: Nodes | UndefinedType = Undefined,
             groups: list[str] | UndefinedType = Undefined,
             access_list_name: str | None | UndefinedType = Undefined,
         ) -> None:
@@ -13699,8 +13907,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class UnderlayOspfAuthentication(AvdBase):
-        class MessageDigestKeysItem(AvdBase):
+    class UnderlayMulticastRps(AvdCollection[str, UnderlayMulticastRpsItem]):
+        _primary_key: ClassVar[str] = "rp"
+
+    UnderlayMulticastRps._item_type = UnderlayMulticastRpsItem
+
+    class UnderlayOspfAuthentication(AvdModel):
+        class MessageDigestKeysItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "id": {"type": int},
@@ -13749,22 +13962,27 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class MessageDigestKeys(AvdCollection[int, MessageDigestKeysItem]):
+            _primary_key: ClassVar[str] = "id"
+
+        MessageDigestKeys._item_type = MessageDigestKeysItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "enabled": {"type": bool, "default": False},
-            "message_digest_keys": {"type": list, "items": MessageDigestKeysItem},
+            "message_digest_keys": {"type": MessageDigestKeys},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "message_digest_keys")
         _custom_data: dict[str, Any]
         enabled: bool
-        message_digest_keys: list[MessageDigestKeysItem]
+        message_digest_keys: MessageDigestKeys
 
         def __init__(
             self,
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             enabled: bool | UndefinedType = Undefined,
-            message_digest_keys: list[MessageDigestKeysItem] | UndefinedType = Undefined,
+            message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
         ) -> None:
             """
             UnderlayOspfAuthentication.
@@ -13781,7 +13999,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class UplinkPtp(AvdBase):
+    class UplinkPtp(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -13802,7 +14020,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanCarriersItem(AvdBase):
+    class WanCarriersItem(AvdModel):
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
             "name": {"type": str},
@@ -13854,7 +14072,12 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanHa(AvdBase):
+    class WanCarriers(AvdCollection[str, WanCarriersItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    WanCarriers._item_type = WanCarriersItem
+
+    class WanHa(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "lan_ha_path_group_name": {"type": str, "default": "LAN_HA"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
@@ -13883,8 +14106,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanIpsecProfiles(AvdBase):
-        class ControlPlane(AvdBase):
+    class WanIpsecProfiles(AvdModel):
+        class ControlPlane(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "ike_policy_name": {"type": str, "default": "CP-IKE-POLICY"},
@@ -13936,7 +14159,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DataPlane(AvdBase):
+        class DataPlane(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "ike_policy_name": {"type": str, "default": "DP-IKE-POLICY"},
@@ -14017,8 +14240,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanPathGroupsItem(AvdBase):
-        class Ipsec(AvdBase):
+    class WanPathGroupsItem(AvdModel):
+        class Ipsec(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "dynamic_peers": {"type": bool, "default": True},
@@ -14053,7 +14276,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class ImportPathGroupsItem(AvdBase):
+        class ImportPathGroupsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "remote": {"type": str}, "local": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -14084,7 +14307,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DpsKeepalive(AvdBase):
+        class DpsKeepalive(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": str}, "failure_threshold": {"type": int, "default": 5}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
             _custom_data: dict[str, Any]
@@ -14216,9 +14439,14 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanRouteServersItem(AvdBase):
-        class PathGroupsItem(AvdBase):
-            class InterfacesItem(AvdBase):
+    class WanPathGroups(AvdCollection[str, WanPathGroupsItem]):
+        _primary_key: ClassVar[str] = "name"
+
+    WanPathGroups._item_type = WanPathGroupsItem
+
+    class WanRouteServersItem(AvdModel):
+        class PathGroupsItem(AvdModel):
+            class InterfacesItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "public_ip": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                 _custom_data: dict[str, Any]
@@ -14249,19 +14477,24 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "interfaces": {"type": list, "items": InterfacesItem}}
+            class Interfaces(AvdCollection[str, InterfacesItem]):
+                _primary_key: ClassVar[str] = "name"
+
+            Interfaces._item_type = InterfacesItem
+
+            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "interfaces": {"type": Interfaces}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "interfaces")
             _custom_data: dict[str, Any]
             name: str
             """Path-group name."""
-            interfaces: list[InterfacesItem]
+            interfaces: Interfaces
 
             def __init__(
                 self,
                 *,
                 _custom_data: dict[str, Any] | UndefinedType = Undefined,
                 name: str | UndefinedType = Undefined,
-                interfaces: list[InterfacesItem] | UndefinedType = Undefined,
+                interfaces: Interfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 PathGroupsItem.
@@ -14278,19 +14511,19 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        _fields: ClassVar[dict] = {
-            "_custom_data": {"type": dict},
-            "hostname": {"type": str},
-            "vtep_ip": {"type": str},
-            "path_groups": {"type": list, "items": PathGroupsItem},
-        }
+        class PathGroups(AvdCollection[str, PathGroupsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        PathGroups._item_type = PathGroupsItem
+
+        _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "hostname": {"type": str}, "vtep_ip": {"type": str}, "path_groups": {"type": PathGroups}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "hostname")
         _custom_data: dict[str, Any]
         hostname: str
         """Route-Reflector hostname."""
         vtep_ip: str | None
         """Route-Reflector VTEP IP Address. This is usually the IP address under `interface Dps1`."""
-        path_groups: list[PathGroupsItem]
+        path_groups: PathGroups
         """Path-groups through which the Route Reflector/Pathfinder is reached."""
 
         def __init__(
@@ -14299,7 +14532,7 @@ class EosDesigns(AvdBase):
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
             hostname: str | UndefinedType = Undefined,
             vtep_ip: str | None | UndefinedType = Undefined,
-            path_groups: list[PathGroupsItem] | UndefinedType = Undefined,
+            path_groups: PathGroups | UndefinedType = Undefined,
         ) -> None:
             """
             WanRouteServersItem.
@@ -14317,8 +14550,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class WanVirtualTopologies(AvdBase):
-        class VrfsItem(AvdBase):
+    class WanRouteServers(AvdCollection[str, WanRouteServersItem]):
+        _primary_key: ClassVar[str] = "hostname"
+
+    WanRouteServers._item_type = WanRouteServersItem
+
+    class WanVirtualTopologies(AvdModel):
+        class VrfsItem(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
@@ -14396,8 +14634,13 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class ControlPlaneVirtualTopology(AvdBase):
-            class Constraints(AvdBase):
+        class Vrfs(AvdCollection[str, VrfsItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        class ControlPlaneVirtualTopology(AvdModel):
+            class Constraints(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "jitter": {"type": int}, "latency": {"type": int}, "loss_rate": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -14429,7 +14672,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class PathGroupsItem(AvdBase):
+            class PathGroupsItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "names": {"type": list, "items": str}, "preference": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "names")
                 _custom_data: dict[str, Any]
@@ -14475,7 +14718,7 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class InternetExit(AvdBase):
+            class InternetExit(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policy": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
@@ -14593,9 +14836,9 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class PoliciesItem(AvdBase):
-            class ApplicationVirtualTopologiesItem(AvdBase):
-                class Constraints(AvdBase):
+        class PoliciesItem(AvdModel):
+            class ApplicationVirtualTopologiesItem(AvdModel):
+                class Constraints(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "jitter": {"type": int}, "latency": {"type": int}, "loss_rate": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -14627,7 +14870,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class PathGroupsItem(AvdBase):
+                class PathGroupsItem(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "names": {"type": list, "items": str}, "preference": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data", "names")
                     _custom_data: dict[str, Any]
@@ -14673,7 +14916,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class InternetExit(AvdBase):
+                class InternetExit(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policy": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -14791,8 +15034,13 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            class DefaultVirtualTopology(AvdBase):
-                class Constraints(AvdBase):
+            class ApplicationVirtualTopologies(AvdCollection[str, ApplicationVirtualTopologiesItem]):
+                _primary_key: ClassVar[str] = "application_profile"
+
+            ApplicationVirtualTopologies._item_type = ApplicationVirtualTopologiesItem
+
+            class DefaultVirtualTopology(AvdModel):
+                class Constraints(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "jitter": {"type": int}, "latency": {"type": int}, "loss_rate": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -14824,7 +15072,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class PathGroupsItem(AvdBase):
+                class PathGroupsItem(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "names": {"type": list, "items": str}, "preference": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data", "names")
                     _custom_data: dict[str, Any]
@@ -14870,7 +15118,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class InternetExit(AvdBase):
+                class InternetExit(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policy": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
                     _custom_data: dict[str, Any]
@@ -14970,14 +15218,14 @@ class EosDesigns(AvdBase):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "name": {"type": str},
-                "application_virtual_topologies": {"type": list, "items": ApplicationVirtualTopologiesItem},
+                "application_virtual_topologies": {"type": ApplicationVirtualTopologies},
                 "default_virtual_topology": {"type": DefaultVirtualTopology},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "default_virtual_topology")
             _custom_data: dict[str, Any]
             name: str
             """Name of the AVT policy."""
-            application_virtual_topologies: list[ApplicationVirtualTopologiesItem]
+            application_virtual_topologies: ApplicationVirtualTopologies
             """List of application specific virtual topologies."""
             default_virtual_topology: DefaultVirtualTopology
             """
@@ -14992,7 +15240,7 @@ class EosDesigns(AvdBase):
                 *,
                 _custom_data: dict[str, Any] | UndefinedType = Undefined,
                 name: str | UndefinedType = Undefined,
-                application_virtual_topologies: list[ApplicationVirtualTopologiesItem] | UndefinedType = Undefined,
+                application_virtual_topologies: ApplicationVirtualTopologies | UndefinedType = Undefined,
                 default_virtual_topology: DefaultVirtualTopology | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -15015,15 +15263,20 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
+        class Policies(AvdCollection[str, PoliciesItem]):
+            _primary_key: ClassVar[str] = "name"
+
+        Policies._item_type = PoliciesItem
+
         _fields: ClassVar[dict] = {
             "_custom_data": {"type": dict},
-            "vrfs": {"type": list, "items": VrfsItem},
+            "vrfs": {"type": Vrfs},
             "control_plane_virtual_topology": {"type": ControlPlaneVirtualTopology},
-            "policies": {"type": list, "items": PoliciesItem},
+            "policies": {"type": Policies},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
         _custom_data: dict[str, Any]
-        vrfs: list[VrfsItem]
+        vrfs: Vrfs
         """Map a VRF that exists in network_services to an AVT policy."""
         control_plane_virtual_topology: ControlPlaneVirtualTopology
         """
@@ -15035,7 +15288,7 @@ class EosDesigns(AvdBase):
         ID is
         hardcoded to 254 for the AVT profile in CV Pathfinder mode.
         """
-        policies: list[PoliciesItem]
+        policies: Policies
         """
         List of virtual topologies policies.
 
@@ -15081,9 +15334,9 @@ class EosDesigns(AvdBase):
             self,
             *,
             _custom_data: dict[str, Any] | UndefinedType = Undefined,
-            vrfs: list[VrfsItem] | UndefinedType = Undefined,
+            vrfs: Vrfs | UndefinedType = Undefined,
             control_plane_virtual_topology: ControlPlaneVirtualTopology | UndefinedType = Undefined,
-            policies: list[PoliciesItem] | UndefinedType = Undefined,
+            policies: Policies | UndefinedType = Undefined,
         ) -> None:
             """
             WanVirtualTopologies.
@@ -15146,8 +15399,8 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class ZscalerEndpoints(AvdBase):
-        class Primary(AvdBase):
+    class ZscalerEndpoints(AvdModel):
+        class Primary(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "ip_address": {"type": str},
@@ -15196,7 +15449,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Secondary(AvdBase):
+        class Secondary(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "ip_address": {"type": str},
@@ -15245,7 +15498,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class Tertiary(AvdBase):
+        class Tertiary(AvdModel):
             _fields: ClassVar[dict] = {
                 "_custom_data": {"type": dict},
                 "ip_address": {"type": str},
@@ -15294,7 +15547,7 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DeviceLocation(AvdBase):
+        class DeviceLocation(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "city": {"type": str}, "country": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "city", "country")
             _custom_data: dict[str, Any]
@@ -15379,7 +15632,7 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class _CustomStructuredConfigurationsItem(AvdBase):
+    class _CustomStructuredConfigurationsItem(AvdModel):
         _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": EosCliConfigGen}}
         _required_fields: ClassVar[tuple] = ("key", "value")
         key: str
@@ -15402,13 +15655,13 @@ class EosDesigns(AvdBase):
                     continue
                 setattr(self, arg, arg_value)
 
-    class _DynamicKeys(AvdBase):
+    class _DynamicKeys(AvdModel):
         """Data models for dynamic keys."""
 
-        class DynamicConnectedEndpointsKeys(AvdBase):
-            class ConnectedEndpointsKeysKeyItem(AvdBase):
-                class AdaptersItem(AvdBase):
-                    class Flowcontrol(AvdBase):
+        class DynamicConnectedEndpointsKeys(AvdModel):
+            class ConnectedEndpointsKeysKeyItem(AvdModel):
+                class AdaptersItem(AvdModel):
+                    class Flowcontrol(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "received": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -15431,7 +15684,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
+                    class Ptp(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -15478,7 +15731,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class FlowTracking(AvdBase):
+                    class FlowTracking(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -15508,7 +15761,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LinkTracking(AvdBase):
+                    class LinkTracking(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -15549,8 +15802,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Dot1x(AvdBase):
-                        class Pae(AvdBase):
+                    class Dot1x(AvdModel):
+                        class Pae(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15573,7 +15826,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class AuthenticationFailure(AvdBase):
+                        class AuthenticationFailure(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "action": {"type": str}, "allow_vlan": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15602,7 +15855,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class HostMode(AvdBase):
+                        class HostMode(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15631,7 +15884,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class MacBasedAuthentication(AvdBase):
+                        class MacBasedAuthentication(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool},
@@ -15668,7 +15921,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Timeout(AvdBase):
+                        class Timeout(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "idle_host": {"type": int},
@@ -15714,7 +15967,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Unauthorized(AvdBase):
+                        class Unauthorized(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "access_vlan_membership_egress": {"type": bool},
@@ -15814,8 +16067,8 @@ class EosDesigns(AvdBase):
                     class Poe(EosCliConfigGen.EthernetInterfacesItem.Poe):
                         pass
 
-                    class StormControl(AvdBase):
-                        class All(AvdBase):
+                    class StormControl(AvdModel):
+                        class All(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15846,7 +16099,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Broadcast(AvdBase):
+                        class Broadcast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15877,7 +16130,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Multicast(AvdBase):
+                        class Multicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15908,7 +16161,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class UnknownUnicast(AvdBase):
+                        class UnknownUnicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -15979,9 +16232,9 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class MonitorSessionsItem(AvdBase):
-                        class SourceSettings(AvdBase):
-                            class AccessGroup(AvdBase):
+                    class MonitorSessionsItem(AvdModel):
+                        class SourceSettings(AvdModel):
+                            class AccessGroup(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "type": {"type": str},
@@ -16048,8 +16301,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class SessionSettings(AvdBase):
-                            class AccessGroup(AvdBase):
+                        class SessionSettings(AvdModel):
+                            class AccessGroup(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -16079,7 +16332,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Truncate(AvdBase):
+                            class Truncate(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "size": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -16237,7 +16490,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EthernetSegment(AvdBase):
+                    class EthernetSegment(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "short_esi": {"type": str},
@@ -16330,9 +16583,9 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class PortChannel(AvdBase):
-                        class LacpFallback(AvdBase):
-                            class Individual(AvdBase):
+                    class PortChannel(AvdModel):
+                        class LacpFallback(AvdModel):
+                            class Individual(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -16407,7 +16660,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class LacpTimer(AvdBase):
+                        class LacpTimer(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multiplier": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -16438,8 +16691,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class SubinterfacesItem(AvdBase):
-                            class EncapsulationVlan(AvdBase):
+                        class SubinterfacesItem(AvdModel):
+                            class EncapsulationVlan(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "client_dot1q": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -17079,17 +17332,19 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {
-                "key": {"type": str},
-                "value": {"type": list, "key": "connected_endpoints_keys_key", "items": ConnectedEndpointsKeysKeyItem},
-            }
+            class ConnectedEndpointsKeysKey(AvdCollection[str, ConnectedEndpointsKeysKeyItem]):
+                _primary_key: ClassVar[str] = "name"
+
+            ConnectedEndpointsKeysKey._item_type = ConnectedEndpointsKeysKeyItem
+
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": ConnectedEndpointsKeysKey, "key": "connected_endpoints_keys_key"}}
             _required_fields: ClassVar[tuple] = ("key",)
             key: str
             """Key used as dynamic key"""
-            value: list[ConnectedEndpointsKeysKeyItem]
+            value: ConnectedEndpointsKeysKey
             """Value of dynamic key"""
 
-            def __init__(self, *, key: str | UndefinedType = Undefined, value: list[ConnectedEndpointsKeysKeyItem] | UndefinedType = Undefined) -> None:
+            def __init__(self, *, key: str | UndefinedType = Undefined, value: ConnectedEndpointsKeysKey | UndefinedType = Undefined) -> None:
                 """
                 DynamicConnectedEndpointsKeys.
 
@@ -17104,11 +17359,11 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DynamicCustomNodeTypeKeys(AvdBase):
-            class CustomNodeTypeKeysKey(AvdBase):
-                class Defaults(AvdBase):
-                    class LinkTracking(AvdBase):
-                        class GroupsItem(AvdBase):
+        class DynamicCustomNodeTypeKeys(AvdModel):
+            class CustomNodeTypeKeysKey(AvdModel):
+                class Defaults(AvdModel):
+                    class LinkTracking(AvdModel):
+                        class GroupsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "name": {"type": str},
@@ -17191,7 +17446,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LacpPortIdRange(AvdBase):
+                    class LacpPortIdRange(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -17240,7 +17495,7 @@ class EosDesigns(AvdBase):
                     class StructuredConfig(EosCliConfigGen):
                         pass
 
-                    class UplinkPtp(AvdBase):
+                    class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -17263,7 +17518,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UplinkMacsec(AvdBase):
+                    class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -17295,7 +17550,7 @@ class EosDesigns(AvdBase):
                     class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                         pass
 
-                    class Filter(AvdBase):
+                    class Filter(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -17389,8 +17644,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class EvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -17437,7 +17692,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2(AvdBase):
+                        class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -17460,7 +17715,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3(AvdBase):
+                        class EvpnL3(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -17543,8 +17798,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class IpvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -17666,8 +17921,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
-                        class Dscp(AvdBase):
+                    class Ptp(AvdModel):
+                        class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -17696,9 +17951,9 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Monitor(AvdBase):
-                            class Threshold(AvdBase):
-                                class Drop(AvdBase):
+                        class Monitor(AvdModel):
+                            class Threshold(AvdModel):
+                                class Drop(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "offset_from_master": {"type": int},
@@ -17767,8 +18022,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class MissingMessage(AvdBase):
-                                class Intervals(AvdBase):
+                            class MissingMessage(AvdModel):
+                                class Intervals(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "announce": {"type": int},
@@ -17805,7 +18060,7 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class SequenceIds(AvdBase):
+                                class SequenceIds(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "enabled": {"type": bool, "default": True},
@@ -18058,8 +18313,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class WanHa(AvdBase):
-                        class FlowTracking(AvdBase):
+                    class WanHa(AvdModel):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -18201,8 +18456,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Bgp(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Bgp(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "peer_as": {"type": str},
@@ -18263,7 +18518,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class StaticRoutesItem(AvdBase):
+                        class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                             _custom_data: dict[str, Any]
@@ -18285,8 +18540,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class CvPathfinderInternetExit(AvdBase):
-                            class PoliciesItem(AvdBase):
+                        class CvPathfinderInternetExit(AvdModel):
+                            class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                 _custom_data: dict[str, Any]
@@ -18324,14 +18579,19 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                            class Policies(AvdCollection[str, PoliciesItem]):
+                                _primary_key: ClassVar[str] = "name"
+
+                            Policies._item_type = PoliciesItem
+
+                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
-                            policies: list[PoliciesItem]
+                            policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
 
                             def __init__(
-                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CvPathfinderInternetExit.
@@ -18347,7 +18607,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -18638,6 +18898,11 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
+                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    L3Interfaces._item_type = L3InterfacesItem
+
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "id": {"type": int},
@@ -18742,7 +19007,7 @@ class EosDesigns(AvdBase):
                         "cv_pathfinder_site": {"type": str},
                         "wan_ha": {"type": WanHa},
                         "dps_mss_ipv4": {"type": str, "default": "auto"},
-                        "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                        "l3_interfaces": {"type": L3Interfaces},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
                     }
@@ -19365,7 +19630,7 @@ class EosDesigns(AvdBase):
                     """
                     dps_mss_ipv4: str | None
                     """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                    l3_interfaces: list[L3InterfacesItem]
+                    l3_interfaces: L3Interfaces
                     """
                     L3 Interfaces to configure on the node.
                     Used to define the node for WAN interfaces when
@@ -19491,7 +19756,7 @@ class EosDesigns(AvdBase):
                         cv_pathfinder_site: str | None | UndefinedType = Undefined,
                         wan_ha: WanHa | UndefinedType = Undefined,
                         dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                        l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                        l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                         data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                         flow_tracker_type: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -19979,9 +20244,9 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodeGroupsItem(AvdBase):
-                    class NodesItem(AvdBase):
-                        class DownlinkPoolsItem(AvdBase):
+                class NodeGroupsItem(AvdModel):
+                    class NodesItem(AvdModel):
+                        class DownlinkPoolsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "ipv4_pool": {"type": str},
@@ -20021,8 +20286,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class LinkTracking(AvdBase):
-                            class GroupsItem(AvdBase):
+                        class LinkTracking(AvdModel):
+                            class GroupsItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "name": {"type": str},
@@ -20105,7 +20370,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class LacpPortIdRange(AvdBase):
+                        class LacpPortIdRange(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -20154,7 +20419,7 @@ class EosDesigns(AvdBase):
                         class StructuredConfig(EosCliConfigGen):
                             pass
 
-                        class UplinkPtp(AvdBase):
+                        class UplinkPtp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -20177,7 +20442,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class UplinkMacsec(AvdBase):
+                        class UplinkMacsec(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -20209,7 +20474,7 @@ class EosDesigns(AvdBase):
                         class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                             pass
 
-                        class Filter(AvdBase):
+                        class Filter(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -20303,8 +20568,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnGateway(AvdBase):
-                            class RemotePeersItem(AvdBase):
+                        class EvpnGateway(AvdModel):
+                            class RemotePeersItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "hostname": {"type": str},
@@ -20351,7 +20616,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class EvpnL2(AvdBase):
+                            class EvpnL2(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -20374,7 +20639,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class EvpnL3(AvdBase):
+                            class EvpnL3(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "enabled": {"type": bool, "default": False},
@@ -20457,8 +20722,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class IpvpnGateway(AvdBase):
-                            class RemotePeersItem(AvdBase):
+                        class IpvpnGateway(AvdModel):
+                            class RemotePeersItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "hostname": {"type": str},
@@ -20580,8 +20845,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Ptp(AvdBase):
-                            class Dscp(AvdBase):
+                        class Ptp(AvdModel):
+                            class Dscp(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -20610,9 +20875,9 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Monitor(AvdBase):
-                                class Threshold(AvdBase):
-                                    class Drop(AvdBase):
+                            class Monitor(AvdModel):
+                                class Threshold(AvdModel):
+                                    class Drop(AvdModel):
                                         _fields: ClassVar[dict] = {
                                             "_custom_data": {"type": dict},
                                             "offset_from_master": {"type": int},
@@ -20681,8 +20946,8 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class MissingMessage(AvdBase):
-                                    class Intervals(AvdBase):
+                                class MissingMessage(AvdModel):
+                                    class Intervals(AvdModel):
                                         _fields: ClassVar[dict] = {
                                             "_custom_data": {"type": dict},
                                             "announce": {"type": int},
@@ -20719,7 +20984,7 @@ class EosDesigns(AvdBase):
                                                     continue
                                                 setattr(self, arg, arg_value)
 
-                                    class SequenceIds(AvdBase):
+                                    class SequenceIds(AvdModel):
                                         _fields: ClassVar[dict] = {
                                             "_custom_data": {"type": dict},
                                             "enabled": {"type": bool, "default": True},
@@ -20972,8 +21237,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class WanHa(AvdBase):
-                            class FlowTracking(AvdBase):
+                        class WanHa(AvdModel):
+                            class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -21115,8 +21380,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class L3InterfacesItem(AvdBase):
-                            class Bgp(AvdBase):
+                        class L3InterfacesItem(AvdModel):
+                            class Bgp(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "peer_as": {"type": str},
@@ -21177,7 +21442,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class StaticRoutesItem(AvdBase):
+                            class StaticRoutesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                                 _custom_data: dict[str, Any]
@@ -21201,8 +21466,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class CvPathfinderInternetExit(AvdBase):
-                                class PoliciesItem(AvdBase):
+                            class CvPathfinderInternetExit(AvdModel):
+                                class PoliciesItem(AvdModel):
                                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                     _custom_data: dict[str, Any]
@@ -21240,14 +21505,19 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                                class Policies(AvdCollection[str, PoliciesItem]):
+                                    _primary_key: ClassVar[str] = "name"
+
+                                Policies._item_type = PoliciesItem
+
+                                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
-                                policies: list[PoliciesItem]
+                                policies: Policies
                                 """List of Internet-exit policies using this interface as exit."""
 
                                 def __init__(
-                                    self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                    self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     CvPathfinderInternetExit.
@@ -21263,7 +21533,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class FlowTracking(AvdBase):
+                            class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -21554,6 +21824,11 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
+                        class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                            _primary_key: ClassVar[str] = "name"
+
+                        L3Interfaces._item_type = L3InterfacesItem
+
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "name": {"type": str},
@@ -21660,7 +21935,7 @@ class EosDesigns(AvdBase):
                             "cv_pathfinder_site": {"type": str},
                             "wan_ha": {"type": WanHa},
                             "dps_mss_ipv4": {"type": str, "default": "auto"},
-                            "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                            "l3_interfaces": {"type": L3Interfaces},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
                         }
@@ -22290,7 +22565,7 @@ class EosDesigns(AvdBase):
                         """
                         dps_mss_ipv4: str | None
                         """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                        l3_interfaces: list[L3InterfacesItem]
+                        l3_interfaces: L3Interfaces
                         """
                         L3 Interfaces to configure on the node.
                         Used to define the node for WAN interfaces when
@@ -22418,7 +22693,7 @@ class EosDesigns(AvdBase):
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
                             dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                            l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                            l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: str | None | UndefinedType = Undefined,
                         ) -> None:
@@ -22910,8 +23185,13 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LinkTracking(AvdBase):
-                        class GroupsItem(AvdBase):
+                    class Nodes(AvdCollection[str, NodesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    Nodes._item_type = NodesItem
+
+                    class LinkTracking(AvdModel):
+                        class GroupsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "name": {"type": str},
@@ -22994,7 +23274,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LacpPortIdRange(AvdBase):
+                    class LacpPortIdRange(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -23043,7 +23323,7 @@ class EosDesigns(AvdBase):
                     class StructuredConfig(EosCliConfigGen):
                         pass
 
-                    class UplinkPtp(AvdBase):
+                    class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -23066,7 +23346,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UplinkMacsec(AvdBase):
+                    class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -23098,7 +23378,7 @@ class EosDesigns(AvdBase):
                     class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                         pass
 
-                    class Filter(AvdBase):
+                    class Filter(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -23192,8 +23472,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class EvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -23240,7 +23520,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2(AvdBase):
+                        class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -23263,7 +23543,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3(AvdBase):
+                        class EvpnL3(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -23346,8 +23626,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class IpvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -23469,8 +23749,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
-                        class Dscp(AvdBase):
+                    class Ptp(AvdModel):
+                        class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -23499,9 +23779,9 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Monitor(AvdBase):
-                            class Threshold(AvdBase):
-                                class Drop(AvdBase):
+                        class Monitor(AvdModel):
+                            class Threshold(AvdModel):
+                                class Drop(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "offset_from_master": {"type": int},
@@ -23570,8 +23850,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class MissingMessage(AvdBase):
-                                class Intervals(AvdBase):
+                            class MissingMessage(AvdModel):
+                                class Intervals(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "announce": {"type": int},
@@ -23608,7 +23888,7 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class SequenceIds(AvdBase):
+                                class SequenceIds(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "enabled": {"type": bool, "default": True},
@@ -23861,8 +24141,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class WanHa(AvdBase):
-                        class FlowTracking(AvdBase):
+                    class WanHa(AvdModel):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -24004,8 +24284,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Bgp(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Bgp(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "peer_as": {"type": str},
@@ -24066,7 +24346,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class StaticRoutesItem(AvdBase):
+                        class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                             _custom_data: dict[str, Any]
@@ -24088,8 +24368,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class CvPathfinderInternetExit(AvdBase):
-                            class PoliciesItem(AvdBase):
+                        class CvPathfinderInternetExit(AvdModel):
+                            class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                 _custom_data: dict[str, Any]
@@ -24127,14 +24407,19 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                            class Policies(AvdCollection[str, PoliciesItem]):
+                                _primary_key: ClassVar[str] = "name"
+
+                            Policies._item_type = PoliciesItem
+
+                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
-                            policies: list[PoliciesItem]
+                            policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
 
                             def __init__(
-                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CvPathfinderInternetExit.
@@ -24150,7 +24435,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -24441,10 +24726,15 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
+                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    L3Interfaces._item_type = L3InterfacesItem
+
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "group": {"type": str},
-                        "nodes": {"type": list, "items": NodesItem},
+                        "nodes": {"type": Nodes},
                         "id": {"type": int},
                         "platform": {"type": str},
                         "mac_address": {"type": str},
@@ -24547,7 +24837,7 @@ class EosDesigns(AvdBase):
                         "cv_pathfinder_site": {"type": str},
                         "wan_ha": {"type": WanHa},
                         "dps_mss_ipv4": {"type": str, "default": "auto"},
-                        "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                        "l3_interfaces": {"type": L3Interfaces},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
                     }
@@ -24559,7 +24849,7 @@ class EosDesigns(AvdBase):
                     The Node Group Name is
                     also used for peer description on downstream switches' uplinks.
                     """
-                    nodes: list[NodesItem]
+                    nodes: Nodes
                     """Define variables per node."""
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -25178,7 +25468,7 @@ class EosDesigns(AvdBase):
                     """
                     dps_mss_ipv4: str | None
                     """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                    l3_interfaces: list[L3InterfacesItem]
+                    l3_interfaces: L3Interfaces
                     """
                     L3 Interfaces to configure on the node.
                     Used to define the node for WAN interfaces when
@@ -25203,7 +25493,7 @@ class EosDesigns(AvdBase):
                         *,
                         _custom_data: dict[str, Any] | UndefinedType = Undefined,
                         group: str | UndefinedType = Undefined,
-                        nodes: list[NodesItem] | UndefinedType = Undefined,
+                        nodes: Nodes | UndefinedType = Undefined,
                         id: int | None | UndefinedType = Undefined,
                         platform: str | None | UndefinedType = Undefined,
                         mac_address: str | None | UndefinedType = Undefined,
@@ -25306,7 +25596,7 @@ class EosDesigns(AvdBase):
                         cv_pathfinder_site: str | None | UndefinedType = Undefined,
                         wan_ha: WanHa | UndefinedType = Undefined,
                         dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                        l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                        l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                         data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                         flow_tracker_type: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -25799,8 +26089,13 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodesItem(AvdBase):
-                    class DownlinkPoolsItem(AvdBase):
+                class NodeGroups(AvdCollection[str, NodeGroupsItem]):
+                    _primary_key: ClassVar[str] = "group"
+
+                NodeGroups._item_type = NodeGroupsItem
+
+                class NodesItem(AvdModel):
+                    class DownlinkPoolsItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "ipv4_pool": {"type": str},
@@ -25840,8 +26135,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LinkTracking(AvdBase):
-                        class GroupsItem(AvdBase):
+                    class LinkTracking(AvdModel):
+                        class GroupsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "name": {"type": str},
@@ -25924,7 +26219,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LacpPortIdRange(AvdBase):
+                    class LacpPortIdRange(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -25973,7 +26268,7 @@ class EosDesigns(AvdBase):
                     class StructuredConfig(EosCliConfigGen):
                         pass
 
-                    class UplinkPtp(AvdBase):
+                    class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -25996,7 +26291,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UplinkMacsec(AvdBase):
+                    class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -26028,7 +26323,7 @@ class EosDesigns(AvdBase):
                     class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                         pass
 
-                    class Filter(AvdBase):
+                    class Filter(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -26122,8 +26417,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class EvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -26170,7 +26465,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2(AvdBase):
+                        class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -26193,7 +26488,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3(AvdBase):
+                        class EvpnL3(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -26276,8 +26571,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class IpvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -26399,8 +26694,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
-                        class Dscp(AvdBase):
+                    class Ptp(AvdModel):
+                        class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -26429,9 +26724,9 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Monitor(AvdBase):
-                            class Threshold(AvdBase):
-                                class Drop(AvdBase):
+                        class Monitor(AvdModel):
+                            class Threshold(AvdModel):
+                                class Drop(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "offset_from_master": {"type": int},
@@ -26500,8 +26795,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class MissingMessage(AvdBase):
-                                class Intervals(AvdBase):
+                            class MissingMessage(AvdModel):
+                                class Intervals(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "announce": {"type": int},
@@ -26538,7 +26833,7 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class SequenceIds(AvdBase):
+                                class SequenceIds(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "enabled": {"type": bool, "default": True},
@@ -26791,8 +27086,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class WanHa(AvdBase):
-                        class FlowTracking(AvdBase):
+                    class WanHa(AvdModel):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -26934,8 +27229,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Bgp(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Bgp(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "peer_as": {"type": str},
@@ -26996,7 +27291,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class StaticRoutesItem(AvdBase):
+                        class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                             _custom_data: dict[str, Any]
@@ -27018,8 +27313,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class CvPathfinderInternetExit(AvdBase):
-                            class PoliciesItem(AvdBase):
+                        class CvPathfinderInternetExit(AvdModel):
+                            class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                 _custom_data: dict[str, Any]
@@ -27057,14 +27352,19 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                            class Policies(AvdCollection[str, PoliciesItem]):
+                                _primary_key: ClassVar[str] = "name"
+
+                            Policies._item_type = PoliciesItem
+
+                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
-                            policies: list[PoliciesItem]
+                            policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
 
                             def __init__(
-                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CvPathfinderInternetExit.
@@ -27080,7 +27380,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -27371,6 +27671,11 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
+                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    L3Interfaces._item_type = L3InterfacesItem
+
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "name": {"type": str},
@@ -27477,7 +27782,7 @@ class EosDesigns(AvdBase):
                         "cv_pathfinder_site": {"type": str},
                         "wan_ha": {"type": WanHa},
                         "dps_mss_ipv4": {"type": str, "default": "auto"},
-                        "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                        "l3_interfaces": {"type": L3Interfaces},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
                     }
@@ -28107,7 +28412,7 @@ class EosDesigns(AvdBase):
                     """
                     dps_mss_ipv4: str | None
                     """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                    l3_interfaces: list[L3InterfacesItem]
+                    l3_interfaces: L3Interfaces
                     """
                     L3 Interfaces to configure on the node.
                     Used to define the node for WAN interfaces when
@@ -28235,7 +28540,7 @@ class EosDesigns(AvdBase):
                         cv_pathfinder_site: str | None | UndefinedType = Undefined,
                         wan_ha: WanHa | UndefinedType = Undefined,
                         dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                        l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                        l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                         data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                         flow_tracker_type: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -28727,19 +29032,24 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class Nodes(AvdCollection[str, NodesItem]):
+                    _primary_key: ClassVar[str] = "name"
+
+                Nodes._item_type = NodesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "defaults": {"type": Defaults},
-                    "node_groups": {"type": list, "items": NodeGroupsItem},
-                    "nodes": {"type": list, "items": NodesItem},
+                    "node_groups": {"type": NodeGroups},
+                    "nodes": {"type": Nodes},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
                 defaults: Defaults
                 """Define variables for all nodes of this type."""
-                node_groups: list[NodeGroupsItem]
+                node_groups: NodeGroups
                 """Define variables related to all nodes part of this group."""
-                nodes: list[NodesItem]
+                nodes: Nodes
                 """Define variables per node."""
 
                 def __init__(
@@ -28747,8 +29057,8 @@ class EosDesigns(AvdBase):
                     *,
                     _custom_data: dict[str, Any] | UndefinedType = Undefined,
                     defaults: Defaults | UndefinedType = Undefined,
-                    node_groups: list[NodeGroupsItem] | UndefinedType = Undefined,
-                    nodes: list[NodesItem] | UndefinedType = Undefined,
+                    node_groups: NodeGroups | UndefinedType = Undefined,
+                    nodes: Nodes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     CustomNodeTypeKeysKey.
@@ -28788,10 +29098,10 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DynamicNetworkServicesKeys(AvdBase):
-            class NetworkServicesKeysNameItem(AvdBase):
-                class BgpPeerGroupsItem(AvdBase):
-                    class AddressFamilyIpv4(AvdBase):
+        class DynamicNetworkServicesKeys(AvdModel):
+            class NetworkServicesKeysNameItem(AvdModel):
+                class BgpPeerGroupsItem(AvdModel):
+                    class AddressFamilyIpv4(AvdModel):
                         class DefaultOriginate(EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem.DefaultOriginate):
                             pass
 
@@ -28854,7 +29164,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class AddressFamilyIpv6(AvdBase):
+                    class AddressFamilyIpv6(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "activate": {"type": bool},
@@ -28903,7 +29213,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class AsPath(AvdBase):
+                    class AsPath(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "remote_as_replace_out": {"type": bool},
@@ -28938,7 +29248,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class RemovePrivateAs(AvdBase):
+                    class RemovePrivateAs(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool},
@@ -28975,7 +29285,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class RemovePrivateAsIngress(AvdBase):
+                    class RemovePrivateAsIngress(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "replace_as": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -29004,7 +29314,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class BfdTimers(AvdBase):
+                    class BfdTimers(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "interval": {"type": int},
@@ -29043,7 +29353,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class DefaultOriginate(AvdBase):
+                    class DefaultOriginate(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool},
@@ -29081,8 +29391,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class MissingPolicy(AvdBase):
-                        class DirectionIn(AvdBase):
+                    class MissingPolicy(AvdModel):
+                        class DirectionIn(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "action": {"type": str},
@@ -29127,7 +29437,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class DirectionOut(AvdBase):
+                        class DirectionOut(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "action": {"type": str},
@@ -29206,7 +29516,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LinkBandwidth(AvdBase):
+                    class LinkBandwidth(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "default": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -29236,7 +29546,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class AllowasIn(AvdBase):
+                    class AllowasIn(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "times": {"type": int}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -29266,7 +29576,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class RibInPrePolicyRetain(AvdBase):
+                    class RibInPrePolicyRetain(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "all": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -29295,7 +29605,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class SharedSecret(AvdBase):
+                    class SharedSecret(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}, "hash_algorithm": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data", "profile", "hash_algorithm")
                         _custom_data: dict[str, Any]
@@ -29551,7 +29861,12 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class EvpnL2Multicast(AvdBase):
+                class BgpPeerGroups(AvdCollection[str, BgpPeerGroupsItem]):
+                    _primary_key: ClassVar[str] = "name"
+
+                BgpPeerGroups._item_type = BgpPeerGroupsItem
+
+                class EvpnL2Multicast(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "enabled": {"type": bool},
@@ -29620,8 +29935,8 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class EvpnL3Multicast(AvdBase):
-                    class EvpnPegItem(AvdBase):
+                class EvpnL3Multicast(AvdModel):
+                    class EvpnPegItem(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "nodes": {"type": list, "items": str}, "transit": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -29701,7 +30016,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class PimRpAddressesItem(AvdBase):
+                class PimRpAddressesItem(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "rps": {"type": list, "items": str},
@@ -29761,7 +30076,7 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class IgmpSnoopingQuerier(AvdBase):
+                class IgmpSnoopingQuerier(AvdModel):
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "enabled": {"type": bool},
@@ -29800,8 +30115,8 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class VrfsItem(AvdBase):
-                    class IpHelpersItem(AvdBase):
+                class VrfsItem(AvdModel):
+                    class IpHelpersItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "ip_helper": {"type": str},
@@ -29841,8 +30156,13 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class VtepDiagnostic(AvdBase):
-                        class LoopbackIpPoolsItem(AvdBase):
+                    class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                        _primary_key: ClassVar[str] = "ip_helper"
+
+                    IpHelpers._item_type = IpHelpersItem
+
+                    class VtepDiagnostic(AvdModel):
+                        class LoopbackIpPoolsItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "pod": {"type": str}, "ipv4_pool": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -29966,8 +30286,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ospf(AvdBase):
-                        class RedistributeBgp(AvdBase):
+                    class Ospf(AvdModel):
+                        class RedistributeBgp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -29997,7 +30317,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class RedistributeConnected(AvdBase):
+                        class RedistributeConnected(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -30085,8 +30405,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnL3Multicast(AvdBase):
-                        class EvpnPegItem(AvdBase):
+                    class EvpnL3Multicast(AvdModel):
+                        class EvpnPegItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "nodes": {"type": list, "items": str},
@@ -30175,7 +30495,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class PimRpAddressesItem(AvdBase):
+                    class PimRpAddressesItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "rps": {"type": list, "items": str},
@@ -30235,9 +30555,9 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class SvisItem(AvdBase):
-                        class NodesItem(AvdBase):
-                            class IpHelpersItem(AvdBase):
+                    class SvisItem(AvdModel):
+                        class NodesItem(AvdModel):
+                            class IpHelpersItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "ip_helper": {"type": str},
@@ -30277,7 +30597,12 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class EvpnL2Multicast(AvdBase):
+                            class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                                _primary_key: ClassVar[str] = "ip_helper"
+
+                            IpHelpers._item_type = IpHelpersItem
+
+                            class EvpnL2Multicast(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "enabled": {"type": bool},
@@ -30330,7 +30655,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class EvpnL3Multicast(AvdBase):
+                            class EvpnL3Multicast(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -30353,7 +30678,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class IgmpSnoopingQuerier(AvdBase):
+                            class IgmpSnoopingQuerier(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "enabled": {"type": bool},
@@ -30403,8 +30728,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Ospf(AvdBase):
-                                class MessageDigestKeysItem(AvdBase):
+                            class Ospf(AvdModel):
+                                class MessageDigestKeysItem(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "id": {"type": int},
@@ -30497,7 +30822,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Bgp(AvdBase):
+                            class Bgp(AvdModel):
                                 class StructuredConfig(EosCliConfigGen.RouterBgp.VlansItem):
                                     pass
 
@@ -30562,7 +30887,7 @@ class EosDesigns(AvdBase):
                                 "ipv6_virtual_router_addresses": {"type": list, "items": str},
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
-                                "ip_helpers": {"type": list, "items": IpHelpersItem},
+                                "ip_helpers": {"type": IpHelpers},
                                 "vni_override": {"type": int},
                                 "rt_override": {"type": str},
                                 "rd_override": {"type": str},
@@ -30647,7 +30972,7 @@ class EosDesigns(AvdBase):
                             The access-list must be defined
                             under `ipv4_acls` and supports substitution of the field "interface_ip".
                             """
-                            ip_helpers: list[IpHelpersItem]
+                            ip_helpers: IpHelpers
                             """IP helper for DHCP relay."""
                             vni_override: int | None
                             """
@@ -30739,7 +31064,7 @@ class EosDesigns(AvdBase):
                                 ipv6_virtual_router_addresses: list[str] | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
-                                ip_helpers: list[IpHelpersItem] | UndefinedType = Undefined,
+                                ip_helpers: IpHelpers | UndefinedType = Undefined,
                                 vni_override: int | None | UndefinedType = Undefined,
                                 rt_override: str | None | UndefinedType = Undefined,
                                 rd_override: str | None | UndefinedType = Undefined,
@@ -30866,7 +31191,12 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class IpHelpersItem(AvdBase):
+                        class Nodes(AvdCollection[str, NodesItem]):
+                            _primary_key: ClassVar[str] = "node"
+
+                        Nodes._item_type = NodesItem
+
+                        class IpHelpersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "ip_helper": {"type": str},
@@ -30906,7 +31236,12 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2Multicast(AvdBase):
+                        class IpHelpers(AvdCollection[str, IpHelpersItem]):
+                            _primary_key: ClassVar[str] = "ip_helper"
+
+                        IpHelpers._item_type = IpHelpersItem
+
+                        class EvpnL2Multicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "always_redistribute_igmp": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -30955,7 +31290,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3Multicast(AvdBase):
+                        class EvpnL3Multicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -30978,7 +31313,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class IgmpSnoopingQuerier(AvdBase):
+                        class IgmpSnoopingQuerier(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool},
@@ -31028,8 +31363,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Ospf(AvdBase):
-                            class MessageDigestKeysItem(AvdBase):
+                        class Ospf(AvdModel):
+                            class MessageDigestKeysItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "id": {"type": int},
@@ -31122,7 +31457,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Bgp(AvdBase):
+                        class Bgp(AvdModel):
                             class StructuredConfig(EosCliConfigGen.RouterBgp.VlansItem):
                                 pass
 
@@ -31177,7 +31512,7 @@ class EosDesigns(AvdBase):
                             "profile": {"type": str},
                             "tags": {"type": list, "items": str, "default": ["all"]},
                             "evpn_vlan_bundle": {"type": str},
-                            "nodes": {"type": list, "items": NodesItem},
+                            "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
                             "description": {"type": str},
                             "ip_address": {"type": str},
@@ -31190,7 +31525,7 @@ class EosDesigns(AvdBase):
                             "ipv6_virtual_router_addresses": {"type": list, "items": str},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
-                            "ip_helpers": {"type": list, "items": IpHelpersItem},
+                            "ip_helpers": {"type": IpHelpers},
                             "vni_override": {"type": int},
                             "rt_override": {"type": str},
                             "rd_override": {"type": str},
@@ -31234,7 +31569,7 @@ class EosDesigns(AvdBase):
                         The common option "evpn_vlan_aware_bundles" is disregarded
                         for this option.
                         """
-                        nodes: list[NodesItem]
+                        nodes: Nodes
                         """
                         Define node specific configuration, such as unique IP addresses.
                         Any keys set here will be merged
@@ -31296,7 +31631,7 @@ class EosDesigns(AvdBase):
                         The access-list must be defined
                         under `ipv4_acls` and supports substitution of the field "interface_ip".
                         """
-                        ip_helpers: list[IpHelpersItem]
+                        ip_helpers: IpHelpers
                         """IP helper for DHCP relay."""
                         vni_override: int | None
                         """
@@ -31378,7 +31713,7 @@ class EosDesigns(AvdBase):
                             profile: str | None | UndefinedType = Undefined,
                             tags: list[str] | UndefinedType = Undefined,
                             evpn_vlan_bundle: str | None | UndefinedType = Undefined,
-                            nodes: list[NodesItem] | UndefinedType = Undefined,
+                            nodes: Nodes | UndefinedType = Undefined,
                             enabled: bool | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             ip_address: str | None | UndefinedType = Undefined,
@@ -31391,7 +31726,7 @@ class EosDesigns(AvdBase):
                             ipv6_virtual_router_addresses: list[str] | UndefinedType = Undefined,
                             ipv4_acl_in: str | None | UndefinedType = Undefined,
                             ipv4_acl_out: str | None | UndefinedType = Undefined,
-                            ip_helpers: list[IpHelpersItem] | UndefinedType = Undefined,
+                            ip_helpers: IpHelpers | UndefinedType = Undefined,
                             vni_override: int | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             rd_override: str | None | UndefinedType = Undefined,
@@ -31533,9 +31868,9 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Ospf(AvdBase):
-                            class MessageDigestKeysItem(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Ospf(AvdModel):
+                            class MessageDigestKeysItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "id": {"type": int},
@@ -31628,7 +31963,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Pim(AvdBase):
+                        class Pim(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -31651,7 +31986,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -31791,8 +32126,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LoopbacksItem(AvdBase):
-                        class Ospf(AvdBase):
+                    class LoopbacksItem(AvdModel):
+                        class Ospf(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -31880,7 +32215,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class StaticRoutesItem(AvdBase):
+                    class StaticRoutesItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "destination_address_prefix": {"type": str},
@@ -31945,7 +32280,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ipv6StaticRoutesItem(AvdBase):
+                    class Ipv6StaticRoutesItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "destination_address_prefix": {"type": str},
@@ -32009,8 +32344,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class BgpPeersItem(AvdBase):
-                        class DefaultOriginate(AvdBase):
+                    class BgpPeersItem(AvdModel):
+                        class DefaultOriginate(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "always": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -32219,7 +32554,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Bgp(AvdBase):
+                    class Bgp(AvdModel):
                         class StructuredConfig(EosCliConfigGen.RouterBgp.VrfsItem):
                             pass
 
@@ -32281,8 +32616,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class BgpPeerGroupsItem(AvdBase):
-                        class AddressFamilyIpv4(AvdBase):
+                    class BgpPeerGroupsItem(AvdModel):
+                        class AddressFamilyIpv4(AvdModel):
                             class DefaultOriginate(EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem.DefaultOriginate):
                                 pass
 
@@ -32345,7 +32680,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class AddressFamilyIpv6(AvdBase):
+                        class AddressFamilyIpv6(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "activate": {"type": bool},
@@ -32394,7 +32729,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class AsPath(AvdBase):
+                        class AsPath(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "remote_as_replace_out": {"type": bool},
@@ -32429,7 +32764,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class RemovePrivateAs(AvdBase):
+                        class RemovePrivateAs(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool},
@@ -32466,7 +32801,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class RemovePrivateAsIngress(AvdBase):
+                        class RemovePrivateAsIngress(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "replace_as": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -32495,7 +32830,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class BfdTimers(AvdBase):
+                        class BfdTimers(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "interval": {"type": int},
@@ -32534,7 +32869,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class DefaultOriginate(AvdBase):
+                        class DefaultOriginate(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool},
@@ -32572,8 +32907,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class MissingPolicy(AvdBase):
-                            class DirectionIn(AvdBase):
+                        class MissingPolicy(AvdModel):
+                            class DirectionIn(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "action": {"type": str},
@@ -32618,7 +32953,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class DirectionOut(AvdBase):
+                            class DirectionOut(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "action": {"type": str},
@@ -32697,7 +33032,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class LinkBandwidth(AvdBase):
+                        class LinkBandwidth(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "default": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -32727,7 +33062,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class AllowasIn(AvdBase):
+                        class AllowasIn(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "times": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -32757,7 +33092,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class RibInPrePolicyRetain(AvdBase):
+                        class RibInPrePolicyRetain(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "all": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -32786,7 +33121,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class SharedSecret(AvdBase):
+                        class SharedSecret(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}, "hash_algorithm": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "profile", "hash_algorithm")
                             _custom_data: dict[str, Any]
@@ -33042,7 +33377,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class AdditionalRouteTargetsItem(AvdBase):
+                    class AdditionalRouteTargetsItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "type": {"type": str},
@@ -33097,7 +33432,7 @@ class EosDesigns(AvdBase):
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
-                        "ip_helpers": {"type": list, "items": IpHelpersItem},
+                        "ip_helpers": {"type": IpHelpers},
                         "enable_mlag_ibgp_peering_vrfs": {"type": bool},
                         "redistribute_mlag_ibgp_peering_vrfs": {"type": bool, "default": False},
                         "mlag_ibgp_peering_vlan": {"type": int},
@@ -33181,7 +33516,7 @@ class EosDesigns(AvdBase):
                     If not set, "mlag_peer_l3_ipv4_pool" or
                     "mlag_peer_ipv4_pool" will be used.
                     """
-                    ip_helpers: list[IpHelpersItem]
+                    ip_helpers: IpHelpers
                     """IP helper for DHCP relay."""
                     enable_mlag_ibgp_peering_vrfs: bool | None
                     """
@@ -33315,7 +33650,7 @@ class EosDesigns(AvdBase):
                         rd_override: str | None | UndefinedType = Undefined,
                         rt_override: str | None | UndefinedType = Undefined,
                         mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
-                        ip_helpers: list[IpHelpersItem] | UndefinedType = Undefined,
+                        ip_helpers: IpHelpers | UndefinedType = Undefined,
                         enable_mlag_ibgp_peering_vrfs: bool | None | UndefinedType = Undefined,
                         redistribute_mlag_ibgp_peering_vrfs: bool | None | UndefinedType = Undefined,
                         mlag_ibgp_peering_vlan: int | None | UndefinedType = Undefined,
@@ -33486,8 +33821,13 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class L2vlansItem(AvdBase):
-                    class EvpnL2Multicast(AvdBase):
+                class Vrfs(AvdCollection[str, VrfsItem]):
+                    _primary_key: ClassVar[str] = "name"
+
+                Vrfs._item_type = VrfsItem
+
+                class L2vlansItem(AvdModel):
+                    class EvpnL2Multicast(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -33510,7 +33850,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IgmpSnoopingQuerier(AvdBase):
+                    class IgmpSnoopingQuerier(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool},
@@ -33559,7 +33899,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Bgp(AvdBase):
+                    class Bgp(AvdModel):
                         class StructuredConfig(EosCliConfigGen.RouterBgp.VlansItem):
                             pass
 
@@ -33799,8 +34139,8 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class PointToPointServicesItem(AvdBase):
-                    class SubinterfacesItem(AvdBase):
+                class PointToPointServicesItem(AvdModel):
+                    class SubinterfacesItem(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "number": {"type": int}}
                         _required_fields: ClassVar[tuple] = ("_custom_data", "number")
                         _custom_data: dict[str, Any]
@@ -33822,8 +34162,13 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EndpointsItem(AvdBase):
-                        class PortChannel(AvdBase):
+                    class Subinterfaces(AvdCollection[int, SubinterfacesItem]):
+                        _primary_key: ClassVar[str] = "number"
+
+                    Subinterfaces._item_type = SubinterfacesItem
+
+                    class EndpointsItem(AvdModel):
+                        class PortChannel(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "short_esi": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -33906,7 +34251,7 @@ class EosDesigns(AvdBase):
                         "_custom_data": {"type": dict},
                         "name": {"type": str},
                         "type": {"type": str, "default": "vpws-pseudowire"},
-                        "subinterfaces": {"type": list, "items": SubinterfacesItem},
+                        "subinterfaces": {"type": Subinterfaces},
                         "endpoints": {"type": list, "items": EndpointsItem},
                         "lldp_disable": {"type": bool},
                     }
@@ -33915,7 +34260,7 @@ class EosDesigns(AvdBase):
                     name: str
                     """Pseudowire name."""
                     type: str | None
-                    subinterfaces: list[SubinterfacesItem]
+                    subinterfaces: Subinterfaces
                     """
                     Subinterfaces will create subinterfaces and additional pseudowires/patch panel config for each
                     endpoint.
@@ -33931,7 +34276,7 @@ class EosDesigns(AvdBase):
                         _custom_data: dict[str, Any] | UndefinedType = Undefined,
                         name: str | UndefinedType = Undefined,
                         type: str | None | UndefinedType = Undefined,
-                        subinterfaces: list[SubinterfacesItem] | UndefinedType = Undefined,
+                        subinterfaces: Subinterfaces | UndefinedType = Undefined,
                         endpoints: list[EndpointsItem] | UndefinedType = Undefined,
                         lldp_disable: bool | None | UndefinedType = Undefined,
                     ) -> None:
@@ -33955,6 +34300,11 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class PointToPointServices(AvdCollection[str, PointToPointServicesItem]):
+                    _primary_key: ClassVar[str] = "name"
+
+                PointToPointServices._item_type = PointToPointServicesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "name": {"type": str},
@@ -33965,15 +34315,15 @@ class EosDesigns(AvdBase):
                     "enable_mlag_ibgp_peering_vrfs": {"type": bool},
                     "redistribute_mlag_ibgp_peering_vrfs": {"type": bool, "default": False},
                     "evpn_vlan_bundle": {"type": str},
-                    "bgp_peer_groups": {"type": list, "items": BgpPeerGroupsItem},
+                    "bgp_peer_groups": {"type": BgpPeerGroups},
                     "evpn_l2_multicast": {"type": EvpnL2Multicast},
                     "evpn_l3_multicast": {"type": EvpnL3Multicast},
                     "pim_rp_addresses": {"type": list, "items": PimRpAddressesItem},
                     "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                     "evpn_l2_multi_domain": {"type": bool, "default": True},
-                    "vrfs": {"type": list, "items": VrfsItem},
+                    "vrfs": {"type": Vrfs},
                     "l2vlans": {"type": list, "items": L2vlansItem},
-                    "point_to_point_services": {"type": list, "items": PointToPointServicesItem},
+                    "point_to_point_services": {"type": PointToPointServices},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                 _custom_data: dict[str, Any]
@@ -34038,7 +34388,7 @@ class EosDesigns(AvdBase):
                 Enable `evpn_vlan_bundle` for all l2vlans and SVIs under the tenant. This `evpn_vlan_bundle` should
                 be present in `evpn_vlan_bundles`.
                 """
-                bgp_peer_groups: list[BgpPeerGroupsItem]
+                bgp_peer_groups: BgpPeerGroups
                 """
                 List of BGP peer groups definitions.
                 This will configure BGP peer groups to be used inside the
@@ -34104,7 +34454,7 @@ class EosDesigns(AvdBase):
                 """
                 evpn_l2_multi_domain: bool | None
                 """Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains."""
-                vrfs: list[VrfsItem]
+                vrfs: Vrfs
                 """
                 VRFs will only be configured on a node if any of the underlying objects like `svis` or
                 `l3_interfaces` apply to the node.
@@ -34124,7 +34474,7 @@ class EosDesigns(AvdBase):
                 """
                 l2vlans: list[L2vlansItem]
                 """Define L2 network services organized by vlan id."""
-                point_to_point_services: list[PointToPointServicesItem]
+                point_to_point_services: PointToPointServices
                 """
                 Point to point services (pseudowires).
                 Only supported for node types with "network_services.l1:
@@ -34144,15 +34494,15 @@ class EosDesigns(AvdBase):
                     enable_mlag_ibgp_peering_vrfs: bool | None | UndefinedType = Undefined,
                     redistribute_mlag_ibgp_peering_vrfs: bool | None | UndefinedType = Undefined,
                     evpn_vlan_bundle: str | None | UndefinedType = Undefined,
-                    bgp_peer_groups: list[BgpPeerGroupsItem] | UndefinedType = Undefined,
+                    bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     pim_rp_addresses: list[PimRpAddressesItem] | UndefinedType = Undefined,
                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                     evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
-                    vrfs: list[VrfsItem] | UndefinedType = Undefined,
+                    vrfs: Vrfs | UndefinedType = Undefined,
                     l2vlans: list[L2vlansItem] | UndefinedType = Undefined,
-                    point_to_point_services: list[PointToPointServicesItem] | UndefinedType = Undefined,
+                    point_to_point_services: PointToPointServices | UndefinedType = Undefined,
                 ) -> None:
                     """
                     NetworkServicesKeysNameItem.
@@ -34290,14 +34640,19 @@ class EosDesigns(AvdBase):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": list, "key": "network_services_keys_name", "items": NetworkServicesKeysNameItem}}
+            class NetworkServicesKeysName(AvdCollection[str, NetworkServicesKeysNameItem]):
+                _primary_key: ClassVar[str] = "name"
+
+            NetworkServicesKeysName._item_type = NetworkServicesKeysNameItem
+
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NetworkServicesKeysName, "key": "network_services_keys_name"}}
             _required_fields: ClassVar[tuple] = ("key",)
             key: str
             """Key used as dynamic key"""
-            value: list[NetworkServicesKeysNameItem]
+            value: NetworkServicesKeysName
             """Value of dynamic key"""
 
-            def __init__(self, *, key: str | UndefinedType = Undefined, value: list[NetworkServicesKeysNameItem] | UndefinedType = Undefined) -> None:
+            def __init__(self, *, key: str | UndefinedType = Undefined, value: NetworkServicesKeysName | UndefinedType = Undefined) -> None:
                 """
                 DynamicNetworkServicesKeys.
 
@@ -34312,11 +34667,11 @@ class EosDesigns(AvdBase):
                         continue
                     setattr(self, arg, arg_value)
 
-        class DynamicNodeTypeKeys(AvdBase):
-            class NodeTypeKeysKey(AvdBase):
-                class Defaults(AvdBase):
-                    class LinkTracking(AvdBase):
-                        class GroupsItem(AvdBase):
+        class DynamicNodeTypeKeys(AvdModel):
+            class NodeTypeKeysKey(AvdModel):
+                class Defaults(AvdModel):
+                    class LinkTracking(AvdModel):
+                        class GroupsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "name": {"type": str},
@@ -34399,7 +34754,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LacpPortIdRange(AvdBase):
+                    class LacpPortIdRange(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -34448,7 +34803,7 @@ class EosDesigns(AvdBase):
                     class StructuredConfig(EosCliConfigGen):
                         pass
 
-                    class UplinkPtp(AvdBase):
+                    class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -34471,7 +34826,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UplinkMacsec(AvdBase):
+                    class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -34503,7 +34858,7 @@ class EosDesigns(AvdBase):
                     class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                         pass
 
-                    class Filter(AvdBase):
+                    class Filter(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -34597,8 +34952,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class EvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -34645,7 +35000,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2(AvdBase):
+                        class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -34668,7 +35023,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3(AvdBase):
+                        class EvpnL3(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -34751,8 +35106,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class IpvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -34874,8 +35229,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
-                        class Dscp(AvdBase):
+                    class Ptp(AvdModel):
+                        class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -34904,9 +35259,9 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Monitor(AvdBase):
-                            class Threshold(AvdBase):
-                                class Drop(AvdBase):
+                        class Monitor(AvdModel):
+                            class Threshold(AvdModel):
+                                class Drop(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "offset_from_master": {"type": int},
@@ -34975,8 +35330,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class MissingMessage(AvdBase):
-                                class Intervals(AvdBase):
+                            class MissingMessage(AvdModel):
+                                class Intervals(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "announce": {"type": int},
@@ -35013,7 +35368,7 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class SequenceIds(AvdBase):
+                                class SequenceIds(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "enabled": {"type": bool, "default": True},
@@ -35266,8 +35621,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class WanHa(AvdBase):
-                        class FlowTracking(AvdBase):
+                    class WanHa(AvdModel):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -35409,8 +35764,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Bgp(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Bgp(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "peer_as": {"type": str},
@@ -35471,7 +35826,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class StaticRoutesItem(AvdBase):
+                        class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                             _custom_data: dict[str, Any]
@@ -35493,8 +35848,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class CvPathfinderInternetExit(AvdBase):
-                            class PoliciesItem(AvdBase):
+                        class CvPathfinderInternetExit(AvdModel):
+                            class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                 _custom_data: dict[str, Any]
@@ -35532,14 +35887,19 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                            class Policies(AvdCollection[str, PoliciesItem]):
+                                _primary_key: ClassVar[str] = "name"
+
+                            Policies._item_type = PoliciesItem
+
+                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
-                            policies: list[PoliciesItem]
+                            policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
 
                             def __init__(
-                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CvPathfinderInternetExit.
@@ -35555,7 +35915,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -35846,6 +36206,11 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
+                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    L3Interfaces._item_type = L3InterfacesItem
+
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "id": {"type": int},
@@ -35950,7 +36315,7 @@ class EosDesigns(AvdBase):
                         "cv_pathfinder_site": {"type": str},
                         "wan_ha": {"type": WanHa},
                         "dps_mss_ipv4": {"type": str, "default": "auto"},
-                        "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                        "l3_interfaces": {"type": L3Interfaces},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
                     }
@@ -36573,7 +36938,7 @@ class EosDesigns(AvdBase):
                     """
                     dps_mss_ipv4: str | None
                     """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                    l3_interfaces: list[L3InterfacesItem]
+                    l3_interfaces: L3Interfaces
                     """
                     L3 Interfaces to configure on the node.
                     Used to define the node for WAN interfaces when
@@ -36699,7 +37064,7 @@ class EosDesigns(AvdBase):
                         cv_pathfinder_site: str | None | UndefinedType = Undefined,
                         wan_ha: WanHa | UndefinedType = Undefined,
                         dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                        l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                        l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                         data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                         flow_tracker_type: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -37187,9 +37552,9 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodeGroupsItem(AvdBase):
-                    class NodesItem(AvdBase):
-                        class DownlinkPoolsItem(AvdBase):
+                class NodeGroupsItem(AvdModel):
+                    class NodesItem(AvdModel):
+                        class DownlinkPoolsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "ipv4_pool": {"type": str},
@@ -37229,8 +37594,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class LinkTracking(AvdBase):
-                            class GroupsItem(AvdBase):
+                        class LinkTracking(AvdModel):
+                            class GroupsItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "name": {"type": str},
@@ -37313,7 +37678,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class LacpPortIdRange(AvdBase):
+                        class LacpPortIdRange(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -37362,7 +37727,7 @@ class EosDesigns(AvdBase):
                         class StructuredConfig(EosCliConfigGen):
                             pass
 
-                        class UplinkPtp(AvdBase):
+                        class UplinkPtp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -37385,7 +37750,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class UplinkMacsec(AvdBase):
+                        class UplinkMacsec(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -37417,7 +37782,7 @@ class EosDesigns(AvdBase):
                         class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                             pass
 
-                        class Filter(AvdBase):
+                        class Filter(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -37511,8 +37876,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnGateway(AvdBase):
-                            class RemotePeersItem(AvdBase):
+                        class EvpnGateway(AvdModel):
+                            class RemotePeersItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "hostname": {"type": str},
@@ -37559,7 +37924,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class EvpnL2(AvdBase):
+                            class EvpnL2(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -37582,7 +37947,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class EvpnL3(AvdBase):
+                            class EvpnL3(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "enabled": {"type": bool, "default": False},
@@ -37665,8 +38030,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class IpvpnGateway(AvdBase):
-                            class RemotePeersItem(AvdBase):
+                        class IpvpnGateway(AvdModel):
+                            class RemotePeersItem(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "hostname": {"type": str},
@@ -37788,8 +38153,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Ptp(AvdBase):
-                            class Dscp(AvdBase):
+                        class Ptp(AvdModel):
+                            class Dscp(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -37818,9 +38183,9 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class Monitor(AvdBase):
-                                class Threshold(AvdBase):
-                                    class Drop(AvdBase):
+                            class Monitor(AvdModel):
+                                class Threshold(AvdModel):
+                                    class Drop(AvdModel):
                                         _fields: ClassVar[dict] = {
                                             "_custom_data": {"type": dict},
                                             "offset_from_master": {"type": int},
@@ -37889,8 +38254,8 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class MissingMessage(AvdBase):
-                                    class Intervals(AvdBase):
+                                class MissingMessage(AvdModel):
+                                    class Intervals(AvdModel):
                                         _fields: ClassVar[dict] = {
                                             "_custom_data": {"type": dict},
                                             "announce": {"type": int},
@@ -37927,7 +38292,7 @@ class EosDesigns(AvdBase):
                                                     continue
                                                 setattr(self, arg, arg_value)
 
-                                    class SequenceIds(AvdBase):
+                                    class SequenceIds(AvdModel):
                                         _fields: ClassVar[dict] = {
                                             "_custom_data": {"type": dict},
                                             "enabled": {"type": bool, "default": True},
@@ -38180,8 +38545,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class WanHa(AvdBase):
-                            class FlowTracking(AvdBase):
+                        class WanHa(AvdModel):
+                            class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -38323,8 +38688,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class L3InterfacesItem(AvdBase):
-                            class Bgp(AvdBase):
+                        class L3InterfacesItem(AvdModel):
+                            class Bgp(AvdModel):
                                 _fields: ClassVar[dict] = {
                                     "_custom_data": {"type": dict},
                                     "peer_as": {"type": str},
@@ -38385,7 +38750,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class StaticRoutesItem(AvdBase):
+                            class StaticRoutesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                                 _custom_data: dict[str, Any]
@@ -38409,8 +38774,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class CvPathfinderInternetExit(AvdBase):
-                                class PoliciesItem(AvdBase):
+                            class CvPathfinderInternetExit(AvdModel):
+                                class PoliciesItem(AvdModel):
                                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                     _custom_data: dict[str, Any]
@@ -38448,14 +38813,19 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                                class Policies(AvdCollection[str, PoliciesItem]):
+                                    _primary_key: ClassVar[str] = "name"
+
+                                Policies._item_type = PoliciesItem
+
+                                _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
-                                policies: list[PoliciesItem]
+                                policies: Policies
                                 """List of Internet-exit policies using this interface as exit."""
 
                                 def __init__(
-                                    self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                    self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     CvPathfinderInternetExit.
@@ -38471,7 +38841,7 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class FlowTracking(AvdBase):
+                            class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                                 _custom_data: dict[str, Any]
@@ -38762,6 +39132,11 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
+                        class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                            _primary_key: ClassVar[str] = "name"
+
+                        L3Interfaces._item_type = L3InterfacesItem
+
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "name": {"type": str},
@@ -38868,7 +39243,7 @@ class EosDesigns(AvdBase):
                             "cv_pathfinder_site": {"type": str},
                             "wan_ha": {"type": WanHa},
                             "dps_mss_ipv4": {"type": str, "default": "auto"},
-                            "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                            "l3_interfaces": {"type": L3Interfaces},
                             "data_plane_cpu_allocation_max": {"type": int},
                             "flow_tracker_type": {"type": str},
                         }
@@ -39498,7 +39873,7 @@ class EosDesigns(AvdBase):
                         """
                         dps_mss_ipv4: str | None
                         """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                        l3_interfaces: list[L3InterfacesItem]
+                        l3_interfaces: L3Interfaces
                         """
                         L3 Interfaces to configure on the node.
                         Used to define the node for WAN interfaces when
@@ -39626,7 +40001,7 @@ class EosDesigns(AvdBase):
                             cv_pathfinder_site: str | None | UndefinedType = Undefined,
                             wan_ha: WanHa | UndefinedType = Undefined,
                             dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                            l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                            l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                             data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                             flow_tracker_type: str | None | UndefinedType = Undefined,
                         ) -> None:
@@ -40118,8 +40493,13 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LinkTracking(AvdBase):
-                        class GroupsItem(AvdBase):
+                    class Nodes(AvdCollection[str, NodesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    Nodes._item_type = NodesItem
+
+                    class LinkTracking(AvdModel):
+                        class GroupsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "name": {"type": str},
@@ -40202,7 +40582,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LacpPortIdRange(AvdBase):
+                    class LacpPortIdRange(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -40251,7 +40631,7 @@ class EosDesigns(AvdBase):
                     class StructuredConfig(EosCliConfigGen):
                         pass
 
-                    class UplinkPtp(AvdBase):
+                    class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -40274,7 +40654,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UplinkMacsec(AvdBase):
+                    class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -40306,7 +40686,7 @@ class EosDesigns(AvdBase):
                     class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                         pass
 
-                    class Filter(AvdBase):
+                    class Filter(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -40400,8 +40780,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class EvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -40448,7 +40828,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2(AvdBase):
+                        class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -40471,7 +40851,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3(AvdBase):
+                        class EvpnL3(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -40554,8 +40934,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class IpvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -40677,8 +41057,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
-                        class Dscp(AvdBase):
+                    class Ptp(AvdModel):
+                        class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -40707,9 +41087,9 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Monitor(AvdBase):
-                            class Threshold(AvdBase):
-                                class Drop(AvdBase):
+                        class Monitor(AvdModel):
+                            class Threshold(AvdModel):
+                                class Drop(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "offset_from_master": {"type": int},
@@ -40778,8 +41158,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class MissingMessage(AvdBase):
-                                class Intervals(AvdBase):
+                            class MissingMessage(AvdModel):
+                                class Intervals(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "announce": {"type": int},
@@ -40816,7 +41196,7 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class SequenceIds(AvdBase):
+                                class SequenceIds(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "enabled": {"type": bool, "default": True},
@@ -41069,8 +41449,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class WanHa(AvdBase):
-                        class FlowTracking(AvdBase):
+                    class WanHa(AvdModel):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -41212,8 +41592,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Bgp(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Bgp(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "peer_as": {"type": str},
@@ -41274,7 +41654,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class StaticRoutesItem(AvdBase):
+                        class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                             _custom_data: dict[str, Any]
@@ -41296,8 +41676,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class CvPathfinderInternetExit(AvdBase):
-                            class PoliciesItem(AvdBase):
+                        class CvPathfinderInternetExit(AvdModel):
+                            class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                 _custom_data: dict[str, Any]
@@ -41335,14 +41715,19 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                            class Policies(AvdCollection[str, PoliciesItem]):
+                                _primary_key: ClassVar[str] = "name"
+
+                            Policies._item_type = PoliciesItem
+
+                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
-                            policies: list[PoliciesItem]
+                            policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
 
                             def __init__(
-                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CvPathfinderInternetExit.
@@ -41358,7 +41743,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -41649,10 +42034,15 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
+                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    L3Interfaces._item_type = L3InterfacesItem
+
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "group": {"type": str},
-                        "nodes": {"type": list, "items": NodesItem},
+                        "nodes": {"type": Nodes},
                         "id": {"type": int},
                         "platform": {"type": str},
                         "mac_address": {"type": str},
@@ -41755,7 +42145,7 @@ class EosDesigns(AvdBase):
                         "cv_pathfinder_site": {"type": str},
                         "wan_ha": {"type": WanHa},
                         "dps_mss_ipv4": {"type": str, "default": "auto"},
-                        "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                        "l3_interfaces": {"type": L3Interfaces},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
                     }
@@ -41767,7 +42157,7 @@ class EosDesigns(AvdBase):
                     The Node Group Name is
                     also used for peer description on downstream switches' uplinks.
                     """
-                    nodes: list[NodesItem]
+                    nodes: Nodes
                     """Define variables per node."""
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -42386,7 +42776,7 @@ class EosDesigns(AvdBase):
                     """
                     dps_mss_ipv4: str | None
                     """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                    l3_interfaces: list[L3InterfacesItem]
+                    l3_interfaces: L3Interfaces
                     """
                     L3 Interfaces to configure on the node.
                     Used to define the node for WAN interfaces when
@@ -42411,7 +42801,7 @@ class EosDesigns(AvdBase):
                         *,
                         _custom_data: dict[str, Any] | UndefinedType = Undefined,
                         group: str | UndefinedType = Undefined,
-                        nodes: list[NodesItem] | UndefinedType = Undefined,
+                        nodes: Nodes | UndefinedType = Undefined,
                         id: int | None | UndefinedType = Undefined,
                         platform: str | None | UndefinedType = Undefined,
                         mac_address: str | None | UndefinedType = Undefined,
@@ -42514,7 +42904,7 @@ class EosDesigns(AvdBase):
                         cv_pathfinder_site: str | None | UndefinedType = Undefined,
                         wan_ha: WanHa | UndefinedType = Undefined,
                         dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                        l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                        l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                         data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                         flow_tracker_type: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -43007,8 +43397,13 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
-                class NodesItem(AvdBase):
-                    class DownlinkPoolsItem(AvdBase):
+                class NodeGroups(AvdCollection[str, NodeGroupsItem]):
+                    _primary_key: ClassVar[str] = "group"
+
+                NodeGroups._item_type = NodeGroupsItem
+
+                class NodesItem(AvdModel):
+                    class DownlinkPoolsItem(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "ipv4_pool": {"type": str},
@@ -43048,8 +43443,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LinkTracking(AvdBase):
-                        class GroupsItem(AvdBase):
+                    class LinkTracking(AvdModel):
+                        class GroupsItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "name": {"type": str},
@@ -43132,7 +43527,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class LacpPortIdRange(AvdBase):
+                    class LacpPortIdRange(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "enabled": {"type": bool, "default": False},
@@ -43181,7 +43576,7 @@ class EosDesigns(AvdBase):
                     class StructuredConfig(EosCliConfigGen):
                         pass
 
-                    class UplinkPtp(AvdBase):
+                    class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -43204,7 +43599,7 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class UplinkMacsec(AvdBase):
+                    class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
                         _custom_data: dict[str, Any]
@@ -43236,7 +43631,7 @@ class EosDesigns(AvdBase):
                     class MlagPeerL3VlanStructuredConfig(EosCliConfigGen.VlanInterfacesItem):
                         pass
 
-                    class Filter(AvdBase):
+                    class Filter(AvdModel):
                         _fields: ClassVar[dict] = {
                             "_custom_data": {"type": dict},
                             "tenants": {"type": list, "items": str, "default": ["all"]},
@@ -43330,8 +43725,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class EvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class EvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -43378,7 +43773,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL2(AvdBase):
+                        class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -43401,7 +43796,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class EvpnL3(AvdBase):
+                        class EvpnL3(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "enabled": {"type": bool, "default": False},
@@ -43484,8 +43879,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class IpvpnGateway(AvdBase):
-                        class RemotePeersItem(AvdBase):
+                    class IpvpnGateway(AvdModel):
+                        class RemotePeersItem(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "hostname": {"type": str},
@@ -43607,8 +44002,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class Ptp(AvdBase):
-                        class Dscp(AvdBase):
+                    class Ptp(AvdModel):
+                        class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -43637,9 +44032,9 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class Monitor(AvdBase):
-                            class Threshold(AvdBase):
-                                class Drop(AvdBase):
+                        class Monitor(AvdModel):
+                            class Threshold(AvdModel):
+                                class Drop(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "offset_from_master": {"type": int},
@@ -43708,8 +44103,8 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            class MissingMessage(AvdBase):
-                                class Intervals(AvdBase):
+                            class MissingMessage(AvdModel):
+                                class Intervals(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "announce": {"type": int},
@@ -43746,7 +44141,7 @@ class EosDesigns(AvdBase):
                                                 continue
                                             setattr(self, arg, arg_value)
 
-                                class SequenceIds(AvdBase):
+                                class SequenceIds(AvdModel):
                                     _fields: ClassVar[dict] = {
                                         "_custom_data": {"type": dict},
                                         "enabled": {"type": bool, "default": True},
@@ -43999,8 +44394,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class WanHa(AvdBase):
-                        class FlowTracking(AvdBase):
+                    class WanHa(AvdModel):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -44142,8 +44537,8 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
-                    class L3InterfacesItem(AvdBase):
-                        class Bgp(AvdBase):
+                    class L3InterfacesItem(AvdModel):
+                        class Bgp(AvdModel):
                             _fields: ClassVar[dict] = {
                                 "_custom_data": {"type": dict},
                                 "peer_as": {"type": str},
@@ -44204,7 +44599,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class StaticRoutesItem(AvdBase):
+                        class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
                             _custom_data: dict[str, Any]
@@ -44226,8 +44621,8 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class CvPathfinderInternetExit(AvdBase):
-                            class PoliciesItem(AvdBase):
+                        class CvPathfinderInternetExit(AvdModel):
+                            class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
                                 _custom_data: dict[str, Any]
@@ -44265,14 +44660,19 @@ class EosDesigns(AvdBase):
                                             continue
                                         setattr(self, arg, arg_value)
 
-                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": list, "items": PoliciesItem}}
+                            class Policies(AvdCollection[str, PoliciesItem]):
+                                _primary_key: ClassVar[str] = "name"
+
+                            Policies._item_type = PoliciesItem
+
+                            _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
-                            policies: list[PoliciesItem]
+                            policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
 
                             def __init__(
-                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: list[PoliciesItem] | UndefinedType = Undefined
+                                self, *, _custom_data: dict[str, Any] | UndefinedType = Undefined, policies: Policies | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 CvPathfinderInternetExit.
@@ -44288,7 +44688,7 @@ class EosDesigns(AvdBase):
                                         continue
                                     setattr(self, arg, arg_value)
 
-                        class FlowTracking(AvdBase):
+                        class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
                             _custom_data: dict[str, Any]
@@ -44579,6 +44979,11 @@ class EosDesigns(AvdBase):
                                     continue
                                 setattr(self, arg, arg_value)
 
+                    class L3Interfaces(AvdCollection[str, L3InterfacesItem]):
+                        _primary_key: ClassVar[str] = "name"
+
+                    L3Interfaces._item_type = L3InterfacesItem
+
                     _fields: ClassVar[dict] = {
                         "_custom_data": {"type": dict},
                         "name": {"type": str},
@@ -44685,7 +45090,7 @@ class EosDesigns(AvdBase):
                         "cv_pathfinder_site": {"type": str},
                         "wan_ha": {"type": WanHa},
                         "dps_mss_ipv4": {"type": str, "default": "auto"},
-                        "l3_interfaces": {"type": list, "items": L3InterfacesItem},
+                        "l3_interfaces": {"type": L3Interfaces},
                         "data_plane_cpu_allocation_max": {"type": int},
                         "flow_tracker_type": {"type": str},
                     }
@@ -45315,7 +45720,7 @@ class EosDesigns(AvdBase):
                     """
                     dps_mss_ipv4: str | None
                     """IPv4 MSS value configured under "router path-selection" on WAN Devices."""
-                    l3_interfaces: list[L3InterfacesItem]
+                    l3_interfaces: L3Interfaces
                     """
                     L3 Interfaces to configure on the node.
                     Used to define the node for WAN interfaces when
@@ -45443,7 +45848,7 @@ class EosDesigns(AvdBase):
                         cv_pathfinder_site: str | None | UndefinedType = Undefined,
                         wan_ha: WanHa | UndefinedType = Undefined,
                         dps_mss_ipv4: str | None | UndefinedType = Undefined,
-                        l3_interfaces: list[L3InterfacesItem] | UndefinedType = Undefined,
+                        l3_interfaces: L3Interfaces | UndefinedType = Undefined,
                         data_plane_cpu_allocation_max: int | None | UndefinedType = Undefined,
                         flow_tracker_type: str | None | UndefinedType = Undefined,
                     ) -> None:
@@ -45935,19 +46340,24 @@ class EosDesigns(AvdBase):
                                 continue
                             setattr(self, arg, arg_value)
 
+                class Nodes(AvdCollection[str, NodesItem]):
+                    _primary_key: ClassVar[str] = "name"
+
+                Nodes._item_type = NodesItem
+
                 _fields: ClassVar[dict] = {
                     "_custom_data": {"type": dict},
                     "defaults": {"type": Defaults},
-                    "node_groups": {"type": list, "items": NodeGroupsItem},
-                    "nodes": {"type": list, "items": NodesItem},
+                    "node_groups": {"type": NodeGroups},
+                    "nodes": {"type": Nodes},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
                 _custom_data: dict[str, Any]
                 defaults: Defaults
                 """Define variables for all nodes of this type."""
-                node_groups: list[NodeGroupsItem]
+                node_groups: NodeGroups
                 """Define variables related to all nodes part of this group."""
-                nodes: list[NodesItem]
+                nodes: Nodes
                 """Define variables per node."""
 
                 def __init__(
@@ -45955,8 +46365,8 @@ class EosDesigns(AvdBase):
                     *,
                     _custom_data: dict[str, Any] | UndefinedType = Undefined,
                     defaults: Defaults | UndefinedType = Undefined,
-                    node_groups: list[NodeGroupsItem] | UndefinedType = Undefined,
-                    nodes: list[NodesItem] | UndefinedType = Undefined,
+                    node_groups: NodeGroups | UndefinedType = Undefined,
+                    nodes: Nodes | UndefinedType = Undefined,
                 ) -> None:
                     """
                     NodeTypeKeysKey.
@@ -46062,8 +46472,7 @@ class EosDesigns(AvdBase):
         "bgp_update_wait_install": {"type": bool},
         "bgp_update_wait_for_convergence": {"type": bool},
         "connected_endpoints_keys": {
-            "type": list,
-            "items": ConnectedEndpointsKeysItem,
+            "type": ConnectedEndpointsKeys,
             "default": lambda cls: coerce_type(
                 [
                     {"key": "servers", "type": "server", "description": "Server"},
@@ -46079,20 +46488,19 @@ class EosDesigns(AvdBase):
                     {"key": "cameras", "type": "camera", "description": "Camera"},
                     {"key": "generic_devices", "type": "generic_device", "description": "Generic Device"},
                 ],
-                target_type=list,
-                list_items_type=cls,
+                target_type=cls,
             ),
         },
         "core_interfaces": {"type": CoreInterfaces},
         "custom_structured_configuration_list_merge": {"type": str, "default": "append_rp"},
         "custom_structured_configuration_prefix": {"type": list, "items": str, "default": ["custom_structured_configuration_"]},
-        "cv_pathfinder_global_sites": {"type": list, "items": CvPathfinderGlobalSitesItem},
-        "cv_pathfinder_internet_exit_policies": {"type": list, "items": CvPathfinderInternetExitPoliciesItem},
-        "cv_pathfinder_regions": {"type": list, "items": CvPathfinderRegionsItem},
+        "cv_pathfinder_global_sites": {"type": CvPathfinderGlobalSites},
+        "cv_pathfinder_internet_exit_policies": {"type": CvPathfinderInternetExitPolicies},
+        "cv_pathfinder_regions": {"type": CvPathfinderRegions},
         "cv_server": {"type": str},
         "cv_tags_topology_type": {"type": str},
         "cv_token": {"type": str},
-        "cv_topology": {"type": list, "items": CvTopologyItem},
+        "cv_topology": {"type": CvTopology},
         "cvp_ingestauth_key": {"type": str},
         "cvp_instance_ips": {"type": list, "items": str},
         "cvp_token_file": {"type": str},
@@ -46105,7 +46513,7 @@ class EosDesigns(AvdBase):
         "default_mgmt_method": {"type": str, "default": "oob"},
         "default_network_ports_description": {"type": str, "default": "{endpoint?}"},
         "default_network_ports_port_channel_description": {"type": str, "default": "{endpoint?}{endpoint_port_channel?<_}"},
-        "default_node_types": {"type": list, "items": DefaultNodeTypesItem},
+        "default_node_types": {"type": DefaultNodeTypes},
         "default_underlay_p2p_ethernet_description": {"type": str, "default": "P2P_{peer}_{peer_interface}{vrf?<_VRF_}"},
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
@@ -46113,7 +46521,7 @@ class EosDesigns(AvdBase):
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": list, "items": EosDesignsCustomTemplatesItem},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
-        "event_handlers": {"type": list, "items": EventHandlersItem},
+        "event_handlers": {"type": EventHandlers},
         "evpn_ebgp_gateway_inter_domain": {"type": bool},
         "evpn_ebgp_gateway_multihop": {"type": int, "default": 15},
         "evpn_ebgp_multihop": {"type": int, "default": 3},
@@ -46124,7 +46532,7 @@ class EosDesigns(AvdBase):
         "evpn_prevent_readvertise_to_server": {"type": bool, "default": False},
         "evpn_short_esi_prefix": {"type": str, "default": "0000:0000:"},
         "evpn_vlan_aware_bundles": {"type": bool, "default": False},
-        "evpn_vlan_bundles": {"type": list, "items": EvpnVlanBundlesItem},
+        "evpn_vlan_bundles": {"type": EvpnVlanBundles},
         "fabric_evpn_encapsulation": {"type": str, "default": "vxlan"},
         "fabric_flow_tracking": {"type": FabricFlowTracking},
         "fabric_ip_addressing": {"type": FabricIpAddressing},
@@ -46137,8 +46545,8 @@ class EosDesigns(AvdBase):
             "type": InternalVlanOrder,
             "default": lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls),
         },
-        "ipv4_acls": {"type": list, "items": Ipv4AclsItem},
-        "ipv4_prefix_list_catalog": {"type": list, "items": Ipv4PrefixListCatalogItem},
+        "ipv4_acls": {"type": Ipv4Acls},
+        "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
         "ipv6_mgmt_destination_networks": {"type": list, "items": str},
         "ipv6_mgmt_gateway": {"type": str},
         "is_deployed": {"type": bool, "default": True},
@@ -46151,8 +46559,8 @@ class EosDesigns(AvdBase):
         "isis_system_id_format": {"type": str, "default": "underlay_loopback"},
         "isis_ti_lfa": {"type": IsisTiLfa},
         "l3_edge": {"type": L3Edge},
-        "l3_interface_profiles": {"type": list, "items": L3InterfaceProfilesItem},
-        "local_users": {"type": list, "items": LocalUsersItem},
+        "l3_interface_profiles": {"type": L3InterfaceProfiles},
+        "local_users": {"type": LocalUsers},
         "mac_address_table": {"type": MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "mgmt_destination_networks": {"type": list, "items": str},
@@ -46175,13 +46583,9 @@ class EosDesigns(AvdBase):
         "mlag_port_channel_description": {"type": str, "default": "MLAG_{mlag_peer}_{peer_interface}"},
         "name_servers": {"type": list, "items": str},
         "network_ports": {"type": list, "items": NetworkPortsItem},
-        "network_services_keys": {
-            "type": list,
-            "items": NetworkServicesKeysItem,
-            "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=list, list_items_type=cls),
-        },
-        "custom_node_type_keys": {"type": list, "items": CustomNodeTypeKeysItem},
-        "node_type_keys": {"type": list, "items": NodeTypeKeysItem},
+        "network_services_keys": {"type": NetworkServicesKeys, "default": lambda cls: coerce_type([{"name": "tenants"}], target_type=cls)},
+        "custom_node_type_keys": {"type": CustomNodeTypeKeys},
+        "node_type_keys": {"type": NodeTypeKeys},
         "ntp_settings": {"type": NtpSettings},
         "only_local_vlan_trunk_groups": {"type": bool, "default": False},
         "overlay_bgp_peer_description": {"type": str, "default": "{peer}{peer_interface?<_}"},
@@ -46318,12 +46722,11 @@ class EosDesigns(AvdBase):
                 list_items_type=cls,
             ),
         },
-        "platform_speed_groups": {"type": list, "items": PlatformSpeedGroupsItem},
+        "platform_speed_groups": {"type": PlatformSpeedGroups},
         "pod_name": {"type": str},
-        "port_profiles": {"type": list, "items": PortProfilesItem},
+        "port_profiles": {"type": PortProfiles},
         "ptp_profiles": {
-            "type": list,
-            "items": PtpProfilesItem,
+            "type": PtpProfiles,
             "default": lambda cls: coerce_type(
                 [
                     {
@@ -46342,8 +46745,7 @@ class EosDesigns(AvdBase):
                     },
                     {"profile": "aes67", "announce": {"interval": 2, "timeout": 3}, "delay_req": 0, "sync_message": {"interval": 0}, "transport": "ipv4"},
                 ],
-                target_type=list,
-                list_items_type=cls,
+                target_type=cls,
             ),
         },
         "ptp_settings": {"type": PtpSettings},
@@ -46356,7 +46758,7 @@ class EosDesigns(AvdBase):
         "shutdown_interfaces_towards_undeployed_peers": {"type": bool, "default": True},
         "snmp_settings": {"type": SnmpSettings},
         "source_interfaces": {"type": SourceInterfaces},
-        "svi_profiles": {"type": list, "items": SviProfilesItem},
+        "svi_profiles": {"type": SviProfiles},
         "system_mac_address": {"type": str},
         "terminattr_disable_aaa": {"type": bool, "default": False},
         "terminattr_ingestexclude": {"type": str, "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"},
@@ -46374,7 +46776,7 @@ class EosDesigns(AvdBase):
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
         "underlay_multicast": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
-        "underlay_multicast_rps": {"type": list, "items": UnderlayMulticastRpsItem},
+        "underlay_multicast_rps": {"type": UnderlayMulticastRps},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
@@ -46386,13 +46788,13 @@ class EosDesigns(AvdBase):
         "use_cv_topology": {"type": bool},
         "vtep_loopback_description": {"type": str, "default": "VXLAN_TUNNEL_SOURCE"},
         "vtep_vvtep_ip": {"type": str},
-        "wan_carriers": {"type": list, "items": WanCarriersItem},
+        "wan_carriers": {"type": WanCarriers},
         "wan_encapsulation": {"type": str, "default": "path-selection"},
         "wan_ha": {"type": WanHa},
         "wan_ipsec_profiles": {"type": WanIpsecProfiles},
         "wan_mode": {"type": str, "default": "cv-pathfinder"},
-        "wan_path_groups": {"type": list, "items": WanPathGroupsItem},
-        "wan_route_servers": {"type": list, "items": WanRouteServersItem},
+        "wan_path_groups": {"type": WanPathGroups},
+        "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
@@ -46472,7 +46874,7 @@ class EosDesigns(AvdBase):
     """
     bgp_update_wait_install: bool | None
     bgp_update_wait_for_convergence: bool | None
-    connected_endpoints_keys: list[ConnectedEndpointsKeysItem]
+    connected_endpoints_keys: ConnectedEndpointsKeys
     """
     Endpoints connecting to the fabric can be grouped by using separate keys.
     The keys can be customized
@@ -46545,20 +46947,20 @@ class EosDesigns(AvdBase):
     - Existing keys of type "Dictionary" will recursively merge
     - Other existing keys will be replaced.
     """
-    cv_pathfinder_global_sites: list[CvPathfinderGlobalSitesItem]
+    cv_pathfinder_global_sites: CvPathfinderGlobalSites
     """
     Define sites that are outside of the CV Pathfinder hierarchy.
     This is used to arrange pathfinders in
     the CloudVision topology layout.
     """
-    cv_pathfinder_internet_exit_policies: list[CvPathfinderInternetExitPoliciesItem]
+    cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies
     """
     PREVIEW: These keys are in preview mode.
 
     List of internet-exit policies used for the WAN
     configuration.
     """
-    cv_pathfinder_regions: list[CvPathfinderRegionsItem]
+    cv_pathfinder_regions: CvPathfinderRegions
     """Define the CV Pathfinder hierarchy."""
     cv_server: str | None
     """
@@ -46592,7 +46994,7 @@ class EosDesigns(AvdBase):
     Make sure to set
     it in a common group_vars file.
     """
-    cv_topology: list[CvTopologyItem]
+    cv_topology: CvTopology
     """
     Generate AVD configurations directly from the given CloudVision topology.
     Activate this feature by
@@ -46743,7 +47145,7 @@ class EosDesigns(AvdBase):
     By default
     the description is templated from the `endpoint` key if set.
     """
-    default_node_types: list[DefaultNodeTypesItem]
+    default_node_types: DefaultNodeTypes
     """Uses hostname matches against a regular expression to determine the node type."""
     default_underlay_p2p_ethernet_description: str | None
     """
@@ -46815,7 +47217,7 @@ class EosDesigns(AvdBase):
     eos_designs_custom_templates: list[EosDesignsCustomTemplatesItem]
     eos_designs_documentation: EosDesignsDocumentation
     """Control fabric documentation generation."""
-    event_handlers: list[EventHandlersItem]
+    event_handlers: EventHandlers
     """
     Gives the ability to monitor and react to Syslog messages.
     Event Handlers provide a powerful and
@@ -46895,7 +47297,7 @@ class EosDesigns(AvdBase):
     `l2vlans` takes precedence and overrides this behavior. Per svi/l2vlan `evpn_vlan_bundle` also works
     when this setting is disabled which allow mixing vlan-aware-bundles with regular MAC-VRFs.
     """
-    evpn_vlan_bundles: list[EvpnVlanBundlesItem]
+    evpn_vlan_bundles: EvpnVlanBundles
     fabric_evpn_encapsulation: str | None
     """Should be set to mpls for evpn-mpls scenario."""
     fabric_flow_tracking: FabricFlowTracking
@@ -46930,7 +47332,7 @@ class EosDesigns(AvdBase):
     hardware_counters: HardwareCounters
     internal_vlan_order: InternalVlanOrder
     """Internal vlan allocation order and range."""
-    ipv4_acls: list[Ipv4AclsItem]
+    ipv4_acls: Ipv4Acls
     """
     IPv4 extended access-lists supporting substitution on certain fields.
     These access-lists can be
@@ -46942,7 +47344,7 @@ class EosDesigns(AvdBase):
     When using
     substitution, the interface name will be appended to the ACL name.
     """
-    ipv4_prefix_list_catalog: list[Ipv4PrefixListCatalogItem]
+    ipv4_prefix_list_catalog: Ipv4PrefixListCatalog
     """IPv4 prefix-list catalog."""
     ipv6_mgmt_destination_networks: list[str]
     """
@@ -46990,13 +47392,13 @@ class EosDesigns(AvdBase):
     """
     isis_ti_lfa: IsisTiLfa
     l3_edge: L3Edge
-    l3_interface_profiles: list[L3InterfaceProfilesItem]
+    l3_interface_profiles: L3InterfaceProfiles
     """
     Profiles to inherit common settings for l3_interfaces defined under the node type key.
     These
     profiles will *not* work for `l3_interfaces` defined under `vrfs`.
     """
-    local_users: list[LocalUsersItem]
+    local_users: LocalUsers
     mac_address_table: MacAddressTable
     """
     MAC address-table aging time.
@@ -47189,7 +47591,7 @@ class EosDesigns(AvdBase):
     name_servers: list[str]
     """List of DNS servers. The VRF is set to < mgmt_interface_vrf >."""
     network_ports: list[NetworkPortsItem]
-    network_services_keys: list[NetworkServicesKeysItem]
+    network_services_keys: NetworkServicesKeys
     """
     Network Services can be grouped by using separate keys.
     The keys can be customized to provide a
@@ -47199,7 +47601,7 @@ class EosDesigns(AvdBase):
     The default values will be overridden if defining this key,
     so it is recommended to copy the defaults and modify them.
     """
-    custom_node_type_keys: list[CustomNodeTypeKeysItem]
+    custom_node_type_keys: CustomNodeTypeKeys
     """
     Define Custom Node Type Keys, to specify the properties of each node type in the fabric.
     This allows
@@ -47210,7 +47612,7 @@ class EosDesigns(AvdBase):
     custom node type keys named the same as a
     default node_type_key will replace the default.
     """
-    node_type_keys: list[NodeTypeKeysItem]
+    node_type_keys: NodeTypeKeys
     """
     Define Node Type Keys, to specify the properties of each node type in the fabric.
     This allows for
@@ -47376,7 +47778,7 @@ class EosDesigns(AvdBase):
     custom platforms, create them under `custom_platform_settings`. Entries under
     `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     """
-    platform_speed_groups: list[PlatformSpeedGroupsItem]
+    platform_speed_groups: PlatformSpeedGroups
     """Set Hardware Speed Groups per Platform."""
     pod_name: str | None
     """
@@ -47390,13 +47792,13 @@ class EosDesigns(AvdBase):
     Recommended to be common between Spines and
     Leafs within a POD (One l3ls topology).
     """
-    port_profiles: list[PortProfilesItem]
+    port_profiles: PortProfiles
     """
     Optional profiles to share common settings for connected_endpoints and/or network_ports.
     Keys are
     the same used under endpoints adapters. Keys defined under endpoints adapters take precedence.
     """
-    ptp_profiles: list[PtpProfilesItem]
+    ptp_profiles: PtpProfiles
     ptp_settings: PtpSettings
     """Common PTP settings."""
     queue_monitor_length: QueueMonitorLength
@@ -47471,7 +47873,7 @@ class EosDesigns(AvdBase):
     Errors will also be raised if an
     interface is not found for a device.
     """
-    svi_profiles: list[SviProfilesItem]
+    svi_profiles: SviProfiles
     """
     Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.
     Keys are the
@@ -47610,7 +48012,7 @@ class EosDesigns(AvdBase):
     NOTE: When using MSDP, all nodes across all MSDP enabled RPs will
     be added to a single MSDP mesh group named "ANYCAST-RP".
     """
-    underlay_multicast_rps: list[UnderlayMulticastRpsItem]
+    underlay_multicast_rps: UnderlayMulticastRps
     """
     List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.
     The
@@ -47665,7 +48067,7 @@ class EosDesigns(AvdBase):
     This is only
     needed for centralized routing designs.
     """
-    wan_carriers: list[WanCarriersItem]
+    wan_carriers: WanCarriers
     """List of carriers used for the WAN configuration and their mapping to path-groups."""
     wan_encapsulation: str | None
     """Select the encapsulation to use for EVPN peerings for WAN BGP peers."""
@@ -47675,9 +48077,9 @@ class EosDesigns(AvdBase):
     """Define IPsec profiles parameters for WAN configuration."""
     wan_mode: str | None
     """Select if the WAN should be run using CV Pathfinder or Legacy AutoVPN only."""
-    wan_path_groups: list[WanPathGroupsItem]
+    wan_path_groups: WanPathGroups
     """List of path-groups used for the WAN configuration."""
-    wan_route_servers: list[WanRouteServersItem]
+    wan_route_servers: WanRouteServers
     """
     List of the AutoVPN RRs when using `wan_mode: legacy-autovpn`, or the Pathfinders
     when using
@@ -47749,17 +48151,17 @@ class EosDesigns(AvdBase):
         bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
         bgp_update_wait_install: bool | None | UndefinedType = Undefined,
         bgp_update_wait_for_convergence: bool | None | UndefinedType = Undefined,
-        connected_endpoints_keys: list[ConnectedEndpointsKeysItem] | UndefinedType = Undefined,
+        connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
         core_interfaces: CoreInterfaces | UndefinedType = Undefined,
         custom_structured_configuration_list_merge: str | None | UndefinedType = Undefined,
         custom_structured_configuration_prefix: list[str] | UndefinedType = Undefined,
-        cv_pathfinder_global_sites: list[CvPathfinderGlobalSitesItem] | UndefinedType = Undefined,
-        cv_pathfinder_internet_exit_policies: list[CvPathfinderInternetExitPoliciesItem] | UndefinedType = Undefined,
-        cv_pathfinder_regions: list[CvPathfinderRegionsItem] | UndefinedType = Undefined,
+        cv_pathfinder_global_sites: CvPathfinderGlobalSites | UndefinedType = Undefined,
+        cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
+        cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
         cv_server: str | None | UndefinedType = Undefined,
         cv_tags_topology_type: str | None | UndefinedType = Undefined,
         cv_token: str | None | UndefinedType = Undefined,
-        cv_topology: list[CvTopologyItem] | UndefinedType = Undefined,
+        cv_topology: CvTopology | UndefinedType = Undefined,
         cvp_ingestauth_key: str | None | UndefinedType = Undefined,
         cvp_instance_ips: list[str] | UndefinedType = Undefined,
         cvp_token_file: str | None | UndefinedType = Undefined,
@@ -47772,7 +48174,7 @@ class EosDesigns(AvdBase):
         default_mgmt_method: str | None | UndefinedType = Undefined,
         default_network_ports_description: str | None | UndefinedType = Undefined,
         default_network_ports_port_channel_description: str | None | UndefinedType = Undefined,
-        default_node_types: list[DefaultNodeTypesItem] | UndefinedType = Undefined,
+        default_node_types: DefaultNodeTypes | UndefinedType = Undefined,
         default_underlay_p2p_ethernet_description: str | None | UndefinedType = Undefined,
         default_underlay_p2p_port_channel_description: str | None | UndefinedType = Undefined,
         default_vrf_diag_loopback_description: str | None | UndefinedType = Undefined,
@@ -47780,7 +48182,7 @@ class EosDesigns(AvdBase):
         enable_trunk_groups: bool | None | UndefinedType = Undefined,
         eos_designs_custom_templates: list[EosDesignsCustomTemplatesItem] | UndefinedType = Undefined,
         eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
-        event_handlers: list[EventHandlersItem] | UndefinedType = Undefined,
+        event_handlers: EventHandlers | UndefinedType = Undefined,
         evpn_ebgp_gateway_inter_domain: bool | None | UndefinedType = Undefined,
         evpn_ebgp_gateway_multihop: int | None | UndefinedType = Undefined,
         evpn_ebgp_multihop: int | None | UndefinedType = Undefined,
@@ -47791,7 +48193,7 @@ class EosDesigns(AvdBase):
         evpn_prevent_readvertise_to_server: bool | None | UndefinedType = Undefined,
         evpn_short_esi_prefix: str | None | UndefinedType = Undefined,
         evpn_vlan_aware_bundles: bool | None | UndefinedType = Undefined,
-        evpn_vlan_bundles: list[EvpnVlanBundlesItem] | UndefinedType = Undefined,
+        evpn_vlan_bundles: EvpnVlanBundles | UndefinedType = Undefined,
         fabric_evpn_encapsulation: str | None | UndefinedType = Undefined,
         fabric_flow_tracking: FabricFlowTracking | UndefinedType = Undefined,
         fabric_ip_addressing: FabricIpAddressing | UndefinedType = Undefined,
@@ -47801,8 +48203,8 @@ class EosDesigns(AvdBase):
         generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
         hardware_counters: HardwareCounters | UndefinedType = Undefined,
         internal_vlan_order: InternalVlanOrder | UndefinedType = Undefined,
-        ipv4_acls: list[Ipv4AclsItem] | UndefinedType = Undefined,
-        ipv4_prefix_list_catalog: list[Ipv4PrefixListCatalogItem] | UndefinedType = Undefined,
+        ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
+        ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
         ipv6_mgmt_destination_networks: list[str] | UndefinedType = Undefined,
         ipv6_mgmt_gateway: str | None | UndefinedType = Undefined,
         is_deployed: bool | None | UndefinedType = Undefined,
@@ -47815,8 +48217,8 @@ class EosDesigns(AvdBase):
         isis_system_id_format: str | None | UndefinedType = Undefined,
         isis_ti_lfa: IsisTiLfa | UndefinedType = Undefined,
         l3_edge: L3Edge | UndefinedType = Undefined,
-        l3_interface_profiles: list[L3InterfaceProfilesItem] | UndefinedType = Undefined,
-        local_users: list[LocalUsersItem] | UndefinedType = Undefined,
+        l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
+        local_users: LocalUsers | UndefinedType = Undefined,
         mac_address_table: MacAddressTable | UndefinedType = Undefined,
         management_eapi: ManagementEapi | UndefinedType = Undefined,
         mgmt_destination_networks: list[str] | UndefinedType = Undefined,
@@ -47839,9 +48241,9 @@ class EosDesigns(AvdBase):
         mlag_port_channel_description: str | None | UndefinedType = Undefined,
         name_servers: list[str] | UndefinedType = Undefined,
         network_ports: list[NetworkPortsItem] | UndefinedType = Undefined,
-        network_services_keys: list[NetworkServicesKeysItem] | UndefinedType = Undefined,
-        custom_node_type_keys: list[CustomNodeTypeKeysItem] | UndefinedType = Undefined,
-        node_type_keys: list[NodeTypeKeysItem] | UndefinedType = Undefined,
+        network_services_keys: NetworkServicesKeys | UndefinedType = Undefined,
+        custom_node_type_keys: CustomNodeTypeKeys | UndefinedType = Undefined,
+        node_type_keys: NodeTypeKeys | UndefinedType = Undefined,
         ntp_settings: NtpSettings | UndefinedType = Undefined,
         only_local_vlan_trunk_groups: bool | None | UndefinedType = Undefined,
         overlay_bgp_peer_description: str | None | UndefinedType = Undefined,
@@ -47858,10 +48260,10 @@ class EosDesigns(AvdBase):
         p2p_uplinks_qos_profile: str | None | UndefinedType = Undefined,
         custom_platform_settings: list[CustomPlatformSettingsItem] | UndefinedType = Undefined,
         platform_settings: list[PlatformSettingsItem] | UndefinedType = Undefined,
-        platform_speed_groups: list[PlatformSpeedGroupsItem] | UndefinedType = Undefined,
+        platform_speed_groups: PlatformSpeedGroups | UndefinedType = Undefined,
         pod_name: str | None | UndefinedType = Undefined,
-        port_profiles: list[PortProfilesItem] | UndefinedType = Undefined,
-        ptp_profiles: list[PtpProfilesItem] | UndefinedType = Undefined,
+        port_profiles: PortProfiles | UndefinedType = Undefined,
+        ptp_profiles: PtpProfiles | UndefinedType = Undefined,
         ptp_settings: PtpSettings | UndefinedType = Undefined,
         queue_monitor_length: QueueMonitorLength | UndefinedType = Undefined,
         redundancy: Redundancy | UndefinedType = Undefined,
@@ -47872,7 +48274,7 @@ class EosDesigns(AvdBase):
         shutdown_interfaces_towards_undeployed_peers: bool | None | UndefinedType = Undefined,
         snmp_settings: SnmpSettings | UndefinedType = Undefined,
         source_interfaces: SourceInterfaces | UndefinedType = Undefined,
-        svi_profiles: list[SviProfilesItem] | UndefinedType = Undefined,
+        svi_profiles: SviProfiles | UndefinedType = Undefined,
         system_mac_address: str | None | UndefinedType = Undefined,
         terminattr_disable_aaa: bool | None | UndefinedType = Undefined,
         terminattr_ingestexclude: str | None | UndefinedType = Undefined,
@@ -47890,7 +48292,7 @@ class EosDesigns(AvdBase):
         underlay_l2_port_channel_description: str | None | UndefinedType = Undefined,
         underlay_multicast: bool | None | UndefinedType = Undefined,
         underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
-        underlay_multicast_rps: list[UnderlayMulticastRpsItem] | UndefinedType = Undefined,
+        underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
         underlay_ospf_area: str | None | UndefinedType = Undefined,
         underlay_ospf_authentication: UnderlayOspfAuthentication | UndefinedType = Undefined,
         underlay_ospf_bfd_enable: bool | None | UndefinedType = Undefined,
@@ -47902,13 +48304,13 @@ class EosDesigns(AvdBase):
         use_cv_topology: bool | None | UndefinedType = Undefined,
         vtep_loopback_description: str | None | UndefinedType = Undefined,
         vtep_vvtep_ip: str | None | UndefinedType = Undefined,
-        wan_carriers: list[WanCarriersItem] | UndefinedType = Undefined,
+        wan_carriers: WanCarriers | UndefinedType = Undefined,
         wan_encapsulation: str | None | UndefinedType = Undefined,
         wan_ha: WanHa | UndefinedType = Undefined,
         wan_ipsec_profiles: WanIpsecProfiles | UndefinedType = Undefined,
         wan_mode: str | None | UndefinedType = Undefined,
-        wan_path_groups: list[WanPathGroupsItem] | UndefinedType = Undefined,
-        wan_route_servers: list[WanRouteServersItem] | UndefinedType = Undefined,
+        wan_path_groups: WanPathGroups | UndefinedType = Undefined,
+        wan_route_servers: WanRouteServers | UndefinedType = Undefined,
         wan_stun_dtls_disable: bool | None | UndefinedType = Undefined,
         wan_stun_dtls_profile_name: str | None | UndefinedType = Undefined,
         wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,

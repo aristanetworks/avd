@@ -63,11 +63,11 @@ def test_import_and_load_model(schema_name: str, data_file: str | None, artifact
         module = import_module(f"artifacts.{schema_name}")
     class_name = generate_class_name(schema_name)
     cls = getattr(module, class_name)
-    assert issubclass(cls, pyavd._schema.models.AvdBase)
+    assert issubclass(cls, pyavd._schema.models.AvdModel)
 
     data = {} if data_file is None else load_data_file(artifacts_path.joinpath(data_file))
 
     # Initialize the loaded class with data.
     model = cls._from_dict(data)
 
-    assert isinstance(model, pyavd._schema.models.AvdBase)
+    assert isinstance(model, pyavd._schema.models.AvdModel)

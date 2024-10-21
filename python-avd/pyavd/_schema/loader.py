@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from collections.abc import Mapping
+from collections.abc import Mapping, Sequence
 from types import NoneType
 from typing import TYPE_CHECKING, Any, ClassVar, TypeVar
 
@@ -19,11 +19,12 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.schema import EosDesigns
 
-    from .models import AvdBase
+    from .models import AvdCollection, AvdModel
 
     T = TypeVar("T")
     TT = TypeVar("TT")
-    T_AvdBase = TypeVar("T_AvdBase", bound=AvdBase)
+    T_AvdModel = TypeVar("T_AvdModel", bound=AvdModel)
+    T_AvdCollection = TypeVar("T_AvdCollection", bound=AvdCollection)
 
 
 def nullifiy_class(cls: type) -> type:
@@ -48,46 +49,43 @@ def coerce_type(value: Any, target_type: type[T], list_items_type: type[TT] | No
 
     If coercion cannot be done, the original value will be returned. The calling function should catch the wrong type if necessary.
     """
+    if value is None and (target_type is list or hasattr(target_type, "_is_avd_class")):
+        # None values are sometimes used to overwrite inherited profiles.
+        # This ensures we still follow the type hint of the class.
+        return nullifiy_class(target_type)()
+
     # Special handling for lists since we need to check every item
     if target_type is list:
-        if not isinstance(value, list):
-            if value is None:
-                # None values are sometimes used to overwrite inherited profiles.
-                # This ensures we still follow the type hint of the class.
-                return nullifiy_class(list)()
-
-            # Wrong type so we cannot coerce.
-            return value
-        if list_items_type is None:
-            # Just expecting a plain list so nothing to coerce.
+        if not isinstance(value, list) or list_items_type is None:
+            # Wrong type so we cannot coerce or just expecting a plain list so nothing to coerce.
             return value
 
         # We got a type with items types like list[str] so we coerce every list item accordingly and return as a new list.
         return [coerce_type(item_value, list_items_type) for item_value in value]
 
     if target_type is Any or isinstance(value, target_type):
-        return value
+        pass
 
-    if target_type in ACCEPTED_COERCION_MAP and isinstance(value, ACCEPTED_COERCION_MAP[target_type]):
+    elif target_type in ACCEPTED_COERCION_MAP and isinstance(value, ACCEPTED_COERCION_MAP[target_type]):
         try:
             return target_type(value)
         except ValueError:
-            return value
+            # Returns original value (too many returns triggers linting violation)
+            pass
 
-    # Identify subclass of AvdBase without importing AvdBase (circular import)
-    if hasattr(target_type, "_is_avd_class"):
-        if isinstance(value, Mapping):
-            return loader(target_type, value)
-        if value is None:
-            # None values are sometimes used to overwrite inherited profiles.
-            # This ensures we still follow the type hint of the class.
-            return nullifiy_class(target_type)()
+    # Identify subclass of AvdModel without importing AvdModel (circular import)
+    elif hasattr(target_type, "_is_avd_model") and isinstance(value, Mapping):
+        return load_model(target_type, value)
+
+    # Identify subclass of AvdCollection without importing AvdCollection (circular import)
+    elif hasattr(target_type, "_is_avd_collection") and isinstance(value, Sequence):
+        return load_collection(target_type, value)
 
     # Giving up and just returning the original value.
     return value
 
 
-def key_to_attr(cls: type[T_AvdBase], key: str) -> str | None:
+def key_to_attr(cls: type[AvdModel], key: str) -> str | None:
     """Returning attribute name for the given key or None if the key is invalid."""
     if key in cls._fields:
         return key
@@ -193,14 +191,21 @@ def get_dynamic_keys(cls: type[EosDesigns], data: Mapping) -> EosDesigns._Dynami
     return coerce_type(get_dynamic_keys_as_dict(cls, data), dynamic_keys_cls)
 
 
-def loader(cls: type[T_AvdBase], data: Mapping) -> T_AvdBase:
+def loader(cls: type[T_AvdModel | T_AvdCollection], data: Mapping | Sequence) -> T_AvdData:
     # Using hasattr to avoid importing the BaseClass which would lead to circular imports.
-    if not hasattr(cls, "_is_avd_class"):
-        msg = f"'cls' must be a subclass of 'AvdBase'. Got '{type(cls)}'"
-        raise TypeError(msg)
+    if hasattr(cls, "_is_avd_class"):
+        if hasattr(cls, "_is_avd_model"):
+            return load_model(cls, data)
+        if hasattr(cls, "_is_avd_collection"):
+            return load_collection(cls, data)
 
+    msg = f"'cls' must be a subclass of 'AvdModel' or 'AvdCollection'. Got '{type(cls)}'"
+    raise TypeError(msg)
+
+
+def load_model(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
     if not isinstance(data, Mapping):
-        msg = f"Expecting 'data' as a 'Mapping'. Got '{type(data)}"
+        msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
         raise TypeError(msg)
 
     allow_other_keys = cls._allow_other_keys
@@ -243,3 +248,22 @@ def loader(cls: type[T_AvdBase], data: Mapping) -> T_AvdBase:
         cls_args[attr] = value
 
     return cls(**cls_args)
+
+
+def load_collection(cls: type[T_AvdCollection], data: Sequence) -> T_AvdCollection:
+    if not isinstance(data, Sequence):
+        msg = f"Expecting 'data' as a 'Sequence' when loading data into '{cls.__name__}'. Got '{type(data)}"
+        raise TypeError(msg)
+
+    item_type = cls._item_type
+    cls_items = []
+    for item in data:
+        value = coerce_type(item, item_type)
+
+        # Raise for wrong type ignoring None values - we expect the validation to have sorted out required fields.
+        if not isinstance(value, (item_type, NoneType)):
+            msg = f"Invalid type '{type(value)}. Expected '{item_type}'. Value '{value}"
+            raise TypeError(msg)
+
+        cls_items.append(value)
+    return cls(cls_items)

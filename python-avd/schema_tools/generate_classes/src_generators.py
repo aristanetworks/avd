@@ -12,10 +12,10 @@ from schema_tools.constants import LICENSE_HEADER
 SRC_HEADER = indent(LICENSE_HEADER + "\n\n", "# ")
 
 BASE_IMPORTS = """\
-from pyavd._schema.models import AvdBase
+from pyavd._schema.models import AvdCollection, AvdModel
 from pyavd._utils import Undefined, UndefinedType
 """
-BASE_MODEL_NAME = "AvdBase"
+BASE_MODEL_NAME = "AvdModel"
 
 
 @dataclass
@@ -145,7 +145,7 @@ class ModelSrc:
     """
 
     name: str
-    classes: list[ModelSrc]
+    classes: list[ModelSrc | CollectionSrc]
     fields: list[FieldSrc]
     class_vars: list[ClassVarSrc] | None = None
     imports: set[str] | None = None
@@ -280,17 +280,71 @@ class ModelSrc:
 
 
 @dataclass
+class CollectionSrc:
+    """
+    Dataclass containing the elements to generate Python source code for this class.
+
+    Use str() on the instance to render the source code.
+    """
+
+    name: str
+    base_class: str
+    item_type: str
+    class_vars: list[ClassVarSrc] | None = None
+    imports: set[str] | None = None
+    description: str | None = None
+
+    def __str__(self) -> str:
+        """Renders the Python source code for this class including any nested classes and fields."""
+        classsrc = f"class {self.name}({self.base_class}):\n"
+
+        if self.description:
+            description = "\n".join(wrap(self.description, width=100, replace_whitespace=False))
+            if "\n" in description:
+                classsrc += indent(f'"""\n{description.strip()}\n"""\n', "    ")
+            else:
+                classsrc += indent(f'"""{description}"""\n', "    ")
+
+        if class_vars := self._render_class_vars():
+            classsrc += f"{class_vars}\n"
+
+        classsrc += f"\n{self.name}._item_type = {self.item_type}\n"
+
+        return classsrc
+
+    def _render_class_vars(self) -> str:
+        """Renders the Python source code for any ClassVars."""
+        if not self.class_vars:
+            return ""
+
+        return indent("\n".join(str(class_var) for class_var in self.class_vars), "    ")
+
+    def get_imports(self) -> set:
+        """Returns Python import statements required for this class including any nested classes and fields."""
+        imports = self.imports or set()
+        if self.class_vars:
+            for class_var in self.class_vars:
+                imports.update(class_var.get_imports())
+        return imports
+
+
+@dataclass
 class SrcData:
     """Dataclass containing a field and an associated class for one schema field including child fields."""
 
     field: FieldSrc | None = None
     """
-    field should be set on all instanced except for the root model
+    field should be set on all instances except for the root model
     """
 
     cls: ModelSrc | None = None
     """
     cls is a full Model for a 'dict' field.
+    """
+
+    collection: CollectionSrc | None = None
+    """
+    collection is a list of Models using a model field as primary key.
     """
 
 
