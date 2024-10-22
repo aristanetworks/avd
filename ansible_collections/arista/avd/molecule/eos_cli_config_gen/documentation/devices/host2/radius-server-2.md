@@ -1,11 +1,11 @@
-# local-users
+# host2/radius-server-2
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [Local Users](#local-users-1)
+  - [RADIUS Server](#radius-server)
 
 ## Management
 
@@ -37,21 +37,13 @@ interface Management1
 
 ## Authentication
 
-### Local Users
+### RADIUS Server
 
-#### Local Users Summary
+- Attribute 32 is included in access requests using format 'myformat'
 
-| User | Privilege | Role | Disabled | Shell |
-| ---- | --------- | ---- | -------- | ----- |
-| admin | - | - | True | - |
-| shell | - | - | False | /sbin/nologin |
-
-#### Local Users Device Configuration
+#### RADIUS Server Device Configuration
 
 ```eos
 !
-no username admin
-username shell shell /sbin/nologin nopassword
-username shell ssh-key SSH_KEY
-username shell ssh-key secondary SECONDARY_SSH_KEY
+radius-server attribute 32 include-in-access-req format myformat
 ```

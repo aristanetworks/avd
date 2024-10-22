@@ -1,11 +1,9 @@
-# aaa-2
+# host1/aaa-authentication
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-  - [AAA Accounting](#aaa-accounting)
 
 ## Management
 
@@ -33,22 +31,4 @@ interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
-```
-
-## Authentication
-
-### AAA Accounting
-
-#### AAA Accounting Summary
-
-| Type | Commands | Record type | Group | Logging |
-| ---- | -------- | ----------- | ----- | ------- |
-| Exec - Console | - | none | - | True |
-| Exec - Default | - | none | - | - |
-
-#### AAA Accounting Device Configuration
-
-```eos
-aaa accounting exec console none
-aaa accounting exec default none
 ```

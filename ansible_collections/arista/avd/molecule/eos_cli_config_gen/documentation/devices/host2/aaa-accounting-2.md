@@ -1,11 +1,9 @@
-# radius-server-2
+# host2/aaa-accounting-2
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
-- [Authentication](#authentication)
-  - [RADIUS Server](#radius-server)
 
 ## Management
 
@@ -33,17 +31,4 @@ interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
-```
-
-## Authentication
-
-### RADIUS Server
-
-- Attribute 32 is included in access requests using format 'myformat'
-
-#### RADIUS Server Device Configuration
-
-```eos
-!
-radius-server attribute 32 include-in-access-req format myformat
 ```

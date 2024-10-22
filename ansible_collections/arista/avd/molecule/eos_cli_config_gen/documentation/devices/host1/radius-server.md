@@ -1,11 +1,11 @@
-# radius-server
+# host1/radius-server
 
 ## Table of Contents
 
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
-  - [RADIUS Server](#radius-server-1)
+  - [RADIUS Server](#radius-server)
 
 ## Management
 
@@ -51,6 +51,9 @@ interface Management1
 
 | VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
 | --- | -------------- | --- | ----------- | ------- | ---------- |
+| mgt | 10.10.10.157 | - | - | - | - |
+| default | 10.10.10.249 | - | - | - | - |
+| default | 10.10.10.158 | - | - | - | - |
 | mgt | 10.10.11.157 | - | - | 1 | 1 |
 | mgt | 10.10.11.159 | - | - | - | 1 |
 | mgt | 10.10.11.160 | - | - | 1 | - |
@@ -68,6 +71,9 @@ radius-server attribute 32 include-in-access-req hostname
 radius-server dynamic-authorization port 1700
 radius-server tls ssl-profile GLOBAL_RADIUS_SSL_PROFILE
 radius-server dynamic-authorization tls ssl-profile SSL_PROFILE
+radius-server host 10.10.10.157 vrf mgt key 7 <removed>
+radius-server host 10.10.10.249 key 7 <removed>
+radius-server host 10.10.10.158 key 7 <removed>
 radius-server host 10.10.11.157 vrf mgt timeout 1 retransmit 1 key 7 <removed>
 radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
 radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
