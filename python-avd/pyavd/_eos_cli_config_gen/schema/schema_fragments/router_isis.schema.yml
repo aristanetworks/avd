@@ -106,7 +106,7 @@ keys:
                 description: Transmit frequency (in seconds) for CSN packets.
               p2p_disabled:
                 type: bool
-                description: Disable periodic CSN packets.
+                description: Disable periodic CSN packets for P2P links.
       set_overload_bit:
         type: dict
         keys:

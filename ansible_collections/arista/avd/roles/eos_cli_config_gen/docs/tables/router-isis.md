@@ -28,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_remaining_lifetime</samp>](## "router_isis.timers.lsp.min_remaining_lifetime") | Integer |  |  | Min: 60<br>Max: 65535 | Minimum remaining lifetime for LSPs (in seconds). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;csnp_generation</samp>](## "router_isis.timers.csnp_generation") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.timers.csnp_generation.interval") | Integer |  |  | Min: 1<br>Max: 300 | Transmit frequency (in seconds) for CSN packets. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_disabled</samp>](## "router_isis.timers.csnp_generation.p2p_disabled") | Boolean |  |  |  | Disable periodic CSN packets. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_disabled</samp>](## "router_isis.timers.csnp_generation.p2p_disabled") | Boolean |  |  |  | Disable periodic CSN packets for P2P links. |
     | [<samp>&nbsp;&nbsp;set_overload_bit</samp>](## "router_isis.set_overload_bit") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_isis.set_overload_bit.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;on_startup</samp>](## "router_isis.set_overload_bit.on_startup") | Dictionary |  |  |  |  |
@@ -185,7 +185,7 @@
           # Transmit frequency (in seconds) for CSN packets.
           interval: <int; 1-300>
 
-          # Disable periodic CSN packets.
+          # Disable periodic CSN packets for P2P links.
           p2p_disabled: <bool>
       set_overload_bit:
         enabled: <bool>
