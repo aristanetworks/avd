@@ -111,6 +111,7 @@ router isis {{ router_isis.instance }}
 {%                 set timers_lsp_generation = timers_lsp_generation ~ " " ~ router_isis.timers.lsp.generation.wait_time %}
 {%             endif %}
 {%         endif %}
+   {{ timers_lsp_generation }}
 {%     endif %}
 {%     if router_isis.timers.lsp.min_remaining_lifetime is arista.avd.defined %}
    timers lsp min-remaining-lifetime {{ router_isis.timers.lsp.min_remaining_lifetime }}
