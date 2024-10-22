@@ -24,7 +24,7 @@ class AvdBase:
 
     def __eq__(self, other: object) -> bool:
         """Compare two instances of AvdBase by comparing their repr."""
-        if isinstance(other, Self):
+        if isinstance(other, self.__class__):
             return repr(self) == repr(other)
         return super().__eq__(other)
 
