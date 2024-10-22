@@ -26,6 +26,9 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
+      - commands: 1
+        type: start-stop
+        logging: false
     default:
       - commands: all
         type: start-stop
@@ -34,3 +37,6 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
+      - commands: 1
+        type: start-stop
+        logging: false
