@@ -5,14 +5,13 @@ import json
 import sys
 from importlib import import_module
 from pathlib import Path
-from unittest import mock
 
 import pytest
 
 # Override global path to load schema from source instead of any installed version.
 sys.path.insert(0, str(Path(__file__).parents[3]))
 
-import pyavd._schema.models
+import pyavd._schema.models.avd_model
 from schema_tools.generate_classes.src_generators import FileSrc
 from schema_tools.generate_classes.utils import generate_class_name
 from schema_tools.metaschema.meta_schema_model import AristaAvdSchema
@@ -59,15 +58,14 @@ def test_generate_class_src(schema_name: str) -> None:
 @pytest.mark.parametrize(("schema_name", "data_file"), TEST_DATA)
 def test_import_and_load_model(schema_name: str, data_file: str | None, artifacts_path: Path) -> None:
     """Imports the generated Python Classes and initializes them with data from the given data_file or no data."""
-    with mock.patch.dict(sys.modules, {"artifacts.models": pyavd._schema.models}):
-        module = import_module(f"artifacts.{schema_name}")
+    module = import_module(f"artifacts.{schema_name}")
     class_name = generate_class_name(schema_name)
     cls = getattr(module, class_name)
-    assert issubclass(cls, pyavd._schema.models.AvdModel)
+    assert issubclass(cls, pyavd._schema.models.avd_model.AvdModel)
 
     data = {} if data_file is None else load_data_file(artifacts_path.joinpath(data_file))
 
     # Initialize the loaded class with data.
     model = cls._from_dict(data)
 
-    assert isinstance(model, pyavd._schema.models.AvdModel)
+    assert isinstance(model, pyavd._schema.models.avd_model.AvdModel)

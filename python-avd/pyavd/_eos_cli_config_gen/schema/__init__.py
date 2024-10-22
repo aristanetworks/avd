@@ -53439,7 +53439,7 @@ class EosCliConfigGen(AvdModel):
                             setattr(self, arg, arg_value)
 
                 class Policies(AvdIndexedList[str, PoliciesItem]):
-                    _primary_key: ClassVar[str] = "from"
+                    _primary_key: ClassVar[str] = "field_from"
 
                 Policies._item_type = PoliciesItem
 

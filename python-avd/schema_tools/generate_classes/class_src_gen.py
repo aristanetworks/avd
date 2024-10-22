@@ -163,7 +163,7 @@ class SrcGenList(SrcGenBase):
             name=class_name,
             base_class=f"AvdIndexedList[{primary_key_type}, {item_class_name}]",
             item_type=item_class_name,
-            class_vars=[ClassVarSrc("_primary_key", FieldTypeHintSrc("str"), f'"{self.schema.primary_key}"')],
+            class_vars=[ClassVarSrc("_primary_key", FieldTypeHintSrc("str"), f'"{self.get_primary_key_field_name()}"')],
         )
 
     def get_items_class(self) -> ModelSrc | None:
@@ -237,6 +237,20 @@ class SrcGenList(SrcGenBase):
             return f"lambda cls: coerce_type({default_value_as_str}, target_type=list, list_items_type=cls)"
 
         return default_value_as_str
+
+    def get_primary_key_field_name(self) -> str | None:
+        """
+        Returns the name to be used for the field used as primary_key.
+
+        Python reserved keywords or mixed case keys will get a prefix of "field_".
+        """
+        if (primary_key := self.schema.primary_key) is None:
+            return None
+
+        if iskeyword(primary_key) or not primary_key.islower():
+            return f"field_{primary_key}"
+
+        return primary_key
 
 
 class SrcGenDict(SrcGenBase):
