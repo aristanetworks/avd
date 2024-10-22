@@ -3,46 +3,73 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator, Sequence
-from copy import deepcopy
-from typing import Any, ClassVar, Generic, Literal, TypeVar
+from collections.abc import Mapping
+from types import NoneType
+from typing import TYPE_CHECKING, Any, ClassVar, Literal
 
-from typing_extensions import Self
+from pyavd._schema.coerce_type import coerce_type
+from pyavd._utils import Undefined
 
-from pyavd._utils import Undefined, UndefinedType
+from .avd_base import AvdBase
+from .avd_indexed_list import AvdIndexedList
 
-from .loader import loader
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
-T = TypeVar("T")
-T_AvdModel = TypeVar("T_AvdModel", bound="AvdModel")
-T_AvdIndexedList = TypeVar("T_AvdIndexedList", bound="AvdIndexedList")
-T_PrimaryKey = TypeVar("T_PrimaryKey", int, str)
-
-
-class AvdBase:
-    _is_avd_class: bool = True
-
-    def __eq__(self, other: object) -> bool:
-        """Compare two instances of AvdBase by comparing their repr."""
-        if isinstance(other, self.__class__):
-            return repr(self) == repr(other)
-        return super().__eq__(other)
-
-    def _deepcopy(self) -> Self:
-        """Return a copy including all nested models."""
-        return deepcopy(self)
+    from .type_vars import T_AvdModel
 
 
 class AvdModel(AvdBase):
     _is_avd_model = True
     _allow_other_keys: bool = False
     _fields: ClassVar[dict[str, dict]]
-    _required_fields: tuple[str, ...]
+    _required_fields: ClassVar[tuple[str, ...]]
+    _field_to_key_map: ClassVar[dict[str, str]]
+    _key_to_field_map: ClassVar[dict[str, str]]
 
     @classmethod
-    def _from_dict(cls: type[T_AvdModel], data: dict) -> T_AvdModel:
+    def _from_dict(cls: type[T_AvdModel], data: Mapping) -> T_AvdModel:
         """Returns a new instance loaded with the data from the given dict."""
-        return loader(cls, data)
+        if not isinstance(data, Mapping):
+            msg = f"Expecting 'data' as a 'Mapping' when loading data into '{cls.__name__}'. Got '{type(data)}"
+            raise TypeError(msg)
+
+        has_custom_data = "_custom_data" in cls._fields
+        cls_args = {}
+
+        for key in data:
+            if has_custom_data and str(key).startswith("_"):
+                cls_args.setdefault("_custom_data", {})[key] = data[key]
+                continue
+
+            if not (field := cls._get_field_name(key)):
+                if cls._allow_other_keys:
+                    # Ignore unknown keys.
+                    continue
+                msg = f"Invalid key '{key}'. Not available on '{cls.__name__}'."
+                raise KeyError(msg, has_custom_data)
+
+            field_info = cls._fields[field]
+            field_type = field_info["type"]
+
+            value = coerce_type(data[key], field_type, list_items_type=field_info.get("items"))
+
+            # Raise for wrong type ignoring None values - we expect the validation to have sorted out required fields.
+            if not isinstance(value, (field_type, NoneType)):
+                msg = f"Invalid type '{type(value)}. Expected '{field_type}'. Value '{value}"
+                raise TypeError(msg)
+
+            cls_args[field] = value
+
+        return cls(**cls_args)
+
+    @classmethod
+    def _get_field_name(cls, key: str) -> str | None:
+        """Returns the field name for the given key. Returns None if the key is not matching a valid field."""
+        field_name = cls._key_to_field_map.get(key, key)
+        if field_name in cls._fields:
+            return field_name
+        return None
 
     def __getattr__(self, name: str) -> Any:
         """
@@ -109,8 +136,12 @@ class AvdModel(AvdBase):
             if (value := self._get_defined_attr(field)) is Undefined:
                 continue
 
+            if field == "_custom_data" and isinstance(value, dict) and value:
+                as_dict.update(value)
+                continue
+
             # Removing field_ prefix if needed.
-            key = field_info.get("key", field)
+            key = self._field_to_key_map.get(field, field)
 
             if issubclass(field_info["type"], AvdModel) and isinstance(value, AvdModel):
                 as_dict[key] = value._as_dict()
@@ -275,111 +306,3 @@ class AvdModel(AvdBase):
             continue
 
         return new_type(**new_args)
-
-
-class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], AvdBase):
-    _is_avd_collection = True
-    _item_type: ClassVar[type[AvdModel]]
-    _primary_key: ClassVar[str]
-    _items: dict[T_PrimaryKey, T_AvdModel]
-
-    @classmethod
-    def from_list(cls, data: Sequence) -> Self:
-        return loader(cls, data)
-
-    def __init__(self, items: Iterable[T_AvdModel] | UndefinedType = Undefined) -> None:
-        if items is Undefined:
-            self._items = {}
-        else:
-            self._items = {getattr(item, self._primary_key): item for item in items}
-
-    def __repr__(self) -> str:
-        """Returns a repr with all the items including any nested models."""
-        cls_name = self.__class__.__name__
-        attrs = [f"{item!r}" for item in (self._items or ())]
-        return f"<{cls_name}([{', '.join(attrs)}])>"
-
-    def __bool__(self) -> bool:
-        """Boolean check on the class to quickly determine if any items are set."""
-        return bool(self._items)
-
-    def __len__(self) -> int:
-        return self._items.__len__()
-
-    def __contains__(self, key: T_PrimaryKey) -> bool:
-        return self._items.__contains__(key)
-
-    def __iter__(self) -> Iterator[T_AvdModel]:
-        return self._items.values().__iter__()
-
-    def __getitem__(self, key: T_PrimaryKey) -> T_AvdModel:
-        return self._items[key]
-
-    def __setitem__(self, key: T_PrimaryKey, value: T_AvdModel) -> None:
-        self._items[key] = value
-
-    def get(self, key: T_PrimaryKey, default: T | Undefined = Undefined) -> T_AvdModel | T | Undefined:
-        return self._items.get(key, default)
-
-    def items(self) -> Iterable[tuple[T_PrimaryKey, T_AvdModel]]:
-        return self._items.items()
-
-    def keys(self) -> Iterable[T_PrimaryKey]:
-        return self._items.keys()
-
-    def values(self) -> Iterable[T_AvdModel]:
-        return self._items.values()
-
-    def append(self, item: T_AvdModel) -> None:
-        self._items[getattr(item, self._primary_key)] = item
-
-    def extend(self, items: Iterable[T_AvdModel]) -> None:
-        self._items.update({getattr(item, self._primary_key): item for item in items})
-
-    def _as_list(self) -> list[T_AvdModel]:
-        """Returns a list with all the data from this model and any nested models."""
-        return list(self._items.values())
-
-    def _deepmerge(self, other: Self, list_merge: Literal["append", "replace"] = "append") -> None:
-        """Update instance by deepmerging the other instance in."""
-        cls = type(self)
-        if not isinstance(other, cls):
-            msg = f"Unable to merge type '{type(other)}' into '{cls}'"
-            raise TypeError(msg)
-
-        copy_of_other = other._deepcopy()
-
-        if list_merge == "replace":
-            self._items = copy_of_other._items
-            return
-
-        for primary_key, new_item in copy_of_other.items():
-            old_value = self.get(primary_key)
-            if old_value is Undefined or not isinstance(old_value, type(new_item)) or getattr(new_item, "_is_nullified", False):
-                # New item or different type so we can just replace
-                self[primary_key] = new_item
-                continue
-
-            # Existing item of same type, so deepmerge.
-            self[primary_key]._deepmerge(new_item, list_merge=list_merge)
-
-    def _deepmerged(self, other: Self, list_merge: Literal["append", "replace"] = "append") -> Self:
-        """Return new instance with the result of the deepmerge of "other" on this instance."""
-        new_instance = self._deepcopy()
-        new_instance._deepmerge(other=other, list_merge=list_merge)
-        return new_instance
-
-    def _cast_as(self, new_type: type[T_AvdIndexedList], ignore_extra_keys: bool = False) -> T_AvdIndexedList:
-        """
-        Recast a class instance as another AvdIndexedList subclass if they are compatible.
-
-        The classes are compatible if the items of the new class is a superset of the current class.
-
-        Useful when inheriting from profiles.
-        """
-        cls = type(self)
-        if not issubclass(new_type, AvdIndexedList):
-            msg = f"Unable to cast '{cls}' as type '{new_type}' since '{new_type}' is not an AvdIndexedList subclass."
-            raise TypeError(msg)
-
-        return new_type([item._cast_as(new_type._item_type, ignore_extra_keys=ignore_extra_keys) for item in self])

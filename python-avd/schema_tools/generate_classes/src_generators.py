@@ -12,7 +12,8 @@ from schema_tools.constants import LICENSE_HEADER
 SRC_HEADER = indent(LICENSE_HEADER + "\n\n", "# ")
 
 BASE_IMPORTS = """\
-from pyavd._schema.models import AvdIndexedList, AvdModel
+from pyavd._schema.models.avd_indexed_list import AvdIndexedList
+from pyavd._schema.models.avd_model import AvdModel
 from pyavd._utils import Undefined, UndefinedType
 """
 BASE_MODEL_NAME = "AvdModel"
@@ -70,7 +71,7 @@ class FieldSrc:
         """Return a set of strings with Python imports that are needed for this class."""
         imports = set()
         if self.default_value and "coerce_type" in self.default_value:
-            imports.add("from pyavd._schema.loader import coerce_type")
+            imports.add("from pyavd._schema.coerce_type import coerce_type")
         for type_hint in self.type_hints:
             imports.update(type_hint.get_imports())
         return imports
@@ -86,8 +87,6 @@ class FieldSrc:
             field_type = "dict"
 
         dict_fields_src = [f'"type": {field_type}']
-        if self.key is not None and self.key != self.name:
-            dict_fields_src.append(f'"key": "{self.key}"')
         if field_type == "list":
             items_type = self.type_hints[0].list_item_type
             dict_fields_src.append(f'"items": {items_type}')
@@ -234,6 +233,12 @@ class ModelSrc:
 
         extra_comma = "," if len(required_field_names_as_strings) == 1 else ""
         src += f"    _required_fields: ClassVar[tuple] = ({', '.join(required_field_names_as_strings)}{extra_comma})\n"
+
+        field_to_key_map = str({field.name: field.key for field in self.fields if field.name and field.key and field.name != field.key})
+        src += f"    _field_to_key_map: ClassVar[dict] = {field_to_key_map}\n"
+
+        key_to_field_map = str({field.key: field.name for field in self.fields if field.name and field.key and field.name != field.key})
+        src += f"    _key_to_field_map: ClassVar[dict] = {key_to_field_map}\n"
 
         if self.allow_extra:
             src += "    _allow_other_keys: ClassVar[bool] = True\n"

@@ -5,18 +5,22 @@
 from typing import Any, ClassVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._schema.loader import coerce_type
-from pyavd._schema.models import AvdIndexedList, AvdModel
+from pyavd._schema.coerce_type import coerce_type
+from pyavd._schema.models.avd_indexed_list import AvdIndexedList
+from pyavd._schema.models.avd_model import AvdModel
+from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel
 from pyavd._utils import Undefined, UndefinedType
 
 
-class EosDesigns(AvdModel):
+class EosDesigns(EosDesignsRootModel):
     class ApplicationClassification(EosCliConfigGen.ApplicationTrafficRecognition):
         pass
 
     class BfdMultihop(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": int}, "min_rx": {"type": int}, "multiplier": {"type": int}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "interval", "min_rx", "multiplier")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         interval: int
         min_rx: int
@@ -52,6 +56,8 @@ class EosDesigns(AvdModel):
     class BgpGracefulRestart(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}, "restart_time": {"type": int, "default": 300}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enabled: bool
         """Enable or disable graceful-restart for all BGP peers."""
@@ -93,6 +99,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -140,6 +148,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -187,6 +197,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -234,6 +246,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -281,6 +295,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -328,6 +344,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -375,6 +393,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -419,6 +439,8 @@ class EosDesigns(AvdModel):
                     "multiplier": {"type": int, "default": 10},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 interval: int
                 """Interval in milliseconds."""
@@ -464,6 +486,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -552,6 +576,8 @@ class EosDesigns(AvdModel):
                     "multiplier": {"type": int, "default": 10},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 interval: int
                 """Interval in milliseconds."""
@@ -596,6 +622,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Name of peer group."""
@@ -677,6 +705,8 @@ class EosDesigns(AvdModel):
             "wan_rr_overlay_peers": {"type": WanRrOverlayPeers},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         ipv4_underlay_peers: Ipv4UnderlayPeers
         mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer
@@ -728,6 +758,8 @@ class EosDesigns(AvdModel):
     class ConnectedEndpointsKeysItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "key": {"type": str}, "type": {"type": str}, "description": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "key")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         key: str
         type: str | None
@@ -773,6 +805,8 @@ class EosDesigns(AvdModel):
                 "prefix_size": {"type": int, "default": 31},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """P2P pool name."""
@@ -814,6 +848,8 @@ class EosDesigns(AvdModel):
             class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 """Enable PTP."""
@@ -836,6 +872,8 @@ class EosDesigns(AvdModel):
             class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 name: str | None
@@ -872,6 +910,8 @@ class EosDesigns(AvdModel):
                         "channel_id": {"type": int},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "node")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     node: str
                     interfaces: list[str]
@@ -920,6 +960,8 @@ class EosDesigns(AvdModel):
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 description: str | None
                 """
@@ -998,7 +1040,7 @@ class EosDesigns(AvdModel):
                 "ipv6_enable": {"type": bool, "default": False},
                 "nodes": {"type": list, "items": str},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "key": "as", "items": str},
+                "field_as": {"type": list, "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -1022,6 +1064,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": dict},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
+            _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
             _custom_data: dict[str, Any]
             name: str
             """P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile."""
@@ -1217,6 +1261,8 @@ class EosDesigns(AvdModel):
             class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 """Enable PTP."""
@@ -1239,6 +1285,8 @@ class EosDesigns(AvdModel):
             class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 name: str | None
@@ -1275,6 +1323,8 @@ class EosDesigns(AvdModel):
                         "channel_id": {"type": int},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "node")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     node: str
                     interfaces: list[str]
@@ -1323,6 +1373,8 @@ class EosDesigns(AvdModel):
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 description: str | None
                 """
@@ -1401,7 +1453,7 @@ class EosDesigns(AvdModel):
                 "ip": {"type": list, "items": str},
                 "ipv6_enable": {"type": bool, "default": False},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "key": "as", "items": str},
+                "field_as": {"type": list, "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -1425,6 +1477,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": dict},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "nodes")
+            _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
+            _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
             _custom_data: dict[str, Any]
             nodes: list[str]
             """Nodes where this link should be configured."""
@@ -1618,6 +1672,8 @@ class EosDesigns(AvdModel):
             "p2p_links": {"type": list, "items": P2pLinksItem},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         p2p_links_ip_pools: P2pLinksIpPools
         p2p_links_profiles: P2pLinksProfiles
@@ -1650,6 +1706,8 @@ class EosDesigns(AvdModel):
     class CvPathfinderGlobalSitesItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "description": {"type": str}, "location": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """The site name."""
@@ -1691,6 +1749,8 @@ class EosDesigns(AvdModel):
             class Firewall(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}, "ips": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 """Enforce firewall controls."""
@@ -1730,6 +1790,8 @@ class EosDesigns(AvdModel):
                 "acceptable_use_policy": {"type": bool, "default": False},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "ipsec_key_salt", "domain_name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ipsec_key_salt: str
             """
@@ -1805,6 +1867,8 @@ class EosDesigns(AvdModel):
             "zscaler": {"type": Zscaler},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "type")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """Internet-exit policy name."""
@@ -1867,6 +1931,8 @@ class EosDesigns(AvdModel):
                 "site_after_hours_contact": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "id")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """The site name."""
@@ -1928,6 +1994,8 @@ class EosDesigns(AvdModel):
             "sites": {"type": Sites},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "id")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         description: str | None
@@ -1971,6 +2039,8 @@ class EosDesigns(AvdModel):
         class InterfacesItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "neighbor": {"type": str}, "neighbor_interface": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             neighbor: str | None
@@ -2007,6 +2077,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "hostname": {"type": str}, "platform": {"type": str}, "interfaces": {"type": Interfaces}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "platform", "interfaces")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         hostname: str
         platform: str
@@ -2051,6 +2123,8 @@ class EosDesigns(AvdModel):
             "downlink_interfaces": {"type": list, "items": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "types", "platforms")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         types: list[str]
         """List of node type keys."""
@@ -2101,6 +2175,8 @@ class EosDesigns(AvdModel):
     class DefaultNodeTypesItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "node_type": {"type": str}, "match_hostnames": {"type": list, "items": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "node_type", "match_hostnames")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         node_type: str
         """Resulting node type when regex matches."""
@@ -2137,6 +2213,8 @@ class EosDesigns(AvdModel):
     class Design(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str, "default": "l3ls-evpn"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         type: str | None
         """
@@ -2169,6 +2247,8 @@ class EosDesigns(AvdModel):
                 "strip_empty_keys": {"type": bool, "default": True},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             list_merge: str | None
             """Merge strategy for lists."""
@@ -2199,6 +2279,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "template": {"type": str}, "options": {"type": Options}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "template")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         template: str
         """Template file."""
@@ -2236,6 +2318,8 @@ class EosDesigns(AvdModel):
             "p2p_links_csv": {"type": bool, "default": False},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enable: bool | None
         """Generate fabric-wide documentation."""
@@ -2291,6 +2375,8 @@ class EosDesigns(AvdModel):
             "expiry_timeout": {"type": int},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enabled: bool | None
         """If set to false it will disable EVPN host-flap detection."""
@@ -2331,6 +2417,8 @@ class EosDesigns(AvdModel):
         class Bgp(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "raw_eos_cli": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             raw_eos_cli: str | None
             """EOS cli commands rendered on router_bgp.vlans-aware-bundle."""
@@ -2360,6 +2448,8 @@ class EosDesigns(AvdModel):
             "bgp": {"type": Bgp},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "id")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """
@@ -2477,6 +2567,8 @@ class EosDesigns(AvdModel):
         class Uplinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2507,6 +2599,8 @@ class EosDesigns(AvdModel):
         class Downlinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2537,6 +2631,8 @@ class EosDesigns(AvdModel):
         class Endpoints(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2567,6 +2663,8 @@ class EosDesigns(AvdModel):
         class L3Edge(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2597,6 +2695,8 @@ class EosDesigns(AvdModel):
         class CoreInterfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2627,6 +2727,8 @@ class EosDesigns(AvdModel):
         class MlagInterfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2657,6 +2759,8 @@ class EosDesigns(AvdModel):
         class L3Interfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2687,6 +2791,8 @@ class EosDesigns(AvdModel):
         class DpsInterfaces(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2717,6 +2823,8 @@ class EosDesigns(AvdModel):
         class DirectWanHaLinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -2757,6 +2865,8 @@ class EosDesigns(AvdModel):
             "direct_wan_ha_links": {"type": DirectWanHaLinks},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         uplinks: Uplinks
         """Enable flow-tracking on all fabric uplinks."""
@@ -2822,6 +2932,8 @@ class EosDesigns(AvdModel):
                 "ipv6_prefix_length": {"type": int, "default": 64},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             algorithm: str | None
             """
@@ -2888,6 +3000,8 @@ class EosDesigns(AvdModel):
         class P2pUplinks(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4_prefix_length": {"type": int, "default": 31}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ipv4_prefix_length: int | None
             """IPv4 prefix length used for L3 point-to-point uplinks."""
@@ -2910,6 +3024,8 @@ class EosDesigns(AvdModel):
         class WanHa(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4_prefix_length": {"type": int, "default": 31}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ipv4_prefix_length: int | None
             """IPv4 prefix length used for point-to-point interface for direct WAN HA link."""
@@ -2931,6 +3047,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mlag": {"type": Mlag}, "p2p_uplinks": {"type": P2pUplinks}, "wan_ha": {"type": WanHa}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         mlag: Mlag
         p2p_uplinks: P2pUplinks
@@ -2973,6 +3091,8 @@ class EosDesigns(AvdModel):
             "l3_interfaces": {"type": bool},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         uplinks: bool | None
         """Enable sFlow on all fabric uplinks."""
@@ -3026,6 +3146,8 @@ class EosDesigns(AvdModel):
             class Encapsulation(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4_ipv6": {"type": bool}, "mpls": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 ipv4_ipv6: bool | None
                 mpls: bool | None
@@ -3055,6 +3177,8 @@ class EosDesigns(AvdModel):
             class HardwareOffload(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipv4": {"type": bool}, "ipv6": {"type": bool}, "threshold_minimum": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 ipv4: bool | None
                 """Configure hardware offload for IPv4 traffic."""
@@ -3094,6 +3218,8 @@ class EosDesigns(AvdModel):
                 "hardware_offload": {"type": HardwareOffload},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             encapsulation: Encapsulation
             sample: int | None
@@ -3127,6 +3253,8 @@ class EosDesigns(AvdModel):
             class Record(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "format_ipfix_standard_timestamps_counters": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 format_ipfix_standard_timestamps_counters: bool | None
                 """Enable software export of IPFIX data records."""
@@ -3153,6 +3281,8 @@ class EosDesigns(AvdModel):
 
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "record": {"type": Record}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             record: Record
 
@@ -3176,6 +3306,8 @@ class EosDesigns(AvdModel):
                 class RecordExport(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mpls": {"type": bool}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     mpls: bool | None
                     """Export MPLS forwarding information."""
@@ -3197,6 +3329,8 @@ class EosDesigns(AvdModel):
 
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "table_size": {"type": int}, "record_export": {"type": RecordExport}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 table_size: int | None
                 """Maximum number of entries in flow table."""
@@ -3227,6 +3361,8 @@ class EosDesigns(AvdModel):
             class RecordExport(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 on_inactive_timeout: int | None
                 """Flow record inactive export timeout in milliseconds"""
@@ -3259,6 +3395,8 @@ class EosDesigns(AvdModel):
                 class Collector(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "host": {"type": str}, "port": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     host: str | None
                     """Collector IPv4 address or IPv6 address or fully qualified domain name"""
@@ -3290,6 +3428,8 @@ class EosDesigns(AvdModel):
                 class Format(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "ipfix_version": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     ipfix_version: int | None
 
@@ -3319,6 +3459,8 @@ class EosDesigns(AvdModel):
                     "template_interval": {"type": int},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 name: str
                 """Exporter Name"""
@@ -3370,6 +3512,8 @@ class EosDesigns(AvdModel):
                 "exporters": {"type": Exporters},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Tracker Name"""
@@ -3430,6 +3574,8 @@ class EosDesigns(AvdModel):
             },
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         sampled: Sampled
         """The options relevant only for flow tracker type sampled."""
@@ -3465,6 +3611,8 @@ class EosDesigns(AvdModel):
         class InterfaceTagsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "data_path": {"type": str}, "value": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Tag name to be assigned to generated tags."""
@@ -3518,6 +3666,8 @@ class EosDesigns(AvdModel):
         class DeviceTagsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "data_path": {"type": str}, "value": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Tag name to be assigned to generated tags."""
@@ -3570,6 +3720,8 @@ class EosDesigns(AvdModel):
             "device_tags": {"type": list, "items": DeviceTagsItem},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         topology_hints: bool | None
         """Enable the generation of CloudVision Topology Tags (hints)."""
@@ -3609,6 +3761,8 @@ class EosDesigns(AvdModel):
         class Range(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "beginning": {"type": int}, "ending": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "beginning", "ending")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             beginning: int
             """First VLAN ID."""
@@ -3639,6 +3793,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "allocation": {"type": str}, "range": {"type": Range}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "allocation")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         allocation: str
         range: Range
@@ -3694,6 +3850,8 @@ class EosDesigns(AvdModel):
                 "vlan_mask": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             source: str | None
             """
@@ -3847,6 +4005,8 @@ class EosDesigns(AvdModel):
             "permit_response_traffic": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "entries")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """
@@ -3905,6 +4065,8 @@ class EosDesigns(AvdModel):
         class SequenceNumbersItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "sequence": {"type": int}, "action": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "sequence", "action")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             sequence: int
             """Sequence ID."""
@@ -3945,6 +4107,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "sequence_numbers": {"type": SequenceNumbers}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "sequence_numbers")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """Prefix-list Name."""
@@ -3985,6 +4149,8 @@ class EosDesigns(AvdModel):
             "local_convergence_delay": {"type": int, "default": 10000},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enabled: bool | None
         protection: str | None
@@ -4024,6 +4190,8 @@ class EosDesigns(AvdModel):
                 "prefix_size": {"type": int, "default": 31},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """P2P pool name."""
@@ -4065,6 +4233,8 @@ class EosDesigns(AvdModel):
             class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 """Enable PTP."""
@@ -4087,6 +4257,8 @@ class EosDesigns(AvdModel):
             class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 name: str | None
@@ -4123,6 +4295,8 @@ class EosDesigns(AvdModel):
                         "channel_id": {"type": int},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "node")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     node: str
                     interfaces: list[str]
@@ -4171,6 +4345,8 @@ class EosDesigns(AvdModel):
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 description: str | None
                 """
@@ -4249,7 +4425,7 @@ class EosDesigns(AvdModel):
                 "ipv6_enable": {"type": bool, "default": False},
                 "nodes": {"type": list, "items": str},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "key": "as", "items": str},
+                "field_as": {"type": list, "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -4273,6 +4449,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": dict},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
+            _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
             _custom_data: dict[str, Any]
             name: str
             """P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile."""
@@ -4468,6 +4646,8 @@ class EosDesigns(AvdModel):
             class Ptp(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 """Enable PTP."""
@@ -4490,6 +4670,8 @@ class EosDesigns(AvdModel):
             class FlowTracking(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 name: str | None
@@ -4526,6 +4708,8 @@ class EosDesigns(AvdModel):
                         "channel_id": {"type": int},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "node")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     node: str
                     interfaces: list[str]
@@ -4574,6 +4758,8 @@ class EosDesigns(AvdModel):
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 description: str | None
                 """
@@ -4652,7 +4838,7 @@ class EosDesigns(AvdModel):
                 "ip": {"type": list, "items": str},
                 "ipv6_enable": {"type": bool, "default": False},
                 "interfaces": {"type": list, "items": str},
-                "field_as": {"type": list, "key": "as", "items": str},
+                "field_as": {"type": list, "items": str},
                 "descriptions": {"type": list, "items": str},
                 "include_in_underlay_protocol": {"type": bool, "default": True},
                 "isis_hello_padding": {"type": bool, "default": False},
@@ -4676,6 +4862,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": dict},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "nodes")
+            _field_to_key_map: ClassVar[dict] = {"field_as": "as"}
+            _key_to_field_map: ClassVar[dict] = {"as": "field_as"}
             _custom_data: dict[str, Any]
             nodes: list[str]
             """Nodes where this link should be configured."""
@@ -4869,6 +5057,8 @@ class EosDesigns(AvdModel):
             "p2p_links": {"type": list, "items": P2pLinksItem},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         p2p_links_ip_pools: P2pLinksIpPools
         p2p_links_profiles: P2pLinksProfiles
@@ -4907,6 +5097,8 @@ class EosDesigns(AvdModel):
                 "ipv4_prefix_list_out": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             peer_as: str
             """
@@ -4963,6 +5155,8 @@ class EosDesigns(AvdModel):
         class StaticRoutesItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             prefix: str
             """IPv4_network/Mask."""
@@ -4986,6 +5180,8 @@ class EosDesigns(AvdModel):
             class PoliciesItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 name: str
                 """Internet-exit policy name."""
@@ -5028,6 +5224,8 @@ class EosDesigns(AvdModel):
 
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             policies: Policies
             """List of Internet-exit policies using this interface as exit."""
@@ -5050,6 +5248,8 @@ class EosDesigns(AvdModel):
         class FlowTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -5109,6 +5309,8 @@ class EosDesigns(AvdModel):
             "structured_config": {"type": StructuredConfig},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "profile")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         profile: str
         """
@@ -5354,6 +5556,8 @@ class EosDesigns(AvdModel):
     class MacAddressTable(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "aging_time": {"type": int}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         aging_time: int | None
         """
@@ -5386,6 +5590,8 @@ class EosDesigns(AvdModel):
             "default_services": {"type": bool},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enable_http: bool | None
         enable_https: bool | None
@@ -5418,6 +5624,8 @@ class EosDesigns(AvdModel):
     class MlagIbgpPeeringVrfs(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "base_vlan": {"type": int, "default": 3000}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         base_vlan: int | None
 
@@ -5440,6 +5648,8 @@ class EosDesigns(AvdModel):
         class Flowcontrol(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "received": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             received: str | None
 
@@ -5466,6 +5676,8 @@ class EosDesigns(AvdModel):
                 "profile": {"type": str, "default": "aes67-r16-2016"},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             endpoint_role: str | None
@@ -5508,6 +5720,8 @@ class EosDesigns(AvdModel):
         class FlowTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -5538,6 +5752,8 @@ class EosDesigns(AvdModel):
         class LinkTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -5580,6 +5796,8 @@ class EosDesigns(AvdModel):
             class Pae(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
 
@@ -5601,6 +5819,8 @@ class EosDesigns(AvdModel):
             class AuthenticationFailure(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "action": {"type": str}, "allow_vlan": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 action: str | None
                 allow_vlan: int | None
@@ -5630,6 +5850,8 @@ class EosDesigns(AvdModel):
             class HostMode(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
                 multi_host_authenticated: bool | None
@@ -5664,6 +5886,8 @@ class EosDesigns(AvdModel):
                     "host_mode_common": {"type": bool},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 always: bool | None
@@ -5703,6 +5927,8 @@ class EosDesigns(AvdModel):
                     "tx_period": {"type": int},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 idle_host: int | None
                 quiet_period: int | None
@@ -5746,6 +5972,8 @@ class EosDesigns(AvdModel):
                     "native_vlan_membership_egress": {"type": bool},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 access_vlan_membership_egress: bool | None
                 native_vlan_membership_egress: bool | None
@@ -5786,6 +6014,8 @@ class EosDesigns(AvdModel):
                 "unauthorized": {"type": Unauthorized},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             port_control: str | None
             port_control_force_authorized_phone: bool | None
@@ -5843,6 +6073,8 @@ class EosDesigns(AvdModel):
             class All(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -5874,6 +6106,8 @@ class EosDesigns(AvdModel):
             class Broadcast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -5905,6 +6139,8 @@ class EosDesigns(AvdModel):
             class Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -5936,6 +6172,8 @@ class EosDesigns(AvdModel):
             class UnknownUnicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -5972,6 +6210,8 @@ class EosDesigns(AvdModel):
                 "unknown_unicast": {"type": UnknownUnicast},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             all: All
             broadcast: Broadcast
@@ -6009,6 +6249,8 @@ class EosDesigns(AvdModel):
                 class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     type: str | None
                     name: str | None
@@ -6041,6 +6283,8 @@ class EosDesigns(AvdModel):
 
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "direction": {"type": str}, "access_group": {"type": AccessGroup}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 direction: str | None
                 access_group: AccessGroup
@@ -6072,6 +6316,8 @@ class EosDesigns(AvdModel):
                 class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     type: str | None
                     name: str | None
@@ -6102,6 +6348,8 @@ class EosDesigns(AvdModel):
                 class Truncate(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "size": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     enabled: bool | None
                     size: int | None
@@ -6140,6 +6388,8 @@ class EosDesigns(AvdModel):
                     "truncate": {"type": Truncate},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 encapsulation_gre_metadata_tx: bool | None
                 header_remove_size: int | None
@@ -6216,6 +6466,8 @@ class EosDesigns(AvdModel):
                 "session_settings": {"type": SessionSettings},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Session name."""
@@ -6267,6 +6519,8 @@ class EosDesigns(AvdModel):
                 "dont_preempt": {"type": bool},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "short_esi")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             short_esi: str
             """
@@ -6355,6 +6609,8 @@ class EosDesigns(AvdModel):
                 class Individual(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     profile: str | None
                     """Port-profile name to inherit configuration."""
@@ -6376,6 +6632,8 @@ class EosDesigns(AvdModel):
 
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
                 """
@@ -6423,6 +6681,8 @@ class EosDesigns(AvdModel):
             class LacpTimer(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multiplier": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
                 """LACP mode for interface members."""
@@ -6455,6 +6715,8 @@ class EosDesigns(AvdModel):
                 class EncapsulationVlan(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "client_dot1q": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     client_dot1q: int | None
 
@@ -6483,6 +6745,8 @@ class EosDesigns(AvdModel):
                     "encapsulation_vlan": {"type": EncapsulationVlan},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 number: int | None
                 """Subinterface number."""
@@ -6552,6 +6816,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mode: str | None
             """Port-Channel Mode."""
@@ -6753,6 +7019,8 @@ class EosDesigns(AvdModel):
             "structured_config": {"type": StructuredConfig},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         switches: list[str]
         """
@@ -7035,6 +7303,8 @@ class EosDesigns(AvdModel):
     class NetworkServicesKeysItem(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
 
@@ -7067,6 +7337,8 @@ class EosDesigns(AvdModel):
                 "l3": {"type": bool, "default": False},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             l1: bool | None
             """??"""
@@ -7123,6 +7395,8 @@ class EosDesigns(AvdModel):
                 "vtep_ip": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             python_module: str | None
             """Custom Python Module to import for IP addressing."""
@@ -7215,6 +7489,8 @@ class EosDesigns(AvdModel):
                 "overlay_loopback_interface": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -7304,6 +7580,8 @@ class EosDesigns(AvdModel):
             "cv_tags_topology_type": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "key")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         key: str
         type: str | None
@@ -7518,6 +7796,8 @@ class EosDesigns(AvdModel):
                 "l3": {"type": bool, "default": False},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             l1: bool | None
             """??"""
@@ -7574,6 +7854,8 @@ class EosDesigns(AvdModel):
                 "vtep_ip": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             python_module: str | None
             """Custom Python Module to import for IP addressing."""
@@ -7666,6 +7948,8 @@ class EosDesigns(AvdModel):
                 "overlay_loopback_interface": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             python_module: str | None
             """Custom Python Module to import for interface descriptions."""
@@ -7755,6 +8039,8 @@ class EosDesigns(AvdModel):
             "cv_tags_topology_type": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "key")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         key: str
         type: str | None
@@ -7973,6 +8259,8 @@ class EosDesigns(AvdModel):
                 "version": {"type": int},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """IP or hostname e.g., 2.2.2.55, 2001:db8::55, ie.pool.ntp.org."""
@@ -8030,6 +8318,8 @@ class EosDesigns(AvdModel):
             "trusted_keys": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         server_vrf: str | None
         """
@@ -8112,6 +8402,8 @@ class EosDesigns(AvdModel):
             "vlan_assigned_number_subfield": {"type": str, "default": "mac_vrf_id"},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         admin_subfield: str | None
         """
@@ -8255,6 +8547,8 @@ class EosDesigns(AvdModel):
             "vlan_assigned_number_subfield": {"type": str, "default": "mac_vrf_id"},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         admin_subfield: str | None
         """
@@ -8376,6 +8670,8 @@ class EosDesigns(AvdModel):
         class ReloadDelay(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mlag": {"type": int}, "non_mlag": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mlag: int | None
             """In seconds."""
@@ -8415,6 +8711,8 @@ class EosDesigns(AvdModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             queue_monitor_length_notify: bool | None
             interface_storm_control: bool | None
@@ -8496,6 +8794,8 @@ class EosDesigns(AvdModel):
                 "hardware_exclusive": {"type": bool},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             hardware: bool | None
             """Use a hardware based source."""
@@ -8551,6 +8851,8 @@ class EosDesigns(AvdModel):
             "raw_eos_cli": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         platforms: list[str]
         trident_forwarding_table_partition: str | None
@@ -8631,6 +8933,8 @@ class EosDesigns(AvdModel):
         class ReloadDelay(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mlag": {"type": int}, "non_mlag": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mlag: int | None
             """In seconds."""
@@ -8670,6 +8974,8 @@ class EosDesigns(AvdModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             queue_monitor_length_notify: bool | None
             interface_storm_control: bool | None
@@ -8751,6 +9057,8 @@ class EosDesigns(AvdModel):
                 "hardware_exclusive": {"type": bool},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             hardware: bool | None
             """Use a hardware based source."""
@@ -8806,6 +9114,8 @@ class EosDesigns(AvdModel):
             "raw_eos_cli": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         platforms: list[str]
         trident_forwarding_table_partition: str | None
@@ -8886,6 +9196,8 @@ class EosDesigns(AvdModel):
         class SpeedsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "speed": {"type": str}, "speed_groups": {"type": list, "items": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "speed")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             speed: str
             speed_groups: list[str]
@@ -8919,6 +9231,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "platform": {"type": str}, "speeds": {"type": Speeds}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "platform")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         platform: str
         speeds: Speeds
@@ -8954,6 +9268,8 @@ class EosDesigns(AvdModel):
         class Flowcontrol(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "received": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             received: str | None
 
@@ -8980,6 +9296,8 @@ class EosDesigns(AvdModel):
                 "profile": {"type": str, "default": "aes67-r16-2016"},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             endpoint_role: str | None
@@ -9022,6 +9340,8 @@ class EosDesigns(AvdModel):
         class FlowTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -9052,6 +9372,8 @@ class EosDesigns(AvdModel):
         class LinkTracking(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             name: str | None
@@ -9094,6 +9416,8 @@ class EosDesigns(AvdModel):
             class Pae(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
 
@@ -9115,6 +9439,8 @@ class EosDesigns(AvdModel):
             class AuthenticationFailure(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "action": {"type": str}, "allow_vlan": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 action: str | None
                 allow_vlan: int | None
@@ -9144,6 +9470,8 @@ class EosDesigns(AvdModel):
             class HostMode(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
                 multi_host_authenticated: bool | None
@@ -9178,6 +9506,8 @@ class EosDesigns(AvdModel):
                     "host_mode_common": {"type": bool},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 always: bool | None
@@ -9217,6 +9547,8 @@ class EosDesigns(AvdModel):
                     "tx_period": {"type": int},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 idle_host: int | None
                 quiet_period: int | None
@@ -9260,6 +9592,8 @@ class EosDesigns(AvdModel):
                     "native_vlan_membership_egress": {"type": bool},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 access_vlan_membership_egress: bool | None
                 native_vlan_membership_egress: bool | None
@@ -9300,6 +9634,8 @@ class EosDesigns(AvdModel):
                 "unauthorized": {"type": Unauthorized},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             port_control: str | None
             port_control_force_authorized_phone: bool | None
@@ -9357,6 +9693,8 @@ class EosDesigns(AvdModel):
             class All(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -9388,6 +9726,8 @@ class EosDesigns(AvdModel):
             class Broadcast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -9419,6 +9759,8 @@ class EosDesigns(AvdModel):
             class Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -9450,6 +9792,8 @@ class EosDesigns(AvdModel):
             class UnknownUnicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 level: str | None
                 """Configure maximum storm-control level."""
@@ -9486,6 +9830,8 @@ class EosDesigns(AvdModel):
                 "unknown_unicast": {"type": UnknownUnicast},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             all: All
             broadcast: Broadcast
@@ -9523,6 +9869,8 @@ class EosDesigns(AvdModel):
                 class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     type: str | None
                     name: str | None
@@ -9555,6 +9903,8 @@ class EosDesigns(AvdModel):
 
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "direction": {"type": str}, "access_group": {"type": AccessGroup}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 direction: str | None
                 access_group: AccessGroup
@@ -9586,6 +9936,8 @@ class EosDesigns(AvdModel):
                 class AccessGroup(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     type: str | None
                     name: str | None
@@ -9616,6 +9968,8 @@ class EosDesigns(AvdModel):
                 class Truncate(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "size": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     enabled: bool | None
                     size: int | None
@@ -9654,6 +10008,8 @@ class EosDesigns(AvdModel):
                     "truncate": {"type": Truncate},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 encapsulation_gre_metadata_tx: bool | None
                 header_remove_size: int | None
@@ -9730,6 +10086,8 @@ class EosDesigns(AvdModel):
                 "session_settings": {"type": SessionSettings},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Session name."""
@@ -9781,6 +10139,8 @@ class EosDesigns(AvdModel):
                 "dont_preempt": {"type": bool},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "short_esi")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             short_esi: str
             """
@@ -9869,6 +10229,8 @@ class EosDesigns(AvdModel):
                 class Individual(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     profile: str | None
                     """Port-profile name to inherit configuration."""
@@ -9890,6 +10252,8 @@ class EosDesigns(AvdModel):
 
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
                 """
@@ -9937,6 +10301,8 @@ class EosDesigns(AvdModel):
             class LacpTimer(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multiplier": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 mode: str | None
                 """LACP mode for interface members."""
@@ -9969,6 +10335,8 @@ class EosDesigns(AvdModel):
                 class EncapsulationVlan(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "client_dot1q": {"type": int}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     client_dot1q: int | None
 
@@ -9997,6 +10365,8 @@ class EosDesigns(AvdModel):
                     "encapsulation_vlan": {"type": EncapsulationVlan},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 number: int | None
                 """Subinterface number."""
@@ -10066,6 +10436,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mode: str | None
             """Port-Channel Mode."""
@@ -10265,6 +10637,8 @@ class EosDesigns(AvdModel):
             "structured_config": {"type": StructuredConfig},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "profile")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         profile: str
         """Port profile name."""
@@ -10524,6 +10898,8 @@ class EosDesigns(AvdModel):
         class Announce(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": int}, "timeout": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             interval: int | None
             timeout: int | None
@@ -10553,6 +10929,8 @@ class EosDesigns(AvdModel):
         class SyncMessage(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             interval: int | None
 
@@ -10580,6 +10958,8 @@ class EosDesigns(AvdModel):
             "transport": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "profile")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         profile: str
         """PTP profile."""
@@ -10632,6 +11012,8 @@ class EosDesigns(AvdModel):
             "auto_clock_identity": {"type": bool, "default": True},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enabled: bool | None
         profile: str | None
@@ -10678,6 +11060,8 @@ class EosDesigns(AvdModel):
         class DefaultThresholds(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "high": {"type": int}, "low": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "high")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             high: int
             """Default high threshold for Ethernet Interfaces."""
@@ -10715,6 +11099,8 @@ class EosDesigns(AvdModel):
             class Thresholds(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "high": {"type": int}, "low": {"type": int}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "high")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 high: int
                 low: int | None
@@ -10743,6 +11129,8 @@ class EosDesigns(AvdModel):
 
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "thresholds": {"type": Thresholds}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             thresholds: Thresholds
 
@@ -10771,6 +11159,8 @@ class EosDesigns(AvdModel):
             "tx_latency": {"type": bool},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enabled: bool
         notifying: bool | None
@@ -10820,6 +11210,8 @@ class EosDesigns(AvdModel):
     class Redundancy(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "protocol": {"type": str}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         protocol: str | None
 
@@ -10842,6 +11234,8 @@ class EosDesigns(AvdModel):
         class Sample(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "rate": {"type": int}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             rate: int | None
             """
@@ -10873,6 +11267,8 @@ class EosDesigns(AvdModel):
         class DestinationsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "destination": {"type": str}, "port": {"type": int}, "vrf": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "destination")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             destination: str
             """sFlow destination name or IP address."""
@@ -10939,6 +11335,8 @@ class EosDesigns(AvdModel):
         class VrfsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "source_interface": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """VRF name."""
@@ -10986,6 +11384,8 @@ class EosDesigns(AvdModel):
             "vrfs": {"type": Vrfs},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "destinations")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         sample: Sample
         destinations: list[DestinationsItem]
@@ -11031,6 +11431,8 @@ class EosDesigns(AvdModel):
                 "priv_passphrase": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Username."""
@@ -11080,6 +11482,8 @@ class EosDesigns(AvdModel):
             class UsersItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "username": {"type": str}, "authentication_level": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 username: str | None
                 authentication_level: str | None
@@ -11117,6 +11521,8 @@ class EosDesigns(AvdModel):
                 "users": {"type": list, "items": UsersItem},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             host: str | None
             """Host IP address or name."""
@@ -11194,6 +11600,8 @@ class EosDesigns(AvdModel):
         class Ipv4AclsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "vrf": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """IPv4 access list name."""
@@ -11224,6 +11632,8 @@ class EosDesigns(AvdModel):
         class Ipv6AclsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "vrf": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """IPv6 access list name."""
@@ -11254,6 +11664,8 @@ class EosDesigns(AvdModel):
         class ViewsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "mib_family_name": {"type": str}, "included": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """SNMP view name."""
@@ -11295,6 +11707,8 @@ class EosDesigns(AvdModel):
                 "notify": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Group name."""
@@ -11360,6 +11774,8 @@ class EosDesigns(AvdModel):
             "traps": {"type": Traps},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         contact: str | None
         """SNMP contact."""
@@ -11514,6 +11930,8 @@ class EosDesigns(AvdModel):
         class DomainLookup(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mgmt_interface: bool | None
             """
@@ -11563,6 +11981,8 @@ class EosDesigns(AvdModel):
         class HttpClient(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mgmt_interface: bool | None
             """
@@ -11612,6 +12032,8 @@ class EosDesigns(AvdModel):
         class Radius(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mgmt_interface: bool | None
             """
@@ -11661,6 +12083,8 @@ class EosDesigns(AvdModel):
         class Snmp(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mgmt_interface: bool | None
             """
@@ -11710,6 +12134,8 @@ class EosDesigns(AvdModel):
         class SshClient(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mgmt_interface: bool | None
             """
@@ -11759,6 +12185,8 @@ class EosDesigns(AvdModel):
         class Tacacs(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mgmt_interface": {"type": bool}, "inband_mgmt_interface": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             mgmt_interface: bool | None
             """
@@ -11815,6 +12243,8 @@ class EosDesigns(AvdModel):
             "tacacs": {"type": Tacacs},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         domain_lookup: DomainLookup
         """IP Domain Lookup source-interfaces."""
@@ -11869,6 +12299,8 @@ class EosDesigns(AvdModel):
                     "source_vrf": {"type": str},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data", "ip_helper")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 ip_helper: str
                 """IPv4 DHCP server IP."""
@@ -11909,6 +12341,8 @@ class EosDesigns(AvdModel):
             class EvpnL2Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "always_redistribute_igmp": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 always_redistribute_igmp: bool | None
@@ -11958,6 +12392,8 @@ class EosDesigns(AvdModel):
             class EvpnL3Multicast(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
 
@@ -11985,6 +12421,8 @@ class EosDesigns(AvdModel):
                     "fast_leave": {"type": bool},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -12035,6 +12473,8 @@ class EosDesigns(AvdModel):
                         "key": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     id: int | None
                     hash_algorithm: str | None
@@ -12076,6 +12516,8 @@ class EosDesigns(AvdModel):
                     "message_digest_keys": {"type": list, "items": MessageDigestKeysItem},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 enabled: bool | None
                 point_to_point: bool | None
@@ -12126,6 +12568,8 @@ class EosDesigns(AvdModel):
 
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "structured_config": {"type": StructuredConfig}, "raw_eos_cli": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 structured_config: StructuredConfig
                 """
@@ -12198,6 +12642,8 @@ class EosDesigns(AvdModel):
                 "structured_config": {"type": StructuredConfig},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "node")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             node: str
             """l3_leaf inventory hostname."""
@@ -12484,6 +12930,8 @@ class EosDesigns(AvdModel):
                 "source_vrf": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "ip_helper")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ip_helper: str
             """IPv4 DHCP server IP."""
@@ -12524,6 +12972,8 @@ class EosDesigns(AvdModel):
         class EvpnL2Multicast(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "always_redistribute_igmp": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             always_redistribute_igmp: bool | None
@@ -12573,6 +13023,8 @@ class EosDesigns(AvdModel):
         class EvpnL3Multicast(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
 
@@ -12600,6 +13052,8 @@ class EosDesigns(AvdModel):
                 "fast_leave": {"type": bool},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -12650,6 +13104,8 @@ class EosDesigns(AvdModel):
                     "key": {"type": str},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 id: int | None
                 hash_algorithm: str | None
@@ -12691,6 +13147,8 @@ class EosDesigns(AvdModel):
                 "message_digest_keys": {"type": list, "items": MessageDigestKeysItem},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             enabled: bool | None
             point_to_point: bool | None
@@ -12741,6 +13199,8 @@ class EosDesigns(AvdModel):
 
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "structured_config": {"type": StructuredConfig}, "raw_eos_cli": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             structured_config: StructuredConfig
             """
@@ -12815,6 +13275,8 @@ class EosDesigns(AvdModel):
             "structured_config": {"type": StructuredConfig},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "profile")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         profile: str
         """Profile name."""
@@ -13121,6 +13583,8 @@ class EosDesigns(AvdModel):
         class Mlag(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str, "default": "MLAG"}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
 
@@ -13142,6 +13606,8 @@ class EosDesigns(AvdModel):
         class MlagL3(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str, "default": "MLAG"}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
 
@@ -13163,6 +13629,8 @@ class EosDesigns(AvdModel):
         class Uplink(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str, "default": "UPLINK"}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
 
@@ -13183,6 +13651,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mlag": {"type": Mlag}, "mlag_l3": {"type": MlagL3}, "uplink": {"type": Uplink}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         mlag: Mlag
         """Trunk Group used for MLAG VLAN (Typically VLAN 4094)."""
@@ -13218,6 +13688,8 @@ class EosDesigns(AvdModel):
     class UnderlayMulticastAnycastRp(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str, "default": "pim"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         mode: str | None
 
@@ -13245,6 +13717,8 @@ class EosDesigns(AvdModel):
                 "description": {"type": str, "default": "PIM RP"},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "loopback_number")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Hostname."""
@@ -13289,6 +13763,8 @@ class EosDesigns(AvdModel):
             "access_list_name": {"type": str},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "rp")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         rp: str
         """RP IPv4 address."""
@@ -13350,6 +13826,8 @@ class EosDesigns(AvdModel):
                 "key": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "id", "key")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             id: int
             hash_algorithm: str | None
@@ -13402,6 +13880,8 @@ class EosDesigns(AvdModel):
             "message_digest_keys": {"type": MessageDigestKeys},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "message_digest_keys")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enabled: bool
         message_digest_keys: MessageDigestKeys
@@ -13431,6 +13911,8 @@ class EosDesigns(AvdModel):
     class UplinkPtp(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         enable: bool | None
 
@@ -13458,6 +13940,8 @@ class EosDesigns(AvdModel):
             "trusted": {"type": bool, "default": False},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "path_group")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """Carrier name."""
@@ -13509,6 +13993,8 @@ class EosDesigns(AvdModel):
     class WanHa(AvdModel):
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "lan_ha_path_group_name": {"type": str, "default": "LAN_HA"}}
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         lan_ha_path_group_name: str | None
         """
@@ -13545,6 +14031,8 @@ class EosDesigns(AvdModel):
                 "shared_key": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "shared_key")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ike_policy_name: str | None
             """Name of the IKE policy."""
@@ -13597,6 +14085,8 @@ class EosDesigns(AvdModel):
                 "shared_key": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "shared_key")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ike_policy_name: str | None
             """Name of the IKE policy."""
@@ -13642,6 +14132,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "control_plane": {"type": ControlPlane}, "data_plane": {"type": DataPlane}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "control_plane")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         control_plane: ControlPlane
         data_plane: DataPlane
@@ -13677,6 +14169,8 @@ class EosDesigns(AvdModel):
                 "static_peers": {"type": bool, "default": True},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             dynamic_peers: bool | None
             """Enable IPSec for dynamic peers."""
@@ -13708,6 +14202,8 @@ class EosDesigns(AvdModel):
         class ImportPathGroupsItem(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "remote": {"type": str}, "local": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             remote: str | None
             """Remote path-group to import."""
@@ -13739,6 +14235,8 @@ class EosDesigns(AvdModel):
         class DpsKeepalive(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "interval": {"type": str}, "failure_threshold": {"type": int, "default": 5}}
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             interval: str | None
             """
@@ -13790,6 +14288,8 @@ class EosDesigns(AvdModel):
             "dps_keepalive": {"type": DpsKeepalive},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "name", "id")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         name: str
         """Path-group name."""
@@ -13878,6 +14378,8 @@ class EosDesigns(AvdModel):
             class InterfacesItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "public_ip": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 name: str
                 """Interface name."""
@@ -13913,6 +14415,8 @@ class EosDesigns(AvdModel):
 
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "interfaces": {"type": Interfaces}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "interfaces")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Path-group name."""
@@ -13947,6 +14451,8 @@ class EosDesigns(AvdModel):
 
         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "hostname": {"type": str}, "vtep_ip": {"type": str}, "path_groups": {"type": PathGroups}}
         _required_fields: ClassVar[tuple] = ("_custom_data", "hostname")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         hostname: str
         """Route-Reflector hostname."""
@@ -13993,6 +14499,8 @@ class EosDesigns(AvdModel):
                 "wan_vni": {"type": int},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "wan_vni")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """VRF name."""
@@ -14072,6 +14580,8 @@ class EosDesigns(AvdModel):
             class Constraints(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "jitter": {"type": int}, "latency": {"type": int}, "loss_rate": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 jitter: int | None
                 """Jitter requirement for this load balance policy in milliseconds."""
@@ -14112,6 +14622,8 @@ class EosDesigns(AvdModel):
             class PathGroupsItem(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "names": {"type": list, "items": str}, "preference": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data", "names")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 names: list[str]
                 """List of path-group names."""
@@ -14158,6 +14670,8 @@ class EosDesigns(AvdModel):
             class InternetExit(AvdModel):
                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policy": {"type": str}}
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 policy: str | None
                 """
@@ -14200,6 +14714,8 @@ class EosDesigns(AvdModel):
                 "internet_exit": {"type": InternetExit},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data",)
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str | None
             """Optional name, if not set `CONTROL-PLANE-PROFILE` is used."""
@@ -14280,6 +14796,8 @@ class EosDesigns(AvdModel):
                 class Constraints(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "jitter": {"type": int}, "latency": {"type": int}, "loss_rate": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     jitter: int | None
                     """Jitter requirement for this load balance policy in milliseconds."""
@@ -14320,6 +14838,8 @@ class EosDesigns(AvdModel):
                 class PathGroupsItem(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "names": {"type": list, "items": str}, "preference": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data", "names")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     names: list[str]
                     """List of path-group names."""
@@ -14366,6 +14886,8 @@ class EosDesigns(AvdModel):
                 class InternetExit(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policy": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     policy: str | None
                     """
@@ -14409,6 +14931,8 @@ class EosDesigns(AvdModel):
                     "internet_exit": {"type": InternetExit},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data", "application_profile")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 application_profile: str
                 """
@@ -14492,6 +15016,8 @@ class EosDesigns(AvdModel):
                 class Constraints(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "jitter": {"type": int}, "latency": {"type": int}, "loss_rate": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     jitter: int | None
                     """Jitter requirement for this load balance policy in milliseconds."""
@@ -14532,6 +15058,8 @@ class EosDesigns(AvdModel):
                 class PathGroupsItem(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "names": {"type": list, "items": str}, "preference": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data", "names")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     names: list[str]
                     """List of path-group names."""
@@ -14578,6 +15106,8 @@ class EosDesigns(AvdModel):
                 class InternetExit(AvdModel):
                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policy": {"type": str}}
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     policy: str | None
                     """
@@ -14620,6 +15150,8 @@ class EosDesigns(AvdModel):
                     "internet_exit": {"type": InternetExit},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 name: str | None
                 """Optional name, if not set `<policy_name>-DEFAULT` is used."""
@@ -14681,6 +15213,8 @@ class EosDesigns(AvdModel):
                 "default_virtual_topology": {"type": DefaultVirtualTopology},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "name", "default_virtual_topology")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             name: str
             """Name of the AVT policy."""
@@ -14734,6 +15268,8 @@ class EosDesigns(AvdModel):
             "policies": {"type": Policies},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data",)
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         vrfs: Vrfs
         """Map a VRF that exists in network_services to an AVT policy."""
@@ -14870,6 +15406,8 @@ class EosDesigns(AvdModel):
                 "longitude": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "ip_address", "datacenter", "city", "country", "latitude", "longitude")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ip_address: str
             datacenter: str
@@ -14919,6 +15457,8 @@ class EosDesigns(AvdModel):
                 "longitude": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "ip_address", "datacenter", "city", "country", "latitude", "longitude")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ip_address: str
             datacenter: str
@@ -14968,6 +15508,8 @@ class EosDesigns(AvdModel):
                 "longitude": {"type": str},
             }
             _required_fields: ClassVar[tuple] = ("_custom_data", "ip_address", "datacenter", "city", "country", "latitude", "longitude")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             ip_address: str
             datacenter: str
@@ -15009,6 +15551,8 @@ class EosDesigns(AvdModel):
         class DeviceLocation(AvdModel):
             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "city": {"type": str}, "country": {"type": str}}
             _required_fields: ClassVar[tuple] = ("_custom_data", "city", "country")
+            _field_to_key_map: ClassVar[dict] = {}
+            _key_to_field_map: ClassVar[dict] = {}
             _custom_data: dict[str, Any]
             city: str
             country: str
@@ -15044,6 +15588,8 @@ class EosDesigns(AvdModel):
             "device_location": {"type": DeviceLocation},
         }
         _required_fields: ClassVar[tuple] = ("_custom_data", "primary", "cloud_name", "device_location")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         _custom_data: dict[str, Any]
         primary: Primary
         secondary: Secondary
@@ -15094,6 +15640,8 @@ class EosDesigns(AvdModel):
     class _CustomStructuredConfigurationsItem(AvdModel):
         _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": EosCliConfigGen}}
         _required_fields: ClassVar[tuple] = ("key", "value")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         key: str
         """Complete key including prefix"""
         value: EosCliConfigGen
@@ -15123,6 +15671,8 @@ class EosDesigns(AvdModel):
                     class Flowcontrol(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "received": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         received: str | None
 
@@ -15151,6 +15701,8 @@ class EosDesigns(AvdModel):
                             "profile": {"type": str, "default": "aes67-r16-2016"},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         endpoint_role: str | None
@@ -15193,6 +15745,8 @@ class EosDesigns(AvdModel):
                     class FlowTracking(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         name: str | None
@@ -15223,6 +15777,8 @@ class EosDesigns(AvdModel):
                     class LinkTracking(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         name: str | None
@@ -15265,6 +15821,8 @@ class EosDesigns(AvdModel):
                         class Pae(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             mode: str | None
 
@@ -15288,6 +15846,8 @@ class EosDesigns(AvdModel):
                         class AuthenticationFailure(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "action": {"type": str}, "allow_vlan": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             action: str | None
                             allow_vlan: int | None
@@ -15317,6 +15877,8 @@ class EosDesigns(AvdModel):
                         class HostMode(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multi_host_authenticated": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             mode: str | None
                             multi_host_authenticated: bool | None
@@ -15351,6 +15913,8 @@ class EosDesigns(AvdModel):
                                 "host_mode_common": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             always: bool | None
@@ -15390,6 +15954,8 @@ class EosDesigns(AvdModel):
                                 "tx_period": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             idle_host: int | None
                             quiet_period: int | None
@@ -15433,6 +15999,8 @@ class EosDesigns(AvdModel):
                                 "native_vlan_membership_egress": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             access_vlan_membership_egress: bool | None
                             native_vlan_membership_egress: bool | None
@@ -15473,6 +16041,8 @@ class EosDesigns(AvdModel):
                             "unauthorized": {"type": Unauthorized},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         port_control: str | None
                         port_control_force_authorized_phone: bool | None
@@ -15530,6 +16100,8 @@ class EosDesigns(AvdModel):
                         class All(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             level: str | None
                             """Configure maximum storm-control level."""
@@ -15561,6 +16133,8 @@ class EosDesigns(AvdModel):
                         class Broadcast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             level: str | None
                             """Configure maximum storm-control level."""
@@ -15592,6 +16166,8 @@ class EosDesigns(AvdModel):
                         class Multicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             level: str | None
                             """Configure maximum storm-control level."""
@@ -15623,6 +16199,8 @@ class EosDesigns(AvdModel):
                         class UnknownUnicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "level": {"type": str}, "unit": {"type": str, "default": "percent"}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             level: str | None
                             """Configure maximum storm-control level."""
@@ -15659,6 +16237,8 @@ class EosDesigns(AvdModel):
                             "unknown_unicast": {"type": UnknownUnicast},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         all: All
                         broadcast: Broadcast
@@ -15701,6 +16281,8 @@ class EosDesigns(AvdModel):
                                     "priority": {"type": int},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 type: str | None
                                 name: str | None
@@ -15733,6 +16315,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "direction": {"type": str}, "access_group": {"type": AccessGroup}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             direction: str | None
                             access_group: AccessGroup
@@ -15764,6 +16348,8 @@ class EosDesigns(AvdModel):
                             class AccessGroup(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "type": {"type": str}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 type: str | None
                                 name: str | None
@@ -15794,6 +16380,8 @@ class EosDesigns(AvdModel):
                             class Truncate(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "size": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 size: int | None
@@ -15832,6 +16420,8 @@ class EosDesigns(AvdModel):
                                 "truncate": {"type": Truncate},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             encapsulation_gre_metadata_tx: bool | None
                             header_remove_size: int | None
@@ -15908,6 +16498,8 @@ class EosDesigns(AvdModel):
                             "session_settings": {"type": SessionSettings},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         name: str
                         """Session name."""
@@ -15959,6 +16551,8 @@ class EosDesigns(AvdModel):
                             "dont_preempt": {"type": bool},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "short_esi")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         short_esi: str
                         """
@@ -16047,6 +16641,8 @@ class EosDesigns(AvdModel):
                             class Individual(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 profile: str | None
                                 """Port-profile name to inherit configuration."""
@@ -16075,6 +16671,8 @@ class EosDesigns(AvdModel):
                                 "timeout": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             mode: str | None
                             """
@@ -16122,6 +16720,8 @@ class EosDesigns(AvdModel):
                         class LacpTimer(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "multiplier": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             mode: str | None
                             """LACP mode for interface members."""
@@ -16154,6 +16754,8 @@ class EosDesigns(AvdModel):
                             class EncapsulationVlan(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "client_dot1q": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 client_dot1q: int | None
 
@@ -16182,6 +16784,8 @@ class EosDesigns(AvdModel):
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             number: int | None
                             """Subinterface number."""
@@ -16251,6 +16855,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         mode: str | None
                         """Port-Channel Mode."""
@@ -16453,6 +17059,8 @@ class EosDesigns(AvdModel):
                         "structured_config": {"type": StructuredConfig},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "switch_ports", "switches")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     switch_ports: list[str]
                     """
@@ -16761,6 +17369,8 @@ class EosDesigns(AvdModel):
                     "adapters": {"type": list, "items": AdaptersItem},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 name: str
                 """Endpoint name will be used in the switchport description."""
@@ -16798,8 +17408,10 @@ class EosDesigns(AvdModel):
 
             ConnectedEndpointsKeysKey._item_type = ConnectedEndpointsKeysKeyItem
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": ConnectedEndpointsKeysKey, "key": "connected_endpoints_keys_key"}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": ConnectedEndpointsKeysKey}}
             _required_fields: ClassVar[tuple] = ("key",)
+            _field_to_key_map: ClassVar[dict] = {"value": "connected_endpoints_keys_key"}
+            _key_to_field_map: ClassVar[dict] = {"connected_endpoints_keys_key": "value"}
             key: str
             """Key used as dynamic key"""
             value: ConnectedEndpointsKeysKey
@@ -16832,6 +17444,8 @@ class EosDesigns(AvdModel):
                                 "links_minimum": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             name: str | None
                             """Tracking group name."""
@@ -16873,6 +17487,8 @@ class EosDesigns(AvdModel):
                             },
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         groups: list[GroupsItem]
@@ -16915,6 +17531,8 @@ class EosDesigns(AvdModel):
                             "offset": {"type": int, "default": 0},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         size: int | None
@@ -16959,6 +17577,8 @@ class EosDesigns(AvdModel):
                     class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enable: bool | None
 
@@ -16982,6 +17602,8 @@ class EosDesigns(AvdModel):
                     class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
 
@@ -17022,6 +17644,8 @@ class EosDesigns(AvdModel):
                             "only_vlans_in_use": {"type": bool, "default": False},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         tenants: list[str]
                         """
@@ -17114,6 +17738,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str | None
                             """Hostname of remote EVPN GW server."""
@@ -17156,6 +17782,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -17183,6 +17811,8 @@ class EosDesigns(AvdModel):
                                 "inter_domain": {"type": bool, "default": True},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             inter_domain: bool | None
@@ -17216,6 +17846,8 @@ class EosDesigns(AvdModel):
                             "evpn_l3": {"type": EvpnL3},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_peers: list[RemotePeersItem]
                         """
@@ -17268,6 +17900,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str
                             """Hostname of remote IPVPN Peer."""
@@ -17321,6 +17955,8 @@ class EosDesigns(AvdModel):
                             "remote_peers": {"type": list, "items": RemotePeersItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool
                         evpn_domain_id: str | None
@@ -17386,6 +18022,8 @@ class EosDesigns(AvdModel):
                         class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             general_messages: int | None
                             event_messages: int | None
@@ -17421,6 +18059,8 @@ class EosDesigns(AvdModel):
                                         "mean_path_delay": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -17454,6 +18094,8 @@ class EosDesigns(AvdModel):
                                     "drop": {"type": Drop},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 offset_from_master: int | None
                                 mean_path_delay: int | None
@@ -17492,6 +18134,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     announce: int | None
                                     follow_up: int | None
@@ -17531,6 +18175,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int, "default": 3},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     enabled: bool | None
                                     announce: int | None
@@ -17572,6 +18218,8 @@ class EosDesigns(AvdModel):
                                     "sequence_ids": {"type": SequenceIds},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 intervals: Intervals
                                 sequence_ids: SequenceIds
@@ -17605,6 +18253,8 @@ class EosDesigns(AvdModel):
                                 "missing_message": {"type": MissingMessage},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             threshold: Threshold
@@ -17654,6 +18304,8 @@ class EosDesigns(AvdModel):
                             "monitor": {"type": Monitor},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         profile: str | None
@@ -17778,6 +18430,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -17818,6 +18472,8 @@ class EosDesigns(AvdModel):
                             "flow_tracking": {"type": FlowTracking},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -17926,6 +18582,8 @@ class EosDesigns(AvdModel):
                                 "ipv4_prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             peer_as: str
                             """
@@ -17982,6 +18640,8 @@ class EosDesigns(AvdModel):
                         class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             prefix: str
                             """IPv4_network/Mask."""
@@ -18005,6 +18665,8 @@ class EosDesigns(AvdModel):
                             class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str
                                 """Internet-exit policy name."""
@@ -18047,6 +18709,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
@@ -18071,6 +18735,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -18130,6 +18796,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -18473,6 +19141,8 @@ class EosDesigns(AvdModel):
                         "flow_tracker_type": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -19714,6 +20384,8 @@ class EosDesigns(AvdModel):
                                 "downlink_interfaces": {"type": list, "items": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             ipv4_pool: str | None
                             """IPv4 pool from which subnets will be allocated for links to downlink switches."""
@@ -19756,6 +20428,8 @@ class EosDesigns(AvdModel):
                                     "links_minimum": {"type": int},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str | None
                                 """Tracking group name."""
@@ -19797,6 +20471,8 @@ class EosDesigns(AvdModel):
                                 },
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             groups: list[GroupsItem]
@@ -19839,6 +20515,8 @@ class EosDesigns(AvdModel):
                                 "offset": {"type": int, "default": 0},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             size: int | None
@@ -19883,6 +20561,8 @@ class EosDesigns(AvdModel):
                         class UplinkPtp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enable: bool | None
 
@@ -19906,6 +20586,8 @@ class EosDesigns(AvdModel):
                         class UplinkMacsec(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             profile: str | None
 
@@ -19946,6 +20628,8 @@ class EosDesigns(AvdModel):
                                 "only_vlans_in_use": {"type": bool, "default": False},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             tenants: list[str]
                             """
@@ -20038,6 +20722,8 @@ class EosDesigns(AvdModel):
                                     "bgp_as": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 hostname: str | None
                                 """Hostname of remote EVPN GW server."""
@@ -20080,6 +20766,8 @@ class EosDesigns(AvdModel):
                             class EvpnL2(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
 
@@ -20107,6 +20795,8 @@ class EosDesigns(AvdModel):
                                     "inter_domain": {"type": bool, "default": True},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 inter_domain: bool | None
@@ -20140,6 +20830,8 @@ class EosDesigns(AvdModel):
                                 "evpn_l3": {"type": EvpnL3},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             remote_peers: list[RemotePeersItem]
                             """
@@ -20192,6 +20884,8 @@ class EosDesigns(AvdModel):
                                     "bgp_as": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 hostname: str
                                 """Hostname of remote IPVPN Peer."""
@@ -20245,6 +20939,8 @@ class EosDesigns(AvdModel):
                                 "remote_peers": {"type": list, "items": RemotePeersItem},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool
                             evpn_domain_id: str | None
@@ -20310,6 +21006,8 @@ class EosDesigns(AvdModel):
                             class Dscp(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 general_messages: int | None
                                 event_messages: int | None
@@ -20345,6 +21043,8 @@ class EosDesigns(AvdModel):
                                             "mean_path_delay": {"type": int},
                                         }
                                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                        _field_to_key_map: ClassVar[dict] = {}
+                                        _key_to_field_map: ClassVar[dict] = {}
                                         _custom_data: dict[str, Any]
                                         offset_from_master: int | None
                                         mean_path_delay: int | None
@@ -20378,6 +21078,8 @@ class EosDesigns(AvdModel):
                                         "drop": {"type": Drop},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -20416,6 +21118,8 @@ class EosDesigns(AvdModel):
                                             "sync": {"type": int},
                                         }
                                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                        _field_to_key_map: ClassVar[dict] = {}
+                                        _key_to_field_map: ClassVar[dict] = {}
                                         _custom_data: dict[str, Any]
                                         announce: int | None
                                         follow_up: int | None
@@ -20455,6 +21159,8 @@ class EosDesigns(AvdModel):
                                             "sync": {"type": int, "default": 3},
                                         }
                                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                        _field_to_key_map: ClassVar[dict] = {}
+                                        _key_to_field_map: ClassVar[dict] = {}
                                         _custom_data: dict[str, Any]
                                         enabled: bool | None
                                         announce: int | None
@@ -20496,6 +21202,8 @@ class EosDesigns(AvdModel):
                                         "sequence_ids": {"type": SequenceIds},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     intervals: Intervals
                                     sequence_ids: SequenceIds
@@ -20529,6 +21237,8 @@ class EosDesigns(AvdModel):
                                     "missing_message": {"type": MissingMessage},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 threshold: Threshold
@@ -20578,6 +21288,8 @@ class EosDesigns(AvdModel):
                                 "monitor": {"type": Monitor},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             profile: str | None
@@ -20702,6 +21414,8 @@ class EosDesigns(AvdModel):
                             class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 name: str | None
@@ -20742,6 +21456,8 @@ class EosDesigns(AvdModel):
                                 "flow_tracking": {"type": FlowTracking},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -20850,6 +21566,8 @@ class EosDesigns(AvdModel):
                                     "ipv4_prefix_list_out": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 peer_as: str
                                 """
@@ -20906,6 +21624,8 @@ class EosDesigns(AvdModel):
                             class StaticRoutesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 prefix: str
                                 """IPv4_network/Mask."""
@@ -20931,6 +21651,8 @@ class EosDesigns(AvdModel):
                                 class PoliciesItem(AvdModel):
                                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     name: str
                                     """Internet-exit policy name."""
@@ -20973,6 +21695,8 @@ class EosDesigns(AvdModel):
 
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 policies: Policies
                                 """List of Internet-exit policies using this interface as exit."""
@@ -20997,6 +21721,8 @@ class EosDesigns(AvdModel):
                             class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 name: str | None
@@ -21056,6 +21782,8 @@ class EosDesigns(AvdModel):
                                 "structured_config": {"type": StructuredConfig},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             profile: str | None
                             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -21401,6 +22129,8 @@ class EosDesigns(AvdModel):
                             "flow_tracker_type": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -22660,6 +23390,8 @@ class EosDesigns(AvdModel):
                                 "links_minimum": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             name: str | None
                             """Tracking group name."""
@@ -22701,6 +23433,8 @@ class EosDesigns(AvdModel):
                             },
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         groups: list[GroupsItem]
@@ -22743,6 +23477,8 @@ class EosDesigns(AvdModel):
                             "offset": {"type": int, "default": 0},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         size: int | None
@@ -22787,6 +23523,8 @@ class EosDesigns(AvdModel):
                     class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enable: bool | None
 
@@ -22810,6 +23548,8 @@ class EosDesigns(AvdModel):
                     class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
 
@@ -22850,6 +23590,8 @@ class EosDesigns(AvdModel):
                             "only_vlans_in_use": {"type": bool, "default": False},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         tenants: list[str]
                         """
@@ -22942,6 +23684,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str | None
                             """Hostname of remote EVPN GW server."""
@@ -22984,6 +23728,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -23011,6 +23757,8 @@ class EosDesigns(AvdModel):
                                 "inter_domain": {"type": bool, "default": True},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             inter_domain: bool | None
@@ -23044,6 +23792,8 @@ class EosDesigns(AvdModel):
                             "evpn_l3": {"type": EvpnL3},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_peers: list[RemotePeersItem]
                         """
@@ -23096,6 +23846,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str
                             """Hostname of remote IPVPN Peer."""
@@ -23149,6 +23901,8 @@ class EosDesigns(AvdModel):
                             "remote_peers": {"type": list, "items": RemotePeersItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool
                         evpn_domain_id: str | None
@@ -23214,6 +23968,8 @@ class EosDesigns(AvdModel):
                         class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             general_messages: int | None
                             event_messages: int | None
@@ -23249,6 +24005,8 @@ class EosDesigns(AvdModel):
                                         "mean_path_delay": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -23282,6 +24040,8 @@ class EosDesigns(AvdModel):
                                     "drop": {"type": Drop},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 offset_from_master: int | None
                                 mean_path_delay: int | None
@@ -23320,6 +24080,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     announce: int | None
                                     follow_up: int | None
@@ -23359,6 +24121,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int, "default": 3},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     enabled: bool | None
                                     announce: int | None
@@ -23400,6 +24164,8 @@ class EosDesigns(AvdModel):
                                     "sequence_ids": {"type": SequenceIds},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 intervals: Intervals
                                 sequence_ids: SequenceIds
@@ -23433,6 +24199,8 @@ class EosDesigns(AvdModel):
                                 "missing_message": {"type": MissingMessage},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             threshold: Threshold
@@ -23482,6 +24250,8 @@ class EosDesigns(AvdModel):
                             "monitor": {"type": Monitor},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         profile: str | None
@@ -23606,6 +24376,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -23646,6 +24418,8 @@ class EosDesigns(AvdModel):
                             "flow_tracking": {"type": FlowTracking},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -23754,6 +24528,8 @@ class EosDesigns(AvdModel):
                                 "ipv4_prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             peer_as: str
                             """
@@ -23810,6 +24586,8 @@ class EosDesigns(AvdModel):
                         class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             prefix: str
                             """IPv4_network/Mask."""
@@ -23833,6 +24611,8 @@ class EosDesigns(AvdModel):
                             class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str
                                 """Internet-exit policy name."""
@@ -23875,6 +24655,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
@@ -23899,6 +24681,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -23958,6 +24742,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -24303,6 +25089,8 @@ class EosDesigns(AvdModel):
                         "flow_tracker_type": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "group")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     group: str
                     """
@@ -25563,6 +26351,8 @@ class EosDesigns(AvdModel):
                             "downlink_interfaces": {"type": list, "items": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         ipv4_pool: str | None
                         """IPv4 pool from which subnets will be allocated for links to downlink switches."""
@@ -25605,6 +26395,8 @@ class EosDesigns(AvdModel):
                                 "links_minimum": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             name: str | None
                             """Tracking group name."""
@@ -25646,6 +26438,8 @@ class EosDesigns(AvdModel):
                             },
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         groups: list[GroupsItem]
@@ -25688,6 +26482,8 @@ class EosDesigns(AvdModel):
                             "offset": {"type": int, "default": 0},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         size: int | None
@@ -25732,6 +26528,8 @@ class EosDesigns(AvdModel):
                     class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enable: bool | None
 
@@ -25755,6 +26553,8 @@ class EosDesigns(AvdModel):
                     class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
 
@@ -25795,6 +26595,8 @@ class EosDesigns(AvdModel):
                             "only_vlans_in_use": {"type": bool, "default": False},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         tenants: list[str]
                         """
@@ -25887,6 +26689,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str | None
                             """Hostname of remote EVPN GW server."""
@@ -25929,6 +26733,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -25956,6 +26762,8 @@ class EosDesigns(AvdModel):
                                 "inter_domain": {"type": bool, "default": True},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             inter_domain: bool | None
@@ -25989,6 +26797,8 @@ class EosDesigns(AvdModel):
                             "evpn_l3": {"type": EvpnL3},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_peers: list[RemotePeersItem]
                         """
@@ -26041,6 +26851,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str
                             """Hostname of remote IPVPN Peer."""
@@ -26094,6 +26906,8 @@ class EosDesigns(AvdModel):
                             "remote_peers": {"type": list, "items": RemotePeersItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool
                         evpn_domain_id: str | None
@@ -26159,6 +26973,8 @@ class EosDesigns(AvdModel):
                         class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             general_messages: int | None
                             event_messages: int | None
@@ -26194,6 +27010,8 @@ class EosDesigns(AvdModel):
                                         "mean_path_delay": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -26227,6 +27045,8 @@ class EosDesigns(AvdModel):
                                     "drop": {"type": Drop},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 offset_from_master: int | None
                                 mean_path_delay: int | None
@@ -26265,6 +27085,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     announce: int | None
                                     follow_up: int | None
@@ -26304,6 +27126,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int, "default": 3},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     enabled: bool | None
                                     announce: int | None
@@ -26345,6 +27169,8 @@ class EosDesigns(AvdModel):
                                     "sequence_ids": {"type": SequenceIds},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 intervals: Intervals
                                 sequence_ids: SequenceIds
@@ -26378,6 +27204,8 @@ class EosDesigns(AvdModel):
                                 "missing_message": {"type": MissingMessage},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             threshold: Threshold
@@ -26427,6 +27255,8 @@ class EosDesigns(AvdModel):
                             "monitor": {"type": Monitor},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         profile: str | None
@@ -26551,6 +27381,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -26591,6 +27423,8 @@ class EosDesigns(AvdModel):
                             "flow_tracking": {"type": FlowTracking},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -26699,6 +27533,8 @@ class EosDesigns(AvdModel):
                                 "ipv4_prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             peer_as: str
                             """
@@ -26755,6 +27591,8 @@ class EosDesigns(AvdModel):
                         class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             prefix: str
                             """IPv4_network/Mask."""
@@ -26778,6 +27616,8 @@ class EosDesigns(AvdModel):
                             class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str
                                 """Internet-exit policy name."""
@@ -26820,6 +27660,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
@@ -26844,6 +27686,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -26903,6 +27747,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -27248,6 +28094,8 @@ class EosDesigns(AvdModel):
                         "flow_tracker_type": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -28505,6 +29353,8 @@ class EosDesigns(AvdModel):
                     "nodes": {"type": Nodes},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 defaults: Defaults
                 """Define variables for all nodes of this type."""
@@ -28537,8 +29387,10 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomNodeTypeKeysKey, "key": "custom_node_type_keys_key"}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomNodeTypeKeysKey}}
             _required_fields: ClassVar[tuple] = ("key",)
+            _field_to_key_map: ClassVar[dict] = {"value": "custom_node_type_keys_key"}
+            _key_to_field_map: ClassVar[dict] = {"custom_node_type_keys_key": "value"}
             key: str
             """Key used as dynamic key"""
             value: CustomNodeTypeKeysKey
@@ -28580,6 +29432,8 @@ class EosDesigns(AvdModel):
                             "prefix_list_out": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         activate: bool | None
                         route_map_in: str | None
@@ -28635,6 +29489,8 @@ class EosDesigns(AvdModel):
                             "prefix_list_out": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         activate: bool | None
                         route_map_in: str | None
@@ -28681,6 +29537,8 @@ class EosDesigns(AvdModel):
                             "prepend_own_disabled": {"type": bool},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_as_replace_out: bool | None
                         """Replace AS number with local AS number."""
@@ -28717,6 +29575,8 @@ class EosDesigns(AvdModel):
                             "replace_as": {"type": bool},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         all: bool | None
@@ -28749,6 +29609,8 @@ class EosDesigns(AvdModel):
                     class RemovePrivateAsIngress(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "replace_as": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         replace_as: bool | None
@@ -28783,6 +29645,8 @@ class EosDesigns(AvdModel):
                             "multiplier": {"type": int},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "interval", "min_rx", "multiplier")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         interval: int
                         """Interval in milliseconds."""
@@ -28822,6 +29686,8 @@ class EosDesigns(AvdModel):
                             "route_map": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         always: bool | None
@@ -28862,6 +29728,8 @@ class EosDesigns(AvdModel):
                                 "include_sub_route_map": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "action")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             action: str
                             """Missing policy action."""
@@ -28907,6 +29775,8 @@ class EosDesigns(AvdModel):
                                 "include_sub_route_map": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "action")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             action: str
                             """Missing policy action."""
@@ -28949,6 +29819,8 @@ class EosDesigns(AvdModel):
                             "direction_out": {"type": DirectionOut},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         direction_in: DirectionIn
                         """Missing policy inbound direction."""
@@ -28980,6 +29852,8 @@ class EosDesigns(AvdModel):
                     class LinkBandwidth(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "default": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         default: str | None
@@ -29010,6 +29884,8 @@ class EosDesigns(AvdModel):
                     class AllowasIn(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "times": {"type": int}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         times: int | None
@@ -29040,6 +29916,8 @@ class EosDesigns(AvdModel):
                     class RibInPrePolicyRetain(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "all": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         all: bool | None
@@ -29069,6 +29947,8 @@ class EosDesigns(AvdModel):
                     class SharedSecret(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}, "hash_algorithm": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data", "profile", "hash_algorithm")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str
                         """Name of profile defined under `management_security`."""
@@ -29138,6 +30018,8 @@ class EosDesigns(AvdModel):
                         "ttl_maximum_hops": {"type": int},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     name: str
                     """BGP peer group name."""
@@ -29337,6 +30219,8 @@ class EosDesigns(AvdModel):
                         "always_redistribute_igmp": {"type": bool},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     enabled: bool | None
                     underlay_l2_multicast_group_ipv4_pool: str | None
@@ -29400,6 +30284,8 @@ class EosDesigns(AvdModel):
                     class EvpnPegItem(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "nodes": {"type": list, "items": str}, "transit": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         nodes: list[str]
                         """A description will be applied to all nodes with RP addresses configured if not set."""
@@ -29436,6 +30322,8 @@ class EosDesigns(AvdModel):
                         "evpn_peg": {"type": list, "items": EvpnPegItem},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "evpn_underlay_l3_multicast_group_ipv4_pool")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     enabled: bool | None
                     evpn_underlay_l3_multicast_group_ipv4_pool: str
@@ -29486,6 +30374,8 @@ class EosDesigns(AvdModel):
                         "access_list_name": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     rps: list[str]
                     """List of Rendevouz Points."""
@@ -29545,6 +30435,8 @@ class EosDesigns(AvdModel):
                         "version": {"type": int, "default": 2},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     enabled: bool | None
                     """Will be enabled automatically if "evpn_l2_multicast" is enabled."""
@@ -29585,6 +30477,8 @@ class EosDesigns(AvdModel):
                             "source_vrf": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "ip_helper")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         ip_helper: str
                         """IPv4 DHCP server IP."""
@@ -29626,6 +30520,8 @@ class EosDesigns(AvdModel):
                         class LoopbackIpPoolsItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "pod": {"type": str}, "ipv4_pool": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             pod: str | None
                             """POD name."""
@@ -29662,6 +30558,8 @@ class EosDesigns(AvdModel):
                             "loopback_ip_pools": {"type": list, "items": LoopbackIpPoolsItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         loopback: int | None
                         """Loopback interface number, required when vtep_diagnotics defined."""
@@ -29751,6 +30649,8 @@ class EosDesigns(AvdModel):
                         class RedistributeBgp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": True}, "route_map": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             route_map: str | None
@@ -29781,6 +30681,8 @@ class EosDesigns(AvdModel):
                         class RedistributeConnected(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}, "route_map": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             route_map: str | None
@@ -29820,6 +30722,8 @@ class EosDesigns(AvdModel):
                             "nodes": {"type": list, "items": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         process_id: int | None
@@ -29874,6 +30778,8 @@ class EosDesigns(AvdModel):
                                 "transit": {"type": bool, "default": False},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             nodes: list[str]
                             """
@@ -29916,6 +30822,8 @@ class EosDesigns(AvdModel):
                             "evpn_peg": {"type": list, "items": EvpnPegItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         evpn_underlay_l3_multicast_group: str | None
@@ -29965,6 +30873,8 @@ class EosDesigns(AvdModel):
                             "access_list_name": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         rps: list[str]
                         """A minimum of one RP must be specified."""
@@ -30026,6 +30936,8 @@ class EosDesigns(AvdModel):
                                     "source_vrf": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "ip_helper")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 ip_helper: str
                                 """IPv4 DHCP server IP."""
@@ -30070,6 +30982,8 @@ class EosDesigns(AvdModel):
                                     "always_redistribute_igmp": {"type": bool},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 always_redistribute_igmp: bool | None
@@ -30119,6 +31033,8 @@ class EosDesigns(AvdModel):
                             class EvpnL3Multicast(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
 
@@ -30148,6 +31064,8 @@ class EosDesigns(AvdModel):
                                     "fast_leave": {"type": bool},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -30198,6 +31116,8 @@ class EosDesigns(AvdModel):
                                         "key": {"type": str},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     id: int | None
                                     hash_algorithm: str | None
@@ -30239,6 +31159,8 @@ class EosDesigns(AvdModel):
                                     "message_digest_keys": {"type": list, "items": MessageDigestKeysItem},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 point_to_point: bool | None
@@ -30293,6 +31215,8 @@ class EosDesigns(AvdModel):
                                     "raw_eos_cli": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 structured_config: StructuredConfig
                                 """
@@ -30366,6 +31290,8 @@ class EosDesigns(AvdModel):
                                 "structured_config": {"type": StructuredConfig},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "node")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             node: str
                             """l3_leaf inventory hostname."""
@@ -30665,6 +31591,8 @@ class EosDesigns(AvdModel):
                                 "source_vrf": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "ip_helper")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             ip_helper: str
                             """IPv4 DHCP server IP."""
@@ -30705,6 +31633,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2Multicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "always_redistribute_igmp": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             always_redistribute_igmp: bool | None
@@ -30754,6 +31684,8 @@ class EosDesigns(AvdModel):
                         class EvpnL3Multicast(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -30783,6 +31715,8 @@ class EosDesigns(AvdModel):
                                 "fast_leave": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -30833,6 +31767,8 @@ class EosDesigns(AvdModel):
                                     "key": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 id: int | None
                                 hash_algorithm: str | None
@@ -30874,6 +31810,8 @@ class EosDesigns(AvdModel):
                                 "message_digest_keys": {"type": list, "items": MessageDigestKeysItem},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             point_to_point: bool | None
@@ -30928,6 +31866,8 @@ class EosDesigns(AvdModel):
                                 "raw_eos_cli": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             structured_config: StructuredConfig
                             """
@@ -31004,6 +31944,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "id", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         id: int
                         """SVI interface id and VLAN id."""
@@ -31339,6 +32281,8 @@ class EosDesigns(AvdModel):
                                     "key": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 id: int | None
                                 hash_algorithm: str | None
@@ -31380,6 +32324,8 @@ class EosDesigns(AvdModel):
                                 "message_digest_keys": {"type": list, "items": MessageDigestKeysItem},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             point_to_point: bool | None
@@ -31427,6 +32373,8 @@ class EosDesigns(AvdModel):
                         class Pim(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -31450,6 +32398,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -31499,6 +32449,8 @@ class EosDesigns(AvdModel):
                             "raw_eos_cli": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         interfaces: list[str]
                         encapsulation_dot1q_vlan: list[int]
@@ -31595,6 +32547,8 @@ class EosDesigns(AvdModel):
                                 "area": {"type": str, "default": "0.0.0.0"},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             area: str | None
@@ -31633,6 +32587,8 @@ class EosDesigns(AvdModel):
                             "raw_eos_cli": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "node", "loopback", "ip_address")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         node: str
                         loopback: int
@@ -31690,6 +32646,8 @@ class EosDesigns(AvdModel):
                             "nodes": {"type": list, "items": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         destination_address_prefix: str | None
                         """IPv4_address."""
@@ -31755,6 +32713,8 @@ class EosDesigns(AvdModel):
                             "nodes": {"type": list, "items": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         destination_address_prefix: str | None
                         """IPv6_address."""
@@ -31809,6 +32769,8 @@ class EosDesigns(AvdModel):
                         class DefaultOriginate(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "always": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             always: bool | None
 
@@ -31857,6 +32819,8 @@ class EosDesigns(AvdModel):
                             "shutdown": {"type": bool},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "ip_address")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         ip_address: str
                         """IPv4_address or IPv6_address."""
@@ -32026,6 +32990,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """
@@ -32096,6 +33062,8 @@ class EosDesigns(AvdModel):
                                 "prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             activate: bool | None
                             route_map_in: str | None
@@ -32151,6 +33119,8 @@ class EosDesigns(AvdModel):
                                 "prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             activate: bool | None
                             route_map_in: str | None
@@ -32197,6 +33167,8 @@ class EosDesigns(AvdModel):
                                 "prepend_own_disabled": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             remote_as_replace_out: bool | None
                             """Replace AS number with local AS number."""
@@ -32233,6 +33205,8 @@ class EosDesigns(AvdModel):
                                 "replace_as": {"type": bool},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             all: bool | None
@@ -32265,6 +33239,8 @@ class EosDesigns(AvdModel):
                         class RemovePrivateAsIngress(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "replace_as": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             replace_as: bool | None
@@ -32299,6 +33275,8 @@ class EosDesigns(AvdModel):
                                 "multiplier": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "interval", "min_rx", "multiplier")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             interval: int
                             """Interval in milliseconds."""
@@ -32338,6 +33316,8 @@ class EosDesigns(AvdModel):
                                 "route_map": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             always: bool | None
@@ -32378,6 +33358,8 @@ class EosDesigns(AvdModel):
                                     "include_sub_route_map": {"type": bool},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "action")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 action: str
                                 """Missing policy action."""
@@ -32423,6 +33405,8 @@ class EosDesigns(AvdModel):
                                     "include_sub_route_map": {"type": bool},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "action")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 action: str
                                 """Missing policy action."""
@@ -32465,6 +33449,8 @@ class EosDesigns(AvdModel):
                                 "direction_out": {"type": DirectionOut},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             direction_in: DirectionIn
                             """Missing policy inbound direction."""
@@ -32496,6 +33482,8 @@ class EosDesigns(AvdModel):
                         class LinkBandwidth(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "default": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             default: str | None
@@ -32526,6 +33514,8 @@ class EosDesigns(AvdModel):
                         class AllowasIn(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "times": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             times: int | None
@@ -32556,6 +33546,8 @@ class EosDesigns(AvdModel):
                         class RibInPrePolicyRetain(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "all": {"type": bool}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             all: bool | None
@@ -32585,6 +33577,8 @@ class EosDesigns(AvdModel):
                         class SharedSecret(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}, "hash_algorithm": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "profile", "hash_algorithm")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             profile: str
                             """Name of profile defined under `management_security`."""
@@ -32654,6 +33648,8 @@ class EosDesigns(AvdModel):
                             "ttl_maximum_hops": {"type": int},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         name: str | None
                         """BGP peer group name."""
@@ -32847,6 +33843,8 @@ class EosDesigns(AvdModel):
                             "nodes": {"type": list, "items": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         type: str | None
                         address_family: str | None
@@ -32917,6 +33915,8 @@ class EosDesigns(AvdModel):
                         "structured_config": {"type": StructuredConfig},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     name: str
                     address_families: list[str]
@@ -33291,6 +34291,8 @@ class EosDesigns(AvdModel):
                     class EvpnL2Multicast(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
 
@@ -33320,6 +34322,8 @@ class EosDesigns(AvdModel):
                             "fast_leave": {"type": bool},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Will be enabled automatically if evpn_l2_multicast is enabled."""
@@ -33370,6 +34374,8 @@ class EosDesigns(AvdModel):
                             "raw_eos_cli": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         structured_config: StructuredConfig
                         """
@@ -33430,6 +34436,8 @@ class EosDesigns(AvdModel):
                         "bgp": {"type": Bgp},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "id", "name")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     id: int
                     """VLAN ID."""
@@ -33604,6 +34612,8 @@ class EosDesigns(AvdModel):
                     class SubinterfacesItem(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "number": {"type": int}}
                         _required_fields: ClassVar[tuple] = ("_custom_data", "number")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         number: int
                         """Subinterface number."""
@@ -33632,6 +34642,8 @@ class EosDesigns(AvdModel):
                         class PortChannel(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "mode": {"type": str}, "short_esi": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             mode: str | None
                             short_esi: str | None
@@ -33666,6 +34678,8 @@ class EosDesigns(AvdModel):
                             "port_channel": {"type": PortChannel},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "id", "nodes", "interfaces")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         id: int
                         """Pseudowire ID on this endpoint."""
@@ -33717,6 +34731,8 @@ class EosDesigns(AvdModel):
                         "lldp_disable": {"type": bool},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     name: str
                     """Pseudowire name."""
@@ -33787,6 +34803,8 @@ class EosDesigns(AvdModel):
                     "point_to_point_services": {"type": PointToPointServices},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 name: str
                 """
@@ -34106,8 +35124,10 @@ class EosDesigns(AvdModel):
 
             NetworkServicesKeysName._item_type = NetworkServicesKeysNameItem
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NetworkServicesKeysName, "key": "network_services_keys_name"}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NetworkServicesKeysName}}
             _required_fields: ClassVar[tuple] = ("key",)
+            _field_to_key_map: ClassVar[dict] = {"value": "network_services_keys_name"}
+            _key_to_field_map: ClassVar[dict] = {"network_services_keys_name": "value"}
             key: str
             """Key used as dynamic key"""
             value: NetworkServicesKeysName
@@ -34140,6 +35160,8 @@ class EosDesigns(AvdModel):
                                 "links_minimum": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             name: str | None
                             """Tracking group name."""
@@ -34181,6 +35203,8 @@ class EosDesigns(AvdModel):
                             },
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         groups: list[GroupsItem]
@@ -34223,6 +35247,8 @@ class EosDesigns(AvdModel):
                             "offset": {"type": int, "default": 0},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         size: int | None
@@ -34267,6 +35293,8 @@ class EosDesigns(AvdModel):
                     class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enable: bool | None
 
@@ -34290,6 +35318,8 @@ class EosDesigns(AvdModel):
                     class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
 
@@ -34330,6 +35360,8 @@ class EosDesigns(AvdModel):
                             "only_vlans_in_use": {"type": bool, "default": False},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         tenants: list[str]
                         """
@@ -34422,6 +35454,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str | None
                             """Hostname of remote EVPN GW server."""
@@ -34464,6 +35498,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -34491,6 +35527,8 @@ class EosDesigns(AvdModel):
                                 "inter_domain": {"type": bool, "default": True},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             inter_domain: bool | None
@@ -34524,6 +35562,8 @@ class EosDesigns(AvdModel):
                             "evpn_l3": {"type": EvpnL3},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_peers: list[RemotePeersItem]
                         """
@@ -34576,6 +35616,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str
                             """Hostname of remote IPVPN Peer."""
@@ -34629,6 +35671,8 @@ class EosDesigns(AvdModel):
                             "remote_peers": {"type": list, "items": RemotePeersItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool
                         evpn_domain_id: str | None
@@ -34694,6 +35738,8 @@ class EosDesigns(AvdModel):
                         class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             general_messages: int | None
                             event_messages: int | None
@@ -34729,6 +35775,8 @@ class EosDesigns(AvdModel):
                                         "mean_path_delay": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -34762,6 +35810,8 @@ class EosDesigns(AvdModel):
                                     "drop": {"type": Drop},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 offset_from_master: int | None
                                 mean_path_delay: int | None
@@ -34800,6 +35850,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     announce: int | None
                                     follow_up: int | None
@@ -34839,6 +35891,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int, "default": 3},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     enabled: bool | None
                                     announce: int | None
@@ -34880,6 +35934,8 @@ class EosDesigns(AvdModel):
                                     "sequence_ids": {"type": SequenceIds},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 intervals: Intervals
                                 sequence_ids: SequenceIds
@@ -34913,6 +35969,8 @@ class EosDesigns(AvdModel):
                                 "missing_message": {"type": MissingMessage},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             threshold: Threshold
@@ -34962,6 +36020,8 @@ class EosDesigns(AvdModel):
                             "monitor": {"type": Monitor},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         profile: str | None
@@ -35086,6 +36146,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -35126,6 +36188,8 @@ class EosDesigns(AvdModel):
                             "flow_tracking": {"type": FlowTracking},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -35234,6 +36298,8 @@ class EosDesigns(AvdModel):
                                 "ipv4_prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             peer_as: str
                             """
@@ -35290,6 +36356,8 @@ class EosDesigns(AvdModel):
                         class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             prefix: str
                             """IPv4_network/Mask."""
@@ -35313,6 +36381,8 @@ class EosDesigns(AvdModel):
                             class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str
                                 """Internet-exit policy name."""
@@ -35355,6 +36425,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
@@ -35379,6 +36451,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -35438,6 +36512,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -35781,6 +36857,8 @@ class EosDesigns(AvdModel):
                         "flow_tracker_type": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -37022,6 +38100,8 @@ class EosDesigns(AvdModel):
                                 "downlink_interfaces": {"type": list, "items": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             ipv4_pool: str | None
                             """IPv4 pool from which subnets will be allocated for links to downlink switches."""
@@ -37064,6 +38144,8 @@ class EosDesigns(AvdModel):
                                     "links_minimum": {"type": int},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str | None
                                 """Tracking group name."""
@@ -37105,6 +38187,8 @@ class EosDesigns(AvdModel):
                                 },
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             groups: list[GroupsItem]
@@ -37147,6 +38231,8 @@ class EosDesigns(AvdModel):
                                 "offset": {"type": int, "default": 0},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             size: int | None
@@ -37191,6 +38277,8 @@ class EosDesigns(AvdModel):
                         class UplinkPtp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enable: bool | None
 
@@ -37214,6 +38302,8 @@ class EosDesigns(AvdModel):
                         class UplinkMacsec(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             profile: str | None
 
@@ -37254,6 +38344,8 @@ class EosDesigns(AvdModel):
                                 "only_vlans_in_use": {"type": bool, "default": False},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             tenants: list[str]
                             """
@@ -37346,6 +38438,8 @@ class EosDesigns(AvdModel):
                                     "bgp_as": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 hostname: str | None
                                 """Hostname of remote EVPN GW server."""
@@ -37388,6 +38482,8 @@ class EosDesigns(AvdModel):
                             class EvpnL2(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
 
@@ -37415,6 +38511,8 @@ class EosDesigns(AvdModel):
                                     "inter_domain": {"type": bool, "default": True},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 inter_domain: bool | None
@@ -37448,6 +38546,8 @@ class EosDesigns(AvdModel):
                                 "evpn_l3": {"type": EvpnL3},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             remote_peers: list[RemotePeersItem]
                             """
@@ -37500,6 +38600,8 @@ class EosDesigns(AvdModel):
                                     "bgp_as": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 hostname: str
                                 """Hostname of remote IPVPN Peer."""
@@ -37553,6 +38655,8 @@ class EosDesigns(AvdModel):
                                 "remote_peers": {"type": list, "items": RemotePeersItem},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool
                             evpn_domain_id: str | None
@@ -37618,6 +38722,8 @@ class EosDesigns(AvdModel):
                             class Dscp(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 general_messages: int | None
                                 event_messages: int | None
@@ -37653,6 +38759,8 @@ class EosDesigns(AvdModel):
                                             "mean_path_delay": {"type": int},
                                         }
                                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                        _field_to_key_map: ClassVar[dict] = {}
+                                        _key_to_field_map: ClassVar[dict] = {}
                                         _custom_data: dict[str, Any]
                                         offset_from_master: int | None
                                         mean_path_delay: int | None
@@ -37686,6 +38794,8 @@ class EosDesigns(AvdModel):
                                         "drop": {"type": Drop},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -37724,6 +38834,8 @@ class EosDesigns(AvdModel):
                                             "sync": {"type": int},
                                         }
                                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                        _field_to_key_map: ClassVar[dict] = {}
+                                        _key_to_field_map: ClassVar[dict] = {}
                                         _custom_data: dict[str, Any]
                                         announce: int | None
                                         follow_up: int | None
@@ -37763,6 +38875,8 @@ class EosDesigns(AvdModel):
                                             "sync": {"type": int, "default": 3},
                                         }
                                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                        _field_to_key_map: ClassVar[dict] = {}
+                                        _key_to_field_map: ClassVar[dict] = {}
                                         _custom_data: dict[str, Any]
                                         enabled: bool | None
                                         announce: int | None
@@ -37804,6 +38918,8 @@ class EosDesigns(AvdModel):
                                         "sequence_ids": {"type": SequenceIds},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     intervals: Intervals
                                     sequence_ids: SequenceIds
@@ -37837,6 +38953,8 @@ class EosDesigns(AvdModel):
                                     "missing_message": {"type": MissingMessage},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 threshold: Threshold
@@ -37886,6 +39004,8 @@ class EosDesigns(AvdModel):
                                 "monitor": {"type": Monitor},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             profile: str | None
@@ -38010,6 +39130,8 @@ class EosDesigns(AvdModel):
                             class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 name: str | None
@@ -38050,6 +39172,8 @@ class EosDesigns(AvdModel):
                                 "flow_tracking": {"type": FlowTracking},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -38158,6 +39282,8 @@ class EosDesigns(AvdModel):
                                     "ipv4_prefix_list_out": {"type": str},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 peer_as: str
                                 """
@@ -38214,6 +39340,8 @@ class EosDesigns(AvdModel):
                             class StaticRoutesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 prefix: str
                                 """IPv4_network/Mask."""
@@ -38239,6 +39367,8 @@ class EosDesigns(AvdModel):
                                 class PoliciesItem(AvdModel):
                                     _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     name: str
                                     """Internet-exit policy name."""
@@ -38281,6 +39411,8 @@ class EosDesigns(AvdModel):
 
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 policies: Policies
                                 """List of Internet-exit policies using this interface as exit."""
@@ -38305,6 +39437,8 @@ class EosDesigns(AvdModel):
                             class FlowTracking(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 enabled: bool | None
                                 name: str | None
@@ -38364,6 +39498,8 @@ class EosDesigns(AvdModel):
                                 "structured_config": {"type": StructuredConfig},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             profile: str | None
                             """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -38709,6 +39845,8 @@ class EosDesigns(AvdModel):
                             "flow_tracker_type": {"type": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -39968,6 +41106,8 @@ class EosDesigns(AvdModel):
                                 "links_minimum": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             name: str | None
                             """Tracking group name."""
@@ -40009,6 +41149,8 @@ class EosDesigns(AvdModel):
                             },
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         groups: list[GroupsItem]
@@ -40051,6 +41193,8 @@ class EosDesigns(AvdModel):
                             "offset": {"type": int, "default": 0},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         size: int | None
@@ -40095,6 +41239,8 @@ class EosDesigns(AvdModel):
                     class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enable: bool | None
 
@@ -40118,6 +41264,8 @@ class EosDesigns(AvdModel):
                     class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
 
@@ -40158,6 +41306,8 @@ class EosDesigns(AvdModel):
                             "only_vlans_in_use": {"type": bool, "default": False},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         tenants: list[str]
                         """
@@ -40250,6 +41400,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str | None
                             """Hostname of remote EVPN GW server."""
@@ -40292,6 +41444,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -40319,6 +41473,8 @@ class EosDesigns(AvdModel):
                                 "inter_domain": {"type": bool, "default": True},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             inter_domain: bool | None
@@ -40352,6 +41508,8 @@ class EosDesigns(AvdModel):
                             "evpn_l3": {"type": EvpnL3},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_peers: list[RemotePeersItem]
                         """
@@ -40404,6 +41562,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str
                             """Hostname of remote IPVPN Peer."""
@@ -40457,6 +41617,8 @@ class EosDesigns(AvdModel):
                             "remote_peers": {"type": list, "items": RemotePeersItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool
                         evpn_domain_id: str | None
@@ -40522,6 +41684,8 @@ class EosDesigns(AvdModel):
                         class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             general_messages: int | None
                             event_messages: int | None
@@ -40557,6 +41721,8 @@ class EosDesigns(AvdModel):
                                         "mean_path_delay": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -40590,6 +41756,8 @@ class EosDesigns(AvdModel):
                                     "drop": {"type": Drop},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 offset_from_master: int | None
                                 mean_path_delay: int | None
@@ -40628,6 +41796,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     announce: int | None
                                     follow_up: int | None
@@ -40667,6 +41837,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int, "default": 3},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     enabled: bool | None
                                     announce: int | None
@@ -40708,6 +41880,8 @@ class EosDesigns(AvdModel):
                                     "sequence_ids": {"type": SequenceIds},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 intervals: Intervals
                                 sequence_ids: SequenceIds
@@ -40741,6 +41915,8 @@ class EosDesigns(AvdModel):
                                 "missing_message": {"type": MissingMessage},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             threshold: Threshold
@@ -40790,6 +41966,8 @@ class EosDesigns(AvdModel):
                             "monitor": {"type": Monitor},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         profile: str | None
@@ -40914,6 +42092,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -40954,6 +42134,8 @@ class EosDesigns(AvdModel):
                             "flow_tracking": {"type": FlowTracking},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -41062,6 +42244,8 @@ class EosDesigns(AvdModel):
                                 "ipv4_prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             peer_as: str
                             """
@@ -41118,6 +42302,8 @@ class EosDesigns(AvdModel):
                         class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             prefix: str
                             """IPv4_network/Mask."""
@@ -41141,6 +42327,8 @@ class EosDesigns(AvdModel):
                             class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str
                                 """Internet-exit policy name."""
@@ -41183,6 +42371,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
@@ -41207,6 +42397,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -41266,6 +42458,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -41611,6 +42805,8 @@ class EosDesigns(AvdModel):
                         "flow_tracker_type": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "group")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     group: str
                     """
@@ -42871,6 +44067,8 @@ class EosDesigns(AvdModel):
                             "downlink_interfaces": {"type": list, "items": str},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         ipv4_pool: str | None
                         """IPv4 pool from which subnets will be allocated for links to downlink switches."""
@@ -42913,6 +44111,8 @@ class EosDesigns(AvdModel):
                                 "links_minimum": {"type": int},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             name: str | None
                             """Tracking group name."""
@@ -42954,6 +44154,8 @@ class EosDesigns(AvdModel):
                             },
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         groups: list[GroupsItem]
@@ -42996,6 +44198,8 @@ class EosDesigns(AvdModel):
                             "offset": {"type": int, "default": 0},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         size: int | None
@@ -43040,6 +44244,8 @@ class EosDesigns(AvdModel):
                     class UplinkPtp(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enable": {"type": bool, "default": False}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enable: bool | None
 
@@ -43063,6 +44269,8 @@ class EosDesigns(AvdModel):
                     class UplinkMacsec(AvdModel):
                         _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "profile": {"type": str}}
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
 
@@ -43103,6 +44311,8 @@ class EosDesigns(AvdModel):
                             "only_vlans_in_use": {"type": bool, "default": False},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         tenants: list[str]
                         """
@@ -43195,6 +44405,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str | None
                             """Hostname of remote EVPN GW server."""
@@ -43237,6 +44449,8 @@ class EosDesigns(AvdModel):
                         class EvpnL2(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool, "default": False}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
 
@@ -43264,6 +44478,8 @@ class EosDesigns(AvdModel):
                                 "inter_domain": {"type": bool, "default": True},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             inter_domain: bool | None
@@ -43297,6 +44513,8 @@ class EosDesigns(AvdModel):
                             "evpn_l3": {"type": EvpnL3},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         remote_peers: list[RemotePeersItem]
                         """
@@ -43349,6 +44567,8 @@ class EosDesigns(AvdModel):
                                 "bgp_as": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "hostname", "ip_address", "bgp_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             hostname: str
                             """Hostname of remote IPVPN Peer."""
@@ -43402,6 +44622,8 @@ class EosDesigns(AvdModel):
                             "remote_peers": {"type": list, "items": RemotePeersItem},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "enabled")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool
                         evpn_domain_id: str | None
@@ -43467,6 +44689,8 @@ class EosDesigns(AvdModel):
                         class Dscp(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "general_messages": {"type": int}, "event_messages": {"type": int}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             general_messages: int | None
                             event_messages: int | None
@@ -43502,6 +44726,8 @@ class EosDesigns(AvdModel):
                                         "mean_path_delay": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     offset_from_master: int | None
                                     mean_path_delay: int | None
@@ -43535,6 +44761,8 @@ class EosDesigns(AvdModel):
                                     "drop": {"type": Drop},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 offset_from_master: int | None
                                 mean_path_delay: int | None
@@ -43573,6 +44801,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     announce: int | None
                                     follow_up: int | None
@@ -43612,6 +44842,8 @@ class EosDesigns(AvdModel):
                                         "sync": {"type": int, "default": 3},
                                     }
                                     _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                    _field_to_key_map: ClassVar[dict] = {}
+                                    _key_to_field_map: ClassVar[dict] = {}
                                     _custom_data: dict[str, Any]
                                     enabled: bool | None
                                     announce: int | None
@@ -43653,6 +44885,8 @@ class EosDesigns(AvdModel):
                                     "sequence_ids": {"type": SequenceIds},
                                 }
                                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 intervals: Intervals
                                 sequence_ids: SequenceIds
@@ -43686,6 +44920,8 @@ class EosDesigns(AvdModel):
                                 "missing_message": {"type": MissingMessage},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             threshold: Threshold
@@ -43735,6 +44971,8 @@ class EosDesigns(AvdModel):
                             "monitor": {"type": Monitor},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         profile: str | None
@@ -43859,6 +45097,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -43899,6 +45139,8 @@ class EosDesigns(AvdModel):
                             "flow_tracking": {"type": FlowTracking},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data",)
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         enabled: bool | None
                         """Enable / Disable auto CV-Pathfinder HA, when two nodes are defined in the same node_group."""
@@ -44007,6 +45249,8 @@ class EosDesigns(AvdModel):
                                 "ipv4_prefix_list_out": {"type": str},
                             }
                             _required_fields: ClassVar[tuple] = ("_custom_data", "peer_as")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             peer_as: str
                             """
@@ -44063,6 +45307,8 @@ class EosDesigns(AvdModel):
                         class StaticRoutesItem(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "prefix": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data", "prefix")
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             prefix: str
                             """IPv4_network/Mask."""
@@ -44086,6 +45332,8 @@ class EosDesigns(AvdModel):
                             class PoliciesItem(AvdModel):
                                 _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "name": {"type": str}, "tunnel_interface_numbers": {"type": str}}
                                 _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                                _field_to_key_map: ClassVar[dict] = {}
+                                _key_to_field_map: ClassVar[dict] = {}
                                 _custom_data: dict[str, Any]
                                 name: str
                                 """Internet-exit policy name."""
@@ -44128,6 +45376,8 @@ class EosDesigns(AvdModel):
 
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "policies": {"type": Policies}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             policies: Policies
                             """List of Internet-exit policies using this interface as exit."""
@@ -44152,6 +45402,8 @@ class EosDesigns(AvdModel):
                         class FlowTracking(AvdModel):
                             _fields: ClassVar[dict] = {"_custom_data": {"type": dict}, "enabled": {"type": bool}, "name": {"type": str}}
                             _required_fields: ClassVar[tuple] = ("_custom_data",)
+                            _field_to_key_map: ClassVar[dict] = {}
+                            _key_to_field_map: ClassVar[dict] = {}
                             _custom_data: dict[str, Any]
                             enabled: bool | None
                             name: str | None
@@ -44211,6 +45463,8 @@ class EosDesigns(AvdModel):
                             "structured_config": {"type": StructuredConfig},
                         }
                         _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                        _field_to_key_map: ClassVar[dict] = {}
+                        _key_to_field_map: ClassVar[dict] = {}
                         _custom_data: dict[str, Any]
                         profile: str | None
                         """L3 interface profile name. Profile defined under `l3_interface_profiles`."""
@@ -44556,6 +45810,8 @@ class EosDesigns(AvdModel):
                         "flow_tracker_type": {"type": str},
                     }
                     _required_fields: ClassVar[tuple] = ("_custom_data", "name")
+                    _field_to_key_map: ClassVar[dict] = {}
+                    _key_to_field_map: ClassVar[dict] = {}
                     _custom_data: dict[str, Any]
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -45813,6 +47069,8 @@ class EosDesigns(AvdModel):
                     "nodes": {"type": Nodes},
                 }
                 _required_fields: ClassVar[tuple] = ("_custom_data",)
+                _field_to_key_map: ClassVar[dict] = {}
+                _key_to_field_map: ClassVar[dict] = {}
                 _custom_data: dict[str, Any]
                 defaults: Defaults
                 """Define variables for all nodes of this type."""
@@ -45845,8 +47103,10 @@ class EosDesigns(AvdModel):
                             continue
                         setattr(self, arg, arg_value)
 
-            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NodeTypeKeysKey, "key": "node_type_keys_key"}}
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": NodeTypeKeysKey}}
             _required_fields: ClassVar[tuple] = ("key",)
+            _field_to_key_map: ClassVar[dict] = {"value": "node_type_keys_key"}
+            _key_to_field_map: ClassVar[dict] = {"node_type_keys_key": "value"}
             key: str
             """Key used as dynamic key"""
             value: NodeTypeKeysKey
@@ -45880,6 +47140,8 @@ class EosDesigns(AvdModel):
             "node_type_keys": {"type": list, "items": DynamicNodeTypeKeys},
         }
         _required_fields: ClassVar[tuple] = ("connected_endpoints_keys", "custom_node_type_keys", "network_services_keys", "node_type_keys")
+        _field_to_key_map: ClassVar[dict] = {}
+        _key_to_field_map: ClassVar[dict] = {}
         connected_endpoints_keys: list[DynamicConnectedEndpointsKeys]
         """List of dynamic 'connected_endpoints_keys'."""
         custom_node_type_keys: list[DynamicCustomNodeTypeKeys]
@@ -46264,6 +47526,8 @@ class EosDesigns(AvdModel):
         "_dynamic_keys": {"type": _DynamicKeys},
     }
     _required_fields: ClassVar[tuple] = ("fabric_name", "_dynamic_keys")
+    _field_to_key_map: ClassVar[dict] = {}
+    _key_to_field_map: ClassVar[dict] = {}
     _allow_other_keys: ClassVar[bool] = True
     application_classification: ApplicationClassification
     """Application traffic recognition configuration."""
