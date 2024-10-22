@@ -82,17 +82,17 @@ class IpAddressingMixin:
         """
         module_path = self.ip_addressing_templates.get("python_module")
         if module_path is None:
-            return AvdIpAddressing(hostvars=self.hostvars, shared_utils=self)
+            return AvdIpAddressing(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
 
         class_name = self.ip_addressing_templates.get("python_class_name", DEFAULT_AVD_IP_ADDRESSING_PYTHON_CLASS_NAME)
 
-        cls = load_python_class(
+        cls: type[AvdIpAddressing] = load_python_class(
             module_path,
             class_name,
             AvdIpAddressing,
         )
 
-        return cls(hostvars=self.hostvars, shared_utils=self)
+        return cls(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
 
     @cached_property
     def ip_addressing_templates(self: SharedUtils) -> dict:

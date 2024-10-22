@@ -11,6 +11,8 @@ from pyavd._utils import get
 from pyavd.j2filters import list_compress, range_expand
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import EosDesignsFacts
 
 
@@ -36,34 +38,37 @@ class VlansMixin:
         """
         return list_compress(self._vlans)
 
-    def _parse_adapter_settings(self: EosDesignsFacts, adapter_settings: dict) -> tuple[set, set]:
+    def _parse_adapter_settings(
+        self: EosDesignsFacts,
+        adapter_settings: EosDesigns._DynamicKeys.DynamicConnectedEndpointsKeys.ConnectedEndpointsKeysKeyItem.AdaptersItem | EosDesigns.NetworkPortsItem,
+    ) -> tuple[set, set]:
         """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
         vlans = set()
-        trunk_groups = set(adapter_settings.get("trunk_groups", []))
-        if "vlans" in adapter_settings and adapter_settings["vlans"] not in ["all", "", None]:
-            vlans.update(map(int, range_expand(str(adapter_settings["vlans"]))))
-        elif adapter_settings.get("mode", "") == "trunk" and not trunk_groups:
+        trunk_groups = set(adapter_settings.trunk_groups)
+        if adapter_settings.vlans not in ["all", "", None]:
+            vlans.update(map(int, range_expand(adapter_settings.vlans)))
+        elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
             # No need to check further, since the list is now containing all vlans.
             return set(range(1, 4094)), trunk_groups
-        elif adapter_settings.get("mode", "") == "trunk phone":
+        elif adapter_settings.mode == "trunk phone":
             # # EOS default native VLAN is VLAN 1
-            if "native_vlan" not in adapter_settings:
+            if not adapter_settings.native_vlan:
                 vlans.add(1)
         else:
             # No vlans or mode defined so this is an access port with only vlan 1 allowed
             vlans.add(1)
 
-        if "native_vlan" in adapter_settings:
-            vlans.add(int(adapter_settings["native_vlan"]))
-        if "phone_vlan" in adapter_settings:
-            vlans.add(int(adapter_settings["phone_vlan"]))
+        if adapter_settings.native_vlan:
+            vlans.add(adapter_settings.native_vlan)
+        if adapter_settings.phone_vlan:
+            vlans.add(adapter_settings.phone_vlan)
 
-        for subinterface in get(adapter_settings, "port_channel.subinterfaces", default=[]):
-            if "vlan_id" in subinterface:
-                vlans.add(int(subinterface["vlan_id"]))
-            elif "number" in subinterface:
-                vlans.add(int(subinterface["number"]))
+        for subinterface in adapter_settings.port_channel.subinterfaces:
+            if subinterface.vlan_id:
+                vlans.add(subinterface.vlan_id)
+            elif subinterface.number:
+                vlans.add(subinterface.number)
 
         return vlans, trunk_groups
 
@@ -83,13 +88,12 @@ class VlansMixin:
         if self.shared_utils.configure_inband_mgmt:
             vlans.add(self.shared_utils.inband_mgmt_vlan)
 
-        for connected_endpoints_key in self.shared_utils.connected_endpoints_keys:
-            connected_endpoints = get(self._hostvars, connected_endpoints_key["key"], default=[])
-            for connected_endpoint in connected_endpoints:
-                for index, adapter in enumerate(connected_endpoint.get("adapters", [])):
-                    adapter["context"] = f"{connected_endpoints_key['key']}[name={connected_endpoint['name']}].adapters[{index}]"
+        for connected_endpoints_key in self.inputs._dynamic_keys.connected_endpoints_keys:
+            for connected_endpoint in connected_endpoints_key.value:
+                for index, adapter in enumerate(connected_endpoint.adapters):
+                    adapter._context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{index}]"
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if self.shared_utils.hostname not in adapter_settings.get("switches", []):
+                    if self.shared_utils.hostname not in adapter_settings.switches:
                         # This switch is not connected to this endpoint. Skipping.
                         continue
 
@@ -102,9 +106,8 @@ class VlansMixin:
                         # configure all vlans anyway.
                         return vlans, trunk_groups
 
-        network_ports = get(self._hostvars, "network_ports", default=[])
-        for index, network_port_item in enumerate(network_ports):
-            for switch_regex in network_port_item.get("switches", []):
+        for index, network_port_item in enumerate(self.inputs.network_ports):
+            for switch_regex in network_port_item.switches:
                 # The match test is built on Python re.match which tests from the beginning of the string #}
                 # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
                 raw_switch_regex = rf"^{switch_regex}$"
@@ -112,7 +115,7 @@ class VlansMixin:
                     # Skip entry if no match
                     continue
 
-                network_port_item["context"] = f"network_ports[{index}]"
+                network_port_item._context = f"network_ports[{index}]"
                 adapter_settings = self.shared_utils.get_merged_adapter_settings(network_port_item)
                 adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                 vlans.update(adapter_vlans)
