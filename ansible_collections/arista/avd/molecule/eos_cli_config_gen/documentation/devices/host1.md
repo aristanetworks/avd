@@ -1,4 +1,4 @@
-# host1/aaa-authorization
+# host1
 
 ## Table of Contents
 
@@ -50,17 +50,23 @@ interface Management1
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
+| admin1 | - | - | True | - |
 | ansible | 15 | network-admin | False | - |
 | cvpadmin | 15 | network-admin | False | - |
+| shell | - | - | False | /sbin/nologin |
 
 #### Local Users Device Configuration
 
 ```eos
 !
 username admin privilege 15 role network-admin nopassword
+no username admin1
 username ansible privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9sP0VRmP6osTo8fgA4Z/dkacQuiOgph6VTHaBkIuqR7XswKKCOH36GXeIChnIF+d1HSoe05mZX+bT2Nu1SObnO8jZjqIFZqUlXUTHWgmnChchABmXS3KMQlivVDE/r9o3vmHEFTfKPZsmG7YHZuavfYXxFJtqtDW0nGH/WJ+mm4v2CP1tOPBLvNE3mLXXyTepDkmrCH/fkwgPR3gBqLrkhWlma0bz+7I851RpCQemhVJFxeI/SnvQfL2VJU2ZMM3pPRSTlLry7Od6kZNAkr4dIOFDCVAaIDbBxPUZ/LvPfyEUwicEo/EKmpLBQ6E2UqcCK2pTyV/K63682spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
+username shell shell /sbin/nologin nopassword
+username shell ssh-key SSH_KEY
+username shell ssh-key secondary SECONDARY_SSH_KEY
 ```
 
 ### TACACS Servers
@@ -89,6 +95,14 @@ tacacs-server host 10.10.10.159 key 8a <removed>
 
 ### RADIUS Server
 
+- Attribute 32 is included in access requests using hostname
+
+- Global RADIUS TLS SSL profile is GLOBAL_RADIUS_SSL_PROFILE
+
+- Dynamic Authorization is enabled on port 1700
+
+- Dynamic Authorization for TLS connections uses SSL profile SSL_PROFILE
+
 #### RADIUS Server Hosts
 
 | VRF | RADIUS Servers | TLS | SSL Profile | Timeout | Retransmit |
@@ -96,14 +110,34 @@ tacacs-server host 10.10.10.159 key 8a <removed>
 | mgt | 10.10.10.157 | - | - | - | - |
 | default | 10.10.10.249 | - | - | - | - |
 | default | 10.10.10.158 | - | - | - | - |
+| mgt | 10.10.11.157 | - | - | 1 | 1 |
+| mgt | 10.10.11.159 | - | - | - | 1 |
+| mgt | 10.10.11.160 | - | - | 1 | - |
+| mgt | 10.10.11.248 | - | - | - | - |
+| default | 10.10.11.249 | - | - | 1 | 1 |
+| default | 10.10.11.158 | - | - | 1 | 1 |
+| default | 10.10.11.156 | True | - | 1 | 1 |
+| mgt | 10.10.11.155 | True | HOST_SSL_PROFILE | 1 | 1 |
 
 #### RADIUS Server Device Configuration
 
 ```eos
 !
+radius-server attribute 32 include-in-access-req hostname
+radius-server dynamic-authorization port 1700
+radius-server tls ssl-profile GLOBAL_RADIUS_SSL_PROFILE
+radius-server dynamic-authorization tls ssl-profile SSL_PROFILE
 radius-server host 10.10.10.157 vrf mgt key 7 <removed>
 radius-server host 10.10.10.249 key 7 <removed>
 radius-server host 10.10.10.158 key 7 <removed>
+radius-server host 10.10.11.157 vrf mgt timeout 1 retransmit 1 key 7 <removed>
+radius-server host 10.10.11.159 vrf mgt retransmit 1 key 7 <removed>
+radius-server host 10.10.11.160 vrf mgt timeout 1 key 7 <removed>
+radius-server host 10.10.11.248 vrf mgt key 7 <removed>
+radius-server host 10.10.11.249 timeout 1 retransmit 1 key 7 <removed>
+radius-server host 10.10.11.158 timeout 1 retransmit 1 key 7 <removed>
+radius-server host 10.10.11.156 tls port 1700 timeout 1 retransmit 1
+radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 2083 timeout 1 retransmit 1
 ```
 
 ### AAA Server Groups

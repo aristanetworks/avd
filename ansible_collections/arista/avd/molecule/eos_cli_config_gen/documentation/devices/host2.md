@@ -1,4 +1,4 @@
-# host2/radius-server-2
+# host2
 
 ## Table of Contents
 
