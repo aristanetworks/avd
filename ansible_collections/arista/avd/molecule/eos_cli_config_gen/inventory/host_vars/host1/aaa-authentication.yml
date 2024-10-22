@@ -1,0 +1,18 @@
+## AAA Authentication
+aaa_authentication:
+  login:
+    default: group TACACS local
+    console: local
+  enable:
+    default: group TACACS local
+  dot1x:
+    default: DOT1X default group
+  policies:
+    on_failure_log: true
+    on_success_log: true
+    local:
+      allow_nopassword: true
+    lockout:
+      failure: 3
+      duration: 300
+      window: 900

@@ -6,6 +6,7 @@
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
   - [RADIUS Server](#radius-server)
+  - [AAA Accounting](#aaa-accounting)
 
 ## Management
 
@@ -46,4 +47,20 @@ interface Management1
 ```eos
 !
 radius-server attribute 32 include-in-access-req format myformat
+```
+
+### AAA Accounting
+
+#### AAA Accounting Summary
+
+| Type | Commands | Record type | Group | Logging |
+| ---- | -------- | ----------- | ----- | ------- |
+| Exec - Console | - | none | - | True |
+| Exec - Default | - | none | - | - |
+
+#### AAA Accounting Device Configuration
+
+```eos
+aaa accounting exec console none
+aaa accounting exec default none
 ```
