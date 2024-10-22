@@ -32,7 +32,8 @@ CSC_TESTS = [
         ["csc_"],
         [
             EosDesigns._CustomStructuredConfigurationsItem(
-                key="csc_loopback_interfaces", value=EosCliConfigGen(loopback_interfaces=[EosCliConfigGen.LoopbackInterfacesItem(name="Loopback0")])
+                key="csc_loopback_interfaces",
+                value=EosCliConfigGen(loopback_interfaces=EosCliConfigGen.LoopbackInterfaces([EosCliConfigGen.LoopbackInterfacesItem(name="Loopback0")])),
             )
         ],
     ),
