@@ -1501,11 +1501,9 @@ keys:
                 identifier:
                   type: str
                   description: "10 octet ethernet segment identifier."
-                  required: true
                 route_target_import:
                   type: "str"
                   description: "Low-order 6 bytes of ES-Import Route Target."
-                  required: true
       address_family_rtc:
         type: dict
         keys:
