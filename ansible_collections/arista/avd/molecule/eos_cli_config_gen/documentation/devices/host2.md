@@ -5,7 +5,10 @@
 - [Management](#management)
   - [Management Interfaces](#management-interfaces)
 - [Authentication](#authentication)
+  - [TACACS Servers](#tacacs-servers)
   - [RADIUS Server](#radius-server)
+  - [AAA Authentication](#aaa-authentication)
+  - [AAA Authorization](#aaa-authorization)
   - [AAA Accounting](#aaa-accounting)
 
 ## Management
@@ -38,6 +41,24 @@ interface Management1
 
 ## Authentication
 
+### TACACS Servers
+
+#### TACACS Servers
+
+| VRF | TACACS Servers | Single-Connection | Timeout |
+| --- | -------------- | ----------------- | ------- |
+| default | 10.10.10.157 | False | - |
+
+Policy unknown-mandatory-attribute ignore is configured
+
+#### TACACS Servers Device Configuration
+
+```eos
+!
+tacacs-server policy unknown-mandatory-attribute ignore
+tacacs-server host 10.10.10.157
+```
+
 ### RADIUS Server
 
 - Attribute 32 is included in access requests using format 'myformat'
@@ -47,6 +68,35 @@ interface Management1
 ```eos
 !
 radius-server attribute 32 include-in-access-req format myformat
+```
+
+### AAA Authentication
+
+#### AAA Authentication Summary
+
+| Type | Sub-type | User Stores |
+| ---- | -------- | ---------- |
+
+#### AAA Authentication Device Configuration
+
+```eos
+!
+```
+
+### AAA Authorization
+
+#### AAA Authorization Summary
+
+| Type | User Stores |
+| ---- | ----------- |
+
+Authorization for configuration commands is disabled.
+
+#### AAA Authorization Device Configuration
+
+```eos
+no aaa authorization config-commands
+!
 ```
 
 ### AAA Accounting

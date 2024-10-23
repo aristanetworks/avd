@@ -1,4 +1,5 @@
-### AAA Server Groups
+---
+## AAA Server Groups
 aaa_server_groups:
   - name: TACACS1
     type: tacacs+
@@ -12,3 +13,27 @@ aaa_server_groups:
       - server: 192.168.10.157
         vrf: mgt
       - server: 10.10.10.248
+  - name: LDAP1
+    type: ldap
+    servers:
+      - server: 192.168.10.157
+        vrf: mgt
+      - server: 10.10.10.248
+  - name: LADP2
+    type: ldap
+    servers:
+      - server: 10.10.10.157
+        vrf: mgt
+      - server: 10.10.10.249
+  - name: RADIUS1
+    type: radius
+    servers:
+      - server: 192.168.10.157
+        vrf: mgt
+      - server: 10.10.10.248
+  - name: RADIUS2
+    type: radius
+    servers:
+      - server: 10.10.10.157
+        vrf: mgt
+      - server: 10.10.10.249

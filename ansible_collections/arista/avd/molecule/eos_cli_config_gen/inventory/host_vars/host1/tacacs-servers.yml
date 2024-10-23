@@ -1,4 +1,5 @@
-### Tacacs+ Servers
+---
+## Tacacs+ Servers
 tacacs_servers:
   timeout: 10
   hosts:

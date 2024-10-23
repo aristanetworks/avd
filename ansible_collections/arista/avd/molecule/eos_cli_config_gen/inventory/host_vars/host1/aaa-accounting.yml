@@ -1,3 +1,4 @@
+---
 ## AAA Accounting
 aaa_accounting:
   exec:
@@ -37,6 +38,7 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
+        # To handle the missing case
       - commands: 1
         type: start-stop
         logging: false

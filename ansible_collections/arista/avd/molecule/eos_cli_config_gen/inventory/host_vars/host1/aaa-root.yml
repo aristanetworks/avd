@@ -1,4 +1,5 @@
-### AAA Root ###
+---
+## AAA Root
 aaa_root:
   secret:
     sha512_password: dsakjlhfqwereDSAFWE346543dfgsG

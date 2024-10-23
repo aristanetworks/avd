@@ -1,4 +1,5 @@
-### Local Users ###
+---
+## Local Users
 local_users:
   - name: admin
     privilege: 15

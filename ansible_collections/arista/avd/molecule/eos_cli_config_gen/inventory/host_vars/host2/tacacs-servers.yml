@@ -1,0 +1,6 @@
+---
+## Tacacs+ Servers
+tacacs_servers:
+  policy_unknown_mandatory_attribute_ignore: true
+  hosts:
+    - host: 10.10.10.157
