@@ -19,17 +19,17 @@ ip_name_servers:
   vrf: MGMT
 - ip_address: 192.168.42.50
   vrf: MGMT
-- ip_address: 1.1.1.1
+- ip_address: 192.168.42.1
   vrf: VRF1
 - ip_address: 192.168.42.10
   vrf: VRF1
-- ip_address: 8.8.4.4
+- ip_address: 192.168.42.4
   vrf: VRF1
-- ip_address: 1.1.1.1
+- ip_address: 192.168.42.1
   vrf: VRF2
 - ip_address: 192.168.42.40
   vrf: VRF2
-- ip_address: 8.8.8.8
+- ip_address: 192.168.42.8
   vrf: VRF2
 local_users:
 - name: eos-designs-admin

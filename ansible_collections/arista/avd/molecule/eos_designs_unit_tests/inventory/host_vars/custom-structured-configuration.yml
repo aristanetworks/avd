@@ -16,19 +16,19 @@ name_servers:
   - 192.168.42.50  # Unique value
 
 csc_1_ip_name_servers:
-  - ip_address: 1.1.1.1  # Collides with csc_2_ip_name_servers
+  - ip_address: 192.168.42.1  # Collides with csc_2_ip_name_servers
     vrf: VRF1
   - ip_address: 192.168.42.10  # Collides with eos_designs
     vrf: VRF1
-  - ip_address: 8.8.4.4  # Unique value
+  - ip_address: 192.168.42.4  # Unique value
     vrf: VRF1
 
 csc_2_ip_name_servers:
-  - ip_address: 1.1.1.1  # Collides with csc_1_ip_name_servers
+  - ip_address: 192.168.42.1  # Collides with csc_1_ip_name_servers
     vrf: VRF2
   - ip_address: 192.168.42.40  # Collides with eos_designs
     vrf: VRF2
-  - ip_address: 8.8.8.8  # Unique value
+  - ip_address: 192.168.42.8  # Unique value
     vrf: VRF2
 
 # DATA MODEL WITH PRIMARY KEY

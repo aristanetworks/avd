@@ -68,7 +68,7 @@ ip name-server vrf MGMT 192.168.42.40
 # Only ip_name_servers from eos_ci_config_gen.
 # The variables will make it to the intended config
 ip_name_servers:
-  - ip_address: 1.1.1.1
+  - ip_address: 192.168.42.1
     vrf: EOS_CLI
   - ip_address: 192.168.42.10
     vrf: EOS_CLI
@@ -77,7 +77,7 @@ ip_name_servers:
 will generate as intended config:
 
 ```eos
-ip name-server vrf EOS_CLI 1.1.1.1
+ip name-server vrf EOS_CLI 192.168.42.1
 ip name-server vrf EOS_CLI 192.168.42.10
 ```
 
@@ -92,7 +92,7 @@ name_servers:
   - 192.168.42.40
 
 ip_name_servers:
-  - ip_address: 1.1.1.1
+  - ip_address: 192.168.42.1
     vrf: EOS_CLI
   - ip_address: 192.168.42.10
     vrf: EOS_CLI
@@ -116,7 +116,7 @@ name_servers:
   - 192.168.42.40
 
 custom_structured_configuration_ip_name_servers:
-  - ip_address: 1.1.1.1
+  - ip_address: 192.168.42.1
     vrf: EOS_CLI
   - ip_address: 192.168.42.10
     vrf: EOS_CLI
@@ -125,7 +125,7 @@ custom_structured_configuration_ip_name_servers:
 will generate as intended config:
 
 ```eos
-ip name-server vrf EOS_CLI 1.1.1.1
+ip name-server vrf EOS_CLI 192.168.42.1
 ip name-server vrf MGMT 192.168.42.10
 ip name-server vrf EOS_CLI 192.168.42.10
 ip name-server vrf MGMT 192.168.42.40
