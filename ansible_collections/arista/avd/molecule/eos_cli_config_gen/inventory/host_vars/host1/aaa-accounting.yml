@@ -42,6 +42,5 @@ aaa_accounting:
         # To handle the missing case
       - commands: 1
         type: start-stop
-        # TODO to fix the 
         logging: false
         group: TACACS
