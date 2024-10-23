@@ -103,6 +103,13 @@ pip install pyavd[ansible]
       show_object_full_path: true
       paths: ../../../../python-avd
 
+::: pyavd.get_fabric_documentation
+    options:
+      heading_level: 3
+      show_root_toc_entry: false
+      show_object_full_path: true
+      paths: ../../../../python-avd
+
 ::: pyavd.get_device_config
     options:
       heading_level: 3
@@ -118,6 +125,13 @@ pip install pyavd[ansible]
       paths: ../../../../python-avd
 
 ::: pyavd.validation_result
+    options:
+      heading_level: 3
+      show_root_toc_entry: false
+      show_object_full_path: true
+      paths: ../../../../python-avd
+
+::: pyavd.api.fabric_documentation
     options:
       heading_level: 3
       show_root_toc_entry: false

@@ -3,12 +3,7 @@
 # that can be found in the LICENSE file.
 
 from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
-
-
-class FabricDocumentation:
-    fabric_documentation: str = ""
-    topology_csv: str = ""
-    p2p_links_csv: str = ""
+from pyavd.api.fabric_documentation import FabricDocumentation
 
 
 def get_fabric_documentation(
