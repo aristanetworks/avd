@@ -1,0 +1,129 @@
+---
+- name: "{{ test_id | upper }} Converge - cv_deploy with Workspace Abandon"
+  hosts: SITE1_FABRIC
+  connection: local
+  gather_facts: false
+  vars:
+    cv_server: www.cv-staging.corp.arista.io
+    cv_token: "{{ lookup('env', 'CVAAS_AAWG_CI') }}"
+    cv_verify_certs: true
+    cv_skip_missing_devices: true
+    eos_config_dir: "{{ playbook_dir }}/intended/configs/test_invalid_configs"
+    structured_dir: "{{ playbook_dir }}/intended/structured_configs/test_invalid_configs"
+    intended_tag_device: avd-ci-leaf1
+    intended_tags: "{{ lookup('file', structured_dir ~ '/' ~ intended_tag_device ~ '.yml')| from_yaml }}"
+    test_id: "ws-invalid-configs"
+    cv_common_pattern: "avd-cv-deploy-{{ test_id }}"
+
+  tasks:
+    - name: "{{ test_id | upper }} Banner"
+      run_once: true
+      debug:
+        msg:
+          - "######################################################################"
+          - "### STARTING MOLECULE TEST {{ '{:<38}'.format(test_id[:38]) | upper }} ####"
+          - "######################################################################"
+
+    - name: "{{ test_id | upper }} Generate random string"
+      run_once: true
+      ansible.builtin.set_fact:
+        r: "{{ lookup('password', '/dev/null chars=ascii_lowercase,digits length=4') }}"
+
+    - name: "{{ test_id | upper }} Set deploy facts"
+      run_once: true
+      ansible.builtin.set_fact:
+        cv_workspace_name: "{{ cv_common_pattern }}-{{ r }}-converge"
+        cv_workspace_description: "{{ (cv_common_pattern + '-' + r + '-converge') | upper }}"
+        cv_change_control_name: "{{ cv_common_pattern }}-{{ r }}-converge"
+        cv_change_control_description: "{{ (cv_common_pattern + '-' + r + '-converge') | upper }}"
+        cv_register_detailed_results: true
+
+    - name: "{{ test_id | upper }} Provision with workspace Pending"
+      run_once: true
+      delegate_to: localhost
+      block:
+        - name: Trigger errors by building WS with EOS CLI errors
+          ansible.builtin.import_role:
+            name: arista.avd.cv_deploy
+          vars:
+            cv_submit_workspace: false
+      rescue:
+        - name: "{{ test_id | upper }} Display CVP result"
+          run_once: true
+          ansible.builtin.debug:
+            msg: '{{ cv_deploy_results }}'
+
+        - name: "{{ test_id | upper }} Check CVP returns"
+          run_once: true
+          ansible.builtin.assert:
+            that:
+              # assert validate config build errors
+              - >
+                cv_deploy_results.workspace.build_errors | selectattr('config_validation', 'defined') | map(attribute='config_validation') | list | flatten |
+                selectattr('error_msg', 'equalto', '> spanning-tree mode spine1 % Invalid input (at token 2: \'spine1\')') | list | length > 0
+              - >
+                cv_deploy_results.workspace.build_errors | selectattr('config_validation', 'defined') | map(attribute='config_validation') | list | flatten |
+                selectattr('error_msg', 'equalto', '>    seqq 10 permit 10.20.0.0/24 eq 32 % Invalid input (at token 0: \'seqq\')') | list | length > 0
+              - >
+                cv_deploy_results.workspace.build_errors | selectattr('config_validation', 'defined') | map(attribute='config_validation') | list | flatten |
+                selectattr('error_msg', 'equalto', '> spanning-tree mode spine2 % Invalid input (at token 2: \'spine2\')') | list | length > 0
+
+    - name: "{{ test_id | upper }} Cleanup orphan workspace"
+      run_once: true
+      ansible.legacy.uri:
+        url: https://{{ cv_server }}/api/resources/workspace/v1/WorkspaceConfig/some
+        validate_certs: yes
+        return_content: yes
+        headers:
+          Accept: "application/json"
+          Content-Type: "application/json"
+          Authorization: "Bearer {{ lookup('env', 'CVAAS_AAWG_CI') }}"
+        method: POST
+        body_format: json
+        body:
+          {
+            "values": [
+              {
+                "key": {
+                  "workspaceId": "{{ cv_deploy_results.workspace.id }}"
+                },
+                "request": "REQUEST_ABANDON",
+                "requestParams": {
+                  "requestId": "{{ r }}"
+                }
+              }
+            ]
+          }
+        force_basic_auth: yes
+        timeout: 10
+      register: cvp_abandon_workspace_result
+      until: cvp_abandon_workspace_result.status == 200
+      retries: 3
+      delay: 3
+      ignore_errors: True
+      when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
+
+    - name: "{{ test_id | upper }} Set cleanup facts"
+      run_once: true
+      ansible.builtin.set_fact:
+        cv_workspace_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
+        cv_workspace_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
+        cv_change_control_name: "{{ cv_common_pattern }}-{{ r }}-cleanup"
+        cv_change_control_description: "{{ cv_common_pattern + '-' + r + '-cleanup' | upper }}"
+        cv_register_detailed_results: true
+
+    - name: "{{ test_id | upper }}  Cleanup"
+      run_once: true
+      delegate_to: localhost
+      ansible.builtin.import_role:
+        name: arista.avd.cv_deploy
+      vars:
+        cv_devices: "{{ ansible_play_hosts_all }}"
+        eos_config_dir: "{{ playbook_dir }}/intended/configs/base_configs"
+        structured_dir: "{{ playbook_dir }}/intended/structured_configs/base_configs"
+        cv_submit_workspace_force: true
+        cv_run_change_control: true
+
+    # Clear failed state of failed hosts for next engaged playbook (no impact within running playbook)
+    - name: Reset ansible_play_hosts for next playbook (no impact within running playbook)
+      ansible.builtin.meta: clear_host_errors

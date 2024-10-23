@@ -74,6 +74,23 @@ class CVPathfinderMetadata:
 
 
 @dataclass
+class CVWSBuildConfigValidationError:
+    configlet_name: str | None = None
+    """Name of the Studio-generated configlet which raised validation error(s)."""
+    error_msg: str | None = None
+    """EOS-returned error message."""
+    line_num: int | None = None
+    """Line number of the violating configuration line within the proposed configlet."""
+
+
+@dataclass
+class CVWSBuildError:
+    serial_number: str | None = None
+    """Serial Number of the device"""
+    config_validation: list[CVWSBuildConfigValidationError] = field(default_factory=list)
+
+
+@dataclass
 class CVWorkspace:
     name: str = field(default_factory=lambda: f"AVD {datetime.now()}")
     description: str | None = None
@@ -96,6 +113,10 @@ class CVWorkspace:
     """The final state of the Workspace. Do not set this manually."""
     change_control_id: str | None = None
     """Do not set this manually."""
+    build_id: str | None = None
+    """last_build_id of the WS. Used to fetch build errors related to the last WS build attempt."""
+    build_errors: list[CVWSBuildError] = field(default_factory=list)
+    """Details of WS build errors"""
 
 
 @dataclass
