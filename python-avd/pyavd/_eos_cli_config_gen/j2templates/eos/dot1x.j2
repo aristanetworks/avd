@@ -126,21 +126,21 @@ dot1x
 {%             if dot1x.radius_av_pair.dhcp.hostname.enabled is arista.avd.defined(true) %}
 {%                 set av_pair_dhcp = "radius av-pair dhcp hostname" %}
 {%                 if dot1x.radius_av_pair.dhcp.hostname.auth_only is arista.avd.defined(true) %}
-{%                     set av_pair_dhcp = av_pair_dhcp~ " auth-only" %}
+{%                     set av_pair_dhcp = av_pair_dhcp ~ " auth-only" %}
 {%                 endif %}
    {{ av_pair_dhcp }}
 {%             endif %}
 {%             if dot1x.radius_av_pair.dhcp.parameter_request_list.enabled is arista.avd.defined(true) %}
 {%                 set av_pair_dhcp = "radius av-pair dhcp parameter-request-list" %}
 {%                 if dot1x.radius_av_pair.dhcp.parameter_request_list.auth_only is arista.avd.defined(true) %}
-{%                     set av_pair_dhcp = av_pair_dhcp~ " auth-only" %}
+{%                     set av_pair_dhcp = av_pair_dhcp ~ " auth-only" %}
 {%                 endif %}
    {{ av_pair_dhcp }}
 {%             endif %}
 {%             if dot1x.radius_av_pair.dhcp.vendor_class_id.enabled is arista.avd.defined(true) %}
 {%                 set av_pair_dhcp = "radius av-pair dhcp vendor-class-id" %}
 {%                 if dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only is arista.avd.defined(true) %}
-{%                     set av_pair_dhcp = av_pair_dhcp~ " auth-only" %}
+{%                     set av_pair_dhcp = av_pair_dhcp ~ " auth-only" %}
 {%                 endif %}
    {{ av_pair_dhcp }}
 {%             endif %}
