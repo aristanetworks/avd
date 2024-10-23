@@ -150,10 +150,10 @@ ASN Notation: asplain
 | Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
 | L3 Gateway Configured | True |
 | L3 Gateway Inter-domain | True |
-| Domain Local: Ethernet-Segment Identifier | 0011:1111:1111:1111:1111 |
-| Domain Local: Ethernet-Segment Route-Target | 11:11:11:11:11:11 |
-| Domain Remote: Ethernet-Segment Identifier | 0022:2222:2222:2222:2222 |
-| Domain Remote: Ethernet-Segment Route-Target | 22:22:22:22:22:22 |
+| Local Domain: Ethernet-Segment Identifier | 0011:1111:1111:1111:1111 |
+| Local Domain: Ethernet-Segment Route-Target | 11:11:11:11:11:11 |
+| Remote Domain: Ethernet-Segment Identifier | 0022:2222:2222:2222:2222 |
+| Remote Domain: Ethernet-Segment Route-Target | 22:22:22:22:22:22 |
 
 #### Router BGP VLAN Aware Bundles
 
