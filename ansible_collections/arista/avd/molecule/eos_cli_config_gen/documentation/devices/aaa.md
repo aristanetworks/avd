@@ -205,11 +205,15 @@ aaa authorization commands 10,15 default group tacacs+ local
 | Exec - Console | - | start-stop | TACACS | True |
 | Commands - Console | all | start-stop | TACACS | True |
 | Commands - Console | 0 | start-stop |  -  | True |
+| Commands - Console | 1 | none |  -  | True |
+| Commands - Console | 2 | start-stop |  -  | False |
 | Exec - Default | - | start-stop | TACACS | True |
 | System - Default | - | start-stop | TACACS | - |
 | Dot1x - Default  | - | start-stop | RADIUS | - |
 | Commands - Default | all | start-stop | TACACS | True |
 | Commands - Default | 0 | start-stop | - | True |
+| Commands - Default | 1 | none | - | True |
+| Commands - Default | 2 | start-stop | - | False |
 
 #### AAA Accounting Device Configuration
 
@@ -217,9 +221,11 @@ aaa authorization commands 10,15 default group tacacs+ local
 aaa accounting exec console start-stop group TACACS logging
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
+aaa accounting commands 1 console none
 aaa accounting exec default start-stop group TACACS logging
 aaa accounting system default start-stop group TACACS
 aaa accounting dot1x default start-stop group RADIUS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
+aaa accounting commands 1 default none
 ```
