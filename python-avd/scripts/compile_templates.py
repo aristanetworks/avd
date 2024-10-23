@@ -4,18 +4,12 @@
 # that can be found in the LICENSE file.
 import logging
 from pathlib import Path
-from sys import path, argv
+from sys import argv, path
 
 # Override global path to load pyavd from pwd instead of any installed version.
 path.insert(0, str(Path(__file__).parent.parent))
 
-from pyavd.constants import (
-    EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH,
-    EOS_CLI_CONFIG_GEN_JINJA2_TEMPLATE_PATH,
-    EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH,
-    EOS_DESIGNS_JINJA2_TEMPLATE_PATH,
-)
-from pyavd.templater import Templar
+from pyavd._utils.compile_templates import compile_eos_cli_config_gen_templates, compile_eos_designs_templates
 
 
 def main(log_level: int = logging.INFO) -> None:
@@ -26,13 +20,8 @@ def main(log_level: int = logging.INFO) -> None:
 
     """
     logging.basicConfig(level=log_level, format="[compile_templates] - %(message)s")
-
-    templar = Templar(precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_CLI_CONFIG_GEN_JINJA2_TEMPLATE_PATH])
-    templar.compile_templates_in_paths(
-        precompiled_templates_path=EOS_CLI_CONFIG_GEN_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_CLI_CONFIG_GEN_JINJA2_TEMPLATE_PATH]
-    )
-    templar = Templar(precompiled_templates_path=EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_DESIGNS_JINJA2_TEMPLATE_PATH])
-    templar.compile_templates_in_paths(precompiled_templates_path=EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH, searchpaths=[EOS_DESIGNS_JINJA2_TEMPLATE_PATH])
+    compile_eos_cli_config_gen_templates()
+    compile_eos_designs_templates()
 
 
 if __name__ == "__main__":

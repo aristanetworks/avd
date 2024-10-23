@@ -1,7 +1,7 @@
 # Copyright (c) 2023-2024 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from ._utils.check_running_from_source import check_running_from_source
+from ._utils.compile_templates import check_templates
 from .get_avd_facts import get_avd_facts
 from .get_device_config import get_device_config
 from .get_device_doc import get_device_doc
@@ -30,4 +30,4 @@ __all__ = [
     "ValidationResult",
 ]
 
-check_running_from_source()
+check_templates()

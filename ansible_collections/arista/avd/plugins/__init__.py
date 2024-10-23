@@ -19,6 +19,6 @@ if RUNNING_FROM_SOURCE_PATH.exists():
 
     display = Display()
 
-    display.warning(f"AVD detected it is running from source, prepending the path to the source of pyavd '{str(PYTHON_AVD_PATH)}' to PATH to use it.")
+    display.warning(f"AVD detected it is running from source, prepending the path to the source of pyavd '{PYTHON_AVD_PATH}' to PATH to use it.")
 
     sys.path = [str(PYTHON_AVD_PATH), *sys.path]
