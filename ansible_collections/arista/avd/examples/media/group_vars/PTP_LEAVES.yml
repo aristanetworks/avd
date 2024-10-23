@@ -1,0 +1,34 @@
+---
+type: ptp_leaf
+
+ptp_leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.3.0/27
+    uplink_switches: [ 'amber-spine1', 'blue-spine1' ]
+    uplink_ipv4_pool: 10.255.253.0/26
+    spanning_tree_priority: 4096
+    spanning_tree_mode: mstp
+    filter:
+      tenants: [ ptp ]
+
+  nodes:
+    - name: media-PTP-1
+      id: 1
+      bgp_as: 65401
+      mgmt_ip: 172.16.3.101/24
+      filter:
+        tags: [ media-PTP-1 ]
+      uplink_switch_interfaces:
+        - Ethernet5
+        - Ethernet5
+
+    - name: media-PTP-2
+      id: 2
+      bgp_as: 65402
+      mgmt_ip: 172.16.3.102/24
+      filter:
+        tags: [ media-PTP-2 ]
+      uplink_switch_interfaces:
+        - Ethernet6
+        - Ethernet6
