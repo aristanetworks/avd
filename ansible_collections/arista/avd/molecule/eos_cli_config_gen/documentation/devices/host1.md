@@ -65,8 +65,8 @@ username ansible privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin privilege 15 role network-admin secret sha512 <removed>
 username cvpadmin ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQC9OuVC4D+ARBrc9sP0VRmP6osTo8fgA4Z/dkacQuiOgph6VTHaBkIuqR7XswKKCOH36GXeIChnIF+d1HSoe05mZX+bT2Nu1SObnO8jZjqIFZqUlXUTHWgmnChchABmXS3KMQlivVDE/r9o3vmHEFTfKPZsmG7YHZuavfYXxFJtqtDW0nGH/WJ+mm4v2CP1tOPBLvNE3mLXXyTepDkmrCH/fkwgPR3gBqLrkhWlma0bz+7I851RpCQemhVJFxeI/SnvQfL2VJU2ZMM3pPRSTlLry7Od6kZNAkr4dIOFDCVAaIDbBxPUZ/LvPfyEUwicEo/EKmpLBQ6E2UqcCK2pTyV/K63682spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU= cvpadmin@hostmachine.local
 username shell shell /sbin/nologin nopassword
-username shell ssh-key SSH_KEY
-username shell ssh-key secondary SECONDARY_SSH_KEY
+username shell ssh-key ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDHMTFuLHPz/prREZZIks0ca4btBIzEbvY6KRYGzhN7JCG5CTfre0Y9UCbNul7qNl7cxomQkh/0VjQNX6ecPd0HyOTKL2EK002ejNyvooUDarnglMWtjKIl40NgDR/GNSkvC3nEylvX1H7Rfmu38NCqiwIpWA8JFwgLCLvkWUoORxHhIIy8/vttLgMxr66HGlVAnRidf3VVCnlILm4gUpc3fR43EhvVoYByY3jEa/fypiS2nDP9K2fXtpXGrIHSbyMu4Mj3fnSdcqWysRF7Tqc6Kvet8ImS07fLcgpbdLp31ssF1rssbTnD1zWuAozvXpK1d+vFO4EfFr5yzkE2Q8lM0wPpdS4LBWQfJdWgi6t5XEXewWyTYfIDKCBOI2dECGtkDjme+PDNIL9IQiiYC2iXMmQrun9fsp8jicdw1svGef8Otdb4kmHXiQ3mAxTeHLgeYPfYyekKq/+dFMcAZT+sv0g24AHc4ulitfLRoGjxYHZLGg2KQpFfAn0aQKCd5vk= noname@hostmachine-asd-cl
+username shell ssh-key secondary ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDHMTFuLHPz/prREZZIks0ca4btBIzEbvY6KRYGzhN7JCG5CTfre0Y9UCbNul7qNl7cxomQkh/0VjQNX6ecPd0HyOTKL2EK002ejNyvooUDarnglMWtjKIl40NgDR/GNSkvC3nEylvX1H7Rfmu38NCqiwIpWA8JFwgLCLvkWUoORxHhIIy8/vttLgMxr66HGlVAnRidf3VVCnlILm4gUpc3fR43EhvVoYByY3jEa/fypiS2nDP9K2fXtpXGrIHSbyMu4Mj3fnSdcqWysRF7Tqc6Kvet8ImS07fLcgpbdLp31ssF1rssbTnD1zWuAozvXpK1d+vFO4EfFr5yzkE2Q8lM0wPpdS4LBWQfJdWgi6t5XEXewWyTYfIDKCBOI2dECGtkDjme+PDNIL9IQiiYC2iXMmQrun9fsp8jicdw1svGef8Otdb4kmHXiQ3mAxTeHLgeYPfYyekKq/+dFMcAZT+sv0g24AHc4ulitfLRoGjxYHZLGg2KQpFfAn0aQKCd5vk= noname@hostmachine-asd-cl
 ```
 
 ### TACACS Servers
@@ -146,6 +146,8 @@ radius-server host 10.10.11.155 vrf mgt tls ssl-profile HOST_SSL_PROFILE port 20
 
 | Server Group Name | Type  | VRF | IP address |
 | ------------------| ----- | --- | ---------- |
+| TACACS | tacacs+ | mgt | 10.10.11.157 |
+| TACACS | tacacs+ | default | 10.10.11.249 |
 | TACACS1 | tacacs+ | mgt | 10.10.10.157 |
 | TACACS1 | tacacs+ | default | 10.10.10.249 |
 | TACACS2 | tacacs+ | mgt | 192.168.10.157 |
@@ -179,6 +181,10 @@ aaa group server radius RADIUS2
    server 10.10.10.157 vrf mgt
    server 10.10.10.249
 !
+aaa group server tacacs+ TACACS
+   server 10.10.11.157 vrf mgt
+   server 10.10.11.249
+!
 aaa group server tacacs+ TACACS1
    server 10.10.10.157 vrf mgt
    server 10.10.10.249
@@ -211,7 +217,7 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 aaa authentication login default group TACACS local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
-aaa authentication dot1x default DOT1X default group
+aaa authentication dot1x default group TACACS
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login
@@ -225,9 +231,9 @@ aaa authentication policy lockout failure 3 window 900 duration 300
 
 | Type | User Stores |
 | ---- | ----------- |
-| Exec | group CUST local |
+| Exec | group TACACS local |
 | Default Role | network-admin |
-| Additional Dynamic Authorization Groups | radius, group1 |
+| Additional Dynamic Authorization Groups | radius, RADIUS1 |
 
 Authorization for configuration commands is enabled.
 
@@ -237,7 +243,7 @@ Authorization for serial console is enabled.
 
 | Privilege Level | User Stores |
 | --------------- | ----------- |
-| all | group aaaAuth |
+| all | group TACACS |
 | 5 | group radius |
 | 10,15 | group tacacs+ local |
 
@@ -246,9 +252,9 @@ Authorization for serial console is enabled.
 ```eos
 aaa authorization policy local default-role network-admin
 aaa authorization serial-console
-aaa authorization dynamic dot1x additional-groups group radius group group1
-aaa authorization exec default group CUST local
-aaa authorization commands all default group aaaAuth
+aaa authorization dynamic dot1x additional-groups group radius group RADIUS1
+aaa authorization exec default group TACACS local
+aaa authorization commands all default group TACACS
 aaa authorization commands 5 default group radius
 aaa authorization commands 10,15 default group tacacs+ local
 !
@@ -263,13 +269,13 @@ aaa authorization commands 10,15 default group tacacs+ local
 | Exec - Console | - | start-stop | TACACS | True |
 | Commands - Console | all | start-stop | TACACS | True |
 | Commands - Console | 0 | start-stop |  -  | True |
-| Commands - Console | 1 | start-stop |  -  | False |
+| Commands - Console | 1 | start-stop | TACACS1 | False |
 | Exec - Default | - | start-stop | TACACS | True |
 | System - Default | - | start-stop | TACACS | - |
 | Dot1x - Default  | - | start-stop | RADIUS | - |
 | Commands - Default | all | start-stop | TACACS | True |
 | Commands - Default | 0 | start-stop | - | True |
-| Commands - Default | 1 | start-stop | - | False |
+| Commands - Default | 1 | start-stop | TACACS | False |
 
 #### AAA Accounting Device Configuration
 
@@ -277,11 +283,11 @@ aaa authorization commands 10,15 default group tacacs+ local
 aaa accounting exec console start-stop group TACACS logging
 aaa accounting commands all console start-stop group TACACS logging
 aaa accounting commands 0 console start-stop logging
-aaa accounting commands 1 console start-stop
+aaa accounting commands 1 console start-stop group TACACS1
 aaa accounting exec default start-stop group TACACS logging
 aaa accounting system default start-stop group TACACS
 aaa accounting dot1x default start-stop group RADIUS
 aaa accounting commands all default start-stop group TACACS logging
 aaa accounting commands 0 default start-stop logging
-aaa accounting commands 1 default start-stop
+aaa accounting commands 1 default start-stop group TACACS
 ```

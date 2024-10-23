@@ -2,4 +2,4 @@
 ## AAA Root
 aaa_root:
   secret:
-    sha512_password: dsakjlhfqwereDSAFWE346543dfgsG
+    sha512_password: $6$u/gcPay8$acyobpJ88zHxkziwGJPcMbp9B/JukvShxg0fDJu7WuMCeB8H0XKX.90w1cAfwcXBrYCR.gjfzaolFgP2zBUua.

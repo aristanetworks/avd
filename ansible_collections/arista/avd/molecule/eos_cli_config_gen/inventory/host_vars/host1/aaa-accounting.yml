@@ -30,6 +30,7 @@ aaa_accounting:
       - commands: 1
         type: start-stop
         logging: false
+        group: TACACS1
     default:
       - commands: all
         type: start-stop
@@ -41,4 +42,6 @@ aaa_accounting:
         # To handle the missing case
       - commands: 1
         type: start-stop
+        # TODO to fix the 
         logging: false
+        group: TACACS
