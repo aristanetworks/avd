@@ -662,10 +662,10 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         endif %}
 {%         for segment in router_bgp.address_family_evpn.evpn_ethernet_segment | arista.avd.natural_sort('domain') %}
 {%             if segment.identifier is arista.avd.defined %}
-| Domain {{ domain | title }}: Ethernet-Segment Identifier | {{ segment.identifier }} |
+| Domain {{ segment.domain | title }}: Ethernet-Segment Identifier | {{ segment.identifier }} |
 {%             endif %}
 {%             if segment.route_target_import is arista.avd.defined %}
-| Domain {{ domain | title }}: Ethernet-Segment Route-Target | {{ segment.route_target_import }} |
+| Domain {{ segment.domain | title }}: Ethernet-Segment Route-Target | {{ segment.route_target_import }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

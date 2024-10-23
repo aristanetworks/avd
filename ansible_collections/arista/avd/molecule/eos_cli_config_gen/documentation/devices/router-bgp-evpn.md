@@ -150,6 +150,10 @@ ASN Notation: asplain
 | Remote Domain Peer Groups | EVPN-OVERLAY-PEERS |
 | L3 Gateway Configured | True |
 | L3 Gateway Inter-domain | True |
+| Domain Local: Ethernet-Segment Identifier | 0011:1111:1111:1111:1111 |
+| Domain Local: Ethernet-Segment Route-Target | 11:11:11:11:11:11 |
+| Domain Remote: Ethernet-Segment Identifier | 0022:2222:2222:2222:2222 |
+| Domain Remote: Ethernet-Segment Route-Target | 22:22:22:22:22:22 |
 
 #### Router BGP VLAN Aware Bundles
 
@@ -329,6 +333,12 @@ router bgp 65101
       host-flap detection window 10 threshold 1 expiry timeout 3 seconds
       layer-2 fec in-place update
       route import overlay-index gateway
+      evpn ethernet-segment domain local
+          identifier 0011:1111:1111:1111:1111
+          route-target import 11:11:11:11:11:11
+      evpn ethernet-segment domain remote
+          identifier 0022:2222:2222:2222:2222
+          route-target import 22:22:22:22:22:22
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
