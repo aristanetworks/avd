@@ -10,6 +10,7 @@
 - [MPLS](#mpls-1)
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
+  - [MPLS RSVP](#mpls-rsvp)
 
 ## Management
 
@@ -123,6 +124,47 @@ mpls ldp
    no shutdown
 !
 mpls icmp fragmentation-needed tunneling
+!
+mpls rsvp
+   refresh interval 3
+   refresh method explicit
+   hello interval 30 multiplier 254
+   authentication type md5
+   authentication sequence-number window 234
+   authentication index 55 password 7 <removed>
+   authentication index 766 password 7 <removed>
+   authentication index 766 active
+   neighbor 1.1.1.1 authentication type md5
+   neighbor 1.1.1.1 authentication index 3 active
+   neighbor 1.1.12.2 authentication type none
+   neighbor 1.1.12.2 authentication index 30 active
+   neighbor 1.10.1.2 authentication type none
+   neighbor 1.21.1.20 authentication type md5
+   neighbor 10.1.1.2 authentication index 303 active
+   ip access-group RSVP_access_group_ipv4
+   ipv6 access-group RSVP_access_group_ipv6
+   fast-reroute mode link-protection
+   fast-reroute reversion local
+   fast-reroute bypass tunnel optimization interval 65535 seconds
+   srlg strict
+   label local-termination explicit-null
+   preemption method soft timer 444
+   mtu signaling
+   !
+   hitless-restart
+      timer recovery 222 seconds
+   !
+   graceful-restart role helper
+      timer restart maximum 32 seconds
+      timer recovery maximum 33 seconds
+   !
+   graceful-restart role speaker
+      timer restart 35 seconds
+      timer recovery 36 seconds
+   !
+   p2mp
+      disabled
+   shutdown
 ```
 
 ### MPLS Interfaces
@@ -131,3 +173,47 @@ mpls icmp fragmentation-needed tunneling
 | --------- | --------------- | ----------- | -------- |
 | Ethernet1 | True | True | True |
 | Loopback0 | - | True | - |
+
+### MPLS RSVP
+
+#### MPLS RSVP Summary
+
+| Setting | Value |
+| ------- | ----- |
+| Refresh interval | 3 |
+| Refresh method  | explicit |
+| Hello interval | 30 |
+| Timeout multiplier | 254 |
+| Authentication type | md5 |
+| Authentication sequence-number window | 234 |
+| Authentication active index | 766 |
+| IPv4 access-group | RSVP_access_group_ipv4 |
+| IPv6 access-group | RSVP_access_group_ipv6 |
+| SRLG strict | enabled |
+| Label local-termination | explicit-null |
+| Preemption method | soft |
+| Preemption timer | 444 |
+| MTU signaling | True |
+| Fast reroute mode | link-protection |
+| Fast reroute reversion | local |
+| Fast reroute  bypass tunnel optimization interval | 65535 |
+| Hitless restart | Active |
+| Hitless restart recovery timer | 222 |
+| Shutdown | Active |
+
+##### Neighbor
+
+| Neighbor IP | Index | Type |
+| ----------- | ----- | ---- |
+| 1.1.1.1 | 3 | md5 |
+| 1.1.12.2 | 30 | none |
+| 1.10.1.2 | - | none |
+| 1.21.1.20 | - | md5 |
+| 10.1.1.2 | 303 | - |
+
+##### Graceful restart
+
+| Role | Recovery timer | Restart timer |
+| ---- | -------------- | ------------- |
+| Helper | 32 | 33 |
+| Speaker | 35 | 36 |
