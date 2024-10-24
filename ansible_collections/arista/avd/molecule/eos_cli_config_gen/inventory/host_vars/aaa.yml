@@ -114,6 +114,17 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
+      # It should not include logging into command
+      - commands: 1
+        type: none
+        logging: true
+      # It should not generate the command
+      - commands: 2
+        type: start-stop
+        logging: false
+      # It should not generate the command
+      - commands: 3
+        logging: false
     default:
       - commands: all
         type: start-stop
@@ -122,6 +133,14 @@ aaa_accounting:
       - commands: 0
         type: start-stop
         logging: true
+      # It should not include logging into command
+      - commands: 1
+        type: none
+        logging: true
+      # It should not generate the command
+      - commands: 2
+        type: start-stop
+        logging: false
 
 ### AAA Root ###
 aaa_root:
