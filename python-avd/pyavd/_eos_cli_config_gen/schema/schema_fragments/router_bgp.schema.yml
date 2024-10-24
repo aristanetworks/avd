@@ -1495,15 +1495,15 @@ keys:
                 domain:
                   type: str
                   valid_values:
-                    - "all"
-                    - "local"
-                    - "remote"
+                    - all
+                    - local
+                    - remote
                 identifier:
                   type: str
-                  description: "10 octet ethernet segment identifier."
+                  description: 10 octet ethernet segment identifier.
                 route_target_import:
                   type: "str"
-                  description: "Low-order 6 bytes of ES-Import Route Target."
+                  description: Low-order 6 bytes of ES-Import Route Target.
       address_family_rtc:
         type: dict
         keys:
