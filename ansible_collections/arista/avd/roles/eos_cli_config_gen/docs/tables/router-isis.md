@@ -18,7 +18,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;local_convergence</samp>](## "router_isis.timers.local_convergence") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protected_prefixes</samp>](## "router_isis.timers.local_convergence.protected_prefixes") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "router_isis.timers.local_convergence.delay") | Integer |  | `10000` |  | Delay in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsp</samp>](## "router_isis.timers.lsp") | Dictionary |  |  |  | Link State Packet timers |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lsp</samp>](## "router_isis.timers.lsp") | Dictionary |  |  |  | Link State Packet timers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generation</samp>](## "router_isis.timers.lsp.generation") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_isis.timers.lsp.generation.interval") | Integer | Required |  | Min: 1<br>Max: 300 | Maximum interval (in seconds) between generating two LSPs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;initial_wait_time</samp>](## "router_isis.timers.lsp.generation.initial_wait_time") | Integer |  |  | Min: 1<br>Max: 300000 | Initial wait time (in milliseconds) before generating LSPs. |
@@ -159,7 +159,7 @@
           # Delay in milliseconds.
           delay: <int; default=10000>
 
-        # Link State Packet timers
+        # Link State Packet timers.
         lsp:
           generation:
 

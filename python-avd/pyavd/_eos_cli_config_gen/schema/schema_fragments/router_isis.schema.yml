@@ -45,7 +45,7 @@ keys:
                 default: 10000
                 description: Delay in milliseconds.
           lsp:
-            description: Link State Packet timers
+            description: Link State Packet timers.
             type: dict
             keys:
               generation:

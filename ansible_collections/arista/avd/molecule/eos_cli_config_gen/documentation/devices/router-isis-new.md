@@ -195,6 +195,8 @@ interface Vlan4094
 | Log Adjacency Changes | False |
 | MPLS LDP Sync Default | True |
 | Local Convergence Delay (ms) | 10000 |
+| LSP Generation Maximum Interval | 30 seconds |
+| LSP Generation Initial Wait-time | 40 milliseconds |
 | Advertise Passive-only | True |
 | SR MPLS Enabled | True |
 | SPF Interval | 250 seconds |
@@ -282,6 +284,7 @@ router isis EVPN_UNDERLAY
    set-overload-bit
    advertise passive-only
    spf-interval 250 seconds 10 milliseconds 20 milliseconds
+   timers lsp generation 30 40
    authentication mode shared-secret profile test1 algorithm md5 level-1
    authentication mode sha key-id 2 level-2
    graceful-restart
