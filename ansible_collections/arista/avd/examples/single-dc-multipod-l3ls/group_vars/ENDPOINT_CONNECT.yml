@@ -1,0 +1,22 @@
+---
+servers:
+  - name: host1
+    adapters:
+      - switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ dc1-leaf1a, dc1-leaf1b ]
+        vlans: 10
+        mode: access
+        spanning_tree_portfast: edge
+        port_channel:
+          description: PortChannel host1
+          mode: active
+  - name: host2
+    adapters:
+      - switch_ports: [ Ethernet5, Ethernet5 ]
+        switches: [ dc1-leaf2a, dc1-leaf2b ]
+        vlans: 20
+        mode: access
+        spanning_tree_portfast: edge
+        port_channel:
+          description: PortChannel host2
+          mode: active

@@ -1,0 +1,47 @@
+---
+fabric_name: FABRIC
+
+# Various fabric settings
+
+# Enable vlan aware bundles
+evpn_vlan_aware_bundles: true
+
+
+# Super-Spine Switches
+super_spine:
+  defaults:
+    platform: cEOS
+    bgp_as: 65000
+    loopback_ipv4_pool: 192.168.101.0/24
+    mlag: false
+    evpn_role: server
+
+  nodes:
+    - name: dc1-ss1
+      id: 201
+      mgmt_ip: 192.168.0.25/24
+    - name: dc1-ss2
+      id: 202
+      mgmt_ip: 192.168.0.26/24
+
+
+# There's an issue with cEOS and vEOS with larger MTUs, probably would be set to 9214 in physical equipment
+p2p_uplinks_mtu: 1500
+
+# BFD Settings
+bfd_multihop:
+  interval: 1200
+  min_rx: 1200
+  multiplier: 3
+
+
+# If you don't set the platform (cEOS/vEOS) for virtual environments, you'll want these two settings below
+
+# bgp_update_wait_install: false
+# bgp_update_wait_for_convergence: false
+
+# Needed for Arista ATD Lab Environment
+dns_domain: atd.lab
+mgmt_interface: Management0 # Set to Management1 for vEOS, Management0 for cEOS
+mgmt_interface_vrf: MGMT
+mgmt_gateway: 192.168.0.1

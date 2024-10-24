@@ -1,0 +1,54 @@
+---
+# Spine Switches
+spine:
+  defaults:
+    platform: cEOS
+    bgp_as: 65002
+    loopback_ipv4_pool: 192.168.101.0/24
+    mlag: false
+    uplink_switches: [ dc1-ss1, dc1-ss2 ] # Where the leaf uplinks go
+    uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
+    uplink_interfaces: [ Ethernet1, Ethernet2 ] # Spine uplinks
+    evpn_route_servers: [ dc1-ss1, dc1-ss2 ]
+  nodes:
+    - name: dc1-spine3
+      id: 13
+      mgmt_ip: 192.168.0.13/24
+      uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
+    - name: dc1-spine4
+      id: 14
+      mgmt_ip: 192.168.0.14/24
+      uplink_switch_interfaces: [ Ethernet4, Ethernet4 ]
+
+
+# Leaf switches. Most leafs will be l3leaf, not l2leaf.
+l3leaf:
+  defaults:
+    bgp_as: 65100-65199 # Gives a range which will be auto-assigned
+    platform: cEOS
+    loopback_ipv4_pool: 192.168.101.0/24 # This is loopback0 (underlay)
+    vtep_loopback_ipv4_pool: 192.168.102.0/24 # This is loopback1 (VTEP)
+    uplink_interfaces: [ Ethernet1, Ethernet2 ] # Leaf uplinks
+    uplink_switches: [ dc1-spine3, dc1-spine4 ] # Where the leaf uplinks go
+    uplink_ipv4_pool: 192.168.103.0/24 # For the p2p interfaces to chopped up into /31s
+    mlag_interfaces: [ Ethernet3, Ethernet4 ] # MLAG peer link
+    mlag_peer_ipv4_pool: 10.255.252.0/24 # MLAG peer IPs
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24 # iBGP peering between MLAG peers
+    virtual_router_mac_address: 00:1c:73:00:00:99 # The vMAC for the anycast gateways
+    spanning_tree_mode: mstp # Spanning Tree is still enabled even in EVPN setups
+    spanning_tree_priority: 16384
+    mlag: true # By default, use MLAG
+
+
+  node_groups:
+    - group: mlag2
+      bgp_as: 65299 # Manually set for the external routed connection
+      nodes:
+        - name: dc1-leaf2a
+          id: 3
+          mgmt_ip: 192.168.0.23/24
+          uplink_switch_interfaces: [ Ethernet3, Ethernet3 ]
+        - name: dc1-leaf2b
+          id: 4
+          mgmt_ip: 192.168.0.24/24
+          uplink_switch_interfaces: [ Ethernet4, Ethernet4 ]
