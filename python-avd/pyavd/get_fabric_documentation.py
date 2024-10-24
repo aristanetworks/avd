@@ -35,8 +35,8 @@ def get_fabric_documentation(
         FabricDocumentation object containing the requested documentation areas.
     """
     # pylint: disable=import-outside-toplevel
-    from pyavd.j2filters import add_md_toc
     from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
+    from pyavd.j2filters import add_md_toc
 
     from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH
     from .templater import Templar
