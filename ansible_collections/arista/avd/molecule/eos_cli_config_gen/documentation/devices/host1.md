@@ -217,7 +217,7 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 aaa authentication login default group TACACS local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
-aaa authentication dot1x default group TACACS
+aaa authentication dot1x default group RADIUS1
 aaa authentication policy on-failure log
 aaa authentication policy on-success log
 aaa authentication policy local allow-nopassword-remote-login

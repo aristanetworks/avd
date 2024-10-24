@@ -7,7 +7,7 @@ aaa_authentication:
   enable:
     default: group TACACS local
   dot1x:
-    default: group TACACS
+    default: group RADIUS1
   policies:
     on_failure_log: true
     on_success_log: true
