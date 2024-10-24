@@ -2,7 +2,6 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
 from pyavd.api.fabric_documentation import FabricDocumentation
 
 
@@ -37,6 +36,7 @@ def get_fabric_documentation(
     """
     # pylint: disable=import-outside-toplevel
     from pyavd.j2filters import add_md_toc
+    from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
 
     from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH
     from .templater import Templar
