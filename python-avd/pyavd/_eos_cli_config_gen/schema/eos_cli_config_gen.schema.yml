@@ -2172,6 +2172,22 @@ keys:
                 valid_values:
                 - upstream
                 - downstream
+        link_tracking:
+          type: dict
+          keys:
+            direction:
+              type: str
+              valid_values:
+              - upstream
+              - downstream
+              required: true
+            groups:
+              type: list
+              description: Link state group(s) an interface belongs to.
+              required: true
+              items:
+                type: str
+                description: Group names.
         evpn_ethernet_segment:
           type: dict
           keys:
@@ -9381,6 +9397,22 @@ keys:
                 valid_values:
                 - upstream
                 - downstream
+        link_tracking:
+          type: dict
+          keys:
+            direction:
+              type: str
+              valid_values:
+              - upstream
+              - downstream
+              required: true
+            groups:
+              type: list
+              description: Link state group(s) an interface belongs to.
+              required: true
+              items:
+                type: str
+                description: Group names.
         phone:
           type: dict
           deprecation:
