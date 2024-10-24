@@ -12,7 +12,7 @@ from pyavd._cv.client.exceptions import CVWorkspaceBuildFailed, CVWorkspaceSubmi
 if TYPE_CHECKING:
     from pyavd._cv.client import CVClient
 
-    from .models import CVWorkspace
+    from .models import CVWorkspace, CVWSBuildError
 
 LOGGER = getLogger(__name__)
 
@@ -40,8 +40,12 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
 
     workspace_config = await cv_client.build_workspace(workspace_id=workspace.id)
     build_result, cv_workspace = await cv_client.wait_for_workspace_response(workspace_id=workspace.id, request_id=workspace_config.request_params.request_id)
+    workspace.build_id = cv_workspace.last_build_id
     if build_result.status != ResponseStatus.SUCCESS:
         workspace.state = "build failed"
+        ws_build_errors = await process_workspace_build_errors(workspace_id=workspace.id, build_id=workspace.build_id, cv_client=cv_client)
+        if ws_build_errors:
+            workspace.build_errors = ws_build_errors
         LOGGER.info("finalize_workspace_on_cv: %s", workspace)
         msg = (
             f"Failed to build workspace {workspace.id}: {build_result}. "
@@ -87,3 +91,50 @@ async def finalize_workspace_on_cv(workspace: CVWorkspace, cv_client: CVClient) 
         return
 
     return
+
+
+async def process_workspace_build_errors(
+    workspace_id: str,
+    build_id: str,
+    cv_client: CVClient,
+) -> list[CVWSBuildError]:
+    """
+    Get and parse Workspace Build Details Response.
+
+    Extract the following errors:
+    - Config validation errors.
+    - TODO: Image validation errors.
+
+    Parameters:
+        workspace_id: Unique identifier the workspace.
+        build_id: Unique identifier of the last WS build attempt.
+        cv_client: CVClient.
+
+    Returns:
+        List of CVWSBuildError objects describing observed WS build validation errors.
+    """
+    try:
+        ws_build_details = await cv_client.get_workspace_build_details(workspace_id=workspace_id, build_id=build_id)
+
+        ws_build_errors = [
+            {
+                "serial_number": response.value.key.device_id,
+                "config_validation": [
+                    {
+                        "error_msg": error.error_msg,
+                        "line_num": error.line_num,
+                        "configlet_name": error.configlet_name,
+                    }
+                    for error in response.value.config_validation_result.errors.values
+                ],
+            }
+            async for response in ws_build_details
+            if response.value.config_validation_result.errors
+        ]
+
+    except Exception:
+        LOGGER.info("finalize_workspace_on_cv: Failed to fetch WS build errors for workspace '%s'", workspace_id)
+        return []
+
+    else:
+        return ws_build_errors
