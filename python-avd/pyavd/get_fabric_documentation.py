@@ -2,13 +2,7 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 
-from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
-
-
-class FabricDocumentation:
-    fabric_documentation: str = ""
-    topology_csv: str = ""
-    p2p_links_csv: str = ""
+from pyavd.api.fabric_documentation import FabricDocumentation
 
 
 def get_fabric_documentation(
@@ -41,6 +35,7 @@ def get_fabric_documentation(
         FabricDocumentation object containing the requested documentation areas.
     """
     # pylint: disable=import-outside-toplevel
+    from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
     from pyavd.j2filters import add_md_toc
 
     from .constants import EOS_DESIGNS_JINJA2_PRECOMPILED_TEMPLATE_PATH
