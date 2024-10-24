@@ -24,15 +24,15 @@
 
 #### Control-Plane Access-Groups
 
-| Protocol | VRF | Access-list |
-| -------- | --- | ------------|
+| Protocol | VRF | Access-list | Ingress-default |
+| -------- | --- | ------------| --------------- |
 {#         IPv4 Access-groups #}
 {%         for acl_set in system.control_plane.ipv4_access_groups | arista.avd.natural_sort %}
-| IPv4 | {{ acl_set.vrf | arista.avd.default('default') }} | {{ acl_set.acl_name }} |
+| IPv4 | {{ acl_set.vrf | arista.avd.default('default') }} | {{ acl_set.acl_name }} | {{ acl_set.ingress_default | arista.avd.default('-') }} |
 {%         endfor %}
 {#         IPv6 Access-groups #}
 {%         for acl_set in system.control_plane.ipv6_access_groups | arista.avd.natural_sort %}
-| IPv6 | {{ acl_set.vrf | arista.avd.default('default') }} | {{ acl_set.acl_name }} |
+| IPv6 | {{ acl_set.vrf | arista.avd.default('default') }} | {{ acl_set.acl_name }} | {{ acl_set.ingress_default | arista.avd.default('-') }} |
 {%         endfor %}
 {%     endif %}
 
