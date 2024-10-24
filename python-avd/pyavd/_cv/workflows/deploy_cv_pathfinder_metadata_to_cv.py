@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING
 
 from pyavd._cv.client.exceptions import CVResourceNotFound
 from pyavd._utils import get, get_v2
-from pyavd._utils.password_utils.password import simple_7_decrypt
 
 if TYPE_CHECKING:
     from pyavd._cv.api.arista.studio.v1 import InputSchema
@@ -442,7 +441,8 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
                         "fqdn": vpn_credential["fqdn"],
                         "comments": f"Credential for {device.hostname} internet-exit policy {policy_name}",
                         "vpnType": vpn_credential["vpn_type"],
-                        "presharedKey": simple_7_decrypt(vpn_credential["pre_shared_key"]),
+                        "presharedKey": vpn_credential["pre_shared_key"],  # Notice we are passing the type-7 obfuscated key.
+                        "secretServiceRef": "encrypted",
                     }
                     for vpn_credential in internet_exit_policy["vpn_credentials"]
                 ],
@@ -452,6 +452,15 @@ def generate_internet_exit_metadata(metadata: dict, device: CVDevice, studio_sch
             {
                 "name": tunnel["name"],
                 "preference": tunnel["preference"],
+                "endpoint": {
+                    "ipAddress": tunnel["endpoint"]["ip_address"],
+                    "dcName": tunnel["endpoint"]["datacenter"],
+                    "city": tunnel["endpoint"]["city"],
+                    "country": tunnel["endpoint"]["country"],
+                    "region": tunnel["endpoint"]["region"],
+                    "latitude": float(tunnel["endpoint"]["latitude"]),
+                    "longitude": float(tunnel["endpoint"]["longitude"]),
+                },
             }
             for tunnel in internet_exit_policy["tunnels"]
         )
