@@ -345,6 +345,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id_remote</samp>](## "router_bgp.vpws.[].pseudowires.[].id_remote") | Integer |  |  |  | Must match id_local on other pe. |
     | [<samp>&nbsp;&nbsp;address_family_evpn</samp>](## "router_bgp.address_family_evpn") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;domain_identifier</samp>](## "router_bgp.address_family_evpn.domain_identifier") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;domain_identifier_remote</samp>](## "router_bgp.address_family_evpn.domain_identifier_remote") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;neighbor_default</samp>](## "router_bgp.address_family_evpn.neighbor_default") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "router_bgp.address_family_evpn.neighbor_default.encapsulation") | String |  |  | Valid Values:<br>- <code>vxlan</code><br>- <code>mpls</code><br>- <code>path-selection</code> | Transport encapsulation for neighbor. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;next_hop_self_source_interface</samp>](## "router_bgp.address_family_evpn.neighbor_default.next_hop_self_source_interface") | String |  |  |  | Source interface name. |
@@ -414,6 +415,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp") | Boolean |  |  |  | All paths in best path ECMP group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecmp_limit</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of ECMP paths to send. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "router_bgp.address_family_evpn.bgp_additional_paths.send.limit") | Integer |  |  | Min: 2<br>Max: 64 | Amount of paths to send. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;evpn_ethernet_segment</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;domain</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment.[].domain") | String | Required, Unique |  | Valid Values:<br>- <code>all</code><br>- <code>local</code><br>- <code>remote</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;identifier</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment.[].identifier") | String |  |  |  | 10 octet ethernet segment identifier. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_target_import</samp>](## "router_bgp.address_family_evpn.evpn_ethernet_segment.[].route_target_import") | String |  |  |  | Low-order 6 bytes of ES-Import Route Target. |
     | [<samp>&nbsp;&nbsp;address_family_rtc</samp>](## "router_bgp.address_family_rtc") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_groups</samp>](## "router_bgp.address_family_rtc.peer_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_bgp.address_family_rtc.peer_groups.[].name") | String | Required, Unique |  |  | Peer-group name. |
@@ -2231,6 +2236,7 @@
               id_remote: <int>
       address_family_evpn:
         domain_identifier: <str>
+        domain_identifier_remote: <str>
         neighbor_default:
 
           # Transport encapsulation for neighbor.
@@ -2400,6 +2406,14 @@
 
             # Amount of paths to send.
             limit: <int; 2-64>
+        evpn_ethernet_segment:
+          - domain: <str; "all" | "local" | "remote"; required; unique>
+
+            # 10 octet ethernet segment identifier.
+            identifier: <str>
+
+            # Low-order 6 bytes of ES-Import Route Target.
+            route_target_import: <str>
       address_family_rtc:
         peer_groups:
 
