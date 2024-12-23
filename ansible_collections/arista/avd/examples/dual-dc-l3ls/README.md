@@ -1,6 +1,6 @@
 ---
 # This title is used for search results
-title: AVD example for a dual data center using L3LS
+title: Dual Data Center - L3LS
 ---
 <!--
   ~ Copyright (c) 2023-2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ title: AVD example for a dual data center using L3LS
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD example for a dual data center using L3LS
+# Dual Data Center - L3LS
 
 ## Introduction
 
@@ -226,7 +226,7 @@ In this section, only additions to the previous example will be discussed. The o
 
 ```yaml title="FABRIC.yml"
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:70:91
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/FABRIC.yml:75:96
     --8<--
 ```
 
@@ -292,13 +292,13 @@ l3leaf:
       bgp_as: 65201 # (13)!
       nodes:
         - name: dc2-leaf1a
-          id: 1
+          id: 11
           mgmt_ip: 172.16.1.111/24
           uplink_switch_interfaces:
             - Ethernet1
             - Ethernet1
         - name: dc2-leaf1b
-          id: 2
+          id: 12
           mgmt_ip: 172.16.1.112/24
           uplink_switch_interfaces:
             - Ethernet2
@@ -314,7 +314,7 @@ l3leaf:
           inter_domain: true
       nodes:
         - name: dc2-leaf2a
-          id: 3
+          id: 13
           mgmt_ip: 172.16.1.113/24
           uplink_switch_interfaces:
             - Ethernet3
@@ -323,7 +323,7 @@ l3leaf:
             remote_peers: # (15)!
               - hostname: dc1-leaf2a
         - name: dc2-leaf2b
-          id: 4
+          id: 14
           mgmt_ip: 172.16.1.114/24
           uplink_switch_interfaces:
             - Ethernet4
@@ -356,7 +356,7 @@ Since we are adding the EVPN DC GW functionality in DC2, we must also add it in 
 
 ```yaml title="DC1.yml"
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1.yml:82:111
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC1.yml:82:115
     --8<--
 ```
 
@@ -364,7 +364,7 @@ Finally, the definition in DC2 for the L2 leaf switches:
 
 ```yaml title="DC2.yml"
     --8<--
-    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2.yml:113:138
+    ansible_collections/arista/avd/examples/dual-dc-l3ls/group_vars/DC2.yml:117:142
     --8<--
 ```
 
