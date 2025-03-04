@@ -5,6 +5,8 @@ from pathlib import Path
 
 PYAVD_DIR = Path(__file__).parents[1]
 
+SCHEMA_STORE_PATH = PYAVD_DIR.joinpath("_schema/schema_store.snappy")
+
 EOS_DESIGNS_SCHEMA_DIR = PYAVD_DIR.joinpath("_eos_designs/schema")
 EOS_DESIGNS_PICKLED_SCHEMA_PATH = EOS_DESIGNS_SCHEMA_DIR.joinpath("eos_designs.schema.pickle")
 
@@ -18,6 +20,10 @@ PICKLED_SCHEMAS = {
     "avd_meta_schema": METASCHEMA_PICKLED_SCHEMA_PATH,
     "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_PICKLED_SCHEMA_PATH,
     "eos_designs": EOS_DESIGNS_PICKLED_SCHEMA_PATH,
+}
+SCHEMA_YAML_FRAGMENTS = {
+    "eos_cli_config_gen": EOS_CLI_CONFIG_GEN_SCHEMA_DIR / "schema_fragments",
+    "eos_designs": EOS_DESIGNS_SCHEMA_DIR / "schema_fragments",
 }
 
 ACCEPTED_COERCION_MAP = {

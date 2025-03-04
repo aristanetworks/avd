@@ -20,6 +20,7 @@ classifiers = [
 keywords = ["pyavd"]
 requires-python = ">=3.10"
 dependencies = [
+    "avdutils @ file://avdutils/",
     "aristaproto>=0.1.1",
     "cryptography>=38.0.4",
     "deepmerge>=1.1.0",
