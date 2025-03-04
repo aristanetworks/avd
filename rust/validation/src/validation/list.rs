@@ -1,0 +1,425 @@
+// Copyright (c) 2025 Arista Networks, Inc.
+// Use of this source code is governed by the Apache License 2.0
+// that can be found in the LICENSE file.
+
+use ordermap::OrderMap;
+use serde::Serialize;
+use serde_json::Value;
+
+use crate::{
+    feedback::{Feedback, Item, MiscViolation, Type, ValidationIssue},
+    utils::walker::Walker,
+};
+
+use crate::{context::Context, validation::Validation};
+use avdschema::list::List;
+
+#[derive(Debug, PartialEq, Eq, Serialize)]
+pub enum Violation {
+    MinimumLength { minimum: u64, found: u64 },
+    MaximumLength { maximum: u64, found: u64 },
+    PrimaryKey,
+    Unique,
+}
+
+impl From<Violation> for Item {
+    fn from(val: Violation) -> Self {
+        ValidationIssue::List(val).into()
+    }
+}
+
+impl Validation<Vec<Value>> for List {
+    fn validate(&self, input: &Vec<Value>, ctx: &mut Context) {
+        validate_min_length(self, input, ctx);
+        validate_max_length(self, input, ctx);
+        validate_items(self, input, ctx);
+        validate_unique_keys(self, input, ctx);
+    }
+
+    fn validate_value(&self, value: &Value, ctx: &mut Context) {
+        if let Some(v) = value.as_array() {
+            self.validate(v, ctx)
+        } else {
+            ctx.add_violation(MiscViolation::InvalidType {
+                expected: Type::List,
+                found: value.into(),
+            })
+        }
+    }
+
+    fn is_required(&self) -> bool {
+        self.base.required.unwrap_or_default()
+    }
+}
+
+fn validate_min_length(schema: &List, input: &[Value], ctx: &mut Context) {
+    if let Some(min_length) = schema.min_length {
+        let length = input.len() as u64;
+        if min_length > length {
+            ctx.add_violation(Violation::MinimumLength {
+                minimum: min_length,
+                found: length,
+            });
+        }
+    }
+}
+
+fn validate_max_length(schema: &List, input: &[Value], ctx: &mut Context) {
+    if let Some(max_length) = schema.max_length {
+        let length = input.len() as u64;
+        if max_length < length {
+            ctx.add_violation(Violation::MaximumLength {
+                maximum: max_length,
+                found: length,
+            });
+        }
+    }
+}
+
+fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
+    let unique_keys = schema.unique_keys.iter().flatten().chain(
+        // the primary key is considered unique unless told otherwise
+        schema
+            .primary_key
+            .as_ref()
+            .filter(|_| !schema.allow_duplicate_primary_key.unwrap_or_default()),
+    );
+
+    for unique_key in unique_keys {
+        let path = unique_key.split('.');
+        let items = items
+            .iter()
+            .enumerate()
+            .flat_map(|(i, item)| {
+                let mut trail = vec![i.to_string()];
+                item.walk(path.clone(), Some(&mut trail))
+            })
+            .collect::<OrderMap<_, _>>();
+
+        for (current_trail, current_item) in &items {
+            for (trail, item) in &items {
+                if current_trail != trail && current_item == item {
+                    ctx.violations.push(Feedback {
+                        path: {
+                            let mut path = ctx.path.clone();
+                            path.extend_from_slice(current_trail);
+                            path
+                        },
+                        item: Violation::Unique.into(),
+                    });
+                }
+            }
+        }
+    }
+}
+
+fn validate_items(schema: &List, items: &[Value], ctx: &mut Context) {
+    for (i, item) in items.iter().enumerate() {
+        ctx.path.push(i.to_string());
+        validate_item_schema(schema, item, ctx);
+        validate_item_primary_key(schema, item, ctx);
+        ctx.path.pop();
+    }
+}
+
+fn validate_item_schema(schema: &List, item: &Value, ctx: &mut Context) {
+    if let Some(schema) = &schema.items {
+        schema.validate_value(item, ctx);
+    }
+}
+
+fn validate_item_primary_key(schema: &List, item: &Value, ctx: &mut Context) {
+    if let Some(primary_key) = &schema.primary_key {
+        if item.get(primary_key).is_none_or(|value| value.is_null()) {
+            ctx.add_violation(Violation::PrimaryKey);
+        }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use avdschema::{any::AnySchema, dict::Dict, str::Str};
+    use ordermap::OrderMap;
+
+    use super::*;
+    use crate::{
+        coercion::Coercion as _,
+        feedback::{CoercionNote, Feedback},
+    };
+
+    #[test]
+    fn validate_type_ok() {
+        let schema = List::default();
+        let input = serde_json::json!(["foo", "bar"]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_type_err() {
+        let schema = List::default();
+        let input = true.into();
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec![],
+                item: MiscViolation::InvalidType {
+                    expected: Type::List,
+                    found: Type::Bool
+                }
+                .into()
+            }]
+        );
+    }
+
+    #[test]
+    fn validate_item_type_ok() {
+        let schema = List {
+            items: Some(AnySchema::Str(Str::default()).into()),
+            ..Default::default()
+        };
+        let input = serde_json::json!(["foo", "bar"]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_item_type_err() {
+        let schema = List {
+            items: Some(Box::new(Str::default().into())),
+            ..Default::default()
+        };
+        let input = serde_json::json!([{}, {}]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![
+                Feedback {
+                    path: vec!["0".into()],
+                    item: MiscViolation::InvalidType {
+                        expected: Type::Str,
+                        found: Type::Dict
+                    }
+                    .into()
+                },
+                Feedback {
+                    path: vec!["1".into()],
+                    item: MiscViolation::InvalidType {
+                        expected: Type::Str,
+                        found: Type::Dict
+                    }
+                    .into()
+                }
+            ]
+        );
+    }
+
+    #[test]
+    fn validate_item_type_coercion_ok_err() {
+        let schema = List {
+            items: Some(Box::new(Str::default().into())),
+            ..Default::default()
+        };
+        let mut input = serde_json::json!([1, []]);
+        let mut ctx = Context::new();
+        schema.coerce(&mut input, &mut ctx);
+        schema.validate_value(&input, &mut ctx);
+        assert_eq!(
+            ctx.coercions,
+            vec![Feedback {
+                path: vec!["0".into()],
+                item: CoercionNote {
+                    found: 1.into(),
+                    made: "1".into()
+                }
+                .into()
+            }]
+        );
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec!["1".into()],
+                item: MiscViolation::InvalidType {
+                    expected: Type::Str,
+                    found: Type::List
+                }
+                .into()
+            },]
+        );
+    }
+
+    #[test]
+    fn validate_min_length_ok() {
+        let schema = List {
+            min_length: Some(1),
+            ..Default::default()
+        };
+        let input = serde_json::json!(["foo", "bar"]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_min_length_err() {
+        let schema = List {
+            min_length: Some(3),
+            ..Default::default()
+        };
+        let input = serde_json::json!(["foo", "bar"]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec![],
+                item: Violation::MinimumLength {
+                    minimum: 3,
+                    found: 2
+                }
+                .into()
+            }]
+        );
+    }
+
+    #[test]
+    fn validate_max_length_ok() {
+        let schema = List {
+            max_length: Some(2),
+            ..Default::default()
+        };
+        let input = serde_json::json!(["foo", "bar"]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_max_length_err() {
+        let schema = List {
+            max_length: Some(2),
+            ..Default::default()
+        };
+        let input = serde_json::json!(["foo", "bar", "baz"]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec![],
+                item: Violation::MaximumLength {
+                    maximum: 2,
+                    found: 3
+                }
+                .into()
+            }]
+        );
+    }
+
+    #[test]
+    fn validate_primary_key_ok() {
+        let schema = List {
+            items: Some(Box::new(
+                Dict {
+                    keys: Some(OrderMap::from_iter([("foo".into(), Str::default().into())])),
+                    ..Default::default()
+                }
+                .into(),
+            )),
+            primary_key: Some("foo".into()),
+            ..Default::default()
+        };
+        let input = serde_json::json!([{ "foo": "v1" }, { "foo": "v2" }]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_primary_key_required_err() {
+        let schema = List {
+            items: Some(Box::new(
+                Dict {
+                    keys: Some(OrderMap::from_iter([("foo".into(), Str::default().into())])),
+                    ..Default::default()
+                }
+                .into(),
+            )),
+            primary_key: Some("foo".into()),
+            ..Default::default()
+        };
+        let input = serde_json::json!([{ "foo": null }, { "foo": "v1" }]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec!["0".into()],
+                item: Violation::PrimaryKey.into()
+            }]
+        );
+    }
+
+    #[test]
+    fn validate_primary_key_not_unique_err() {
+        let schema = List {
+            items: Some(Box::new(
+                Dict {
+                    keys: Some(OrderMap::from_iter([("foo".into(), Str::default().into())])),
+                    ..Default::default()
+                }
+                .into(),
+            )),
+            primary_key: Some("foo".into()),
+            ..Default::default()
+        };
+        let input = serde_json::json!([{ "foo": "111" }, { "foo": "222" }, { "foo": "111" }]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![
+                Feedback {
+                    path: vec!["0".into(), "foo".into()],
+                    item: Violation::Unique.into()
+                },
+                Feedback {
+                    path: vec!["2".into(), "foo".into()],
+                    item: Violation::Unique.into()
+                }
+            ]
+        );
+    }
+
+    #[test]
+    fn validate_allow_duplicate_primary_key_ok() {
+        let schema = List {
+            items: Some(Box::new(
+                Dict {
+                    keys: Some(OrderMap::from_iter([("foo".into(), Str::default().into())])),
+                    ..Default::default()
+                }
+                .into(),
+            )),
+            primary_key: Some("foo".into()),
+            allow_duplicate_primary_key: Some(true),
+            ..Default::default()
+        };
+        let input = serde_json::json!([{ "foo": "111" }, { "foo": "222" }, { "foo": "111" }]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert!(ctx.violations.is_empty());
+    }
+}

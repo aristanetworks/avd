@@ -1,0 +1,24 @@
+[package]
+name = "validation"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[dependencies]
+avdschema = { path = "../avdschema" }
+ordermap = { version = "0.5.4", features = ["serde"] }
+pyo3 = { version = "0.23.3", features = ["abi3"], optional = true }
+regex = { version = "1.11.1" }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { version = "1.0.135", features = [
+    "arbitrary_precision",  # To support very big numbers
+    "preserve_order",
+] }
+serde_yaml = { version = "0.9.33" }
+
+[features]
+python_bindings = ["dep:pyo3"]
+
+[lib]
+name = "_validation"
+crate-type = ["cdylib"]
