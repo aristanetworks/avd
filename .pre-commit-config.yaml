@@ -2,6 +2,12 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
+  skip:
+    # pre-commit.ci doesn't have Rust installed
+    - fmt
+    - cargo-check
+    - clippy
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
