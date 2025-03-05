@@ -33,74 +33,76 @@ impl Validation<bool> for Bool {
     }
 }
 
-// #[cfg(test)]
-// mod tests {
-//     use super::*;
-//     use crate::{
-//         feedback::{Feedback, MiscViolation, Type},
-//         schema::Schema as _,
-//         store::Schema,
-//     };
+#[cfg(test)]
+mod tests {
+    use avdschema::base::valid_values::ValidValues;
 
-//     #[test]
-//     fn validate_type_ok() {
-//         let schema = Bool::default();
-//         let mut input = true.into();
-//         let mut ctx = Context::new(Schema::EosDesigns);
-//         schema.parse_and_validate(&mut input, &mut ctx);
-//         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
-//     }
+    use super::*;
+    use crate::feedback::{Feedback, MiscViolation, Type};
 
-//     #[test]
-//     fn validate_type_err() {
-//         let schema = Bool::default();
-//         let mut input = serde_json::json!([]);
-//         let mut ctx = Context::new(Schema::EosDesigns);
-//         schema.parse_and_validate(&mut input, &mut ctx);
-//         assert!(ctx.coercions.is_empty());
-//         assert_eq!(
-//             ctx.violations,
-//             vec![Feedback {
-//                 path: vec![],
-//                 item: InvalidType {
-//                     expected: Type::Bool,
-//                     found: Type::List,
-//                 }
-//                 .into(),
-//             }],
-//         );
-//     }
+    #[test]
+    fn validate_type_ok() {
+        let schema = Bool::default();
+        let input = true.into();
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
 
-//     #[test]
-//     fn validate_valid_values_ok() {
-//         let schema = {
-//             let mut boolean = Bool::default();
-//             boolean.valid_values.valid_values = Some(vec![false]);
-//             boolean
-//         };
-//         let mut input = false.into();
-//         let mut ctx = Context::new(Schema::EosDesigns);
-//         schema.parse_and_validate(&mut input, &mut ctx);
-//         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
-//     }
+    #[test]
+    fn validate_type_err() {
+        let schema = Bool::default();
+        let input = serde_json::json!([]);
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec![],
+                item: MiscViolation::InvalidType {
+                    expected: Type::Bool,
+                    found: Type::List,
+                }
+                .into(),
+            }],
+        );
+    }
 
-//     #[test]
-//     fn validate_valid_values_err() {
-//         let schema = {
-//             let mut boolean = Bool::default();
-//             boolean.valid_values.valid_values = Some(vec![false]);
-//             boolean
-//         };
-//         let mut input = true.into();
-//         let mut ctx = Context::new(Schema::EosDesigns);
-//         schema.parse_and_validate(&mut input, &mut ctx);
-//         assert!(ctx.coercions.is_empty());
-//         assert_eq!(
-//             ctx.violations,
-//             vec![Feedback {
-//                 path: vec![],
-//                 item: MiscViolation::DisallowedValue.into()
-//             }]
-//         );
-//     }
-// }
+    #[test]
+    fn validate_valid_values_ok() {
+        let schema = Bool {
+            valid_values: ValidValues {
+                valid_values: Some(vec![false]),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let input = false.into();
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_valid_values_err() {
+        let schema = Bool {
+            valid_values: ValidValues {
+                valid_values: Some(vec![false]),
+                ..Default::default()
+            },
+            ..Default::default()
+        };
+        let input = true.into();
+        let mut ctx = Context::new();
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec![],
+                item: MiscViolation::DisallowedValue.into()
+            }]
+        );
+    }
+}
