@@ -5,15 +5,10 @@
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
-use super::DataValue;
-
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
 #[serde(deny_unknown_fields)]
-pub struct ValidValues<T>
-where
-    T: DataValue,
-{
+pub struct ValidValues<T> {
     /// List of valid values
     pub valid_values: Option<Vec<T>>,
     pub dynamic_valid_values: Option<Vec<String>>,

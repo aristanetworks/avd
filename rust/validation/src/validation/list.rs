@@ -3,30 +3,15 @@
 // that can be found in the LICENSE file.
 
 use ordermap::OrderMap;
-use serde::Serialize;
 use serde_json::Value;
 
 use crate::{
-    feedback::{Feedback, Item, MiscViolation, Type, ValidationIssue},
+    feedback::{Feedback, Type, Violation},
     utils::walker::Walker,
 };
 
 use crate::{context::Context, validation::Validation};
 use avdschema::list::List;
-
-#[derive(Debug, PartialEq, Eq, Serialize)]
-pub enum Violation {
-    MinimumLength { minimum: u64, found: u64 },
-    MaximumLength { maximum: u64, found: u64 },
-    PrimaryKey,
-    Unique,
-}
-
-impl From<Violation> for Item {
-    fn from(val: Violation) -> Self {
-        ValidationIssue::List(val).into()
-    }
-}
 
 impl Validation<Vec<Value>> for List {
     fn validate(&self, input: &Vec<Value>, ctx: &mut Context) {
@@ -40,7 +25,7 @@ impl Validation<Vec<Value>> for List {
         if let Some(v) = value.as_array() {
             self.validate(v, ctx)
         } else {
-            ctx.add_violation(MiscViolation::InvalidType {
+            ctx.add_violation(Violation::InvalidType {
                 expected: Type::List,
                 found: value.into(),
             })
@@ -56,7 +41,7 @@ fn validate_min_length(schema: &List, input: &[Value], ctx: &mut Context) {
     if let Some(min_length) = schema.min_length {
         let length = input.len() as u64;
         if min_length > length {
-            ctx.add_violation(Violation::MinimumLength {
+            ctx.add_violation(Violation::LengthBelowMinimum {
                 minimum: min_length,
                 found: length,
             });
@@ -68,7 +53,7 @@ fn validate_max_length(schema: &List, input: &[Value], ctx: &mut Context) {
     if let Some(max_length) = schema.max_length {
         let length = input.len() as u64;
         if max_length < length {
-            ctx.add_violation(Violation::MaximumLength {
+            ctx.add_violation(Violation::LengthAboveMaximum {
                 maximum: max_length,
                 found: length,
             });
@@ -105,7 +90,10 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
                             path.extend_from_slice(current_trail);
                             path
                         },
-                        item: Violation::Unique.into(),
+                        issue: Violation::ValueNotUnique {
+                            other_path: trail.to_owned(),
+                        }
+                        .into(),
                     });
                 }
             }
@@ -131,7 +119,9 @@ fn validate_item_schema(schema: &List, item: &Value, ctx: &mut Context) {
 fn validate_item_primary_key(schema: &List, item: &Value, ctx: &mut Context) {
     if let Some(primary_key) = &schema.primary_key {
         if item.get(primary_key).is_none_or(|value| value.is_null()) {
-            ctx.add_violation(Violation::PrimaryKey);
+            ctx.add_violation(Violation::MissingRequiredKey {
+                key: primary_key.to_owned(),
+            });
         }
     }
 }
@@ -167,7 +157,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::List,
                     found: Type::Bool
                 }
@@ -203,7 +193,7 @@ mod tests {
             vec![
                 Feedback {
                     path: vec!["0".into()],
-                    item: MiscViolation::InvalidType {
+                    issue: Violation::InvalidType {
                         expected: Type::Str,
                         found: Type::Dict
                     }
@@ -211,7 +201,7 @@ mod tests {
                 },
                 Feedback {
                     path: vec!["1".into()],
-                    item: MiscViolation::InvalidType {
+                    issue: Violation::InvalidType {
                         expected: Type::Str,
                         found: Type::Dict
                     }
@@ -235,7 +225,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec!["0".into()],
-                item: CoercionNote {
+                issue: CoercionNote {
                     found: 1.into(),
                     made: "1".into()
                 }
@@ -246,7 +236,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec!["1".into()],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::Str,
                     found: Type::List
                 }
@@ -281,7 +271,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::MinimumLength {
+                issue: Violation::LengthBelowMinimum {
                     minimum: 3,
                     found: 2
                 }
@@ -316,7 +306,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::MaximumLength {
+                issue: Violation::LengthAboveMaximum {
                     maximum: 2,
                     found: 3
                 }
@@ -365,7 +355,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec!["0".into()],
-                item: Violation::PrimaryKey.into()
+                issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
             }]
         );
     }
@@ -392,11 +382,17 @@ mod tests {
             vec![
                 Feedback {
                     path: vec!["0".into(), "foo".into()],
-                    item: Violation::Unique.into()
+                    issue: Violation::ValueNotUnique {
+                        other_path: vec!["2".into(), "foo".into()]
+                    }
+                    .into()
                 },
                 Feedback {
                     path: vec!["2".into(), "foo".into()],
-                    item: Violation::Unique.into()
+                    issue: Violation::ValueNotUnique {
+                        other_path: vec!["0".into(), "foo".into()]
+                    }
+                    .into()
                 }
             ]
         );

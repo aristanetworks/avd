@@ -7,7 +7,7 @@ use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{MiscViolation, Type},
+    feedback::{Type, Violation},
 };
 
 use super::{Validation, valid_values::ValidateValidValues as _};
@@ -21,7 +21,7 @@ impl Validation<bool> for Bool {
         if let Some(v) = value.as_bool() {
             self.validate(&v, ctx)
         } else {
-            ctx.add_violation(MiscViolation::InvalidType {
+            ctx.add_violation(Violation::InvalidType {
                 expected: Type::Bool,
                 found: value.into(),
             })
@@ -38,7 +38,7 @@ mod tests {
     use avdschema::base::valid_values::ValidValues;
 
     use super::*;
-    use crate::feedback::{Feedback, MiscViolation, Type};
+    use crate::feedback::{Feedback, Type, Violation};
 
     #[test]
     fn validate_type_ok() {
@@ -60,7 +60,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::Bool,
                     found: Type::List,
                 }
@@ -101,7 +101,11 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::DisallowedValue.into()
+                issue: Violation::InvalidValue {
+                    expected: vec![false].into(),
+                    found: input
+                }
+                .into()
             }]
         );
     }

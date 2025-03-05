@@ -70,7 +70,7 @@ impl Inherit for ConvertTypes {
 }
 impl<T> Inherit for ValidValues<T>
 where
-    T: InheritableWithClone + DataValue + Clone,
+    T: InheritableWithClone + Clone,
 {
     fn inherit(&mut self, other: &Self) {
         self.valid_values.inherit(&other.valid_values);

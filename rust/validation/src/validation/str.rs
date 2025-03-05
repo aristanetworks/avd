@@ -4,28 +4,14 @@
 
 use avdschema::str::Str;
 use regex::Regex;
-use serde::Serialize;
 use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{Item, MiscViolation, Type, ValidationIssue},
+    feedback::{Issue, Type, Violation},
 };
 
 use super::{Validation, valid_values::ValidateValidValues as _};
-
-#[derive(Debug, PartialEq, Eq, Serialize)]
-pub enum Violation {
-    MinimumLength { minimum: u64, found: u64 },
-    MaximumLength { maximum: u64, found: u64 },
-    Pattern { pattern: String },
-}
-
-impl From<Violation> for Item {
-    fn from(val: Violation) -> Self {
-        ValidationIssue::String(val).into()
-    }
-}
 
 impl Validation<String> for Str {
     fn validate(&self, value: &String, ctx: &mut Context) {
@@ -39,7 +25,7 @@ impl Validation<String> for Str {
         if let Some(v) = value.as_str() {
             self.validate(&v.into(), ctx)
         } else {
-            ctx.add_violation(MiscViolation::InvalidType {
+            ctx.add_violation(Violation::InvalidType {
                 expected: Type::Str,
                 found: value.into(),
             })
@@ -55,7 +41,7 @@ fn validate_min_length(schema: &Str, input: &str, ctx: &mut Context) {
     if let Some(min_length) = schema.min_length {
         let length = input.chars().count() as u64;
         if min_length > length {
-            ctx.add_violation(Violation::MinimumLength {
+            ctx.add_violation(Violation::LengthBelowMinimum {
                 minimum: min_length,
                 found: length,
             });
@@ -67,7 +53,7 @@ fn validate_max_length(schema: &Str, input: &str, ctx: &mut Context) {
     if let Some(max_length) = schema.max_length {
         let length = input.chars().count() as u64;
         if max_length < length {
-            ctx.add_violation(Violation::MaximumLength {
+            ctx.add_violation(Violation::LengthAboveMaximum {
                 maximum: max_length,
                 found: length,
             });
@@ -80,12 +66,13 @@ fn validate_pattern(schema: &Str, input: &str, ctx: &mut Context) {
         match Regex::new(&format!("^{pattern}$")) {
             Ok(regex) => {
                 if !regex.is_match(input) {
-                    ctx.add_violation(Violation::Pattern {
+                    ctx.add_violation(Violation::InvalidValuePattern {
                         pattern: pattern.to_string(),
+                        found: input.into(),
                     });
                 }
             }
-            Err(e) => ctx.add_violation(MiscViolation::InvalidRegex {
+            Err(e) => ctx.add_violation(Issue::InternalError {
                 message: e.to_string(),
             }),
         }
@@ -122,7 +109,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::Str,
                     found: Type::List
                 }
@@ -163,7 +150,11 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::DisallowedValue.into()
+                issue: Violation::InvalidValue {
+                    expected: vec!["foo".to_string()].into(),
+                    found: "FOO".into()
+                }
+                .into()
             }]
         );
     }
@@ -187,7 +178,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec![],
-                item: CoercionNote {
+                issue: CoercionNote {
                     found: "FOO".into(),
                     made: "foo".into()
                 }
@@ -216,7 +207,7 @@ mod tests {
             vec![
                 Feedback {
                     path: vec![],
-                    item: CoercionNote {
+                    issue: CoercionNote {
                         found: true.into(),
                         made: "True".into()
                     }
@@ -224,7 +215,7 @@ mod tests {
                 },
                 Feedback {
                     path: vec![],
-                    item: CoercionNote {
+                    issue: CoercionNote {
                         found: "True".into(),
                         made: "true".into()
                     }
@@ -260,7 +251,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::MinimumLength {
+                issue: Violation::LengthBelowMinimum {
                     minimum: 3,
                     found: 2
                 }
@@ -295,7 +286,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::MaximumLength {
+                issue: Violation::LengthAboveMaximum {
                     maximum: 3,
                     found: 4
                 }
@@ -330,8 +321,9 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::Pattern {
-                    pattern: "[a-z][A-Z][a-z]".into()
+                issue: Violation::InvalidValuePattern {
+                    pattern: "[a-z][A-Z][a-z]".into(),
+                    found: "foo".into(),
                 }
                 .into()
             }]

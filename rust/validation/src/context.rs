@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use crate::feedback::{CoercionNote, Feedback, Item};
+use crate::feedback::{CoercionNote, Feedback, Issue};
 
 #[derive(Debug)]
 pub(crate) struct Context {
@@ -20,17 +20,17 @@ impl Context {
         }
     }
 
-    pub(crate) fn add_violation(&mut self, violation: impl Into<Item>) {
+    pub(crate) fn add_violation(&mut self, violation: impl Into<Issue>) {
         self.violations.push(Feedback {
             path: self.path.clone(),
-            item: violation.into(),
+            issue: violation.into(),
         });
     }
 
     pub(crate) fn add_coercion(&mut self, coercion: impl Into<CoercionNote>) {
         self.coercions.push(Feedback {
             path: self.path.clone(),
-            item: coercion.into().into(),
+            issue: coercion.into().into(),
         });
     }
 }

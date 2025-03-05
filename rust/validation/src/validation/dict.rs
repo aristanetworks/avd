@@ -3,28 +3,15 @@
 // that can be found in the LICENSE file.
 
 use avdschema::dict::Dict;
-use serde::Serialize;
 use serde_json::{Map, Value};
 
 use crate::{
     context::Context,
-    feedback::{Item, MiscViolation, Type, ValidationIssue},
+    feedback::{Type, Violation},
     utils::dynamic_keys::get_dynamic_keys,
 };
 
 use super::Validation;
-
-#[derive(Debug, PartialEq, Eq, Serialize)]
-pub enum Violation {
-    Keys { key: String },
-    Required { key: String },
-}
-
-impl From<Violation> for Item {
-    fn from(val: Violation) -> Self {
-        ValidationIssue::Dict(val).into()
-    }
-}
 
 impl Validation<Map<String, Value>> for Dict {
     fn validate(&self, value: &Map<String, Value>, ctx: &mut Context) {
@@ -37,7 +24,7 @@ impl Validation<Map<String, Value>> for Dict {
         if let Some(v) = value.as_object() {
             self.validate(v, ctx)
         } else {
-            ctx.add_violation(MiscViolation::InvalidType {
+            ctx.add_violation(Violation::InvalidType {
                 expected: Type::Dict,
                 found: value.into(),
             })
@@ -58,7 +45,7 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
                 .filter(|key| !key.starts_with('_'))
                 .find(|key| !keys.contains_key(key.as_str()))
             {
-                ctx.add_violation(Violation::Keys {
+                ctx.add_violation(Violation::UnexpectedKey {
                     key: key.to_string(),
                 });
             }
@@ -73,7 +60,7 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                 Some(Value::Null) | None => {
                     // nullish values don't need to be validated beyond a requiredness check
                     if key_schema.is_required() {
-                        ctx.add_violation(Violation::Required {
+                        ctx.add_violation(Violation::MissingRequiredKey {
                             key: key.to_string(),
                         });
                     }
@@ -116,7 +103,6 @@ mod tests {
     use crate::coercion::Coercion as _;
     use crate::context::Context;
     use crate::feedback::{CoercionNote, Feedback};
-    use crate::validation::int;
 
     #[test]
     fn validate_type_ok() {
@@ -138,7 +124,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::Dict,
                     found: Type::Bool
                 }
@@ -180,7 +166,7 @@ mod tests {
             vec![
                 Feedback {
                     path: vec!["foo".into()],
-                    item: MiscViolation::InvalidType {
+                    issue: Violation::InvalidType {
                         expected: Type::Str,
                         found: Type::List
                     }
@@ -188,7 +174,7 @@ mod tests {
                 },
                 Feedback {
                     path: vec!["bar".into()],
-                    item: MiscViolation::InvalidType {
+                    issue: Violation::InvalidType {
                         expected: Type::Int,
                         found: Type::Str
                     }
@@ -217,7 +203,7 @@ mod tests {
             vec![
                 Feedback {
                     path: vec!["foo".into()],
-                    item: CoercionNote {
+                    issue: CoercionNote {
                         found: 321.into(),
                         made: "321".into()
                     }
@@ -225,7 +211,7 @@ mod tests {
                 },
                 Feedback {
                     path: vec!["bar".into()],
-                    item: CoercionNote {
+                    issue: CoercionNote {
                         found: "123".into(),
                         made: 123.into()
                     }
@@ -294,7 +280,7 @@ mod tests {
             vec![
                 Feedback {
                     path: vec!["dynkey1".into()],
-                    item: int::Violation::Maximum {
+                    issue: Violation::ValueAboveMaximum {
                         maximum: 10,
                         found: 11
                     }
@@ -302,7 +288,7 @@ mod tests {
                 },
                 Feedback {
                     path: vec!["dynkey2".into()],
-                    item: MiscViolation::InvalidType {
+                    issue: Violation::InvalidType {
                         expected: Type::Int,
                         found: Type::Str
                     }
@@ -339,7 +325,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::Keys { key: "foo1".into() }.into()
+                issue: Violation::UnexpectedKey { key: "foo1".into() }.into()
             }]
         )
     }
@@ -369,7 +355,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec!["foo".into()],
-                item: CoercionNote {
+                issue: CoercionNote {
                     found: true.into(),
                     made: "True".into()
                 }
@@ -402,7 +388,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::Required { key: "foo".into() }.into()
+                issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
             }]
         )
     }

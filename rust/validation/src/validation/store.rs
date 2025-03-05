@@ -3,27 +3,13 @@
 // that can be found in the LICENSE file.
 
 use avdschema::{Schema, Store};
-use serde::Serialize;
 use serde_json::Value;
 
 use crate::{
-    Item, coercion::Coercion, context::Context, feedback::ValidationIssue,
-    validation_result::ValidationResult,
+    coercion::Coercion, context::Context, feedback::Violation, validation_result::ValidationResult,
 };
 
 use super::Validation;
-
-#[derive(Debug, PartialEq, Eq, Serialize)]
-pub enum Violation {
-    InvalidSchema { schema: String }, // InvalidPath { component: String },
-                                      // MissingKey { key: String },
-}
-
-impl From<Violation> for Item {
-    fn from(val: Violation) -> Self {
-        ValidationIssue::Store(val).into()
-    }
-}
 
 pub trait ValidateJson<T> {
     fn validate_json(

@@ -2,29 +2,16 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use serde::Serialize;
 use serde_json::Value;
 
 use crate::{
     context::Context,
-    feedback::{Item, MiscViolation, Type, ValidationIssue},
+    feedback::{Type, Violation},
 };
 
 use avdschema::int::Int;
 
 use super::{Validation, valid_values::ValidateValidValues};
-
-#[derive(Debug, PartialEq, Eq, Serialize)]
-pub enum Violation {
-    Minimum { minimum: i64, found: i64 },
-    Maximum { maximum: i64, found: i64 },
-}
-
-impl From<Violation> for Item {
-    fn from(val: Violation) -> Self {
-        ValidationIssue::Int(val).into()
-    }
-}
 
 impl Validation<i64> for Int {
     fn validate(&self, value: &i64, ctx: &mut Context) {
@@ -37,7 +24,7 @@ impl Validation<i64> for Int {
         if let Some(v) = value.as_i64() {
             self.validate(&v, ctx)
         } else {
-            ctx.add_violation(MiscViolation::InvalidType {
+            ctx.add_violation(Violation::InvalidType {
                 expected: Type::Int,
                 found: value.into(),
             })
@@ -52,7 +39,7 @@ impl Validation<i64> for Int {
 fn validate_min(schema: &Int, input: &i64, ctx: &mut Context) {
     if let Some(min) = schema.min {
         if min > *input {
-            ctx.add_violation(Violation::Minimum {
+            ctx.add_violation(Violation::ValueBelowMinimum {
                 minimum: min,
                 found: *input,
             });
@@ -63,7 +50,7 @@ fn validate_min(schema: &Int, input: &i64, ctx: &mut Context) {
 fn validate_max(schema: &Int, input: &i64, ctx: &mut Context) {
     if let Some(max) = schema.max {
         if max < *input {
-            ctx.add_violation(Violation::Maximum {
+            ctx.add_violation(Violation::ValueAboveMaximum {
                 maximum: max,
                 found: *input,
             });
@@ -77,7 +64,7 @@ mod tests {
 
     use crate::coercion::Coercion as _;
     use crate::context::Context;
-    use crate::feedback::{CoercionNote, Feedback, MiscViolation};
+    use crate::feedback::{CoercionNote, Feedback, Violation};
 
     #[test]
     fn validate_type_ok() {
@@ -99,7 +86,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::Int,
                     found: Type::Dict,
                 }
@@ -120,7 +107,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec![],
-                item: CoercionNote {
+                issue: CoercionNote {
                     found: "123".into(),
                     made: 123.into()
                 }
@@ -140,7 +127,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::InvalidType {
+                issue: Violation::InvalidType {
                     expected: Type::Int,
                     found: Type::Str
                 }
@@ -177,7 +164,11 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: MiscViolation::DisallowedValue.into()
+                issue: Violation::InvalidValue {
+                    expected: vec![123].into(),
+                    found: input
+                }
+                .into()
             }]
         );
     }
@@ -208,7 +199,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::Minimum {
+                issue: Violation::ValueBelowMinimum {
                     minimum: 122,
                     found: 121
                 }
@@ -243,7 +234,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                item: Violation::Maximum {
+                issue: Violation::ValueAboveMaximum {
                     maximum: 124,
                     found: 125
                 }
