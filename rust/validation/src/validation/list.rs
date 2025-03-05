@@ -91,7 +91,11 @@ fn validate_unique_keys(schema: &List, items: &[Value], ctx: &mut Context) {
                             path
                         },
                         issue: Violation::ValueNotUnique {
-                            other_path: trail.to_owned(),
+                            other_path: {
+                                let mut path = ctx.path.clone();
+                                path.extend_from_slice(trail);
+                                path
+                            },
                         }
                         .into(),
                     });

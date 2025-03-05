@@ -9,8 +9,6 @@ ignore-paths=
   python-avd/pyavd/_eos_designs/schema/__init__.py,
   python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py,
   python-avd/tests/pyavd/schema/data_merging_schema_class.py,
-  # TODO: Fix import issue from rust bindings
-  python-avd/tests/avdutils/validation/conftest.py,
 
 [MESSAGES CONTROL]
 disable=
