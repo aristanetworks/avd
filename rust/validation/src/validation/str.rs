@@ -66,7 +66,7 @@ fn validate_pattern(schema: &Str, input: &str, ctx: &mut Context) {
         match Regex::new(&format!("^{pattern}$")) {
             Ok(regex) => {
                 if !regex.is_match(input) {
-                    ctx.add_violation(Violation::InvalidValuePattern {
+                    ctx.add_violation(Violation::NotMatchingPattern {
                         pattern: pattern.to_string(),
                         found: input.into(),
                     });
@@ -321,7 +321,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec![],
-                issue: Violation::InvalidValuePattern {
+                issue: Violation::NotMatchingPattern {
                     pattern: "[a-z][A-Z][a-z]".into(),
                     found: "foo".into(),
                 }
