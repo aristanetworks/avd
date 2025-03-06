@@ -62,6 +62,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # macos-13 covers x64 and macos-latest covers arm
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-latest]
         python: ["3.10", "3.11", "3.12", "3.13"]
         include:
@@ -77,13 +78,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - name: "Install tox"
+      - name: Install tox
         run: |
           pip install tox tox-gh-actions --upgrade
-      - name: |
-          Run pytest via tox which will build the package (including rust) for Python ${{ matrix.python }}
+      - name: Run pytest via tox
         working-directory: python/avdutils
-        # Running tox
+        # Running tox  which will build the package (including rust).
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
         # For coverage we specify for the coverage environment.
         run: |
