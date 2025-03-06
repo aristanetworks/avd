@@ -26,6 +26,5 @@ path = "../../rust/validation/Cargo.toml"
 binding = "PyO3"
 features = ["python_bindings"]
 
-
 [tool.pytest.ini_options]
 testpaths = "tests"
