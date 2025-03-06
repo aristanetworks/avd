@@ -14,6 +14,7 @@ from avdutils._validation import init_store_from_fragments, validate_json
 @pytest.fixture
 def init_store() -> None:
     org_path = sys.path
+    # Insert /python-avd into the python path to be able to import constants from schema_tools.
     mocked_path = [str(Path(__file__).parents[4] / "python-avd"), *org_path]
     sys.path = mocked_path
     from schema_tools.constants import SCHEMAS
