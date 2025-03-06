@@ -64,6 +64,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-latest]
         python: ["3.10", "3.11", "3.12", "3.13"]
+        include:
+          - os: "ubuntu-latest"
+            python: "coverage"
 
     steps:
       - uses: actions/checkout@v4
@@ -82,8 +85,8 @@ jobs:
         run: |
           tox
       - name: Upload coverage from pytest
-        # Coverage only runs as part of 3.11 for ubuntu x64.
-        if: matrix.python == '3.11' && matrix.os == 'ubuntu-latest'
+        # Coverage only runs for ubuntu x64.
+        if: matrix.python == 'coverage'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-avdutils-coverage
