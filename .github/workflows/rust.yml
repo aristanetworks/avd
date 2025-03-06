@@ -23,7 +23,7 @@ jobs:
   file-changes:
     runs-on: ubuntu-latest
     outputs:
-      eos_design: ${{ steps.filter.outputs.eos_design }}
+      rust-src-or-ci-changed: ${{ steps.filter.outputs.rust-src-or-ci-changed }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
