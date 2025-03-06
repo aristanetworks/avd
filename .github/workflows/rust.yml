@@ -45,6 +45,7 @@ jobs:
     if: needs.file-changes.outputs.rust-src-or-ci-changed == 'true'
     steps:
       - uses: actions/checkout@v4
+      - run: rustup update
       - run: cargo fmt --verbose
       - run: cargo clippy --all-targets --all-features
       - run: cargo build --all-targets --all-features
@@ -54,7 +55,7 @@ jobs:
   # Python build and test
   # ----------------------------------- #
   python_build_and_test:
-    name: Python {{ matrix.python }} on ${{ matrix.os }}
+    name: Python ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
     if: needs.file-changes.outputs.rust-src-or-ci-changed == 'true'
@@ -66,6 +67,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        # This is needed for arm machines since they don't ship with 2024 edition.
+      - name: Upgrade rust and cargo
+        run: rustup update stable
       - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
