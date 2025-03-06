@@ -20,7 +20,8 @@ pub(crate) fn get_dynamic_keys(key_path: &str, dict: &Map<String, Value>) -> Vec
                 .filter_map(|item| item.as_str().map(|str| str.to_string()))
                 .collect(),
             _ => {
-                // todo: add a violation here for an incorrect type?
+                // Ignore an incorrect type targeted by the key_path.
+                // The validation will report this during validation of that model.
                 vec![]
             }
         })
