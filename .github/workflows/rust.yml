@@ -54,14 +54,14 @@ jobs:
   # Python build and test
   # ----------------------------------- #
   python_build_and_test:
-    name: Python build and test on ${{ matrix.os }}
+    name: Python {{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
     if: needs.file-changes.outputs.rust-src-or-ci-changed == 'true'
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-13, macos-latest]
         python: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
@@ -78,9 +78,8 @@ jobs:
         run: |
           tox
       - name: Upload coverage from pytest
-        # Coverage only runs as part of 3.11.
-        if: |
-          matrix.python == '3.11'
+        # Coverage only runs as part of 3.11 for ubuntu x64.
+        if: matrix.python == '3.11' && matrix.os == 'ubuntu-latest'
         uses: actions/upload-artifact@v4
         with:
           name: pytest-avdutils-coverage
