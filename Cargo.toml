@@ -3,7 +3,6 @@ members = [
     "rust/avdschema",
     "rust/validation",
     ]
-exclude = ["python-avd/avdutils/rust_symlink"]
 resolver = "2"
 
 [profile.release-lto]
