@@ -1,9 +1,6 @@
 # Some of these ignores might overlap the ignore in the parent AVD repo root.
 
 __pycache__/
-build/
-dist/
-*.egg-info/
 /pyavd/eos_cli_config_gen.templates.zip
 *.prof
 /site/
