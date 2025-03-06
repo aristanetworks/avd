@@ -39,7 +39,7 @@ jobs:
   # Cargo build, test and linting
   # ----------------------------------- #
   cargo_build_and_test:
-    name: Rust project - latest
+    name: Cargo build, test and linting
     runs-on: ubuntu-latest
     needs: [file-changes]
     if: needs.file_changes.outputs.rust_src_or_ci_changed == 'true'
@@ -49,3 +49,39 @@ jobs:
       - run: cargo clippy --all-targets --all-features
       - run: cargo build --all-targets --all-features
       - run: cargo test --all-targets --all-features
+
+  # ----------------------------------- #
+  # Python build and test
+  # ----------------------------------- #
+  python_build_and_test:
+    name: Python build and test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file_changes.outputs.rust_src_or_ci_changed == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-13, macos-14]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: "Install tox"
+        run: |
+          pip install tox tox-gh-actions --upgrade
+      - name: |
+          Run pytest via tox which will build the package (including rust) for Python ${{ matrix.python }}
+        working-directory: python/avdutils
+        run: |
+          tox
+      - name: Upload coverage from pytest
+        # Coverage only runs as part of 3.11.
+        if: |
+          matrix.python == '3.11'
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-avdutils-coverage
+          path: python/avdutils/coverage.xml
