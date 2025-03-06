@@ -67,8 +67,8 @@ jobs:
         include:
           - os: "ubuntu-latest"
             python: "3.11"
+            tox-arg: "-e coverage,report"
             coverage: true
-
     steps:
       - uses: actions/checkout@v4
         # This is needed for arm machines since they don't ship with 2024 edition.
@@ -83,8 +83,11 @@ jobs:
       - name: |
           Run pytest via tox which will build the package (including rust) for Python ${{ matrix.python }}
         working-directory: python/avdutils
+        # Running tox
+        # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
+        # For coverage we specify for the coverage environment.
         run: |
-          tox
+          tox ${{ matrix.tox-arg }}
       - name: Upload coverage from pytest
         # Coverage only runs for ubuntu x64 on python 3.11.
         if: matrix.coverage
