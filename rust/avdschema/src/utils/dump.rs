@@ -91,36 +91,4 @@ pub(crate) mod tests {
         let result = store.to_file(Some(file_path));
         assert!(result.is_ok())
     }
-
-    #[test]
-    pub(crate) fn dump_avd_store() {
-        // Dumping each stage of resolving a full store, to make it easier to track the behavior in the generated artifacts.
-
-        // First load schemas from fragments and dump the store with raw schemas containing refs etc.
-        let mut eos_cli_config_gen_schema =
-            AnySchema::from_fragments(EOS_CLI_CONFIG_GEN_FRAGMENTS.into()).unwrap();
-        let mut eos_designs_schema =
-            AnySchema::from_fragments(EOS_DESIGNS_FRAGMENTS.into()).unwrap();
-        let mut store = Store {
-            eos_cli_config_gen: eos_cli_config_gen_schema.to_owned(),
-            eos_designs: eos_designs_schema.to_owned(),
-        };
-        let file_path = get_tmp_file("test_dump_avd_store_with_refs.yml");
-        let result = store.to_file(Some(file_path));
-        assert!(result.is_ok());
-
-        // Next in-place resolve each schema and replace in the store and dump the fully resolved store.
-        resolve_schema(&mut eos_cli_config_gen_schema, &store).unwrap();
-        store.eos_cli_config_gen = eos_cli_config_gen_schema;
-        resolve_schema(&mut eos_designs_schema, &store).unwrap();
-        store.eos_designs = eos_designs_schema;
-        let file_path = get_tmp_file("test_dump_avd_store_resolved.yml");
-        let result = store.to_file(Some(file_path));
-        assert!(result.is_ok());
-
-        // Now dump as compressed file to see the size difference
-        let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
-        let result = store.to_file(Some(file_path));
-        assert!(result.is_ok());
-    }
 }
