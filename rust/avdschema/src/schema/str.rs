@@ -13,7 +13,7 @@ use super::{
     },
 };
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Format {
     Cidr,
@@ -28,8 +28,8 @@ pub enum Format {
     Mac,
 }
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Str {
     /// Convert string value to lower case before performing validation

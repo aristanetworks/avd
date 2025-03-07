@@ -15,8 +15,8 @@ use super::{
     },
 };
 
-#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Int {
     pub min: Option<i64>,

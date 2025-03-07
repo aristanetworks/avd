@@ -5,8 +5,8 @@
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct ConvertTypes {
     pub convert_types: Option<Vec<String>>,

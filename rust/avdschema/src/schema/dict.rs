@@ -12,8 +12,8 @@ use super::{
     base::{Base, documentation_options::DocumentationOptionsDict},
 };
 
-#[derive(Debug, Clone, Default, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Dict {
     /// Dictionary of dictionary-keys in the format `{<keyname>: {<schema>}}`.

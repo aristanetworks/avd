@@ -11,7 +11,7 @@ use crate::utils::{
 
 use super::{boolean::Bool, dict::Dict, int::Int, list::List, str::Str};
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum AnySchema {
     Bool(Bool),

@@ -6,8 +6,8 @@ use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
 /// Special options used for generating documentation
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DocumentationOptions {
     /// Setting `table` will allow for custom grouping of schema fields in the documentation.
@@ -18,8 +18,8 @@ pub struct DocumentationOptions {
 }
 
 /// Special options used for generating documentation
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct DocumentationOptionsDict {
     /// Setting `table` will allow for custom grouping of schema fields in the documentation.

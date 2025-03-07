@@ -2,9 +2,32 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use std::path::PathBuf;
+
 use crate::{Store, any::AnySchema};
 use serde::Deserialize as _;
 use serde_json::json;
+
+// Using a tmp path in the crate allows us to inspect the generated artifacts.
+// The files in the path are exempted from git.
+const TMP_PATH: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/tmp");
+
+pub(crate) const EOS_CLI_CONFIG_GEN_FRAGMENTS: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../python-avd/pyavd/_eos_cli_config_gen/schema/schema_fragments/"
+);
+
+pub(crate) const EOS_DESIGNS_FRAGMENTS: &str = concat!(
+    env!("CARGO_MANIFEST_DIR"),
+    "/../../python-avd/pyavd/_eos_designs/schema/schema_fragments/"
+);
+
+pub(crate) fn get_tmp_path() -> PathBuf {
+    PathBuf::from(TMP_PATH)
+}
+pub(crate) fn get_tmp_file(filename: &str) -> PathBuf {
+    get_tmp_path().join(filename)
+}
 
 pub(crate) fn get_test_store() -> Store {
     Store {
@@ -194,7 +217,8 @@ pub(crate) fn get_test_dict_schema() -> AnySchema {
                 "bool_key": {"type": "bool"},
                 "int_key": {"type": "int"},
                 "str_key": {"type": "str"},
-                "list_key": {"type": "list", "items": {"type": "int"}}
+                "list_key": {"type": "list", "items": {"type": "int"}},
+                "dict_key": {"type": "dict", "keys": {"nested_key": {"type": "str"}}}
             },
             "dynamic_keys": {"some_path": {"type": "int"}},
             "$defs": {"def_schema": {"type": "str"}},

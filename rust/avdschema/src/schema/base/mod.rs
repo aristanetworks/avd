@@ -21,8 +21,8 @@ impl DataValue for OrderMap<String, Value> {}
 // Vec<Value> corresponds to a list
 impl DataValue for Vec<Value> {}
 
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Base<T>
 where
@@ -42,8 +42,8 @@ where
 }
 
 /// Deprecation settings
-#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[skip_serializing_none]
+#[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
 pub struct Deprecation {
     /// Emit deprecation warning if key is set

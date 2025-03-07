@@ -10,7 +10,7 @@ use crate::{
     utils::{dump::Dump, load::Load},
 };
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Store {
     pub eos_cli_config_gen: AnySchema,
     pub eos_designs: AnySchema,
