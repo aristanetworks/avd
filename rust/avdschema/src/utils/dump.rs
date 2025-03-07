@@ -21,7 +21,7 @@ where
             Some(path) => match path.extension().and_then(OsStr::to_str) {
                 Some("yml" | "yaml") => self.to_yaml_file(path),
                 Some("json") => self.to_json_file(path),
-                Some("snappy") => self.to_snappy_file(path),
+                Some("xz2") => self.to_xz2_file(path),
                 _ => Err("Invalid extension for output file".into()),
             },
             None => self.to_stdout(),
@@ -36,10 +36,10 @@ where
         let writer = BufWriter::new(file);
         Ok(serde_yaml::to_writer(writer, self)?)
     }
-    fn to_snappy_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_xz2_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
         let file = File::create(path)?;
-        let snapped = snap::write::FrameEncoder::new(file);
-        let writer = BufWriter::new(snapped);
+        let compressor = xz2::write::XzEncoder::new(file, 6);
+        let writer = BufWriter::new(compressor);
         Ok(serde_json::to_writer(writer, self)?)
     }
     fn to_json_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {

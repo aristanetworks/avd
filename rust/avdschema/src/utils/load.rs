@@ -24,7 +24,7 @@ where
             Some(path) => match path.extension().and_then(OsStr::to_str) {
                 Some("yml" | "yaml") => Self::from_yaml_file(path),
                 Some("json") => Self::from_json_file(path),
-                Some("snappy") => Self::from_snappy_file(path),
+                Some("xz2") => Self::from_xz2_file(path),
                 _ => Err("Invalid extension for input file".into()),
             },
             None => Self::from_stdin(),
@@ -39,10 +39,10 @@ where
         let reader = BufReader::new(file);
         Ok(serde_yaml::from_reader(reader)?)
     }
-    fn from_snappy_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_xz2_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
         let file = File::open(path)?;
-        let snapped = snap::read::FrameDecoder::new(file);
-        let reader = BufReader::new(snapped);
+        let decompressor = xz2::read::XzDecoder::new(file);
+        let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
     fn from_json_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {

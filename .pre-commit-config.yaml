@@ -113,6 +113,12 @@ repos:
         types: [rust]
         files: ^rust/
 
+  - repo: https://github.com/EmbarkStudios/cargo-deny
+    rev: 0.18.1
+    hooks:
+      # Check licenses of Rust dependencies
+      - id: cargo-deny
+
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
     rev: v0.11.7
