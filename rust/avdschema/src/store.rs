@@ -1,7 +1,6 @@
 // Copyright (c) 2025 Arista Networks, Inc.
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
-
 use serde::{Deserialize, Serialize};
 use strum_macros::AsRefStr;
 
@@ -23,6 +22,8 @@ impl Store {
         }
     }
 }
+impl Dump for Store {}
+impl Load for Store {}
 
 #[derive(Debug, Clone, Copy, AsRefStr)]
 pub enum Schema {
@@ -41,8 +42,6 @@ impl TryFrom<&str> for Schema {
         }
     }
 }
-impl Dump for Store {}
-impl Load for Store {}
 
 #[cfg(test)]
 mod tests {

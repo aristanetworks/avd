@@ -53,15 +53,7 @@ where
 #[cfg(test)]
 pub(crate) mod tests {
     use super::Dump;
-    use crate::{
-        LoadFromFragments as _, Store,
-        any::AnySchema,
-        resolve_schema,
-        utils::test_utils::{
-            EOS_CLI_CONFIG_GEN_FRAGMENTS, EOS_DESIGNS_FRAGMENTS, get_test_dict_schema,
-            get_test_store, get_tmp_file,
-        },
-    };
+    use crate::utils::test_utils::{get_test_dict_schema, get_test_store, get_tmp_file};
 
     #[test]
     pub(crate) fn dump_yaml() {

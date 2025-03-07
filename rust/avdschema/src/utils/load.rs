@@ -50,6 +50,11 @@ where
         let reader = BufReader::new(file);
         Ok(serde_json::from_reader(reader)?)
     }
+    fn from_xz2_bytes(bytes: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
+        let decompressor = xz2::read::XzDecoder::new(bytes);
+        let reader = BufReader::new(decompressor);
+        Ok(serde_json::from_reader(reader)?)
+    }
 }
 
 pub trait LoadFromFragments
