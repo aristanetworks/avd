@@ -33,4 +33,6 @@ impl Validation<Value> for AnySchema {
             Self::Dict(schema) => schema.is_required(),
         }
     }
+
+    fn validate_ref(&self, _value: &Value, _ctx: &mut Context) {}
 }

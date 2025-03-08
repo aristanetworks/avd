@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::boolean::Bool;
+use avdschema::{any::AnySchema, boolean::Bool, resolve_ref};
 use serde_json::Value;
 
 use crate::{
@@ -15,6 +15,7 @@ use super::{Validation, valid_values::ValidateValidValues as _};
 impl Validation<bool> for Bool {
     fn validate(&self, value: &bool, ctx: &mut Context) {
         self.valid_values.validate(value, ctx);
+        self.validate_ref(value, ctx);
     }
 
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
@@ -31,6 +32,17 @@ impl Validation<bool> for Bool {
     fn is_required(&self) -> bool {
         self.base.required.unwrap_or_default()
     }
+
+    fn validate_ref(&self, value: &bool, ctx: &mut Context) {
+        if let Some(ref_) = self.base.schema_ref.as_ref() {
+            // Ignoring not being able to resolve the schema.
+            // Ignoring a wrong schema type at the ref. Since Validation is infallible.
+            // TODO: What to do?
+            if let Ok(AnySchema::Bool(ref_schema)) = resolve_ref(ref_, ctx.store) {
+                ref_schema.validate(value, ctx);
+            }
+        }
+    }
 }
 
 #[cfg(test)]
@@ -38,13 +50,17 @@ mod tests {
     use avdschema::base::valid_values::ValidValues;
 
     use super::*;
-    use crate::feedback::{Feedback, Type, Violation};
+    use crate::{
+        feedback::{Feedback, Type, Violation},
+        validation::test_utils::get_test_store,
+    };
 
     #[test]
     fn validate_type_ok() {
         let schema = Bool::default();
         let input = true.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -53,7 +69,8 @@ mod tests {
     fn validate_type_err() {
         let schema = Bool::default();
         let input = serde_json::json!([]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -79,7 +96,8 @@ mod tests {
             ..Default::default()
         };
         let input = false.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -94,7 +112,8 @@ mod tests {
             ..Default::default()
         };
         let input = true.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(

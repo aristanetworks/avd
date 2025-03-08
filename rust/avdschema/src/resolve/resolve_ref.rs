@@ -12,7 +12,7 @@ use super::walker::Walker as _;
 static REF_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new("^([a-z][a-z_]*)#((/[a-z$][a-z0-9_]*)*)$").unwrap());
 
-pub(crate) fn resolve_ref<'a>(
+pub fn resolve_ref<'a>(
     ref_: &str,
     store: &'a Store,
 ) -> Result<&'a AnySchema, Box<dyn std::error::Error>> {

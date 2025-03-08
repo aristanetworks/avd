@@ -2,9 +2,9 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use std::path::PathBuf;
+use std::{path::PathBuf, sync::OnceLock};
 
-use crate::{Store, any::AnySchema};
+use crate::{LoadFromFragments as _, Store, any::AnySchema, resolve_schema};
 use serde::Deserialize as _;
 use serde_json::json;
 
@@ -235,4 +235,26 @@ pub(crate) fn get_test_dict_schema() -> AnySchema {
         }
     ))
     .unwrap()
+}
+
+static AVD_STORE: OnceLock<Store> = OnceLock::new();
+
+fn init_avd_store() -> Store {
+    // Load schemas from fragments, resolve all $ref and save in a store we can compare the loaded store with.
+    let mut eos_cli_config_gen_schema =
+        AnySchema::from_fragments(EOS_CLI_CONFIG_GEN_FRAGMENTS.into()).unwrap();
+    let mut eos_designs_schema = AnySchema::from_fragments(EOS_DESIGNS_FRAGMENTS.into()).unwrap();
+    let mut store = Store {
+        eos_cli_config_gen: eos_cli_config_gen_schema.to_owned(),
+        eos_designs: eos_designs_schema.to_owned(),
+    };
+    resolve_schema(&mut eos_cli_config_gen_schema, &store).unwrap();
+    store.eos_cli_config_gen = eos_cli_config_gen_schema;
+    resolve_schema(&mut eos_designs_schema, &store).unwrap();
+    store.eos_designs = eos_designs_schema;
+    store
+}
+
+pub(crate) fn get_avd_store() -> &'static Store {
+    AVD_STORE.get_or_init(init_avd_store)
 }

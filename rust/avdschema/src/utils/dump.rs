@@ -22,6 +22,7 @@ where
                 Some("yml" | "yaml") => self.to_yaml_file(path),
                 Some("json") => self.to_json_file(path),
                 Some("xz2") => self.to_xz2_file(path),
+                Some("gz") => self.to_gz_file(path),
                 _ => Err("Invalid extension for output file".into()),
             },
             None => self.to_stdout(),
@@ -38,13 +39,19 @@ where
     }
     fn to_xz2_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
         let file = File::create(path)?;
-        let compressor = xz2::write::XzEncoder::new(file, 6);
+        let compressor = xz2::write::XzEncoder::new(file, 1);
         let writer = BufWriter::new(compressor);
         Ok(serde_json::to_writer(writer, self)?)
     }
     fn to_json_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
         let file = File::create(path)?;
         let writer = BufWriter::new(file);
+        Ok(serde_json::to_writer(writer, self)?)
+    }
+    fn to_gz_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+        let file = File::create(path)?;
+        let compressor = flate2::write::GzEncoder::new(file, flate2::Compression::fast());
+        let writer = BufWriter::new(compressor);
         Ok(serde_json::to_writer(writer, self)?)
     }
 }
@@ -72,6 +79,13 @@ pub(crate) mod tests {
     #[test]
     pub(crate) fn dump_xz2() {
         let file_path = get_tmp_file("test_dump.xz2");
+        let schema = get_test_dict_schema();
+        let result = schema.to_file(Some(file_path));
+        assert!(result.is_ok())
+    }
+    #[test]
+    pub(crate) fn dump_gz() {
+        let file_path = get_tmp_file("test_dump.gz");
         let schema = get_test_dict_schema();
         let result = schema.to_file(Some(file_path));
         assert!(result.is_ok())

@@ -2,18 +2,22 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use avdschema::Store;
+
 use crate::feedback::{CoercionNote, Feedback, Issue};
 
 #[derive(Debug)]
-pub(crate) struct Context {
+pub(crate) struct Context<'a> {
+    pub(crate) store: &'a Store,
     pub(crate) path: Vec<String>,
     pub(crate) violations: Vec<Feedback>,
     pub(crate) coercions: Vec<Feedback>,
 }
 
-impl Context {
-    pub(crate) fn new() -> Self {
+impl<'a> Context<'a> {
+    pub(crate) fn new(store: &'a Store) -> Self {
         Self {
+            store,
             path: vec![],
             violations: vec![],
             coercions: vec![],

@@ -4,20 +4,13 @@
 
 // When running from Python we wish to cache Store inside Rust,
 // to avoid sending the huge object back and forth.
-// The store will be initialized automatically on the first validation.
-//
-// If the feature "include-schemas" is not enabled, the store must be initialized
-// from YAML fragments at run-time with the `init_store_from_fragments(eos_cli_config_gen: str, eos_designs: str)` function.
-//
-// If the feature "include-schemas" is enabled, the store will be built from YAML fragments
-// during compilation and included as a json string in the source code.
+// The store is initialized on first access with the included store (built from YAML fragments during compilation).
+// It is possible to replace the store by calling `init_store_from_fragments` which will replace the inner option of the Mutex.
 
-use std::{
-    path::PathBuf,
-    sync::{LazyLock, Mutex},
-};
+use std::{path::PathBuf, sync::OnceLock};
 
-use avdschema::{Dump as _, LoadFromFragments, Store, any::AnySchema, dict::Dict, resolve_schema};
+use avdschema::{Dump as _, LoadFromFragments, Store, any::AnySchema, resolve_schema};
+use included_store::get_store as get_included_store;
 use pyo3::{
     Bound, PyResult,
     exceptions::PyRuntimeError,
@@ -32,15 +25,10 @@ use crate::{
     validation_result::ValidationResult,
 };
 
-static STORE: LazyLock<Mutex<Option<Store>>> =
-    LazyLock::new(|| Mutex::new(Some(initialize_store())));
+static STORE: OnceLock<Store> = OnceLock::new();
 
-fn initialize_store() -> Store {
-    // TODO: Add the macro to include the schema during compilation
-    Store {
-        eos_cli_config_gen: AnySchema::Dict(Dict::default()),
-        eos_designs: AnySchema::Dict(Dict::default()),
-    }
+fn get_store() -> &'static Store {
+    STORE.get_or_init(get_included_store)
 }
 
 #[pymodule]
@@ -80,27 +68,15 @@ pub fn init_store_from_fragments(
     let _ = resolve_schema(&mut eos_designs_schema, &store);
     store.eos_designs = eos_designs_schema;
 
-    // Finally insert the resolved store into the Mutex.
-    let mut store_option = STORE.lock().map_err(|err| {
-        PyRuntimeError::new_err(format!(
-            "Unable to lock the schema store for updating: {err}"
-        ))
-    })?;
-    _ = store_option.replace(store);
-    Ok(())
+    // Finally insert the resolved store into the OnceLock.
+    STORE.set(store).map_err(|_| {
+        PyRuntimeError::new_err("Unable to initialize the schema store. Initialization can only happen once, and must be done before running any validations.".to_string())
+    })
 }
 
 #[pyfunction]
 pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<String> {
-    let store_option = STORE.lock().map_err(|err| {
-        PyRuntimeError::new_err(format!(
-            "Unable to lock the schema store for updating: {err}"
-        ))
-    })?;
-    let store = store_option.as_ref().ok_or_else(|| {
-        PyRuntimeError::new_err("Schema store must be initialized before calling validation")
-    })?;
-    store
+    get_store()
         .validate_json(data_as_json, schema_name)
         .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?
         .to_json()
@@ -123,7 +99,7 @@ pub fn validate_json_with_adhoc_schema(
     let mut data: Value = serde_json::from_str(data_as_json)
         .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
-    let mut ctx = Context::new();
+    let mut ctx = Context::new(get_store());
     schema.coerce(&mut data, &mut ctx);
     schema.validate_value(&data, &mut ctx);
 

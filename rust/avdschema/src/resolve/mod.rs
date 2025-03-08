@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-mod resolve_ref;
+pub mod resolve_ref;
 mod walker;
 
 use crate::{any::AnySchema, inherit::Inherit, store::Store};
@@ -57,6 +57,11 @@ impl Resolve for AnySchema {
         }
         // Next resolve the main schema itself
         while let Some(ref ref_) = self.ref_() {
+            // Skip resolving references to a full schema. These will be handled during validation.
+            if ref_.ends_with("#") {
+                break;
+            }
+
             // The clone here is required since we might be inheriting parts of this schema in other places, and thereby modify the schemas.
             let mut ref_schema = resolve_ref(ref_, store)?.clone();
             ref_schema.resolve(store)?;

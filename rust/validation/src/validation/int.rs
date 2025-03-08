@@ -9,7 +9,7 @@ use crate::{
     feedback::{Type, Violation},
 };
 
-use avdschema::int::Int;
+use avdschema::{any::AnySchema, int::Int, resolve_ref};
 
 use super::{Validation, valid_values::ValidateValidValues};
 
@@ -18,6 +18,7 @@ impl Validation<i64> for Int {
         self.valid_values.validate(value, ctx);
         validate_min(self, value, ctx);
         validate_max(self, value, ctx);
+        self.validate_ref(value, ctx);
     }
 
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
@@ -33,6 +34,17 @@ impl Validation<i64> for Int {
 
     fn is_required(&self) -> bool {
         self.base.required.unwrap_or_default()
+    }
+
+    fn validate_ref(&self, value: &i64, ctx: &mut Context) {
+        if let Some(ref_) = self.base.schema_ref.as_ref() {
+            // Ignoring not being able to resolve the schema.
+            // Ignoring a wrong schema type at the ref. Since Validation is infallible.
+            // TODO: What to do?
+            if let Ok(AnySchema::Int(ref_schema)) = resolve_ref(ref_, ctx.store) {
+                ref_schema.validate(value, ctx);
+            }
+        }
     }
 }
 
@@ -65,12 +77,14 @@ mod tests {
     use crate::coercion::Coercion as _;
     use crate::context::Context;
     use crate::feedback::{CoercionNote, Feedback, Violation};
+    use crate::validation::test_utils::get_test_store;
 
     #[test]
     fn validate_type_ok() {
         let schema = Int::default();
         let input = 123.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -79,7 +93,8 @@ mod tests {
     fn validate_type_err() {
         let schema = Int::default();
         let input = serde_json::json!({});
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -99,7 +114,8 @@ mod tests {
     fn validate_type_coerced_from_str_ok() {
         let schema = Int::default();
         let mut input = "123".into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -120,7 +136,8 @@ mod tests {
     fn validate_type_coerced_from_str_err() {
         let schema = Int::default();
         let input = "one23".into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -144,7 +161,8 @@ mod tests {
             int
         };
         let input = 123.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -157,7 +175,8 @@ mod tests {
             int
         };
         let input = 321.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -180,7 +199,8 @@ mod tests {
             ..Default::default()
         };
         let input = 123.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -192,7 +212,8 @@ mod tests {
             ..Default::default()
         };
         let input = 121.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -215,7 +236,8 @@ mod tests {
             ..Default::default()
         };
         let input = 123.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -227,7 +249,8 @@ mod tests {
             ..Default::default()
         };
         let input = 125.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(

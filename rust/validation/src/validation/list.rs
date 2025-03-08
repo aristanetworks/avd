@@ -11,7 +11,7 @@ use crate::{
 };
 
 use crate::{context::Context, validation::Validation};
-use avdschema::list::List;
+use avdschema::{any::AnySchema, list::List, resolve_ref};
 
 impl Validation<Vec<Value>> for List {
     fn validate(&self, input: &Vec<Value>, ctx: &mut Context) {
@@ -34,6 +34,17 @@ impl Validation<Vec<Value>> for List {
 
     fn is_required(&self) -> bool {
         self.base.required.unwrap_or_default()
+    }
+
+    fn validate_ref(&self, value: &Vec<Value>, ctx: &mut Context) {
+        if let Some(ref_) = self.base.schema_ref.as_ref() {
+            // Ignoring not being able to resolve the schema.
+            // Ignoring a wrong schema type at the ref. Since Validation is infallible.
+            // TODO: What to do?
+            if let Ok(AnySchema::List(ref_schema)) = resolve_ref(ref_, ctx.store) {
+                ref_schema.validate(value, ctx);
+            }
+        }
     }
 }
 
@@ -139,13 +150,15 @@ mod tests {
     use crate::{
         coercion::Coercion as _,
         feedback::{CoercionNote, Feedback},
+        validation::test_utils::get_test_store,
     };
 
     #[test]
     fn validate_type_ok() {
         let schema = List::default();
         let input = serde_json::json!(["foo", "bar"]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -154,7 +167,8 @@ mod tests {
     fn validate_type_err() {
         let schema = List::default();
         let input = true.into();
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -177,7 +191,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!(["foo", "bar"]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -189,7 +204,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!([{}, {}]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -222,7 +238,8 @@ mod tests {
             ..Default::default()
         };
         let mut input = serde_json::json!([1, []]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
@@ -256,7 +273,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!(["foo", "bar"]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -268,7 +286,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!(["foo", "bar"]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -291,7 +310,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!(["foo", "bar"]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -303,7 +323,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!(["foo", "bar", "baz"]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -333,7 +354,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!([{ "foo": "v1" }, { "foo": "v2" }]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -352,7 +374,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!([{ "foo": null }, { "foo": "v1" }]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -378,7 +401,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!([{ "foo": "111" }, { "foo": "222" }, { "foo": "111" }]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -417,7 +441,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!([{ "foo": "111" }, { "foo": "222" }, { "foo": "111" }]);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert!(ctx.violations.is_empty());

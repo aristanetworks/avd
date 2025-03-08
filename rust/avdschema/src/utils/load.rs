@@ -25,6 +25,7 @@ where
                 Some("yml" | "yaml") => Self::from_yaml_file(path),
                 Some("json") => Self::from_json_file(path),
                 Some("xz2") => Self::from_xz2_file(path),
+                Some("gz") => Self::from_gz_file(path),
                 _ => Err("Invalid extension for input file".into()),
             },
             None => Self::from_stdin(),
@@ -52,6 +53,17 @@ where
     }
     fn from_xz2_bytes(bytes: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
         let decompressor = xz2::read::XzDecoder::new(bytes);
+        let reader = BufReader::new(decompressor);
+        Ok(serde_json::from_reader(reader)?)
+    }
+    fn from_gz_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+        let file = File::open(path)?;
+        let decompressor = flate2::read::GzDecoder::new(file);
+        let reader = BufReader::new(decompressor);
+        Ok(serde_json::from_reader(reader)?)
+    }
+    fn from_gz_bytes(bytes: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
+        let decompressor = flate2::read::GzDecoder::new(bytes);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
@@ -90,7 +102,7 @@ mod tests {
     use super::Load;
     use crate::Store;
     use crate::any::AnySchema;
-    use crate::utils::dump::tests::{dump_json, dump_store_yaml, dump_xz2, dump_yaml};
+    use crate::utils::dump::tests::{dump_gz, dump_json, dump_store_yaml, dump_xz2, dump_yaml};
     use crate::utils::test_utils::{get_test_dict_schema, get_test_store, get_tmp_file};
 
     #[test]
@@ -115,6 +127,15 @@ mod tests {
     fn load_xz2() {
         dump_xz2();
         let file_path = get_tmp_file("test_dump.xz2");
+        let schema = get_test_dict_schema();
+        let result = AnySchema::from_file(Some(file_path));
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), schema);
+    }
+    #[test]
+    fn load_gz() {
+        dump_gz();
+        let file_path = get_tmp_file("test_dump.gz");
         let schema = get_test_dict_schema();
         let result = AnySchema::from_file(Some(file_path));
         assert!(result.is_ok());

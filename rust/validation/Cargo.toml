@@ -6,6 +6,7 @@ license = "Apache-2.0"
 
 [dependencies]
 avdschema = { path = "../avdschema" }
+included_store = { path = "../included_store", optional = true }
 ordermap = { version = "0.5.4", features = ["serde"] }
 pyo3 = { version = "0.23.3", features = ["abi3"], optional = true }
 regex = { version = "1.11.1" }
@@ -17,7 +18,7 @@ serde_json = { version = "1.0.135", features = [
 serde_yaml = { version = "0.9.33" }
 
 [features]
-python_bindings = ["dep:pyo3"]
+python_bindings = ["dep:pyo3", "dep:included_store"]
 
 [lib]
 name = "_validation"

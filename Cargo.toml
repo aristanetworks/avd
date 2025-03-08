@@ -1,6 +1,8 @@
 [workspace]
 members = [
     "rust/avdschema",
+    "rust/included_store",
+    "rust/avdschema_macros",
     "rust/validation",
     ]
 resolver = "2"

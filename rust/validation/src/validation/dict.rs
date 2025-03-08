@@ -2,7 +2,7 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::dict::Dict;
+use avdschema::{any::AnySchema, dict::Dict, resolve_ref};
 use serde_json::{Map, Value};
 
 use crate::{
@@ -18,6 +18,7 @@ impl Validation<Map<String, Value>> for Dict {
         validate_keys(self, value, ctx);
         validate_allowed_keys(self, value, ctx);
         validate_dynamic_keys(self, value, ctx);
+        self.validate_ref(value, ctx);
     }
 
     fn validate_value(&self, value: &Value, ctx: &mut Context) {
@@ -33,6 +34,17 @@ impl Validation<Map<String, Value>> for Dict {
 
     fn is_required(&self) -> bool {
         self.base.required.unwrap_or_default()
+    }
+
+    fn validate_ref(&self, value: &Map<String, Value>, ctx: &mut Context) {
+        if let Some(ref_) = self.base.schema_ref.as_ref() {
+            // Ignoring not being able to resolve the schema.
+            // Ignoring a wrong schema type at the ref. Since Validation is infallible.
+            // TODO: What to do?
+            if let Ok(AnySchema::Dict(ref_schema)) = resolve_ref(ref_, ctx.store) {
+                ref_schema.validate(value, ctx);
+            }
+        }
     }
 }
 
@@ -103,12 +115,14 @@ mod tests {
     use crate::coercion::Coercion as _;
     use crate::context::Context;
     use crate::feedback::{CoercionNote, Feedback};
+    use crate::validation::test_utils::get_test_store;
 
     #[test]
     fn validate_type_ok() {
         let schema = Dict::default();
         let input = serde_json::json!({ "foo": true });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -117,7 +131,8 @@ mod tests {
     fn validate_type_err() {
         let schema = Dict::default();
         let input = serde_json::json!(true);
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -143,7 +158,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({ "foo": "bar", "bar": 123 });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -158,7 +174,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({ "foo": [], "bar": "boo" });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -194,7 +211,8 @@ mod tests {
             ..Default::default()
         };
         let mut input = serde_json::json!({ "foo": 321, "bar": "123" });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -244,7 +262,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({ "my_dynamic_keys": ["dynkey1", "dynkey2"], "dynkey1": 5, "dynkey2": 9 });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -272,7 +291,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({ "my_dynamic_keys": ["dynkey1", "dynkey2"], "dynkey1": 11, "dynkey2": "wrong" });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -306,7 +326,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({ "foo": "ok", "foo1": "wrong" });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -318,7 +339,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({ "foo": "ok", "foo1": "wrong", "_internal": "ignored" });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -347,7 +369,8 @@ mod tests {
             ..Default::default()
         };
         let mut input = serde_json::json!({ "foo": true });
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -381,7 +404,8 @@ mod tests {
             ..Default::default()
         };
         let input = serde_json::json!({});
-        let mut ctx = Context::new();
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(

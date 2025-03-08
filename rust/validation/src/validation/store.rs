@@ -28,7 +28,7 @@ impl ValidateJson<Schema> for Store {
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
         let mut value = serde_yaml::from_str::<Value>(json)?;
-        let mut ctx = Context::new();
+        let mut ctx = Context::new(self);
 
         let schema = self.get(schema_type);
         schema.coerce(&mut value, &mut ctx);
@@ -47,7 +47,7 @@ impl ValidateJson<&str> for Store {
         if let Ok(schema_type) = Schema::try_from(schema_name) {
             self.validate_json(json, schema_type)
         } else {
-            let mut ctx = Context::new();
+            let mut ctx = Context::new(self);
             ctx.add_violation(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });

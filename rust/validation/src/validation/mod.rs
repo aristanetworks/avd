@@ -19,4 +19,12 @@ pub(crate) trait Validation<T> {
     fn validate(&self, value: &T, ctx: &mut Context);
     fn validate_value(&self, value: &Value, ctx: &mut Context);
     fn is_required(&self) -> bool;
+
+    /// This validation of ref will not merge in the schema, so it only works as expected when there are no local variables set as well.
+    /// In practice this is only used for structured_config, where we $ref in the full eos_cli_config_gen schema. All other schemas
+    /// will be resolved up-front and stored in the schema store.
+    fn validate_ref(&self, value: &T, ctx: &mut Context);
 }
+
+#[cfg(test)]
+pub(crate) mod test_utils;

@@ -12,7 +12,7 @@ pub struct ValidationResult {
     pub violations: Vec<Feedback>,
     pub coercions: Vec<Feedback>,
 }
-impl From<Context> for ValidationResult {
+impl From<Context<'_>> for ValidationResult {
     fn from(value: Context) -> Self {
         Self {
             coercions: value.coercions,
