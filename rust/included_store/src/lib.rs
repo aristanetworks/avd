@@ -3,10 +3,19 @@
 // that can be found in the LICENSE file.
 #![deny(unused_crate_dependencies)]
 
-// Added here to avoid being detected as unused during testing and linting.
+/// The full AVD schema is pre-compiled into this crate as a bytestream of XZ2 compressed JSON.
+/// Include it from various bindings and cache it with OnceLock like:
+/// ```
+/// use included_store::get_store as get_included_store;
+///
+/// static STORE: OnceLock<Store> = OnceLock::new();
+///
+/// fn get_store() -> &'static Store {
+///     STORE.get_or_init(get_included_store)
+/// }
+/// ```
+// Added here to avoid it being deemed unused during testing and linting.
 use avdschema_macros as _;
-
-use std::sync::LazyLock;
 
 use avdschema::{Load as _, Store};
 
@@ -20,5 +29,3 @@ const INCLUDED_STORE_XZ2_BYTES: &[u8] = &[];
 pub fn get_store() -> Store {
     Store::from_xz2_bytes(INCLUDED_STORE_XZ2_BYTES).unwrap()
 }
-
-pub static STORE: LazyLock<Store> = LazyLock::new(get_store);
