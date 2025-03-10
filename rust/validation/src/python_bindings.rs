@@ -70,7 +70,11 @@ pub fn init_store_from_fragments(
 
     // Finally insert the resolved store into the OnceLock.
     STORE.set(store).map_err(|_| {
-        PyRuntimeError::new_err("Unable to initialize the schema store. Initialization can only happen once, and must be done before running any validations.".to_string())
+        PyRuntimeError::new_err(
+            "Unable to initialize the schema store. \
+             Initialization can only happen once, and must be done before running any validations."
+                .to_string(),
+        )
     })
 }
 
