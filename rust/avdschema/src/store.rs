@@ -31,14 +31,33 @@ pub enum Schema {
 }
 
 impl TryFrom<&str> for Schema {
-    type Error = &'static str;
+    type Error = SchemaStoreError;
 
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         match value {
             "eos_designs" => Ok(Self::EosDesigns),
             "eos_cli_config_gen" => Ok(Self::EosCliConfigGen),
-            _ => Err("Invalid schema name"),
+            _ => Err(SchemaName::new(value.into()).into()),
         }
+    }
+}
+
+#[derive(Debug, derive_more::Display, derive_more::From)]
+pub enum SchemaStoreError {
+    SchemaName(SchemaName),
+}
+
+#[derive(Debug, derive_more::Constructor)]
+pub struct SchemaName {
+    pub name: String,
+}
+impl std::fmt::Display for SchemaName {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "Schema name '{}' not found in the schema store.",
+            self.name
+        )
     }
 }
 

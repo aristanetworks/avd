@@ -3,6 +3,7 @@
 // that can be found in the LICENSE file.
 #![deny(unused_crate_dependencies)]
 
+mod errors;
 mod inherit;
 mod resolve;
 mod schema;

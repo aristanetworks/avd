@@ -2,11 +2,13 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+mod errors;
 pub mod resolve_ref;
 mod walker;
 
 use crate::{any::AnySchema, inherit::Inherit, store::Store};
 
+use errors::{SchemaResolverError, SchemaType};
 use resolve_ref::resolve_ref;
 
 /// Inplace resolve all $ref in the provided AnySchema.
@@ -14,19 +16,19 @@ use resolve_ref::resolve_ref;
 pub fn resolve_schema<'a>(
     schema: &'a mut AnySchema,
     store: &'a Store,
-) -> Result<(), Box<dyn std::error::Error>> {
+) -> Result<(), SchemaResolverError> {
     schema.resolve(store)
 }
 
 trait Resolve {
-    fn resolve(&mut self, store: &Store) -> Result<(), Box<dyn std::error::Error>>
+    fn resolve(&mut self, store: &Store) -> Result<(), SchemaResolverError>
     where
         Self: Inherit;
     fn ref_(&self) -> Option<String>;
     fn unset_ref(&mut self);
 }
 impl Resolve for AnySchema {
-    fn resolve(&mut self, store: &Store) -> Result<(), Box<dyn std::error::Error>>
+    fn resolve(&mut self, store: &Store) -> Result<(), SchemaResolverError>
     where
         Self: Inherit,
     {
@@ -55,18 +57,23 @@ impl Resolve for AnySchema {
                 }
             }
         }
+        // Skip resolving references to a full schema. These will be handled during validation.
+        if self.ref_().is_some_and(|ref_| ref_.ends_with("#")) {
+            return Ok(());
+        }
+
         // Next resolve the main schema itself
         while let Some(ref ref_) = self.ref_() {
-            // Skip resolving references to a full schema. These will be handled during validation.
-            if ref_.ends_with("#") {
-                break;
-            }
-
             // The clone here is required since we might be inheriting parts of this schema in other places, and thereby modify the schemas.
             let mut ref_schema = resolve_ref(ref_, store)?.clone();
             ref_schema.resolve(store)?;
             if !is_same_schema(self, &ref_schema) {
-                return Err("Wrong schema type found in $ref".into());
+                return Err(SchemaType {
+                    schema_ref: ref_.to_owned(),
+                    expected: self.into(),
+                    found: (&ref_schema).into(),
+                }
+                .into());
             }
             self.unset_ref();
             self.inherit(&ref_schema);

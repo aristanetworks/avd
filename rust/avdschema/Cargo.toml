@@ -5,6 +5,7 @@ edition = "2024"
 license = "Apache-2.0"
 
 [dependencies]
+derive_more = { version = "2.0.1", features = ["constructor", "display", "from"] }
 flate2 = "1.1.0"
 ordermap = { version = "0.5.4", features = ["serde"] }
 regex = { version = "1.11.1" }

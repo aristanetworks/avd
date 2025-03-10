@@ -4,6 +4,7 @@
 
 use std::sync::LazyLock;
 
+use crate::resolve::errors::{RefSyntax, SchemaResolverError};
 use crate::{Store, any::AnySchema};
 use regex::Regex;
 
@@ -12,39 +13,32 @@ use super::walker::Walker as _;
 static REF_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new("^([a-z][a-z_]*)#((/[a-z$][a-z0-9_]*)*)$").unwrap());
 
-pub fn resolve_ref<'a>(
-    ref_: &str,
-    store: &'a Store,
-) -> Result<&'a AnySchema, Box<dyn std::error::Error>> {
-    let captures = REF_REGEX
-        .captures(ref_)
-        .ok_or::<Box<dyn std::error::Error>>(
-            format!("Invalid syntax for schema ref {ref_}.").into(),
-        )?;
+pub fn resolve_ref<'a>(ref_: &str, store: &'a Store) -> Result<&'a AnySchema, SchemaResolverError> {
+    let captures = REF_REGEX.captures(ref_).ok_or(RefSyntax {
+        schema_ref: ref_.to_owned(),
+    })?;
     let schema_name = captures
         .get(1)
-        .ok_or::<Box<dyn std::error::Error>>(
-            format!("Invalid syntax for schema ref {ref_}.").into(),
-        )?
+        .ok_or(RefSyntax {
+            schema_ref: ref_.to_owned(),
+        })?
         .as_str();
     let schema_path = captures
         .get(2)
-        .ok_or::<Box<dyn std::error::Error>>(
-            format!("Invalid syntax for schema ref {ref_}.").into(),
-        )?
+        .ok_or(RefSyntax {
+            schema_ref: ref_.to_owned(),
+        })?
         .as_str();
 
     let path_iter = schema_path.split('/').skip(1).peekable();
-    let schema = store.get(
-        schema_name
-            .try_into()
-            .map_err(|e| format!("Invalid syntax for schema ref {ref_}: {e}"))?,
-    );
-    schema.walk(path_iter)
+    let schema = store.get(schema_name.try_into()?);
+    schema.walk(path_iter).map_err(|err| err.into())
 }
 
 #[cfg(test)]
 mod tests {
+    use crate::resolve::errors::SchemaResolverError;
+    use crate::store::SchemaStoreError;
     use crate::str::Str;
 
     use crate::utils::test_utils::get_test_store;
@@ -73,10 +67,10 @@ mod tests {
         let ref_ = "#/keys/key2";
         let result = resolve_ref(ref_, &test_store);
         assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err().to_string(),
-            format!("Invalid syntax for schema ref {ref_}.")
-        )
+        assert!(matches!(
+            result.unwrap_err(),
+            SchemaResolverError::RefSyntax(_)
+        ))
     }
 
     #[test]
@@ -85,10 +79,10 @@ mod tests {
         let ref_ = "eos_cli_config_gen";
         let result = resolve_ref(ref_, &test_store);
         assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err().to_string(),
-            format!("Invalid syntax for schema ref {ref_}.")
-        )
+        assert!(matches!(
+            result.unwrap_err(),
+            SchemaResolverError::RefSyntax(_)
+        ))
     }
 
     #[test]
@@ -97,9 +91,9 @@ mod tests {
         let ref_ = "wrong_schema#/keys/key2";
         let result = resolve_ref(ref_, &test_store);
         assert!(result.is_err());
-        assert_eq!(
-            result.unwrap_err().to_string(),
-            format!("Invalid syntax for schema ref {ref_}: Invalid schema name")
-        )
+        assert!(matches!(
+            result.unwrap_err(),
+            SchemaResolverError::SchemaStoreError(SchemaStoreError::SchemaName(_))
+        ))
     }
 }

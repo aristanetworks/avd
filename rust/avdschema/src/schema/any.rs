@@ -48,3 +48,27 @@ impl From<Dict> for AnySchema {
 impl Dump for AnySchema {}
 impl Load for AnySchema {}
 impl LoadFromFragments for AnySchema {}
+
+impl From<&AnySchema> for String {
+    fn from(value: &AnySchema) -> Self {
+        match value {
+            AnySchema::Bool(_) => "bool".to_string(),
+            AnySchema::Dict(_) => "dict".to_string(),
+            AnySchema::Int(_) => "int".to_string(),
+            AnySchema::List(_) => "list".to_string(),
+            AnySchema::Str(_) => "str".to_string(),
+        }
+    }
+}
+
+impl From<&mut AnySchema> for String {
+    fn from(value: &mut AnySchema) -> Self {
+        match value {
+            AnySchema::Bool(_) => "bool".to_string(),
+            AnySchema::Dict(_) => "dict".to_string(),
+            AnySchema::Int(_) => "int".to_string(),
+            AnySchema::List(_) => "list".to_string(),
+            AnySchema::Str(_) => "str".to_string(),
+        }
+    }
+}
