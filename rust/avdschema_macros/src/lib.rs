@@ -3,6 +3,8 @@
 // that can be found in the LICENSE file.
 #![deny(unused_crate_dependencies)]
 
+use std::path::PathBuf;
+
 use avdschema::{Dump, LoadFromFragments as _, Store, any::AnySchema, resolve_schema};
 use proc_macro::TokenStream;
 
@@ -16,7 +18,7 @@ const EOS_DESIGNS_FRAGMENTS: &str = concat!(
     "/../../python-avd/pyavd/_eos_designs/schema/schema_fragments/"
 );
 
-const TMP_FILE: &str = concat!(env!("CARGO_MANIFEST_DIR"), "/tmp/store.xz2");
+const TMP_FILE_PATH_ELEMENTS: [&str; 3] = [env!("CARGO_MANIFEST_DIR"), "tmp", "store.xz2"];
 
 /// Returns a bytestream (&'static [u8; N]) of AVD schemas built from fragments during compilation.
 ///
@@ -39,7 +41,9 @@ pub fn include_avd_schemas(_input: TokenStream) -> TokenStream {
     resolve_schema(&mut eos_designs_schema, &store).unwrap();
     store.eos_designs = eos_designs_schema;
 
-    let tmp_file = TMP_FILE;
-    store.to_file(Some(tmp_file.into())).unwrap();
-    format!("\"{tmp_file}\"").parse().unwrap()
+    let tmp_file = PathBuf::from_iter(TMP_FILE_PATH_ELEMENTS);
+    store.to_file(Some(tmp_file.clone())).unwrap();
+    format!("\"{}\"", tmp_file.as_os_str().to_str().unwrap())
+        .parse()
+        .unwrap()
 }
