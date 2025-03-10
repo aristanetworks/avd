@@ -7,23 +7,11 @@
 // The store is initialized on first access with the included store (built from YAML fragments during compilation).
 // It is possible to replace the store by calling `init_store_from_fragments` which will replace the inner option of the Mutex.
 
-use std::{path::PathBuf, sync::OnceLock};
+use std::sync::OnceLock;
 
-use avdschema::{Dump as _, LoadFromFragments, Store, any::AnySchema, resolve_schema};
+use avdschema::Store;
 use included_store::get_store as get_included_store;
-use pyo3::{
-    Bound, PyResult,
-    exceptions::PyRuntimeError,
-    pyfunction, pymodule,
-    types::{PyModule, PyModuleMethods as _},
-    wrap_pyfunction,
-};
-use serde_json::Value;
-
-use crate::{
-    StoreValidate as _, coercion::Coercion, context::Context, validation::Validation,
-    validation_result::ValidationResult,
-};
+use pyo3::pymodule;
 
 static STORE: OnceLock<Store> = OnceLock::new();
 
@@ -32,89 +20,106 @@ fn get_store() -> &'static Store {
 }
 
 #[pymodule]
-#[pyo3(name = "_validation")]
-fn validation(module: &Bound<'_, PyModule>) -> PyResult<()> {
-    module.add_function(wrap_pyfunction!(init_store_from_fragments, module)?)?;
-    module.add_function(wrap_pyfunction!(validate_json, module)?)?;
-    module.add_function(wrap_pyfunction!(validate_json_with_adhoc_schema, module)?)
-}
+mod _validation {
+    use log::info;
+    use std::path::PathBuf;
 
-#[pyfunction]
-pub fn init_store_from_fragments(
-    eos_cli_config_gen: PathBuf,
-    eos_designs: PathBuf,
-) -> PyResult<()> {
-    let mut eos_cli_config_gen_schema =
-        AnySchema::from_fragments(eos_cli_config_gen).map_err(|err| {
-            pyo3::exceptions::PyRuntimeError::new_err(format!(
-                "Error while reading the EosCliConfigGen schema fragments: {err}",
-            ))
-        })?;
-    let mut eos_designs_schema = AnySchema::from_fragments(eos_designs).map_err(|err| {
-        pyo3::exceptions::PyRuntimeError::new_err(format!(
-            "Error while reading the EosDesigns schema fragments: {err}",
-        ))
-    })?;
+    use avdschema::{Dump as _, LoadFromFragments, Store, any::AnySchema, resolve_schema};
 
-    // First create the store without resolving schemas.
-    let mut store = Store {
-        eos_cli_config_gen: eos_cli_config_gen_schema.clone(),
-        eos_designs: eos_designs_schema.clone(),
+    use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyfunction, types::PyModule};
+    use serde_json::Value;
+
+    use crate::{
+        StoreValidate as _, coercion::Coercion, context::Context, validation::Validation,
+        validation_result::ValidationResult,
     };
 
-    // Next resolve all $ref in each schema, updating the store as we go, to avoid re-resolving nested refs many times.
-    let _ = resolve_schema(&mut eos_cli_config_gen_schema, &store);
-    store.eos_cli_config_gen = eos_cli_config_gen_schema;
-    let _ = resolve_schema(&mut eos_designs_schema, &store);
-    store.eos_designs = eos_designs_schema;
+    use super::{STORE, get_store};
 
-    // Finally insert the resolved store into the OnceLock.
-    STORE.set(store).map_err(|_| {
-        PyRuntimeError::new_err(
-            "Unable to initialize the schema store. \
-             Initialization can only happen once, and must be done before running any validations."
-                .to_string(),
-        )
-    })
-}
+    #[pymodule_init]
+    fn init(_m: &Bound<'_, PyModule>) -> PyResult<()> {
+        pyo3_log::init();
+        Ok(())
+    }
 
-#[pyfunction]
-pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<String> {
-    get_store()
-        .validate_json(data_as_json, schema_name)
-        .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?
+    #[pyfunction]
+    pub fn init_store_from_fragments(
+        eos_cli_config_gen: PathBuf,
+        eos_designs: PathBuf,
+    ) -> PyResult<()> {
+        let mut eos_cli_config_gen_schema =
+            AnySchema::from_fragments(eos_cli_config_gen).map_err(|err| {
+                pyo3::exceptions::PyRuntimeError::new_err(format!(
+                    "Error while reading the EosCliConfigGen schema fragments: {err}",
+                ))
+            })?;
+        let mut eos_designs_schema = AnySchema::from_fragments(eos_designs).map_err(|err| {
+            pyo3::exceptions::PyRuntimeError::new_err(format!(
+                "Error while reading the EosDesigns schema fragments: {err}",
+            ))
+        })?;
+
+        // First create the store without resolving schemas.
+        let mut store = Store {
+            eos_cli_config_gen: eos_cli_config_gen_schema.clone(),
+            eos_designs: eos_designs_schema.clone(),
+        };
+
+        // Next resolve all $ref in each schema, updating the store as we go, to avoid re-resolving nested refs many times.
+        let _ = resolve_schema(&mut eos_cli_config_gen_schema, &store);
+        store.eos_cli_config_gen = eos_cli_config_gen_schema;
+        let _ = resolve_schema(&mut eos_designs_schema, &store);
+        store.eos_designs = eos_designs_schema;
+
+        // Finally insert the resolved store into the OnceLock.
+        STORE.set(store).map_err(|_| {
+            PyRuntimeError::new_err(
+                "Unable to initialize the schema store. \
+                 Initialization can only happen once, and must be done before running any validations."
+                    .to_string(),
+            )
+            }).inspect(|_| info!("Initialized the schema store from fragments."))
+    }
+
+    #[pyfunction]
+    pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<String> {
+        get_store()
+            .validate_json(data_as_json, schema_name)
+            .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?
+            .to_json()
+            .map_err(|err| {
+                PyRuntimeError::new_err(format!(
+                    "Error occurred during dumping of validation results to JSON: {err}"
+                ))
+            })
+    }
+
+    #[pyfunction]
+    pub fn validate_json_with_adhoc_schema(
+        data_as_json: &str,
+        schema_as_json: &str,
+    ) -> PyResult<String> {
+        // Parse schema JSON
+        let schema: AnySchema = serde_json::from_str(schema_as_json).map_err(|err| {
+            PyRuntimeError::new_err(format!("Invalid JSON in adhoc schema: {err}"))
+        })?;
+        // Parse data JSON
+        let mut data: Value = serde_json::from_str(data_as_json)
+            .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
+
+        let mut ctx = Context::new(get_store());
+        schema.coerce(&mut data, &mut ctx);
+        schema.validate_value(&data, &mut ctx);
+
+        ValidationResult {
+            violations: ctx.violations,
+            coercions: ctx.coercions,
+        }
         .to_json()
         .map_err(|err| {
             PyRuntimeError::new_err(format!(
                 "Error occurred during dumping of validation results to JSON: {err}"
             ))
         })
-}
-
-#[pyfunction]
-pub fn validate_json_with_adhoc_schema(
-    data_as_json: &str,
-    schema_as_json: &str,
-) -> PyResult<String> {
-    // Parse schema JSON
-    let schema: AnySchema = serde_json::from_str(schema_as_json)
-        .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in adhoc schema: {err}")))?;
-    // Parse data JSON
-    let mut data: Value = serde_json::from_str(data_as_json)
-        .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
-
-    let mut ctx = Context::new(get_store());
-    schema.coerce(&mut data, &mut ctx);
-    schema.validate_value(&data, &mut ctx);
-
-    ValidationResult {
-        violations: ctx.violations,
-        coercions: ctx.coercions,
     }
-    .to_json()
-    .map_err(|err| {
-        PyRuntimeError::new_err(format!(
-            "Error occurred during dumping of validation results to JSON: {err}"
-        ))
-    })
 }

@@ -8,8 +8,10 @@ license = "Apache-2.0"
 avdschema = { path = "../avdschema" }
 derive_more = { version = "2.0.1", features = ["display", "from"] }
 included_store = { path = "../included_store", optional = true }
+log = "0.4.26"
 ordermap = { version = "0.5.4", features = ["serde"] }
 pyo3 = { version = "0.23.3", features = ["abi3"], optional = true }
+pyo3-log = { version = "0.12.1", optional = true }
 regex = { version = "1.11.1" }
 serde = { version = "1.0.217", features = ["derive"] }
 serde_json = { version = "1.0.135", features = [
@@ -19,7 +21,7 @@ serde_json = { version = "1.0.135", features = [
 serde_yaml = { version = "0.9.33" }
 
 [features]
-python_bindings = ["dep:pyo3", "dep:included_store"]
+python_bindings = ["dep:pyo3", "dep:pyo3-log", "dep:included_store"]
 
 [lib]
 name = "_validation"

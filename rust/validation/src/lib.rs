@@ -3,6 +3,9 @@
 // that can be found in the LICENSE file.
 #![deny(unused_crate_dependencies)]
 
+// Avoiding unused issues, since log is only used under python_bindings.
+use log as _;
+
 mod coercion;
 mod context;
 mod feedback;
@@ -11,6 +14,6 @@ mod validation;
 mod validation_result;
 
 #[cfg(feature = "python_bindings")]
-pub mod python_bindings;
+mod python_bindings;
 
 pub use self::validation::store::StoreValidate;

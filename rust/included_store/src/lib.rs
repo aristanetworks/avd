@@ -15,9 +15,10 @@
 /// }
 /// ```
 // Added here to avoid it being deemed unused during testing and linting.
-use avdschema_macros as _;
+use log::info;
 
 use avdschema::{Load as _, Store};
+use avdschema_macros as _;
 
 // Avoid triggering the expensive macro during testing and linting.
 #[cfg(not(test))]
@@ -27,5 +28,7 @@ const INCLUDED_STORE_XZ2_BYTES: &[u8] = include_bytes!(avdschema_macros::include
 const INCLUDED_STORE_XZ2_BYTES: &[u8] = &[];
 
 pub fn get_store() -> Store {
-    Store::from_xz2_bytes(INCLUDED_STORE_XZ2_BYTES).unwrap()
+    Store::from_xz2_bytes(INCLUDED_STORE_XZ2_BYTES)
+        .inspect(|_| info!("Initialized the schema store from builtin schemas."))
+        .unwrap()
 }
