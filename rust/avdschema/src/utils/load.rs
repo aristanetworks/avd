@@ -15,10 +15,10 @@ pub trait Load
 where
     Self: DeserializeOwned,
 {
-    fn from_json(json: &str) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_json(json: &str) -> Result<Self, LoadError> {
         Ok(serde_json::from_str(json)?)
     }
-    fn from_file(input: Option<PathBuf>) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_file(input: Option<PathBuf>) -> Result<Self, LoadError> {
         // Read input from file / stdin
         match input {
             Some(path) => match path.extension().and_then(OsStr::to_str) {
@@ -26,43 +26,43 @@ where
                 Some("json") => Self::from_json_file(path),
                 Some("xz2") => Self::from_xz2_file(path),
                 Some("gz") => Self::from_gz_file(path),
-                _ => Err("Invalid extension for input file".into()),
+                _ => Err(LoadError::InvalidExtension {}),
             },
             None => Self::from_stdin(),
         }
     }
-    fn from_stdin() -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_stdin() -> Result<Self, LoadError> {
         let reader = io::stdin();
         Ok(serde_yaml::from_reader(reader)?)
     }
-    fn from_yaml_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_yaml_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         Ok(serde_yaml::from_reader(reader)?)
     }
-    fn from_xz2_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_xz2_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let decompressor = xz2::read::XzDecoder::new(file);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
-    fn from_json_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_json_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         Ok(serde_json::from_reader(reader)?)
     }
-    fn from_xz2_bytes(bytes: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_xz2_bytes(bytes: &[u8]) -> Result<Self, LoadError> {
         let decompressor = xz2::read::XzDecoder::new(bytes);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
-    fn from_gz_file(path: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_gz_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let decompressor = flate2::read::GzDecoder::new(file);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
-    fn from_gz_bytes(bytes: &[u8]) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_gz_bytes(bytes: &[u8]) -> Result<Self, LoadError> {
         let decompressor = flate2::read::GzDecoder::new(bytes);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
@@ -73,7 +73,7 @@ pub trait LoadFromFragments
 where
     Self: Load + Inherit + DeserializeOwned,
 {
-    fn from_fragments(glob: PathBuf) -> Result<Self, Box<dyn std::error::Error>> {
+    fn from_fragments(glob: PathBuf) -> Result<Self, LoadError> {
         let mut glob_iter = WalkDir::new(glob)
             .max_depth(1)
             .sort_by_file_name()
@@ -85,9 +85,7 @@ where
                     .is_some_and(|ext| ext.eq_ignore_ascii_case("yml"))
                     .then_some(entry)
             });
-        let first_file = glob_iter
-            .next()
-            .ok_or_else(|| Box::<dyn std::error::Error>::from("No files found"))?;
+        let first_file = glob_iter.next().ok_or(LoadError::NoFilesFound {})?;
         let mut combined_data = Self::from_file(Some(first_file.path().to_path_buf()))?;
         for file in glob_iter {
             let file_data = Self::from_file(Some(file.path().to_path_buf()))?;
@@ -95,6 +93,17 @@ where
         }
         Ok(combined_data)
     }
+}
+
+#[derive(Debug, derive_more::Display, derive_more::From)]
+pub enum LoadError {
+    JsonError(serde_json::Error),
+    YamlError(serde_yaml::Error),
+    IoError(std::io::Error),
+    #[display("Invalid extension for input file.")]
+    InvalidExtension {},
+    #[display("No files found.")]
+    NoFilesFound {},
 }
 
 #[cfg(test)]

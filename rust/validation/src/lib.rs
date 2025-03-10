@@ -13,4 +13,4 @@ mod validation_result;
 #[cfg(feature = "python_bindings")]
 pub mod python_bindings;
 
-pub use self::validation::store::ValidateJson;
+pub use self::validation::store::StoreValidate;

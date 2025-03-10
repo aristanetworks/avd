@@ -11,20 +11,40 @@ use crate::{
 
 use super::Validation;
 
-pub trait ValidateJson<T> {
+pub trait StoreValidate<T> {
     fn validate_json(
         &self,
         json: &str,
         schema_name: T,
-    ) -> Result<ValidationResult, Box<dyn std::error::Error>>;
+    ) -> Result<ValidationResult, StoreValidateError>;
+
+    fn validate_yaml(
+        &self,
+        json: &str,
+        schema_name: T,
+    ) -> Result<ValidationResult, StoreValidateError>;
 }
 
-impl ValidateJson<Schema> for Store {
+impl StoreValidate<Schema> for Store {
     fn validate_json(
         &self,
         json: &str,
         schema_type: Schema,
-    ) -> Result<ValidationResult, Box<dyn std::error::Error>> {
+    ) -> Result<ValidationResult, StoreValidateError> {
+        let mut value = serde_json::from_str(json)?;
+        let mut ctx = Context::new(self);
+
+        let schema = self.get(schema_type);
+        schema.coerce(&mut value, &mut ctx);
+        schema.validate_value(&value, &mut ctx);
+
+        Ok(ctx.into())
+    }
+    fn validate_yaml(
+        &self,
+        json: &str,
+        schema_type: Schema,
+    ) -> Result<ValidationResult, StoreValidateError> {
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
         let mut value = serde_yaml::from_str::<Value>(json)?;
@@ -38,12 +58,12 @@ impl ValidateJson<Schema> for Store {
     }
 }
 
-impl ValidateJson<&str> for Store {
+impl StoreValidate<&str> for Store {
     fn validate_json(
         &self,
         json: &str,
         schema_name: &str,
-    ) -> Result<ValidationResult, Box<dyn std::error::Error>> {
+    ) -> Result<ValidationResult, StoreValidateError> {
         if let Ok(schema_type) = Schema::try_from(schema_name) {
             self.validate_json(json, schema_type)
         } else {
@@ -55,4 +75,26 @@ impl ValidateJson<&str> for Store {
             Ok(ctx.into())
         }
     }
+    fn validate_yaml(
+        &self,
+        json: &str,
+        schema_name: &str,
+    ) -> Result<ValidationResult, StoreValidateError> {
+        if let Ok(schema_type) = Schema::try_from(schema_name) {
+            self.validate_yaml(json, schema_type)
+        } else {
+            let mut ctx = Context::new(self);
+            ctx.add_violation(Violation::InvalidSchema {
+                schema: schema_name.into(),
+            });
+
+            Ok(ctx.into())
+        }
+    }
+}
+
+#[derive(Debug, derive_more::Display, derive_more::From)]
+pub enum StoreValidateError {
+    JsonError(serde_json::Error),
+    YamlError(serde_yaml::Error),
 }

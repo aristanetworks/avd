@@ -12,10 +12,10 @@ pub trait Dump
 where
     Self: Serialize,
 {
-    fn to_json(&self) -> Result<String, Box<dyn std::error::Error>> {
+    fn to_json(&self) -> Result<String, DumpError> {
         Ok(serde_json::to_string(self)?)
     }
-    fn to_file(&self, output: Option<PathBuf>) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_file(&self, output: Option<PathBuf>) -> Result<(), DumpError> {
         // Output result to file / stdout
         match output {
             Some(path) => match path.extension().and_then(OsStr::to_str) {
@@ -23,37 +23,46 @@ where
                 Some("json") => self.to_json_file(path),
                 Some("xz2") => self.to_xz2_file(path),
                 Some("gz") => self.to_gz_file(path),
-                _ => Err("Invalid extension for output file".into()),
+                _ => Err(DumpError::InvalidExtension {}),
             },
             None => self.to_stdout(),
         }
     }
-    fn to_stdout(&self) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_stdout(&self) -> Result<(), DumpError> {
         let writer = io::stdout();
         Ok(serde_json::to_writer(writer, self)?)
     }
-    fn to_yaml_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_yaml_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let writer = BufWriter::new(file);
         Ok(serde_yaml::to_writer(writer, self)?)
     }
-    fn to_xz2_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_xz2_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let compressor = xz2::write::XzEncoder::new(file, 1);
         let writer = BufWriter::new(compressor);
         Ok(serde_json::to_writer(writer, self)?)
     }
-    fn to_json_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_json_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let writer = BufWriter::new(file);
         Ok(serde_json::to_writer(writer, self)?)
     }
-    fn to_gz_file(&self, path: PathBuf) -> Result<(), Box<dyn std::error::Error>> {
+    fn to_gz_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let compressor = flate2::write::GzEncoder::new(file, flate2::Compression::fast());
         let writer = BufWriter::new(compressor);
         Ok(serde_json::to_writer(writer, self)?)
     }
+}
+
+#[derive(Debug, derive_more::Display, derive_more::From)]
+pub enum DumpError {
+    JsonError(serde_json::Error),
+    YamlError(serde_yaml::Error),
+    IoError(std::io::Error),
+    #[display("Invalid extension for output file.")]
+    InvalidExtension {},
 }
 
 // These tests are also called from the load tests.

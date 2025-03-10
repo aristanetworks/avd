@@ -21,7 +21,7 @@ use pyo3::{
 use serde_json::Value;
 
 use crate::{
-    ValidateJson as _, coercion::Coercion, context::Context, validation::Validation,
+    StoreValidate as _, coercion::Coercion, context::Context, validation::Validation,
     validation_result::ValidationResult,
 };
 
