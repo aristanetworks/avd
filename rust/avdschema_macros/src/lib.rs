@@ -43,7 +43,7 @@ pub fn include_avd_schemas(_input: TokenStream) -> TokenStream {
 
     let tmp_file = PathBuf::from_iter(TMP_FILE_PATH_ELEMENTS);
     store.to_file(Some(tmp_file.clone())).unwrap();
-    format!("\"{}\"", tmp_file.as_os_str().to_str().unwrap())
+    format!("r\"{}\"", tmp_file.to_str().unwrap())
         .parse()
         .unwrap()
 }
