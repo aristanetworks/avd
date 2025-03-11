@@ -6,6 +6,7 @@ ci:
     # pre-commit.ci doesn't have Rust installed
     - fmt
     - cargo-check
+    - cargo-deny
     - clippy
 
 repos:
@@ -101,16 +102,13 @@ repos:
     hooks:
       - id: fmt
         name: Lint Rust files using fmt
-        types: [rust]
         files: ^rust/
       - id: cargo-check
         name: Lint Rust files using cargo check
-        types: [rust]
         files: ^rust/
       - id: clippy
         name: Lint Rust files using clippy
         args: ["--all-targets", "--all-features"]
-        types: [rust]
         files: ^rust/
 
   - repo: https://github.com/EmbarkStudios/cargo-deny
@@ -118,6 +116,7 @@ repos:
     hooks:
       # Check licenses of Rust dependencies
       - id: cargo-deny
+        files: ^rust/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
