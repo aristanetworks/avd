@@ -43,7 +43,7 @@ l3leaf:
     # Definition of pool of IPs to be used as Virtual Tunnel EndPoint (VXLAN origin and destination IPs)
     vtep_loopback_ipv4_pool: 10.255.129.0/27
     # Ansible hostname of the devices used to establish neighborship (IP assignments and BGP peering)
-    uplink_switches: ['dc2-spine1', 'dc2-spine2']
+    uplink_switches: [dc2-spine1, dc2-spine2]
     # Definition of pool of IPs to be used in P2P links
     uplink_ipv4_pool: 10.255.255.64/26
     # Definition of pool of IPs to be used for MLAG peer-link connectivity
@@ -122,7 +122,7 @@ l2leaf:
 
   node_groups:
     - group: DC2_L2_LEAF1
-      uplink_switches: ['dc2-leaf1a', 'dc2-leaf1b']
+      uplink_switches: [dc2-leaf1a, dc2-leaf1b]
       nodes:
         - name: dc2-leaf1c
           id: 11
@@ -132,7 +132,7 @@ l2leaf:
             - Ethernet8
 
     - group: DC2_L2_LEAF2
-      uplink_switches: ['dc2-leaf2a', 'dc2-leaf2b']
+      uplink_switches: [dc2-leaf2a, dc2-leaf2b]
       nodes:
         - name: dc2-leaf2c
           id: 12
