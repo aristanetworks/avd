@@ -10,7 +10,7 @@ default_node_types:
 dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS
 
 overlay_routing_protocol: CVX
-overlay_cvx_servers: [OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2]
+overlay_cvx_servers: [OVERLAY_ROUTING_PROTOCOL_CVX_SERVER1, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2, OVERLAY_ROUTING_PROTOCOL_CVX_SERVER3]
 
 node_type_keys:
   - key: cvxserver
@@ -35,6 +35,9 @@ cvxserver:
     - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER2
       id: 2
       mgmt_ip: 192.168.254.255/23
+    - name: OVERLAY_ROUTING_PROTOCOL_CVX_SERVER3
+      id: 3
+      mgmt_ip: 192.168.254.253/23
 l3leaf:
   defaults:
     loopback_ipv4_pool: 192.168.254.0/24

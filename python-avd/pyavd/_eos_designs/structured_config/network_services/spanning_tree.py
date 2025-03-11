@@ -3,9 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd.j2filters import list_compress
 
 if TYPE_CHECKING:
@@ -19,15 +19,15 @@ class SpanningTreeMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
-    def spanning_tree(self: AvdStructuredConfigNetworkServicesProtocol) -> dict | None:
+    @structured_config_contributor
+    def spanning_tree(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """spanning_tree priorities set per VLAN if spanning_tree mode is "rapid-pvst"."""
         if not self.shared_utils.network_services_l2:
-            return None
+            return
 
         spanning_tree_mode = self.shared_utils.node_config.spanning_tree_mode
         if spanning_tree_mode != "rapid-pvst":
-            return None
+            return
 
         default_priority = self.shared_utils.node_config.spanning_tree_priority
 
@@ -48,16 +48,10 @@ class SpanningTreeMixin(Protocol):
 
         if not non_default_vlans:
             # Quick return with only default
-            return {"rapid_pvst_instances": [{"id": "1-4094", "priority": default_priority}]}
+            self.structured_config.spanning_tree.rapid_pvst_instances.append_new(id="1-4094", priority=default_priority)
+            return
 
         default_vlans = non_default_vlans.symmetric_difference(range(1, 4094))
         vlan_stp_priorities.setdefault(default_priority, set()).update(default_vlans)
-        return {
-            "rapid_pvst_instances": [
-                {
-                    "id": list_compress(list(vlans)),
-                    "priority": priority,
-                }
-                for priority, vlans in vlan_stp_priorities.items()
-            ],
-        }
+        for priority, vlans in vlan_stp_priorities.items():
+            self.structured_config.spanning_tree.rapid_pvst_instances.append_new(id=list_compress(list(vlans)), priority=priority)

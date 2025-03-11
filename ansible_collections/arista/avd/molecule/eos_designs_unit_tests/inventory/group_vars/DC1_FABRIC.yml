@@ -36,17 +36,15 @@ bgp_peer_groups:
     name: IPVPN-INTERWORKING-PEERS
     password: "nWwwZQLPI34O1AhoANg77g=="
 
-# test with inline jinja2 targeting eos_designs_facts
-spine_platform: "7050SX3"
-spine_bgp_defaults: ['distance bgp 20 200 200']
-
 # Spine Switches
 spine:
   defaults:
-    platform: "{{ spine_platform }}"
+    platform: 7050SX3
+
     bgp_as: 65001
     loopback_ipv4_pool: 192.168.255.0/24
-    bgp_defaults: "{{ spine_bgp_defaults }}"
+    bgp_defaults:
+      - distance bgp 20 200 200
   nodes:
     - name: DC1-SPINE1
       id: 1
@@ -178,9 +176,9 @@ l3leaf:
               destinations:
                 - destination: 192.168.200.10
                 - destination: 10.0.200.90
-              # Testing custom_structured_configuration using inline jinja with switch.x facts.
-              # Common customer use case, so we should make sure this does not break.
-              source_interface: "{{ switch.mgmt_interface }}"
+              # Need to overwrite at host var level for platform with different management interface
+              # This tests was run with inline Jinja previously
+              source_interface: Management0
       # NB - uplink_switch_interfaces Ethernet19-21 are used by MH_LEAF1A, 1B and 2A.
       nodes:
         - name: DC1-BL1A

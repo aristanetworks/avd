@@ -31,6 +31,8 @@ class RouterPathSelectionMixin(Protocol):
             "path_groups": self._get_path_groups(),
         }
 
+        router_path_selection["interfaces"] = self._get_interface_bandwidths(router_path_selection["path_groups"])
+
         if self.shared_utils.is_wan_server:
             router_path_selection["peer_dynamic_source"] = "stun"
 
@@ -128,6 +130,28 @@ class RouterPathSelectionMixin(Protocol):
 
         return ha_path_group
 
+    def _get_interface_bandwidths(self: AvdStructuredConfigOverlayProtocol, path_groups: dict) -> list:
+        """Generate the bandwidths for the interfaces configured in path groups."""
+        wan_interfaces = self.shared_utils.wan_interfaces
+        metric_interfaces = []
+        for path_group in path_groups:
+            interfaces = path_group.get("local_interfaces", [])
+            for interface in interfaces:
+                name = interface["name"]
+                if l3_intf := wan_interfaces.get(name):
+                    bandwidths = {}
+                    if l3_intf.receive_bandwidth is not None:
+                        bandwidths["receive"] = l3_intf.receive_bandwidth
+                    if l3_intf.transmit_bandwidth is not None:
+                        bandwidths["transmit"] = l3_intf.transmit_bandwidth
+                    if bandwidths:
+                        if "." in name:
+                            schema_key = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={name}]"
+                            msg = f"Fields 'receive_bandwidth' and 'transmit_bandwidth' configured on {schema_key} are not supported for subinterfaces."
+                            raise AristaAvdError(msg)
+                        metric_interfaces.append({"name": name, "metric_bandwidth": bandwidths})
+        return metric_interfaces
+
     def _wan_ha_interfaces(self: AvdStructuredConfigOverlayProtocol) -> list:
         """Return list of interfaces for HA."""
         return [uplink for uplink in self.shared_utils.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
@@ -165,7 +189,7 @@ class RouterPathSelectionMixin(Protocol):
             if self.shared_utils.is_wan_client and self.shared_utils.should_connect_to_wan_rs([path_group_name]):
                 stun_server_profiles = self._stun_server_profiles.get(path_group_name, [])
                 if stun_server_profiles:
-                    local_interface["stun"] = {"server_profiles": [profile["name"] for profile in stun_server_profiles]}
+                    local_interface["stun"] = {"server_profiles": [profile.name for profile in stun_server_profiles]}
 
             local_interfaces.append(local_interface)
 

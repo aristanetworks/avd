@@ -1,0 +1,81 @@
+---
+# RD RT ADMIN SUBFIELD TESTS with inline Jinja
+type: l3leaf
+
+mgmt_gateway: 192.168.200.1
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    filter:
+      always_include_vrfs_in_tenants:
+        - TENANT_WITH_VRFS_WITHOUT_SVIS
+  nodes:
+    - name: RD-RT-ADMIN-SUBFIELD-L3LEAF
+      bgp_as: 65006
+      id: 6
+      mgmt_ip: 192.168.200.106/24
+
+overlay_rd_type:
+  # Expected result: rd 65535:*
+  # Testing inline jinja with integer values
+  admin_subfield: "{{ non_existing_variable | default(65525) }}"
+  admin_subfield_offset: "{{ non_existing_variable | default(10) }}"
+
+# Expected result:
+# VLAN rt <vlan_id>:<mac_vrf_id>
+# VRF rt <vrf_id>:<mac_vrf_id>
+overlay_rt_type:
+  admin_subfield: "id"
+
+tenants:
+  # igmp_snooping_querier enable on Tenant
+  - name: Tenant_A
+    mac_vrf_id_base: 10000
+    mac_vrf_vni_base: 80000
+    vrfs:
+      - name: TEST1
+        description: "TEST1"
+        vrf_id: 11
+        vrf_vni: 22
+        svis:
+          - id: 1
+            name: "VLAN_1"
+            tags: ["test_l3"]
+            enabled: true
+            ip_address_virtual: 10.0.1.1/24
+          - id: 2
+            name: "VLAN_2"
+            tags: ["test_l3"]
+            enabled: true
+            ip_address_virtual: 10.0.2.1/24
+          - id: 3
+            name: "VLAN_3"
+            tags: ["test_l3"]
+            enabled: true
+            ip_address_virtual: 10.0.3.1/24
+            rt_override: 3333
+            rd_override: 33333
+          - id: 4
+            name: "VLAN_4"
+            tags: ["test_l3"]
+            enabled: true
+            ip_address_virtual: 10.0.4.1/24
+            rt_override: 3333:3333
+            rd_override: 33333:33333
+          - id: 5
+            name: "VLAN_5"
+            tags: ["test_l3"]
+            enabled: true
+            ip_address_virtual: 10.0.5.1/24
+            rd_override: auto
+  - name: TENANT_WITH_VRFS_WITHOUT_SVIS
+    vrfs:
+      - name: TEST2
+        description: VRF with router-id
+        vrf_id: 12
+        bgp:
+          router_id: 10.12.12.12

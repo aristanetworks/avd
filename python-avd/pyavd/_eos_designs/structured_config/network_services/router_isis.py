@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
+
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -17,10 +18,10 @@ class RouterIsisMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
-    def router_isis(self: AvdStructuredConfigNetworkServicesProtocol) -> dict | None:
+    @structured_config_contributor
+    def router_isis(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
-        Return structured config for router_isis.
+        Set the structured config for router_isis.
 
         Used for non-EVPN where underlay_routing_protocol is ISIS,
         static routes in VRF "default" should be redistributed into ISIS
@@ -31,6 +32,4 @@ class RouterIsisMixin(Protocol):
             and self._vrf_default_ipv4_static_routes["redistribute_in_underlay"]
             and self.shared_utils.underlay_routing_protocol in ["isis", "isis-ldp", "isis-sr", "isis-sr-ldp"]
         ):
-            return {"redistribute_routes": [{"source_protocol": "static"}]}
-
-        return None
+            self.structured_config.router_isis.redistribute_routes.append_new(source_protocol="static")

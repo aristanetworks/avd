@@ -1,7 +1,5 @@
 aaa_root:
   disabled: true
-clock:
-  timezone: correctly_templated_timezone
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -185,13 +183,6 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: 10.10.40.10
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
-  entries:
-  - sequence: 15
-    action: deny
-    protocol: ip
-    source: any
-    destination: 10.10.40.20
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -199,6 +190,13 @@ ip_access_lists:
     protocol: ip
     source: 10.10.40.10
     destination: any
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.40.20
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -251,10 +249,9 @@ loopback_interfaces:
   - 192.168.255.255/32
 mac_address_table:
   aging_time: 42
-  notification_host_flap:
-    logging: true
 management_api_http:
-  enable_https: true
+  enable_http: false
+  enable_https: false
   default_services: false
   enable_vrfs:
   - name: MGMT

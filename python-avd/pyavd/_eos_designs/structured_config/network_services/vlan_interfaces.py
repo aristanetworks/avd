@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, get
+from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 
 if TYPE_CHECKING:
@@ -61,6 +61,9 @@ class VlanInterfacesMixin(Protocol):
         pim_source_interface_needed = False
 
         interface_name = f"Vlan{svi.id}"
+        interface_ip = svi.ip_address_virtual
+        if interface_ip is not None and "/" in interface_ip:
+            interface_ip = get_ip_from_ip_prefix(interface_ip)
         vlan_interface_config = EosCliConfigGen.VlanInterfacesItem(
             name=interface_name,
             tenant=tenant.name,
@@ -70,11 +73,27 @@ class VlanInterfacesMixin(Protocol):
             ip_address=svi.ip_address,
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
-            access_group_in=get(self._svi_acls, f"{interface_name}.ipv4_acl_in.name"),
-            access_group_out=get(self._svi_acls, f"{interface_name}.ipv4_acl_out.name"),
             mtu=svi.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
             eos_cli=svi.raw_eos_cli,
         )
+
+        if svi.ipv4_acl_in:
+            acl = self.shared_utils.get_ipv4_acl(
+                name=svi.ipv4_acl_in,
+                interface_name=interface_name,
+                interface_ip=interface_ip,
+            )
+            vlan_interface_config.access_group_in = acl.name
+            self._set_ipv4_acl(acl)
+
+        if svi.ipv4_acl_out:
+            acl = self.shared_utils.get_ipv4_acl(
+                name=svi.ipv4_acl_out,
+                interface_name=interface_name,
+                interface_ip=interface_ip,
+            )
+            vlan_interface_config.access_group_out = acl.name
+            self._set_ipv4_acl(acl)
 
         if svi.structured_config:
             self.custom_structured_configs.nested.vlan_interfaces.obtain(interface_name)._deepmerge(

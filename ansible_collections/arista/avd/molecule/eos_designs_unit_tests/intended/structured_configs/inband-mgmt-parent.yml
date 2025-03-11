@@ -24,6 +24,16 @@ ethernet_interfaces:
   peer_type: spine
   switchport:
     enabled: false
+- name: Ethernet2
+  description: P2P_inband-mgmt-spine2-ztp_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.16.255.3/31
+  peer: inband-mgmt-spine2-ztp
+  peer_interface: Ethernet1
+  peer_type: spine
+  switchport:
+    enabled: false
 - name: Ethernet21
   description: INBAND-MGMT-SUBNET_Ethernet1
   shutdown: false
@@ -213,11 +223,21 @@ router_bgp:
     remote_as: '64999'
     peer: inband-mgmt-spine1-ztp
     description: inband-mgmt-spine1-ztp_Ethernet1
+  - ip_address: 172.16.255.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '64999'
+    peer: inband-mgmt-spine2-ztp
+    description: inband-mgmt-spine2-ztp_Ethernet1
   - ip_address: 10.0.254.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '64999'
     peer: inband-mgmt-spine1-ztp
     description: inband-mgmt-spine1-ztp_Loopback0
+  - ip_address: 10.0.254.2
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '64999'
+    peer: inband-mgmt-spine2-ztp
+    description: inband-mgmt-spine2-ztp_Loopback0
   redistribute:
     attached_host:
       enabled: true

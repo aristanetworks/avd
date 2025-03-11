@@ -21,6 +21,10 @@ collection-build: ## Build arista.avd collection locally.
 pyavd-build: ## Build PyAVD Python package locally.
 	cd python-avd && $(MAKE) build
 
+.PHONY: uv-pyavd-build
+uv-pyavd-build: ## Build PyAVD Python package locally.
+	cd python-avd && $(MAKE) uv-build
+
 .PHONY: pyavd-test
 pyavd-test: ## Test PyAVD Python code with tox.
 	cd python-avd && $(MAKE) && tox -r
@@ -28,6 +32,10 @@ pyavd-test: ## Test PyAVD Python code with tox.
 .PHONY: pyavd-publish
 pyavd-publish: ## Build and publish PyAVD Python package.
 	cd python-avd && $(MAKE) build publish
+
+.PHONY: uv-pyavd-publish
+uv-pyavd-publish: ## Build and publish PyAVD Python package.
+	cd python-avd && $(MAKE) uv-build uv-publish
 
 .PHONY: pyavd-install
 pyavd-install: pyavd-build ## Build and install PyAVD Python package.
@@ -37,6 +45,16 @@ pyavd-install: pyavd-build ## Build and install PyAVD Python package.
 .PHONY: pyavd-editable-install
 pyavd-editable-install: ## Build and install PyAVD as editable
 	pip install -e python-avd --config-settings editable_mode=compat --force-reinstall
+
+
+.PHONY: uv-pyavd-install
+uv-pyavd-install: pyavd-build ## Build and install PyAVD Python package.
+	uv pip install python-avd/dist/* --force-reinstall
+
+# The editable_mode=compat is required for pylance to pick up the editable install.
+.PHONY: uv-pyavd-editable-install
+uv-pyavd-editable-install: ## Build and install PyAVD as editable
+	uv pip install -e python-avd --config-settings editable_mode=compat --force-reinstall
 
 #########################################
 # Code Validation using ansible-test 	#

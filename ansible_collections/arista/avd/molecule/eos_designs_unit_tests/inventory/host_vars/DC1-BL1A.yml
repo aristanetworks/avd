@@ -52,29 +52,9 @@ event_handlers:
       regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
     asynchronous: true
 
-# Testing with inline jinja - targeting base.py loaded in eos_designs_structured_config.
-# Since base.py is not performing any templating, the vars must be templated before handed over to the python class.
-template_timezone: "correctly_templated_timezone"
-timezone: "{{ template_timezone }}"
-
 # Test Mac address table variables
 mac_address_table:
   aging_time: 42
-
-# Testing custom_structured_configuration setting a dict key from inline jinja with switch.x facts.
-# Rare customer use case, but known to be in the field, so we should make sure this does not break.
-#
-# Unless switch.x is available in hostvars when eos_designs_structured_config run, this will _overwrite_ the
-# dict (aging_time: 42 will disappear), since the unresolved jinja will be seen as a string,
-# so combine is not possible.
-#
-# TODO: Refactor custom_structured_configuration_ to Python and load switch facts from avd_switch_facts
-# _before_ performing input data templating. Then we can remove switch facts from global vars
-my_mac_address_table:
-  notification_host_flap:
-    logging: "{{ switch.id == 6 }}"
-
-override_mac_address_table: "{{ my_mac_address_table }}"
 
 # Test that we can enable CloudVision Tag generation
 # for a single device in a Fabric. The structured config for this node
@@ -82,3 +62,10 @@ override_mac_address_table: "{{ my_mac_address_table }}"
 # eos_designs_unit_tests should not have any CloudVision tags generated for them
 generate_cv_tags:
   topology_hints: true
+
+# Management api-http
+# Expicitely disabling http and https
+management_eapi:
+  enable_https: false
+  enable_http: false
+  default_services: false

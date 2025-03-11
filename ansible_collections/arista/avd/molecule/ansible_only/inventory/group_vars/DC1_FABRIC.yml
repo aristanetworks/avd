@@ -1,0 +1,98 @@
+---
+# L3LS Fabric Values
+
+# bgp peer groups passwords
+bgp_peer_groups:
+  ipv4_underlay_peers:
+    name: UNDERLAY-PEERS
+    password: "0nsCUm70mvSTxVO0ldytrg=="
+  evpn_overlay_peers:
+    password: "q+VNViP5i4rVjW1cxFv2wA=="
+  mlag_ipv4_underlay_peer:
+    name: MLAG-PEERS
+    password: "15AwQNBEJ1nyF/kBEtoAGw=="
+
+# test with inline jinja2 targeting eos_designs_facts
+spine_platform: "7050SX3"
+spine_bgp_defaults: ["distance bgp 20 200 200"]
+
+# Spine Switches
+spine:
+  defaults:
+    platform: "{{ spine_platform }}"
+    bgp_as: 65001
+    loopback_ipv4_pool: 192.168.255.0/24
+    bgp_defaults: "{{ spine_bgp_defaults }}"
+  nodes:
+    - name: DC1-SPINE1
+      id: 1
+      mgmt_ip: 192.168.200.101/24
+      mac_address: "0c:1d:c0:1d:62:01"
+
+# Leaf switch groups
+# A maximum of two nodes can form a leaf group
+# When two nodes are in a leaf group this will automatically form mlag pair
+l3leaf:
+  defaults:
+    # Set to test automatic uplink/downlink allocation
+    max_parallel_uplinks: 2
+    # Testing multiple pools and ranges to represent 192.168.255.0-192.168.255.200. This will break into multiple entries in the EVPN overlay prefix-list.
+    loopback_ipv4_pool: 192.168.255.0-192.168.255.3, 192.168.255.4/30, 192.168.255.8-192.168.255.200
+    loopback_ipv4_offset: 8
+    # Testing multiple pools and ranges to represent 192.168.254.0-192.168.254.200. This will break into multiple entries in the EVPN overlay prefix-list.
+    vtep_loopback_ipv4_pool: 192.168.254.0-192.168.254.127, 192.168.254.128/26, 192.168.254.192-192.168.254.200
+    # Commented out for automatic uplink allocation
+    # uplink_interfaces: ['Ethernet1', 'Ethernet2']
+    uplink_switches: ["DC1-SPINE1", "DC1-SPINE1"]
+    uplink_ipv4_pool: 172.31.254.0/30, 172.31.254.4-172.31.254.127, 172.31.254.128/25, 172.31.255.0/24
+    uplink_interface_speed: forced 100gfull
+    bgp_defaults: ["distance bgp 20 200 200"]
+    platform: 7280R
+    bgp_as: 65101
+    # Commented out for automatic mlag allocation
+    # mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_interfaces_speed: 100g
+    mlag_peer_l3_vlan: 4090
+    mlag_peer_vlan: 4092
+    mlag_peer_link_allowed_vlans: "1-4094"
+    spanning_tree_mode: mstp
+    spanning_tree_root_super: true
+    spanning_tree_priority: 4096
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+    filter:
+      tenants: [Tenant_A, Tenant_B, Tenant_C, Tenant_D]
+      tags: [opzone, web, app, db, vmotion, nfs, v6wan, v6opzone]
+    # Testing multiple pools and ranges to represent 10.255.251.0/24
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/29, 10.255.251.8-10.255.251.127, 10.255.251.128/25
+    # Testing multiple pools and ranges to represent 10.255.252.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/29, 10.255.252.8-10.255.252.127, 10.255.252.128/25
+  node_groups:
+    - group: DC1_BL1
+      uplink_interfaces: ["Ethernet1", "Ethernet2"]
+      mlag: false
+      filter:
+        tenants: [all]
+        always_include_vrfs_in_tenants: ["Tenant_B"]
+      structured_config:
+        sflow:
+          vrfs:
+            - name: OOB
+              destinations:
+                - destination: 192.168.200.10
+                - destination: 10.0.200.90
+              # Testing custom_structured_configuration using inline jinja with switch.x facts.
+              # Common customer use case, so we should make sure this does not break.
+              source_interface: "{{ switch.mgmt_interface }}"
+      nodes:
+        - name: DC1-BL1A
+          id: 6
+          bgp_as: 65104
+          mgmt_ip: 192.168.200.110/24
+          mac_address: "0c:1d:c0:1d:62:01"
+          uplink_switch_interfaces: [Ethernet1, Ethernet2]
+        - name: DC1-BL1B
+          id: 7
+          bgp_as: 65105
+          mgmt_ip: 192.168.200.111/24
+          mac_address: "0c:1d:c0:1d:62:01"
+          uplink_switch_interfaces: [Ethernet3, Ethernet4]

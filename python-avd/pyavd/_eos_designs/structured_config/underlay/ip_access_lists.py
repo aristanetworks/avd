@@ -3,14 +3,13 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
-from itertools import chain
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._utils import append_if_not_duplicate
-from pyavd.j2filters import natural_sort
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import AvdStructuredConfigUnderlayProtocol
 
 
@@ -21,20 +20,10 @@ class IpAccesslistsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
-    def ip_access_lists(self: AvdStructuredConfigUnderlayProtocol) -> list | None:
+    def _set_ipv4_acl(self: AvdStructuredConfigUnderlayProtocol, ipv4_acl: EosDesigns.Ipv4AclsItem) -> None:
         """
-        Return structured config for ip_access_lists.
+        Set structured config for ip_access_lists.
 
-        Covers ipv4_acl_in/out defined under node l3_interfaces or l3_port_channels.
+        Called for each interface in l3_interfaces and l3_port_channels when applying ipv4_acls
         """
-        if not self._l3_interface_acls and not self._l3_port_channel_acls:
-            return None
-
-        ip_access_lists = []
-        context_str = "IPv4 Access lists for node l3_interfaces or l3_port_channels"
-        for interface_acls in chain(self._l3_interface_acls.values(), self._l3_port_channel_acls.values()):
-            for acl in interface_acls.values():
-                append_if_not_duplicate(ip_access_lists, "name", acl, context=context_str, context_keys=["name"])
-
-        return natural_sort(ip_access_lists, "name")
+        self.structured_config.ip_access_lists.append(ipv4_acl._cast_as(EosCliConfigGen.IpAccessListsItem))

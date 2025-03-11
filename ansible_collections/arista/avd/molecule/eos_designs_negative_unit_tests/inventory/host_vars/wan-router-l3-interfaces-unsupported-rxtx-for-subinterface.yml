@@ -1,0 +1,59 @@
+---
+type: wan_router
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site423
+        id: 423
+        location: Somewhere-warm
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+wan_router:
+  nodes:
+    - name: wan-router-l3-interfaces-unsupported-rxtx-for-subinterface
+      id: 1
+      evpn_role: none
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site423
+      loopback_ipv4_pool: 1.2.3.4/24
+      vtep_loopback_ipv4_pool: 192.168.142.0/24
+      bgp_as: 65000
+      l3_interfaces:
+        - name: Ethernet42.100
+          ip_address: 192.168.1.2/31
+          receive_bandwidth: 12
+          peer: peer1
+          peer_interface: eth1
+          peer_ip: 192.168.1.3
+          wan_carrier: Comcast
+          static_routes:
+            - prefix: 0.0.0.0/0
+
+expected_error_message: >-
+  Fields 'receive_bandwidth' and 'transmit_bandwidth'
+  configured on
+  wan_router.nodes[name=wan-router-l3-interfaces-unsupported-rxtx-for-subinterface].l3_interfaces[name=Ethernet42.100] are not supported for subinterfaces.

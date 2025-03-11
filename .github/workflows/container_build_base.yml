@@ -3,8 +3,6 @@ name: Build base container
 
 "on":
   push:
-    branches:
-      - devel
     paths:
       - containers/base/**
       - .github/workflows/container_build_template.yml
@@ -15,7 +13,7 @@ name: Build base container
 
 jobs:
   build_base:
-    if: github.repository == 'aristanetworks/avd'
+    if: ( github.repository == 'aristanetworks/avd' && github.ref == 'refs/heads/devel' ) || vars.DEBUG_CONTAINER_ACTIONS == 'true'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:

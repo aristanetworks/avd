@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError
 from pyavd._utils import get, strip_empties_from_dict
 from pyavd.j2filters import natural_sort
@@ -264,17 +265,17 @@ class UtilsMixin(Protocol):
         return f"{path_group_name}-{wan_route_server_name}-{sanitized_interface_name}"
 
     @cached_property
-    def _stun_server_profiles(self: AvdStructuredConfigOverlayProtocol) -> dict:
+    def _stun_server_profiles(self: AvdStructuredConfigOverlayProtocol) -> dict[str, EosCliConfigGen.Stun.Client.ServerProfiles]:
         """Return a dictionary of _stun_server_profiles with ip_address per local path_group."""
-        stun_server_profiles = {}
+        stun_server_profiles: dict[str, EosCliConfigGen.Stun.Client.ServerProfiles] = {}
         for wan_route_server in self.shared_utils.filtered_wan_route_servers:
             for path_group in wan_route_server.path_groups:
-                stun_server_profiles.setdefault(path_group.name, []).extend(
-                    {
-                        "name": self._stun_server_profile_name(wan_route_server.hostname, path_group.name, interface.name),
-                        "ip_address": interface.public_ip,
-                        "ssl_profile": self.shared_utils.wan_stun_dtls_profile_name,
-                    }
+                stun_server_profiles.setdefault(path_group.name, EosCliConfigGen.Stun.Client.ServerProfiles()).extend(
+                    EosCliConfigGen.Stun.Client.ServerProfilesItem(
+                        name=self._stun_server_profile_name(wan_route_server.hostname, path_group.name, interface.name),
+                        ip_address=interface.public_ip,
+                        ssl_profile=self.shared_utils.wan_stun_dtls_profile_name,
+                    )
                     for interface in path_group.interfaces
                 )
         return stun_server_profiles

@@ -17,9 +17,23 @@ build: ## Build pyavd package
 	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/
 	python3 -m build --wheel
 
+.PHONY: uv-build
+uv-build: ## Build pyavd package
+	uv pip install build
+	rm -rf $(CURRENT_DIR)/build/ $(CURRENT_DIR)/dist/ $(CURRENT_DIR)/pyavd.egg-info/
+	python3 -m build --wheel
+
+
 .PHONY: publish
 publish: ## Publish pyavd package to PyPI (build first)
 	pip3 install twine && \
+	twine check dist/* && \
+	twine upload -r testpypi dist/* && \
+	twine upload dist/*
+
+.PHONY: uv-publish
+uv-publish: ## Publish pyavd package to PyPI (build first)
+	uv pip install twine && \
 	twine check dist/* && \
 	twine upload -r testpypi dist/* && \
 	twine upload dist/*

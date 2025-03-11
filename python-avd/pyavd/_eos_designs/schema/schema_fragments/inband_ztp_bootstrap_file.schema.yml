@@ -1,0 +1,12 @@
+---
+type: dict
+keys:
+  inband_ztp_bootstrap_file:
+    type: str
+    description: |-
+      Bootstrap URL configured in DHCP to use for inband ZTP.
+      If not set and `cvp_instance_ips` is set then the bootstrap value will be set to:
+          `https://{cvp_instance_ips[0]}/ztp/bootstrap`
+      Otherwise no value will be configured.
+    documentation_options:
+      table: management-settings

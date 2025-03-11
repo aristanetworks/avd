@@ -3,9 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from collections import defaultdict
-from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
+
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -18,44 +19,28 @@ class RouterInternetExitMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
-    def router_internet_exit(self: AvdStructuredConfigNetworkServicesProtocol) -> dict | None:
+    @structured_config_contributor
+    def router_internet_exit(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
-        Return structured config for router_internet_exit.
+        Set the structured config for router_internet_exit.
 
         Only used for CV Pathfinder edge routers today
         """
         if not self._filtered_internet_exit_policies_and_connections:
-            return None
+            return
 
-        router_internet_exit = {}
-        exit_groups_dict = defaultdict(lambda: {"local_connections": []})
-        policies = []
-
+        policies = EosCliConfigGen.RouterInternetExit.Policies()
+        exit_groups = EosCliConfigGen.RouterInternetExit.ExitGroups()
         for policy, connections in self._filtered_internet_exit_policies_and_connections:
-            policy_exit_groups = []
             # TODO: Today we use the order of the connection list to order the exit-groups inside the policy.
             #       This works for zscaler but later we may need to use some sorting intelligence as order matters.
             for connection in connections:
                 exit_group_name = connection["exit_group"]
-                exit_groups_dict[exit_group_name]["local_connections"].append({"name": connection["name"]})
+                exit_groups.obtain(exit_group_name).local_connections.append_new(name=connection["name"])
                 # Recording the exit_group in the policy
-                if exit_group_name not in policy_exit_groups:
-                    policy_exit_groups.append(exit_group_name)
+                policies.obtain(policy.name).exit_groups.append_new(name=exit_group_name)
 
             if policy.fallback_to_system_default:
-                policy_exit_groups.append("system-default-exit-group")
+                policies.obtain(policy.name).exit_groups.append_new(name="system-default-exit-group")
 
-            policies.append({"name": policy.name, "exit_groups": [{"name": exit_group_name} for exit_group_name in policy_exit_groups]})
-
-        if exit_groups_dict:
-            router_internet_exit["exit_groups"] = [
-                {"name": exit_group_name, **exit_group_data} for exit_group_name, exit_group_data in exit_groups_dict.items()
-            ]
-        if policies:
-            router_internet_exit["policies"] = policies
-
-        if router_internet_exit:
-            return router_internet_exit
-
-        return None
+        self.structured_config.router_internet_exit._update(policies=policies, exit_groups=exit_groups)

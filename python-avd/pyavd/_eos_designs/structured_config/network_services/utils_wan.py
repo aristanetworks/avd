@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import get, get_ip_from_ip_prefix
+from pyavd._utils import get
 from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
@@ -418,51 +418,6 @@ class UtilsWanMixin(Protocol):
             if any(wan_interface["connected_to_pathfinder"] for wan_interface in path_group._internal_data.interfaces)
         ]
 
-    @cached_property
-    def _svi_acls(self: AvdStructuredConfigNetworkServicesProtocol) -> dict[str, dict[str, dict]] | None:
-        """
-        Returns a dict of SVI ACLs.
-
-        <interface_name>: {
-            "ipv4_acl_in": <generated_ipv4_acl>,
-            "ipv4_acl_out": <generated_ipv4_acl>,
-        }
-
-        Only contains interfaces with ACLs and only the ACLs that are set,
-        so use `get(self._svi_acls, f"{interface_name}.ipv4_acl_in")` to get the value.
-        """
-        if not self.shared_utils.network_services_l3:
-            return None
-
-        svi_acls = {}
-        for tenant in self.shared_utils.filtered_tenants:
-            for vrf in tenant.vrfs:
-                for svi in vrf.svis:
-                    ipv4_acl_in = svi.ipv4_acl_in
-                    ipv4_acl_out = svi.ipv4_acl_out
-                    if ipv4_acl_in is None and ipv4_acl_out is None:
-                        continue
-
-                    interface_name = f"Vlan{svi.id}"
-                    interface_ip = svi.ip_address_virtual
-                    if interface_ip is not None and "/" in interface_ip:
-                        interface_ip = get_ip_from_ip_prefix(interface_ip)
-
-                    if ipv4_acl_in is not None:
-                        svi_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
-                            name=ipv4_acl_in,
-                            interface_name=interface_name,
-                            interface_ip=interface_ip,
-                        )._as_dict()
-                    if ipv4_acl_out is not None:
-                        svi_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
-                            name=ipv4_acl_out,
-                            interface_name=interface_name,
-                            interface_ip=interface_ip,
-                        )._as_dict()
-
-        return svi_acls
-
     def get_internet_exit_nat_profile_name(self: AvdStructuredConfigNetworkServicesProtocol, internet_exit_policy_type: Literal["zscaler", "direct"]) -> str:
         if internet_exit_policy_type == "zscaler":
             return "NAT-IE-ZSCALER"
@@ -474,53 +429,6 @@ class UtilsWanMixin(Protocol):
     @cached_property
     def _filtered_internet_exit_policy_types(self: AvdStructuredConfigNetworkServicesProtocol) -> list:
         return sorted({internet_exit_policy.type for internet_exit_policy, _connections in self._filtered_internet_exit_policies_and_connections})
-
-    @cached_property
-    def _l3_interface_acls(self: AvdStructuredConfigNetworkServicesProtocol) -> dict | None:
-        """
-        Returns a dict of interfaces and ACLs set on the interfaces.
-
-        {
-            <interface_name>: {
-            "ipv4_acl_in": <generated_ipv4_acl>,
-            "ipv4_acl_out": <generated_ipv4_acl>,
-            }
-        }
-        Only contains interfaces with ACLs and only the ACLs that are set,
-        so use `get(self._l3_interface_acls, f"{interface_name}..ipv4_acl_in", separator="..")` to get the value.
-        """
-        if not self.shared_utils.network_services_l3:
-            return None
-
-        l3_interface_acls = {}
-        for tenant in self.shared_utils.filtered_tenants:
-            for vrf in tenant.vrfs:
-                for l3_interface in vrf.l3_interfaces:
-                    for interface_idx, interface in enumerate(l3_interface.interfaces):
-                        if l3_interface.nodes[interface_idx] != self.shared_utils.hostname:
-                            continue
-
-                        ipv4_acl_in = l3_interface.ipv4_acl_in
-                        ipv4_acl_out = l3_interface.ipv4_acl_out
-                        if ipv4_acl_in is None and ipv4_acl_out is None:
-                            continue
-                        interface_name = interface
-                        interface_ip: str | None = l3_interface.ip_addresses[interface_idx]
-                        if interface_ip is not None:
-                            interface_ip = get_ip_from_ip_prefix(interface_ip)
-                        if ipv4_acl_in is not None:
-                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_in"] = self.shared_utils.get_ipv4_acl(
-                                name=ipv4_acl_in,
-                                interface_name=interface_name,
-                                interface_ip=interface_ip,
-                            )._as_dict()
-                        if ipv4_acl_out is not None:
-                            l3_interface_acls.setdefault(interface_name, {})["ipv4_acl_out"] = self.shared_utils.get_ipv4_acl(
-                                name=ipv4_acl_out,
-                                interface_name=interface_name,
-                                interface_ip=interface_ip,
-                            )._as_dict()
-        return l3_interface_acls
 
     @cached_property
     def _filtered_internet_exit_policies_and_connections(
@@ -734,7 +642,7 @@ class UtilsWanMixin(Protocol):
                         "exit_group": f"{policy_name}_{suffix}",
                         "preference": preference,
                         "suffix": suffix,
-                        "endpoint": zscaler_endpoint._as_dict(),
+                        "endpoint": zscaler_endpoint,
                     },
                 )
         return connections

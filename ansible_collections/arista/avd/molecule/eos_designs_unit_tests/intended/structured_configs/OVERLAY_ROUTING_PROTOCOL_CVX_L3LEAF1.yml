@@ -26,6 +26,7 @@ management_cvx:
   server_hosts:
   - 192.168.254.254
   - 192.168.254.255
+  - 192.168.254.253
   source_interface: Loopback0
 metadata:
   dc_name: OVERLAY_ROUTING_PROTOCOL_CVX_TESTS

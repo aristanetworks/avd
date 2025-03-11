@@ -161,13 +161,6 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: 10.10.50.10
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
-  entries:
-  - sequence: 15
-    action: deny
-    protocol: ip
-    source: any
-    destination: 10.10.50.20
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -175,6 +168,13 @@ ip_access_lists:
     protocol: ip
     source: 10.10.50.10
     destination: any
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.50.20
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
   entries:
   - remark: Some remark will not require source and destination fields.

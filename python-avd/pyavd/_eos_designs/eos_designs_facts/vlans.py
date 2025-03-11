@@ -12,7 +12,7 @@ from pyavd.j2filters import list_compress, range_expand
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
 
-    from . import EosDesignsFacts, EosDesignsFactsProtocol
+    from . import EosDesignsFactsProtocol
 
 
 class VlansMixin(Protocol):
@@ -44,7 +44,7 @@ class VlansMixin(Protocol):
         """Parse the given adapter_settings and return relevant vlans and trunk_groups."""
         vlans = set()
         trunk_groups = set(adapter_settings.trunk_groups)
-        if adapter_settings.vlans not in ["all", "", None]:
+        if adapter_settings.vlans and adapter_settings.vlans != "all":
             vlans.update(map(int, range_expand(adapter_settings.vlans)))
         elif adapter_settings.mode == "trunk" and not trunk_groups:
             # No vlans or trunk_groups defined, but this is a trunk, so default is all vlans allowed
@@ -140,7 +140,7 @@ class VlansMixin(Protocol):
         vlans = set()
         trunk_groups = set()
         for fabric_switch in self.shared_utils.all_fabric_devices:
-            fabric_switch_facts: EosDesignsFacts = self.shared_utils.get_peer_facts(fabric_switch, required=True)
+            fabric_switch_facts = self.get_peer_facts_cls(fabric_switch)
             if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.hostname in fabric_switch_facts.uplink_peers:
                 fabric_switch_endpoint_vlans, fabric_switch_endpoint_trunk_groups = fabric_switch_facts._endpoint_vlans_and_trunk_groups
                 vlans.update(fabric_switch_endpoint_vlans)
@@ -158,9 +158,7 @@ class VlansMixin(Protocol):
         if not self.shared_utils.mlag:
             return set(), set()
 
-        mlag_peer_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
-
-        return mlag_peer_facts._endpoint_vlans_and_trunk_groups
+        return self._mlag_peer_facts._endpoint_vlans_and_trunk_groups
 
     @cached_property
     def _endpoint_vlans_and_trunk_groups(self: EosDesignsFactsProtocol) -> tuple[set, set]:
@@ -249,52 +247,37 @@ class VlansMixin(Protocol):
 
         Ex. [1, 2, 3 ,4 ,201, 3021]
         """
-        if self.shared_utils.any_network_services:
-            vlans = []
-            match_tags = self.shared_utils.filter_tags
+        if not self.shared_utils.any_network_services:
+            return []
 
-            if self.shared_utils.node_config.filter.only_vlans_in_use:
-                # Only include the vlans that are used by connected endpoints
-                endpoint_trunk_groups = self._endpoint_trunk_groups
-                endpoint_vlans = self._endpoint_vlans
+        vlans = []
+        for network_services_key in self.inputs._dynamic_keys.network_services:
+            tenants = network_services_key.value
+            for tenant in tenants:
+                if not set(self.shared_utils.node_config.filter.tenants).intersection([tenant.name, "all"]):
+                    # Not matching tenant filters. Skipping this tenant.
+                    continue
 
-            for network_services_key in self.inputs._dynamic_keys.network_services:
-                tenants = network_services_key.value
-                for tenant in tenants:
-                    if not set(self.shared_utils.node_config.filter.tenants).intersection([tenant.name, "all"]):
-                        # Not matching tenant filters. Skipping this tenant.
-                        continue
+                vlans.extend(svi.id for vrf in tenant.vrfs for svi in vrf.svis if self._is_accepted_vlan(svi))
+                vlans.extend(l2vlan.id for l2vlan in tenant.l2vlans if self._is_accepted_vlan(l2vlan))
 
-                    for vrf in tenant.vrfs:
-                        for svi in vrf.svis:
-                            if "all" in match_tags or set(svi.tags).intersection(match_tags):
-                                if self.shared_utils.node_config.filter.only_vlans_in_use:
-                                    # Check if vlan is in use
-                                    if svi.id in endpoint_vlans:
-                                        vlans.append(svi.id)
-                                        continue
-                                    # Check if vlan has a trunk group defined which is in use
-                                    if self.inputs.enable_trunk_groups and svi.trunk_groups and endpoint_trunk_groups.intersection(svi.trunk_groups):
-                                        vlans.append(svi.id)
-                                        continue
-                                    # Skip since the vlan is not in use
-                                    continue
-                                vlans.append(svi.id)
+        return vlans
 
-                    for l2vlan in tenant.l2vlans:
-                        if "all" in match_tags or set(l2vlan.tags).intersection(match_tags):
-                            if self.shared_utils.node_config.filter.only_vlans_in_use:
-                                # Check if vlan is in use
-                                if l2vlan.id in endpoint_vlans:
-                                    vlans.append(l2vlan.id)
-                                    continue
-                                # Check if vlan has a trunk group defined which is in use
-                                if self.inputs.enable_trunk_groups and l2vlan.trunk_groups and endpoint_trunk_groups.intersection(l2vlan.trunk_groups):
-                                    vlans.append(l2vlan.id)
-                                    continue
-                                # Skip since the vlan is not in use
-                                continue
-                            vlans.append(l2vlan.id)
+    def _is_accepted_vlan(
+        self: EosDesignsFactsProtocol,
+        vlan: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.L2vlansItem,
+    ) -> bool:
+        if "all" not in self.shared_utils.filter_tags and not set(vlan.tags).intersection(self.shared_utils.filter_tags):
+            return False
 
-            return vlans
-        return []
+        if not self.shared_utils.node_config.filter.only_vlans_in_use:
+            # Nothing else to filter
+            return True
+
+        # Check if vlan is in use
+        if vlan.id in self._endpoint_vlans:
+            return True
+
+        # Check if vlan has a trunk group defined which is in use
+        return bool(self.inputs.enable_trunk_groups and vlan.trunk_groups and self._endpoint_trunk_groups.intersection(vlan.trunk_groups))

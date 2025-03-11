@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
+
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -17,11 +18,11 @@ class EosCliMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
-    def eos_cli(self: AvdStructuredConfigNetworkServicesProtocol) -> str | None:
-        """Return existing eos_cli plus any eos_cli from VRFs."""
+    @structured_config_contributor
+    def eos_cli(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
+        """Set existing eos_cli plus any eos_cli from VRFs."""
         if not self.shared_utils.network_services_l3:
-            return None
+            return
 
         eos_clis = []
         # Find any existing eos_cli set by AvdStructuredConfigBase.
@@ -34,6 +35,4 @@ class EosCliMixin(Protocol):
         eos_clis.extend(vrf.raw_eos_cli for tenant in self.shared_utils.filtered_tenants for vrf in tenant.vrfs if vrf.raw_eos_cli is not None)
 
         if eos_clis:
-            return "\n".join(eos_clis)
-
-        return None
+            self.structured_config.eos_cli = "\n".join(eos_clis)

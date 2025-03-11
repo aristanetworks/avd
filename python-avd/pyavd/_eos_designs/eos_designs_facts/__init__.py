@@ -13,11 +13,12 @@ from .mlag import MlagMixin
 from .overlay import OverlayMixin
 from .short_esi import ShortEsiMixin
 from .uplinks import UplinksMixin
+from .utils import UtilsMixin
 from .vlans import VlansMixin
 from .wan import WanMixin
 
 
-class EosDesignsFactsProtocol(MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin, AvdFactsProtocol, Protocol):
+class EosDesignsFactsProtocol(MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, UplinksMixin, VlansMixin, UtilsMixin, AvdFactsProtocol, Protocol):
     @cached_property
     def id(self) -> int | None:
         """Exposed in avd_switch_facts."""
@@ -78,11 +79,9 @@ class EosDesignsFactsProtocol(MlagMixin, ShortEsiMixin, OverlayMixin, WanMixin, 
                 msg = "'evpn_multicast: True' is only supported in combination with 'underlay_multicast: True' and 'igmp_snooping_enabled : True'"
                 raise AristaAvdError(msg)
 
-            if self.shared_utils.mlag is True:
-                peer_eos_designs_facts: EosDesignsFacts = self.shared_utils.mlag_peer_facts
-                if self.shared_utils.overlay_rd_type_admin_subfield == peer_eos_designs_facts.shared_utils.overlay_rd_type_admin_subfield:
-                    msg = "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
-                    raise AristaAvdError(msg)
+            if self.shared_utils.mlag and self.shared_utils.overlay_rd_type_admin_subfield == self._mlag_peer_facts.shared_utils.overlay_rd_type_admin_subfield:
+                msg = "For MLAG devices Route Distinguisher must be unique when 'evpn_multicast: True' since it will create a multi-vtep configuration."
+                raise AristaAvdError(msg)
             return True
         return None
 

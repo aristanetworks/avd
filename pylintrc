@@ -39,6 +39,7 @@ disable=
     too-many-statements,
     wrong-import-position,
     # Disabling other rules covered by ruff
+    # Error
     assigning-non-slot,
     await-outside-async,
     bad-format-character,
@@ -92,11 +93,12 @@ disable=
     used-prior-global-declaration,
     yield-inside-async-function,
     yield-outside-function,
+    # Warning
     anomalous-backslash-in-string,
     assert-on-string-literal,
     assert-on-tuple,
+    # bad-dunder-name, # Part of a PyLint extension we don't use.
     bad-format-string,
-    bad-format-string-key,
     bad-open-mode,
     bad-staticmethod-argument,
     bare-except,
@@ -104,11 +106,12 @@ disable=
     broad-exception-caught,
     broad-exception-raised,
     cell-var-from-loop,
+    # consider-ternary-expression, # Part of a PyLint extension we don't use.
     dangerous-default-value,
     duplicate-except,
     duplicate-key,
-    duplicate-string-formatting-argument,
     duplicate-value,
+    # eq-without-hash, # Part of a PyLint extension we don't use.
     eval-used,
     exec-used,
     # expression-not-assigned,
@@ -141,6 +144,7 @@ disable=
     # protected-access,
     raise-missing-from,
     # redefined-builtin,
+    # redefined-loop-name, # Part of a PyLint extension we don't use.
     redundant-u-string-prefix,
     reimported,
     self-assigning-variable,
@@ -160,14 +164,20 @@ disable=
     useless-else-on-loop,
     useless-with-lock,
     wildcard-import,
+    # Convention
     bad-classmethod-argument,
+    # bad-docstring-quotes, # Part of a PyLint extension we don't use.
     compare-to-empty-string,
     consider-iterating-dictionary,
+    # consider-using-any-or-all, # Part of a PyLint extension we don't use.
     consider-using-dict-items,
+    # docstring-first-line-empty , # Part of a PyLint extension we don't use.
     empty-docstring,
     import-outside-toplevel,
+    # import-private-name, # Part of a PyLint extension we don't use.
     # invalid-name,
     # line-too-long,
+    # misplaced-comparison-constant, # Part of a PyLint extension we don't use.
     missing-class-docstring,
     missing-final-newline,
     missing-function-docstring,
@@ -178,6 +188,7 @@ disable=
     non-ascii-name,
     single-string-used-for-slots,
     singleton-comparison,
+    trailing-newlines,
     trailing-whitespace,
     typevar-double-variance,
     typevar-name-incorrect-variance,
@@ -188,13 +199,18 @@ disable=
     unnecessary-dunder-call,
     unnecessary-lambda-assignment,
     unneeded-not,
+    use-implicit-booleaness-not-len,
     use-sequence-for-iteration,
     useless-import-alias,
     wrong-import-order,
     # wrong-import-position,
+    # Refactor
     comparison-of-constants,
     comparison-with-itself,
+    # consider-alternative-union-syntax, # Part of a PyLint extension we don't use.
     consider-merging-isinstance,
+    # consider-using-alias, # Part of a PyLint extension we don't use.
+    # consider-using-augmented-assign, # Part of a PyLint extension we don't use.
     consider-using-dict-comprehension,
     consider-using-from-import,
     consider-using-generator,
@@ -204,10 +220,13 @@ disable=
     consider-using-max-builtin,
     consider-using-set-comprehension,
     consider-using-sys-exit,
-    consider-using-ternary,
+    # consider-using-ternary,  # Marked as removed in ruff
     consider-using-with,
+    # else-if-used, # Part of a PyLint extension we don't use.
+    # empty-comment, # Part of a PyLint extension we don't use.
     # inconsistent-return-statements,
     literal-comparison,
+    # magic-value-comparison, # Part of a PyLint extension we don't use.
     no-classmethod-decorator,
     no-else-break,
     no-else-continue,
@@ -219,6 +238,7 @@ disable=
     simplifiable-if-expression,
     simplifiable-if-statement,
     super-with-arguments,
+    # too-complex, # Part of a PyLint extension we don't use.
     # too-many-arguments,
     too-many-boolean-expressions,
     # too-many-branches,
@@ -234,5 +254,6 @@ disable=
     use-a-generator,
     use-dict-literal,
     use-list-literal,
+    # use-set-for-membership, # Part of a PyLint extension we don't use.
     useless-object-inheritance,
     useless-return,

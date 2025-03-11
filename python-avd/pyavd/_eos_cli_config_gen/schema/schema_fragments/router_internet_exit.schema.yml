@@ -21,6 +21,7 @@ keys:
               type: str
             exit_groups:
               type: list
+              primary_key: name
               description: The exit groups that are configured under a policy are strictly ordered, meaning an exit group appearing first has more priority than the exit group that follows it.
               items:
                 type: dict
@@ -42,6 +43,7 @@ keys:
               type: bool
               description: Fib default exit indicates that the flows that select this exit will follow the default route available in the VRF of the flow.
             local_connections:
+              primary_key: name
               type: list
               description: |-
                 Local connections refer to connections configured under the `router_service_insertion`.

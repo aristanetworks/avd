@@ -1600,6 +1600,47 @@ keys:
       in the Fabric, **must** be an inventory group name.
     type: str
     required: true
+  fabric_numbering:
+    description: 'PREVIEW: This feature is in marked as "preview", which means it
+      is subject to change at any time.
+
+
+      Assignment policies for numbers like Node ID.'
+    type: dict
+    keys:
+      node_id:
+        type: dict
+        description: 'Assignment policy for Node ID.
+
+          Node ID is mainly used for IP address assignment but can also affect BGP
+          AS and/or
+
+          interface assignments depending on other settings.'
+        keys:
+          algorithm:
+            type: str
+            default: static
+            valid_values:
+            - static
+            - pool_manager
+            description: "IDs will be automatically assigned according to the configured
+              algorithm.\n- `static` will use the statically set IDs under node setting.\n-
+              `pool_manager` will activate the pool manager for ID pools.\n  Any statically
+              set ID under node settings will be reserved in the pool if possible.\n
+              \ Otherwise an error will be raised."
+          pools_file:
+            type: str
+            description: 'Path to file to use for storing ID pool data when using
+              "pool_manager" as algorithm.
+
+              This can be an absolute path or a path relative to current working directory.
+
+
+              By default the path is "<root_dir>/intended/data/<fabric_name>-ids.yml".
+
+
+              Note: Since the pool manager will remove stale entries after every run,
+              each fabric should be using its own file.'
   fabric_sflow:
     documentation_options:
       table: management-sflow-settings
@@ -1848,6 +1889,14 @@ keys:
       table: system-settings
     $ref: eos_cli_config_gen#/keys/hardware_counters
     type: dict
+  inband_ztp_bootstrap_file:
+    type: str
+    description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
+      set and `cvp_instance_ips` is set then the bootstrap value will be set to:\n
+      \   `https://{cvp_instance_ips[0]}/ztp/bootstrap`\nOtherwise no value will be
+      configured."
+    documentation_options:
+      table: management-settings
   internal_vlan_order:
     documentation_options:
       table: system-settings
@@ -2153,7 +2202,6 @@ keys:
     keys:
       enable_http:
         type: bool
-        default: false
       enable_https:
         type: bool
         default: true
@@ -2584,9 +2632,6 @@ keys:
 
             `server` indicates that the router is a route-reflector.
 
-
-            Only supported if `overlay_routing_protocol` is set to `ibgp`.
-
             '
         default_flow_tracker_type:
           type: str
@@ -3006,6 +3051,9 @@ keys:
           of RD) for VRF services:
 
           - ''router_id'' means the IP address of Loopback0.
+
+          - ''vrf_router_id'' means the Router ID assigned for the BGP in the VRF
+          - falling back to IP address of Loopback0.
 
           - ''vtep_loopback'' means the IP address of the VTEP loopback interface.
 
@@ -4951,6 +4999,21 @@ keys:
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
+  wan_use_evpn_node_settings_for_lan:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    default: false
+    description: 'PREVIEW: This key is currently not supported and may produce invalid
+      configuration.
+
+      When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and
+      `vtep`
+
+      node settings for LAN side on WAN devices. Otherwise these will be ignored for
+      WAN.
+
+      This will be the default in AVD version 6.0.0 and this option will be removed.'
   wan_virtual_topologies:
     type: dict
     description: 'Configure Virtual Topologies for CV Pathfinder and AutoVPN.
@@ -9327,10 +9390,7 @@ $defs:
 
               That means if `wan_mode` root key is set to `autovpn` or `cv-pathfinder`.
 
-              `server` indicates that the router is a route-reflector.
-
-
-              Only supported if `overlay_routing_protocol` is set to `ibgp`.'
+              `server` indicates that the router is a route-reflector.'
           cv_pathfinder_transit_mode:
             documentation_options:
               table: node-type-wan-configuration
@@ -9627,6 +9687,26 @@ $defs:
           type: str
           description: Speed should be set in the format `<interface_speed>` or `forced
             <interface_speed>` or `auto <interface_speed>`.
+        receive_bandwidth:
+          type: int
+          description: 'Maximum allowed receive bandwidth (download) in Mbps for this
+            interface.
+
+            This is currently used on CVaaS to provide more information in the visualization.'
+          min: 1
+          max: 4294967295
+          convert_types:
+          - str
+        transmit_bandwidth:
+          type: int
+          description: 'Maximum allowed transmit bandwidth (upload) in Mbps for this
+            interface.
+
+            This is currently used on CVaaS to provide more information in the visualization.'
+          min: 1
+          max: 4294967295
+          convert_types:
+          - str
         peer:
           type: str
           description: The peer device name. Used for description and documentation.

@@ -6,8 +6,9 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default, strip_empties_from_dict
+from pyavd._utils import default
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -20,50 +21,44 @@ class RouterIsisMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
-    def router_isis(self: AvdStructuredConfigUnderlayProtocol) -> dict | None:
-        """Return structured config for router_isis."""
+    @structured_config_contributor
+    def router_isis(self: AvdStructuredConfigUnderlayProtocol) -> None:
+        """Set the structured config for router_isis."""
         if self.shared_utils.underlay_isis is not True:
-            return None
+            return
 
-        router_isis = {
-            "instance": self.shared_utils.isis_instance_name,
-            "log_adjacency_changes": True,
-            "net": self._isis_net,
-            "router_id": self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
-            "is_type": self._is_type,
-            "address_family_ipv4": {"enabled": True, "maximum_paths": self.inputs.isis_maximum_paths},
-        }
+        self.structured_config.router_isis._update(
+            instance=self.shared_utils.isis_instance_name,
+            log_adjacency_changes=True,
+            net=self._isis_net,
+            router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
+            is_type=default(self.shared_utils.node_config.is_type, self.inputs.isis_default_is_type),
+        )
+        self.structured_config.router_isis.address_family_ipv4._update(enabled=True, maximum_paths=self.inputs.isis_maximum_paths)
 
         if self.shared_utils.underlay_ldp is True:
-            router_isis["mpls_ldp_sync_default"] = True
+            self.structured_config.router_isis.mpls_ldp_sync_default = True
 
         # TI-LFA
         if self.inputs.isis_ti_lfa.enabled:
-            router_isis["timers"] = {
-                "local_convergence": {
-                    "delay": self.inputs.isis_ti_lfa.local_convergence_delay,
-                    "protected_prefixes": True,
-                },
-            }
+            self.structured_config.router_isis.timers.local_convergence._update(delay=self.inputs.isis_ti_lfa.local_convergence_delay, protected_prefixes=True)
+
         if self.inputs.isis_ti_lfa.protection:
-            router_isis["address_family_ipv4"]["fast_reroute_ti_lfa"] = {"mode": f"{self.inputs.isis_ti_lfa.protection}-protection"}
+            self.structured_config.router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode = f"{self.inputs.isis_ti_lfa.protection}-protection"
 
         # Overlay protocol
         if self.shared_utils.overlay_routing_protocol == "none":
-            router_isis["redistribute_routes"] = [{"source_protocol": "connected"}]
+            self.structured_config.router_isis.redistribute_routes.append_new(source_protocol="connected")
 
         if self.shared_utils.underlay_sr is True:
-            router_isis["advertise"] = {"passive_only": self.inputs.isis_advertise_passive_only}
+            self.structured_config.router_isis.advertise.passive_only = self.inputs.isis_advertise_passive_only
             # TODO: - enabling IPv6 only in SR cases as per existing behavior
             # but this could probably be taken out
             if self.shared_utils.underlay_ipv6 is True:
-                router_isis["address_family_ipv6"] = {"enabled": True, "maximum_paths": self.inputs.isis_maximum_paths}
+                self.structured_config.router_isis.address_family_ipv6._update(enabled=True, maximum_paths=self.inputs.isis_maximum_paths)
                 if self.inputs.isis_ti_lfa.protection:
-                    router_isis["address_family_ipv6"]["fast_reroute_ti_lfa"] = {"mode": f"{self.inputs.isis_ti_lfa.protection}-protection"}
-            router_isis["segment_routing_mpls"] = {"router_id": self.shared_utils.router_id, "enabled": True}
-
-        return strip_empties_from_dict(router_isis)
+                    self.structured_config.router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode = f"{self.inputs.isis_ti_lfa.protection}-protection"
+            self.structured_config.router_isis.segment_routing_mpls._update(router_id=self.shared_utils.router_id, enabled=True)
 
     @cached_property
     def _isis_net(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
@@ -85,10 +80,6 @@ class RouterIsisMixin(Protocol):
 
         isis_area_id = self.inputs.isis_area_id
         return f"{isis_area_id}.{system_id}.00"
-
-    @cached_property
-    def _is_type(self: AvdStructuredConfigUnderlayProtocol) -> str:
-        return default(self.shared_utils.node_config.is_type, self.inputs.isis_default_is_type)
 
     @staticmethod
     def ipv4_to_isis_system_id(ipv4_address: str) -> str:

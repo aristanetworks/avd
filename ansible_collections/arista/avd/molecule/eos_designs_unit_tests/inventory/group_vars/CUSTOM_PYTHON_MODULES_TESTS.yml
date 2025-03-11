@@ -1,5 +1,4 @@
 ---
-
 mgmt_gateway: 192.168.200.1
 
 custom_node_type_keys:

@@ -34,7 +34,11 @@ disable=
     consider-using-max-builtin,
     consider-using-min-builtin,
     cyclic-import,  # consistent results require running with --jobs 1 and testing all files
+    deprecated-argument,  # results vary by Python version
+    deprecated-attribute,  # results vary by Python version
+    deprecated-class,  # results vary by Python version
     deprecated-comment,  # custom plugin only used by ansible-core, not collections  # pylint: disable=unknown-option-value
+    deprecated-decorator,  # results vary by Python version
     deprecated-method,  # results vary by Python version
     deprecated-module,  # results vary by Python version
     duplicate-code,  # consistent results require running with --jobs 1 and testing all files
@@ -73,6 +77,7 @@ disable=
     pointless-statement,
     pointless-string-statement,
     possibly-unused-variable,
+    possibly-used-before-assignment,
     protected-access,
     raise-missing-from,  # Python 2.x does not support raise from
     redefined-argument-from-local,
@@ -91,7 +96,6 @@ disable=
     too-few-public-methods,
     too-many-ancestors,  # inconsistent results between python 3.6 and 3.7+
     too-many-arguments,
-    too-many-positional-arguments,
     too-many-boolean-expressions,
     too-many-branches,
     too-many-function-args,
@@ -102,6 +106,7 @@ disable=
     too-many-public-methods,
     too-many-return-statements,
     too-many-statements,
+    too-many-positional-arguments,
     try-except-raise,
     unbalanced-tuple-unpacking,
     undefined-loop-variable,
