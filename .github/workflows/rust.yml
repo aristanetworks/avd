@@ -50,7 +50,9 @@ jobs:
       - run: cargo clippy --all-targets --all-features
       - run: cargo build --all-targets --all-features
       - run: cargo test --all-targets --all-features
-      - run: cargo deny check --all-targets --all-features
+      - run: |
+          cargo install cargo-deny
+          cargo deny check --all-targets --all-features
 
   # ----------------------------------- #
   # Python build and test
