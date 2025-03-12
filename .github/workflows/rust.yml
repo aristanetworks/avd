@@ -52,7 +52,7 @@ jobs:
       - run: cargo test --all-targets --all-features
       - run: |
           cargo install cargo-deny
-          cargo deny check --all-targets --all-features
+          cargo deny check
 
   # ----------------------------------- #
   # Python build and test
