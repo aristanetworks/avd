@@ -20,8 +20,8 @@ def init_store() -> None:
     from schema_tools.constants import SCHEMAS
 
     init_store_from_fragments(
-        eos_cli_config_gen=cast(Path, SCHEMAS["eos_cli_config_gen"].fragments_dir),
-        eos_designs=cast(Path, SCHEMAS["eos_designs"].fragments_dir),
+        eos_cli_config_gen=cast("Path", SCHEMAS["eos_cli_config_gen"].fragments_dir),
+        eos_designs=cast("Path", SCHEMAS["eos_designs"].fragments_dir),
     )
     sys.path = org_path
 
