@@ -13,6 +13,51 @@ from pyavd._utils import get, get_item
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
 
+M_AND_E_DEFAULT_NODE_TYPE_KEYS = [
+    {
+        "key": "ptp_leaf",
+        "type": "ptp_leaf",
+        "default_overlay_routing_protocol": "none",
+        "connected_endpoints": True,
+        "network_services": {
+            "l2": True,
+            "l3": True,
+        },
+        "default_ptp_priority1": 10,
+    },
+    {
+        "key": "media_spine",
+        "type": "media_spine",
+        "default_overlay_routing_protocol": "none",
+        "connected_endpoints": True,
+        "network_services": {
+            "l2": True,
+            "l3": True,
+        },
+        "default_ptp_priority1": 20,
+    },
+    {
+        "key": "media_l2leaf",
+        "type": "media_l2leaf",
+        "default_overlay_routing_protocol": "none",
+        "connected_endpoints": True,
+        "network_services": {
+            "l2": True,
+        },
+        "default_ptp_priority1": 30,
+    },
+    {
+        "key": "media_l3leaf",
+        "type": "media_l3leaf",
+        "default_overlay_routing_protocol": "none",
+        "connected_endpoints": True,
+        "network_services": {
+            "l2": True,
+            "l3": True,
+        },
+        "default_ptp_priority1": 30,
+    },
+]
 MPLS_DEFAULT_NODE_TYPE_KEYS = [
     {
         "key": "p",
@@ -178,6 +223,7 @@ DEFAULT_NODE_TYPE_KEYS = {
         },
         # Avoiding duplicate code
         *MPLS_DEFAULT_NODE_TYPE_KEYS,
+        *M_AND_E_DEFAULT_NODE_TYPE_KEYS,
     ],
     "mpls": MPLS_DEFAULT_NODE_TYPE_KEYS,
     "l2ls": L2LS_DEFAULT_NODE_TYPE_KEYS,
