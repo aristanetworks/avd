@@ -8,7 +8,7 @@ from typing import Literal, cast
 
 import pytest
 
-from avdutils._validation import init_store_from_fragments, validate_json
+from avdutils.validation import init_store_from_fragments, validate_json
 
 
 @pytest.fixture

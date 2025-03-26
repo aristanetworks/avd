@@ -20,7 +20,7 @@ fn get_store() -> &'static Store {
 }
 
 #[pymodule]
-mod _validation {
+mod validation {
     use log::info;
     use std::path::PathBuf;
 

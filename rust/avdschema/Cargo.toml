@@ -15,6 +15,3 @@ serde_with = { version = "3.12.0" }
 serde_yaml = { version = "0.9.33" }
 walkdir = "2.5.0"
 xz2 = "0.1.7"
-
-[features]
-include-schemas = []

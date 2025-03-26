@@ -24,5 +24,4 @@ serde_yaml = { version = "0.9.33" }
 python_bindings = ["dep:pyo3", "dep:pyo3-log", "dep:included_store"]
 
 [lib]
-name = "_validation"
-crate-type = ["cdylib"]
+crate-type = ["cdylib", "lib"]

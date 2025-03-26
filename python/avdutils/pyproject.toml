@@ -21,7 +21,7 @@ py-limited-api = "cp310"
 include = ["src"]
 
 [[tool.setuptools-rust.ext-modules]]
-target = "avdutils._validation"
+target = "avdutils.validation"
 path = "../../rust/validation/Cargo.toml"
 binding = "PyO3"
 features = ["python_bindings"]
