@@ -32,6 +32,7 @@ vxlan_interface:
           flood_vteps:
             - 10.1.1.10
             - 10.1.1.11
+          flood_group_multicast_ipaddress: 232.1.1.21
         - id: 112
           multicast_group: 239.9.1.6
 

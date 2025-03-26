@@ -38,6 +38,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].multicast_group") | String |  |  |  | IP Multicast Group Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_group_multicast_ipaddress</samp>](## "vxlan_interface.vxlan1.vxlan.vlans.[].flood_group_multicast_ipaddress") | String |  |  |  | Underlay IP multicast group address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
@@ -76,6 +77,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_group</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].multicast_group") | String |  |  |  | IP Multicast Group Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_vteps</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_vteps.[]") | String |  |  |  | Remote VTEP IP Address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flood_group_multicast_ipaddress</samp>](## "vxlan_interface.Vxlan1.vxlan.vlans.[].flood_group_multicast_ipaddress") | String |  |  |  | Underlay IP multicast group address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].name") | String | Required, Unique |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni</samp>](## "vxlan_interface.Vxlan1.vxlan.vrfs.[].vni") | Integer |  |  |  |  |
@@ -149,6 +151,9 @@
 
                   # Remote VTEP IP Address.
                 - <str>
+
+              # Underlay IP multicast group address.
+              flood_group_multicast_ipaddress: <str>
           vrfs:
 
               # VRF Name.
@@ -228,6 +233,9 @@
 
                   # Remote VTEP IP Address.
                 - <str>
+
+              # Underlay IP multicast group address.
+              flood_group_multicast_ipaddress: <str>
           vrfs:
 
               # VRF Name.
