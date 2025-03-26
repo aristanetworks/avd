@@ -7,12 +7,8 @@ name = "avdutils"
 version = "0.0.1"
 
 [dependency-groups]
-pytest = [
-    "pytest",
-]
-coverage = [
-    "coverage[toml]",
-]
+pytest = ["pytest"]
+coverage = ["coverage[toml]"]
 
 [tool.distutils.bdist_wheel]
 py-limited-api = "cp310"
