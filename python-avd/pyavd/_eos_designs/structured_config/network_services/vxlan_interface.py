@@ -177,7 +177,6 @@ class VxlanInterfaceMixin(Protocol):
         Can be used for both svis and l2vlans
         """
         vxlan_vlan = EosCliConfigGen.VxlanInterface.Vxlan1.Vxlan.VlansItem(id=vlan.id)
-
         if vlan.vni_override:
             vxlan_vlan.vni = vlan.vni_override
         else:
@@ -197,6 +196,12 @@ class VxlanInterfaceMixin(Protocol):
                 vlan.id,
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
             )
+            if tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool:
+                vxlan_vlan.flood_group_multicast_ipaddress = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
+                    tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool,
+                    vlan.id,
+                    tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool_offset,
+                )
 
         if self.shared_utils.overlay_her and self.inputs.overlay_her_flood_list_per_vni and (vlan_id_entry := self._overlay_her_flood_lists.get(vlan.id)):
             vxlan_vlan.flood_vteps.extend(natural_sort(unique(vlan_id_entry)))

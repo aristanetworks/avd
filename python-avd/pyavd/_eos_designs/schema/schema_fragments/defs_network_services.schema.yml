@@ -191,6 +191,15 @@ $defs:
               default: 0
               convert_types:
                 - str
+            underlay_l2_multicast_flood_group_ipv4_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+              format: ipv4_pool
+            underlay_l2_multicast_flood_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+                - str
             fast_leave:
               type: bool
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.

@@ -35393,6 +35393,8 @@ class EosDesigns(EosDesignsRootModel):
                         "enabled": {"type": bool},
                         "underlay_l2_multicast_group_ipv4_pool": {"type": str},
                         "underlay_l2_multicast_group_ipv4_pool_offset": {"type": int, "default": 0},
+                        "underlay_l2_multicast_flood_group_ipv4_pool": {"type": str},
+                        "underlay_l2_multicast_flood_group_ipv4_pool_offset": {"type": int, "default": 0},
                         "fast_leave": {"type": bool},
                         "always_redistribute_igmp": {"type": bool},
                     }
@@ -35400,6 +35402,10 @@ class EosDesigns(EosDesignsRootModel):
                     underlay_l2_multicast_group_ipv4_pool: str | None
                     """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
                     underlay_l2_multicast_group_ipv4_pool_offset: int
+                    """Default value: `0`"""
+                    underlay_l2_multicast_flood_group_ipv4_pool: str | None
+                    """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
+                    underlay_l2_multicast_flood_group_ipv4_pool_offset: int
                     """Default value: `0`"""
                     fast_leave: bool | None
                     """Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant."""
@@ -35425,6 +35431,8 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool | None | UndefinedType = Undefined,
                             underlay_l2_multicast_group_ipv4_pool: str | None | UndefinedType = Undefined,
                             underlay_l2_multicast_group_ipv4_pool_offset: int | UndefinedType = Undefined,
+                            underlay_l2_multicast_flood_group_ipv4_pool: str | None | UndefinedType = Undefined,
+                            underlay_l2_multicast_flood_group_ipv4_pool_offset: int | UndefinedType = Undefined,
                             fast_leave: bool | None | UndefinedType = Undefined,
                             always_redistribute_igmp: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -35438,6 +35446,8 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: enabled
                                 underlay_l2_multicast_group_ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                 underlay_l2_multicast_group_ipv4_pool_offset: underlay_l2_multicast_group_ipv4_pool_offset
+                                underlay_l2_multicast_flood_group_ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                                underlay_l2_multicast_flood_group_ipv4_pool_offset: underlay_l2_multicast_flood_group_ipv4_pool_offset
                                 fast_leave: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
                                 always_redistribute_igmp:
                                    Always configure `redistribute igmp` under BGP for all SVIs within the Tenant if `evpn_l2_multicast`
