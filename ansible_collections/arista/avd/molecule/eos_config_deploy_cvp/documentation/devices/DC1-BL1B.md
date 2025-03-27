@@ -516,11 +516,11 @@ interface Vlan4094
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Multicast Group |
-| ---- | --- | ---------- | --------------- |
-| 150 | 10150 | - | - |
-| 250 | 20250 | - | - |
-| 350 | 30350 | - | - |
+| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
+| ---- | --- | ---------- | ------------------------ | --------------- |
+| 150 | 10150 | - | - | - |
+| 250 | 20250 | - | - | - |
+| 350 | 30350 | - | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 

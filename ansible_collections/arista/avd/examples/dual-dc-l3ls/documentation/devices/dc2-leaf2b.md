@@ -502,14 +502,14 @@ interface Vlan4094
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Multicast Group |
-| ---- | --- | ---------- | --------------- |
-| 11 | 10011 | - | - |
-| 12 | 10012 | - | - |
-| 21 | 10021 | - | - |
-| 22 | 10022 | - | - |
-| 3401 | 13401 | - | - |
-| 3402 | 13402 | - | - |
+| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
+| ---- | --- | ---------- | ------------------------ | --------------- |
+| 11 | 10011 | - | - | - |
+| 12 | 10012 | - | - | - |
+| 21 | 10021 | - | - | - |
+| 22 | 10022 | - | - | - |
+| 3401 | 13401 | - | - | - |
+| 3402 | 13402 | - | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 

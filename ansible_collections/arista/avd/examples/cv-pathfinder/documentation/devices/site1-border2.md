@@ -584,10 +584,10 @@ interface Vlan4094
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Multicast Group |
-| ---- | --- | ---------- | --------------- |
-| 42 | 10042 | - | - |
-| 666 | 10666 | - | - |
+| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
+| ---- | --- | ---------- | ------------------------ | --------------- |
+| 42 | 10042 | - | - | - |
+| 666 | 10666 | - | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 

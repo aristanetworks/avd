@@ -421,13 +421,13 @@ interface Vlan1102
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Multicast Group |
-| ---- | --- | ---------- | --------------- |
-| 110 | 10110 | - | - |
-| 111 | 50111 | - | - |
-| 112 | 10112 | - | - |
-| 2500 | 2500 | - | - |
-| 2600 | 12600 | - | - |
+| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
+| ---- | --- | ---------- | ------------------------ | --------------- |
+| 110 | 10110 | - | - | - |
+| 111 | 50111 | - | - | - |
+| 112 | 10112 | - | - | - |
+| 2500 | 2500 | - | - | - |
+| 2600 | 12600 | - | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 
