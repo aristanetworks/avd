@@ -476,14 +476,14 @@ interface Vlan131
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
-| ---- | --- | ---------- | ------------------------ | --------------- |
-| 120 | 10120 | - | - | - |
-| 121 | 10121 | - | - | - |
-| 122 | 10122 | - | - | - |
-| 123 | 10123 | - | - | - |
-| 124 | 10124 | - | - | - |
-| 130 | 10130 | - | - | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 120 | 10120 | - | - |
+| 121 | 10121 | - | - |
+| 122 | 10122 | - | - |
+| 123 | 10123 | - | - |
+| 124 | 10124 | - | - |
+| 130 | 10130 | - | - |
 
 ##### VRF to VNI and Multicast Group Mappings
 

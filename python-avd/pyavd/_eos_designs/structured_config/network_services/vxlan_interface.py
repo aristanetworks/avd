@@ -197,7 +197,7 @@ class VxlanInterfaceMixin(Protocol):
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
             )
             if tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool:
-                vxlan_vlan.flood_group_multicast_ipaddress = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
+                vxlan_vlan.flood_group = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
                     tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool,
                     vlan.id,
                     tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool_offset,

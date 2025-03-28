@@ -119,9 +119,9 @@ keys:
                       items:
                         type: str
                         description: Remote VTEP IP Address.
-                    flood_group_multicast_ipaddress:
+                    flood_group:
                       type: str
-                      description: Underlay IP multicast group address.
+                      description: Flood multicast group address.
               vrfs:
                 type: list
                 primary_key: name

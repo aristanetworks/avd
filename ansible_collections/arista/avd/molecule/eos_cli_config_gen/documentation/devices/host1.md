@@ -6703,11 +6703,11 @@ interface Vlan4094
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
-| ---- | --- | ---------- | ------------------------ | --------------- |
-| 110 | 10110 | - | - | 239.9.1.4 |
-| 111 | 10111 | 10.1.1.10<br/>10.1.1.11 | 232.1.1.21 | - |
-| 112 | - | - | - | 239.9.1.6 |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 110 | 10110 | - | 239.9.1.4 |
+| 111 | 10111 | 10.1.1.10<br/>10.1.1.11<br/>232.1.1.21 | - |
+| 112 | - | - | 239.9.1.6 |
 
 ##### VRF to VNI and Multicast Group Mappings
 

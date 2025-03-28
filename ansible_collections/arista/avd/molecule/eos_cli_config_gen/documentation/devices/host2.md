@@ -882,11 +882,11 @@ interface Dps1
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
 
-| VLAN | VNI | Flood List | Flood Group Multicast IP | Multicast Group |
-| ---- | --- | ---------- | ------------------------ | --------------- |
-| 111,113,115-118 | 10111,10113,10115-10118 | - | - | - |
-| 110 | 10110 | - | - | 239.9.1.4 |
-| 111 | - | 10.1.1.10<br/>10.1.1.11 | - | - |
+| VLAN | VNI | Flood List | Multicast Group |
+| ---- | --- | ---------- | --------------- |
+| 111,113,115-118 | 10111,10113,10115-10118 | - | - |
+| 110 | 10110 | - | 239.9.1.4 |
+| 111 | - | 10.1.1.10<br/>10.1.1.11 | - |
 
 #### VXLAN Interface Device Configuration
 

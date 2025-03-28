@@ -64,8 +64,8 @@ interface Vxlan1
 {%         if vlan.flood_vteps is arista.avd.defined %}
    vxlan vlan {{ vlan.id }} flood vtep {{ vlan.flood_vteps | join(' ') }}
 {%         endif %}
-{%         if vlan.flood_group_multicast_ipaddress is arista.avd.defined %}
-   vxlan vlan {{ vlan.id }} flood group {{ vlan.flood_group_multicast_ipaddress }}
+{%         if vlan.flood_group is arista.avd.defined %}
+   vxlan vlan {{ vlan.id }} flood group {{ vlan.flood_group }}
 {%         endif %}
 {%     endfor %}
 {%     for vlan in vxlan_config.vxlan.vlans | arista.avd.natural_sort('id') if vlan.multicast_group is arista.avd.defined %}
