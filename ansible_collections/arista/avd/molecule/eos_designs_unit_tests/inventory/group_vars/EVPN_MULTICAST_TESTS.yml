@@ -111,9 +111,14 @@ tenants:
         # fast-leave is not expected for VLAN 256 since l2vlans.evpn_l2_multicast.enabled: false
         evpn_l2_multicast:
           enabled: false
+        vxlan_flood_multicast:
+          enabled: true
+          underlay_multicast_group: 232.1.0.10
       - id: 257
         name: "MULTICAST_ENABLED_257"
         tags: ['test_l2']
+        vxlan_flood_multicast:
+          enabled: true
       - id: 4092
         name: "MULTICAST_ENABLED_4092"
         tags: ['test_l2']
@@ -158,6 +163,8 @@ tenants:
             # vrfs.svis.evpn_l2_multicast.enabled: true with igmp_snooping_querier.fast_leave: true
             evpn_l2_multicast:
               enabled: true
+            vxlan_flood_multicast:
+              enabled: false
             igmp_snooping_querier:
               fast_leave: true
           - id: 2
@@ -169,6 +176,7 @@ tenants:
               enabled: true
             vxlan_flood_multicast:
               enabled: false
+              underlay_multicast_group: 232.1.10.1
       - name: MULTICAST_ENABLED_3_DISABLED_4
         description: "MULTICAST_ENABLED_3_DISABLED_4"
         vrf_vni: 22
@@ -230,6 +238,9 @@ tenants:
       - id: 7
         name: "MULTICAST_DISABLED_7"
         tags: ['test_l2']
+        vxlan_flood_multicast:
+          enabled: true
+          underlay_multicast_group: 232.10.10.10
       - id: 8
         name: "MULTICAST_ENABLED_8"
         tags: ['test_l2']

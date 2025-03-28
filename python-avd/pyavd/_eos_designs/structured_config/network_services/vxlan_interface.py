@@ -196,8 +196,13 @@ class VxlanInterfaceMixin(Protocol):
                 vlan.id,
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
             )
-        vxlan_flood_multicast_enabled = bool(default(vlan.vxlan_flood_multicast.enabled, tenant.vxlan_flood_multicast.enabled))
-        if vxlan_flood_multicast_enabled is True:
+        if vlan.vxlan_flood_multicast.enabled is not None:
+            vxlan_vlan.flood_group = (
+                vlan.vxlan_flood_multicast.underlay_multicast_group
+                if vlan.vxlan_flood_multicast.underlay_multicast_group and vlan.vxlan_flood_multicast.enabled is True
+                else None
+            )
+        elif tenant.vxlan_flood_multicast.enabled is True:
             if not tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool:
                 msg = f"'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: {tenant.name} is required."
                 raise AristaAvdInvalidInputsError(msg)

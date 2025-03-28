@@ -1581,6 +1581,8 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                  underlay_multicast_group:
+                    type: str
               igmp_snooping_enabled:
                 documentation_options:
                   table: network-services-multicast-settings

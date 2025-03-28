@@ -13254,12 +13254,15 @@ class EosDesigns(EosDesignsRootModel):
             class VxlanFloodMulticast(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
                 enabled: bool | None
+                underlay_multicast_group: str | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                    ) -> None:
                         """
                         VxlanFloodMulticast.
 
@@ -13268,6 +13271,7 @@ class EosDesigns(EosDesignsRootModel):
 
                         Args:
                             enabled: enabled
+                            underlay_multicast_group: underlay_multicast_group
 
                         """
 
@@ -13984,12 +13988,15 @@ class EosDesigns(EosDesignsRootModel):
         class VxlanFloodMulticast(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
             enabled: bool | None
+            underlay_multicast_group: str | None
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                ) -> None:
                     """
                     VxlanFloodMulticast.
 
@@ -13998,6 +14005,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         enabled: enabled
+                        underlay_multicast_group: underlay_multicast_group
 
                     """
 
@@ -36449,12 +36457,18 @@ class EosDesigns(EosDesignsRootModel):
                             class VxlanFloodMulticast(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
                                 enabled: bool | None
+                                underlay_multicast_group: str | None
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        underlay_multicast_group: str | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         VxlanFloodMulticast.
 
@@ -36463,6 +36477,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled: enabled
+                                            underlay_multicast_group: underlay_multicast_group
 
                                         """
 
@@ -37202,12 +37217,15 @@ class EosDesigns(EosDesignsRootModel):
                         class VxlanFloodMulticast(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
                             enabled: bool | None
+                            underlay_multicast_group: str | None
 
                             if TYPE_CHECKING:
 
-                                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                                def __init__(
+                                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                ) -> None:
                                     """
                                     VxlanFloodMulticast.
 
@@ -37216,6 +37234,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled: enabled
+                                        underlay_multicast_group: underlay_multicast_group
 
                                     """
 
@@ -40542,12 +40561,15 @@ class EosDesigns(EosDesignsRootModel):
                     class VxlanFloodMulticast(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
                         enabled: bool | None
+                        underlay_multicast_group: str | None
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                            ) -> None:
                                 """
                                 VxlanFloodMulticast.
 
@@ -40556,6 +40578,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
+                                    underlay_multicast_group: underlay_multicast_group
 
                                 """
 

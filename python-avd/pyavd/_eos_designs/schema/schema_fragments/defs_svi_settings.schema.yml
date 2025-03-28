@@ -169,6 +169,8 @@ $defs:
         keys:
           enabled:
             type: bool
+          underlay_multicast_group:
+            type: str
       evpn_l3_multicast:
         documentation_options:
           table: network-services-multicast-settings
