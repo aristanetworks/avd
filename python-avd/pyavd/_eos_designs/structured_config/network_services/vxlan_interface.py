@@ -196,12 +196,17 @@ class VxlanInterfaceMixin(Protocol):
                 vlan.id,
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
             )
-            if tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool:
-                vxlan_vlan.flood_group = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
-                    tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool,
-                    vlan.id,
-                    tenant.evpn_l2_multicast.underlay_l2_multicast_flood_group_ipv4_pool_offset,
-                )
+        vxlan_flood_multicast_enabled = bool(default(vlan.vxlan_flood_multicast.enabled, tenant.vxlan_flood_multicast.enabled))
+        if vxlan_flood_multicast_enabled is True:
+            if not tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool:
+                msg = f"'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: {tenant.name} is required."
+                raise AristaAvdInvalidInputsError(msg)
+
+            vxlan_vlan.flood_group = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
+                tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool,
+                vlan.id,
+                tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
+            )
 
         if self.shared_utils.overlay_her and self.inputs.overlay_her_flood_list_per_vni and (vlan_id_entry := self._overlay_her_flood_lists.get(vlan.id)):
             vxlan_vlan.flood_vteps.extend(natural_sort(unique(vlan_id_entry)))

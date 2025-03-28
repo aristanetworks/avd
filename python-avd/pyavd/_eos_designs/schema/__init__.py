@@ -13251,6 +13251,26 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class VxlanFloodMulticast(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                enabled: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        VxlanFloodMulticast.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+
+                        """
+
             class EvpnL3Multicast(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -13466,6 +13486,7 @@ class EosDesigns(EosDesignsRootModel):
                 "rd_override": {"type": str},
                 "trunk_groups": {"type": TrunkGroups},
                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                 "igmp_snooping_enabled": {"type": bool},
                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -13603,6 +13624,14 @@ class EosDesigns(EosDesignsRootModel):
             Subclass
             of AvdModel.
             """
+            vxlan_flood_multicast: VxlanFloodMulticast
+            """
+            Explicitly enable or disable vxlan_flood_multicast to override setting of
+            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+            Subclass of AvdModel.
+            """
             evpn_l3_multicast: EvpnL3Multicast
             """
             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -13681,6 +13710,7 @@ class EosDesigns(EosDesignsRootModel):
                     rd_override: str | None | UndefinedType = Undefined,
                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                    vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -13793,6 +13823,12 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass
                            of AvdModel.
+                        vxlan_flood_multicast:
+                           Explicitly enable or disable vxlan_flood_multicast to override setting of
+                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                           Subclass of AvdModel.
                         evpn_l3_multicast:
                            Explicitly enable or disable evpn_l3_multicast to override setting of
                            `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -13942,6 +13978,26 @@ class EosDesigns(EosDesignsRootModel):
                            additional control-plane and data-plane resources,
                            but it is required to support forwarding of TTL=1
                            multicast traffic within the VLAN.
+
+                    """
+
+        class VxlanFloodMulticast(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+            enabled: bool | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                    """
+                    VxlanFloodMulticast.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
 
                     """
 
@@ -14162,6 +14218,7 @@ class EosDesigns(EosDesignsRootModel):
             "rd_override": {"type": str},
             "trunk_groups": {"type": TrunkGroups},
             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
             "evpn_l3_multicast": {"type": EvpnL3Multicast},
             "igmp_snooping_enabled": {"type": bool},
             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -14315,6 +14372,14 @@ class EosDesigns(EosDesignsRootModel):
         Subclass
         of AvdModel.
         """
+        vxlan_flood_multicast: VxlanFloodMulticast
+        """
+        Explicitly enable or disable vxlan_flood_multicast to override setting of
+        `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+        Subclass of AvdModel.
+        """
         evpn_l3_multicast: EvpnL3Multicast
         """
         Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -14395,6 +14460,7 @@ class EosDesigns(EosDesignsRootModel):
                 rd_override: str | None | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -14519,6 +14585,12 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass
                        of AvdModel.
+                    vxlan_flood_multicast:
+                       Explicitly enable or disable vxlan_flood_multicast to override setting of
+                       `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                       Subclass of AvdModel.
                     evpn_l3_multicast:
                        Explicitly enable or disable evpn_l3_multicast to override setting of
                        `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -35393,8 +35465,6 @@ class EosDesigns(EosDesignsRootModel):
                         "enabled": {"type": bool},
                         "underlay_l2_multicast_group_ipv4_pool": {"type": str},
                         "underlay_l2_multicast_group_ipv4_pool_offset": {"type": int, "default": 0},
-                        "underlay_l2_multicast_flood_group_ipv4_pool": {"type": str},
-                        "underlay_l2_multicast_flood_group_ipv4_pool_offset": {"type": int, "default": 0},
                         "fast_leave": {"type": bool},
                         "always_redistribute_igmp": {"type": bool},
                     }
@@ -35402,10 +35472,6 @@ class EosDesigns(EosDesignsRootModel):
                     underlay_l2_multicast_group_ipv4_pool: str | None
                     """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
                     underlay_l2_multicast_group_ipv4_pool_offset: int
-                    """Default value: `0`"""
-                    underlay_l2_multicast_flood_group_ipv4_pool: str | None
-                    """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
-                    underlay_l2_multicast_flood_group_ipv4_pool_offset: int
                     """Default value: `0`"""
                     fast_leave: bool | None
                     """Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant."""
@@ -35431,8 +35497,6 @@ class EosDesigns(EosDesignsRootModel):
                             enabled: bool | None | UndefinedType = Undefined,
                             underlay_l2_multicast_group_ipv4_pool: str | None | UndefinedType = Undefined,
                             underlay_l2_multicast_group_ipv4_pool_offset: int | UndefinedType = Undefined,
-                            underlay_l2_multicast_flood_group_ipv4_pool: str | None | UndefinedType = Undefined,
-                            underlay_l2_multicast_flood_group_ipv4_pool_offset: int | UndefinedType = Undefined,
                             fast_leave: bool | None | UndefinedType = Undefined,
                             always_redistribute_igmp: bool | None | UndefinedType = Undefined,
                         ) -> None:
@@ -35446,8 +35510,6 @@ class EosDesigns(EosDesignsRootModel):
                                 enabled: enabled
                                 underlay_l2_multicast_group_ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                                 underlay_l2_multicast_group_ipv4_pool_offset: underlay_l2_multicast_group_ipv4_pool_offset
-                                underlay_l2_multicast_flood_group_ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-                                underlay_l2_multicast_flood_group_ipv4_pool_offset: underlay_l2_multicast_flood_group_ipv4_pool_offset
                                 fast_leave: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
                                 always_redistribute_igmp:
                                    Always configure `redistribute igmp` under BGP for all SVIs within the Tenant if `evpn_l2_multicast`
@@ -35460,6 +35522,42 @@ class EosDesigns(EosDesignsRootModel):
                                    required to support forwarding of TTL=1 multicast traffic within the VLAN.
                                    This can be overridden
                                    per SVI.
+
+                            """
+
+                class VxlanFloodMulticast(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "enabled": {"type": bool},
+                        "underlay_l2_multicast_group_ipv4_pool": {"type": str},
+                        "underlay_l2_multicast_group_ipv4_pool_offset": {"type": int, "default": 0},
+                    }
+                    enabled: bool | None
+                    underlay_l2_multicast_group_ipv4_pool: str | None
+                    """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
+                    underlay_l2_multicast_group_ipv4_pool_offset: int
+                    """Default value: `0`"""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            enabled: bool | None | UndefinedType = Undefined,
+                            underlay_l2_multicast_group_ipv4_pool: str | None | UndefinedType = Undefined,
+                            underlay_l2_multicast_group_ipv4_pool_offset: int | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            VxlanFloodMulticast.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+                                underlay_l2_multicast_group_ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                                underlay_l2_multicast_group_ipv4_pool_offset: underlay_l2_multicast_group_ipv4_pool_offset
 
                             """
 
@@ -36348,6 +36446,26 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class VxlanFloodMulticast(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                                enabled: bool | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        VxlanFloodMulticast.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+
+                                        """
+
                             class EvpnL3Multicast(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -36569,6 +36687,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "rd_override": {"type": str},
                                 "trunk_groups": {"type": TrunkGroups},
                                 "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                                "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                                 "evpn_l3_multicast": {"type": EvpnL3Multicast},
                                 "igmp_snooping_enabled": {"type": bool},
                                 "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -36716,6 +36835,14 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass
                             of AvdModel.
                             """
+                            vxlan_flood_multicast: VxlanFloodMulticast
+                            """
+                            Explicitly enable or disable vxlan_flood_multicast to override setting of
+                            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                            Subclass of AvdModel.
+                            """
                             evpn_l3_multicast: EvpnL3Multicast
                             """
                             Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -36795,6 +36922,7 @@ class EosDesigns(EosDesignsRootModel):
                                     rd_override: str | None | UndefinedType = Undefined,
                                     trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                     evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                    vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                     evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                     igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                     igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -36913,6 +37041,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass
                                            of AvdModel.
+                                        vxlan_flood_multicast:
+                                           Explicitly enable or disable vxlan_flood_multicast to override setting of
+                                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                                           Subclass of AvdModel.
                                         evpn_l3_multicast:
                                            Explicitly enable or disable evpn_l3_multicast to override setting of
                                            `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -37062,6 +37196,26 @@ class EosDesigns(EosDesignsRootModel):
                                            additional control-plane and data-plane resources,
                                            but it is required to support forwarding of TTL=1
                                            multicast traffic within the VLAN.
+
+                                    """
+
+                        class VxlanFloodMulticast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                            enabled: bool | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    VxlanFloodMulticast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
 
                                     """
 
@@ -37289,6 +37443,7 @@ class EosDesigns(EosDesignsRootModel):
                             "rd_override": {"type": str},
                             "trunk_groups": {"type": TrunkGroups},
                             "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                            "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                             "evpn_l3_multicast": {"type": EvpnL3Multicast},
                             "igmp_snooping_enabled": {"type": bool},
                             "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -37460,6 +37615,14 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass
                         of AvdModel.
                         """
+                        vxlan_flood_multicast: VxlanFloodMulticast
+                        """
+                        Explicitly enable or disable vxlan_flood_multicast to override setting of
+                        `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                        Subclass of AvdModel.
+                        """
                         evpn_l3_multicast: EvpnL3Multicast
                         """
                         Explicitly enable or disable evpn_l3_multicast to override setting of
@@ -37542,6 +37705,7 @@ class EosDesigns(EosDesignsRootModel):
                                 rd_override: str | None | UndefinedType = Undefined,
                                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
                                 evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                                vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                                 evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                                 igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                                 igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -37678,6 +37842,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass
                                        of AvdModel.
+                                    vxlan_flood_multicast:
+                                       Explicitly enable or disable vxlan_flood_multicast to override setting of
+                                       `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                                       Subclass of AvdModel.
                                     evpn_l3_multicast:
                                        Explicitly enable or disable evpn_l3_multicast to override setting of
                                        `<network_services_key>.[].evpn_l3_multicast.enabled` and
@@ -40369,6 +40539,26 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class VxlanFloodMulticast(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                        enabled: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                VxlanFloodMulticast.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+
+                                """
+
                     class IgmpSnoopingQuerier(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -40472,6 +40662,7 @@ class EosDesigns(EosDesignsRootModel):
                         "trunk_groups": {"type": TrunkGroups},
                         "evpn_l2_multi_domain": {"type": bool},
                         "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                        "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
@@ -40563,6 +40754,14 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of
                     AvdModel.
                     """
+                    vxlan_flood_multicast: VxlanFloodMulticast
+                    """
+                    Explicitly enable or disable vxlan_flood_multicast to override setting of
+                    `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                    Subclass of AvdModel.
+                    """
                     igmp_snooping_enabled: bool | None
                     """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                     igmp_snooping_querier: IgmpSnoopingQuerier
@@ -40594,6 +40793,7 @@ class EosDesigns(EosDesignsRootModel):
                             trunk_groups: TrunkGroups | UndefinedType = Undefined,
                             evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                             evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                            vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
@@ -40666,6 +40866,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
+                                vxlan_flood_multicast:
+                                   Explicitly enable or disable vxlan_flood_multicast to override setting of
+                                   `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+
+
+                                   Subclass of AvdModel.
                                 igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                 igmp_snooping_querier:
                                    Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -40899,6 +41105,7 @@ class EosDesigns(EosDesignsRootModel):
                     "evpn_vlan_bundle": {"type": str},
                     "bgp_peer_groups": {"type": BgpPeerGroups},
                     "evpn_l2_multicast": {"type": EvpnL2Multicast},
+                    "vxlan_flood_multicast": {"type": VxlanFloodMulticast},
                     "evpn_l3_multicast": {"type": EvpnL3Multicast},
                     "pim_rp_addresses": {"type": PimRpAddresses},
                     "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
@@ -41004,6 +41211,13 @@ class EosDesigns(EosDesignsRootModel):
                 - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp
                 snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
                 - Requires `evpn_multicast` to also be set to `true`.
+
+
+                Subclass of AvdModel.
+                """
+                vxlan_flood_multicast: VxlanFloodMulticast
+                """
+                Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
 
 
                 Subclass of AvdModel.
@@ -41116,6 +41330,7 @@ class EosDesigns(EosDesignsRootModel):
                         evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                         bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
                         evpn_l2_multicast: EvpnL2Multicast | UndefinedType = Undefined,
+                        vxlan_flood_multicast: VxlanFloodMulticast | UndefinedType = Undefined,
                         evpn_l3_multicast: EvpnL3Multicast | UndefinedType = Undefined,
                         pim_rp_addresses: PimRpAddresses | UndefinedType = Undefined,
                         igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
@@ -41203,6 +41418,11 @@ class EosDesigns(EosDesignsRootModel):
                                - When evpn_l2_multicast.enabled is true for a VLAN or a tenant, "igmp
                                snooping" and "igmp snooping querier" will always be enabled - overriding those individual settings.
                                - Requires `evpn_multicast` to also be set to `true`.
+
+
+                               Subclass of AvdModel.
+                            vxlan_flood_multicast:
+                               Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
 
 
                                Subclass of AvdModel.

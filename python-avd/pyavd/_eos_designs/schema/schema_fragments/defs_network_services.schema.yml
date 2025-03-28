@@ -191,15 +191,6 @@ $defs:
               default: 0
               convert_types:
                 - str
-            underlay_l2_multicast_flood_group_ipv4_pool:
-              type: str
-              description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-              format: ipv4_pool
-            underlay_l2_multicast_flood_group_ipv4_pool_offset:
-              type: int
-              default: 0
-              convert_types:
-                - str
             fast_leave:
               type: bool
               description: Enable IGMP snooping fast-leave feature for all SVIs and l2vlans within the Tenant.
@@ -211,6 +202,24 @@ $defs:
                 Configuring `redistribute igmp` when both L2 and L3 EVPN Multicast is enabled will take up additional control-plane and data-plane resources,
                 but it is required to support forwarding of TTL=1 multicast traffic within the VLAN.
                 This can be overridden per SVI.
+        vxlan_flood_multicast:
+          documentation_options:
+            table: network-services-multicast-settings
+          description: |
+            Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+          type: dict
+          keys:
+            enabled:
+              type: bool
+            underlay_l2_multicast_group_ipv4_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+              format: ipv4_pool
+            underlay_l2_multicast_group_ipv4_pool_offset:
+              type: int
+              default: 0
+              convert_types:
+                - str
         evpn_l3_multicast:
           documentation_options:
             table: network-services-multicast-settings
@@ -1560,6 +1569,15 @@ $defs:
                   Explicitly enable or disable evpn_l2_multicast to override setting of `<network_services_key>.[].evpn_l2_multicast.enabled`.
                   When evpn_l2_multicast.enabled is set to true for a vlan or a tenant, igmp snooping and igmp snooping querier will always be enabled, overriding those individual settings.
                   Requires `evpn_multicast` to also be set to `true`.
+                keys:
+                  enabled:
+                    type: bool
+              vxlan_flood_multicast:
+                documentation_options:
+                  table: network-services-multicast-settings
+                type: dict
+                description: |
+                  Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
                 keys:
                   enabled:
                     type: bool

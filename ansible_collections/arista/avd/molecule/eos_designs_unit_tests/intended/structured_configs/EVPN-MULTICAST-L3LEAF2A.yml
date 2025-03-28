@@ -1308,32 +1308,35 @@ vxlan_interface:
         multicast_group: 232.0.15.251
       - id: 5
         vni: 10005
+        flood_group: 232.1.0.5
       - id: 6
         vni: 10006
+        flood_group: 232.1.0.6
       - id: 1
         vni: 10001
         multicast_group: 232.0.16.1
-        flood_group: 232.1.0.10
+        flood_group: 232.1.0.1
       - id: 2
         vni: 10002
         multicast_group: 232.0.16.2
-        flood_group: 232.1.0.11
       - id: 3
         vni: 10003
         multicast_group: 232.0.16.3
-        flood_group: 232.1.0.12
+        flood_group: 232.1.0.3
       - id: 4
         vni: 10004
+        flood_group: 232.1.0.4
       - id: 7
         vni: 10007
+        flood_group: 232.1.0.7
       - id: 8
         vni: 10008
         multicast_group: 232.0.16.8
-        flood_group: 232.1.0.17
+        flood_group: 232.1.0.8
       - id: 9
         vni: 10009
         multicast_group: 232.0.16.9
-        flood_group: 232.1.0.18
+        flood_group: 232.1.0.9
       - id: 330
         vni: 10330
       - id: 331
