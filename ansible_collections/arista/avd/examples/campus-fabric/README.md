@@ -187,7 +187,7 @@ The tabs below show the Ansible **group_vars** used in this example.
     ```
 
 === "S1_SPINES"
-    In an L2LS Campus design, there are two types of spine nodes: `spine` and `l3spine`. For a spine node to provide routing of SVIs, we set the type to `l3spine`. Variables applied under the node key type (spine/leaf) defaults section are inherited by nodes under each type. These variables may be overwritten under the node itself.
+    In an L2LS Campus design, there are two types of spine nodes: `spine` and `l3spine`. For a spine node to provide routing of SVIs, we set the type to `l3spine`. Variables applied under the node key type (l3spine/l2leaf) defaults section are inherited by nodes under each type. These variables may be overridden under the node itself.
 
     ``` yaml
     --8<--
