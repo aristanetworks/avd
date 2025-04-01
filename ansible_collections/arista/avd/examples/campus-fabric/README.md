@@ -226,7 +226,7 @@ The tabs below show the Ansible **group_vars** used in this example.
 
 ## Network Services
 
-The Network Services data model is stored in the **NETWORK_SERVICES** group_var tab above. Each IDF will have three unique VLANs to support Data, Voice, and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
+The Network Services data model is stored in the **NETWORK_SERVICES** group_vars tab above. Each IDF will have three unique VLANs to support Data, Voice, and Guest networks. The spine nodes will provide routing for these VLANs via locally assigned SVIs.
 
 ### VLAN/IP Subnet Assignment
 
