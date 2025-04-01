@@ -5,7 +5,9 @@
   -->
 
 ---
+
 # This title is used for search results
+
 title: Campus Fabric
 link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/campus-fabric/index.html
 ---
