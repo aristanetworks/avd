@@ -6932,6 +6932,39 @@ $defs:
                         convert_types:
                         - int
                         description: Tag value.
+                    static_routes:
+                      type: list
+                      description: Static routes with SVI as the gateway.
+                      items:
+                        type: dict
+                        keys:
+                          destination_address_prefix:
+                            type: str
+                            description: IPv4_address.
+                          track_bfd:
+                            type: bool
+                            description: Track next-hop using BFD.
+                          distance:
+                            type: int
+                            convert_types:
+                            - str
+                            min: 1
+                            max: 255
+                          tag:
+                            type: int
+                            convert_types:
+                            - str
+                            min: 0
+                            max: 4294967295
+                          name:
+                            type: str
+                            description: description.
+                          metric:
+                            type: int
+                            convert_types:
+                            - str
+                            min: 0
+                            max: 4294967295
                     evpn_vlan_bundle:
                       type: str
                       description: 'Name of a bundle defined under ''evpn_vlan_bundles''

@@ -35696,6 +35696,60 @@ class EosDesigns(EosDesignsRootModel):
 
                         Tags._item_type = str
 
+                        class StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "destination_address_prefix": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                            }
+                            destination_address_prefix: str | None
+                            """IPv4_address."""
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    destination_address_prefix: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        destination_address_prefix: IPv4_address.
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+
+                                    """
+
+                        class StaticRoutes(AvdList[StaticRoutesItem]):
+                            """Subclass of AvdList with `StaticRoutesItem` items."""
+
+                        StaticRoutes._item_type = StaticRoutesItem
+
                         class NodesItem(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -36737,6 +36791,7 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "profile": {"type": str},
                             "tags": {"type": Tags, "default": lambda cls: coerce_type(["all"], target_type=cls)},
+                            "static_routes": {"type": StaticRoutes},
                             "evpn_vlan_bundle": {"type": str},
                             "nodes": {"type": Nodes},
                             "enabled": {"type": bool},
@@ -36788,6 +36843,12 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdList with `str` items.
 
                         Default value: `lambda cls: coerce_type(["all"], target_type=cls)`
+                        """
+                        static_routes: StaticRoutes
+                        """
+                        Static routes with SVI as the gateway.
+
+                        Subclass of AvdList with `StaticRoutesItem` items.
                         """
                         evpn_vlan_bundle: str | None
                         """
@@ -36990,6 +37051,7 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 profile: str | None | UndefinedType = Undefined,
                                 tags: Tags | UndefinedType = Undefined,
+                                static_routes: StaticRoutes | UndefinedType = Undefined,
                                 evpn_vlan_bundle: str | None | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 enabled: bool | None | UndefinedType = Undefined,
@@ -37041,6 +37103,10 @@ class EosDesigns(EosDesignsRootModel):
                                        node type settings.
                                        Tags are also matched against the "node_group" name under node type settings.
                                        Subclass of AvdList with `str` items.
+                                    static_routes:
+                                       Static routes with SVI as the gateway.
+
+                                       Subclass of AvdList with `StaticRoutesItem` items.
                                     evpn_vlan_bundle:
                                        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
                                        This setting overrides

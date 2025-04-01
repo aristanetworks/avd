@@ -41,6 +41,12 @@ class StaticRoutesMixin(Protocol):
                     self.structured_config.static_routes.append_unique(static_route_item)
 
                 for svi in vrf.svis:
+                    for static_route in svi.static_routes:
+                        static_route_item = static_route._cast_as(EosCliConfigGen.StaticRoutesItem, ignore_extra_keys=True)
+                        static_route_item.interface = f"Vlan{svi.id}"
+                        static_route_item.vrf = vrf.name
+                        self.structured_config.static_routes.append_unique(static_route_item)
+
                     if not svi.ip_virtual_router_addresses or not svi.ip_address:
                         # Skip svi if VARP is not set or if there is no unique ip_address
                         continue

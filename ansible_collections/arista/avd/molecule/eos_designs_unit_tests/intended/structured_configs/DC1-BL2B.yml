@@ -465,6 +465,10 @@ static_routes:
 - vrf: MGMT
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
+- vrf: Tenant_A_WAN_Zone
+  destination_address_prefix: 10.3.4.0/24
+  interface: Vlan150
+  name: SVI_static_route
 tcam_profile:
   system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true

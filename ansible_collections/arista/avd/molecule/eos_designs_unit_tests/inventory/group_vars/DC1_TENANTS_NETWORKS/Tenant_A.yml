@@ -231,6 +231,9 @@ tenant_a:
               cost: 100
               authentication: simple
               simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+            static_routes:
+              - destination_address_prefix: 10.3.4.0/24
+                name: SVI_static_route
           - id: 151
             name: svi_with_no_tags
             enabled: true
