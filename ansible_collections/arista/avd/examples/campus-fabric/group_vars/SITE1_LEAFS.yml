@@ -1,5 +1,5 @@
 ---
-### group_vars/S1_LEAFS.yml
+### group_vars/SITE1_LEAFS.yml
 
 type: l2leaf     # Must be l2leaf
 
@@ -20,15 +20,15 @@ l2leaf:
       filter:
         tags: ["110", "120", "130"]
       nodes:
-        - name: S1_LEAF1A
+        - name: SITE1_LEAF1A
           id: 3
           mgmt_ip: 172.16.100.103/24
-          uplink_switches: [S1_SPINE1]
+          uplink_switches: [SITE1_SPINE1]
           uplink_switch_interfaces: [Ethernet1]
-        - name: S1_LEAF1B
+        - name: SITE1_LEAF1B
           id: 4
           mgmt_ip: 172.16.100.104/24
-          uplink_switches: [S1_SPINE2]
+          uplink_switches: [SITE1_SPINE2]
           uplink_switch_interfaces: [Ethernet1]
     - group: IDF2
       platform: 720XP
@@ -36,52 +36,52 @@ l2leaf:
       filter:
         tags: ["210", "220", "230"]
       nodes:
-        - name: S1_LEAF2A
+        - name: SITE1_LEAF2A
           id: 5
           mgmt_ip: 172.16.100.105/24
           uplink_interfaces: [Ethernet1/1, Ethernet1/3]
-          uplink_switches: [S1_SPINE1, S1_SPINE2]
+          uplink_switches: [SITE1_SPINE1, SITE1_SPINE2]
           uplink_switch_interfaces: [Ethernet49/1, Ethernet49/1]
     - group: IDF3_AGG
       mlag: true
       mlag_interfaces: [Ethernet98/3, Ethernet98/4]
-      uplink_switches: [S1_SPINE1, S1_SPINE2]
+      uplink_switches: [SITE1_SPINE1, SITE1_SPINE2]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
       filter:
         tags: ["310", "320", "330"]
       nodes:
-        - name: S1_LEAF3A
+        - name: SITE1_LEAF3A
           id: 6
           mgmt_ip: 172.16.100.106/24
           uplink_switch_interfaces: [Ethernet50/1, Ethernet50/1]
-        - name: S1_LEAF3B
+        - name: SITE1_LEAF3B
           id: 7
           mgmt_ip: 172.16.100.107/24
           uplink_switch_interfaces: [Ethernet51/1, Ethernet51/1]
     - group: IDF3_3C
       mlag: false
-      uplink_switches: [S1_LEAF3A, S1_LEAF3B]
+      uplink_switches: [SITE1_LEAF3A, SITE1_LEAF3B]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
       nodes:
-        - name: S1_LEAF3C
+        - name: SITE1_LEAF3C
           id: 8
           mgmt_ip: 172.16.100.108/24
           uplink_switch_interfaces: [Ethernet97/3, Ethernet97/3]
     - group: IDF3_3D
       mlag: false
-      uplink_switches: [S1_LEAF3A, S1_LEAF3B]
+      uplink_switches: [SITE1_LEAF3A, SITE1_LEAF3B]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
       nodes:
-        - name: S1_LEAF3D
+        - name: SITE1_LEAF3D
           id: 9
           mgmt_ip: 172.16.100.109/24
           uplink_switch_interfaces: [Ethernet97/4, Ethernet97/4]
     - group: IDF3_3E
       mlag: false
-      uplink_switches: [S1_LEAF3A, S1_LEAF3B]
+      uplink_switches: [SITE1_LEAF3A, SITE1_LEAF3B]
       uplink_interfaces: [Ethernet97/1, Ethernet97/2]
       nodes:
-        - name: S1_LEAF3E
+        - name: SITE1_LEAF3E
           id: 10
           mgmt_ip: 172.16.100.110/24
           uplink_switch_interfaces: [Ethernet98/1, Ethernet98/1]
