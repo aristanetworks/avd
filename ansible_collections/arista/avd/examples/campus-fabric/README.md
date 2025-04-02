@@ -1,11 +1,8 @@
 ---
-# This title is used for search results
-title: Campus Fabric
+title: Campus Fabric # This title is used for search results
 link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/campus-fabric/index.html
 ---
 <!--
-  ~ TODO: This license is not consistent with the license used in the project.
-  ~       Delete the inconsistent license and above line and rerun pre-commit to insert a good license.
   ~ Copyright (c) 2025 Arista Networks, Inc.
   ~ Use of this source code is governed by the Apache License 2.0
   ~ that can be found in the LICENSE file.
@@ -302,7 +299,7 @@ ansible-playbook deploy.yml
 
 Your configuration files should be similar to these.
 
-=== "SPINE1"
+=== "SITE1_SPINE1"
 
     ``` shell
     --8<--
@@ -310,7 +307,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "SPINE2"
+=== "SITE1_SPINE2"
 
     ``` shell
     --8<--
@@ -318,7 +315,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF1A"
+=== "SITE1_LEAF1A"
 
     ``` shell
     --8<--
@@ -326,7 +323,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF1B"
+=== "SITE1_LEAF1B"
 
     ``` shell
     --8<--
@@ -334,7 +331,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF2A"
+=== "SITE1_LEAF2A"
 
     ``` shell
     --8<--
@@ -342,7 +339,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF3A"
+=== "SITE1_LEAF3A"
 
     ``` shell
     --8<--
@@ -350,7 +347,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF3B"
+=== "SITE1_LEAF3B"
 
     ``` shell
     --8<--
@@ -358,7 +355,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF3C"
+=== "SITE1_LEAF3C"
 
     ``` shell
     --8<--
@@ -366,7 +363,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF3D"
+=== "SITE1_LEAF3D"
 
     ``` shell
     --8<--
@@ -374,7 +371,7 @@ Your configuration files should be similar to these.
     --8<--
     ```
 
-=== "LEAF3E"
+=== "SITE1_LEAF3E"
 
     ``` shell
     --8<--
