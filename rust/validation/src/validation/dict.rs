@@ -71,6 +71,12 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
             match input.get(key) {
                 Some(Value::Null) | None => {
                     // nullish values don't need to be validated beyond a requiredness check
+
+                    #[cfg(feature = "relaxed_validation_on_root_dicts")]
+                    // Don't validate required keys if we are at the rool level.
+                    if ctx.path.is_empty() {
+                        break;
+                    }
                     if key_schema.is_required() {
                         ctx.add_violation(Violation::MissingRequiredKey {
                             key: key.to_string(),
@@ -371,13 +377,16 @@ mod tests {
         let mut input = serde_json::json!({ "foo": true });
         let store = get_test_store();
         let mut ctx = Context::new(&store);
+        // Using a deeper path since tests are run with all features including "relaxed_validation_on_root_dicts"
+        // where required keys at the root are not enforced.
+        ctx.path.push("deeper".into());
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["foo".into()],
+                path: vec!["deeper".into(), "foo".into()],
                 issue: CoercionNote {
                     found: true.into(),
                     made: "True".into()
@@ -406,12 +415,15 @@ mod tests {
         let input = serde_json::json!({});
         let store = get_test_store();
         let mut ctx = Context::new(&store);
+        // Using a deeper path since tests are run with all features including "relaxed_validation_on_root_dicts"
+        // where required keys at the root are not enforced.
+        ctx.path.push("deeper".into());
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
+                path: vec!["deeper".into()],
                 issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
             }]
         )

@@ -21,7 +21,8 @@ serde_json = { version = "1.0.135", features = [
 serde_yaml = { version = "0.9.33" }
 
 [features]
-python_bindings = ["dep:pyo3", "dep:pyo3-log", "dep:included_store"]
+python_bindings = ["dep:pyo3", "dep:pyo3-log", "dep:included_store", "avdschema/dump_load_files"]
+relaxed_validation_on_root_dicts = []
 
 [lib]
 crate-type = ["cdylib", "lib"]
