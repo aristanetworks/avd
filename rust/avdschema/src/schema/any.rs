@@ -4,10 +4,10 @@
 
 use serde::{Deserialize, Serialize};
 
-use crate::utils::{
-    dump::Dump,
-    load::{Load, LoadFromFragments},
-};
+use crate::utils::{dump::Dump, load::Load};
+
+#[cfg(feature = "dump_load_files")]
+use crate::utils::load::LoadFromFragments;
 
 use super::{boolean::Bool, dict::Dict, int::Int, list::List, str::Str};
 
@@ -47,6 +47,7 @@ impl From<Dict> for AnySchema {
 }
 impl Dump for AnySchema {}
 impl Load for AnySchema {}
+#[cfg(feature = "dump_load_files")]
 impl LoadFromFragments for AnySchema {}
 
 impl From<&AnySchema> for String {

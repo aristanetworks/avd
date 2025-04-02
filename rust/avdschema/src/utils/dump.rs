@@ -3,10 +3,14 @@
 // that can be found in the LICENSE file.
 
 use serde::Serialize;
-use std::ffi::OsStr;
-use std::fs::File;
-use std::io::{self, BufWriter};
-use std::path::PathBuf;
+
+#[cfg(feature = "dump_load_files")]
+use std::{
+    ffi::OsStr,
+    fs::File,
+    io::{self, BufWriter},
+    path::PathBuf,
+};
 
 pub trait Dump
 where
@@ -15,6 +19,8 @@ where
     fn to_json(&self) -> Result<String, DumpError> {
         Ok(serde_json::to_string(self)?)
     }
+
+    #[cfg(feature = "dump_load_files")]
     fn to_file(&self, output: Option<PathBuf>) -> Result<(), DumpError> {
         // Output result to file / stdout
         match output {
@@ -28,26 +34,31 @@ where
             None => self.to_stdout(),
         }
     }
+    #[cfg(feature = "dump_load_files")]
     fn to_stdout(&self) -> Result<(), DumpError> {
         let writer = io::stdout();
         Ok(serde_json::to_writer(writer, self)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn to_yaml_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let writer = BufWriter::new(file);
         Ok(serde_yaml::to_writer(writer, self)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn to_xz2_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let compressor = xz2::write::XzEncoder::new(file, 1);
         let writer = BufWriter::new(compressor);
         Ok(serde_json::to_writer(writer, self)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn to_json_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let writer = BufWriter::new(file);
         Ok(serde_json::to_writer(writer, self)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn to_gz_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let compressor = flate2::write::GzEncoder::new(file, flate2::Compression::fast());
@@ -60,7 +71,9 @@ where
 pub enum DumpError {
     JsonError(serde_json::Error),
     YamlError(serde_yaml::Error),
+    #[cfg(feature = "dump_load_files")]
     IoError(std::io::Error),
+    #[cfg(feature = "dump_load_files")]
     #[display("Invalid extension for output file.")]
     InvalidExtension {},
 }

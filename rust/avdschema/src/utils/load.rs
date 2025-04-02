@@ -3,12 +3,15 @@
 // that can be found in the LICENSE file.
 
 use serde::de::DeserializeOwned;
-use std::ffi::OsStr;
-use std::fs::File;
-use std::io::{self, BufReader};
-use std::path::PathBuf;
+use std::io::BufReader;
+
+#[cfg(feature = "dump_load_files")]
+use std::{ffi::OsStr, fs::File, io, path::PathBuf};
+
+#[cfg(feature = "dump_load_files")]
 use walkdir::WalkDir;
 
+#[cfg(feature = "dump_load_files")]
 use crate::Inherit;
 
 pub trait Load
@@ -18,6 +21,8 @@ where
     fn from_json(json: &str) -> Result<Self, LoadError> {
         Ok(serde_json::from_str(json)?)
     }
+
+    #[cfg(feature = "dump_load_files")]
     fn from_file(input: Option<PathBuf>) -> Result<Self, LoadError> {
         // Read input from file / stdin
         match input {
@@ -31,31 +36,37 @@ where
             None => Self::from_stdin(),
         }
     }
+    #[cfg(feature = "dump_load_files")]
     fn from_stdin() -> Result<Self, LoadError> {
         let reader = io::stdin();
         Ok(serde_yaml::from_reader(reader)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn from_yaml_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         Ok(serde_yaml::from_reader(reader)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn from_xz2_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let decompressor = xz2::read::XzDecoder::new(file);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn from_json_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let reader = BufReader::new(file);
         Ok(serde_json::from_reader(reader)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn from_xz2_bytes(bytes: &[u8]) -> Result<Self, LoadError> {
         let decompressor = xz2::read::XzDecoder::new(bytes);
         let reader = BufReader::new(decompressor);
         Ok(serde_json::from_reader(reader)?)
     }
+    #[cfg(feature = "dump_load_files")]
     fn from_gz_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let decompressor = flate2::read::GzDecoder::new(file);
@@ -69,6 +80,7 @@ where
     }
 }
 
+#[cfg(feature = "dump_load_files")]
 pub trait LoadFromFragments
 where
     Self: Load + Inherit + DeserializeOwned,
@@ -99,9 +111,12 @@ where
 pub enum LoadError {
     JsonError(serde_json::Error),
     YamlError(serde_yaml::Error),
+    #[cfg(feature = "dump_load_files")]
     IoError(std::io::Error),
+    #[cfg(feature = "dump_load_files")]
     #[display("Invalid extension for input file.")]
     InvalidExtension {},
+    #[cfg(feature = "dump_load_files")]
     #[display("No files found.")]
     NoFilesFound {},
 }

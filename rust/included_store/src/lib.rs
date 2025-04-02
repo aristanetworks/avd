@@ -22,13 +22,13 @@ use avdschema_macros as _;
 
 // Avoid triggering the expensive macro during testing and linting.
 #[cfg(not(test))]
-const INCLUDED_STORE_XZ2_BYTES: &[u8] = include_bytes!(avdschema_macros::include_avd_schemas!());
+const INCLUDED_STORE_GZ: &[u8] = include_bytes!(avdschema_macros::include_avd_schemas!());
 
 #[cfg(test)]
-const INCLUDED_STORE_XZ2_BYTES: &[u8] = &[];
+const INCLUDED_STORE_GZ: &[u8] = &[];
 
 pub fn get_store() -> Store {
-    Store::from_xz2_bytes(INCLUDED_STORE_XZ2_BYTES)
+    Store::from_gz_bytes(INCLUDED_STORE_GZ)
         .inspect(|_| info!("Initialized the schema store from builtin schemas."))
         .unwrap()
 }

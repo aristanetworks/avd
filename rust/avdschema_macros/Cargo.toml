@@ -5,7 +5,7 @@ edition = "2024"
 license = "Apache-2.0"
 
 [dependencies]
-avdschema = { path = "../avdschema" }
+avdschema = { path = "../avdschema", features = ["dump_load_files"] }
 
 [lib]
 proc-macro = true

@@ -18,15 +18,15 @@ const EOS_DESIGNS_FRAGMENTS: &str = concat!(
     "/../../python-avd/pyavd/_eos_designs/schema/schema_fragments/"
 );
 
-const TMP_FILE_PATH_ELEMENTS: [&str; 3] = [env!("CARGO_MANIFEST_DIR"), "tmp", "store.xz2"];
+const TMP_FILE_PATH_ELEMENTS: [&str; 3] = [env!("CARGO_MANIFEST_DIR"), "tmp", "store.gz"];
 
 /// Returns a bytestream (&'static [u8; N]) of AVD schemas built from fragments during compilation.
 ///
 /// Operations:
 /// - Loads schemas from fragments
 /// - Resolve all $ref
-/// - Save in a temporary xz2 file
-/// - Run include_bytes on the temporary xz2 file and return the output.
+/// - Save in a temporary file
+/// - Run include_bytes on the temporary file and return the output.
 #[proc_macro]
 pub fn include_avd_schemas(_input: TokenStream) -> TokenStream {
     let mut eos_cli_config_gen_schema =

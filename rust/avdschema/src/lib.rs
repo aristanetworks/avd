@@ -9,9 +9,10 @@ mod schema;
 mod store;
 mod utils;
 
+#[cfg(feature = "dump_load_files")]
+pub use self::utils::load::LoadFromFragments;
 pub use self::{
     inherit::Inherit, resolve::resolve_ref::resolve_ref, resolve::resolve_schema, schema::any,
     schema::base, schema::boolean, schema::dict, schema::int, schema::list, schema::str,
     store::Schema, store::Store, utils::dump::Dump, utils::load::Load,
-    utils::load::LoadFromFragments,
 };
