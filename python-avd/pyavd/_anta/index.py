@@ -13,14 +13,25 @@ from .constants import StructuredConfigKey
 
 AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
+        test_class=VerifyAgentLogs,
+    ),
+    TestSpec(
         test_class=VerifyAPIHttpsSSL,
         conditional_keys=[StructuredConfigKey.HTTPS_SSL_PROFILE],
         input_dict={"profile": StructuredConfigKey.HTTPS_SSL_PROFILE},
     ),
     TestSpec(
+        test_class=VerifyAVTPathHealth,
+        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
+    ),
+    TestSpec(
         test_class=VerifyAVTRole,
-        conditional_keys=[StructuredConfigKey.AVT_ROLE],
+        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
         input_factory=VerifyAVTRoleInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyBFDPeersHealth,
+        conditional_keys=[StructuredConfigKey.ROUTER_BFD],
     ),
     TestSpec(
         test_class=VerifyBGPPeerSession,
@@ -28,7 +39,13 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyBGPPeerSessionInputFactory,
     ),
     TestSpec(
+        test_class=VerifyCoredump,
+    ),
+    TestSpec(
         test_class=VerifyEnvironmentSystemCooling,
+    ),
+    TestSpec(
+        test_class=VerifyFileSystemUtilization,
     ),
     TestSpec(
         test_class=VerifyIllegalLACP,
@@ -55,12 +72,21 @@ AVD_TEST_INDEX: list[TestSpec] = [
         conditional_keys=[StructuredConfigKey.PORT_CHANNEL_INTERFACES],
     ),
     TestSpec(
+        test_class=VerifyRunningConfigDiffs,
+    ),
+    TestSpec(
         test_class=VerifyStormControlDrops,
     ),
     TestSpec(
         test_class=VerifyLLDPNeighbors,
         conditional_keys=[StructuredConfigKey.ETHERNET_INTERFACES],
         input_factory=VerifyLLDPNeighborsInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyLoggingErrors,
+    ),
+    TestSpec(
+        test_class=VerifyMemoryUtilization,
     ),
     TestSpec(
         test_class=VerifyMlagConfigSanity,
@@ -91,6 +117,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyNTP,
     ),
     TestSpec(
+        test_class=VerifyPathsHealth,
+        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
+    ),
+    TestSpec(
         test_class=VerifyReachability,
         input_factory=VerifyReachabilityInputFactory,
     ),
@@ -104,19 +134,31 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifySpecificIPSecConn,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION_GROUPS],
+        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifySpecificIPSecConnInputFactory,
     ),
     TestSpec(
+        test_class=VerifySTPBlockedPorts,
+    ),
+    TestSpec(
+        test_class=VerifySTPCounters,
+    ),
+    TestSpec(
         test_class=VerifyStunClientTranslation,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION_GROUPS],
+        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifyStunClientTranslationInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyTelnetStatus,
     ),
     TestSpec(
         test_class=VerifyTemperature,
     ),
     TestSpec(
         test_class=VerifyTransceiversTemperature,
+    ),
+    TestSpec(
+        test_class=VerifyZeroTouch,
     ),
 ]
 """List of all ANTA tests with their specifications that AVD will run by default."""

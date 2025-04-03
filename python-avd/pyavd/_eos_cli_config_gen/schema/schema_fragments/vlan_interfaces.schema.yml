@@ -347,7 +347,13 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
+        ipv6_ospf_network_point_to_point:
+          type: bool
         ospf_area:
+          type: str
+          convert_types:
+            - int
+        ipv6_ospf_area:
           type: str
           convert_types:
             - int
@@ -615,6 +621,9 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        ntp_serve:
+          type: bool
+          description: Enable/disable serving NTP to clients.
         pvlan_mapping:
           type: str
           description: List of VLANs as string.

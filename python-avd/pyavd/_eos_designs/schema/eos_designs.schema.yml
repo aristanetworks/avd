@@ -1933,6 +1933,18 @@ keys:
       range:
         beginning: 1006
         ending: 1199
+  ipsec_settings:
+    documentation_options:
+      table: wan-settings
+    description: Settings applicable to all IPsec connections.
+    type: dict
+    keys:
+      bind_connection_to_interface:
+        type: bool
+        default: false
+        description: 'Allow IPsec connections to be bound to the source interface.
+
+          Enabling this prevents IPsec connections from using ECMP paths.'
   ipv4_acls:
     type: list
     primary_key: name
@@ -2200,6 +2212,10 @@ keys:
       '
     type: dict
     keys:
+      enabled:
+        description: Enable/Disable api http-commands.
+        type: bool
+        default: true
       enable_http:
         type: bool
       enable_https:
@@ -6679,6 +6695,13 @@ $defs:
                           description: Comma separated list of prefixes (IPv6 address/Mask)
                             or ranges (IPv6_address-IPv6_address).
                           format: ipv6_pool
+                  hardware_forwarding:
+                    type: bool
+                    description: 'Enable hardware forwarding for diagnostic loopbacks.
+                      This is required for correct forwarding in VRFs without physical
+                      interfaces.
+
+                      '
               ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -7323,6 +7346,13 @@ $defs:
                           - int
                           description: OSPF area ID.
                           default: 0.0.0.0
+                    hardware_forwarding:
+                      type: bool
+                      description: 'Enable hardware forwarding for this loopback.
+                        This is required for correct forwarding in VRFs without physical
+                        interfaces.
+
+                        '
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Loopback interface
@@ -8097,6 +8127,8 @@ $defs:
             type: str
             format: cidr
           mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the management gateway for the device. It takes
               precedence over the global `mgmt_gateway`.
@@ -8107,6 +8139,8 @@ $defs:
             type: str
             format: cidr
           ipv6_mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the ipv6 management gateway for the device.
               It takes precedence over the global `ipv6_mgmt_gateway`.
@@ -9774,6 +9808,8 @@ $defs:
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
           flow_tracker_type:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             valid_values:
             - sampled

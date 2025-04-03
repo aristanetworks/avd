@@ -1,7 +1,6 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import json
 import sys
 from copy import deepcopy
 from unittest.mock import patch
@@ -9,6 +8,7 @@ from unittest.mock import patch
 import pytest
 
 from pyavd import get_avd_facts
+from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from tests.models import MoleculeScenario
 
 
@@ -37,12 +37,7 @@ def test_get_avd_facts(molecule_scenario: MoleculeScenario) -> None:
         avd_facts = get_avd_facts(molecule_inputs, pool_manager=molecule_scenario.pool_manager)
 
     assert isinstance(avd_facts, dict)
-    assert "avd_switch_facts" in avd_facts
-    assert isinstance(avd_facts["avd_switch_facts"], dict)
-    assert len(avd_facts["avd_switch_facts"]) == len(molecule_inputs)
-    assert "avd_overlay_peers" in avd_facts
-    assert isinstance(avd_facts["avd_overlay_peers"], dict)
-    assert "avd_topology_peers" in avd_facts
-    assert isinstance(avd_facts["avd_topology_peers"], dict)
-    # Test that we can dump the returned data as json.
-    assert json.dumps(avd_facts)
+    assert len(avd_facts) == len(molecule_inputs)
+    assert avd_facts.keys() == molecule_inputs.keys()
+    if avd_facts:
+        assert isinstance(next(iter(avd_facts.values())), EosDesignsFacts)

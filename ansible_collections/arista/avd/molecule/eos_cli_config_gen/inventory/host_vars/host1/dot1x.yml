@@ -4,12 +4,17 @@ dot1x:
   system_auth_control: true
   protocol_lldp_bypass: true
   dynamic_authorization: true
+  statistics_packets_dropped: true
   mac_based_authentication:
     delay: 300
     hold_period: 300
   radius_av_pair:
     service_type: true
     framed_mtu: 1500
+    filter_id:
+      delimiter_period: true
+      ipv4_ipv6_required: true
+      multiple: true
     lldp:
       system_name:
         enabled: true
@@ -65,3 +70,10 @@ dot1x:
         ssl_profile: PF2
     logging: true
     disconnect_cached_results_timeout: 79
+  vlan_assignment_groups:
+    - name: Assignment_3
+      members: 1,3,15-20
+    - name: Assignment_2
+      members: 55
+    - name: Assignment_1
+      members: 400-407

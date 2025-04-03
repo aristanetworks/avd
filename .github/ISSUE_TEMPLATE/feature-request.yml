@@ -1,7 +1,8 @@
 name: Feature Request
 description: Ask for new feature or feature enhancement
 title: "Feature request Title"
-labels: ['type: enhancement', triage]
+labels: ["type: enhancement", triage]
+# TODO: consider adding types here instead of label
 body:
   - type: markdown
     attributes:
@@ -22,15 +23,13 @@ body:
       label: Which component of AVD is impacted
       multiple: true
       options:
-        - eos_designs
         - eos_cli_config_gen
-        - cvp_configlet_upload
-        - dhcp_provisioner
+        - eos_designs
+        - anta_runner
+        - cv_deploy
         - eos_config_deploy_cvp
-        - eos_config_deploy_eapi
-        - eos_snapshot
         - eos_validate_state
-        - plugins
+        - PyAVD
         - others
     validations:
       required: true
@@ -73,5 +72,5 @@ body:
       label: Contributing Guide
       description: By submitting this issue, you agree to follow our [Contributing Guide](https://avd.arista.com/devel/docs/contribution/overview.html)
       options:
-        - label: I agree to follow this project's Code of Conduct
+        - label: I agree to follow this project Code of Conduct
           required: true

@@ -392,7 +392,7 @@
         },
         "$ref": {
             "type": "string",
-            "pattern": "^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$",
+            "pattern": "^(eos_cli_config_gen|eos_designs)#(/[a-z$][\\.a-z0-9_]*)*$",
             "description": "Reference to Sub Schema using JSON Schema resolver.\nExample '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema"
         },
         "documentation_options": {

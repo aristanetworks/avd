@@ -17,6 +17,8 @@ from .topology import Topology
 if TYPE_CHECKING:
     from typing import TypeVar
 
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
+
     T_Network = TypeVar("T_Network", IPv4Network, IPv6Network)
 
 
@@ -28,7 +30,7 @@ class FabricDocumentationFacts(AvdFacts):
     For use in Python the instance can be used directly to avoid calculating facts unless needed.
     """
 
-    avd_switch_facts: dict[str, dict]
+    avd_facts: dict[str, EosDesignsFacts]
     structured_configs: dict[str, dict]
     _fabric_name: str
     _include_connected_endpoints: bool
@@ -38,8 +40,10 @@ class FabricDocumentationFacts(AvdFacts):
     _hostvars = NotImplemented
     shared_utils = NotImplemented
 
-    def __init__(self, avd_facts: dict[str, dict], structured_configs: dict[str, dict], fabric_name: str, include_connected_endpoints: bool, toc: bool) -> None:  # pylint: disable=super-init-not-called
-        self.avd_switch_facts = {hostname: facts["switch"] for hostname, facts in get(avd_facts, "avd_switch_facts", required=True).items()}
+    def __init__(  # pylint: disable=super-init-not-called
+        self, avd_facts: dict[str, EosDesignsFacts], structured_configs: dict[str, dict], fabric_name: str, include_connected_endpoints: bool, toc: bool
+    ) -> None:
+        self.avd_facts = avd_facts
         self._fabric_name = fabric_name
         self.structured_configs = structured_configs
         self._include_connected_endpoints = include_connected_endpoints
@@ -62,14 +66,14 @@ class FabricDocumentationFacts(AvdFacts):
             [
                 {
                     "node": hostname,
-                    "type": self.avd_switch_facts[hostname]["type"],
-                    "pod": self.avd_switch_facts[hostname].get("pod"),
-                    "mgmt_ip": self.avd_switch_facts[hostname].get("mgmt_ip") or "-",
-                    "platform": self.avd_switch_facts[hostname].get("platform") or "-",
-                    "provisioned": "Provisioned" if self.avd_switch_facts[hostname].get("is_deployed") else "Not Available",
-                    "serial_number": self.avd_switch_facts[hostname].get("serial_number") or "-",
-                    "inband_mgmt_ip": self.avd_switch_facts[hostname].get("inband_mgmt_ip"),
-                    "inband_mgmt_interface": self.avd_switch_facts[hostname].get("inband_mgmt_interface"),
+                    "type": self.avd_facts[hostname].type,
+                    "pod": self.avd_facts[hostname].pod,
+                    "mgmt_ip": self.avd_facts[hostname].mgmt_ip or "-",
+                    "platform": self.avd_facts[hostname].platform or "-",
+                    "provisioned": "Provisioned" if self.avd_facts[hostname].is_deployed else "Not Available",
+                    "serial_number": self.avd_facts[hostname].serial_number or "-",
+                    "inband_mgmt_ip": self.avd_facts[hostname].inband_mgmt_ip,
+                    "inband_mgmt_interface": self.avd_facts[hostname].inband_mgmt_interface,
                     "loopback0_ip_address": get(
                         get_item(get(structured_config, "loopback_interfaces", default=[]), "name", "Loopback0", default={}), "ip_address"
                     ),
@@ -114,7 +118,7 @@ class FabricDocumentationFacts(AvdFacts):
 
                 peer = get(ethernet_interface, "peer", required=True)
                 if peer_type == "mlag_peer":
-                    peer_type = self.avd_switch_facts[peer]["type"]
+                    peer_type = self.avd_facts[peer].type
                     mlag_peer = True
                 else:
                     mlag_peer = False
@@ -129,7 +133,7 @@ class FabricDocumentationFacts(AvdFacts):
                 routed = get(ethernet_interface, "switchport.enabled") is False
 
                 data = (
-                    self.avd_switch_facts[hostname]["type"],  # type
+                    self.avd_facts[hostname].type,  # type
                     get(ethernet_interface, "name"),  # interface
                     get(ethernet_interface, "ip_address"),  # ip_address
                     mlag_peer,  # is_mlag_peer
@@ -177,7 +181,7 @@ class FabricDocumentationFacts(AvdFacts):
     def uplink_ipv4_networks(self) -> list[dict]:
         """List of unique networks from uplink_ipv4_pools containing information about size and usage."""
         # Build set of loopback_ipv4_pool for all devices
-        pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "uplink_ipv4_pool"))}
+        pools_set = {facts.uplink_ipv4_pool for facts in self.avd_facts.values() if facts.uplink_ipv4_pool}
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]
 
         # Build list of ip addresses found in topology
@@ -189,7 +193,7 @@ class FabricDocumentationFacts(AvdFacts):
     def loopback_ipv4_networks(self) -> list[dict]:
         """List of unique networks from loopback_ipv4_pools containing information about size and usage."""
         # Build set of loopback_ipv4_pool for all devices
-        pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "loopback_ipv4_pool"))}
+        pools_set = {facts.loopback_ipv4_pool for facts in self.avd_facts.values() if facts.loopback_ipv4_pool}
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]
 
         # Build list of ip addresses found in fabric switches
@@ -204,7 +208,7 @@ class FabricDocumentationFacts(AvdFacts):
     def vtep_loopback_ipv4_networks(self) -> list[dict]:
         """List of unique networks from vtep_loopback_ipv4_pools containing information about size and usage."""
         # Build set of vtep_loopback_ipv4_pool from all devices
-        pools_set = {f"{pool}" for switch in self.avd_switch_facts.values() if (pool := get(switch, "vtep_loopback_ipv4_pool"))}
+        pools_set = {facts.vtep_loopback_ipv4_pool for facts in self.avd_facts.values() if facts.vtep_loopback_ipv4_pool}
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]
 
         # Build list of ip addresses found in fabric switches
@@ -252,8 +256,8 @@ class FabricDocumentationFacts(AvdFacts):
 
         all_connected_endpoints = {}
         for hostname, structured_config in self.structured_configs.items():
-            connected_endpoints_keys = get(self.avd_switch_facts[hostname], "connected_endpoints_keys", default=[])
-            connected_endpoints_by_type = {item["type"]: item for item in connected_endpoints_keys}
+            connected_endpoints_keys = self.avd_facts[hostname].connected_endpoints_keys
+            connected_endpoints_by_type = {item.type: item for item in connected_endpoints_keys}
             port_channel_interfaces = get(structured_config, "port_channel_interfaces", default=[])
             for ethernet_interface in get(structured_config, "ethernet_interfaces", default=[]):
                 if (peer_type := get(ethernet_interface, "peer_type")) not in connected_endpoints_by_type:
@@ -265,7 +269,7 @@ class FabricDocumentationFacts(AvdFacts):
                 else:
                     port_channel_interface = {}
 
-                all_connected_endpoints.setdefault(connected_endpoints_by_type[peer_type]["key"], []).append(
+                all_connected_endpoints.setdefault(connected_endpoints_by_type[peer_type].key, []).append(
                     {
                         "peer": get(ethernet_interface, "peer", default="-"),
                         "peer_type": peer_type,
@@ -295,11 +299,7 @@ class FabricDocumentationFacts(AvdFacts):
         if not self._include_connected_endpoints:
             return []
 
-        set_of_tuples = {
-            (item["key"], item["type"], item.get("description"))
-            for switch in self.avd_switch_facts.values()
-            for item in get(switch, "connected_endpoints_keys", default=[])
-        }
+        set_of_tuples = {(item.key, item.type, item.description) for facts in self.avd_facts.values() for item in facts.connected_endpoints_keys}
         return natural_sort(
             [
                 {
@@ -322,9 +322,7 @@ class FabricDocumentationFacts(AvdFacts):
         if not self._include_connected_endpoints:
             return []
 
-        set_of_tuples = {
-            (item["profile"], item.get("parent_profile")) for switch in self.avd_switch_facts.values() for item in get(switch, "port_profile_names", default=[])
-        }
+        set_of_tuples = {(item.profile, item.parent_profile) for facts in self.avd_facts.values() for item in facts.port_profile_names}
         return natural_sort(
             [
                 {
@@ -344,7 +342,7 @@ class FabricDocumentationFacts(AvdFacts):
         """
         return [
             (
-                self.avd_switch_facts[hostname]["type"],
+                self.avd_facts[hostname].type,
                 hostname,
                 ethernet_interface["name"],
                 get(ethernet_interface, "peer_type", default=""),

@@ -27,7 +27,8 @@ class MinimalStructuredConfig:
 
 
 def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[str, MinimalStructuredConfig]:
-    """Get a minimal version of structured configurations for all devices to generate tests.
+    """
+    Get a minimal version of structured configurations for all devices to generate tests.
 
     Loaded in dataclasses and used in `pyavd.get_device_anta_catalog` to generate ANTA catalogs.
 

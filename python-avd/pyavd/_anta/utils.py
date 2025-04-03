@@ -17,7 +17,8 @@ LOGGER = getLogger(__name__)
 
 
 def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str) -> None:
-    """Dump the ANTA catalog for a device to the provided catalog directory.
+    """
+    Dump the ANTA catalog for a device to the provided catalog directory.
 
     The catalog will be saved as a JSON file named after the device: `<device>.json`.
     """

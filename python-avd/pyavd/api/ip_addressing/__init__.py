@@ -171,6 +171,12 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
+                switch={
+                    "uplink_ipv4_pool": self._uplink_ipv4_pool,
+                    "id": self._id,
+                    "max_uplink_switches": self._max_uplink_switches,
+                    "max_parallel_uplinks": self._max_parallel_uplinks,
+                },
             )
 
         prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length
@@ -185,6 +191,12 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             return self._template(
                 template_path,
                 uplink_switch_index=uplink_switch_index,
+                switch={
+                    "uplink_ipv4_pool": self._uplink_ipv4_pool,
+                    "id": self._id,
+                    "max_uplink_switches": self._max_uplink_switches,
+                    "max_parallel_uplinks": self._max_parallel_uplinks,
+                },
             )
 
         prefixlen = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length

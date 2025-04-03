@@ -10,11 +10,12 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
+    from collections.abc import Callable, Mapping
     from typing import TypeVar
 
     from typing_extensions import Self
 
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
@@ -63,6 +64,7 @@ class StructuredConfigGeneratorProtocol(AvdFactsProtocol, Protocol):
     returning a dict.
     """
 
+    facts: EosDesignsFacts
     structured_config: EosCliConfigGen
     custom_structured_configs: StructCfgs
     _complete_structured_config: EosCliConfigGen
@@ -131,8 +133,15 @@ class StructuredConfigGenerator(AvdFacts, StructuredConfigGeneratorProtocol):
     """
 
     def __init__(
-        self, hostvars: dict, inputs: EosDesigns, shared_utils: SharedUtilsProtocol, structured_config: EosCliConfigGen, custom_structured_configs: StructCfgs
+        self,
+        hostvars: Mapping,
+        inputs: EosDesigns,
+        facts: EosDesignsFacts,
+        shared_utils: SharedUtilsProtocol,
+        structured_config: EosCliConfigGen,
+        custom_structured_configs: StructCfgs,
     ) -> None:
+        self.facts = facts
         self.structured_config = structured_config
         self.custom_structured_configs = custom_structured_configs
         super().__init__(hostvars=hostvars, inputs=inputs, shared_utils=shared_utils)

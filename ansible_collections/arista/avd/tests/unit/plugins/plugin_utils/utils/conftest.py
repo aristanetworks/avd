@@ -5,6 +5,7 @@
 
 from pathlib import Path
 
+import logging
 import pytest
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
@@ -59,3 +60,45 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
     play = Play.load(play_data, variable_manager=variable_manager, loader=loader)
     block = Block.load(block_data, play, variable_manager=variable_manager, loader=loader)
     return Task.load(task_data, block, variable_manager=variable_manager, loader=loader)
+
+
+@pytest.fixture
+def anta_record() -> logging.LogRecord:
+    """Create a log record from an ANTA library."""
+    return logging.LogRecord(
+        name="anta.runner",
+        level=logging.INFO,
+        pathname="",
+        lineno=0,
+        msg="Hello from ANTA",
+        args=(),
+        exc_info=None
+    )
+
+
+@pytest.fixture
+def non_anta_record() -> logging.LogRecord:
+    """Create a log record from a non-ANTA library."""
+    return logging.LogRecord(
+        name="pyavd",
+        level=logging.INFO,
+        pathname="",
+        lineno=0,
+        msg="Hello from PyAVD",
+        args=(),
+        exc_info=None
+    )
+
+
+@pytest.fixture
+def warning_record() -> logging.LogRecord:
+    """Create a warning log record from an ANTA library."""
+    return logging.LogRecord(
+        name="anta.runner",
+        level=logging.WARNING,
+        pathname="",
+        lineno=0,
+        msg="Warning from ANTA",
+        args=(),
+        exc_info=None
+    )

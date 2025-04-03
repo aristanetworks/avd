@@ -157,7 +157,8 @@ class AvdSchema:
         return recursive_function(datapath, schema)
 
     def get_default_value(self, datapath: list) -> Any:
-        """Return the default value of a key given the datapath as a list.
+        """
+        Return the default value of a key given the datapath as a list.
 
         Raises:
         -------

@@ -8,13 +8,14 @@ from functools import cached_property
 from hashlib import sha256
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
 from pyavd._utils import default
 
 if TYPE_CHECKING:
-    from . import EosDesignsFactsProtocol
+    from . import EosDesignsFactsGeneratorProtocol
 
 
-class ShortEsiMixin(Protocol):
+class ShortEsiMixin(EosDesignsFactsProtocol, Protocol):
     """
     Mixin Class used to generate some of the EosDesignsFacts.
 
@@ -23,7 +24,7 @@ class ShortEsiMixin(Protocol):
     """
 
     @cached_property
-    def _short_esi(self: EosDesignsFactsProtocol) -> str | None:
+    def _short_esi(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """
         If short_esi is set to "auto" we will use sha256 to create a unique short_esi value based on various uplink information.
 
@@ -31,12 +32,12 @@ class ShortEsiMixin(Protocol):
         as primary MLAG switch.
         """
         # On the MLAG Secondary use short-esi from MLAG primary
-        if self.shared_utils.mlag_role == "secondary" and (peer_short_esi := self._mlag_peer_facts._short_esi) is not None:
+        if self.shared_utils.mlag_role == "secondary" and (peer_short_esi := self._mlag_peer_facts_generator._short_esi) is not None:
             return peer_short_esi
         short_esi = self.shared_utils.node_config.short_esi
         if short_esi == "auto":
             esi_seed_1 = "".join(self.shared_utils.uplink_switches[:2])
-            esi_seed_2 = "".join(self.shared_utils.uplink_switch_interfaces[:2])
+            esi_seed_2 = "".join(list(self.uplink_switch_interfaces)[:2])
             esi_seed_3 = "".join(self.shared_utils.uplink_interfaces[:2])
             esi_seed_4 = default(self.shared_utils.group, "")
             esi_hash = sha256(f"{esi_seed_1}{esi_seed_2}{esi_seed_3}{esi_seed_4}".encode()).hexdigest()

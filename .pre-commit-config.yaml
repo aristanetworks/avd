@@ -15,7 +15,12 @@ repos:
         exclude: ansible_collections/arista/avd/molecule
       - id: check-added-large-files
         name: Prevents giant files from being committed.
-        exclude: (ansible_collections/arista/avd/molecule|pickle$|python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py)
+        exclude: >-
+          (ansible_collections/arista/avd/molecule
+          |pickle$
+          |python-avd/pyavd/_(eos_cli_config_gen|eos_designs)/schema/__init__.py
+          |python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py
+          )
       - id: check-merge-conflict
         name: Checks for files that contain merge conflict strings.
         exclude: ansible_collections/arista/avd/molecule

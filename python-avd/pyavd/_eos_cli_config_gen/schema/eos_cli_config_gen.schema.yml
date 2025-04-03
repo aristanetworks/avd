@@ -1654,6 +1654,9 @@ keys:
         type: bool
       dynamic_authorization:
         type: bool
+      statistics_packets_dropped:
+        type: bool
+        description: Enable the 802.1X port authentication dropped data packet statistics.
       mac_based_authentication:
         type: dict
         keys:
@@ -1751,6 +1754,18 @@ keys:
                     required: true
                   auth_only:
                     type: bool
+          filter_id:
+            type: dict
+            keys:
+              delimiter_period:
+                type: bool
+                description: Use period as the delimiter.
+              ipv4_ipv6_required:
+                type: bool
+                description: Enable filters for IPv4 and IPv6 traffic.
+              multiple:
+                type: bool
+                description: Multiple attribute.
       aaa:
         type: dict
         description: Configure AAA parameters.
@@ -1931,6 +1946,20 @@ keys:
             min: 60
             max: 65535
             description: Timeout in seconds for removing a disconnected supplicant.
+      vlan_assignment_groups:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+            members:
+              type: str
+              required: true
+              convert_types:
+              - int
+              description: VLAN value(s) or range(s) of VLAN values.
   dps_interfaces:
     type: list
     primary_key: name
@@ -2880,6 +2909,9 @@ keys:
           keys:
             profile:
               type: str
+        ntp_serve:
+          type: bool
+          description: Enable/disable serving NTP to clients.
         tcp_mss_ceiling:
           type: dict
           description: 'The TCP MSS clamping feature involves clamping the maximum
@@ -6271,7 +6303,6 @@ keys:
           type: str
         vrf:
           type: str
-          default: default
           convert_types:
           - int
   ip_tacacs_source_interfaces:
@@ -6470,6 +6501,143 @@ keys:
                   Example: "permit 1b11:3a00:22b0:0082::/64 eq 128"
 
                   '
+  ipv6_router_ospf:
+    type: dict
+    display_name: IPv6 router OSPF Configuration
+    keys:
+      process_ids:
+        type: list
+        primary_key: id
+        unique_keys:
+        - vrf
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+              - str
+              description: OSPF process ID.
+            vrf:
+              type: str
+              description: VRF name for OSPF process. Must be unique across all OSPFv3
+                instances.
+              convert_types:
+              - int
+            router_id:
+              type: str
+              description: IPv4 Address.
+            redistribute:
+              type: dict
+              description: Redistribute routes with OSPFv3.
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include leaked routes while redistributing.
+                      type: bool
+                connected:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include leaked routes while redistributing.
+                      type: bool
+                isis:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    isis_level:
+                      type: str
+                      description: Redistribute IS-IS route level.
+                      valid_values:
+                      - level-1
+                      - level-2
+                      - level-1-2
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include leaked routes while redistributing.
+                      type: bool
+                ospfv3:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      description: Redistribute OSPFv3 routes.
+                    match_external:
+                      description: Redistribute OSPFv3 routes learned from external
+                        sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include leaked routes while redistributing.
+                          type: bool
+                    match_internal:
+                      description: Redistribute OSPFv3 routes learned from internal
+                        sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                    match_nssa_external:
+                      description: Redistribute OSPFv3 routes learned from external
+                        NSSA sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                    route_map:
+                      type: str
+                static:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    include_leaked:
+                      type: bool
+                      description: Include leaked routes while redistributing.
+                dhcp:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+              - str
+              description: Bandwidth in mbps.
+              min: 1
+              max: 4294967
   ipv6_standard_access_lists:
     type: list
     primary_key: name
@@ -6550,6 +6718,12 @@ keys:
     description: Key only used for documentation or validation purposes.
     type: bool
     default: true
+  kernel:
+    type: dict
+    keys:
+      software_forwarding_ecmp:
+        type: bool
+        description: Program ECMP routes in the kernel.
   l2_protocol:
     type: dict
     keys:
@@ -8661,6 +8835,7 @@ keys:
         - str
       interface_sets:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -8736,6 +8911,7 @@ keys:
               type: str
             interface_sets:
               type: list
+              primary_key: name
               items:
                 type: dict
                 keys:
@@ -9703,6 +9879,36 @@ keys:
         description: List of trusted-keys as string ex. 10-12,15.
         convert_types:
         - int
+      serve:
+        description: Enable Serving NTP to clients.
+        type: dict
+        keys:
+          serve_all:
+            type: bool
+          access_group:
+            type: str
+            description: Standard ACL to apply to NTP serve. All ACLs are applied
+              in the 'in' direction.
+          ipv6_access_group:
+            type: str
+            description: Standard IPv6 ACL to apply to NTP serve. All ACLs are applied
+              in the 'in' direction.
+          vrfs:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  convert_types:
+                  - int
+                serve_all:
+                  type: bool
+                access_group:
+                  type: str
+                ipv6_access_group:
+                  type: str
   patch_panel:
     type: dict
     keys:
@@ -10805,6 +11011,9 @@ keys:
                   type: bool
                 igp_sync:
                   type: bool
+        ntp_serve:
+          type: bool
+          description: Enable/disable serving NTP to clients.
         trunk_private_vlan_secondary:
           type: bool
           deprecation:
@@ -21155,6 +21364,16 @@ keys:
                 be less than the value of B) formats. Example. 30-34,55,RED
               convert_types:
               - int
+  serial_number:
+    documentation_options:
+      table: metadata
+    description: 'Serial Number of the device.
+
+      Used only for documentation and deployment purposes. It is used by the ''eos_config_deploy_cvp''
+      and ''cv_deploy'' roles.'
+    type: str
+    convert_types:
+    - int
   service_routing_configuration_bgp:
     type: dict
     keys:
@@ -22872,7 +23091,13 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
+        ipv6_ospf_network_point_to_point:
+          type: bool
         ospf_area:
+          type: str
+          convert_types:
+          - int
+        ipv6_ospf_area:
           type: str
           convert_types:
           - int
@@ -23142,6 +23367,9 @@ keys:
                 input:
                   type: str
                   description: Name of policy-map used for policy based routing.
+        ntp_serve:
+          type: bool
+          description: Enable/disable serving NTP to clients.
         pvlan_mapping:
           type: str
           description: List of VLANs as string.
