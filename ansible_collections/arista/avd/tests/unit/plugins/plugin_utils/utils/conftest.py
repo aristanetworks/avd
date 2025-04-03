@@ -7,6 +7,7 @@ from pathlib import Path
 
 import logging
 import pytest
+
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.playbook.block import Block

@@ -17,8 +17,7 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, PythonToAnsibleHandler
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.anta_logging_filter import AntaLoggingFilter
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaLoggingFilter, PythonToAnsibleHandler
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

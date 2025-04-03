@@ -20,7 +20,8 @@ class ActionPluginVars:
     """Provides access to Ansible host variables resolved for the current action plugin context."""
 
     def __init__(self, action_plugin: ActionBase) -> None:
-        """Initializes the accessor with an Ansible action plugin instance to capture context.
+        """
+        Initializes the accessor with an Ansible action plugin instance to capture context.
 
         Args:
             action_plugin: The Ansible ActionBase plugin instance currently executing.
@@ -33,7 +34,8 @@ class ActionPluginVars:
         self.inventory: InventoryManager = self.variable_manager._inventory
 
     def __getitem__(self, hostname: str) -> HostVarsVars:
-        """Provides dictionary-like access to a host's variables, processed for templates.
+        """
+        Provides dictionary-like access to a host's variables, processed for templates.
 
         Args:
             hostname: The name of the host.
@@ -48,7 +50,8 @@ class ActionPluginVars:
         return HostVarsVars(variables=variables, loader=self.loader)
 
     def _get_raw_variables(self, hostname: str) -> dict[str, Any]:
-        """Retrieves the raw variables for a specific host using the captured context.
+        """
+        Retrieves the raw variables for a specific host using the captured context.
 
         Args:
             hostname: The name of the host for which to retrieve variables.
