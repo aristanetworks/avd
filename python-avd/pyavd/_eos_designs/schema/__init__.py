@@ -35432,7 +35432,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdList with `str` items."""
                         structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
                         """
-                        Custom structured config added under router_ospf.process_ids.[process_id=<OSPF process ID>] for
+                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
                         eos_cli_config_gen.
                         """
 
@@ -35476,7 +35476,7 @@ class EosDesigns(EosDesignsRootModel):
                                     redistribute_connected: Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
-                                       Custom structured config added under router_ospf.process_ids.[process_id=<OSPF process ID>] for
+                                       Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
                                        eos_cli_config_gen.
 
                                 """
