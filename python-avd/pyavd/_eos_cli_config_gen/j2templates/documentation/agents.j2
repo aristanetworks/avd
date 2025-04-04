@@ -26,9 +26,15 @@
 
 | Setting | Value |
 | ------- | ----- |
-| Shutdown All Supervisors| {{ agent.shutdown | arista.avd.default("-") }} |
-| Shutdown Active Supervisors | {{ agent.shutdown_supervisor_active | arista.avd.default("-") }} |
-| Shutdown Standby Supervisors | {{ agent.shutdown_supervisor_standby | arista.avd.default("-") }} |
+{%             if agent.shutdown is arista.avd.defined %}
+| Shutdown | {{ agent.shutdown }} |
+{%             endif %}
+{%             if agent.shutdown_supervisor_active is arista.avd.defined %}
+| Shutdown on Active Supervisor | {{ agent.shutdown_supervisor_active }} |
+{%             endif %}
+{%             if agent.shutdown_supervisor_standby is arista.avd.defined %}
+| Shutdown on Standby Supervisor | {{ agent.shutdown_supervisor_standby }} |
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 
