@@ -139,8 +139,13 @@ jobs:
           python-version: |
             3.12
       - name: Create wheel packages of pyavd dependencies
+        # run: |
+        #   pip install build
+        #   cd python-avd
+        #   python -m build --wheel --outdir /tmp/pyavd
         run: |
           pip install build
+          pip wheel -r .github/molecule-ci-requirements.txt --wheel-dir /tmp/pyavd
           cd python-avd
           python -m build --wheel --outdir /tmp/pyavd
       - name: Compress wheel packages
@@ -184,7 +189,6 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Molecule
         run: |
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
-          python -m pip install -r .github/molecule-ci-requirements.txt
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
