@@ -308,6 +308,14 @@
 | V1 | 42 |
 | V2 | 666 |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown | True |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
 #### Agent KernelFib
 
 ##### Environment Variables
@@ -316,12 +324,26 @@
 | ---- | ----- |
 | KERNELFIB_PROGRAM_ALL_ECMP | true |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
+#### Agent NotRendered
+
 #### Agents Device Configuration
 
 ```eos
 !
 agent Dummy environment V1=42:V2=666
+agent Dummy shutdown
+agent Dummy shutdown supervisor active
+agent Dummy shutdown supervisor standby
 agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
+agent KernelFib shutdown supervisor active
+agent KernelFib shutdown supervisor standby
 ```
 
 ### Management Interfaces
