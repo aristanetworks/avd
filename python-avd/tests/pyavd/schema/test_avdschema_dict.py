@@ -26,6 +26,10 @@ TEST_SCHEMA = {
             "keys": {
                 "pri": {"type": "int", "convert_types": ["str"]},
                 "foo": {"type": "str", "convert_types": ["int"]},
+                "nested_dict": {  # nested_dict is not required, but the key inside is.
+                    "type": "dict",
+                    "keys": {"required_key": {"type": "str", "required": True}},
+                },
                 "dynamic": {
                     "type": "list",
                     "items": {
@@ -58,6 +62,12 @@ def avd_schema() -> AvdSchema:
         ),
         pytest.param({}, None, None, id="ok-empty"),
         pytest.param(None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
+        pytest.param(
+            {"nested_dict": {}},
+            (AvdValidationError,),
+            ("'Validation Error: test_value.nested_dict': Required key 'required_key' is not set in dict.",),
+            id="err-missing-nested-required-value",
+        ),
         pytest.param("a", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'dict'.",), id="err-invalid-type-str"),
         pytest.param({"mykey": 123, "dynamic": [{"key": "mykey"}]}, None, None, id="ok-dynamic-key-mykey"),
         pytest.param(
