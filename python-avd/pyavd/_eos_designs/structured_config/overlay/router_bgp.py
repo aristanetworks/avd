@@ -226,6 +226,9 @@ class RouterBgpMixin(Protocol):
                     if self.shared_utils.overlay_ipvpn_gateway:
                         msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
                         raise AristaAvdError(msg)
+                    if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain:
+                        msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
+                        raise AristaAvdError(msg)
                     self.structured_config.router_bgp.address_family_evpn._update(
                         domain_identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local
                     )

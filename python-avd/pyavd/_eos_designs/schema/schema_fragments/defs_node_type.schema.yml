@@ -672,7 +672,7 @@ $defs:
                     default: true
               all_active_multihoming:
                 description: Enable Active Active Multihoming architecture for EVPN
-                  Gateways. Not supported with MLAG or with IPVPN Gateway.
+                  Gateways. Not supported with MLAG or with IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
                 type: dict
                 keys:
                   enabled:

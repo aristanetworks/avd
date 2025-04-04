@@ -18673,7 +18673,7 @@ class EosDesigns(EosDesignsRootModel):
                         all_active_multihoming: AllActiveMultihoming
                         """
                         Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                        IPVPN Gateway.
+                        IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                         Subclass of AvdModel.
                         """
@@ -18715,7 +18715,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     all_active_multihoming:
                                        Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                       IPVPN Gateway.
+                                       IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -22741,7 +22741,7 @@ class EosDesigns(EosDesignsRootModel):
                             all_active_multihoming: AllActiveMultihoming
                             """
                             Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                            IPVPN Gateway.
+                            IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                             Subclass of AvdModel.
                             """
@@ -22783,7 +22783,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         all_active_multihoming:
                                            Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                           IPVPN Gateway.
+                                           IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                            Subclass of AvdModel.
 
@@ -26789,7 +26789,7 @@ class EosDesigns(EosDesignsRootModel):
                         all_active_multihoming: AllActiveMultihoming
                         """
                         Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                        IPVPN Gateway.
+                        IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                         Subclass of AvdModel.
                         """
@@ -26831,7 +26831,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     all_active_multihoming:
                                        Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                       IPVPN Gateway.
+                                       IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -30884,7 +30884,7 @@ class EosDesigns(EosDesignsRootModel):
                         all_active_multihoming: AllActiveMultihoming
                         """
                         Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                        IPVPN Gateway.
+                        IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                         Subclass of AvdModel.
                         """
@@ -30926,7 +30926,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     all_active_multihoming:
                                        Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                       IPVPN Gateway.
+                                       IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -41688,7 +41688,7 @@ class EosDesigns(EosDesignsRootModel):
                         all_active_multihoming: AllActiveMultihoming
                         """
                         Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                        IPVPN Gateway.
+                        IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                         Subclass of AvdModel.
                         """
@@ -41730,7 +41730,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     all_active_multihoming:
                                        Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                       IPVPN Gateway.
+                                       IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -45756,7 +45756,7 @@ class EosDesigns(EosDesignsRootModel):
                             all_active_multihoming: AllActiveMultihoming
                             """
                             Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                            IPVPN Gateway.
+                            IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                             Subclass of AvdModel.
                             """
@@ -45798,7 +45798,7 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         all_active_multihoming:
                                            Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                           IPVPN Gateway.
+                                           IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                            Subclass of AvdModel.
 
@@ -49804,7 +49804,7 @@ class EosDesigns(EosDesignsRootModel):
                         all_active_multihoming: AllActiveMultihoming
                         """
                         Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                        IPVPN Gateway.
+                        IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                         Subclass of AvdModel.
                         """
@@ -49846,7 +49846,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     all_active_multihoming:
                                        Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                       IPVPN Gateway.
+                                       IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -53899,7 +53899,7 @@ class EosDesigns(EosDesignsRootModel):
                         all_active_multihoming: AllActiveMultihoming
                         """
                         Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                        IPVPN Gateway.
+                        IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                         Subclass of AvdModel.
                         """
@@ -53941,7 +53941,7 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     all_active_multihoming:
                                        Enable Active Active Multihoming architecture for EVPN Gateways. Not supported with MLAG or with
-                                       IPVPN Gateway.
+                                       IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
