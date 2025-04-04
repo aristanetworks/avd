@@ -157,7 +157,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             ),
             shutdown=False,
             service_profile=self.inputs.p2p_uplinks_qos_profile,
-            flow_tracker=self.shared_utils.new_get_flow_tracker(
+            flow_tracker=self.shared_utils.get_flow_tracker(
                 self.inputs.fabric_flow_tracking.mlag_interfaces, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
             ),
         )

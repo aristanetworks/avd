@@ -64,7 +64,7 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
 @pytest.mark.molecule_scenarios(
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
-    "eos_designs_l2l2",
+    "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     "eos_designs-twodc-5stage-clos",
     "evpn_underlay_ebgp_overlay_ebgp",
@@ -97,7 +97,7 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
 @pytest.mark.molecule_scenarios(
     "eos_designs_unit_tests",
     "eos_designs_deprecated_vars",
-    "eos_designs_l2l2",
+    "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     "eos_designs-twodc-5stage-clos",
     "evpn_underlay_ebgp_overlay_ebgp",

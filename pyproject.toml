@@ -18,7 +18,8 @@ extend-exclude = [
 target-version = "py310"
 
 [tool.ruff.lint]
-extend-select = ["ALL"]
+# D213 is forced here since it will be removed by pydocstyle.convention = 'google' even when we have ALL here.
+extend-select = ["ALL", "D213"]
 ignore = [
   "D203",    # Ignoring conflicting D* warnings - one-blank-line-before-class
   "D212",    # Ignoring conflicting D* warnings - multi-line-summary-first-line
@@ -118,3 +119,14 @@ docstring-code-format = true
 [tool.ruff.lint.flake8-type-checking]
 # These classes require that type annotations be available at runtime
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
+[tool.pyright]
+include = [
+  ".github",
+  "python-avd/pyavd/_eos_designs",
+]
+exclude = [
+    "python-avd/pyavd/_eos_designs/schema/__init__.py",
+    "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py",
+]
+pythonVersion = "3.10"

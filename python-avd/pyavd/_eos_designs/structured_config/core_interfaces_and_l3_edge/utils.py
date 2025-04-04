@@ -296,7 +296,7 @@ class UtilsMixin(Protocol):
         elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
             interface.sflow.enable = p2p_link_sflow
 
-        if (p2p_link_flow_tracking := self.shared_utils.new_get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
+        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
             interface.flow_tracker = p2p_link_flow_tracking
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003

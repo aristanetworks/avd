@@ -13,7 +13,8 @@ if TYPE_CHECKING:
 
 
 def cprofile(sort_by: str = "cumtime") -> Callable:
-    """Profile an Ansible action plugin with cProfile.
+    """
+    Profile an Ansible action plugin with cProfile.
 
     Profiling is conditionally enabled based on the presence of `cprofile_file` in the task arguments.
 
@@ -29,7 +30,8 @@ def cprofile(sort_by: str = "cumtime") -> Callable:
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
-            """Enable cProfile or not.
+            """
+            Enable cProfile or not.
 
             If `cprofile_file` is present in the task arguments, cProfile will be enabled
             and will dump the stats to the provided cProfile file.
