@@ -44,4 +44,4 @@ tenants:
             ip_address_virtual: 10.10.11.1/24
 
 expected_error_message: >-
-  The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings -> feature_support
+  The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support.
