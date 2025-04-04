@@ -199,7 +199,7 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Molecule
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[.github/molecule-ci-requirements.txt]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[molecule]"
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
