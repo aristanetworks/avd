@@ -9687,7 +9687,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             all_active_multihoming: bool
             """
-            Supports the configuration for the all-active EVPN gateway redundancy model.
+            Support for all-active EVPN gateway redundancy.
 
             Default value: `False`
             """
@@ -9737,7 +9737,7 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        all_active_multihoming: Supports the configuration for the all-active EVPN gateway redundancy model.
+                        all_active_multihoming: Support for all-active EVPN gateway redundancy.
 
                     """
 
@@ -10004,7 +10004,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             all_active_multihoming: bool
             """
-            Supports the configuration for the all-active EVPN gateway redundancy model.
+            Support for all-active EVPN gateway redundancy.
 
             Default value: `False`
             """
@@ -10054,7 +10054,7 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        all_active_multihoming: Supports the configuration for the all-active EVPN gateway redundancy model.
+                        all_active_multihoming: Support for all-active EVPN gateway redundancy.
 
                     """
 

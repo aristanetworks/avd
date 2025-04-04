@@ -3435,8 +3435,7 @@ keys:
             all_active_multihoming:
               type: bool
               default: false
-              description: Supports the configuration for the all-active EVPN gateway
-                redundancy model.
+              description: Support for all-active EVPN gateway redundancy.
         management_interface:
           type: str
           default: Management1

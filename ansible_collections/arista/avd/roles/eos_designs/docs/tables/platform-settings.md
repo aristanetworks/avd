@@ -28,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.all_active_multihoming") | Boolean |  | `False` |  | Supports the configuration for the all-active EVPN gateway redundancy model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -58,7 +58,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "platform_settings.[].feature_support.all_active_multihoming") | Boolean |  | `False` |  | Supports the configuration for the all-active EVPN gateway redundancy model. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "platform_settings.[].feature_support.all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -130,7 +130,7 @@
             # Maximum rx_queue count supported on any interface.
             max_rx_queues: <int; default=6>
 
-          # Supports the configuration for the all-active EVPN gateway redundancy model.
+          # Support for all-active EVPN gateway redundancy.
           all_active_multihoming: <bool; default=False>
         management_interface: <str; default="Management1">
 
@@ -208,7 +208,7 @@
             # Maximum rx_queue count supported on any interface.
             max_rx_queues: <int; default=6>
 
-          # Supports the configuration for the all-active EVPN gateway redundancy model.
+          # Support for all-active EVPN gateway redundancy.
           all_active_multihoming: <bool; default=False>
         management_interface: <str; default="Management1">
 

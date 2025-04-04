@@ -218,13 +218,13 @@ class RouterBgpMixin(Protocol):
                 )
                 if self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enabled:
                     if self.shared_utils.node_config.mlag:
-                        msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node"
+                        msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
                         raise AristaAvdError(msg)
                     if not self.shared_utils.platform_settings.feature_support.all_active_multihoming:
-                        msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings -> feature_support"
+                        msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
                         raise AristaAvdError(msg)
                     if self.shared_utils.overlay_ipvpn_gateway:
-                        msg = "The All Active Multihoming resiliency model is not compatible along the IPVPN Gateway model"
+                        msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
                         raise AristaAvdError(msg)
                     self.structured_config.router_bgp.address_family_evpn._update(
                         domain_identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local
