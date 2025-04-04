@@ -139,10 +139,6 @@ jobs:
           python-version: |
             3.12
       - name: Create wheel packages of pyavd dependencies
-        # run: |
-        #   pip install build
-        #   cd python-avd
-        #   python -m build --wheel --outdir /tmp/pyavd
         run: |
           pip install build
           pip wheel -r .github/molecule-ci-requirements.txt --wheel-dir /tmp/pyavd
@@ -228,7 +224,6 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
-          python -m pip install -r .github/molecule-ci-requirements.txt
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -295,7 +290,6 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
-          python -m pip install -r .github/molecule-ci-requirements.txt
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -340,7 +334,6 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
-          python -m pip install -r .github/molecule-ci-requirements.txt
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -385,7 +378,6 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
-          python -m pip install -r .github/molecule-ci-requirements.txt
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -426,7 +418,6 @@ jobs:
       - name: Install Ansible Version & Run Tests
         run: |
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
-          python -m pip install -r .github/molecule-ci-requirements.txt
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -501,6 +492,7 @@ jobs:
         run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
       - name: "Install pyavd and ansible requirements"
         run: |
+          ls /tmp/pyavd/*.whl
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
           pip install "ansible-core<2.19.0"
       - name: "Run ansible-test units"
