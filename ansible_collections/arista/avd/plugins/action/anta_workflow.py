@@ -17,11 +17,10 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.plugins.action import ActionBase, display
 
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.anta_logging_filter import AntaLoggingFilter
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import ActionPluginVars, AntaLoggingFilter, PythonToAnsibleHandler
 
 if TYPE_CHECKING:
-    from collections.abc import Iterator, Mapping
+    from collections.abc import Iterator
 
     from pyavd.api._anta import MinimalStructuredConfig
 
@@ -155,8 +154,9 @@ class ActionModule(ActionBase):
             msg = "'device_list' cannot be empty"
             raise AnsibleActionFail(msg)
 
-        # Extract only the needed hostvars from each device
-        ANSIBLE_VARS = extract_hostvars(device_list, task_vars["hostvars"])
+        # Get the required Ansible variables for each device
+        action_plugin_vars = ActionPluginVars(self)
+        ANSIBLE_VARS = get_ansible_vars(device_list, action_plugin_vars)
         deployed_devices = list(ANSIBLE_VARS.keys())
 
         generate_avd_catalogs = get(PLUGIN_ARGS, "avd_catalogs.enabled")
@@ -280,30 +280,26 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict)
             file.write(result_manager.json)
 
 
-def extract_hostvars(device_list: list[str], hostvars: Mapping) -> dict:
-    """Extract only the required hostvars for each device."""
-    device_vars = {}
+def get_ansible_vars(device_list: list[str], action_plugin_vars: ActionPluginVars) -> dict[str, dict[str, Any]]:
+    """Get the required Ansible variables from the Action plugin variables for each device."""
+    ansible_vars = {}
 
     for device in device_list:
-        if device not in hostvars:
-            msg = f"Device '{device}' not found in Ansible inventory"
-            raise ValueError(msg)
-
-        host_hostvars = hostvars[device]
+        device_vars = action_plugin_vars[device]
 
         # Since we can run ANTA without any structured configs, i.e., only using user-defined catalogs,
         # we honor the `is_deployed` flag in the hostvars to skip devices that are not deployed.
-        if get(host_hostvars, "is_deployed", default=True) is False:
+        if get(device_vars, "is_deployed", default=True) is False:
             LOGGER.info("skipping %s - device marked as not deployed", device)
             continue
 
         # Adding the Ansible connection variables following the HTTPAPI connection plugin settings
-        device_vars[device] = {key: get(host_hostvars, key) for key in ANSIBLE_CONNECTION_VARS}
+        ansible_vars[device] = {key: get(device_vars, key) for key in ANSIBLE_CONNECTION_VARS}
 
         # Same as above, we also honor the `anta_tags` variable if provided in the hostvars
-        device_vars[device]["anta_tags"] = get(host_hostvars, "anta_tags")
+        ansible_vars[device]["anta_tags"] = get(device_vars, "anta_tags")
 
-    return device_vars
+    return ansible_vars
 
 
 def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaInventory, AntaCatalog]:
@@ -380,7 +376,6 @@ def build_anta_device(device: str) -> AsyncEOSDevice:
 
     device_vars = ANSIBLE_VARS[device]
 
-    # TODO: Confirm this is working with Ansible Vault
     device_settings = {
         "name": device,
         "host": get(device_vars, "ansible_host", default=get(device_vars, "inventory_hostname")),
@@ -438,7 +433,7 @@ def load_user_catalogs(catalogs_dir: str) -> AntaCatalog:
     return AntaCatalog.merge_catalogs(catalogs)
 
 
-def load_structured_configs(device_list: list[str], structured_config_dir: str, structured_config_suffix: str) -> dict:
+def load_structured_configs(device_list: list[str], structured_config_dir: str, structured_config_suffix: str) -> dict[str, Any]:
     """Load the structured configurations for the devices in the provided list from the given directory."""
     return {device: load_one_structured_config(device, structured_config_dir, structured_config_suffix) for device in device_list}
 
