@@ -381,12 +381,14 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.255.11.10/32
+  hardware_forwarding_id: true
 - name: Loopback123
   description: Test-Loopback
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.1.53.0/32
   ospf_area: '1'
+  hardware_forwarding_id: true
 management_api_http:
   enable_https: true
   default_services: false

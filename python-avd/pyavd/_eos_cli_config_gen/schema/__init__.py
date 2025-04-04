@@ -17039,6 +17039,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Ipv6StaticRoutes._item_type = Ipv6StaticRoutesItem
 
+    class Kernel(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"software_forwarding_ecmp": {"type": bool}}
+        software_forwarding_ecmp: bool | None
+        """Program ECMP routes in the kernel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, software_forwarding_ecmp: bool | None | UndefinedType = Undefined) -> None:
+                """
+                Kernel.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    software_forwarding_ecmp: Program ECMP routes in the kernel.
+
+                """
+
     class L2Protocol(AvdModel):
         """Subclass of AvdModel."""
 
@@ -64357,6 +64378,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
         "ipv6_unicast_routing": {"type": bool},
         "is_deployed": {"type": bool, "default": True},
+        "kernel": {"type": Kernel},
         "l2_protocol": {"type": L2Protocol},
         "lacp": {"type": Lacp},
         "link_tracking_groups": {"type": LinkTrackingGroups},
@@ -64755,6 +64777,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
     Default value: `True`
     """
+    kernel: Kernel
+    """Subclass of AvdModel."""
     l2_protocol: L2Protocol
     """Subclass of AvdModel."""
     lacp: Lacp
@@ -65109,6 +65133,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
             ipv6_unicast_routing: bool | None | UndefinedType = Undefined,
             is_deployed: bool | UndefinedType = Undefined,
+            kernel: Kernel | UndefinedType = Undefined,
             l2_protocol: L2Protocol | UndefinedType = Undefined,
             lacp: Lacp | UndefinedType = Undefined,
             link_tracking_groups: LinkTrackingGroups | UndefinedType = Undefined,
@@ -65407,6 +65432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_static_routes: Subclass of AvdList with `Ipv6StaticRoutesItem` items.
                 ipv6_unicast_routing: ipv6_unicast_routing
                 is_deployed: Key only used for documentation or validation purposes.
+                kernel: Subclass of AvdModel.
                 l2_protocol: Subclass of AvdModel.
                 lacp:
                    Set Link Aggregation Control Protocol (LACP) parameters.

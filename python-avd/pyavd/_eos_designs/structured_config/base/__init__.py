@@ -421,12 +421,13 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
     @structured_config_contributor
     def management_api_http(self) -> None:
         """management_api_http set based on management_eapi data-model."""
-        self.structured_config.management_api_http.enable_vrfs.append_new(name=self.inputs.mgmt_interface_vrf)
-        self.structured_config.management_api_http._update(
-            enable_http=self.inputs.management_eapi.enable_http,
-            enable_https=self.inputs.management_eapi.enable_https,
-            default_services=self.inputs.management_eapi.default_services,
-        )
+        if self.inputs.management_eapi.enabled:
+            self.structured_config.management_api_http.enable_vrfs.append_new(name=self.inputs.mgmt_interface_vrf)
+            self.structured_config.management_api_http._update(
+                enable_http=self.inputs.management_eapi.enable_http,
+                enable_https=self.inputs.management_eapi.enable_https,
+                default_services=self.inputs.management_eapi.default_services,
+            )
 
     @structured_config_contributor
     def link_tracking_groups(self) -> None:

@@ -6718,6 +6718,12 @@ keys:
     description: Key only used for documentation or validation purposes.
     type: bool
     default: true
+  kernel:
+    type: dict
+    keys:
+      software_forwarding_ecmp:
+        type: bool
+        description: Program ECMP routes in the kernel.
   l2_protocol:
     type: dict
     keys:
