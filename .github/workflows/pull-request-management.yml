@@ -183,7 +183,8 @@ jobs:
         run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
       - name: Install pyavd, Ansible Version & Run Molecule
         run: |
-          python -m pip install --no-cache-dir /tmp/pyavd/*.whl[anta,cvprac,netaddr,pyyaml,treelib,jsonschema,distlib,molecule,molecule_docker]
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
+          python -m pip install --no-cache-dir "$WHEEL_FILE[anta,cvprac,netaddr,yaml,treelib,jsonschema,distlib,molecule,molecule_docker]"
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
