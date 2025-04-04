@@ -464,7 +464,7 @@ jobs:
         run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
       - name: "Install pyavd and Ansible requirements"
         run: |
-          python -m pip install --no-cache-dir /tmp/pyavd/*.whl
+          python -m pip install --no-cache-dir /tmp/pyavd/pyavd-*.whl
           pip install ${{ matrix.pip_installation }} --upgrade
       - name: "Run ansible-test sanity"
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -492,7 +492,6 @@ jobs:
         run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
       - name: "Install pyavd and ansible requirements"
         run: |
-          ls /tmp/pyavd/*.whl
           python -m pip install --no-cache-dir /tmp/pyavd/*.whl
           pip install "ansible-core<2.19.0"
       - name: "Run ansible-test units"
