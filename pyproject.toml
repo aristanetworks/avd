@@ -119,3 +119,14 @@ docstring-code-format = true
 [tool.ruff.lint.flake8-type-checking]
 # These classes require that type annotations be available at runtime
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
+
+[tool.pyright]
+include = [
+  ".github",
+  "python-avd/pyavd/_eos_designs",
+]
+exclude = [
+    "python-avd/pyavd/_eos_designs/schema/__init__.py",
+    "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py",
+]
+pythonVersion = "3.10"

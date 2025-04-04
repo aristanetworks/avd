@@ -35402,6 +35402,7 @@ class EosDesigns(EosDesignsRootModel):
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
                             "nodes": {"type": Nodes},
+                            "structured_config": {"type": EosCliConfigGen.RouterOspf.ProcessIdsItem},
                         }
                         enabled: bool | None
                         process_id: int | None
@@ -35429,6 +35430,11 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
+                        structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
+                        """
+                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
+                        eos_cli_config_gen.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -35443,6 +35449,7 @@ class EosDesigns(EosDesignsRootModel):
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospf.
@@ -35468,6 +35475,9 @@ class EosDesigns(EosDesignsRootModel):
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
+                                    structured_config:
+                                       Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
+                                       eos_cli_config_gen.
 
                                 """
 
