@@ -553,6 +553,13 @@ $defs:
                     items:
                       type: str
                       description: Hostname.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for eos_cli_config_gen.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings

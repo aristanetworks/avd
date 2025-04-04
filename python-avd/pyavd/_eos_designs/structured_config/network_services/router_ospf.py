@@ -48,6 +48,11 @@ class RouterOspfMixin(Protocol):
                 )
                 self._update_ospf_interface(process, vrf)
 
+                if vrf.ospf.structured_config:
+                    self.custom_structured_configs.nested.router_ospf.process_ids.obtain(process_id)._deepmerge(
+                        vrf.ospf.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                    )
+
                 if vrf.name != "default":
                     process.vrf = vrf.name
                 if vrf.ospf.bfd:

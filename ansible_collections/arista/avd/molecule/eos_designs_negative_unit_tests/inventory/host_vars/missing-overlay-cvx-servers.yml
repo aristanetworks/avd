@@ -1,0 +1,23 @@
+type: l3leaf
+
+overlay_routing_protocol: CVX
+node_type_keys:
+  - key: l3leaf
+    type: l3leaf
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+  nodes:
+    - name: missing-overlay-cvx-servers
+      bgp_as: 65001
+      id: 1
+
+expected_error_message: >-
+  'overlay_cvx_servers' is required but was not found.
