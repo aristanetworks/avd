@@ -62,7 +62,7 @@ repos:
           - --allow-past-years
           - --fuzzy-match-generates-todo
           - --comment-style
-          - "{#||#}"
+          - '{#||#}'
           - --no-extra-eol
 
       - id: insert-license
@@ -76,7 +76,7 @@ repos:
           - --allow-past-years
           - --fuzzy-match-generates-todo
           - --comment-style
-          - "<!--|  ~|  -->"
+          - '<!--|  ~|  -->'
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
@@ -130,8 +130,8 @@ repos:
         language: python
         types: [text]
         args:
-          - "--ignore-words=.github/ignore-codespell-words" # Ignore words listed in this file
-        exclude: > # List of regex patterns for files/directories to exclude
+          - '--ignore-words=.github/ignore-codespell-words'  # Ignore words listed in this file
+        exclude: >  # List of regex patterns for files/directories to exclude
           (?x)^(
             .*\.cfg|  # Exclude all .cfg files
             .*\.svg|  # Exclude all .svg files
@@ -149,6 +149,7 @@ repos:
 
   - repo: local
     hooks:
+
       - id: docs-plugin-modules
         name: Build documentation for collection modules and action plugins.
         entry: >-
@@ -156,8 +157,7 @@ repos:
           --markdown "docs/plugins/Modules_and_action_plugins/"
         language: python
         types: [python]
-        additional_dependencies:
-          ["ansible-doc-extractor>=0.1.10", "ansible-core>=2.16.0,<2.19.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/modules/
 
       - id: docs-plugin-filter
@@ -167,8 +167,7 @@ repos:
           --markdown "docs/plugins/Filter_plugins/"
         language: python
         types_or: [python, yaml]
-        additional_dependencies:
-          ["ansible-doc-extractor>=0.1.10", "ansible-core>=2.16.0,<2.19.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/filter/
         exclude: ^(ansible_collections/arista/avd/plugins/filter/deprecated_filters.py)$
 
@@ -179,8 +178,7 @@ repos:
           --markdown "docs/plugins/Lookup_plugins/"
         language: python
         types: [python]
-        additional_dependencies:
-          ["ansible-doc-extractor>=0.1.10", "ansible-core>=2.16.0,<2.19.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/lookup/
 
       - id: docs-plugin-test
@@ -190,8 +188,7 @@ repos:
           --markdown "docs/plugins/Test_plugins/"
         language: python
         types: [python]
-        additional_dependencies:
-          ["ansible-doc-extractor>=0.1.10", "ansible-core>=2.16.0,<2.19.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/test/
 
       - id: docs-plugin-vars
@@ -201,8 +198,7 @@ repos:
           --markdown "docs/plugins/Vars_plugins/"
         language: python
         types: [python]
-        additional_dependencies:
-          ["ansible-doc-extractor>=0.1.10", "ansible-core>=2.16.0,<2.19.0"]
+        additional_dependencies: ['ansible-doc-extractor>=0.1.10', 'ansible-core>=2.16.0,<2.19.0']
         files: ansible_collections/arista/avd/plugins/vars/
 
       - id: schemas
@@ -211,15 +207,7 @@ repos:
         language: python
         files: python-avd/pyavd/[a-z_]+/schema
         pass_filenames: false
-        additional_dependencies:
-          [
-            "deepmerge>=1.1.0",
-            "PyYAML>=6.0.0",
-            "pydantic>=2.3.0",
-            "jsonschema-rs>=0.24",
-            "referencing>=0.35.0",
-            "ruff==0.7.2",
-          ]
+        additional_dependencies: ['deepmerge>=1.1.0', 'PyYAML>=6.0.0', 'pydantic>=2.3.0', 'jsonschema-rs>=0.24', 'referencing>=0.35.0', 'ruff==0.7.2']
 
       - id: templates
         name: Precompile Jinja2 templates
@@ -227,8 +215,7 @@ repos:
         language: python
         files: python-avd/pyavd/(_eos_cli_config_gen|_eos_designs)/j2templates/
         pass_filenames: false
-        additional_dependencies:
-          ["Jinja2>=3.0.0", "cryptography>=38.0.4", "deepmerge>=1.1.0"]
+        additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.17.2
