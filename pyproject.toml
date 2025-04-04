@@ -128,5 +128,6 @@ include = [
 exclude = [
     "python-avd/pyavd/_eos_designs/schema/__init__.py",
     "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py",
+    "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
 ]
 pythonVersion = "3.10"
