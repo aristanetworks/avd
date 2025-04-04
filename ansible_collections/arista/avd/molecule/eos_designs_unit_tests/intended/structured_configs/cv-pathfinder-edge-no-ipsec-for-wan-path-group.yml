@@ -1,0 +1,510 @@
+aaa_root:
+  disabled: true
+agents:
+- name: KernelFib
+  environment_variables:
+  - name: KERNELFIB_PROGRAM_ALL_ECMP
+    value: '1'
+application_traffic_recognition:
+  field_sets:
+    ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 10.10.10.10/32
+  applications:
+    ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
+  application_profiles:
+  - name: TEST
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
+config_end: true
+dps_interfaces:
+- name: Dps1
+  description: DPS Interface
+  mtu: 9194
+  ip_address: 192.168.255.1/32
+  flow_tracker:
+    hardware: FLOW-TRACKER
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1/1
+  description: ATT_666
+  shutdown: false
+  ip_address: 192.168.1.105/31
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet1/2
+  description: ATT_777
+  shutdown: false
+  ip_address: 192.168.2.205/31
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+flow_tracking:
+  hardware:
+    trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
+    shutdown: false
+hostname: cv-pathfinder-edge-no-ipsec-for-wan-path-group
+ip_access_lists:
+- name: ACL-NAT-IE-ZSCALER
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
+ip_extcommunity_lists:
+- name: ECL-EVPN-SOO
+  entries:
+  - type: permit
+    extcommunities: soo 192.168.42.1:136
+ip_nat:
+  profiles:
+  - name: NAT-IE-ZSCALER
+    source:
+      dynamic:
+      - access_list: ACL-NAT-IE-ZSCALER
+        nat_type: pool
+        pool_name: PORT-ONLY-POOL
+  pools:
+  - name: PORT-ONLY-POOL
+    type: port-only
+    ranges:
+    - first_port: 1500
+      last_port: 65535
+ip_routing: true
+ip_security:
+  ike_policies:
+  - name: CP-IKE-POLICY
+    local_id: 192.168.255.1
+  - name: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    local_id_fqdn: cv-pathfinder-edge-no-ipsec-for-wan-path-group_ZSCALER-EXIT-POLICY-1@test.local
+    ike_lifetime: 24
+    encryption: aes256
+    dh_group: 24
+  sa_policies:
+  - name: DP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  - name: CP-SA-POLICY
+    esp:
+      encryption: aes256gcm128
+    pfs_dh_group: 14
+  - name: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    sa_lifetime:
+      value: 8
+    esp:
+      integrity: sha256
+      encryption: aes256
+    pfs_dh_group: 24
+  profiles:
+  - name: DP-PROFILE
+    sa_policy: DP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890666
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
+    connection: start
+    shared_key: ABCDEF1234567890
+    dpd:
+      interval: 10
+      time: 50
+      action: clear
+    mode: transport
+  - name: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+    ike_policy: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    sa_policy: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    connection: start
+    shared_key: 0007054B145A1F0E0928424A0C0B4812160C094924246921232627104A100C131B4E595D191E020C1E145F455C47456B316825267472365E233C723F4B3F0E60672A2048462D3F242D191417001C000E373834263E60786D7F602B27
+    dpd:
+      interval: 10
+      time: 60
+      action: clear
+  key_controller:
+    profile: DP-PROFILE
+  connection_tx_interface_match_source_ip: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.42.1/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    tls_versions: '1.2'
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  cv_tags:
+    device_tags:
+    - name: Role
+      value: edge
+    - name: Region
+      value: AVD_Land_West_1
+    - name: Zone
+      value: AVD_Land_West_1-ZONE
+    - name: Site
+      value: Site136
+    interface_tags:
+    - interface: Ethernet1/1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT
+      - name: Circuit
+        value: '666'
+    - interface: Ethernet1/2
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: ATT
+      - name: Circuit
+        value: '777'
+  cv_pathfinder:
+    role: edge
+    region: AVD_Land_West_1
+    zone: AVD_Land_West_1-ZONE
+    site: Site136
+    vtep_ip: 192.168.255.1
+    ssl_profile: STUN-DTLS
+    pathfinders:
+    - vtep_ip: 10.10.10.10
+    interfaces:
+    - name: Ethernet1/1
+      carrier: ATT
+      circuit_id: '666'
+      pathgroup: INET
+    - name: Ethernet1/2
+      carrier: ATT
+      circuit_id: '777'
+      pathgroup: INET
+    internet_exit_policies:
+    - name: ZSCALER-EXIT-POLICY-1
+      type: zscaler
+      city: Santa Clara, CA
+      country: United States
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-edge-no-ipsec-for-wan-path-group_ZSCALER-EXIT-POLICY-1@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B4812160C094924246921232627104A100C131B4E595D191E020C1E145F455C47456B316825267472365E233C723F4B3F0E60672A2048462D3F242D191417001C000E373834263E60786D7F602B27
+      tunnels:
+      - name: Tunnel100
+        preference: Preferred
+        endpoint:
+          ip_address: 192.168.121.108
+          datacenter: FMT1
+          city: Fremont, CA
+          country: United States
+          region: us-west1
+          latitude: '37'
+          longitude: '-121'
+monitor_connectivity:
+  shutdown: false
+  interface_sets:
+  - name: SET-Tunnel100
+    interfaces: Tunnel100
+  hosts:
+  - name: IE-Tunnel100
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+    ip: 192.168.121.108
+    local_interfaces: SET-Tunnel100
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.42.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.42.1:136 additive
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 192.168.42.1:136 additive
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - extcommunity ECL-EVPN-SOO
+router_adaptive_virtual_topology:
+  topology_role: edge
+  region:
+    name: AVD_Land_West_1
+    id: 36
+  zone:
+    name: AVD_Land_West_1-ZONE
+    id: 1
+  site:
+    name: Site136
+    id: 136
+  profiles:
+  - name: DEFAULT-POLICY-TEST
+    load_balance_policy: LB-DEFAULT-POLICY-TEST
+    internet_exit_policy: ZSCALER-EXIT-POLICY-1
+  - name: DEFAULT-POLICY-CONTROL-PLANE
+    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
+  policies:
+  - name: DEFAULT-POLICY
+    matches:
+    - application_profile: TEST
+      avt_profile: DEFAULT-POLICY-TEST
+  - name: DEFAULT-POLICY-WITH-CP
+    matches:
+    - application_profile: APP-PROFILE-CONTROL-PLANE
+      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
+    - application_profile: TEST
+      avt_profile: DEFAULT-POLICY-TEST
+  vrfs:
+  - name: PROD
+    policy: DEFAULT-POLICY
+    profiles:
+    - name: DEFAULT-POLICY-TEST
+      id: 42
+  - name: default
+    policy: DEFAULT-POLICY-WITH-CP
+    profiles:
+    - name: DEFAULT-POLICY-CONTROL-PLANE
+      id: 254
+    - name: DEFAULT-POLICY-TEST
+      id: 42
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 192.168.42.1
+  maximum_paths:
+    paths: 16
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: WAN-OVERLAY-PEERS
+    type: wan
+    remote_as: '65000'
+    update_source: Dps1
+    bfd: true
+    bfd_timers:
+      interval: 1000
+      min_rx: 1000
+      multiplier: 10
+    password: htm4AZe9mIQOO1uiMuGgYQ==
+    send_community: all
+    maximum_routes: 0
+    ttl_maximum_hops: 1
+  neighbors:
+  - ip_address: 10.10.10.10
+    peer_group: WAN-OVERLAY-PEERS
+    peer: cv-pathfinder-pathfinder
+    description: cv-pathfinder-pathfinder_Dps1
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
+      encapsulation: path-selection
+  address_family_ipv4:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: false
+  address_family_ipv4_sr_te:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  address_family_link_state:
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+    path_selection:
+      roles:
+        producer: true
+  address_family_path_selection:
+    bgp:
+      additional_paths:
+        receive: true
+        send: any
+    peer_groups:
+    - name: WAN-OVERLAY-PEERS
+      activate: true
+  vrfs:
+  - name: default
+    rd: 192.168.42.1:1
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '1:1'
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+  - name: PROD
+    rd: 192.168.42.1:42
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '42:42'
+    router_id: 192.168.42.1
+    redistribute:
+      connected:
+        enabled: true
+router_internet_exit:
+  policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    exit_groups:
+    - name: ZSCALER-EXIT-POLICY-1_PRI
+    - name: system-default-exit-group
+  exit_groups:
+  - name: ZSCALER-EXIT-POLICY-1_PRI
+    local_connections:
+    - name: IE-Tunnel100
+router_path_selection:
+  path_groups:
+  - name: INET
+    id: 101
+    local_interfaces:
+    - name: Ethernet1/1
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder-Ethernet1_1
+    - name: Ethernet1/2
+      stun:
+        server_profiles:
+        - INET-cv-pathfinder-pathfinder-Ethernet1_1
+    dynamic_peers:
+      enabled: true
+      ipsec: false
+    static_peers:
+    - router_ip: 10.10.10.10
+      name: cv-pathfinder-pathfinder
+      ipv4_addresses:
+      - 192.168.55.55
+  load_balance_policies:
+  - name: LB-DEFAULT-POLICY-TEST
+    path_groups:
+    - name: INET
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+    path_groups:
+    - name: INET
+  tcp_mss_ceiling:
+    ipv4_segment_size: auto
+router_service_insertion:
+  enabled: true
+  connections:
+  - name: IE-Tunnel100
+    tunnel_interface:
+      primary: Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
+router_traffic_engineering:
+  enabled: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- destination_address_prefix: 192.168.121.108/32
+  gateway: 192.168.1.104
+  name: IE-ZSCALER-PRI
+stun:
+  client:
+    server_profiles:
+    - name: INET-cv-pathfinder-pathfinder-Ethernet1_1
+      ip_address: 192.168.55.55
+      ssl_profile: STUN-DTLS
+transceiver_qsfp_default_mode_4x10: false
+tunnel_interfaces:
+- name: Tunnel100
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+  mtu: 1394
+  ip_address: unnumbered Loopback0
+  tunnel_mode: ipsec
+  source_interface: Ethernet1/1
+  destination: 192.168.121.108
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: PROD
+  ip_routing: true
+  tenant: TenantA
+vxlan_interface:
+  vxlan1:
+    description: cv-pathfinder-edge-no-ipsec-for-wan-path-group_VTEP
+    vxlan:
+      source_interface: Dps1
+      udp_port: 4789
+      vrfs:
+      - name: default
+        vni: 1
+      - name: PROD
+        vni: 42

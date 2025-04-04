@@ -15,7 +15,8 @@ from ._base_classes import AntaTestInputFactory
 
 
 class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyInterfacesStatus` test.
+    """
+    Input factory class for the `VerifyInterfacesStatus` test.
 
     This factory generates test inputs for verifying the status of interfaces.
 

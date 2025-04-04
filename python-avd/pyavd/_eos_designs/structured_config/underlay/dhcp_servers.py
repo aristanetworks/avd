@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get
 
 
 class DhcpServersMixin(Protocol):
@@ -49,21 +48,21 @@ class DhcpServersMixin(Protocol):
         Used for l3 inband ztp/ztr.
         """
         for peer in self._avd_peers:
-            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
-            for uplink in peer_facts["uplinks"]:
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
                 if (
-                    uplink["peer"] == self.shared_utils.hostname
-                    and uplink["type"] == "underlay_p2p"
-                    and uplink.get("ip_address")
-                    and "unnumbered" not in uplink["ip_address"]
-                    and get(peer_facts, "inband_ztp")
+                    uplink.peer == self.shared_utils.hostname
+                    and uplink.type == "underlay_p2p"
+                    and uplink.ip_address
+                    and "unnumbered" not in uplink.ip_address
+                    and peer_facts.inband_ztp
                 ):
                     subnet_item = EosCliConfigGen.DhcpServersItem.SubnetsItem(
-                        subnet=str(ip_network(f"{uplink['peer_ip_address']}/{uplink['prefix_length']}", strict=False)),
-                        name=f"inband ztp for {peer}-{uplink['interface']}",
-                        default_gateway=f"{uplink['peer_ip_address']}",
+                        subnet=str(ip_network(f"{uplink.peer_ip_address}/{uplink.prefix_length}", strict=False)),
+                        name=f"inband ztp for {peer}-{uplink.interface}",
+                        default_gateway=f"{uplink.peer_ip_address}",
                     )
-                    subnet_item.ranges.append_new(start=str(uplink["ip_address"]), end=str(uplink["ip_address"]))
+                    subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
                     dhcp_server.subnets.append(subnet_item)
 
     def _update_ipv4_ztp_boot_file(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:

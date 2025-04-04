@@ -26,7 +26,8 @@ LOGGER = logging.getLogger(__name__)
 
 
 class DeviceUtilsMixin:
-    """Mixin class for the eos_validate_state tests.
+    """
+    Mixin class for the eos_validate_state tests.
 
     This class provides utility methods for handling and manipulating device-related data.
 
@@ -34,7 +35,8 @@ class DeviceUtilsMixin:
     """
 
     def update_interface_shutdown(self, interface: dict, host: str | None = None) -> None:
-        """Update the interface shutdown key, considering EOS default.
+        """
+        Update the interface shutdown key, considering EOS default.
 
         For Ethernet interfaces:
         - If the interface `shutdown` key is not set, the host `interface_defaults.ethernet.shutdown` key is used.
@@ -54,7 +56,8 @@ class DeviceUtilsMixin:
             interface["shutdown"] = get(interface, "shutdown", default=False)
 
     def is_peer_available(self, peer: str) -> bool:
-        """Check if a peer is deployed by looking at his `is_deployed` key.
+        """
+        Check if a peer is deployed by looking at his `is_deployed` key.
 
         Args:
         ----
@@ -75,7 +78,8 @@ class DeviceUtilsMixin:
         return True
 
     def get_interface_ip(self, interface_model: str, interface_name: str, host: str | None = None) -> str | None:
-        """Retrieve the IP address of a specified host interface.
+        """
+        Retrieve the IP address of a specified host interface.
 
         Args:
         ----
@@ -99,7 +103,8 @@ class DeviceUtilsMixin:
         return ip_address
 
     def is_dhcp_interface(self, interface: dict) -> bool:
-        """Check if the interface is a DHCP interface.
+        """
+        Check if the interface is a DHCP interface.
 
         Args:
         ----
@@ -112,7 +117,8 @@ class DeviceUtilsMixin:
         return interface["ip_address"] == "dhcp"
 
     def is_subinterface(self, interface: dict) -> bool:
-        """Check if the interface is a subinterface.
+        """
+        Check if the interface is a subinterface.
 
         Args:
         ----
@@ -138,7 +144,8 @@ class DeviceUtilsMixin:
 
 
 class ValidationMixin:
-    """Mixin class for the eos_validate_state tests.
+    """
+    Mixin class for the eos_validate_state tests.
 
     This class provides validation methods for the structured configuration data.
 
@@ -155,7 +162,8 @@ class ValidationMixin:
         logging_level: str = "INFO",
         **kwargs: dict,
     ) -> bool:
-        """Validate data based on given requirements such as expected key-value pairs and required keys.
+        """
+        Validate data based on given requirements such as expected key-value pairs and required keys.
 
         In the context of the eos_validate_state tests, if the data is not valid, the test is skipped.
 

@@ -14,6 +14,10 @@ keys:
       The VRF is set to < mgmt_interface_vrf >.
     type: dict
     keys:
+      enabled:
+        description: Enable/Disable api http-commands.
+        type: bool
+        default: true
       enable_http:
         type: bool
       enable_https:

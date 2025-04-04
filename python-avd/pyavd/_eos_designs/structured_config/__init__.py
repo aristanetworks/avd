@@ -23,6 +23,9 @@ from .structured_config_generator import StructCfgs
 from .underlay import AvdStructuredConfigUnderlay
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd.avd_schema_tools import AvdSchemaTools
 
     from .structured_config_generator import StructuredConfigGenerator
@@ -57,21 +60,27 @@ The order is important, since later modules can overwrite or read config created
 
 
 def get_structured_config(
-    vars: dict,  # noqa: A002
+    *,
+    hostname: str,
+    hostvars: Mapping,
     input_schema_tools: AvdSchemaTools,
+    all_facts: Mapping[str, EosDesignsFacts],
     result: dict,
     templar: object | None = None,
-    *,
     validate: bool = True,
-) -> dict:
+) -> EosCliConfigGen | None:
     """
     Generate structured_config for a device.
 
     Args:
-        vars:
-            The variable for the device
+        hostname:
+            The hostname of the device
+        hostvars:
+            The variables for the device
         input_schema_tools:
             An AvdSchemaTools object used to validate the input variables if enabled.
+        all_facts:
+            Map of all devices and their facts.
         result:
             Dictionary to store results.
         templar:
@@ -80,20 +89,20 @@ def get_structured_config(
             Optional flag to disable validation for the input schema.
 
     Returns:
-        The structured_config as a dict
+        The structured config as an EosCliConfigGen instance or None if validation failed.
     """
     # Validate input data
     if validate:
-        result.update(input_schema_tools.convert_and_validate_data(vars))
+        result.update(input_schema_tools.convert_and_validate_data(hostvars))
         if result.get("failed"):
             # Input data validation failed so return empty dict. Calling function should check result.get("failed").
-            return {}
+            return None
 
     # Load input vars into the EosDesigns data class.
-    inputs = EosDesigns._from_dict(vars)
+    inputs = EosDesigns._from_dict(hostvars)
 
     # Initialize SharedUtils class to be passed to each python_module below.
-    shared_utils = SharedUtils(hostvars=vars, inputs=inputs, templar=templar, schema=input_schema_tools.avdschema)
+    shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar)
 
     # Single structured config instance which will be in-place updated by each structured config generator.
     structured_config = EosCliConfigGen()
@@ -108,8 +117,13 @@ def get_structured_config(
 
     for cls in AVD_STRUCTURED_CONFIG_CLASSES:
         eos_designs_module = cls(
-            hostvars=vars, inputs=inputs, shared_utils=shared_utils, structured_config=structured_config, custom_structured_configs=custom_structured_configs
+            hostvars=hostvars,
+            inputs=inputs,
+            facts=all_facts[hostname],
+            shared_utils=shared_utils,
+            structured_config=structured_config,
+            custom_structured_configs=custom_structured_configs,
         )
         eos_designs_module.render()
 
-    return structured_config._as_dict()
+    return structured_config

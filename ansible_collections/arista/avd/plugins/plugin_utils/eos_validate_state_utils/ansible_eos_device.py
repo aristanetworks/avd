@@ -53,7 +53,8 @@ class AnsibleEOSDevice(AntaDevice):
     """Implementation of an AntaDevice using Ansible HttpApi plugin for EOS."""
 
     def __init__(self, name: str, connection: ConnectionBase, tags: list | None = None, *, check_mode: bool = False) -> None:
-        """Initialize an instance of the AnsibleEOSDevice class.
+        """
+        Initialize an instance of the AnsibleEOSDevice class.
 
         Args:
         ----
@@ -107,7 +108,8 @@ class AnsibleEOSDevice(AntaDevice):
             yield "_connection", connection_vars
 
     async def _collect(self, command: AntaCommand, *, collection_id: str | None = None) -> None:  # noqa: ARG002
-        """Collect device command result using Ansible HttpApi connection plugin.
+        """
+        Collect device command result using Ansible HttpApi connection plugin.
 
         Supports outformat 'json' and 'text' as output structure.
 
@@ -147,7 +149,8 @@ class AnsibleEOSDevice(AntaDevice):
         logger.debug("%s: %s", self.name, command)
 
     async def refresh(self) -> None:
-        """Update attributes of an AnsibleEOSDevice instance.
+        """
+        Update attributes of an AnsibleEOSDevice instance.
 
         This coroutine must update the following attributes of AnsibleEOSDevice:
         - is_online: When a device IP is reachable and a port can be open

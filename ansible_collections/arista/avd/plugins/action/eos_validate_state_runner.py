@@ -112,7 +112,8 @@ class ActionModule(ActionBase):
 
 
 def get_custom_anta_catalogs(hostvars: Mapping, hostname: str, custom_anta_catalogs_dir: Path) -> list[Path] | None:
-    """Retrieve the custom ANTA catalogs for the current inventory device.
+    """
+    Retrieve the custom ANTA catalogs for the current inventory device.
 
     Custom catalogs can be provided for each device or for each Ansible inventory group of devices.
 
@@ -140,7 +141,8 @@ def get_custom_anta_catalogs(hostvars: Mapping, hostname: str, custom_anta_catal
 
 
 def write_results(hostname: str, anta_results: list[dict], test_results_dir: Path) -> None:
-    """Save all test results from ANTA to a JSON file.
+    """
+    Save all test results from ANTA to a JSON file.
 
     The JSON file name is hard coded here to make sure we can retrieve it in the report plugin.
 
@@ -156,7 +158,8 @@ def write_results(hostname: str, anta_results: list[dict], test_results_dir: Pat
 
 
 def setup_module_logging(hostname: str, result: dict) -> None:
-    """Create a Filter to add the hostname to generate logs.
+    """
+    Create a Filter to add the hostname to generate logs.
 
     Add a Handler to copy the logs from the plugin into Ansible output based on their level
 

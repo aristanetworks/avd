@@ -157,7 +157,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             ),
             shutdown=False,
             service_profile=self.inputs.p2p_uplinks_qos_profile,
-            flow_tracker=self.shared_utils.new_get_flow_tracker(
+            flow_tracker=self.shared_utils.get_flow_tracker(
                 self.inputs.fabric_flow_tracking.mlag_interfaces, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
             ),
         )
@@ -186,9 +186,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             port_channel_interface.ptp = ptp_profile_config._cast_as(EosCliConfigGen.PortChannelInterfacesItem.Ptp, ignore_extra_keys=True)
             port_channel_interface.ptp.enable = True
 
-        if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
+        if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
             port_channel_interface._update(
-                lacp_fallback_mode="individual", lacp_fallback_timeout=self.shared_utils.get_mlag_peer_fact("inband_ztp_lacp_fallback_delay")
+                lacp_fallback_mode="individual", lacp_fallback_timeout=self.shared_utils.mlag_peer_facts.inband_ztp_lacp_fallback_delay
             )
 
         self.structured_config.port_channel_interfaces.append(port_channel_interface)
@@ -214,8 +214,8 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 speed=self.shared_utils.node_config.mlag_interfaces_speed,
             )
             ethernet_interface.channel_group._update(id=self.shared_utils.mlag_port_channel_id, mode="active")
-            if self.shared_utils.get_mlag_peer_fact("inband_ztp", required=False) is True:
-                ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.shared_utils.get_mlag_peer_fact("inband_ztp_vlan"))
+            if self.shared_utils.mlag and self.shared_utils.mlag_peer_facts.inband_ztp is True:
+                ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=self.shared_utils.mlag_peer_facts.inband_ztp_vlan)
             self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
     @structured_config_contributor

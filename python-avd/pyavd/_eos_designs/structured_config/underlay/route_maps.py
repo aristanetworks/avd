@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import get
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -68,14 +67,14 @@ class RouteMapsMixin(Protocol):
 
             add_p2p_links = False
             for peer in self._avd_peers:
-                peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
-                for uplink in peer_facts["uplinks"]:
+                peer_facts = self.shared_utils.get_peer_facts(peer)
+                for uplink in peer_facts.uplinks:
                     if (
-                        uplink["peer"] == self.shared_utils.hostname
-                        and uplink["type"] == "underlay_p2p"
-                        and uplink.get("ip_address")
-                        and "unnumbered" not in uplink["ip_address"]
-                        and get(peer_facts, "inband_ztp")
+                        uplink.peer == self.shared_utils.hostname
+                        and uplink.type == "underlay_p2p"
+                        and uplink.ip_address
+                        and "unnumbered" not in uplink.ip_address.lower()
+                        and peer_facts.inband_ztp
                     ):
                         add_p2p_links = True
                         break
@@ -92,7 +91,7 @@ class RouteMapsMixin(Protocol):
 
         if self.inputs.underlay_filter_peer_as:
             # using set comprehension with `{}` to remove duplicates and then run natural_sort to convert to list.
-            underlay_filter_peer_as_route_maps_asns = natural_sort({link["peer_bgp_as"] for link in self._underlay_links if link["type"] == "underlay_p2p"})
+            underlay_filter_peer_as_route_maps_asns = natural_sort({link.peer_bgp_as for link in self._underlay_links if link.type == "underlay_p2p"})
             # RM-BGP-AS{{ asn }}-OUT
             for asn in underlay_filter_peer_as_route_maps_asns:
                 route_map_name = f"RM-BGP-AS{asn}-OUT"

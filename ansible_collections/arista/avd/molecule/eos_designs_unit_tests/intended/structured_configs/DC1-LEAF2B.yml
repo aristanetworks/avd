@@ -319,6 +319,7 @@ loopback_interfaces:
   shutdown: false
   vrf: Tenant_A_OSPF
   ip_address: 10.255.11.11/32
+  hardware_forwarding_id: true
 - name: Loopback123
   shutdown: true
   vrf: Tenant_A_OSPF
