@@ -18,7 +18,8 @@ extend-exclude = [
 target-version = "py310"
 
 [tool.ruff.lint]
-extend-select = ["ALL"]
+# D213 is forced here since it will be removed by pydocstyle.convention = 'google' even when we have ALL here.
+extend-select = ["ALL", "D213"]
 ignore = [
   "D203",    # Ignoring conflicting D* warnings - one-blank-line-before-class
   "D212",    # Ignoring conflicting D* warnings - multi-line-summary-first-line

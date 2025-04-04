@@ -16,13 +16,13 @@ application_traffic_recognition:
     - name: APP-CONTROL-PLANE
       dest_prefix_set_name: PFX-PATHFINDERS
   application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
   - name: VIDEO
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
-  - name: APP-PROFILE-CONTROL-PLANE
-    applications:
-    - name: APP-CONTROL-PLANE
 config_end: true
 dps_interfaces:
 - name: Dps1
