@@ -53,6 +53,8 @@ class LoopbackInterfacesMixin(Protocol):
                         loopback_interface_item.vrf = vrf.name
                     if loopback.ospf.enabled and vrf.ospf.enabled:
                         loopback_interface_item.ospf_area = loopback.ospf.area
+                    if loopback.hardware_forwarding:
+                        loopback_interface_item.hardware_forwarding_id = True
                     self._set_virtual_source_nat_for_vrf_loopback(loopback_interface_item)
                     self.structured_config.loopback_interfaces.append(loopback_interface_item)
 
@@ -84,4 +86,5 @@ class LoopbackInterfacesMixin(Protocol):
             vrf=vrf.name,
             ip_address=f"{self.shared_utils.ip_addressing.vrf_loopback_ip(loopback_ipv4_pool)}/32" if loopback_ipv4_pool else None,
             ipv6_address=f"{self.shared_utils.ip_addressing.vrf_loopback_ipv6(loopback_ipv6_pool)}/128" if loopback_ipv6_pool else None,
+            hardware_forwarding_id=vrf.vtep_diagnostic.hardware_forwarding or None,
         )

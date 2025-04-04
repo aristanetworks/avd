@@ -1085,6 +1085,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/system.md
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/tcam-profile.md
 --8<--
 
+### Kernel
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/kernel.md
+--8<--
+
 ## Metadata
 
 These fields are not generating any configuration. They are meant to be used by tools that parse structured configuration.

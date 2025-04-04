@@ -1,5 +1,8 @@
 Device,Test Name,Test Status,Message(s),Test description,Test category
+dc1-leaf1a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-leaf1a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -14,23 +17,31 @@ dc1-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf1a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
 dc1-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc1-leaf1a,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc1-leaf1a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
+dc1-leaf1a,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all paths under router path-selection.,Path-Selection
 dc1-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-leaf1a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-leaf1a,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-leaf1b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -45,6 +56,7 @@ dc1-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf1b,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
 dc1-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -52,15 +64,20 @@ dc1-leaf1b,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of 
 dc1-leaf1b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc1-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-leaf1b,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-leaf1b,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
@@ -73,18 +90,25 @@ dc1-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf1c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf1c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-leaf1c,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-leaf1c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-leaf1c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf1c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-leaf1c,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-leaf2a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-leaf2a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -99,6 +123,7 @@ dc1-leaf2a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf2a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf2a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-leaf2a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf2a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-leaf2a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
 dc1-leaf2a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -106,9 +131,12 @@ dc1-leaf2a,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of 
 dc1-leaf2a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc1-leaf2a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf2a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-leaf2a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-leaf2a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-leaf2a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf2a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-leaf2a,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-leaf2a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-leaf2a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
@@ -120,6 +148,8 @@ dc1-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VX
 dc1-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc1-leaf2a,VerifyVxlanVniBinding,unset,,Verifies the VNI-VLAN bindings of the Vxlan1 interface.,VXLAN
 dc1-leaf2a,VerifyVxlanVtep,unset,,Verifies the VTEP peers of the Vxlan1 interface.,VXLAN
+dc1-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
@@ -132,18 +162,25 @@ dc1-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc1-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-leaf2c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-leaf2c,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-leaf2c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-leaf2c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf2c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-leaf2c,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-spine1,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-spine1,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -156,18 +193,25 @@ dc1-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-spine1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-spine1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-spine1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-spine1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-spine1,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-spine1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-spine1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-spine1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-spine1,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-spine1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-spine2,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-spine2,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -180,18 +224,25 @@ dc1-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc1-spine2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-spine2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-spine2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-spine2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-spine2,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-spine2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-spine2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-spine2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-spine2,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-spine2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-spine2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-spine2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-svc-leaf1a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-svc-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-svc-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-svc-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-svc-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-svc-leaf1a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -206,6 +257,7 @@ dc1-svc-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization o
 dc1-svc-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-svc-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-svc-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-svc-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-svc-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-svc-leaf1a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
 dc1-svc-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -213,16 +265,22 @@ dc1-svc-leaf1a,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters
 dc1-svc-leaf1a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc1-svc-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-svc-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-svc-leaf1a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-svc-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-svc-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-svc-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-svc-leaf1a,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-svc-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-svc-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-svc-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-svc-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-svc-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-svc-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-svc-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-svc-leaf1b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-svc-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-svc-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-svc-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-svc-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -237,6 +295,7 @@ dc1-svc-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization o
 dc1-svc-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-svc-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-svc-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-svc-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc1-svc-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc1-svc-leaf1b,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection parameters.,MLAG
 dc1-svc-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
@@ -244,17 +303,24 @@ dc1-svc-leaf1b,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters
 dc1-svc-leaf1b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc1-svc-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-svc-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc1-svc-leaf1b,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-svc-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-svc-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-svc-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-svc-leaf1b,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-svc-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-svc-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-svc-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-svc-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-svc-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-svc-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-svc-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-wan1,VerifyAVTPathHealth,unset,,Verifies the status of all AVT paths for all VRFs.,AVT
 dc1-wan1,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
+dc1-wan1,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-wan1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-wan1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-wan1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-wan1,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -267,12 +333,17 @@ dc1-wan1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counter
 dc1-wan1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-wan1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc1-wan1,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all paths under router path-selection.,Path-Selection
 dc1-wan1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-wan1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan1,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
+dc1-wan1,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-wan1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-wan1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-wan1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-wan1,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-wan1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-wan1,VerifyStunClientTranslation,unset,,Verifies the translation for a source address on a STUN client.,STUN
 dc1-wan1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
@@ -280,8 +351,12 @@ dc1-wan1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utiliz
 dc1-wan1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc1-wan2,VerifyAVTPathHealth,unset,,Verifies the status of all AVT paths for all VRFs.,AVT
 dc1-wan2,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
+dc1-wan2,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc1-wan2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-wan2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc1-wan2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc1-wan2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc1-wan2,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -294,12 +369,17 @@ dc1-wan2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counter
 dc1-wan2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc1-wan2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
+dc1-wan2,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all paths under router path-selection.,Path-Selection
 dc1-wan2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-wan2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan2,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
+dc1-wan2,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc1-wan2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-wan2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-wan2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc1-wan2,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc1-wan2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc1-wan2,VerifyStunClientTranslation,unset,,Verifies the translation for a source address on a STUN client.,STUN
 dc1-wan2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc1-wan2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
@@ -307,7 +387,10 @@ dc1-wan2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utiliz
 dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan2,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-leaf1a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf1a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -322,22 +405,29 @@ dc2-leaf1a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf1a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf1a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf1a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf1a,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc2-leaf1a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc2-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf1a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf1a,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf1a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf1a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1a,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-leaf1b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -352,21 +442,27 @@ dc2-leaf1b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf1b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf1b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf1b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf1b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf1b,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc2-leaf1b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc2-leaf1b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf1b,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf1b,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf1b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf1b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1b,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-leaf1c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf1c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf1c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf1c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
@@ -379,18 +475,25 @@ dc2-leaf1c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf1c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf1c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf1c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf1c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf1c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf1c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf1c,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf1c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf1c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf1c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf1c,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf1c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf1c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf1c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-leaf2a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf2a,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -405,15 +508,19 @@ dc2-leaf2a,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf2a,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2a,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf2a,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf2a,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2a,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf2a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf2a,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc2-leaf2a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc2-leaf2a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf2a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf2a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf2a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf2a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf2a,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf2a,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf2a,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
@@ -425,7 +532,10 @@ dc2-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VX
 dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2a,VerifyVxlanVniBinding,unset,,Verifies the VNI-VLAN bindings of the Vxlan1 interface.,VXLAN
 dc2-leaf2a,VerifyVxlanVtep,unset,,Verifies the VTEP peers of the Vxlan1 interface.,VXLAN
+dc2-leaf2b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-leaf2b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf2b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf2b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf2b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -440,15 +550,19 @@ dc2-leaf2b,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf2b,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2b,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf2b,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf2b,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2b,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf2b,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf2b,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc2-leaf2b,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc2-leaf2b,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2b,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf2b,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf2b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf2b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf2b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf2b,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf2b,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf2b,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
@@ -460,6 +574,8 @@ dc2-leaf2b,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VX
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
 dc2-leaf2b,VerifyVxlanVniBinding,unset,,Verifies the VNI-VLAN bindings of the Vxlan1 interface.,VXLAN
 dc2-leaf2b,VerifyVxlanVtep,unset,,Verifies the VTEP peers of the Vxlan1 interface.,VXLAN
+dc2-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf2c,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc2-leaf2c,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
@@ -472,18 +588,25 @@ dc2-leaf2c,VerifyInterfaceUtilization,unset,,Verifies that the utilization of in
 dc2-leaf2c,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf2c,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf2c,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf2c,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf2c,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf2c,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf2c,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf2c,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf2c,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf2c,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf2c,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf2c,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf2c,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf2c,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2c,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-leaf3a.arista.com,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf3a.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3a.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf3a.arista.com,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -498,22 +621,29 @@ dc2-leaf3a.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utiliz
 dc2-leaf3a.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf3a.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf3a.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf3a.arista.com,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf3a.arista.com,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf3a.arista.com,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf3a.arista.com,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc2-leaf3a.arista.com,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc2-leaf3a.arista.com,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf3a.arista.com,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf3a.arista.com,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf3a.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf3a.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf3a.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf3a.arista.com,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf3a.arista.com,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf3a.arista.com,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf3a.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf3a.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf3a.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3a.arista.com,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf3a.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-leaf3b.arista.com,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-leaf3b.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf3b.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-leaf3b.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3b.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-leaf3b.arista.com,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -528,22 +658,29 @@ dc2-leaf3b.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utiliz
 dc2-leaf3b.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-leaf3b.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf3b.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-leaf3b.arista.com,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-leaf3b.arista.com,VerifyMlagConfigSanity,unset,,Verifies there are no MLAG config-sanity inconsistencies.,MLAG
 dc2-leaf3b.arista.com,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc2-leaf3b.arista.com,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc2-leaf3b.arista.com,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
 dc2-leaf3b.arista.com,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-leaf3b.arista.com,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-leaf3b.arista.com,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-leaf3b.arista.com,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-leaf3b.arista.com,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-leaf3b.arista.com,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-leaf3b.arista.com,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-leaf3b.arista.com,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-leaf3b.arista.com,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-leaf3b.arista.com,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf3b.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3b.arista.com,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-spine1,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-spine1,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -556,18 +693,25 @@ dc2-spine1,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-spine1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-spine1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-spine1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-spine1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-spine1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-spine1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-spine1,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-spine1,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-spine1,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-spine1,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-spine1,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-spine1,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-spine1,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-spine1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
+dc2-spine2,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
 dc2-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
+dc2-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
 dc2-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
 dc2-spine2,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neighbors with an update source configured.,Connectivity
@@ -580,11 +724,15 @@ dc2-spine2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error count
 dc2-spine2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-spine2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc2-spine2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
+dc2-spine2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
 dc2-spine2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc2-spine2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
+dc2-spine2,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
 dc2-spine2,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc2-spine2,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc2-spine2,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
+dc2-spine2,VerifySTPBlockedPorts,unset,,Verifies there is no STP blocked ports.,STP
+dc2-spine2,VerifySTPCounters,unset,,Verifies there is no errors in STP BPDU packets.,STP
 dc2-spine2,VerifyAgentLogs,unset,,Verifies there are no agent crash reports.,System
 dc2-spine2,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-spine2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System

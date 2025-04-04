@@ -64,6 +64,8 @@ $defs:
             type: str
             format: cidr
           mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the management gateway for the device. It takes precedence over the global `mgmt_gateway`.
           ipv6_mgmt_ip:
@@ -73,6 +75,8 @@ $defs:
             type: str
             format: cidr
           ipv6_mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the ipv6 management gateway for the device. It takes precedence over the global `ipv6_mgmt_gateway`.
           mgmt_interface:
@@ -1425,6 +1429,8 @@ $defs:
               Set the maximum number of CPU used for the data plane.
               This setting is useful on virtual Route Reflectors and Pathfinders where more CPU cores should be allocated for control plane.
           flow_tracker_type:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             valid_values:
               - "sampled"

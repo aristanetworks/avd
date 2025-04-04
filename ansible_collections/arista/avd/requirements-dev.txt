@@ -10,7 +10,7 @@ jsonschema>=3.2.0
 # dev requirements
 ansible-core>=2.16.0,<2.19.0
 ansible-doc-extractor>=0.1.10
-ansible-lint>=24.6.0
+ansible-lint>=25.1.3
 aristaproto[compiler]>=0.1.1
 codespell>=2.2.6
 deepmerge>=1.1.0
