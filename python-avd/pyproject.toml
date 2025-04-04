@@ -163,3 +163,7 @@ markers = [
     "molecule_scenarios: Create test case fixtures 'molecule_host' or 'molecule_scenario' for the given molecule scenarios.",
 ]
 asyncio_default_fixture_loop_scope = "function"
+
+[tool.pyright]
+# Pyright stops at the first parent pyproject.toml it finds so as documented adding base config
+extends = "../pyproject.toml"
