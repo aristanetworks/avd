@@ -10,7 +10,8 @@ class AntaLoggingFilter(logging.Filter):
     _anta_libraries = ("anta", "asyncio", "asyncssh", "httpcore", "httpx")
 
     def __init__(self, has_warnings_ref: list[bool] | None = None, *, exclude: bool = True) -> None:
-        """Initializes the filter.
+        """
+        Initializes the filter.
 
         Args:
           has_warnings_ref: Reference to a boolean list to track if any warnings or above are logged.

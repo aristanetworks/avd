@@ -12,7 +12,8 @@ from ._base_classes import AntaTestInputFactory
 
 
 class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyBGPPeerSession` test.
+    """
+    Input factory class for the `VerifyBGPPeerSession` test.
 
     This factory generates test inputs for IPv4 BGP peer session verification.
 

@@ -36,7 +36,8 @@ class RouterPathSelectionMixin(Protocol):
 
     @cached_property
     def _dp_ipsec_profile_name(self: AvdStructuredConfigOverlayProtocol) -> str:
-        """Returns the IPsec profile name to use for Data-Plane.
+        """
+        Returns the IPsec profile name to use for Data-Plane.
 
         If no data-plane config is present for IPsec, default to the control-plane profile-name.
         """

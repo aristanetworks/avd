@@ -17,7 +17,8 @@ if TYPE_CHECKING:
 
 
 class TestLoggerAdapter(LoggerAdapter):
-    """Custom LoggerAdapter used to add device, test, and an optional context information to log messages.
+    """
+    Custom LoggerAdapter used to add device, test, and an optional context information to log messages.
 
     It uses the same constructor as the standard LoggerAdapter and `extra` should have the following structure:
 
@@ -77,7 +78,8 @@ class TestLoggerAdapter(LoggerAdapter):
 
 
 class LogMessage(Enum):
-    """Log message templates for test input generation.
+    """
+    Log message templates for test input generation.
 
     Adapter adds: `<device> [test] (context):`
     """

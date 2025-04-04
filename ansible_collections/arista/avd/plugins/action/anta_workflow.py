@@ -344,7 +344,8 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
 
 
 def get_device_catalog_filters(device: str, avd_catalogs_filters: list[dict]) -> dict[str, list[str]]:
-    """Get the test filters for a device from the provided AVD catalogs filters.
+    """
+    Get the test filters for a device from the provided AVD catalogs filters.
 
     More specific filters (appearing later in the list) override earlier ones.
     For example, if a device matches both a group filter and an individual filter,
@@ -456,7 +457,8 @@ def load_one_structured_config(device: str, structured_config_dir: str, structur
 
 
 def setup_queue_listener(result: dict, queue: Queue) -> QueueListener:
-    """Setup and start the queue listener for centralized log handling.
+    """
+    Setup and start the queue listener for centralized log handling.
 
     1. Creates a handler to convert Python logs to Ansible display format
     2. Starts a queue listener thread to process logs from all processes, including the main process
@@ -472,7 +474,8 @@ def setup_queue_listener(result: dict, queue: Queue) -> QueueListener:
 
 
 def setup_module_logging(queue: Queue) -> None:
-    """Setup logging configuration for the module to handle logs across multiple processes.
+    """
+    Setup logging configuration for the module to handle logs across multiple processes.
 
     1. Clears existing handlers for the `pyavd` logger and enables propagation to use root queue handler
     2. Sets up a queue-based logging system where all logs are sent to a central queue
@@ -507,7 +510,8 @@ def setup_module_logging(queue: Queue) -> None:
 
 
 def setup_process_logging() -> tuple[list[bool], str | None]:
-    """Initialize logging for the child processes.
+    """
+    Initialize logging for the child processes.
 
     The child processes inherit the logging configuration from the parent process,
     configured by `setup_module_logging`.

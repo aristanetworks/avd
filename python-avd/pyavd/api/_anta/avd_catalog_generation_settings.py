@@ -11,7 +11,8 @@ from .test_spec import TestSpec
 
 
 class InputFactorySettings(BaseModel):
-    """Model defining settings for test input generation.
+    """
+    Model defining settings for test input generation.
 
     Attributes:
     ----------
@@ -23,7 +24,8 @@ class InputFactorySettings(BaseModel):
 
 
 class AvdCatalogGenerationSettings(BaseModel):
-    """Model defining settings for the AVD-generated ANTA catalog.
+    """
+    Model defining settings for the AVD-generated ANTA catalog.
 
     Used in `pyavd.get_device_anta_catalog` to customize the AVD test catalog generation.
 

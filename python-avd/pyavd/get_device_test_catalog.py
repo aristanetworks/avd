@@ -20,7 +20,8 @@ def get_device_test_catalog(
     minimal_structured_configs: dict[str, MinimalStructuredConfig],
     settings: AvdCatalogGenerationSettings | None = None,
 ) -> AntaCatalog:
-    """Generate an ANTA test catalog for a single device.
+    """
+    Generate an ANTA test catalog for a single device.
 
     By default, the ANTA catalog will be generated from all tests specified in the AVD test index.
 
