@@ -10,7 +10,8 @@ class PathIndexedListKey:
     """Models an AvdIndexList Key."""
 
     def __init__(self, index: int, primary_key: str, value: str) -> None:
-        """Initialize the object.
+        """
+        Initialize the object.
 
         Args:
             index: Index of the instance in the AvdIndexedList
@@ -32,7 +33,8 @@ class InputPath:
     path_elements: list[int | str | PathIndexedListKey]
 
     def __init__(self, *args: int | str | PathIndexedListKey, schema: str | None = None) -> None:
-        """An ordered list of path elements.
+        """
+        An ordered list of path elements.
 
         TODO: technically it should not be possible to have:
         * two ints in a row
