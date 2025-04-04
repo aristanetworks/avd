@@ -4,6 +4,7 @@
 type: l3leaf
 
 underlay_multicast_pim_sm: true
+underlay_multicast_static: true
 
 l3leaf:
   defaults:
@@ -25,11 +26,21 @@ l3leaf:
     # - VLAN 4093 configured with "pim ipv4 sparse-mode"
     - group: DC1_LEAF1
       bgp_as: 65101
+      underlay_multicast:
+        static:
+          enabled: false
       nodes:
         - name: UNDERLAY-MULTICAST-L3LEAF1A
           id: 1
           mgmt_ip: 192.168.200.105/24
           uplink_switch_interfaces: [Ethernet1, Ethernet1]
+          underlay_multicast:
+            pim_sm:
+              enabled: true
+              uplinks: true
+              uplink_interfaces:
+                - Ethernet1
+              mlag: false
         - name: UNDERLAY-MULTICAST-L3LEAF1B
           id: 2
           mgmt_ip: 192.168.200.106/24
@@ -47,12 +58,27 @@ l3leaf:
     - group: DC1_LEAF2
       bgp_as: 65102
       mlag_peer_l3_vlan: 4094
+      underlay_multicast:
+        pim_sm:
+          enabled: false
       nodes:
         - name: UNDERLAY-MULTICAST-L3LEAF2A
           id: 3
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
+          underlay_multicast:
+            static:
+              enabled: true
+              uplinks: true
+              uplink_interfaces:
+                - Ethernet1
+              mlag: false
         - name: UNDERLAY-MULTICAST-L3LEAF2B
           id: 4
           mgmt_ip: 192.168.200.108/24
+          underlay_multicast:
+            static:
+              enabled: true
+              uplinks: false
+              mlag: true
           uplink_switch_interfaces: [Ethernet4, Ethernet4]

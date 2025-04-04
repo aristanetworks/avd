@@ -160,7 +160,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
     def router_multicast(self) -> None:
         """router_multicast set based on underlay_multicast, underlay_router and switch.evpn_multicast facts."""
         if not (
-            self.shared_utils.underlay_multicast or self.shared_utils.underlay_multicast_pim_enabled or self.shared_utils.underlay_multicast_static_enabled
+            self.shared_utils.underlay_multicast or self.shared_utils.underlay_multicast_pim_sm_enabled or self.shared_utils.underlay_multicast_static_enabled
         ):
             return
 

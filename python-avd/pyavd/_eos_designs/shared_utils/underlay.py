@@ -94,7 +94,7 @@ class UnderlayMixin(Protocol):
         return None
 
     @cached_property
-    def underlay_multicast_pim_enabled(self: SharedUtilsProtocol) -> bool:
+    def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:
         return bool(default(self.node_config.underlay_multicast.pim_sm.enabled, self.underlay_multicast_pim_sm))
 
     @cached_property
@@ -103,7 +103,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_multicast_pim_mlag_enabled(self: SharedUtilsProtocol) -> bool:
-        return bool(default(self.node_config.underlay_multicast.pim_sm.mlag, self.underlay_multicast_pim_enabled))
+        return bool(default(self.node_config.underlay_multicast.pim_sm.mlag, self.underlay_multicast_pim_sm_enabled))
 
     @cached_property
     def underlay_multicast_static_mlag_enabled(self: SharedUtilsProtocol) -> bool:

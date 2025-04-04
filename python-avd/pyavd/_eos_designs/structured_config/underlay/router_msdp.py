@@ -30,7 +30,9 @@ class RouterMsdpMixin(Protocol):
         """
         if (
             not (
-                self.shared_utils.underlay_multicast or self.shared_utils.underlay_multicast_pim_enabled or self.shared_utils.underlay_multicast_static_enabled
+                self.shared_utils.underlay_multicast
+                or self.shared_utils.underlay_multicast_pim_sm_enabled
+                or self.shared_utils.underlay_multicast_static_enabled
             )
             or not self.inputs.underlay_multicast_rps
         ):
