@@ -184,7 +184,8 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Molecule
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection,molecule-ci]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          python -m pip install molecule
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -224,7 +225,8 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection,molecule-ci]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          python -m pip install molecule
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -291,7 +293,8 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection,molecule-ci]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          python -m pip install molecule
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -336,7 +339,8 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           pWHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection,molecule-ci]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          python -m pip install molecule
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -381,7 +385,8 @@ jobs:
       - name: Install pyavd, Ansible Version & Run Tests
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection,molecule-ci]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          python -m pip install molecule
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
@@ -422,7 +427,8 @@ jobs:
       - name: Install Ansible Version & Run Tests
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection,molecule-ci]"
+          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          python -m pip install molecule
           python -m pip install --upgrade "${{ matrix.ansible_version }}"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
