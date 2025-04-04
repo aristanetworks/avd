@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
     FlowTracking = (
         EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.FlowTracking
+        | EosDesigns._DynamicKeys.DynamicCustomConnectedEndpointsItem.CustomConnectedEndpointsItem.AdaptersItem.FlowTracking
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.FlowTracking
         | EosDesigns.CoreInterfaces.P2pLinksItem.FlowTracking
         | EosDesigns.L3Edge.P2pLinksItem.FlowTracking
@@ -61,6 +62,9 @@ class FlowTrackingMixin(Protocol):
         """Return flow_tracking settings for a link, falling back to the fabric flow_tracking_settings if not defined."""
         match flow_tracking:
             case EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.FlowTracking():
+                enabled: bool = default(flow_tracking.enabled, self.inputs.fabric_flow_tracking.endpoints.enabled)
+                name: str = default(flow_tracking.name, self.inputs.fabric_flow_tracking.endpoints.name)
+            case EosDesigns._DynamicKeys.DynamicCustomConnectedEndpointsItem.CustomConnectedEndpointsItem.AdaptersItem.FlowTracking():
                 enabled: bool = default(flow_tracking.enabled, self.inputs.fabric_flow_tracking.endpoints.enabled)
                 name: str = default(flow_tracking.name, self.inputs.fabric_flow_tracking.endpoints.name)
             case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.FlowTracking():

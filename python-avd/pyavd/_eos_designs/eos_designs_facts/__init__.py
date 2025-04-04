@@ -271,11 +271,19 @@ class EosDesignsFactsGeneratorProtocol(
 
         Used for fabric docs
         """
-        return EosDesignsFactsProtocol.ConnectedEndpointsKeys(
-            EosDesignsFactsProtocol.ConnectedEndpointsKeysItem(key=entry.key, type=entry.type, description=entry.description)
-            for entry in self.inputs.connected_endpoints_keys
-            if entry.key in self.inputs._dynamic_keys.connected_endpoints
-        )
+        connected_endpoints_keys = EosDesignsFactsProtocol.ConnectedEndpointsKeys()
+        for entry in self.inputs.connected_endpoints_keys:
+            if entry.key in self.inputs._dynamic_keys.connected_endpoints:
+                connected_endpoints_keys.append(
+                    EosDesignsFactsProtocol.ConnectedEndpointsKeysItem(key=entry.key, type=entry.type, description=entry.description)
+                )
+
+        for entry in self.inputs.custom_connected_endpoints_keys:
+            if entry.key in self.inputs._dynamic_keys.custom_connected_endpoints:
+                connected_endpoints_keys.append(
+                    EosDesignsFactsProtocol.ConnectedEndpointsKeysItem(key=entry.key, type=entry.type, description=entry.description)
+                )
+        return connected_endpoints_keys
 
     @remove_cached_property_type
     @cached_property

@@ -49,6 +49,14 @@ ethernet_interfaces:
   peer: trunk-group-tests-l2leaf3
   peer_interface: Ethernet1
   peer_type: l2leaf
+- name: Ethernet31
+  description: MONITOR_custom_connected_endpoint_Nic101
+  shutdown: false
+  peer: custom_connected_endpoint
+  peer_interface: Nic101
+  peer_type: monitor
+  switchport:
+    enabled: true
 - name: Ethernet11
   description: SERVER_server_with_tg_100_Nic1
   shutdown: false

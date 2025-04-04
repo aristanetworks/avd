@@ -115,3 +115,14 @@ servers:
         port_channel:
           mode: active
           description: portchannel
+
+custom_connected_endpoints_keys:
+  - key: monitor
+    type: monitor
+
+monitor:
+  - name: custom_connected_endpoint
+    adapters:
+      - endpoint_ports: [ Nic101, Nic102, Nic103, Nic104 ]
+        switch_ports: [ Ethernet31, Ethernet31, Ethernet31, Ethernet31 ]
+        switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b, trunk-group-tests-l2leaf1a, trunk-group-tests-l2leaf1b ]

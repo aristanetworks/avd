@@ -6,14 +6,24 @@
 # Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
 type: dict
 keys:
+  custom_connected_endpoints_keys:
+    $ref: eos_designs#/keys/connected_endpoints_keys
+    default: null
+    type: list
+    documentation_options:
+      table: connected-endpoints-keys
+    description: |-
+      Use this setting to specify values for `connected_endpoints_keys` in addition to the default ones.
+      This method preserves the default values while adding the new keys.
   connected_endpoints_keys:
     documentation_options:
       table: connected-endpoints-keys
     description: |
       Endpoints connecting to the fabric can be grouped by using separate keys.
-      The keys can be customized to provide a better better organization or grouping of your data.
+      The keys can be customized to provide a better organization or grouping of your data.
       `connected_endpoints_keys` should be defined in the top level group_vars for the fabric.
-      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+      The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them or utilize the `custom_connected_endpoints_keys` key,
+      which serves to augment rather than replace the default configuration.
     type: list
     primary_key: key
     items:
