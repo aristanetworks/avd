@@ -65,7 +65,7 @@ l3leaf:
 
 wan_router:
   defaults:
-    platform: vEOS
+    platform: CloudEOS
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     filter:
