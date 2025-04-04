@@ -358,6 +358,7 @@ router_ospf:
     redistribute:
       bgp:
         enabled: true
+    auto_cost_reference_bandwidth: 10
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
