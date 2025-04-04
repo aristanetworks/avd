@@ -150,7 +150,7 @@ class UtilsMixin(Protocol):
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
-            flow_tracker=self.shared_utils.new_get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
+            flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
         )
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
@@ -233,7 +233,7 @@ class UtilsMixin(Protocol):
             eos_cli=svi.raw_eos_cli,
         )
 
-        if flow_tracker := self.shared_utils.new_get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
+        if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
             subinterface.flow_tracker = flow_tracker
 
         if svi.structured_config:

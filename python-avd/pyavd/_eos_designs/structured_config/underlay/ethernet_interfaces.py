@@ -55,7 +55,7 @@ class EthernetInterfacesMixin(Protocol):
                     mtu=self.shared_utils.p2p_uplinks_mtu,
                     service_profile=self.inputs.p2p_uplinks_qos_profile,
                     ipv6_enable=link.ipv6_enable,
-                    flow_tracker=self.shared_utils.new_get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+                    flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                 )
                 ethernet_interface.switchport.enabled = False
                 if link.mac_security:
@@ -169,7 +169,7 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_interface._update(
                         service_profile=self.inputs.p2p_uplinks_qos_profile,
                         spanning_tree_portfast=link.spanning_tree_portfast,
-                        flow_tracker=self.shared_utils.new_get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+                        flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
                     for link_tracking_group in link.link_tracking_groups:
                         ethernet_interface.link_tracking_groups.append_new(
@@ -204,7 +204,7 @@ class EthernetInterfacesMixin(Protocol):
                         shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
                         ipv6_enable=subinterface.ipv6_enable,
                         mtu=self.shared_utils.p2p_uplinks_mtu,
-                        flow_tracker=self.shared_utils.new_get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+                        flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
@@ -349,7 +349,7 @@ class EthernetInterfacesMixin(Protocol):
         if self.shared_utils.use_uplinks_for_wan_ha:
             return
 
-        direct_wan_ha_links_flow_tracker = self.shared_utils.new_get_flow_tracker(
+        direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(
             self.shared_utils.node_config.wan_ha.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker
         )
 

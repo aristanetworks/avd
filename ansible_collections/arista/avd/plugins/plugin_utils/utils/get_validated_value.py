@@ -7,7 +7,8 @@ from typing import Any
 
 
 def get_validated_value(data: dict, key: str, expected_type: type, default_value: Any = None, allowed_values: list[str] | None = None) -> Any:
-    """Retrieve and validate a value from a given dictionary based on its type and, optionally, a list of allowed values.
+    """
+    Retrieve and validate a value from a given dictionary based on its type and, optionally, a list of allowed values.
 
     Args:
     ----

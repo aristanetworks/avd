@@ -58,7 +58,7 @@ class PortChannelInterfacesMixin(Protocol):
                 description=description or None,
                 shutdown=False,
                 service_profile=self.inputs.p2p_uplinks_qos_profile,
-                flow_tracker=self.shared_utils.new_get_flow_tracker(link.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
+                flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
                 spanning_tree_portfast=link.spanning_tree_portfast,
             )
             port_channel_interface.switchport._update(enabled=True, mode="trunk")
@@ -209,7 +209,7 @@ class PortChannelInterfacesMixin(Protocol):
         if not self.shared_utils.use_port_channel_for_direct_ha:
             return
 
-        direct_wan_ha_links_flow_tracker = self.shared_utils.new_get_flow_tracker(
+        direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(
             self.shared_utils.node_config.wan_ha.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
         )
         port_channel_name = f"Port-Channel{self.shared_utils.wan_ha_port_channel_id}"
