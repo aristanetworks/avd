@@ -7,7 +7,8 @@ from pathlib import Path
 
 
 def get_validated_path(path_input: str | Path, *, parent: bool = False) -> Path:
-    """Verify if the given path or its parent directory exists and return the Path object.
+    """
+    Verify if the given path or its parent directory exists and return the Path object.
 
     Args:
     ----

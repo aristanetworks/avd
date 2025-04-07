@@ -64,7 +64,8 @@ def get_anta_results(
     *,
     dry_run: bool = False,
 ) -> list[dict]:
-    """Get the ANTA results for a given device.
+    """
+    Get the ANTA results for a given device.
 
     Args:
     ----
@@ -131,7 +132,8 @@ def get_anta_results(
 
 
 def load_custom_catalogs(catalog_files: list[Path]) -> dict:
-    """Load the custom ANTA catalogs from the provided files and merge them together.
+    """
+    Load the custom ANTA catalogs from the provided files and merge them together.
 
     Args:
     ----
@@ -155,7 +157,8 @@ def load_custom_catalogs(catalog_files: list[Path]) -> dict:
 
 
 def dump_to_file(tests: dict, filename: Path, yaml_dumper: Dumper = NoAliasDumper) -> None:
-    """Dump the generated tests to a YAML file.
+    """
+    Dump the generated tests to a YAML file.
 
     Args:
     ----
@@ -168,7 +171,8 @@ def dump_to_file(tests: dict, filename: Path, yaml_dumper: Dumper = NoAliasDumpe
 
 
 def generate_tests(config_manager: ConfigManager, skip_tests: list[dict], custom_catalog: dict | None = None) -> RawCatalogInput:
-    """Create the test catalog in a dictionary format generated from the AVD test classes.
+    """
+    Create the test catalog in a dictionary format generated from the AVD test classes.
 
     Test definitions are generated from the AVD structured_config for each AVD test classes and are merged together
     with an optional custom_catalog to create the final catalog.
@@ -215,7 +219,8 @@ def generate_tests(config_manager: ConfigManager, skip_tests: list[dict], custom
 
 
 def create_dry_run_report(device_name: str, catalog: AntaCatalog, manager: ResultManager) -> None:
-    """Create a dry run report.
+    """
+    Create a dry run report.
 
     When dry_run is True in get_anta_results, this function is used to go through all the tests
     in the catalog and create a TestResult object to add to the ResultManager.

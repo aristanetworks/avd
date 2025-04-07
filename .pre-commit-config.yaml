@@ -116,7 +116,7 @@ repos:
         args: [--strict, -c=.github/yamllintrc]
 
   - repo: https://github.com/aristanetworks/j2lint.git
-    rev: "v1.1.0"
+    rev: "v1.2.0"
     hooks:
       - id: j2lint
         name: Check for Linting errors on Jinja2 files

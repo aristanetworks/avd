@@ -72,7 +72,8 @@ class DeviceTestContext:
     def _process_bgp_neighbor(
         self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem, vrf: str
     ) -> BgpNeighbor | None:
-        """Process a BGP neighbor from the structured configuration and return a `BgpNeighbor` object.
+        """
+        Process a BGP neighbor from the structured configuration and return a `BgpNeighbor` object.
 
         Returns `None` if the neighbor should be skipped.
         """

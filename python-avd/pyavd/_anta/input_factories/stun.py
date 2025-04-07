@@ -15,7 +15,8 @@ from ._base_classes import AntaTestInputFactory
 
 
 class VerifyStunClientTranslationInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyStunClientTranslation` test.
+    """
+    Input factory class for the `VerifyStunClientTranslation` test.
 
     This factory generates test inputs for verifying STUN client translations.
 

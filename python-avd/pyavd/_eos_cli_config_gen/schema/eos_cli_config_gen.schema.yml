@@ -516,6 +516,15 @@ keys:
                 - bool
                 required: true
                 description: Environment variable value.
+        shutdown:
+          description: Shutdown the agent process.
+          type: bool
+        shutdown_supervisor_active:
+          description: Shutdown the agent process for active supervisors.
+          type: bool
+        shutdown_supervisor_standby:
+          description: Shutdown the agent process for standby supervisors.
+          type: bool
   aliases:
     type: str
     description: "Multi-line string with one or more alias commands.\n\nExample:\n\n```yaml\naliases:
@@ -6718,6 +6727,12 @@ keys:
     description: Key only used for documentation or validation purposes.
     type: bool
     default: true
+  kernel:
+    type: dict
+    keys:
+      software_forwarding_ecmp:
+        type: bool
+        description: Program ECMP routes in the kernel.
   l2_protocol:
     type: dict
     keys:
@@ -8829,6 +8844,7 @@ keys:
         - str
       interface_sets:
         type: list
+        primary_key: name
         items:
           type: dict
           keys:
@@ -8904,6 +8920,7 @@ keys:
               type: str
             interface_sets:
               type: list
+              primary_key: name
               items:
                 type: dict
                 keys:

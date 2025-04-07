@@ -4,11 +4,16 @@ agents:
     environment_variables:
       - name: KERNELFIB_PROGRAM_ALL_ECMP
         value: 'true'
+    shutdown_supervisor_active: true
+    shutdown_supervisor_standby: true
   - name: Dummy
     environment_variables:
       - name: V1
         value: 42
       - name: V2
         value: 666
+    shutdown: true
+    shutdown_supervisor_active: true
+    shutdown_supervisor_standby: true
   # This next one is not rendered because there is no config to render for it
   - name: NotRendered

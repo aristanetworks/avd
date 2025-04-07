@@ -20,10 +20,7 @@ TEST_SCHEMA = {
     "keys": {
         "test_value": {
             "type": "bool",
-            "convert_types": ["int", "str"],  # Part of meta schema but not implemented in converter
             "default": True,
-            "valid_values": [True],
-            "dynamic_valid_values": ["valid_booleans"],  # Part of meta schema but not implemented in converter
             "required": True,
             "description": "Some boolean",
             "display_name": "Boolean",
@@ -31,30 +28,32 @@ TEST_SCHEMA = {
     },
 }
 
-TESTS = [
-    # (test_value, expected_errors: tuple, expected_error_messages: tuple)
-    (True, None, None),  # Valid value. No errors.
-    (False, (AvdValidationError,), ("'Validation Error: test_value': 'False' is not one of [True]",)),  # Valid value. Not a valid value.
-    (11.0123, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'float'. Expected a 'bool'.",)),  # Invalid value.
-    (None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",)),  # Required is set, so None is not ignored.
-    ("11", None, None),  # Converted to True. No errors.
-    ("", (AvdValidationError,), ("'Validation Error: test_value': 'False' is not one of [True]",)),  # Converted to False. Not a valid value.
-    (12, None, None),  # Converted to True. No errors.
-    (0, (AvdValidationError,), ("'Validation Error: test_value': 'False' is not one of [True]",)),  # Converted to False. Not a valid value.
-]
-
 
 @pytest.fixture(scope="module")
 def avd_schema() -> AvdSchema:
     return AvdSchema(TEST_SCHEMA)
 
 
-@pytest.mark.parametrize(("test_value", "expected_errors", "expected_error_messages"), TESTS)
-def test_generated_schema(test_value: Any, expected_errors: tuple | None, expected_error_messages: tuple | None, avd_schema: AvdSchema) -> None:
+@pytest.mark.parametrize(
+    ("test_value", "expected_errors", "expected_error_messages"),
+    [
+        # (test_value, expected_errors: tuple, expected_error_messages: tuple)
+        pytest.param(True, None, None, id="ok"),  # Valid value. No errors.
+        pytest.param(
+            11.0123, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'float'. Expected a 'bool'.",), id="err-invalid-type-float"
+        ),
+        pytest.param(None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
+        pytest.param("", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'bool'.",), id="err-invalid-type-str"),
+        pytest.param(0, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'int'. Expected a 'bool'.",), id="err-invalid-type-int"),
+    ],
+)
+def test_generated_schema(
+    test_value: Any, expected_errors: tuple[type[AvdValidationError], ...] | None, expected_error_messages: tuple[str, ...] | None, avd_schema: AvdSchema
+) -> None:
     instance = {"test_value": test_value}
     list(avd_schema.convert(instance))
     validation_errors = list(avd_schema.validate(instance))
-    if expected_errors:
+    if expected_errors and expected_error_messages:
         for validation_error in validation_errors:
             assert isinstance(validation_error, expected_errors)
             assert str(validation_error) in expected_error_messages
