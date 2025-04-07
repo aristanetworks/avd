@@ -60,7 +60,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.41/24 | 192.168.17.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.17.23/24 | 192.168.17.1 |
 
 ##### IPv6
 
@@ -76,7 +76,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 192.168.17.41/24
+   ip address 192.168.17.23/24
    no lldp transmit
    no lldp receive
 ```

@@ -31,9 +31,9 @@
 | WAN | wan_router | site2-wan2 | 192.168.17.17/24 | - | Provisioned | - |
 | WAN | l2leaf | site3-leaf1 | 192.168.17.21/24 | - | Provisioned | - |
 | WAN | wan_router | site3-wan1 | 192.168.17.20/24 | - | Provisioned | - |
-| WAN | l3leaf | site4-border1 | 192.168.17.41/24 | - | Provisioned | - |
-| WAN | l3leaf | site4-border2 | 192.168.17.42/24 | - | Provisioned | - |
-| WAN | wan_router | site4-wan1 | 192.168.17.43/24 | - | Provisioned | - |
+| WAN | l3leaf | site4-border1 | 192.168.17.23/24 | - | Provisioned | - |
+| WAN | l3leaf | site4-border2 | 192.168.17.24/24 | - | Provisioned | - |
+| WAN | wan_router | site4-wan1 | 192.168.17.22/24 | - | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
