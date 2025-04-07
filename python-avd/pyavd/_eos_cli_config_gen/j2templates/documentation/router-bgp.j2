@@ -200,7 +200,7 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 | Route Reflector Client | Yes |
 {%             endif %}
 {%             if peer_group.next_hop_peer is arista.avd.defined(true) %}
-| Next-hop peer | True |
+| Next-hop peer |{{ peer_group.next_hop_peer }} |
 {%             endif %}
 {%             if peer_group.next_hop_self is arista.avd.defined(true) %}
 | Next-hop self | True |
