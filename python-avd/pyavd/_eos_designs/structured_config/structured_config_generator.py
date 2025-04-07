@@ -76,21 +76,19 @@ class StructuredConfigGeneratorProtocol(AvdFactsProtocol, Protocol):
 
     def render(self) -> None:
         """
-        In-place update the structured_config by deepmerging the rendered dict over the structured_config object.
+        In-place update self.structured_config.
 
-        This method is bridging the gap between older classes which returns builtin types on all methods,
-        and refactored classes which inplace updates the self.structured_config.
+        If 'avd_eos_designs_enforce_duplication_checks_across_all_models' is `true` (new behavior for AVD 6.0.0 (?)),
+        all code is updating the same instance of self.structured_config.
+        Otherwise a fresh structured_config instance is initialized for each module, and they are deepmerged on top of the final structured_config.
         """
-        # This knob makes us keep the legacy behavior of maintaining a single structured config object per module and merging them.
-        # Without it set, we will just in-place update the same structured_config, which means any duplication checks will be enforced across all modules.
-        # Note that methods that have not been refactored to update structured_config directly will still be merged on top.
         if not self.inputs.avd_eos_designs_enforce_duplication_checks_across_all_models and not getattr(
             self, "ignore_avd_eos_designs_enforce_duplication_checks_across_all_models", False
         ):
             self._complete_structured_config = self.structured_config
             self.structured_config = EosCliConfigGen()
 
-        # In-place update self.structured_config by calling all the refactored methods marked with @structured_config_contributor
+        # In-place update self.structured_config by calling all methods marked with @structured_config_contributor
         self.render_structured_config()
 
         # If we run with the legacy behavior we now have to restore the original structured config and merge in the things we generated here.
