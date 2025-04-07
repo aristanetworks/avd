@@ -136,7 +136,7 @@ Devices with `is_deployed: false` set as part of `eos_designs` inputs will autom
 !!! note
     When excluding devices from a run, whether by using `--limit` or `anta_devices`, tests that rely on the excluded devices will not be executed. For example, if a test requires information from a device that is not included, the test will be skipped. The same behavior applies with `is_deployed: false` devices.
 
-The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must be accessible from the Ansible control node. The Ansible connection variables must be set accordingly:
+The role connects to EOS devices via eAPI using HTTP/HTTPS, so the devices must be accessible from the Ansible control node. Even though the role uses ANTA's HTTP client, the Ansible connection variables are used to build the connections and must be set accordingly:
 
 ```yaml
 # The IP/name of the target host to use instead of inventory_hostname.
