@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, get
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import encrypt, natural_sort
 
@@ -33,48 +32,44 @@ class EthernetInterfacesMixin(Protocol):
             description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
-                    interface=link["interface"],
-                    link_type=link["type"],
-                    peer=link["peer"],
-                    peer_interface=link["peer_interface"],
+                    interface=link.interface,
+                    link_type=link.type,
+                    peer=link.peer,
+                    peer_interface=link.peer_interface,
                 ),
             )
             ethernet_interface = EosCliConfigGen.EthernetInterfacesItem(
-                name=link["interface"],
-                peer=link["peer"],
-                peer_interface=link["peer_interface"],
-                peer_type=link["peer_type"],
+                name=link.interface,
+                peer=link.peer,
+                peer_interface=link.peer_interface,
+                peer_type=link.peer_type,
                 description=description or None,
-                speed=link.get("speed", Undefined),
-                shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
+                speed=link.speed,
+                shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
             )
 
             # L3 interface
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
-            if link["type"] == "underlay_p2p":
+            if link.type == "underlay_p2p":
                 ethernet_interface._update(
                     mtu=self.shared_utils.p2p_uplinks_mtu,
                     service_profile=self.inputs.p2p_uplinks_qos_profile,
-                    ipv6_enable=link.get("ipv6_enable", Undefined),
-                    flow_tracker=self.shared_utils.new_get_flow_tracker(
-                        link.get("flow_tracking"), output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker
-                    ),
+                    ipv6_enable=link.ipv6_enable,
+                    flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                 )
                 ethernet_interface.switchport.enabled = False
-                if mac_security := link.get("mac_security"):
-                    ethernet_interface.mac_security.profile = mac_security["profile"]
+                if link.mac_security:
+                    ethernet_interface.mac_security.profile = link.mac_security.profile
 
-                if link_tracking_groups := link.get("link_tracking_groups"):
-                    for link_tracking_group in link_tracking_groups:
-                        ethernet_interface.link_tracking_groups.append_new(
-                            name=link_tracking_group["name"],
-                            direction=link_tracking_group["direction"],
-                        )
-                if sflow := link.get("sflow"):
-                    ethernet_interface.sflow.enable = sflow["enable"]
+                for link_tracking_group in link.link_tracking_groups:
+                    ethernet_interface.link_tracking_groups.append_new(
+                        name=link_tracking_group.name,
+                        direction=link_tracking_group.direction,
+                    )
+                ethernet_interface.sflow.enable = link.sflow_enabled
 
                 # PTP
-                if get(link, "ptp.enable") is True:
+                if link.ptp.enable:
                     # Apply PTP profile config if using the new ptp config style
                     if self.shared_utils.ptp_enabled:
                         # Create a copy and removes the .profile attribute since the target model has a .profile key with a different schema.
@@ -87,17 +82,17 @@ class EthernetInterfacesMixin(Protocol):
                 # MPLS
                 if self.shared_utils.underlay_mpls:
                     ethernet_interface.mpls.ip = True
-                    if self.shared_utils.underlay_ldp is True:
+                    if self.shared_utils.underlay_ldp:
                         ethernet_interface.mpls.ldp._update(interface=True, igp_sync=True)
 
                 # IP address
-                if link.get("ip_address") is not None:
-                    if "unnumbered" in link["ip_address"].lower():
-                        ethernet_interface.ip_address = link["ip_address"]
+                if link.ip_address:
+                    if "unnumbered" in link.ip_address.lower():
+                        ethernet_interface.ip_address = link.ip_address
                     else:
-                        ethernet_interface.ip_address = f"{link['ip_address']}/{link['prefix_length']}"
+                        ethernet_interface.ip_address = f"{link.ip_address}/{link.prefix_length}"
 
-                if self.shared_utils.underlay_ospf is True:
+                if self.shared_utils.underlay_ospf:
                     ethernet_interface.ospf_network_point_to_point = True
                     ethernet_interface.ospf_area = self.inputs.underlay_ospf_area
                     ospf_authentication = self.inputs.underlay_ospf_authentication.enabled
@@ -121,7 +116,7 @@ class EthernetInterfacesMixin(Protocol):
                                 ),
                             )
 
-                if self.shared_utils.underlay_isis is True:
+                if self.shared_utils.underlay_isis:
                     ethernet_interface._update(
                         isis_enable=self.shared_utils.isis_instance_name,
                         isis_bfd=self.inputs.underlay_isis_bfd or None,
@@ -135,23 +130,23 @@ class EthernetInterfacesMixin(Protocol):
                     if self.inputs.underlay_isis_authentication_key is not None:
                         ethernet_interface.isis_authentication.both._update(key=self.inputs.underlay_isis_authentication_key, key_type="7")
 
-                if link.get("underlay_multicast") is True:
+                if link.underlay_multicast:
                     ethernet_interface.pim.ipv4.sparse_mode = True
 
                 # DHCP server settings (primarily used for ZTP)
-                if link.get("ip_address") is not None and "unnumbered" not in link["ip_address"].lower() and link.get("dhcp_server"):
+                if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True
 
                 # Structured Config
-                if structured_config := link.get("structured_config"):
-                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(link["interface"])._deepmerge(
+                if structured_config := link.structured_config:
+                    self.custom_structured_configs.nested.ethernet_interfaces.obtain(link.interface)._deepmerge(
                         EosCliConfigGen.EthernetInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
                     )
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # L2 interface
-            elif link["type"] == "underlay_l2":
+            elif link.type == "underlay_l2":
                 if self.shared_utils.network_services_l2_as_subint:
                     # Render L3 subinterfaces for each SVI.
                     # The peer will just render a regular trunk.
@@ -159,68 +154,64 @@ class EthernetInterfacesMixin(Protocol):
                     ethernet_interface._deepmerge(main_interface)
                     self.structured_config.ethernet_interfaces.extend(ethernet_subinterfaces)
 
-                elif (channel_group_id := link.get("channel_group_id")) is not None:
+                elif link.channel_group_id is not None:
                     # Render port-channel member
-                    ethernet_interface.channel_group._update(id=int(channel_group_id), mode="active")
-                    if get(link, "inband_ztp_vlan"):
-                        ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=link["inband_ztp_vlan"])
+                    ethernet_interface.channel_group._update(id=link.channel_group_id, mode="active")
+                    if link.inband_ztp_vlan:
+                        ethernet_interface.switchport._update(enabled=True, mode="access", access_vlan=link.inband_ztp_vlan)
                 else:
                     # Render trunk interface
                     ethernet_interface.switchport._update(enabled=True, mode="trunk")
                     ethernet_interface.switchport.trunk._update(
-                        allowed_vlan=link["vlans"],
-                        native_vlan=link.get("native_vlan", Undefined),
+                        allowed_vlan=link.vlans,
+                        native_vlan=link.native_vlan,
                     )
                     ethernet_interface._update(
                         service_profile=self.inputs.p2p_uplinks_qos_profile,
-                        spanning_tree_portfast=link.get("spanning_tree_portfast", Undefined),
-                        flow_tracker=self.shared_utils.new_get_flow_tracker(
-                            link.get("flow_tracking"), output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker
-                        ),
+                        spanning_tree_portfast=link.spanning_tree_portfast,
+                        flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
-                    if link_tracking_groups := link.get("link_tracking_groups"):
-                        for link_tracking_group in link_tracking_groups:
-                            ethernet_interface.link_tracking_groups.append_new(
-                                name=link_tracking_group["name"],
-                                direction=link_tracking_group["direction"],
-                            )
+                    for link_tracking_group in link.link_tracking_groups:
+                        ethernet_interface.link_tracking_groups.append_new(
+                            name=link_tracking_group.name,
+                            direction=link_tracking_group.direction,
+                        )
 
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
             # Adding subinterfaces for each VRF after the main interface.
-            if link["type"] == "underlay_p2p" and "subinterfaces" in link:
-                for subinterface in get(link, "subinterfaces", default=[]):
+            if link.type == "underlay_p2p" and link.subinterfaces:
+                for subinterface in link.subinterfaces:
                     description = self.shared_utils.interface_descriptions.underlay_ethernet_interface(
                         InterfaceDescriptionData(
                             shared_utils=self.shared_utils,
-                            interface=subinterface["interface"],
-                            link_type=link["type"],
-                            peer=link["peer"],
-                            peer_interface=subinterface["peer_interface"],
-                            vrf=subinterface["vrf"],
+                            interface=subinterface.interface,
+                            link_type=link.type,
+                            peer=link.peer,
+                            peer_interface=subinterface.peer_interface,
+                            vrf=subinterface.vrf,
                         ),
                     )
                     ethernet_subinterface = EosCliConfigGen.EthernetInterfacesItem(
-                        name=subinterface["interface"],
-                        peer=link["peer"],
-                        peer_interface=subinterface["peer_interface"],
-                        peer_type=link["peer_type"],
-                        vrf=subinterface["vrf"],
+                        name=subinterface.interface,
+                        peer=link.peer,
+                        peer_interface=subinterface.peer_interface,
+                        peer_type=link.peer_type,
+                        vrf=subinterface.vrf,
                         # TODO: - for now reusing the encapsulation as it is hardcoded to the VRF ID which is used as
                         # subinterface name
                         description=description or None,
-                        shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link["peer_is_deployed"],
-                        ipv6_enable=subinterface.get("ipv6_enable", Undefined),
+                        shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
+                        ipv6_enable=subinterface.ipv6_enable,
                         mtu=self.shared_utils.p2p_uplinks_mtu,
-                        flow_tracker=self.shared_utils.new_get_flow_tracker(link.get("flow_tracking"), EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+                        flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
-                    ethernet_subinterface.encapsulation_dot1q.vlan = subinterface["encapsulation_dot1q_vlan"]
+                    ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
 
-                    if sflow := link.get("sflow"):
-                        ethernet_subinterface.sflow.enable = sflow["enable"]
+                    ethernet_subinterface.sflow.enable = link.sflow_enabled
 
-                    if subinterface.get("ip_address") is not None:
-                        ethernet_subinterface.ip_address = f"{subinterface['ip_address']}/{subinterface['prefix_length']}"
+                    if subinterface.ip_address:
+                        ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
@@ -358,7 +349,7 @@ class EthernetInterfacesMixin(Protocol):
         if self.shared_utils.use_uplinks_for_wan_ha:
             return
 
-        direct_wan_ha_links_flow_tracker = self.shared_utils.new_get_flow_tracker(
+        direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(
             self.shared_utils.node_config.wan_ha.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker
         )
 

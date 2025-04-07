@@ -1418,9 +1418,9 @@ router pim sparse-mode
 
 #### 802.1X Global
 
-| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
-| ------------------- | -------------------- | ----------------------|
-| True | True | True |
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | ----------------------| -------------------------- |
+| True | True | True | - |
 
 #### 802.1X Radius AV pair
 

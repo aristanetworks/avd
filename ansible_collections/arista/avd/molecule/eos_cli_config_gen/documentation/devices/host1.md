@@ -68,6 +68,9 @@
 - [System Boot Settings](#system-boot-settings)
   - [Boot Secret Summary](#boot-secret-summary)
   - [System Boot Device Configuration](#system-boot-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -305,6 +308,14 @@
 | V1 | 42 |
 | V2 | 666 |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown | True |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
 #### Agent KernelFib
 
 ##### Environment Variables
@@ -313,12 +324,26 @@
 | ---- | ----- |
 | KERNELFIB_PROGRAM_ALL_ECMP | true |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
+#### Agent NotRendered
+
 #### Agents Device Configuration
 
 ```eos
 !
 agent Dummy environment V1=42:V2=666
+agent Dummy shutdown
+agent Dummy shutdown supervisor active
+agent Dummy shutdown supervisor standby
 agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
+agent KernelFib shutdown supervisor active
+agent KernelFib shutdown supervisor standby
 ```
 
 ### Management Interfaces
@@ -1882,6 +1907,19 @@ dhcp server vrf VRF01
 ```eos
 !
 boot secret 5 <removed>
+```
+
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
 ```
 
 ## Monitoring
@@ -10300,9 +10338,9 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Global
 
-| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
-| ------------------- | -------------------- | ----------------------|
-| True | True | True |
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | ----------------------| -------------------------- |
+| True | True | True | True |
 
 #### 802.1X MAC based authentication
 
@@ -10324,6 +10362,14 @@ ip as-path access-list mylist2 deny _64517$ igp
 | SSL profile | Profile1 |
 | IPv4 Access-list | ACL |
 | Start limit | Infinite |
+
+#### 802.1X VLAN Assignment Groups
+
+| VLAN Group Name | Members |
+| --------------- | ------- |
+| Assignment_1 | 400-407 |
+| Assignment_2 | 55 |
+| Assignment_3 | 1,3,15-20 |
 
 #### 802.1X Supplicant
 

@@ -17,7 +17,8 @@ class CSVReport:
     """Generate and writes the validation CSV report based on test results managed by ResultsManager."""
 
     def __init__(self, csvfile: TextIOWrapper, results: ResultsManager) -> None:
-        """Initialize the CSVReport with an open CSV file object to write to and a ResultsManager instance.
+        """
+        Initialize the CSVReport with an open CSV file object to write to and a ResultsManager instance.
 
         Args:
         ----
@@ -28,7 +29,8 @@ class CSVReport:
         self.results = results
 
     def generate_rows(self) -> Generator[dict, None, None]:
-        """Generate rows of test result data for the CSV report.
+        """
+        Generate rows of test result data for the CSV report.
 
         Results are sourced from `failed_tests` or `all_tests`, based on whether the report includes only failed tests or all results.
 

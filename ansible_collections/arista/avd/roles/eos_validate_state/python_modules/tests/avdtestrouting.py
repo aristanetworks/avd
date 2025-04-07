@@ -76,7 +76,8 @@ class AvdTestRoutingTable(AvdTestBase):
 
 
 class AvdTestBGP(AvdTestBase):
-    """AvdTestBGP class for BGP tests.
+    """
+    AvdTestBGP class for BGP tests.
 
     Supports IPv4, IPv6, Path-Selection, Link-State and EVPN address families.
     """
@@ -135,7 +136,8 @@ class AvdTestBGP(AvdTestBase):
 
     @cached_property
     def test_definition(self) -> dict | None:
-        """Generates the proper ANTA test definition for all BGP tests.
+        """
+        Generates the proper ANTA test definition for all BGP tests.
 
         Returns:
         -------

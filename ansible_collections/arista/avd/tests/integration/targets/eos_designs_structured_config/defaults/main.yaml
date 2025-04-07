@@ -12,7 +12,6 @@ l2leaf:
       id: 1
 avd_switch_facts:
   testhost:
-    switch:
-      id: 1
-      vlans: ""
-      uplinks: []
+    id: 1
+    vlans: ""
+    uplinks: []

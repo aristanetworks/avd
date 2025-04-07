@@ -76,3 +76,4 @@ All functions input variables follow SemVer. Any breaking changes will, at a min
 | `validate_structured_config()` | ✅ | ✅ | |
 | `get_device_config()` | ✅ | ✅ | EOS CLI configuration generated from eos_cli_config_gen follows SemVer.<br> Breaking changes may occur in rare cases when addressing a bug.<br> Reordering of the CLI output may occur but without impacting the resulting configuration on EOS. |
 | `get_device_doc()` | ✅ | ✘  | Device documentation artifacts may change during minor releases. |
+| `get_fabric_documentation()` | ✅ | ✘  | Fabric documentation artifacts may change during minor releases. |

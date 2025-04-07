@@ -8,6 +8,7 @@ from re import findall
 from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get, get_ip_from_ip_prefix, strip_empties_from_dict
@@ -134,7 +135,7 @@ class WanMixin(Protocol):
                 public_ip: ... (for route-servers the IP may come from wan_route_servers) and so on.
         """
         for interface in l3_generic_interfaces:
-            if interface.wan_carrier not in local_carriers_dict:
+            if interface.wan_carrier and interface.wan_carrier not in local_carriers_dict:
                 if interface.wan_carrier not in self.inputs.wan_carriers:
                     msg = f"WAN carrier {interface.wan_carrier} is not in the available carriers defined in `wan_carriers`"
                     raise AristaAvdInvalidInputsError(msg)
@@ -188,17 +189,17 @@ class WanMixin(Protocol):
         return list(self.wan_local_path_groups.keys())
 
     @cached_property
-    def wan_ha_peer_path_groups(self: SharedUtilsProtocol) -> list:
+    def wan_ha_peer_path_groups(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol.WanPathGroups:
         """List of WAN HA peer path-groups coming from facts."""
-        if not self.is_wan_router or not self.wan_ha:
-            return []
-        peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
-        return get(peer_facts, "wan_path_groups", required=True)
+        if not self.is_wan_router or not self.wan_ha_peer:
+            return EosDesignsFactsProtocol.WanPathGroups()
+        peer_facts = self.get_peer_facts(self.wan_ha_peer)
+        return peer_facts.wan_path_groups
 
     @cached_property
     def wan_ha_peer_path_group_names(self: SharedUtilsProtocol) -> list:
         """Return a list of wan_ha_peer_path_group names."""
-        return [path_group["name"] for path_group in self.wan_ha_peer_path_groups]
+        return [path_group.name for path_group in self.wan_ha_peer_path_groups]
 
     def get_public_ip_for_wan_interface(
         self: SharedUtilsProtocol,
@@ -335,7 +336,7 @@ class WanMixin(Protocol):
             # These remote gw can be outside of the inventory
             if (peer_facts := self.get_peer_facts(wan_rs.hostname, required=False)) is not None:
                 # Found a matching server in inventory
-                bgp_as = peer_facts.get("bgp_as")
+                bgp_as = peer_facts.bgp_as
 
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
@@ -344,7 +345,7 @@ class WanMixin(Protocol):
 
                 # Prefer values coming from the input variables over peer facts
                 if not wan_rs.vtep_ip:
-                    if not (peer_vtep_ip := peer_facts.get("vtep_ip")):
+                    if not (peer_vtep_ip := peer_facts.vtep_ip):
                         msg = (
                             f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
                             " facts."
@@ -353,7 +354,7 @@ class WanMixin(Protocol):
                     wan_rs.vtep_ip = peer_vtep_ip
 
                 if not wan_rs.path_groups:
-                    if not (peer_path_groups := peer_facts.get("wan_path_groups")):
+                    if not (peer_path_groups := peer_facts.wan_path_groups):
                         msg = (
                             f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
                             " or something is wrong with the peer facts."
@@ -364,13 +365,11 @@ class WanMixin(Protocol):
                     wan_rs.path_groups = EosDesigns.WanRouteServersItem.PathGroups(
                         [
                             EosDesigns.WanRouteServersItem.PathGroupsItem(
-                                name=peer_path_group["name"],
+                                name=peer_path_group.name,
                                 interfaces=EosDesigns.WanRouteServersItem.PathGroupsItem.Interfaces(
                                     [
-                                        EosDesigns.WanRouteServersItem.PathGroupsItem.InterfacesItem(
-                                            name=interface["name"], public_ip=interface.get("public_ip")
-                                        )
-                                        for interface in peer_path_group.get("_interfaces", [])
+                                        EosDesigns.WanRouteServersItem.PathGroupsItem.InterfacesItem(name=interface.name, public_ip=interface.public_ip)
+                                        for interface in peer_path_group.interfaces
                                     ]
                                 ),
                             )
@@ -492,14 +491,18 @@ class WanMixin(Protocol):
         raise AristaAvdError(msg)
 
     @cached_property
-    def vrf_default_uplinks(self: SharedUtilsProtocol) -> list:
-        """Return the uplinkss in VRF default."""
-        return [uplink for uplink in self.get_switch_fact("uplinks") if get(uplink, "vrf") is None]
+    def vrf_default_uplinks(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol.Uplinks:
+        """
+        Return the uplinkss in VRF default.
+
+        TODO: Figure out if we really need this, since all uplinks are in vrf default.
+        """
+        return self.switch_facts.uplinks
 
     @cached_property
     def vrf_default_uplink_interfaces(self: SharedUtilsProtocol) -> list:
         """Return the uplink interfaces in VRF default."""
-        return [uplink["interface"] for uplink in self.vrf_default_uplinks]
+        return [uplink.interface for uplink in self.vrf_default_uplinks]
 
     @cached_property
     def use_uplinks_for_wan_ha(self: SharedUtilsProtocol) -> bool:
@@ -569,22 +572,17 @@ class WanMixin(Protocol):
         Used also to generate the prefix list of the PEER HA prefixes.
         """
         ip_addresses = []
-        if self.use_uplinks_for_wan_ha:
-            peer_facts = self.get_peer_facts(self.wan_ha_peer, required=True)
-            vrf_default_peer_uplinks = [uplink for uplink in get(peer_facts, "uplinks", required=True) if get(uplink, "vrf") is None]
+        if self.use_uplinks_for_wan_ha and self.wan_ha_peer:
+            peer_facts = self.get_peer_facts(self.wan_ha_peer)
+            # TODO: Simplify this, since there are no VRFs on uplinks.
+            vrf_default_peer_uplinks = peer_facts.uplinks
             interfaces = set(self.node_config.wan_ha.ha_interfaces)
             for uplink in vrf_default_peer_uplinks:
-                if not interfaces or uplink["interface"] in interfaces:
-                    ip_address = get(
-                        uplink,
-                        "ip_address",
-                        required=True,
-                        custom_error_msg=(
-                            f"The uplink interface {uplink['interface']} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address."
-                        ),
-                    )
-                    prefix_length = uplink["prefix_length"]
-                    ip_addresses.append(f"{ip_address}/{prefix_length}")
+                if not interfaces or uplink.interface in interfaces:
+                    if not uplink.ip_address:
+                        msg = f"The uplink interface {uplink.interface} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address."
+                        raise AristaAvdInvalidInputsError(msg)
+                    ip_addresses.append(f"{uplink.ip_address}/{uplink.prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
             ip_addresses.append(self.ip_addressing.wan_ha_peer_ip())
@@ -602,16 +600,11 @@ class WanMixin(Protocol):
         if self.use_uplinks_for_wan_ha:
             interfaces = set(self.node_config.wan_ha.ha_interfaces)
             for uplink in self.vrf_default_uplinks:
-                if not interfaces or uplink["interface"] in interfaces:
-                    ip_address = get(
-                        uplink,
-                        "ip_address",
-                        required=True,
-                        custom_error_msg=f"The uplink interface {uplink['interface']} used as WAN LAN HA does not have an IP address.",
-                    )
-                    # We can use [] notation here because if there is an ip_address, there should be a prefix_length
-                    prefix_length = uplink["prefix_length"]
-                    ip_addresses.append(f"{ip_address}/{prefix_length}")
+                if not interfaces or uplink.interface in interfaces:
+                    if not uplink.ip_address:
+                        msg = f"The uplink interface {uplink.interface} used as WAN LAN HA does not have an IP address."
+                        raise AristaAvdInvalidInputsError(msg)
+                    ip_addresses.append(f"{uplink.ip_address}/{uplink.prefix_length}")
         else:
             # Only one supported HA interface today when not using uplinks
             ip_addresses.append(self.ip_addressing.wan_ha_ip())

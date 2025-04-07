@@ -78,6 +78,15 @@ dot1x
 {%         if dot1x.radius_av_pair.service_type is arista.avd.defined(true) %}
    radius av-pair service-type
 {%         endif %}
+{%         if dot1x.radius_av_pair.filter_id.multiple is arista.avd.defined(true) %}
+   radius av-pair filter-id multiple
+{%         endif %}
+{%         if dot1x.radius_av_pair.filter_id.delimiter_period is arista.avd.defined(true) %}
+   radius av-pair filter-id delimiter period
+{%         endif %}
+{%         if dot1x.radius_av_pair.filter_id.ipv4_ipv6_required is arista.avd.defined(true) %}
+   radius av-pair filter-id ipv4 ipv6 required
+{%         endif %}
 {%         if dot1x.radius_av_pair.framed_mtu is arista.avd.defined %}
    radius av-pair framed-mtu {{ dot1x.radius_av_pair.framed_mtu }}
 {%         endif %}
@@ -105,6 +114,12 @@ dot1x
 {%             if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
    captive-portal start limit infinite
 {%             endif %}
+{%         endif %}
+{%         for vlan_assignment_group in dot1x.vlan_assignment_groups | arista.avd.natural_sort("name") %}
+   vlan assignment group {{ vlan_assignment_group.name }} members {{ vlan_assignment_group.members }}
+{%         endfor %}
+{%         if dot1x.statistics_packets_dropped is arista.avd.defined(true) %}
+   statistics packets dropped
 {%         endif %}
 {%         if dot1x.radius_av_pair.lldp is arista.avd.defined %}
 {%             if dot1x.radius_av_pair.lldp.system_name.enabled is arista.avd.defined(true) %}

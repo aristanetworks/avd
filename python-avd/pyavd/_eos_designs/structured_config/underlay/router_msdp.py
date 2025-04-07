@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import get
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -47,8 +47,12 @@ class RouterMsdpMixin(Protocol):
 
         self.structured_config.router_msdp.originator_id_local_interface = "Loopback0"
         for peer in natural_sort(peers):
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            if not peer_facts.router_id:
+                msg = f"'router_id' is required but was not found for {peer}."
+                raise AristaAvdInvalidInputsError(msg)
             self.structured_config.router_msdp.peers.append_new(
-                ipv4_address=get(self.shared_utils.get_peer_facts(peer), "router_id", required=True),
+                ipv4_address=peer_facts.router_id,
                 local_interface="Loopback0",
                 description=peer,
                 mesh_groups=EosCliConfigGen.RouterMsdp.PeersItem.MeshGroups([EosCliConfigGen.RouterMsdp.PeersItem.MeshGroupsItem(name="ANYCAST-RP")]),

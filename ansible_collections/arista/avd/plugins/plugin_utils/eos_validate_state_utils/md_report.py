@@ -15,7 +15,8 @@ if TYPE_CHECKING:
 
 
 class MDReport:
-    """Main class responsible for generating various sections of a markdown report based on test results.
+    """
+    Main class responsible for generating various sections of a markdown report based on test results.
 
     It aggregates different report sections, each represented by a subclass of `MDReportBase`,
     and sequentially generates their content into a markdown file.
@@ -25,7 +26,8 @@ class MDReport:
     """
 
     def __init__(self, mdfile: TextIOWrapper, results: ResultsManager) -> None:
-        """Initialize the MDReport with an open markdown file object to write to and a ResultsManager instance.
+        """
+        Initialize the MDReport with an open markdown file object to write to and a ResultsManager instance.
 
         Args:
         ----
@@ -49,14 +51,16 @@ class MDReport:
 
 
 class MDReportBase(ABC):
-    """Base class for all sections subclasses.
+    """
+    Base class for all sections subclasses.
 
     Every subclasses must implement the `generate_section` method that uses the `ResultsManager` object
     to generate and write content to the provided markdown file.
     """
 
     def __init__(self, mdfile: TextIOWrapper, results: ResultsManager) -> None:
-        """Initialize the MDReportBase with an open markdown file object to write to and a ResultsManager instance.
+        """
+        Initialize the MDReportBase with an open markdown file object to write to and a ResultsManager instance.
 
         Args:
         ----
@@ -68,7 +72,8 @@ class MDReportBase(ABC):
 
     @abstractmethod
     def generate_section(self) -> None:
-        """Abstract method to generate a specific section of the markdown report.
+        """
+        Abstract method to generate a specific section of the markdown report.
 
         Must be implemented by subclasses.
         """
@@ -76,7 +81,8 @@ class MDReportBase(ABC):
         raise NotImplementedError(msg)
 
     def generate_rows(self) -> Generator[str, None, None]:
-        """Generate the rows of a markdown table for a specific report section.
+        """
+        Generate the rows of a markdown table for a specific report section.
 
         Subclasses can implement this method to generate the content of the table rows.
         """
@@ -84,7 +90,8 @@ class MDReportBase(ABC):
         raise NotImplementedError(msg)
 
     def generate_heading_name(self) -> str:
-        """Generate a formatted heading name based on the class name.
+        """
+        Generate a formatted heading name based on the class name.
 
         Returns:
         -------
@@ -98,7 +105,8 @@ class MDReportBase(ABC):
         return re.sub(r"(?<!^)(?=[A-Z])", " ", class_name).title()
 
     def write_table(self, table_heading: list[str], *, last_table: bool = False) -> None:
-        """Write a markdown table with a table heading and multiple rows to the markdown file.
+        """
+        Write a markdown table with a table heading and multiple rows to the markdown file.
 
         Args:
         ----
@@ -113,7 +121,8 @@ class MDReportBase(ABC):
             self.mdfile.write("\n")
 
     def write_heading(self, heading_level: int) -> None:
-        """Write a markdown heading to the markdown file.
+        """
+        Write a markdown heading to the markdown file.
 
         The heading name used is the class name.
 
@@ -132,7 +141,8 @@ class MDReportBase(ABC):
         self.mdfile.write(f"{heading}\n\n")
 
     def safe_markdown(self, text: str | None) -> str:
-        """Escape markdown characters in the text to prevent markdown rendering issues.
+        """
+        Escape markdown characters in the text to prevent markdown rendering issues.
 
         Args:
         ----------
@@ -267,7 +277,8 @@ class FailedTestResultsSummary(MDReportBase):
 
 
 class AllTestResults(MDReportBase):
-    """Generates the `## All Test Results` section of the markdown report.
+    """
+    Generates the `## All Test Results` section of the markdown report.
 
     This section is generated only if the report includes all results.
     """
@@ -288,7 +299,8 @@ class AllTestResults(MDReportBase):
             )
 
     def generate_section(self) -> None:
-        """Generate the `## All Test Results` section of the markdown report.
+        """
+        Generate the `## All Test Results` section of the markdown report.
 
         This section is generated only if the report includes all results.
         """
