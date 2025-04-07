@@ -22,18 +22,20 @@ application_traffic_recognition:
       - '666'
       - '777'
     ipv4_prefixes:
+    - name: PFX-PATHFINDERS
+      prefix_values:
+      - 192.168.144.2/32
+      - 192.168.144.3/32
     - name: CUSTOM-SRC-PREFIX-1
       prefix_values:
       - 42.42.42.0/24
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: PFX-PATHFINDERS
-      prefix_values:
-      - 192.168.144.2/32
-      - 192.168.144.3/32
   applications:
     ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      dest_prefix_set_name: PFX-PATHFINDERS
     - name: CUSTOM-APPLICATION-1
       src_prefix_set_name: CUSTOM-SRC-PREFIX-1
       dest_prefix_set_name: CUSTOM-DEST-PREFIX-1
@@ -50,9 +52,10 @@ application_traffic_recognition:
       - 12-14
       - cs6
       - '42'
-    - name: APP-CONTROL-PLANE
-      dest_prefix_set_name: PFX-PATHFINDERS
   application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
   - name: VIDEO
     applications:
     - name: CUSTOM-APPLICATION-1
@@ -64,9 +67,6 @@ application_traffic_recognition:
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
-  - name: APP-PROFILE-CONTROL-PLANE
-    applications:
-    - name: APP-CONTROL-PLANE
 config_end: true
 dps_interfaces:
 - name: Dps1

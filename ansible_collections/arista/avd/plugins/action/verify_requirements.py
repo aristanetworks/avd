@@ -4,6 +4,7 @@
 
 import json
 import sys
+from importlib import import_module
 from importlib.metadata import Distribution, PackageNotFoundError, metadata, version
 from pathlib import Path
 from subprocess import PIPE, Popen
@@ -12,7 +13,6 @@ from typing import Any
 import yaml
 from ansible import constants as C  # noqa: N812
 from ansible.errors import AnsibleActionFail
-from ansible.module_utils.compat.importlib import import_module
 from ansible.plugins.action import ActionBase
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 from ansible.utils.display import Display

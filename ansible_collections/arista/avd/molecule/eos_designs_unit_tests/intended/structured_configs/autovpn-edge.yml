@@ -17,12 +17,12 @@ application_traffic_recognition:
     - name: APP-CONTROL-PLANE
       dest_prefix_set_name: PFX-PATHFINDERS
   application_profiles:
-  - name: IT
-  - name: VOICE
-  - name: VIDEO
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
+  - name: IT
+  - name: VOICE
+  - name: VIDEO
 config_end: true
 dps_interfaces:
 - name: Dps1

@@ -493,6 +493,10 @@ $defs:
                           type: str
                           description: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                           format: ipv6_pool
+                  hardware_forwarding:
+                    type: bool
+                    description: |
+                      Enable hardware forwarding for diagnostic loopbacks. This is required for correct forwarding in VRFs without physical interfaces.
               ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -549,6 +553,13 @@ $defs:
                     items:
                       type: str
                       description: Hostname.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for eos_cli_config_gen.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: "eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items"
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -1047,6 +1058,10 @@ $defs:
                             - int
                           description: OSPF area ID.
                           default: "0.0.0.0"
+                    hardware_forwarding:
+                      type: bool
+                      description: |
+                        Enable hardware forwarding for this loopback. This is required for correct forwarding in VRFs without physical interfaces.
                     raw_eos_cli:
                       type: str
                       description: |
