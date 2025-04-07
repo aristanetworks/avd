@@ -149,17 +149,14 @@ jobs:
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install ${{ matrix.ansible_version}} -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          .github/molecule-runner.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -180,17 +177,14 @@ jobs:
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install ${{ matrix.ansible_version}} -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          .github/molecule-runner.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -249,17 +243,14 @@ jobs:
           uv pip compile .github/requirements-ci-dev.txt --resolution=lowest-direct > ${{ matrix.pip_requirements }}
           cat ${{ matrix.pip_requirements }}
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: ${{ matrix.pip_requirements }}
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install ${{ matrix.ansible_version}} -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          .github/molecule-runner.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -285,17 +276,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install ${{ matrix.ansible_version}} -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          .github/molecule-runner.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -321,17 +309,14 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
-          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install ${{ matrix.ansible_version}} -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          .github/molecule-runner.sh
 
   # ----------------------------------- #
   # EOS Validate State MOLECULE
@@ -353,17 +338,14 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install ${{ matrix.ansible_version}} -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          .github/molecule-runner.sh
 
   # ----------------------------------- #
   # Ansible tests
