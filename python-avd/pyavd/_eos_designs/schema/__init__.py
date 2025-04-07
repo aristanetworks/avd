@@ -7392,7 +7392,10 @@ class EosDesigns(EosDesignsRootModel):
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                """Custom structured config added under subinterfaces.[name=<interface>] for eos_cli_config_gen."""
+                """
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
 
                 if TYPE_CHECKING:
 
@@ -7427,7 +7430,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                            structured_config: Custom structured config added under subinterfaces.[name=<interface>] for eos_cli_config_gen.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
 
                         """
 
@@ -11053,7 +11058,10 @@ class EosDesigns(EosDesignsRootModel):
                 raw_eos_cli: str | None
                 """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                 structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                """Custom structured config added under subinterfaces.[name=<interface>] for eos_cli_config_gen."""
+                """
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
 
                 if TYPE_CHECKING:
 
@@ -11088,7 +11096,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                Subclass of AvdModel.
                             raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                            structured_config: Custom structured config added under subinterfaces.[name=<interface>] for eos_cli_config_gen.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
 
                         """
 
@@ -17386,7 +17396,10 @@ class EosDesigns(EosDesignsRootModel):
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """Custom structured config added under subinterfaces.[name=<interface>] for eos_cli_config_gen."""
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                            eos_cli_config_gen.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -17421,7 +17434,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
-                                        structured_config: Custom structured config added under subinterfaces.[name=<interface>] for eos_cli_config_gen.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                           eos_cli_config_gen.
 
                                     """
 
