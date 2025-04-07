@@ -6,7 +6,8 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._utils import default, strip_empties_from_list
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._utils import default
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -21,18 +22,17 @@ class LinkTrackingGroupsMixin(Protocol):
     """
 
     @cached_property
-    def link_tracking_groups(self: SharedUtilsProtocol) -> list | None:
-        if self.node_config.link_tracking.enabled:
-            link_tracking_groups = []
-            default_recovery_delay = default(self.platform_settings.reload_delay.mlag, 300)
-            if len(self.node_config.link_tracking.groups) > 0:
-                for lt_group in self.node_config.link_tracking.groups:
-                    lt_group_dict = lt_group._as_dict(include_default_values=True)
-                    lt_group_dict["recovery_delay"] = default(lt_group.recovery_delay, default_recovery_delay)
-                    link_tracking_groups.append(lt_group_dict)
-            else:
-                link_tracking_groups.append({"name": "LT_GROUP1", "recovery_delay": default_recovery_delay})
+    def link_tracking_groups(self: SharedUtilsProtocol) -> EosCliConfigGen.LinkTrackingGroups | None:
+        if not self.node_config.link_tracking.enabled:
+            return None
 
-            return strip_empties_from_list(link_tracking_groups)
+        link_tracking_groups = EosCliConfigGen.LinkTrackingGroups()
+        default_recovery_delay = default(self.platform_settings.reload_delay.mlag, 300)
+        for lt_group in self.node_config.link_tracking.groups:
+            link_tracking_groups.append_new(
+                name=lt_group.name,
+                links_minimum=lt_group.links_minimum,
+                recovery_delay=default(lt_group.recovery_delay, default_recovery_delay),
+            )
 
-        return None
+        return link_tracking_groups

@@ -6,3 +6,7 @@ underlay_ipv6: true
 # Test that having "overlay_routing_protocol_address_family: ipv6"
 # will not raise an error for devices that are not underlay_router (issue/2954)
 overlay_routing_protocol_address_family: ipv6
+
+# Expicitely disabling management api-http commands
+management_eapi:
+  enabled: false

@@ -4,8 +4,10 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
@@ -14,8 +16,6 @@ from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
-    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
-
     from . import SharedUtilsProtocol
 
 
@@ -29,13 +29,7 @@ class MiscMixin(Protocol):
 
     @cached_property
     def all_fabric_devices(self: SharedUtilsProtocol) -> list[str]:
-        avd_switch_facts: dict = get(self.hostvars, "avd_switch_facts", required=True)
-        return list(avd_switch_facts.keys())
-
-    @cached_property
-    def hostname(self: SharedUtilsProtocol) -> str:
-        """Hostname set based on inventory_hostname variable. TODO: Get a proper attribute on the class instead of gleaning from the regular inputs."""
-        return get(self.hostvars, "inventory_hostname", required=True)
+        return list(self.peer_facts.keys())
 
     @cached_property
     def id(self: SharedUtilsProtocol) -> int | None:
@@ -45,19 +39,19 @@ class MiscMixin(Protocol):
         Will be sourced from different places depending on the context.
 
         If running under eos_designs_structured_config:
-            Use 'self.hostvars.switch.id' or None
+            Use 'id' from EosDesignsFacts or None
 
         If running under eos_designs_facts and pool manager is activated:
-            Use pool manager requesting the value of 'self.switch_data_combined.id' if set.
+            Use pool manager requesting the value of 'self.node_config.id' if set.
             If the 'id' field is set but not available in the pool, an error will be raised.
 
         If running under eos_designs_facts and pool manager is _not_ activated:
-            Use 'self.switch_data_combined.id' which is the ID defined in the node type config or None.
+            Use 'self.node_config.id' which is the ID defined in the node type config or None.
         """
-        # Check if we are running from eos_designs_structured_config ("switch" is a dict)
-        if isinstance(switch := get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch", separator=".."), dict):
-            # Return value of 'self.hostvars.switch.id' or None
-            return switch.get("id")
+        # Check if we are running from eos_designs_structured_config (facts is an instance of EosDesignsFacts and not EosDesignsFactsGenerator)
+        if isinstance(self.switch_facts, EosDesignsFacts):
+            # Return id or None
+            return self.switch_facts.id
 
         # We are running from eos_designs_facts.
         # Check if pool manager is activated.
@@ -85,7 +79,7 @@ class MiscMixin(Protocol):
     @cached_property
     def filter_tags(self: SharedUtilsProtocol) -> list:
         """Return filter.tags + group if defined."""
-        filter_tags = self.node_config.filter.tags
+        filter_tags = list(self.node_config.filter.tags)
         if self.group is not None:
             filter_tags.append(self.group)
         return filter_tags
@@ -121,40 +115,7 @@ class MiscMixin(Protocol):
 
     @cached_property
     def uplink_switch_interfaces(self: SharedUtilsProtocol) -> list[str]:
-        uplink_switch_interfaces = self.node_config.uplink_switch_interfaces or get(self.cv_topology_config, "uplink_switch_interfaces") or []
-        if uplink_switch_interfaces:
-            return range_expand(uplink_switch_interfaces)
-
-        if not self.uplink_switches:
-            return []
-
-        if self.id is None:
-            msg = f"'id' is not set on '{self.hostname}'"
-            raise AristaAvdInvalidInputsError(msg)
-
-        uplink_switch_interfaces = []
-        uplink_switch_counter = {}
-        for uplink_switch in self.uplink_switches:
-            uplink_switch_facts: EosDesignsFacts = self.get_peer_facts(uplink_switch, required=True)
-
-            # Count the number of instances the current switch was processed
-            uplink_switch_counter[uplink_switch] = uplink_switch_counter.get(uplink_switch, 0) + 1
-            index_of_parallel_uplinks = uplink_switch_counter[uplink_switch] - 1
-
-            # Add uplink_switch_interface based on this switch's ID (-1 for 0-based) * max_parallel_uplinks + index_of_parallel_uplinks.
-            # For max_parallel_uplinks: 2 this would assign downlink interfaces like this:
-            # spine1 downlink-interface mapping: [ leaf-id1, leaf-id1, leaf-id2, leaf-id2, leaf-id3, leaf-id3, ... ]
-            downlink_index = (self.id - 1) * self.node_config.max_parallel_uplinks + index_of_parallel_uplinks
-            if len(uplink_switch_facts._default_downlink_interfaces) > downlink_index:
-                uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
-            else:
-                msg = (
-                    f"'uplink_switch_interfaces' is not set on '{self.hostname}' and 'uplink_switch' '{uplink_switch}' "
-                    f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
-                )
-                raise AristaAvdError(msg)
-
-        return uplink_switch_interfaces
+        return list(self.switch_facts.uplink_switch_interfaces)
 
     @cached_property
     def serial_number(self: SharedUtilsProtocol) -> str | None:
@@ -200,17 +161,9 @@ class MiscMixin(Protocol):
     def default_interface_mtu(self: SharedUtilsProtocol) -> int | None:
         return default(self.platform_settings.default_interface_mtu, self.inputs.default_interface_mtu)
 
-    def get_switch_fact(self: SharedUtilsProtocol, key: str, required: bool = True) -> Any:
-        """
-        Return facts from EosDesignsFacts.
-
-        We need to go via avd_switch_facts since PyAVD does not expose "switch.*" in get_avdfacts.
-        """
-        return get(self.hostvars, f"avd_switch_facts..{self.hostname}..switch..{key}", required=required, org_key=f"switch.{key}", separator="..")
-
     @cached_property
     def evpn_multicast(self: SharedUtilsProtocol) -> bool:
-        return self.get_switch_fact("evpn_multicast", required=False) is True
+        return self.switch_facts.evpn_multicast is True
 
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
@@ -276,94 +229,147 @@ class MiscMixin(Protocol):
 
         return replacement_value
 
-    def get_l3_generic_interface_bgp_neighbors(
-        self: SharedUtilsProtocol,
-        l3_generic_interfaces: (
-            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3Interfaces
-            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannels
-        ),
-    ) -> list:
-        """
-        Fetches bgp neighbors for given L3 interface placeholder.
+    def get_prefix_list(self: SharedUtilsProtocol, name: str) -> EosCliConfigGen.PrefixListsItem:
+        """Retrieve prefix list from self.inputs.ipv4_prefix_list_catalog."""
+        if name not in self.inputs.ipv4_prefix_list_catalog:
+            msg = f"ipv4_prefix_list_catalog[name={name}]"
+            raise AristaAvdMissingVariableError(msg)
+        return self.inputs.ipv4_prefix_list_catalog[name]._cast_as(EosCliConfigGen.PrefixListsItem)
 
-        Fetches bgp neighbors (list of dict) for all interfaces under given interface type.
-        'l3_generic_interfaces' is expected to be set to either property - self.l3_interfaces or self.l3_port_channels.
+    def get_l3_bgp_route_map_in(self: SharedUtilsProtocol, name: str, prefix_list_name: str, *, no_advertise: bool = False) -> EosCliConfigGen.RouteMapsItem:
         """
-        neighbors = []
-        is_l3_interface = False
-        if isinstance(l3_generic_interfaces, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3Interfaces):
-            is_l3_interface = True
-            schema_key = "l3_interfaces"
+        Generate the inbound route-map for the Router BGP neighbors for node_config.l3_interfaces or node_config.l3_port_channels.
+
+        Args:
+            name: the route-map name RM-BGP-<PEER-IP>-IN
+            prefix_list_name: the prefix-list name to use for the sequence 10 permit match entry.
+            no_advertise: if True, set the community no-advertise on the sequence 10 entry.
+        """
+        route_map = EosCliConfigGen.RouteMapsItem(name=name)
+        sequence_number = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem(
+            sequence=10, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"ip address prefix-list {prefix_list_name}"])
+        )
+        # set no advertise is set only for WAN neighbors, which will also have prefix_list_in
+        if no_advertise:
+            sequence_number.set.append("community no-advertise additive")
+
+        route_map.sequence_numbers.append(sequence_number)
+        return route_map
+
+    def get_l3_bgp_route_map_out(self: SharedUtilsProtocol, name: str, prefix_list_name: str | None = None) -> EosCliConfigGen.RouteMapsItem:
+        """
+        Generate the outbound route-map for the Router BGP neighbors for node_config.l3_interfaces or node_config.l3_port_channels.
+
+        Args:
+            name: the route-map name RM-BGP-<PEER-IP>-OUT
+            prefix_list_name: the prefix-list name to use for the sequence 10 permit match entry,
+        """
+        route_map = EosCliConfigGen.RouteMapsItem(name=name)
+        if prefix_list_name:
+            route_map.sequence_numbers.append_new(
+                sequence=10, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match([f"ip address prefix-list {prefix_list_name}"])
+            )
+            route_map.sequence_numbers.append_new(sequence=20, type="deny")
         else:
-            # implies we intend to query all L3 Port-Channels
+            route_map.sequence_numbers.append_new(
+                sequence=10,
+                type="deny",
+            )
+        return route_map
+
+    def update_l3_generic_interface_bgp_objects(
+        self: SharedUtilsProtocol,
+        interface: (
+            EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem
+            | EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannelsItem
+        ),
+        neighbors: EosCliConfigGen.RouterBgp.Neighbors,
+        prefix_lists: EosCliConfigGen.PrefixLists,
+        route_maps: EosCliConfigGen.RouteMaps,
+    ) -> None:
+        if isinstance(interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
+            schema_key = "l3_interfaces"
+            description_function = self.interface_descriptions.underlay_ethernet_interface
+            peer_interface = interface.peer_interface
+        else:
             schema_key = "l3_port_channels"
+            description_function = self.interface_descriptions.underlay_port_channel_interface
+            peer_interface = interface.peer_port_channel
 
-        for interface in l3_generic_interfaces:
-            if not (interface.peer_ip and interface.bgp):
-                continue
+        context = f"{schema_key}[{interface.name}]"
 
-            if interface.bgp.peer_as is None:
-                msg = f"'{schema_key}[{interface.name}].bgp.peer_as' needs to be set to enable BGP."
-                raise AristaAvdInvalidInputsError(msg)
+        if not (interface.peer_ip and interface.bgp):
+            return
 
-            is_intf_wan = bool(interface.wan_carrier)
+        is_wan_interface = bool(interface.wan_carrier)
 
-            if not interface.bgp.ipv4_prefix_list_in and is_intf_wan:
-                msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for {schema_key}[{interface.name}]"
-                raise AristaAvdInvalidInputsError(msg)
+        if is_wan_interface and not interface.bgp.ipv4_prefix_list_in:
+            # TODO: Use source here when available.
+            msg = f"BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for '{context}'."
+            raise AristaAvdInvalidInputsError(msg)
 
-            description = interface.description
-            if not description:
-                if is_l3_interface:
-                    description = self.interface_descriptions.underlay_ethernet_interface(
-                        InterfaceDescriptionData(
-                            shared_utils=self,
-                            interface=interface.name,
-                            peer=interface.peer,
-                            peer_interface=interface.peer_interface,
-                            wan_carrier=interface.wan_carrier,
-                            wan_circuit_id=interface.wan_circuit_id,
-                        ),
-                    )
-                else:
-                    # build description for L3 Port-Channel interface
-                    description = self.interface_descriptions.underlay_port_channel_interface(
-                        InterfaceDescriptionData(
-                            shared_utils=self,
-                            interface=interface.name,
-                            peer=interface.peer,
-                            peer_interface=interface.peer_port_channel,
-                            wan_carrier=interface.wan_carrier,
-                            wan_circuit_id=interface.wan_circuit_id,
-                        ),
-                    )
+        description = (
+            interface.description
+            or description_function(
+                InterfaceDescriptionData(
+                    shared_utils=self,
+                    interface=interface.name,
+                    peer=interface.peer,
+                    peer_interface=peer_interface,
+                    wan_carrier=interface.wan_carrier,
+                    wan_circuit_id=interface.wan_circuit_id,
+                ),
+            )
+            or None
+        )
 
-            neighbor = {
-                "ip_address": interface.peer_ip,
-                "remote_as": interface.bgp.peer_as,
-                "description": description,
-            }
+        neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
+            ip_address=interface.peer_ip,
+            remote_as=interface.bgp.peer_as,
+            description=description,
+        )
 
-            neighbor["ipv4_prefix_list_in"] = interface.bgp.ipv4_prefix_list_in
-            neighbor["ipv4_prefix_list_out"] = interface.bgp.ipv4_prefix_list_out
-            if is_intf_wan:
-                neighbor["set_no_advertise"] = True
+        if interface.bgp.ipv4_prefix_list_in:
+            if interface.bgp.ipv4_prefix_list_in not in prefix_lists:
+                prefix_lists.append(self.get_prefix_list(interface.bgp.ipv4_prefix_list_in))
+            rm_in_name = f"RM-BGP-{neighbor.ip_address}-IN"
+            neighbor.route_map_in = rm_in_name
+            route_maps.append(self.get_l3_bgp_route_map_in(rm_in_name, interface.bgp.ipv4_prefix_list_in, no_advertise=is_wan_interface))
 
-            # The inbound route-map is only used if there is a prefix list or no-advertise
-            if neighbor["ipv4_prefix_list_in"] or neighbor.get("set_no_advertise") is True:
-                neighbor["route_map_in"] = f"RM-BGP-{neighbor['ip_address']}-IN"
-            neighbor["route_map_out"] = f"RM-BGP-{neighbor['ip_address']}-OUT"
+        if interface.bgp.ipv4_prefix_list_out and interface.bgp.ipv4_prefix_list_out not in prefix_lists:
+            prefix_lists.append(self.get_prefix_list(interface.bgp.ipv4_prefix_list_out))
 
-            neighbors.append(neighbor)
+        rm_out_name = f"RM-BGP-{neighbor.ip_address}-OUT"
+        neighbor.route_map_out = rm_out_name
+        route_maps.append(self.get_l3_bgp_route_map_out(rm_out_name, interface.bgp.ipv4_prefix_list_out))
 
-        return neighbors
+        neighbors.append(neighbor)
 
     @cached_property
-    def l3_bgp_neighbors(self: SharedUtilsProtocol) -> list:
-        """Returns the consolidated list of L3 bgp neighbors referenced by L3 Interfaces and L3 Port-Channels."""
-        l3_bgp_neighbors = self.get_l3_generic_interface_bgp_neighbors(self.l3_interfaces)
-        l3_bgp_neighbors.extend(self.get_l3_generic_interface_bgp_neighbors(self.node_config.l3_port_channels))
-        return l3_bgp_neighbors
+    def l3_bgp_objects(self: SharedUtilsProtocol) -> tuple[EosCliConfigGen.RouterBgp.Neighbors, EosCliConfigGen.PrefixLists, EosCliConfigGen.RouteMaps]:
+        """Generates the EosCliConfigGen Router BGP Neighbors and their associated PrefixListsItem and RouteMapsItem."""
+        neighbors = EosCliConfigGen.RouterBgp.Neighbors()
+        prefix_lists = EosCliConfigGen.PrefixLists()
+        route_maps = EosCliConfigGen.RouteMaps()
+
+        for interface in self.l3_interfaces:
+            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps)
+        for interface in self.node_config.l3_port_channels:
+            self.update_l3_generic_interface_bgp_objects(interface, neighbors, prefix_lists, route_maps)
+
+        return neighbors, prefix_lists, route_maps
+
+    @property
+    def l3_bgp_neighbors(self: SharedUtilsProtocol) -> EosCliConfigGen.RouterBgp.Neighbors:
+        return self.l3_bgp_objects[0]
+
+    @property
+    def l3_bgp_prefix_lists(self: SharedUtilsProtocol) -> EosCliConfigGen.PrefixLists:
+        return self.l3_bgp_objects[1]
+
+    @property
+    def l3_bgp_route_maps(self: SharedUtilsProtocol) -> EosCliConfigGen.RouteMaps:
+        return self.l3_bgp_objects[2]
 
     @cached_property
     def is_sfe_interface_profile_supported(self: SharedUtilsProtocol) -> bool:

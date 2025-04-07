@@ -28,6 +28,37 @@ interface Management1
    ip address 10.73.255.122/24
 ```
 
+### NTP
+
+#### NTP Summary
+
+##### NTP Servers
+
+| Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
+| ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
+| 2.2.2.55 | - | - | - | - | - | - | - | - | - |
+
+#### NTP Device Configuration
+
+```eos
+!
+ntp server 2.2.2.55
+ntp serve all
+ntp serve all vrf 1
+ntp serve all vrf BLUE
+ntp serve all vrf PINK
+ntp serve all vrf RED
+ntp serve all vrf default
+ntp serve ip access-group test_ACL vrf 1 in
+ntp serve ip access-group test_ACL vrf BLUE in
+ntp serve ip access-group test_ACL vrf RED in
+ntp serve ip access-group test_ACL in
+ntp serve ipv6 access-group test_ACL_v6 vrf 1 in
+ntp serve ipv6 access-group test_ACL_v6 vrf PINK in
+ntp serve ipv6 access-group test_ACL_v6 vrf RED in
+ntp serve ipv6 access-group test_ACL_v6 in
+```
+
 ### Management SSH
 
 #### SSH Timeout and Management

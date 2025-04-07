@@ -34,8 +34,8 @@ class RouterOspfMixin(Protocol):
             bfd_enable=self.inputs.underlay_ospf_bfd_enable,
         )
         for link in self._underlay_links:
-            if link["type"] == "underlay_p2p":
-                process.no_passive_interfaces.append(link["interface"])
+            if link.type == "underlay_p2p":
+                process.no_passive_interfaces.append(link.interface)
 
         if self.shared_utils.mlag_l3 is True:
             mlag_l3_vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)

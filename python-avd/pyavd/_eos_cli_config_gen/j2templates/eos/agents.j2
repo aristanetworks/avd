@@ -15,4 +15,13 @@
 {%         endfor %}
 agent {{ agent.name }} environment {{ env_list | join(":") }}
 {%     endif %}
+{%     if agent.shutdown is arista.avd.defined(true) %}
+agent {{ agent.name }} shutdown
+{%     endif %}
+{%     if agent.shutdown_supervisor_active is arista.avd.defined(true) %}
+agent {{ agent.name }} shutdown supervisor active
+{%     endif %}
+{%     if agent.shutdown_supervisor_standby is arista.avd.defined(true) %}
+agent {{ agent.name }} shutdown supervisor standby
+{%     endif %}
 {% endfor %}

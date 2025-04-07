@@ -16,7 +16,8 @@ if TYPE_CHECKING:
 
 
 class AntaTestInputFactory(ABC):
-    """Base class for `AntaTest.Input` factories.
+    """
+    Base class for `AntaTest.Input` factories.
 
     Implementations of this class must provide a `create` method that returns
     a list of `AntaTest.Input` models or `None`.

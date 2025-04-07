@@ -12,7 +12,6 @@ from yaml import safe_dump
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.shared_utils import SharedUtils
-from pyavd._schema.avdschema import AvdSchema
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.pool_manager.base_classes import FILE_HEADER
 
@@ -222,7 +221,6 @@ def test_avdpoolmanager_pool(
     """
     file_exists = mock_file_data is not None
     expected_write = mock_file_data != expected_data
-    schema = AvdSchema(schema_id="eos_designs")
     with (
         mock.patch.object(Path, "exists", mock.Mock(return_value=file_exists)) as mocked_exists,
         mock.patch.object(Path, "open", mock.mock_open(read_data=get_file_content(mock_file_data))) as mocked_open,
@@ -237,7 +235,9 @@ def test_avdpoolmanager_pool(
 
         for index, hostvars in enumerate(hostvars_list):
             requested_id = requested_ids[index] if requested_ids else None
-            shared_utils = SharedUtils(hostvars=hostvars, inputs=EosDesigns._from_dict(hostvars), templar=object(), schema=schema)
+            _hostvars = hostvars.copy()
+            hostname = _hostvars.pop("inventory_hostname")
+            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns(**_hostvars), templar=object(), peer_facts={})
             # Get the id of the host from hostvars. If not, a new data set will be created.
             assert pool_manager.get_assignment("node_id_pools", shared_utils, requested_id) == expected_ids[index]
 
@@ -278,6 +278,7 @@ class DummySharedUtils:
     type: str
     dc_name: str | None = None
     pod_name: str | None = None
+    inputs: object | None = None
 
 
 @pytest.mark.parametrize(

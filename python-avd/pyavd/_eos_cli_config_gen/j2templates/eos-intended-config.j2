@@ -70,6 +70,8 @@
 {% include 'eos/interface-defaults.j2' %}
 {# service routing protocols model #}
 {% include 'eos/service-routing-protocols-model.j2' %}
+{# kernel software configuration #}
+{% include 'eos/kernel.j2' %}
 {# l2 protocol forwarding #}
 {% include 'eos/l2-protocol-forwarding.j2' %}
 {# lacp #}
@@ -347,6 +349,8 @@
 {% include 'eos/router-multicast.j2' %}
 {# router ospf configuration #}
 {% include 'eos/router-ospf.j2' %}
+{# ipv6 router ospf configuration #}
+{% include 'eos/ipv6-router-ospf.j2' %}
 {# router pim sparse mode configuration #}
 {% include 'eos/router-pim-sparse-mode.j2' %}
 {# router msdp #}

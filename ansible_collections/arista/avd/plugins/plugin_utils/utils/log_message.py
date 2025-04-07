@@ -19,7 +19,8 @@ def log_message(
     *,
     prepend_message: bool = False,
 ) -> None:
-    """Log a message when a key from a data model is missing or has an invalid value.
+    """
+    Log a message when a key from a data model is missing or has an invalid value.
 
     The function can take optional parameters to customize the log message.
 
