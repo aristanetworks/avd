@@ -18,11 +18,11 @@ l3leaf:
       bgp_as: 65104
       nodes:
         - name: site4-border1
-          mgmt_ip: 192.168.17.41/24
+          mgmt_ip: 192.168.17.23/24
           id: 13
           evpn_role: server
         - name: site4-border2
-          mgmt_ip: 192.168.17.42/24
+          mgmt_ip: 192.168.17.24/24
           id: 14
 
 wan_router:
@@ -50,7 +50,7 @@ wan_router:
         - name: site4-wan1
           id: 15
           evpn_role: client
-          mgmt_ip: 192.168.17.43/24
+          mgmt_ip: 192.168.17.22/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
           l3_interfaces:
             - name: Ethernet3
@@ -65,7 +65,7 @@ wan_router:
               peer_ip: 100.64.40.1
               ip_address: 100.64.40.2/24
               static_routes:
-              - prefix: 100.64.0.0/16
+                - prefix: 100.64.0.0/16
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION1-INTERNET-CORP
               wan_circuit_id: inet-site4-wan1
