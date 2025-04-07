@@ -12,7 +12,7 @@ from pyavd._utils import remove_cached_property_type
 
 from .mlag import MlagMixin
 from .overlay import OverlayMixin
-from .schema import EosDesignsFactsProtocol
+from .schema import EosDesignsFacts, EosDesignsFactsProtocol
 from .short_esi import ShortEsiMixin
 from .uplinks import UplinksMixin
 from .utils import UtilsMixin
@@ -379,3 +379,7 @@ class EosDesignsFactsGenerator(AvdFacts, EosDesignsFactsGeneratorProtocol, EosDe
         self._populate_downlink_switches_on_peers()
         self._populate_evpn_route_server_clients_on_peers()
         self._populate_mpls_route_reflector_clients_on_peers()
+
+    def render(self) -> EosDesignsFacts:
+        """Returns an instance of the EosDesignsFacts schemas class populated by the generator."""
+        return EosDesignsFacts._from_dict({key: value for key in self.keys() if (value := getattr(self, key)) is not None})

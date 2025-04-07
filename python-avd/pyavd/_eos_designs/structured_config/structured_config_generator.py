@@ -93,13 +93,6 @@ class StructuredConfigGeneratorProtocol(AvdFactsProtocol, Protocol):
         # In-place update self.structured_config by calling all the refactored methods marked with @structured_config_contributor
         self.render_structured_config()
 
-        # The render method on AvdFacts class will only execute methods with @cached_property not starting with _.
-        # These are the legacy methods which will be refactored to use the @structured_config_contributor decorator instead.
-        generated_structured_config_as_dict = super().render()
-        if generated_structured_config_as_dict:
-            generated_structured_config = EosCliConfigGen._from_dict(generated_structured_config_as_dict)
-            self.structured_config._deepmerge(generated_structured_config, list_merge="append_unique")
-
         # If we run with the legacy behavior we now have to restore the original structured config and merge in the things we generated here.
         if not self.inputs.avd_eos_designs_enforce_duplication_checks_across_all_models and not getattr(
             self, "ignore_avd_eos_designs_enforce_duplication_checks_across_all_models", False
@@ -128,8 +121,6 @@ class StructuredConfigGenerator(AvdFacts, StructuredConfigGeneratorProtocol):
     Base class for structured config generators.
 
     This differs from AvdFacts by also taking structured_config and custom_structured_configs as argument
-    and by the render function which updates the structured_config instead of
-    returning a dict.
     """
 
     def __init__(
