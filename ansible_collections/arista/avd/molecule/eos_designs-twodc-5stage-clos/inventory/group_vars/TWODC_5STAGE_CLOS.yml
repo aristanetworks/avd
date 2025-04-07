@@ -173,6 +173,7 @@ cv_topology:
   - hostname: DC1-POD1-LEAF2B
     platform: vEOS-LAB
     interfaces:
+      - name: Management1
       - name: Ethernet1
         neighbor: DC1-POD1-SPINE1
         neighbor_interface: Ethernet5
