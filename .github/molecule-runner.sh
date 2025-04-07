@@ -13,9 +13,6 @@ echo "Script running from ${PWD}"
 INPUT_CHECK_GIT="${INPUT_CHECK_GIT:-true}"
 INPUT_CHECK_GIT_ENFORCED="${INPUT_CHECK_GIT_ENFORCED:-true}"
 
-echo "INPUT_CHECK_GIT: $INPUT_CHECK_GIT"
-echo "INPUT_CHECK_GIT_ENFORCED: $INPUT_CHECK_GIT_ENFORCED"
-
 if [ ${INPUT_CHECK_GIT} = "true" ]; then
     git config core.fileMode false
     echo "  * Run Git Verifier because CHECK_GIT is set to ${INPUT_CHECK_GIT}"
