@@ -411,7 +411,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
     @cached_property
     def mac_address_table(self) -> dict | None:
         """mac_address_table set based on mac_address_table data-model."""
-        self.structured_config.mac_address_table.aging_time = self.inputs.mac_address_table.aging_time
+        self.structured_config.mac_address_table = self.inputs.mac_address_table
 
     @structured_config_contributor
     def queue_monitor_streaming(self) -> None:

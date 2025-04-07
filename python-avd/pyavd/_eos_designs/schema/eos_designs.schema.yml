@@ -2185,23 +2185,7 @@ keys:
     documentation_options:
       table: system-settings
     type: dict
-    description: 'MAC address-table aging time.
-
-      Use to change the EOS default of 300.
-
-      '
-    keys:
-      aging_time:
-        type: int
-        convert_types:
-        - str
-        description: 'Aging time in seconds 10-1000000.
-
-          Enter 0 to disable aging.
-
-          '
-        min: 0
-        max: 1000000
+    $ref: eos_cli_config_gen#/keys/mac_address_table
   management_eapi:
     documentation_options:
       table: management-settings
