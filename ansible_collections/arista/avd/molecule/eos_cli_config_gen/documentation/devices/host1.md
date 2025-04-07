@@ -68,6 +68,9 @@
 - [System Boot Settings](#system-boot-settings)
   - [Boot Secret Summary](#boot-secret-summary)
   - [System Boot Device Configuration](#system-boot-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -157,6 +160,7 @@
   - [Router Service Insertion Configuration](#router-service-insertion-configuration)
   - [Router Traffic-Engineering](#router-traffic-engineering)
   - [Router OSPF](#router-ospf)
+  - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
@@ -304,6 +308,14 @@
 | V1 | 42 |
 | V2 | 666 |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown | True |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
 #### Agent KernelFib
 
 ##### Environment Variables
@@ -312,12 +324,26 @@
 | ---- | ----- |
 | KERNELFIB_PROGRAM_ALL_ECMP | true |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
+#### Agent NotRendered
+
 #### Agents Device Configuration
 
 ```eos
 !
 agent Dummy environment V1=42:V2=666
+agent Dummy shutdown
+agent Dummy shutdown supervisor active
+agent Dummy shutdown supervisor standby
 agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
+agent KernelFib shutdown supervisor active
+agent KernelFib shutdown supervisor standby
 ```
 
 ### Management Interfaces
@@ -1881,6 +1907,19 @@ dhcp server vrf VRF01
 ```eos
 !
 boot secret 5 <removed>
+```
+
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
 ```
 
 ## Monitoring
@@ -6262,6 +6301,8 @@ interface Vlan26
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ipv6 ospf network point-to-point
+   ipv6 ospf area 0.0.0.29
 !
 interface Vlan41
    description SVI Description
@@ -7406,6 +7447,76 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+```
+
+### IPv6 Router OSPF
+
+#### IPv6 Router OSPF Summary
+
+| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth |
+| ---------- | --- | --------- | ----------------------------- |
+| 100 | - | 192.168.255.3 | 100 |
+| 101 | TEST2 | - | - |
+| 201 | MGMT | - | - |
+| 301 | TEST1 | - | - |
+| 401 | TENANT_A_PROJECT02 | - | - |
+
+#### IPv6 Router OSPF Router Redistribution
+
+| Process ID | VRF | Source Protocol | Include Leaked | Route Map |
+| ---------- | --- | --------------- | -------------- | --------- |
+| 100 | - |connected | enabled | rm-ospf-connected |
+| 100 | - |static | enabled | rm-ospf-static |
+| 100 | - |bgp | enabled | rm-ospf-bgp |
+| 100 | - |dhcp | - | rm-ospf-dhcp |
+| 100 | - |isis level-2 | enabled | rm-ospf-isis |
+| 100 | - |ospfv3 | enabled | rm-ospf-ospfv3 |
+| 100 | - |ospfv3 match external | enabled | rm-ospf-ospfv3-external |
+| 100 | - |ospfv3 match nssa external | enabled | rm-ospf-ospfv3-nssa-external |
+| 101 | TEST2 |connected | - | - |
+| 101 | TEST2 |static | - | - |
+| 101 | TEST2 |bgp | - | - |
+| 101 | TEST2 |dhcp | - | - |
+| 101 | TEST2 |isis | - | - |
+| 101 | TEST2 |ospfv3 match external | enabled | - |
+| 101 | TEST2 |ospfv3 match internal | enabled | rm-ospf-ospfv3-internal |
+| 101 | TEST2 |ospfv3 match nssa external | enabled | - |
+| 201 | MGMT |ospfv3 match internal | enabled | - |
+| 301 | TEST1 |ospfv3 | enabled | - |
+
+#### IPv6 Router OSPF Device Configuration
+
+```eos
+!
+ipv6 router ospf 100
+   router-id 192.168.255.3
+   auto-cost reference-bandwidth 100
+   redistribute bgp include leaked route-map rm-ospf-bgp
+   redistribute dhcp route-map rm-ospf-dhcp
+   redistribute connected include leaked route-map rm-ospf-connected
+   redistribute isis include leaked level-2 route-map rm-ospf-isis
+   redistribute ospfv3 leaked route-map rm-ospf-ospfv3
+   redistribute ospfv3 leaked match external route-map rm-ospf-ospfv3-external
+   redistribute ospfv3 leaked match nssa-external route-map rm-ospf-ospfv3-nssa-external
+   redistribute static include leaked route-map rm-ospf-static
+!
+ipv6 router ospf 101 vrf TEST2
+   redistribute bgp
+   redistribute dhcp
+   redistribute connected
+   redistribute isis
+   redistribute ospfv3 leaked match internal route-map rm-ospf-ospfv3-internal
+   redistribute ospfv3 leaked match external
+   redistribute ospfv3 leaked match nssa-external
+   redistribute static
+!
+ipv6 router ospf 201 vrf MGMT
+   redistribute ospfv3 leaked match internal
+!
+ipv6 router ospf 301 vrf TEST1
+   redistribute ospfv3 leaked
+!
+ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 ```
 
 ### Router ISIS
@@ -10227,9 +10338,9 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Global
 
-| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
-| ------------------- | -------------------- | ----------------------|
-| True | True | True |
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | ----------------------| -------------------------- |
+| True | True | True | True |
 
 #### 802.1X MAC based authentication
 
@@ -10251,6 +10362,14 @@ ip as-path access-list mylist2 deny _64517$ igp
 | SSL profile | Profile1 |
 | IPv4 Access-list | ACL |
 | Start limit | Infinite |
+
+#### 802.1X VLAN Assignment Groups
+
+| VLAN Group Name | Members |
+| --------------- | ------- |
+| Assignment_1 | 400-407 |
+| Assignment_2 | 55 |
+| Assignment_3 | 1,3,15-20 |
 
 #### 802.1X Supplicant
 

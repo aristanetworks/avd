@@ -16,7 +16,8 @@ from ._base_classes import AntaTestInputFactory
 
 
 class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyLLDPNeighbors` test.
+    """
+    Input factory class for the `VerifyLLDPNeighbors` test.
 
     This factory collects LLDP neighbors for Ethernet interfaces that have
     `peer` and `peer_interface` fields defined in their configuration.
@@ -67,7 +68,8 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
 
 
 class VerifyReachabilityInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyReachability` test.
+    """
+    Input factory class for the `VerifyReachability` test.
 
     Generates test inputs for verifying the following reachability checks:
 
@@ -132,7 +134,8 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
     # TODO: When https://github.com/aristanetworks/anta/issues/1112 is resolved, also add BGP direct neighbors
     def _get_bgp_inputs(self) -> VerifyReachability.Input:
-        """Generate the inputs for the BGP neighbor reachability test.
+        """
+        Generate the inputs for the BGP neighbor reachability test.
 
         Only support BGP neighbors with an update source configured for now.
         """

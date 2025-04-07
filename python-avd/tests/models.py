@@ -14,11 +14,14 @@ from ansible.parsing.dataloader import DataLoader
 from ansible.vars.manager import VariableManager
 from yaml import CSafeLoader, load
 
-from pyavd import get_avd_facts
+from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd.api.pool_manager import PoolManager
 
 if TYPE_CHECKING:
     from ansible.inventory.host import Host as AnsibleHost
+
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
 REPO_ROOT = Path(__file__).parents[2]
 MOLECULE_PATH = REPO_ROOT / "ansible_collections/arista/avd/molecule"
@@ -99,6 +102,10 @@ class MoleculeScenario:
             self.path = MOLECULE_PATH / name
             inventory_path = self.path / "inventory/hosts.yml"
 
+        if not inventory_path.exists():
+            msg = "Molecule inventory file not found: %s"
+            raise FileNotFoundError(msg, inventory_path)
+
         self._inventory = InventoryManager(loader=DataLoader(), sources=[inventory_path.as_posix()])
         self._vars = VariableManager(loader=DataLoader(), inventory=self._inventory)
         self.hosts = []
@@ -118,6 +125,62 @@ class MoleculeScenario:
                 self.extra_python_paths = [str(self.path / line[:-1]) for line in f.readlines()]
 
     @cached_property
-    def avd_facts(self) -> dict:
+    def avd_facts(self) -> dict[str, EosDesignsFacts]:
         """The AVD facts calculated from the full Ansible inventory in the molecule scenario."""
-        return get_avd_facts({host.name: deepcopy(host.hostvars) for host in self.hosts}, pool_manager=self.pool_manager)
+        all_hostvars = {host.name: deepcopy(host.hostvars) for host in self.hosts}
+        all_inputs = {hostname: EosDesigns._from_dict(hostvars) for hostname, hostvars in all_hostvars.items()}
+        return get_facts(all_inputs=all_inputs, pool_manager=self.pool_manager, all_hostvars=all_hostvars)
+
+    @cached_property
+    def fabric_documentation(self) -> str | None:
+        """
+        The generated Fabric documentation as a markdown string.
+
+        None if no fabric documentation is found in the molecule artifacts.
+        """
+        fabric_doc_path = self.path / "documentation/fabric"
+        files = list(fabric_doc_path.glob("*-documentation.md"))
+        if not files:
+            return None
+
+        if len(files) > 1:
+            msg = "Found too many fabric documentation files: %s"
+            raise LookupError(msg, files)
+
+        return files[0].read_text("UTF-8")
+
+    @cached_property
+    def topology_csv(self) -> str | None:
+        """
+        The generated Topology CSV as a markdown string.
+
+        None if no Topology CSV is found in the molecule artifacts.
+        """
+        fabric_doc_path = self.path / "documentation/fabric"
+        files = list(fabric_doc_path.glob("*-topology.csv"))
+        if not files:
+            return None
+
+        if len(files) > 1:
+            msg = "Found too many Topology CSV files: %s"
+            raise LookupError(msg, files)
+
+        return files[0].read_text("UTF-8")
+
+    @cached_property
+    def p2p_links_csv(self) -> str | None:
+        """
+        The generated P2P Links CSV as a markdown string.
+
+        None if no P2P Links CSV is found in the molecule artifacts.
+        """
+        fabric_doc_path = self.path / "documentation/fabric"
+        files = list(fabric_doc_path.glob("*-p2p-links.csv"))
+        if not files:
+            return None
+
+        if len(files) > 1:
+            msg = "Found too many P2P Links CSV files: %s"
+            raise LookupError(msg, files)
+
+        return files[0].read_text("UTF-8")

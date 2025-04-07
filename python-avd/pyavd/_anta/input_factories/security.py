@@ -15,7 +15,8 @@ from ._base_classes import AntaTestInputFactory
 
 
 class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifySpecificIPSecConn` test.
+    """
+    Input factory class for the `VerifySpecificIPSecConn` test.
 
     This factory generates test inputs for verifying IPsec connections.
 

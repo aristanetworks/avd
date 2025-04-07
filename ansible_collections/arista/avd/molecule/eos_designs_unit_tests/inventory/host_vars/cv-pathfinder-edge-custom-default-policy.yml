@@ -44,6 +44,9 @@ bgp_peer_groups:
 wan_route_servers:
   - hostname: cv-pathfinder-pathfinder
 
+ipsec_settings:
+  bind_connection_to_interface: true
+
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890

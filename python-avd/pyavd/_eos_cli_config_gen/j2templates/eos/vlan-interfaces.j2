@@ -295,6 +295,12 @@ interface {{ vlan_interface.name }}
    ip ospf message-digest-key {{ ospf_message_digest_key.id }} {{ ospf_message_digest_key.hash_algorithm }} 7 {{ ospf_message_digest_key.key | arista.avd.hide_passwords(hide_passwords) }}
 {%         endif %}
 {%     endfor %}
+{%     if vlan_interface.ipv6_ospf_network_point_to_point is arista.avd.defined(true) %}
+   ipv6 ospf network point-to-point
+{%     endif %}
+{%     if vlan_interface.ipv6_ospf_area is arista.avd.defined %}
+   ipv6 ospf area {{ vlan_interface.ipv6_ospf_area }}
+{%     endif %}
 {%     if vlan_interface.service_policy.pbr.input is arista.avd.defined %}
    service-policy type pbr input {{ vlan_interface.service_policy.pbr.input }}
 {%     endif %}

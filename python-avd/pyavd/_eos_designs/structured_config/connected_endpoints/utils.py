@@ -96,7 +96,9 @@ class UtilsMixin(Protocol):
                 continue
             if network_port_settings.switches and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname):
                 continue
-            if network_port_settings.platforms and not self._match_regexes(network_port_settings.platforms, self.shared_utils.platform):
+            if network_port_settings.platforms and (
+                not self.shared_utils.platform or not self._match_regexes(network_port_settings.platforms, self.shared_utils.platform)
+            ):
                 continue
 
             filtered_network_ports.append(network_port_settings)
@@ -229,7 +231,8 @@ class UtilsMixin(Protocol):
             return Undefined
 
         output = output_type()
-        output.append_new(name=adapter.link_tracking.name or self.shared_utils.link_tracking_groups[0]["name"], direction="downstream")
+        default_name = next(iter(self.shared_utils.link_tracking_groups)).name
+        output.append_new(name=adapter.link_tracking.name or default_name, direction="downstream")
         return output
 
     def _get_adapter_ptp(

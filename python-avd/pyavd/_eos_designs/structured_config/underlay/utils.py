@@ -7,9 +7,10 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, default, get, get_ip_from_ip_prefix, strip_empties_from_dict
+from pyavd._utils import Undefined, default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -24,84 +25,86 @@ class UtilsMixin(Protocol):
     """
 
     @cached_property
-    def _avd_peers(self: AvdStructuredConfigUnderlayProtocol) -> list:
+    def _avd_peers(self: AvdStructuredConfigUnderlayProtocol) -> list[str]:
         """
         Returns a list of peers.
 
         This cannot be loaded in shared_utils since it will not be calculated until EosDesignsFacts has been rendered
         and shared_utils are shared between EosDesignsFacts and AvdStructuredConfig classes like this one.
         """
-        return natural_sort(get(self._hostvars, f"avd_topology_peers..{self.shared_utils.hostname}", separator="..", default=[]))
+        return natural_sort(self.facts.downlink_switches)
 
     @cached_property
-    def _underlay_links(self: AvdStructuredConfigUnderlayProtocol) -> list:
+    def _underlay_links(self: AvdStructuredConfigUnderlayProtocol) -> EosDesignsFacts.Uplinks:
         """Returns the list of underlay links for this device."""
-        underlay_links = []
-        underlay_links.extend(get(self._hostvars, "switch.uplinks"))
-        if self.inputs.fabric_sflow.uplinks is not None:
-            for uplink in underlay_links:
-                uplink.update({"sflow": {"enable": self.inputs.fabric_sflow.uplinks}})
+        underlay_links = self.facts.uplinks._deepcopy()
 
         for uplink in underlay_links:
-            uplink["flow_tracking"] = self.inputs.fabric_flow_tracking.uplinks
+            uplink.sflow_enabled = self.inputs.fabric_sflow.uplinks
+            uplink.flow_tracking = self.inputs.fabric_flow_tracking.uplinks
 
-        downlinks_flow_tracking = self.inputs.fabric_flow_tracking.downlinks if self.inputs.fabric_flow_tracking.downlinks.enabled else None
+        downlinks_flow_tracking = (
+            # Cast as uplink model since that is used in the facts' uplink which we reuse below model
+            self.inputs.fabric_flow_tracking.downlinks._cast_as(EosDesigns.FabricFlowTracking.Uplinks)
+        )
 
         for peer in self._avd_peers:
-            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
-            for uplink in peer_facts["uplinks"]:
-                if uplink["peer"] == self.shared_utils.hostname:
-                    link = {
-                        "interface": uplink["peer_interface"],
-                        "peer": peer,
-                        "peer_interface": uplink["interface"],
-                        "peer_type": get(peer_facts, "type"),
-                        "peer_is_deployed": peer_facts["is_deployed"],
-                        "peer_bgp_as": get(peer_facts, "bgp_as"),
-                        "type": get(uplink, "type", required=True),
-                        "speed": get(uplink, "peer_speed", default=get(uplink, "speed")),
-                        "ip_address": get(uplink, "peer_ip_address"),
-                        "peer_ip_address": get(uplink, "ip_address"),
-                        "prefix_length": get(uplink, "prefix_length"),
-                        "channel_group_id": get(uplink, "peer_channel_group_id"),
-                        "peer_channel_group_id": get(uplink, "channel_group_id"),
-                        "peer_node_group": get(uplink, "node_group"),
-                        "vlans": get(uplink, "vlans"),
-                        "native_vlan": get(uplink, "native_vlan"),
-                        "trunk_groups": get(uplink, "peer_trunk_groups"),
-                        "bfd": get(uplink, "bfd"),
-                        "ptp": get(uplink, "ptp"),
-                        "mac_security": get(uplink, "mac_security"),
-                        "short_esi": get(uplink, "peer_short_esi"),
-                        "mlag": get(uplink, "peer_mlag"),
-                        "underlay_multicast": get(uplink, "underlay_multicast"),
-                        "ipv6_enable": get(uplink, "ipv6_enable"),
-                        "sflow": {"enable": self.inputs.fabric_sflow.downlinks},
-                        "flow_tracking": downlinks_flow_tracking,
-                        "spanning_tree_portfast": get(uplink, "peer_spanning_tree_portfast"),
-                        "structured_config": get(uplink, "structured_config"),
-                    }
-                    if get(peer_facts, "inband_ztp"):
-                        # l2 inband ztp
-                        link["inband_ztp_vlan"] = get(peer_facts, "inband_ztp_vlan")
-                        link["inband_ztp_lacp_fallback_delay"] = get(peer_facts, "inband_ztp_lacp_fallback_delay")
-                        # l3 inband ztp
-                        link["dhcp_server"] = True
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
+                if uplink.peer != self.shared_utils.hostname:
+                    continue
 
-                    if (subinterfaces := get(uplink, "subinterfaces")) is not None:
-                        link["subinterfaces"] = [
-                            {
-                                **subinterface,
-                                "interface": subinterface["peer_interface"],
-                                "peer_interface": subinterface["interface"],
-                                "ip_address": subinterface.get("peer_ip_address"),
-                                "peer_ip_address": subinterface.get("ip_address"),
-                            }
-                            for subinterface in subinterfaces
-                        ]
-                    underlay_links.append(strip_empties_from_dict(link))
+                downlink = EosDesignsFacts.UplinksItem(
+                    interface=uplink.peer_interface,
+                    peer=peer,
+                    peer_interface=uplink.interface,
+                    peer_type=peer_facts.type,
+                    peer_is_deployed=peer_facts.is_deployed,
+                    peer_bgp_as=peer_facts.bgp_as,
+                    type=uplink.type,
+                    speed=uplink.peer_speed or uplink.speed,
+                    ip_address=uplink.peer_ip_address,
+                    peer_ip_address=uplink.ip_address,
+                    prefix_length=uplink.prefix_length,
+                    channel_group_id=uplink.peer_channel_group_id,
+                    peer_channel_group_id=uplink.channel_group_id,
+                    peer_node_group=uplink.node_group,
+                    vlans=uplink.vlans,
+                    native_vlan=uplink.native_vlan,
+                    trunk_groups=uplink.peer_trunk_groups._cast_as(EosDesignsFacts.UplinksItem.TrunkGroups),
+                    bfd=uplink.bfd,
+                    ptp=uplink.ptp,
+                    mac_security=uplink.mac_security,
+                    short_esi=uplink.peer_short_esi,
+                    mlag=uplink.peer_mlag,
+                    underlay_multicast=uplink.underlay_multicast,
+                    ipv6_enable=uplink.ipv6_enable,
+                    sflow_enabled=self.inputs.fabric_sflow.downlinks,
+                    flow_tracking=downlinks_flow_tracking,
+                    spanning_tree_portfast=uplink.peer_spanning_tree_portfast,
+                    structured_config=uplink.structured_config,
+                )
+                if peer_facts.inband_ztp:
+                    # l2 inband ztp
+                    downlink.inband_ztp_vlan = peer_facts.inband_ztp_vlan
+                    downlink.inband_ztp_lacp_fallback_delay = peer_facts.inband_ztp_lacp_fallback_delay
+                    # l3 inband ztp
+                    downlink.dhcp_server = True
 
-        return natural_sort(underlay_links, "interface")
+                if uplink.subinterfaces:
+                    for subinterface in uplink.subinterfaces:
+                        downlink_subinterface = subinterface._deepcopy()
+                        # Swap own and peer interface and ip.
+                        downlink_subinterface._update(
+                            interface=subinterface.peer_interface,
+                            peer_interface=subinterface.interface,
+                            ip_address=subinterface.peer_ip_address,
+                            peer_ip_address=subinterface.ip_address,
+                        )
+                        downlink.subinterfaces.append(downlink_subinterface)
+                underlay_links.append(downlink)
+
+        return underlay_links._natural_sorted()
 
     # These overloads are just here to help the type checker enforce that input type x gives output type y
     @overload
@@ -147,7 +150,7 @@ class UtilsMixin(Protocol):
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
-            flow_tracker=self.shared_utils.new_get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
+            flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
         )
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
@@ -162,10 +165,10 @@ class UtilsMixin(Protocol):
         return interface
 
     def _get_l3_uplink_with_l2_as_subint(
-        self: AvdStructuredConfigUnderlayProtocol, link: dict
+        self: AvdStructuredConfigUnderlayProtocol, link: EosDesignsFacts.UplinksItem
     ) -> tuple[EosCliConfigGen.EthernetInterfacesItem, EosCliConfigGen.EthernetInterfaces]:
         """Return a tuple with main uplink interface, list of subinterfaces representing each SVI."""
-        vlans = [int(vlan) for vlan in range_expand(link["vlans"])]
+        vlans = set(map(int, range_expand(link.vlans or "")))
 
         # Main interface
         # Routed interface with no config unless there is an SVI matching the native-vlan, then it will contain the config for that SVI
@@ -182,10 +185,10 @@ class UtilsMixin(Protocol):
 
         # If we have the main interface covered, we can just remove it from the list and return as main interface.
         # Otherwise we return an almost empty dict as the main interface since it was already covered by the calling function.
-        if link["interface"] in interfaces:
-            main_interface = interfaces[link["interface"]]
+        if link.interface in interfaces:
+            main_interface = interfaces[link.interface]
             del main_interface.description
-            del interfaces[link["interface"]]
+            del interfaces[link.interface]
         else:
             main_interface = EosCliConfigGen.EthernetInterfacesItem(
                 switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False), mtu=self.shared_utils.p2p_uplinks_mtu
@@ -194,7 +197,7 @@ class UtilsMixin(Protocol):
         if (mtu := default(main_interface.mtu, 1500)) != self.shared_utils.p2p_uplinks_mtu:
             msg = (
                 f"MTU '{self.shared_utils.p2p_uplinks_mtu}' set for 'p2p_uplinks_mtu' conflicts with MTU '{mtu}' "
-                f"set on SVI for uplink_native_vlan '{link['native_vlan']}'."
+                f"set on SVI for uplink_native_vlan '{link.native_vlan}'."
                 "Either adjust the MTU on the SVI or p2p_uplinks_mtu or change/remove the uplink_native_vlan setting."
             )
             raise AristaAvdError(msg)
@@ -202,7 +205,7 @@ class UtilsMixin(Protocol):
 
     def _get_l2_as_subint(
         self: AvdStructuredConfigUnderlayProtocol,
-        link: dict,
+        link: EosDesignsFacts.UplinksItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
     ) -> EosCliConfigGen.EthernetInterfacesItem:
@@ -211,13 +214,13 @@ class UtilsMixin(Protocol):
 
         Only supports static IPs or VRRP.
         """
-        is_native = svi.id == link.get("native_vlan")
-        interface_name = link["interface"] if is_native else f"{link['interface']}.{svi.id}"
+        is_native = svi.id == link.native_vlan
+        interface_name = link.interface if is_native else f"{link.interface}.{svi.id}"
         subinterface = EosCliConfigGen.EthernetInterfacesItem(
             name=interface_name,
-            peer=link["peer"],
-            peer_interface=f"{link['peer_interface']} VLAN {svi.id}",
-            peer_type=link["peer_type"],
+            peer=link.peer,
+            peer_interface=f"{link.peer_interface} VLAN {svi.id}",
+            peer_type=link.peer_type,
             description=default(svi.description, svi.name),
             shutdown=not default(svi.enabled, False),  # noqa: FBT003
             switchport=EosCliConfigGen.EthernetInterfacesItem.Switchport(enabled=False) if is_native else Undefined,
@@ -230,9 +233,7 @@ class UtilsMixin(Protocol):
             eos_cli=svi.raw_eos_cli,
         )
 
-        if (flow_tracking := link.get("flow_tracking")) and (
-            flow_tracker := self.shared_utils.new_get_flow_tracker(flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker)
-        ):
+        if flow_tracker := self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker):
             subinterface.flow_tracker = flow_tracker
 
         if svi.structured_config:

@@ -123,7 +123,7 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
 
     def _strip_empties(self) -> None:
         """In-place update the instance to remove data matching the given strip_values."""
-        if issubclass(self._item_type, AvdBase):
+        if self._item_type is not Any and issubclass(self._item_type, AvdBase):
             items = cast("list[AvdBase]", self._items)
             [item._strip_empties() for item in items]
             self._items = [item for item in self._items if item]
@@ -133,7 +133,7 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
 
     def _as_list(self, include_default_values: bool = False) -> list:
         """Returns a list with all the data from this model and any nested models."""
-        if issubclass(self._item_type, AvdBase):
+        if self._item_type is not Any and issubclass(self._item_type, AvdBase):
             items = cast("list[AvdBase]", self._items)
             return [item._dump(include_default_values=include_default_values) for item in items]
 

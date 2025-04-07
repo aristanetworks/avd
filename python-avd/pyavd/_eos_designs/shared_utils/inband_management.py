@@ -8,8 +8,6 @@ from ipaddress import ip_network
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import get
-from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -171,14 +169,13 @@ class InbandManagementMixin(Protocol):
         svis = {}
         subnets = []
         ipv6_subnets = []
-        peers = natural_sort(get(self.hostvars, f"avd_topology_peers..{self.hostname}", separator="..", default=[]))
-        for peer in peers:
-            peer_facts = self.get_peer_facts(peer, required=True)
-            if (vlan := peer_facts.get("inband_mgmt_vlan")) is None:
+        for peer in self.switch_facts.downlink_switches:
+            peer_facts = self.get_peer_facts(peer)
+            if (vlan := peer_facts.inband_mgmt_vlan) is None:
                 continue
 
-            subnet = peer_facts.get("inband_mgmt_subnet")
-            ipv6_subnet = peer_facts.get("inband_mgmt_ipv6_subnet")
+            subnet = peer_facts.inband_mgmt_subnet
+            ipv6_subnet = peer_facts.inband_mgmt_ipv6_subnet
             if vlan not in svis:
                 svis[vlan] = {"ipv4": None, "ipv6": None}
 

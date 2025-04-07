@@ -347,7 +347,13 @@ keys:
                   type: bool
         ospf_network_point_to_point:
           type: bool
+        ipv6_ospf_network_point_to_point:
+          type: bool
         ospf_area:
+          type: str
+          convert_types:
+            - int
+        ipv6_ospf_area:
           type: str
           convert_types:
             - int

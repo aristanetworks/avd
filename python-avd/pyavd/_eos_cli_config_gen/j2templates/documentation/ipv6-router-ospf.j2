@@ -1,0 +1,102 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - ipv6 router ospf #}
+{% if ipv6_router_ospf.process_ids is arista.avd.defined %}
+
+### IPv6 Router OSPF
+
+#### IPv6 Router OSPF Summary
+
+| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth |
+| ---------- | --- | --------- | ----------------------------- |
+{%     for process_id in ipv6_router_ospf.process_ids | arista.avd.natural_sort('id') %}
+{%         set router_id = process_id.router_id | arista.avd.default ('-') %}
+{%         set auto_cost_reference_bandwidth = process_id.auto_cost_reference_bandwidth | arista.avd.default('-') %}
+| {{ process_id.id }} | {{ process_id.vrf | arista.avd.default ('-') }} | {{ router_id }} | {{ auto_cost_reference_bandwidth }} |
+{%     endfor %}
+{# Router Redistribution #}
+{%     set has = namespace() %}
+{%     set has.found = false %}
+{%     for process_id in ipv6_router_ospf.process_ids %}
+{%         if process_id.redistribute is arista.avd.defined %}
+{%             set has.found = true %}
+{%             break %}
+{%         endif %}
+{%     endfor %}
+{%     if has.found is arista.avd.defined(true) %}
+
+#### IPv6 Router OSPF Router Redistribution
+
+| Process ID | VRF | Source Protocol | Include Leaked | Route Map |
+| ---------- | --- | --------------- | -------------- | --------- |
+{%         for process_id in ipv6_router_ospf.process_ids | arista.avd.natural_sort('id') %}
+{%             if process_id.redistribute is arista.avd.defined %}
+{%                 set source_protocols = [] %}
+{%                 if process_id.redistribute.connected.enabled is arista.avd.defined(true) %}
+{%                     if process_id.redistribute.connected.include_leaked is arista.avd.defined(true) %}
+{%                         set include_leaked = 'enabled' %}
+{%                     else %}
+{%                         set include_leaked = '-' %}
+{%                     endif %}
+{%                     do source_protocols.append(('connected', include_leaked, process_id.redistribute.connected.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.static.enabled is arista.avd.defined(true) %}
+{%                     if process_id.redistribute.static.include_leaked is arista.avd.defined(true) %}
+{%                         set include_leaked = 'enabled' %}
+{%                     else %}
+{%                         set include_leaked = '-' %}
+{%                     endif %}
+{%                     do source_protocols.append(('static', include_leaked, process_id.redistribute.static.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.bgp.enabled is arista.avd.defined(true) %}
+{%                     if process_id.redistribute.bgp.include_leaked is arista.avd.defined(true) %}
+{%                         set include_leaked = 'enabled' %}
+{%                     else %}
+{%                         set include_leaked = '-' %}
+{%                     endif %}
+{%                     do source_protocols.append(('bgp', include_leaked, process_id.redistribute.bgp.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.dhcp.enabled is arista.avd.defined(true) %}
+{%                     do source_protocols.append(('dhcp', '-', process_id.redistribute.dhcp.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.isis.enabled is arista.avd.defined(true) %}
+{%                     if process_id.redistribute.isis.include_leaked is arista.avd.defined(true) %}
+{%                         set include_leaked = 'enabled' %}
+{%                     else %}
+{%                         set include_leaked = '-' %}
+{%                     endif %}
+{%                     if process_id.redistribute.isis.isis_level is arista.avd.defined %}
+{%                         set isis_level = 'isis ' ~ process_id.redistribute.isis.isis_level %}
+{%                     else %}
+{%                         set isis_level = 'isis' %}
+{%                     endif %}
+{%                     do source_protocols.append((isis_level, include_leaked, process_id.redistribute.isis.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.ospfv3.enabled is arista.avd.defined(true) %}
+{%                     do source_protocols.append(('ospfv3', 'enabled', process_id.redistribute.ospfv3.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.ospfv3.match_external.enabled is arista.avd.defined(true) %}
+{%                     do source_protocols.append(('ospfv3 match external', 'enabled', process_id.redistribute.ospfv3.match_external.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.ospfv3.match_internal.enabled is arista.avd.defined(true) %}
+{%                     do source_protocols.append(('ospfv3 match internal', 'enabled', process_id.redistribute.ospfv3.match_internal.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 if process_id.redistribute.ospfv3.match_nssa_external.enabled is arista.avd.defined(true) %}
+{%                     do source_protocols.append(('ospfv3 match nssa external', 'enabled', process_id.redistribute.ospfv3.match_nssa_external.route_map | arista.avd.default('-'))) %}
+{%                 endif %}
+{%                 for source_protocol in source_protocols %}
+| {{ process_id.id }} | {{ process_id.vrf | arista.avd.default ('-') }} |{{ source_protocol[0] }} | {{ source_protocol[1] }} | {{ source_protocol[2] }} |
+{%                 endfor %}
+{%             endif %}
+{%         endfor %}
+{%     endif %}
+
+#### IPv6 Router OSPF Device Configuration
+
+```eos
+{%     include 'eos/ipv6-router-ospf.j2' %}
+```
+{% endif %}
