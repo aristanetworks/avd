@@ -685,7 +685,10 @@ $defs:
                       items:
                         type: dict
                         keys:
-                          destination_address_prefix:
+                          prefix:
+                            type: str
+                            description: IPv4_address.
+                          next_hop:
                             type: str
                             description: IPv4_address.
                           track_bfd:
@@ -712,6 +715,8 @@ $defs:
                               - str
                             min: 0
                             max: 4294967295
+                          interface:
+                            type: str
                     evpn_vlan_bundle:
                       type: str
                       description: |

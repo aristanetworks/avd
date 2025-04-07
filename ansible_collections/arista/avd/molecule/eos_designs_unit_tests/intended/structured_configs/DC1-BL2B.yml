@@ -466,8 +466,8 @@ static_routes:
   destination_address_prefix: 0.0.0.0/0
   gateway: 192.168.200.5
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 10.3.4.0/24
-  interface: Vlan150
+  destination_address_prefix: 10.3.5.0/24
+  gateway: 1.2.3.4
   name: SVI_static_route
 tcam_profile:
   system: vxlan-routing

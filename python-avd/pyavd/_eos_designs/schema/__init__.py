@@ -35700,14 +35700,18 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {
-                                "destination_address_prefix": {"type": str},
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
                                 "track_bfd": {"type": bool},
                                 "distance": {"type": int},
                                 "tag": {"type": int},
                                 "name": {"type": str},
                                 "metric": {"type": int},
+                                "interface": {"type": str},
                             }
-                            destination_address_prefix: str | None
+                            prefix: str | None
+                            """IPv4_address."""
+                            next_hop: str | None
                             """IPv4_address."""
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
@@ -35716,18 +35720,21 @@ class EosDesigns(EosDesignsRootModel):
                             name: str | None
                             """description."""
                             metric: int | None
+                            interface: str | None
 
                             if TYPE_CHECKING:
 
                                 def __init__(
                                     self,
                                     *,
-                                    destination_address_prefix: str | None | UndefinedType = Undefined,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
                                     track_bfd: bool | None | UndefinedType = Undefined,
                                     distance: int | None | UndefinedType = Undefined,
                                     tag: int | None | UndefinedType = Undefined,
                                     name: str | None | UndefinedType = Undefined,
                                     metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     StaticRoutesItem.
@@ -35736,12 +35743,14 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        destination_address_prefix: IPv4_address.
+                                        prefix: IPv4_address.
+                                        next_hop: IPv4_address.
                                         track_bfd: Track next-hop using BFD.
                                         distance: distance
                                         tag: tag
                                         name: description.
                                         metric: metric
+                                        interface: interface
 
                                     """
 
