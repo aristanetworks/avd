@@ -83,9 +83,6 @@ node_id_pools:
   - key:
       hostname: DC1-SUPER-SPINE2
     value: 2
-  - key:
-      hostname: TEMP-HOST-FOR-COVERAGE
-    value: 3
   pool_key:
     dc_name: DC1
     fabric_name: TWODC_5STAGE_CLOS

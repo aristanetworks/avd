@@ -46,7 +46,6 @@
 | DC2 | overlay-controller | DC2-RS2 | 192.168.1.19/24 | vEOS-LAB | Provisioned | - |
 | DC2 | super-spine | DC2-SUPER-SPINE1 | 192.168.1.16/24 | vEOS-LAB | Provisioned | - |
 | DC2 | super-spine | DC2-SUPER-SPINE2 | 192.168.1.17/24 | vEOS-LAB | Provisioned | - |
-| DC1 | super-spine | TEMP-HOST-FOR-COVERAGE | - | vEOS-LAB | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -190,7 +189,7 @@
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 172.16.10.0/24 | 256 | 2 | 0.79 % |
 | 172.16.20.0/24 | 256 | 2 | 0.79 % |
-| 172.16.100.0/24 | 256 | 3 | 1.18 % |
+| 172.16.100.0/24 | 256 | 2 | 0.79 % |
 | 172.16.110.0/24 | 256 | 5 | 1.96 % |
 | 172.16.120.0/24 | 256 | 3 | 1.18 % |
 | 172.16.200.0/24 | 256 | 2 | 0.79 % |
@@ -220,7 +219,6 @@
 | DC2 | DC2-RS2 | 172.16.20.2/32 |
 | DC2 | DC2-SUPER-SPINE1 | 172.16.200.1/32 |
 | DC2 | DC2-SUPER-SPINE2 | 172.16.200.2/32 |
-| DC1 | TEMP-HOST-FOR-COVERAGE | 172.16.100.3/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
