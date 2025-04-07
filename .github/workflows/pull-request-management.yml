@@ -156,7 +156,7 @@ jobs:
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
-          sh .github/molecule-runner.sh
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -184,7 +184,7 @@ jobs:
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
-          sh .github/molecule-runner.sh
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -250,7 +250,7 @@ jobs:
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
-          sh .github/molecule-runner.sh
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -283,7 +283,7 @@ jobs:
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
-          sh .github/molecule-runner.sh
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -316,7 +316,7 @@ jobs:
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
-          sh .github/molecule-runner.sh
+          sh .github/check-git-status.sh
 
   # ----------------------------------- #
   # EOS Validate State MOLECULE
@@ -345,7 +345,7 @@ jobs:
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
-          sh .github/molecule-runner.sh
+          sh .github/check-git-status.sh
 
   # ----------------------------------- #
   # Ansible tests
