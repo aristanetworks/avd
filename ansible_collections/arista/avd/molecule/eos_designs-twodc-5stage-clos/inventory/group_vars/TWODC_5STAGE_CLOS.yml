@@ -102,7 +102,6 @@ platform_settings:
       non_mlag: 330
     feature_support:
       per_interface_mtu: false # Removes mtu command from all interfaces
-    management_interface: null # To get the coverage for get(self.cv_topology_config, "mgmt_interface")
 
 custom_structured_configuration_list_merge: 'append'
 
@@ -174,7 +173,6 @@ cv_topology:
   - hostname: DC1-POD1-LEAF2B
     platform: vEOS-LAB
     interfaces:
-      - name: Management12
       - name: Ethernet1
         neighbor: DC1-POD1-SPINE1
         neighbor_interface: Ethernet5
