@@ -55,6 +55,11 @@ event_handlers:
 # Test Mac address table variables
 mac_address_table:
   aging_time: 42
+  notification_host_flap:
+    logging: true
+    detection:
+      window: 10
+      moves: 2
 
 # Test that we can enable CloudVision Tag generation
 # for a single device in a Fabric. The structured config for this node
