@@ -9,8 +9,6 @@ from pyavd._eos_designs.eos_designs_facts import EosDesignsFactsGenerator
 from pyavd._eos_designs.shared_utils import SharedUtils
 from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
 
-from .schema import EosDesignsFacts
-
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
@@ -18,6 +16,8 @@ if TYPE_CHECKING:
 
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd.api.pool_manager import PoolManager
+
+    from .schema import EosDesignsFacts
 
 
 def get_facts(
@@ -50,13 +50,12 @@ def get_facts(
 
     for hostname, generator in peer_facts_generators.items():
         try:
-            facts_in_dict = generator.render()
-        except AristaAvdMissingVariableError as e:
+            all_facts[hostname] = generator.render()
+        except AristaAvdMissingVariableError as e:  # noqa: PERF203
             raise AristaAvdMissingVariableError(variable=e.variable, host=hostname) from e
         except AristaAvdError as e:
             msg = f"{str(e).removesuffix('.')} for host '{hostname}'."
             raise type(e)(msg) from e
-        all_facts[hostname] = EosDesignsFacts._from_dict(facts_in_dict)
 
     return all_facts
 
