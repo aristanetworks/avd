@@ -21,7 +21,7 @@ l3_edge:
       interfaces: [ethernet1, ethernet1]
       ip: [192.168.0.4/31, 192.168.0.5/31]
       include_in_underlay_protocol: true
-      underlay_multicast: true
+      underlay_multicast: false
       # P2P link with underlay multicast(pim-sparse) enabled.
     - nodes: [host1, peer2]
       interfaces: [ethernet2, ethernet2]

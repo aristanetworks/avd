@@ -11,9 +11,6 @@ ethernet_interfaces:
   ip_address: 192.168.0.4/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
-  pim:
-    ipv4:
-      sparse_mode: true
   peer: peer1
   peer_interface: ethernet1
   peer_type: other

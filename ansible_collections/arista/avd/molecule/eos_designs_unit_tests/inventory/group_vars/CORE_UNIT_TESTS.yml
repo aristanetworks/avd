@@ -259,4 +259,4 @@ l3_edge:
       include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 2
-      underlay_multicast_static: true
+      underlay_multicast_static: false

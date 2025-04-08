@@ -308,9 +308,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 1600
   ip_address: 172.16.1.9/29
-  multicast:
-    ipv4:
-      static: true
   mpls:
     ip: true
   peer: peer6
