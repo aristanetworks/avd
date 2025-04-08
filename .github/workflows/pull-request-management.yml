@@ -140,7 +140,7 @@ jobs:
           - "eos_cli_config_gen_deprecated_vars"
           - "eos_cli_config_gen_negative_unit_tests"
         ansible_version:
-          - "ansible-core<2.19.0 --upgrade"
+          - "ansible-core<2.19.0"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_cli_config_gen"
@@ -149,17 +149,14 @@ jobs:
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -175,22 +172,19 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario: ["dhcp_configuration", "dhcp_provisioning"]
-        ansible_version: ["ansible-core<2.19.0 --upgrade"]
+        ansible_version: ["ansible-core<2.19.0"]
     needs: [file-changes]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -225,19 +219,19 @@ jobs:
           - "example-cv-pathfinder"
         ansible_version:
           # Testing all scenario with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
-          - "ansible-core>=2.16.0,<2.17.0 --upgrade"
+          - "ansible-core>=2.16.0,<2.17.0"
         pip_requirements:
           - ".github/requirements-ci-dev.txt"
         # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core==2.16.0 --upgrade"
+            ansible_version: "ansible-core==2.16.0"
             pip_requirements: ".github/requirements-ci-dev.txt"
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.18.0 --upgrade"
+            ansible_version: "ansible-core<2.18.0"
             pip_requirements: ".github/requirements-ci-dev.txt"
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core<2.19.0 --upgrade"
+            ansible_version: "ansible-core<2.19.0"
             pip_requirements: ".github/requirements-ci-dev.txt"
     needs: [file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
@@ -249,17 +243,14 @@ jobs:
           uv pip compile .github/requirements-ci-dev.txt --resolution=lowest-direct > ${{ matrix.pip_requirements }}
           cat ${{ matrix.pip_requirements }}
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: ${{ matrix.pip_requirements }}
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -276,7 +267,7 @@ jobs:
         avd_scenario:
           - "eos_config_deploy_cvp"
         ansible_version:
-          - "ansible-core<2.19.0 --upgrade"
+          - "ansible-core<2.19.0"
         include:
           - avd_scenario: "eos_config_deploy_cvp"
             ansible_version: "ansible-core==2.16.0"
@@ -285,17 +276,14 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
       # - uses: actions/upload-artifact@v4
       #   with:
       #     name: molecule-${{ matrix.avd_scenario }}-artifacts
@@ -313,7 +301,7 @@ jobs:
         avd_scenario:
           - 'anta_runner'
         ansible_version:
-          - 'ansible-core<2.19.0 --upgrade'
+          - 'ansible-core<2.19.0'
         include:
           - avd_scenario: 'anta_runner'
             ansible_version: 'ansible-core==2.16.0'
@@ -321,17 +309,14 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: 'ansible_collections/arista/avd'
-          molecule_command: 'test'
-          molecule_args: '--scenario-name ${{ matrix.avd_scenario }}'
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
 
   # ----------------------------------- #
   # EOS Validate State MOLECULE
@@ -345,7 +330,7 @@ jobs:
         avd_scenario:
           - "eos_validate_state"
         ansible_version:
-          - "ansible-core<2.19.0 --upgrade"
+          - "ansible-core<2.19.0"
         include:
           - avd_scenario: "eos_validate_state"
             ansible_version: "ansible-core==2.16.0"
@@ -353,17 +338,14 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule action
-        uses: arista-netdevops-community/action-molecule-avd@v1.8.1
-        with:
-          molecule_parentdir: "ansible_collections/arista/avd"
-          molecule_command: "test"
-          molecule_args: "--scenario-name ${{ matrix.avd_scenario }}"
-          pip_file: .github/requirements-ci-dev.txt
-          galaxy_file: "ansible_collections/arista/avd/collections.yml"
-          ansible: ${{ matrix.ansible_version }}
-          check_git: true
-          check_git_enforced: true
+      - name: Run molecule test
+        run: |
+          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          cd ansible_collections/arista/avd
+          molecule test --scenario-name ${{ matrix.avd_scenario }}
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
 
   # ----------------------------------- #
   # Ansible tests

@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from typing import Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -408,8 +407,8 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if tcam_profile := self.shared_utils.platform_settings.tcam_profile:
             self.structured_config.tcam_profile.system = tcam_profile
 
-    @cached_property
-    def mac_address_table(self) -> dict | None:
+    @structured_config_contributor
+    def mac_address_table(self) -> None:
         """mac_address_table set based on mac_address_table data-model."""
         self.structured_config.mac_address_table.aging_time = self.inputs.mac_address_table.aging_time
 
