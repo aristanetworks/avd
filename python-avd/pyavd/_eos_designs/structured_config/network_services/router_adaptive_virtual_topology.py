@@ -61,6 +61,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             msg = "The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy"
             raise AristaAvdError(msg)
 
+        # TODO: This condition is unreachable; this method is only called when self.inputs.wan_mode == "cv-pathfinder".
         if self.inputs.wan_mode == "autovpn":
             output_policy.rules.append_new(
                 id=10,
@@ -174,6 +175,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             context_path = f"wan_virtual_topologies.policies[{policy.name}].default_virtual_topology"
             load_balance_policy = self._generate_wan_load_balance_policy(name, policy.default_virtual_topology, context_path)
 
+            # TODO: "This condition is unreachable because an exception is raised on line 172 if 'default_virtual_topology.path-groups' is not defined."
             if not load_balance_policy:
                 msg = (
                     f"The `default_virtual_topology` path-groups configuration for `wan_virtual_topologies.policies[{policy.name}]` produces "
