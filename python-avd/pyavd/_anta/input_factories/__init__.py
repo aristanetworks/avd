@@ -11,11 +11,14 @@ from .interfaces import VerifyInterfacesStatusInputFactory
 from .mlag import VerifyMlagDualPrimaryInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .security import VerifySpecificIPSecConnInputFactory
+from .services import VerifyDNSLookupInputFactory, VerifyDNSServersInputFactory
 from .stun import VerifyStunClientTranslationInputFactory
 
 __all__ = [
     "VerifyAVTRoleInputFactory",
     "VerifyBGPPeerSessionInputFactory",
+    "VerifyDNSLookupInputFactory",
+    "VerifyDNSServersInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyMlagDualPrimaryInputFactory",
