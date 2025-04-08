@@ -5049,6 +5049,20 @@ keys:
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
+  wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    default: true
+    description: 'This specifies the preferred mechanism to program ECMP routes within
+      kernel for software forwarding.
+
+      When enabled, configures environment variable to restart KernelFib agent for
+      ecmp route programming.
+
+      When disabled, ecmp route programming in kernel is achieved without agent restart.
+
+      This is relevant to Pathfinder and Autovpn designs.'
   wan_use_evpn_node_settings_for_lan:
     type: bool
     documentation_options:

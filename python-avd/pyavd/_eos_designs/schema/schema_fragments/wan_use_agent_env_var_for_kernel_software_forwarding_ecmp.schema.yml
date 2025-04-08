@@ -1,0 +1,19 @@
+# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    # TODO: AVD 6.0.0 Consider changing default to false
+    default: true
+    description: |-
+      This specifies the preferred mechanism to program ECMP routes within kernel for software forwarding.
+      When enabled, configures environment variable to restart KernelFib agent for ecmp route programming.
+      When disabled, ecmp route programming in kernel is achieved without agent restart.
+      This is relevant to Pathfinder and Autovpn designs.
