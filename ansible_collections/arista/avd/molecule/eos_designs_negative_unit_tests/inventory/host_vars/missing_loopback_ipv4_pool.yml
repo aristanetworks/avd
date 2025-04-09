@@ -1,0 +1,32 @@
+fabric_name: FABRIC_MISSING_LOOPBACK_IPV4_POOL
+
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+bgp_as: 65000
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+  nodes:
+    - name: missing_loopback_ipv4_pool
+      id: 1
+
+core_interfaces:
+  p2p_links_profiles:
+    - name: isis_bb_profile
+      speed: "forced 1000full"
+      mtu: 1500
+  p2p_links:
+    - nodes: [ missing_loopback_ipv4_pool, peer1 ]
+      id: 10
+      interfaces: [ Ethernet1, Ethernet1 ]
+      include_in_underlay_protocol: true
+      underlay_multicast: true
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+      as: [65000, 65002]
+
+expected_error_message: "'loopback_ipv4_pool' is required but was not found for host 'missing_loopback_ipv4_pool'."
