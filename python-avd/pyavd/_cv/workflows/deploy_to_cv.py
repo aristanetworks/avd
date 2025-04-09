@@ -142,7 +142,7 @@ async def deploy_to_cv(
                 + [config.device for config in configs if config.device is not None]
             )
             # Check structured config of the targeted devices for overlapping `serial_number`s or `system_mac_address`es.
-            verify_device_inputs(devices=devices, strict_system_mac_address=strict_system_mac_address, warnings=result.warnings)
+            verify_device_inputs(devices, result.warnings, strict_system_mac_address=strict_system_mac_address)
 
             try:
                 # Verify devices exist and update CVDevice objects with _exists_on_cv.

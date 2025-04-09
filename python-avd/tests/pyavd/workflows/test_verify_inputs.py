@@ -305,19 +305,17 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
 @pytest.mark.parametrize(
     (
         "devices",
-        "strict_system_mac_address",
         "warnings_qty",
         "expected_warning_patterns",
         "logs_qty",
         "expected_logs_patterns",
         "expected_exception_patterns",
         "expected_exception",
+        "strict_system_mac_address",
     ),
     [
         pytest.param(
             NO_DUPS_DEVICES,
-            # strict_system_mac_address
-            False,
             # Warnings
             0,
             [],
@@ -327,12 +325,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             # Exceptions
             [],
             does_not_raise(),
+            # strict_system_mac_address
+            False,
             id="NO_DUPS_STRICT_MAC_FALSE",
         ),
         pytest.param(
             NO_DUPS_DEVICES,
-            # strict_system_mac_address
-            True,
             # Warnings
             0,
             [],
@@ -342,12 +340,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             # Exceptions
             [],
             does_not_raise(),
+            # strict_system_mac_address
+            True,
             id="NO_DUPS_STRICT_MAC_TRUE",
         ),
         pytest.param(
             TWO_DUPED_SERIAL_DEVICES,
-            # strict_system_mac_address
-            False,
             # Warnings
             0,
             [],
@@ -357,12 +355,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             # Exceptions
             TWO_DUPED_SERIAL_PATTERNS,
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            False,
             id="TWO_DUPED_SERIAL_STRICT_MAC_FALSE",
         ),
         pytest.param(
             TWO_DUPED_SERIAL_DEVICES,
-            # strict_system_mac_address
-            True,
             # Warnings
             0,
             [],
@@ -372,12 +370,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             # Exception
             TWO_DUPED_SERIAL_PATTERNS,
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            True,
             id="TWO_DUPED_SERIAL_STRICT_MAC_TRUE",
         ),
         pytest.param(
             TWO_DUPED_SYS_MAC_DEVICES,
-            # strict_system_mac_address
-            False,
             # Warnings
             0,
             [],
@@ -392,12 +390,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch2'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            False,
             id="TWO_DUPED_SYS_MAC_STRICT_MAC_FALSE",
         ),
         pytest.param(
             TWO_DUPED_SYS_MAC_DEVICES,
-            # strict_system_mac_address
-            True,
             # Warnings
             0,
             [],
@@ -415,12 +413,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            True,
             id="TWO_DUPED_SYS_MAC_STRICT_MAC_TRUE",
         ),
         pytest.param(
             TWO_DUPED_SYS_MAC_UNIQ_SER_DEVICES,
-            # strict_system_mac_address
-            False,
             # Warnings
             1,
             [
@@ -446,12 +444,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
             # Exceptions
             [],
             does_not_raise(),
+            # strict_system_mac_address
+            False,
             id="TWO_DUPED_SYS_MAC_UNIQ_SER_STRICT_MAC_FALSE",
         ),
         pytest.param(
             TWO_DUPED_SYS_MAC_UNIQ_SER_DEVICES,
-            # strict_system_mac_address
-            True,
             # Warnings
             0,
             [],
@@ -469,12 +467,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch6'.*system_mac_address='aa:bb:cc:dd:ee:f5'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            True,
             id="TWO_DUPED_SYS_MAC_UNIQ_SER_STRICT_MAC_TRUE",
         ),
         pytest.param(
             ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_DEVICES,
-            # strict_system_mac_address
-            False,
             # Warnings
             0,
             [],
@@ -489,12 +487,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch2'.*serial_number='serial1'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            False,
             id="ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_STRICT_MAC_FALSE",
         ),
         pytest.param(
             ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_DEVICES,
-            # strict_system_mac_address
-            True,
             # Warnings
             0,
             [],
@@ -512,12 +510,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch4'.*system_mac_address='aa:bb:cc:dd:ee:f3'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            True,
             id="ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_STRICT_MAC_TRUE",
         ),
         pytest.param(
             ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_SAME_DEVICES_DEVICES,
-            # strict_system_mac_address
-            False,
             # Warnings
             0,
             [],
@@ -532,12 +530,12 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            False,
             id="ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_SAME_DEVICES_STRICT_MAC_FALSE",
         ),
         pytest.param(
             ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_SAME_DEVICES_DEVICES,
-            # strict_system_mac_address
-            True,
             # Warnings
             0,
             [],
@@ -555,28 +553,29 @@ def generate_x_mock_cvdevices(num_devices: int = 1000000) -> list[CVDevice]:
                 "CVDevice\\(hostname='switch2'.*serial_number='serial1'.*system_mac_address='aa:bb:cc:dd:ee:f1'.*",
             ],
             pytest.raises(CVDuplicatedDevices),
+            # strict_system_mac_address
+            True,
             id="ONE_DUPED_SERIAL_ONE_DUPED_SYS_MAC_SAME_DEVICES_STRICT_MAC_TRUE",
         ),
     ],
 )
 def test_verify_device_inputs(
-    *,
     caplog: pytest.LogCaptureFixture,
     devices: list[CVDevice],
-    strict_system_mac_address: bool,
-    warnings: list[Exception] | None = None,
     warnings_qty: int,
     expected_warning_patterns: list[str],
     logs_qty: int,
     expected_logs_patterns: list[str],
     expected_exception_patterns: list[str],
     expected_exception: RaisesContext | does_not_raise,
+    *,
+    strict_system_mac_address: bool,
 ) -> None:
     # Create an empty list for warnings
     warnings = []
     with caplog.at_level(logging.DEBUG), expected_exception as exc_info:
         # Engage FUT
-        verify_device_inputs(devices=devices, strict_system_mac_address=strict_system_mac_address, warnings=warnings)
+        verify_device_inputs(devices, warnings, strict_system_mac_address=strict_system_mac_address)
     # Assert number of returned warnings
     assert len(warnings) == warnings_qty
     # Assert that updated warnings match expected warning patterns
@@ -610,32 +609,33 @@ def test_verify_device_inputs(
 )
 @pytest.mark.usefixtures("generate_x_mock_cvdevices")
 def test_identify_duplicated_devices(
-    *,
     devices: list[CVDevice],
     expected_return: dict[str, list[CVDevice]],
     target_function: Callable,
     generate_x_mock_cvdevices: list[CVDevice],
 ) -> None:
     # Call tested function to fetch devices with overlapping serial_number or system_mac_address
-    duplicated_serial_number, duplicated_system_mac_address_unset_or_mixed_serial_number, duplicated_system_mac_address_set_serial_number = target_function(
-        devices=devices,
+    duplicated_devices = target_function(
+        devices,
     )
 
-    # Validate duplicated_serial_number
-    assert len(duplicated_serial_number) == len(expected_return["duplicated_serial_number"])
-    for serial_number, matching_cvdevices in duplicated_serial_number.items():
+    # Validate duplicated_devices.serial_number
+    assert len(duplicated_devices.serial_number) == len(expected_return["duplicated_serial_number"])
+    for serial_number, matching_cvdevices in duplicated_devices.serial_number.items():
         assert {device.hostname for device in matching_cvdevices} == {device.hostname for device in expected_return["duplicated_serial_number"][serial_number]}
 
-    # Validate duplicated_system_mac_address_unset_or_mixed_serial_number
-    assert len(duplicated_system_mac_address_unset_or_mixed_serial_number) == len(expected_return["duplicated_system_mac_address_unset_or_mixed_serial_number"])
-    for system_mac_address, matching_cvdevices in duplicated_system_mac_address_unset_or_mixed_serial_number.items():
+    # Validate duplicated_devices.system_mac_address.unset_or_mixed_serial_number
+    assert len(duplicated_devices.system_mac_address.unset_or_mixed_serial_number) == len(
+        expected_return["duplicated_system_mac_address_unset_or_mixed_serial_number"]
+    )
+    for system_mac_address, matching_cvdevices in duplicated_devices.system_mac_address.unset_or_mixed_serial_number.items():
         assert {device.hostname for device in matching_cvdevices} == {
             device.hostname for device in expected_return["duplicated_system_mac_address_unset_or_mixed_serial_number"][system_mac_address]
         }
 
-    # Validate duplicated_system_mac_address_set_serial_number
-    assert len(duplicated_system_mac_address_set_serial_number) == len(expected_return["duplicated_system_mac_address_set_serial_number"])
-    for system_mac_address, matching_cvdevices in duplicated_system_mac_address_set_serial_number.items():
+    # Validate duplicated_devices.system_mac_address.set_serial_number
+    assert len(duplicated_devices.system_mac_address.set_serial_number) == len(expected_return["duplicated_system_mac_address_set_serial_number"])
+    for system_mac_address, matching_cvdevices in duplicated_devices.system_mac_address.set_serial_number.items():
         assert {device.hostname for device in matching_cvdevices} == {
             device.hostname for device in expected_return["duplicated_system_mac_address_set_serial_number"][system_mac_address]
         }
@@ -643,8 +643,8 @@ def test_identify_duplicated_devices(
     # Measure performance of each tested function based on the inventory of 1M mock CVDevices
     profiler = cProfile.Profile()
     profiler.enable()
-    duplicated_serial_number, duplicated_system_mac_address_unset_or_mixed_serial_number, duplicated_system_mac_address_set_serial_number = target_function(
-        devices=generate_x_mock_cvdevices,
+    _ = target_function(
+        generate_x_mock_cvdevices,
     )
     profiler.disable()
     profiler.print_stats()
