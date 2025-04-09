@@ -12,7 +12,7 @@ core_router:
   defaults:
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
   nodes:
-    - name: missing_loopback_ipv4_pool
+    - name: missing-loopback-ipv4-pool
       id: 1
 
 core_interfaces:
@@ -21,7 +21,7 @@ core_interfaces:
       speed: "forced 1000full"
       mtu: 1500
   p2p_links:
-    - nodes: [ missing_loopback_ipv4_pool, peer1 ]
+    - nodes: [ missing-loopback-ipv4-pool, peer1 ]
       id: 10
       interfaces: [ Ethernet1, Ethernet1 ]
       include_in_underlay_protocol: true
@@ -29,4 +29,4 @@ core_interfaces:
       ip: [192.168.0.2/31, 192.168.0.3/31]
       as: [65000, 65002]
 
-expected_error_message: "'loopback_ipv4_pool' is required but was not found for host 'missing_loopback_ipv4_pool'."
+expected_error_message: "'loopback_ipv4_pool' is required but was not found for host 'missing-loopback-ipv4-pool'."
