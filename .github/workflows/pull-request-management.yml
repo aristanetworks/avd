@@ -174,9 +174,17 @@ jobs:
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
       - name: Run molecule test
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          WHEEL_PATH=$(find /tmp -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_PATH[molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
