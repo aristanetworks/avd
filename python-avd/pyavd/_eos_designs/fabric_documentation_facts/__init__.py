@@ -15,7 +15,7 @@ from pyavd.j2filters import natural_sort
 from .topology import Topology
 
 if TYPE_CHECKING:
-    from typing import TypeVar
+    from typing import Any, TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
@@ -48,6 +48,9 @@ class FabricDocumentationFacts(AvdFacts):
         self.structured_configs = structured_configs
         self._include_connected_endpoints = include_connected_endpoints
         self._toc = toc
+
+    def render(self) -> dict[str, Any]:
+        return {key: value for key in self.keys() if (value := getattr(self, key)) is not None}
 
     @cached_property
     def fabric_name(self) -> str:

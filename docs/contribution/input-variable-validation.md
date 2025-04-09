@@ -26,7 +26,6 @@ The current implementation supports the automatic conversions listed below.
 | From (`convert_types`) | To (`type`) |
 | ---------------------- | ----------- |
 | `bool`, `str` | `int` |
-| `int`, `str` | `bool` |
 | `bool`, `int` | `str` |
 
 An example of input variable conversion is `bgp_as`. `bgp_as` is expected as a string (`str`) since 32-bit AS numbers can be
@@ -143,12 +142,7 @@ The meta-schema does not allow for other keys to be set in the schema.
 | Key | Type | Required | Default | Value Restrictions | Description |
 | ----| ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>type</samp> | String | True | | Valid Values:<br>- `"bool"` | Type of variable using the Python short names for each type.<br>`bool` for Boolean |
-| <samp>convert_types</samp> | List, items: String | | | | List of types to auto-convert from.<br>For type `bool`, auto-conversion is supported from `int` and `str` |
-| <samp>&nbsp;&nbsp;- \<str\></samp> | String | | | Valid Values:<br>- `"int"`<br>- `"str"` | |
 | <samp>default</samp> | Boolean | | | | Default value |
-| <samp>valid_values</samp> | List, items: Boolean | | | | List of valid values |
-| <samp>&nbsp;&nbsp;- \<int\></samp> | Boolean | | | | |
-| <samp>dynamic_valid_values</samp> | String | | | | Path to variable under the parent dictionary containing valid values.<br>Variable path use dot-notation and variable path must be relative to the parent dictionary.<br>If an element of the variable path is a list, every list item will unpacked.<br>**Note that this is building the schema from values in the *data* being validated!** |
 | <samp>display_name</samp> | String | | | Regex Pattern: `"^[^\n]+$"` | Free text display name for forms and documentation (single line) |
 | <samp>description</samp> | String | | | Minimum Length: 1 | Free text description for forms and documentation (multi line) |
 | <samp>required</samp> | Boolean | | | | Set if variable is required |
