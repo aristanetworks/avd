@@ -184,7 +184,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_PATH=$(find /tmp -name "*.whl" | head -n 1)
-          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_PATH[molecule-ci]"
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_PATH[ansible-collection]" "$WHEEL_PATH[molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
