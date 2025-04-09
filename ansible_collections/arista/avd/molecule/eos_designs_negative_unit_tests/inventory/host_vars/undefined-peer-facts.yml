@@ -1,9 +1,5 @@
 fabric_name: FABRIC_UNDEFINED_PEER
 
-fabric_ip_addressing:
-  p2p_uplinks:
-    ipv4_prefix_length: 30
-
 type: overlay-controller
 overlay_controller:
   nodes:
