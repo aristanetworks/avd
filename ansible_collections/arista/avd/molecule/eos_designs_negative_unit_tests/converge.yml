@@ -1,6 +1,6 @@
 ---
-- name: Converge Negative tests for 'eos_designs_facts' - cv-topology-missing-default-mlag-interfaces-peer1
-  hosts: cv-topology-missing-default-mlag-interfaces-peer1
+- name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-default-mlag-interfaces-peer1
+  hosts: missing-cv-topology-default-mlag-interfaces-peer1
   gather_facts: false
   connection: local
   tasks:
@@ -16,8 +16,8 @@
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
-- name: Converge Negative tests for 'eos_designs_facts' - cv-topology-missing-default-uplink-interfaces
-  hosts: cv-topology-missing-default-uplink-interfaces
+- name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology-default-uplink-interfaces
+  hosts: missing-cv-topology-default-uplink-interfaces
   gather_facts: false
   connection: local
   tasks:
@@ -33,8 +33,8 @@
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
-- name: Converge Negative tests for 'eos_designs_facts' - cv-topology-missing
-  hosts: cv-topology-missing
+- name: Converge Negative tests for 'eos_designs_facts' - missing-cv-topology
+  hosts: missing-cv-topology
   gather_facts: false
   connection: local
   tasks:

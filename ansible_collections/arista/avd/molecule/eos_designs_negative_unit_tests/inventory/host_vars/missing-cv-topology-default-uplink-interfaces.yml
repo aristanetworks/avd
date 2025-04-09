@@ -1,4 +1,4 @@
-fabric_name: CV_TOPOLOGY_MISSING_DEFAULT_UPLINK_INTERFACES
+fabric_name: MISSING_CV_TOPOLOGY_DEFAULT_UPLINK_INTERFACES
 # Fabric node type keys
 node_type_keys:
   - key: core_router
@@ -13,11 +13,11 @@ core_router:
     loopback_ipv4_pool: 10.0.0.0/24
     loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
   nodes:
-    - name: cv-topology-missing-default-uplink-interfaces
+    - name: missing-cv-topology-default-uplink-interfaces
       id: 1
 use_cv_topology: true
 cv_topology:
-  - hostname: cv-topology-missing-default-uplink-interfaces
+  - hostname: missing-cv-topology-default-uplink-interfaces
     platform: vEOS-LAB
     interfaces:
       - name: Ethernet1
@@ -31,7 +31,7 @@ cv_topology:
         neighbor_interface: Ethernet4
 core_interfaces:
   p2p_links:
-    - nodes: [ cv-topology-missing-default-uplink-interfaces, peer1 ]
+    - nodes: [ missing-cv-topology-default-uplink-interfaces, peer1 ]
       id: 10
       ip: [192.168.0.2/31, 192.168.0.3/31]
       as: [65000, 65002]
