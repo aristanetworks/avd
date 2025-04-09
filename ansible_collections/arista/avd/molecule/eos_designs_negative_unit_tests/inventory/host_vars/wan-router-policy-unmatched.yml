@@ -1,4 +1,4 @@
-# Testing the policy does not match any traffic but is assigned to a VRF
+# Testing the case where the policy does not match any traffic
 type: wan_router
 
 wan_router:

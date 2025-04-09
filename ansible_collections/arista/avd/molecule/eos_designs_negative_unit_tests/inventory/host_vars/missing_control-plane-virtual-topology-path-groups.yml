@@ -1,4 +1,4 @@
-# Testing missing path-group in WAN load-balance policy
+# Testing missing path-groups under control_plane_virtual_topology
 type: wan_router
 
 wan_router:

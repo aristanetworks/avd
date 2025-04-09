@@ -175,7 +175,7 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             context_path = f"wan_virtual_topologies.policies[{policy.name}].default_virtual_topology"
             load_balance_policy = self._generate_wan_load_balance_policy(name, policy.default_virtual_topology, context_path)
 
-            # TODO: "This condition is unreachable because an exception is raised on line 172 if 'default_virtual_topology.path-groups' is not defined."
+            # TODO: This condition is unreachable because an exception is raised on line 172 if 'default_virtual_topology.path-groups' is not defined.
             if not load_balance_policy:
                 msg = (
                     f"The `default_virtual_topology` path-groups configuration for `wan_virtual_topologies.policies[{policy.name}]` produces "
