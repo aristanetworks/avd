@@ -16,7 +16,8 @@ if TYPE_CHECKING:
 
 
 class TestSpec(BaseModel):
-    """TestSpec model used to define an ANTA test specification in PyAVD.
+    """
+    TestSpec model used to define an ANTA test specification in PyAVD.
 
     Primarily used in the `AVD_TEST_INDEX` list to define the ANTA tests to be run
     but can also be provided in the `get_device_anta_catalog` PyAVD function to add custom tests.
@@ -48,8 +49,15 @@ class TestSpec(BaseModel):
             msg = f"TestSpec {self.test_class.name} cannot have both `input_factory` and `input_dict`"
             raise ValueError(msg)
 
-        if "Input" in self.test_class.__dict__ and not self.input_factory and not self.input_dict:
-            msg = f"TestSpec {self.test_class.name} must have `input_factory or `input_dict`"
-            raise ValueError(msg)
+        # Check if the test class has an `Input` model and if it has required fields
+        if "Input" in self.test_class.__dict__ and isinstance((input_class := self.test_class.__dict__["Input"]), AntaTest.Input):
+            for f_name, f_info in input_class.model_fields.items():
+                # No need to check the base class fields
+                if f_name in {"result_overwrite", "filters"}:
+                    continue
+                # If a required field is present, an input factory or input dict must be provided
+                if f_info.is_required() and not self.input_factory and not self.input_dict:
+                    msg = f"TestSpec {self.test_class.name} must have `input_factory or `input_dict`"
+                    raise ValueError(msg)
 
         return self

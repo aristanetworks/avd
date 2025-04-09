@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import get, get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
+from pyavd._utils import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -70,17 +70,17 @@ class PrefixListsMixin(Protocol):
         sequence_number = 0
         p2p_links_sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
         for peer in self._avd_peers:
-            peer_facts = self.shared_utils.get_peer_facts(peer, required=True)
-            for uplink in peer_facts["uplinks"]:
+            peer_facts = self.shared_utils.get_peer_facts(peer)
+            for uplink in peer_facts.uplinks:
                 if (
-                    uplink["peer"] == self.shared_utils.hostname
-                    and uplink["type"] == "underlay_p2p"
-                    and uplink.get("ip_address")
-                    and "unnumbered" not in uplink["ip_address"]
-                    and get(peer_facts, "inband_ztp")
+                    uplink.peer == self.shared_utils.hostname
+                    and uplink.type == "underlay_p2p"
+                    and uplink.ip_address
+                    and "unnumbered" not in uplink.ip_address
+                    and peer_facts.inband_ztp
                 ):
                     sequence_number += 10
-                    subnet = str(ip_network(f"{uplink['ip_address']}/{uplink['prefix_length']}", strict=False))
+                    subnet = str(ip_network(f"{uplink.ip_address}/{uplink.prefix_length}", strict=False))
                     p2p_links_sequence_numbers.append_new(sequence=sequence_number, action=f"permit {subnet}")
         if p2p_links_sequence_numbers:
             self.structured_config.prefix_lists.append_new(name="PL-P2P-LINKS", sequence_numbers=p2p_links_sequence_numbers)

@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import get
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -69,65 +68,63 @@ class RouterBgpMixin(Protocol):
         # Neighbor Interfaces and VRF Neighbor Interfaces
         if self.inputs.underlay_rfc5549 is True:
             for link in self._underlay_links:
-                if link["type"] != "underlay_p2p":
+                if link.type != "underlay_p2p":
                     continue
 
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
-                    name=link["interface"],
+                    name=link.interface,
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                    remote_as=link["peer_bgp_as"],
-                    peer=link["peer"],
-                    description="_".join([link["peer"], link["peer_interface"]]),
+                    remote_as=link.peer_bgp_as,
+                    peer=link.peer,
+                    description=f"{link.peer}_{link.peer_interface}",
                 )
 
-                if "subinterfaces" in link:
-                    for subinterface in link["subinterfaces"]:
-                        # We need to add basic BGP VRF config in case the device is not covered by network_services. (Like a spine)
-                        if subinterface["vrf"] not in self.structured_config.router_bgp.vrfs:
-                            self.structured_config.router_bgp.vrfs.append_new(name=subinterface["vrf"], router_id=self.shared_utils.router_id)
+                for subinterface in link.subinterfaces:
+                    # We need to add basic BGP VRF config in case the device is not covered by network_services. (Like a spine)
+                    if subinterface.vrf not in self.structured_config.router_bgp.vrfs:
+                        self.structured_config.router_bgp.vrfs.append_new(name=subinterface.vrf, router_id=self.shared_utils.router_id)
 
-                        self.structured_config.router_bgp.vrfs[subinterface["vrf"]].neighbor_interfaces.append_new(
-                            name=subinterface["interface"],
-                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                            remote_as=link["peer_bgp_as"],
-                            # TODO: - implement some centralized way to generate these descriptions
-                            description=f"{'_'.join([link['peer'], subinterface['peer_interface']])}_vrf_{subinterface['vrf']}",
-                        )
+                    self.structured_config.router_bgp.vrfs[subinterface.vrf].neighbor_interfaces.append_new(
+                        name=subinterface.interface,
+                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                        remote_as=link.peer_bgp_as,
+                        # TODO: - implement some centralized way to generate these descriptions
+                        description=f"{link.peer}_{subinterface.peer_interface}_vrf_{subinterface.vrf}",
+                    )
 
         # Neighbors and VRF Neighbors
         else:
             for link in self._underlay_links:
-                if link["type"] != "underlay_p2p":
+                if link.type != "underlay_p2p":
                     continue
 
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
-                    ip_address=link["peer_ip_address"],
+                    ip_address=link.peer_ip_address,
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                    remote_as=get(link, "peer_bgp_as"),
-                    peer=link["peer"],
-                    description="_".join([link["peer"], link["peer_interface"]]),
-                    bfd=get(link, "bfd"),
+                    remote_as=link.peer_bgp_as,
+                    peer=link.peer,
+                    description=f"{link.peer}_{link.peer_interface}",
+                    bfd=link.bfd,
                 )
 
-                if self.inputs.shutdown_bgp_towards_undeployed_peers and link["peer_is_deployed"] is False:
+                if self.inputs.shutdown_bgp_towards_undeployed_peers and not link.peer_is_deployed:
                     neighbor.shutdown = True
 
                 if self.inputs.underlay_filter_peer_as:
-                    neighbor.route_map_out = f"RM-BGP-AS{link['peer_bgp_as']}-OUT"
+                    neighbor.route_map_out = f"RM-BGP-AS{link.peer_bgp_as}-OUT"
 
                 self.structured_config.router_bgp.neighbors.append(neighbor)
 
-                if "subinterfaces" in link:
-                    for subinterface in link["subinterfaces"]:
-                        subinterface_vrf = subinterface["vrf"]
-                        # We need to add basic BGP VRF config in case the device is not covered by network_services. (Like a spine)
-                        if subinterface_vrf not in self.structured_config.router_bgp.vrfs:
-                            self.structured_config.router_bgp.vrfs.append_new(name=subinterface_vrf, router_id=self.shared_utils.router_id)
+                for subinterface in link.subinterfaces:
+                    subinterface_vrf = subinterface.vrf
+                    # We need to add basic BGP VRF config in case the device is not covered by network_services. (Like a spine)
+                    if subinterface_vrf not in self.structured_config.router_bgp.vrfs:
+                        self.structured_config.router_bgp.vrfs.append_new(name=subinterface_vrf, router_id=self.shared_utils.router_id)
 
-                        self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
-                            ip_address=subinterface["peer_ip_address"],
-                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                            remote_as=get(link, "peer_bgp_as"),
-                            description=f"{'_'.join([link['peer'], subinterface['peer_interface']])}_vrf_{subinterface_vrf}",
-                            bfd=get(link, "bfd"),
-                        )
+                    self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
+                        ip_address=subinterface.peer_ip_address,
+                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                        remote_as=link.peer_bgp_as,
+                        description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
+                        bfd=link.bfd,
+                    )

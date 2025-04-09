@@ -20,7 +20,8 @@ class AvdTestBase(DeviceUtilsMixin, ValidationMixin):
     """Base class for all AVD eos_validate_state tests."""
 
     def __init__(self, config_manager: ConfigManager) -> None:
-        """Initialize the AvdTestBase class.
+        """
+        Initialize the AvdTestBase class.
 
         Args:
         ----
@@ -59,7 +60,8 @@ class AvdTestBase(DeviceUtilsMixin, ValidationMixin):
         return self.config_manager.dps_mapping
 
     def render(self) -> dict:
-        """Return the test_definition of the class.
+        """
+        Return the test_definition of the class.
 
         This method attempts to retrieve the value of the `test_definition` attribute.
         If `test_definition` is not set or returns a falsy value (e.g., None),

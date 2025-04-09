@@ -746,10 +746,10 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| BLUE | 192.168.255.6:100 | connected |
-| RED | 192.168.255.6:101 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| BLUE | 192.168.255.6:100 | connected | - |
+| RED | 192.168.255.6:101 | connected | - |
 
 #### Router BGP Device Configuration
 

@@ -2703,6 +2703,15 @@ router bgp {{ router_bgp.as }}
 {%         if vrf.timers is arista.avd.defined %}
       timers bgp {{ vrf.timers }}
 {%         endif %}
+{%         if vrf.graceful_restart.enabled is arista.avd.defined(true) %}
+{%             if vrf.graceful_restart.restart_time is arista.avd.defined %}
+      graceful-restart restart-time {{ vrf.graceful_restart.restart_time }}
+{%             endif %}
+{%             if vrf.graceful_restart.stalepath_time is arista.avd.defined %}
+      graceful-restart stalepath-time {{ vrf.graceful_restart.stalepath_time }}
+{%             endif %}
+      graceful-restart
+{%         endif %}
 {%         if vrf.maximum_paths.paths is arista.avd.defined %}
 {%             set paths_cli = "maximum-paths " ~ vrf.maximum_paths.paths %}
 {%             if vrf.maximum_paths.ecmp is arista.avd.defined %}

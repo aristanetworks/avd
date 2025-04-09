@@ -88,6 +88,10 @@ mlag_configuration:
   domain_id: DC1_SVC_LEAF1
   local_interface: Vlan4094
   peer_address: 10.33.1.72
+  peer_address_heartbeat:
+    peer_ip: 172.16.1.31
+    vrf: MGMT
+  dual_primary_detection_delay: 5
   peer_link: Port-Channel3
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'

@@ -854,12 +854,12 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Common_VRF | 172.16.110.4:1025 | connected |
-| vrf_with_loopbacks_dc1_pod1_only | 172.16.110.4:1102 | connected |
-| vrf_with_loopbacks_from_overlapping_pool | 172.16.110.4:1100 | connected |
-| vrf_with_loopbacks_from_pod_pools | 172.16.110.4:1101 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Common_VRF | 172.16.110.4:1025 | connected | - |
+| vrf_with_loopbacks_dc1_pod1_only | 172.16.110.4:1102 | connected | - |
+| vrf_with_loopbacks_from_overlapping_pool | 172.16.110.4:1100 | connected | - |
+| vrf_with_loopbacks_from_pod_pools | 172.16.110.4:1101 | connected | - |
 
 #### Router BGP Device Configuration
 

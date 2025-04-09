@@ -11,6 +11,7 @@ service_leaf:
     uplink_ipv4_pool: 10.33.255.0/26
     mlag_peer_ipv4_pool: 10.33.1.64/27
     mlag_peer_l3_ipv4_pool: 10.33.1.96/27
+    mlag_dual_primary_detection: true
     virtual_router_mac_address: 00:1c:73:00:00:99
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp

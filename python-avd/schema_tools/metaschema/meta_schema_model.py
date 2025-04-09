@@ -595,11 +595,9 @@ class AristaAvdSchema(AvdSchemaDict):
     # Internal attributes used by schema docs generators
     @cached_property
     def _table(self) -> str | None:
-        """
-        Return the name of the schema documentation table where this field should be included.
-
-        The table name is not applicable to the root schema so we return None
-        """
+        """Return the name of the schema documentation table where this field should be included."""
+        if self.documentation_options:
+            return self.documentation_options.table
         return None
 
     @cached_property

@@ -55,6 +55,7 @@
               - VerifyLLDPNeighbors
             skip_tests:
               - VerifyLLDPNeighbors
+      run_once: true
 
     - name: ANTA User-Defined Catalogs Run
       delegate_to: 127.0.0.1
@@ -64,6 +65,7 @@
         anta_runner_dry_run: true
         avd_catalogs_enabled: false
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_run"
+      run_once: true
 
     - name: ANTA User-Defined Catalogs Run with Tags
       delegate_to: 127.0.0.1
@@ -74,3 +76,4 @@
         avd_catalogs_enabled: false
         anta_reports_dir: "{{ root_dir }}/anta/reports/user_defined_catalogs_with_tags_run"
         anta_runner_tags: ["border_leaf"]
+      run_once: true

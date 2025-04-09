@@ -1,0 +1,26 @@
+---
+### NTP tests for serve
+ntp:
+  servers:
+    - name: 2.2.2.55
+  serve:
+    serve_all: true
+    access_group: test_ACL
+    ipv6_access_group: test_ACL_v6
+    vrfs:
+      - name: RED
+        serve_all: true
+        access_group: test_ACL
+        ipv6_access_group: test_ACL_v6
+      - name: default
+        serve_all: true
+      - name: BLUE
+        serve_all: true
+        access_group: test_ACL
+      - name: PINK
+        serve_all: true
+        ipv6_access_group: test_ACL_v6
+      - name: 1
+        serve_all: true
+        access_group: test_ACL
+        ipv6_access_group: test_ACL_v6

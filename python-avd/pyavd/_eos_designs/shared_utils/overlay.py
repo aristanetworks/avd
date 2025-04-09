@@ -126,8 +126,8 @@ class OverlayMixin(Protocol):
             if self.is_first_ha_peer:
                 return f"{self.router_id}:{self.wan_site.id}"
 
-            peer_fact = self.get_peer_facts(self.wan_ha_peer, required=True)
-            return f"{peer_fact['router_id']}:{self.wan_site.id}"
+            peer_fact = self.get_peer_facts(self.wan_ha_peer)
+            return f"{peer_fact.router_id}:{self.wan_site.id}"
 
         if self.overlay_vtep:
             return f"{self.vtep_ip}:1"

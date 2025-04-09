@@ -81,27 +81,9 @@
                                 "bool"
                             ]
                         },
-                        "convert_types": {
-                            "type": "array",
-                            "description": "List of types to auto-convert from.\nFor 'bool' auto-conversion is supported from 'int' and 'str'",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "int",
-                                    "str"
-                                ]
-                            }
-                        },
                         "default": {
                             "description": "Default value",
                             "type": "boolean"
-                        },
-                        "valid_values": {
-                            "type": "array",
-                            "description": "List of valid values",
-                            "items": {
-                                "type": "boolean"
-                            }
                         },
                         "display_name": {
                             "$ref": "#/$defs/display_name"
@@ -111,9 +93,6 @@
                         },
                         "required": {
                             "$ref": "#/$defs/required"
-                        },
-                        "dynamic_valid_values": {
-                            "$ref": "#/$defs/dynamic_valid_values"
                         },
                         "deprecation": {
                             "$ref": "#/$defs/deprecation"
@@ -392,7 +371,7 @@
         },
         "$ref": {
             "type": "string",
-            "pattern": "^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$",
+            "pattern": "^(eos_cli_config_gen|eos_designs)#(/[a-z$][\\.a-z0-9_]*)*$",
             "description": "Reference to Sub Schema using JSON Schema resolver.\nExample '#/keys/mykey' will resolve the schema for 'mykey' under the root dictionary of the current schema"
         },
         "documentation_options": {

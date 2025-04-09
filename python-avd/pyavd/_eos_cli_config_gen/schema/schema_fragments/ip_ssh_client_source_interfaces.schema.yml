@@ -16,6 +16,5 @@ keys:
           type: str
         vrf:
           type: str
-          default: "default"
           convert_types:
             - int

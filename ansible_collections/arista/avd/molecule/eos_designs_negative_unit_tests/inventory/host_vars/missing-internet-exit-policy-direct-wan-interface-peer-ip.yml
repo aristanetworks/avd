@@ -1,0 +1,109 @@
+---
+# Testing missing interface peer IP for direct internet exit policy
+wan_mode: cv-pathfinder
+# Disabling underlay for tests
+underlay_routing_protocol: none
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_route_servers:
+  - hostname: cv-pathfinder-pathfinder
+    vtep_ip: 10.10.10.10
+    path_groups:
+      - name: INET
+        interfaces:
+          - name: Ethernet1
+            public_ip: 192.168.55.55
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+default_node_types:
+  - node_type: wan_router
+    match_hostnames:
+      - "missing-internet-exit-policy.*"
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: missing-internet-exit-policy-direct-wan-interface-peer-ip
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 666
+          ip_address: 10.10.10.10/24
+          # missing peer_ip for internet exit.
+          cv_pathfinder_internet_exit:
+            policies:
+              - name: DIRECT-EXIT-POLICY-1
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+tenants:
+  - name: TenantA
+    vrfs:
+      - name: default
+        vrf_id: 1
+      - name: PROD
+        vrf_id: 42
+
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+  policies:
+    - name: DEFAULT-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: TEST
+          id: 42
+          path_groups:
+            - names: [INET]
+          internet_exit:
+            policy: DIRECT-EXIT-POLICY-1
+
+application_classification:
+  application_profiles:
+    - name: TEST
+
+cv_pathfinder_internet_exit_policies:
+  - name: DIRECT-EXIT-POLICY-1
+    fallback_to_system_default: false
+    type: direct
+
+expected_error_message: >-
+  'l3_interfaces[name=Ethernet1].peer_ip' needs to be set. When using WAN interface for direct type Internet exit, 'peer_ip'
+  is used for nexthop, and connectivity monitoring.

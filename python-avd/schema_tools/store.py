@@ -94,7 +94,7 @@ def _compile_schemas() -> dict:
 
     # We rely on eos_cli_config_gen being before eos_designs,
     # so anything in eos_cli_config_gen can be resolved and $def popped before resolving from eos_designs.
-    for schema_name, schema_paths in SCHEMAS.items():
+    for schema_name in SCHEMAS:
         if schema_name == "avd_meta_schema":
             # Do not resolve $ref in the meta schema.
             resolved_schema = schema_store[schema_name]
@@ -104,6 +104,13 @@ def _compile_schemas() -> dict:
             # Inplace update the schema store with the resolved variant without $def.
             # This is needed so eos_designs will not resolve to a schema with another $ref.
             schema_store[schema_name] = resolved_schema
+
+    # Since all schemas are now fully resolved we can drop the $defs and write the pickle files.
+    for schema_name, schema_paths in SCHEMAS.items():
+        resolved_schema = schema_store[schema_name]
+        if schema_name != "avd_meta_schema":
+            # Do not drop $defs from the meta schema.
+            resolved_schema.pop("$defs", None)
 
         # Update pickle file with binary version of the completely resolved schema.
         try:
@@ -131,8 +138,4 @@ def _resolve_schema(schema: dict, store: dict) -> dict:
     resolved_schema = deepcopy(schema)
     schemaresolver = AvdSchemaResolver(schema["$id"], store)
     schemaresolver.resolve(resolved_schema)
-
-    # Since the schema is now fully resolved we can drop the $defs.
-    resolved_schema.pop("$defs", None)
-
     return resolved_schema

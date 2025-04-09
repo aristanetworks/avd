@@ -19,12 +19,13 @@
 
 #### 802.1X Global
 
-| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
-| ------------------- | -------------------- | ----------------------|
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | ----------------------| -------------------------- |
 {%         set system_auth_control = dot1x.system_auth_control | arista.avd.default('-') %}
 {%         set protocol_lldp_bypass = dot1x.protocol_lldp_bypass | arista.avd.default('-') %}
 {%         set dynamic_authorization = dot1x.dynamic_authorization | arista.avd.default('-') %}
-| {{ system_auth_control }} | {{ protocol_lldp_bypass }} | {{ dynamic_authorization }} |
+{%         set statistics_packets_dropped = dot1x.statistics_packets_dropped | arista.avd.default('-') %}
+| {{ system_auth_control }} | {{ protocol_lldp_bypass }} | {{ dynamic_authorization }} | {{ statistics_packets_dropped }} |
 {%         if dot1x.mac_based_authentication is arista.avd.defined %}
 
 #### 802.1X MAC based authentication
@@ -63,6 +64,16 @@
 {%             if dot1x.captive_portal.start_limit_infinite is arista.avd.defined(true) %}
 | Start limit | Infinite |
 {%             endif %}
+{%         endif %}
+{%         if dot1x.vlan_assignment_groups is arista.avd.defined %}
+
+#### 802.1X VLAN Assignment Groups
+
+| VLAN Group Name | Members |
+| --------------- | ------- |
+{%             for vlan_assignment_group in dot1x.vlan_assignment_groups | arista.avd.natural_sort("name") %}
+| {{ vlan_assignment_group.name }} | {{ vlan_assignment_group.members }} |
+{%             endfor %}
 {%         endif %}
 {%         if dot1x.supplicant is arista.avd.defined %}
 

@@ -31,3 +31,5 @@ ntp:
       hash_algorithm: "sha1"
       key: "$BYk2Sjahe+D9T7uDgIItSA==$JTw5JOAPcYEo0O2hsvsxFQ==$C7wmpXOo"
       key_type: 8a
+  serve:
+    serve_all: true

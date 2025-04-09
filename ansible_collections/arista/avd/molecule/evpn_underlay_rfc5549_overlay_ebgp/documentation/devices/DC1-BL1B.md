@@ -635,11 +635,11 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected<br>static |
-| Tenant_B_WAN_Zone | 192.168.255.11:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.11:31 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_A_WAN_Zone | 192.168.255.11:14 | connected<br>static | - |
+| Tenant_B_WAN_Zone | 192.168.255.11:21 | connected | - |
+| Tenant_C_WAN_Zone | 192.168.255.11:31 | connected | - |
 
 #### Router BGP Device Configuration
 

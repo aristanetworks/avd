@@ -27,9 +27,15 @@ class AristaAvdInvalidInputsError(AristaAvdError):
 
 
 class AristaAvdMissingVariableError(AristaAvdError):
-    def __init__(self, variable: str | None = None) -> None:
-        self.message = f"'{variable}' is required but was not found."
-        super().__init__(self.message)
+    variable: str | None
+    host: str | None
+
+    def __init__(self, variable: str | None = None, host: str | None = None) -> None:
+        self.variable = variable
+        self.host = host
+        host_msg = f" for host '{host}'" if host else ""
+        message = f"'{variable}' is required but was not found{host_msg}."
+        super().__init__(message)
 
 
 class AvdSchemaError(AristaAvdError):

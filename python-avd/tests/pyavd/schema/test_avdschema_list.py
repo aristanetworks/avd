@@ -13,8 +13,6 @@ path.insert(0, str(Path(__file__).parents[3]))
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import AvdSchema
 
-# TODO: Test default value with required False.
-
 TEST_SCHEMA = {
     "type": "dict",
     "keys": {
@@ -39,42 +37,48 @@ TEST_SCHEMA = {
     },
 }
 
-TESTS = [
-    # (test_value, expected_errors: tuple, expected_error_messages: tuple)
-    ([{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}], None, None),  # Valid value. No errors.
-    ([{"pri": "1", "foo": 123}, {"pri": 2, "foo": "234"}], None, None),  # Valid value after conversion. No errors.
-    (
-        [{"pri": 1, "foo": "123"}, {"pri": "1", "foo": 123}],
-        (AvdValidationError,),
-        (
-            "'Validation Error: test_value[0].pri': The value '1' is not unique between all list items as required.",
-            "'Validation Error: test_value[1].pri': The value '1' is not unique between all list items as required.",
-            "'Validation Error: test_value[0].foo': The value '123' is not unique between all list items as required.",
-            "'Validation Error: test_value[1].foo': The value '123' is not unique between all list items as required.",
-        ),
-    ),  # Collision on both primary_key and unique_keys
-    (None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",)),  # Required is set, so None is not ignored.
-    ([], (AvdValidationError,), ("'Validation Error: test_value': The value is shorter (0) than the allowed minimum of 1.",)),  # Valid but below min length.
-    (
-        [{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}, {"pri": 3, "foo": "foo3"}, {"pri": 4, "foo": "foo4"}],
-        (AvdValidationError,),
-        ("'Validation Error: test_value': The value is longer (4) than the allowed maximum of 3.",),
-    ),  # Valid but amove max length.
-    ("a", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'list'.",)),  # Invalid type.
-]
-
 
 @pytest.fixture(scope="module")
 def avd_schema() -> AvdSchema:
     return AvdSchema(TEST_SCHEMA)
 
 
-@pytest.mark.parametrize(("test_value", "expected_errors", "expected_error_messages"), TESTS)
-def test_generated_schema(test_value: Any, expected_errors: tuple | None, expected_error_messages: tuple | None, avd_schema: AvdSchema) -> None:
+@pytest.mark.parametrize(
+    ("test_value", "expected_errors", "expected_error_messages"),
+    [
+        pytest.param([{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}], None, None, id="ok"),
+        pytest.param([{"pri": "1", "foo": 123}, {"pri": 2, "foo": "234"}], None, None, id="ok-nested-coercion"),
+        pytest.param(
+            [{"pri": 1, "foo": "123"}, {"pri": "1", "foo": 123}],
+            (AvdValidationError,),
+            (
+                "'Validation Error: test_value[0].pri': The value '1' is not unique between all list items as required.",
+                "'Validation Error: test_value[1].pri': The value '1' is not unique between all list items as required.",
+                "'Validation Error: test_value[0].foo': The value '123' is not unique between all list items as required.",
+                "'Validation Error: test_value[1].foo': The value '123' is not unique between all list items as required.",
+            ),
+            id="err-primary-key-collision-unique-keys-collision",
+        ),
+        pytest.param(None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"),
+        pytest.param(
+            [], (AvdValidationError,), ("'Validation Error: test_value': The value is shorter (0) than the allowed minimum of 1.",), id="err-below-min-length-0"
+        ),
+        pytest.param(
+            [{"pri": 1, "foo": "foo1"}, {"pri": 2, "foo": "foo2"}, {"pri": 3, "foo": "foo3"}, {"pri": 4, "foo": "foo4"}],
+            (AvdValidationError,),
+            ("'Validation Error: test_value': The value is longer (4) than the allowed maximum of 3.",),
+            id="err-above-max-length-4",
+        ),
+        pytest.param("a", (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'str'. Expected a 'list'.",), id="err-invalid-type-str"),
+    ],
+)
+def test_generated_schema(
+    test_value: Any, expected_errors: tuple[type[AvdValidationError], ...] | None, expected_error_messages: tuple[str, ...] | None, avd_schema: AvdSchema
+) -> None:
     instance = {"test_value": test_value}
     list(avd_schema.convert(instance))
     validation_errors = list(avd_schema.validate(instance))
-    if expected_errors:
+    if expected_errors and expected_error_messages:
         for validation_error in validation_errors:
             assert isinstance(validation_error, expected_errors)
             assert str(validation_error) in expected_error_messages

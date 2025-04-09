@@ -12,12 +12,17 @@ class StructuredConfigKey(Enum):
     """Enumeration of AVD structured configuration keys used to conditionally run tests. Supports dot notation for nested keys."""
 
     ETHERNET_INTERFACES = "ethernet_interfaces"
+    PORT_CHANNEL_INTERFACES = "port_channel_interfaces"
     HTTPS_SSL_PROFILE = "management_api_http.https_ssl_profile"
     MLAG_CONFIGURATION = "mlag_configuration"
+    MLAG_DUAL_PRIMARY_DETECTION_DELAY = "mlag_configuration.dual_primary_detection_delay"
+    RELOAD_DELAY_MLAG = "mlag_configuration.reload_delay_mlag"
+    RELOAD_DELAY_NON_MLAG = "mlag_configuration.reload_delay_non_mlag"
+    ROUTER_BFD = "router_bfd"
     ROUTER_BGP = "router_bgp"
     SERVICE_ROUTING_PROTOCOLS_MODEL = "service_routing_protocols_model"
-    AVT_ROLE = "router_adaptive_virtual_topology.topology_role"
-    ROUTER_PATH_SELECTION_GROUPS = "router_path_selection.path_groups"
+    ROUTER_AVT = "router_adaptive_virtual_topology"
+    ROUTER_PATH_SELECTION = "router_path_selection"
 
     @classmethod
     def to_string_list(cls, keys: list[StructuredConfigKey]) -> list[str]:

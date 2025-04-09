@@ -64,6 +64,8 @@ wan_router:
               profile: INTERNET-WAN-INTERFACE
               wan_carrier: REGION1-INTERNET-CORP
               wan_circuit_id: inet-site1-wan1
+              static_routes:
+                - prefix: 0.0.0.0/0
         - name: site1-wan2
           id: 4
           mgmt_ip: 192.168.17.13/24

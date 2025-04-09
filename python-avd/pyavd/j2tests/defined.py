@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""AVD Jinja2 test defined.
+"""
+AVD Jinja2 test defined.
 
 The test checks if a passed variable is defined, and if specified, its value and its type.
 """

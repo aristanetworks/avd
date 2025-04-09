@@ -10,7 +10,8 @@ HEADING_PATTERN = re.compile(r"#+ ")
 
 
 def add_md_toc(md_input: str, skip_lines: int = 0, toc_levels: int = 3, toc_marker: str = "<!-- toc -->") -> str:
-    """Parse the input Markdown and add a TOC between the toc_markers.
+    """
+    Parse the input Markdown and add a TOC between the toc_markers.
 
     Parameters
     ----------
@@ -85,7 +86,8 @@ def add_md_toc(md_input: str, skip_lines: int = 0, toc_levels: int = 3, toc_mark
 
 
 def _get_line_info(line: str, all_anchor_ids: list[str]) -> tuple[int, str, str]:
-    """Split heading and return level, text and anchor_id.
+    """
+    Split heading and return level, text and anchor_id.
 
     Since we know the line is already a heading, we can assume correct formatting.
     Update all_anchor_ids with the missing anchor if not found.

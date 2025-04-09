@@ -197,10 +197,10 @@ vlan 2020
 | Ethernet6.10 | TENANT_B_SITE_5_INTRA_L3VPN | - | 123.1.1.2/31 | TENANT_B_INTRA | - | False | - | - |
 | Ethernet6.100 | TENANT_B_SITE_3_OSPF | - | 192.168.48.4/31 | TENANT_B_WAN | - | False | - | - |
 | Ethernet6.101 | TENANT_B_SITE_5 | - | 192.168.48.2/31 | TENANT_B_WAN | - | False | - | - |
-| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
-| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *100.64.49.2/30 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
-| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *100.64.49.6/30 | **default | *9178 | *False | **- | **- |
+| Ethernet11 | P2P_SITE2-LSR2_Ethernet12 | 11 | *100.64.49.2/30 | *default | *9178 | *False | *- | *- |
+| Ethernet12 | P2P_SITE2-LSR2_Ethernet13 | 11 | *100.64.49.2/30 | *default | *9178 | *False | *- | *- |
+| Ethernet13 | P2P_SITE2-LSR2_Ethernet14 | 220 | *100.64.49.6/30 | *default | *9178 | *False | *- | *- |
+| Ethernet14 | P2P_SITE2-LSR2_Ethernet15 | 220 | *100.64.49.6/30 | *default | *9178 | *False | *- | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -781,10 +781,10 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_B_INTRA | 100.70.0.7:19 | connected<br>static |
-| TENANT_B_WAN | 100.70.0.7:20 | connected<br>ospf |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| TENANT_B_INTRA | 100.70.0.7:19 | connected<br>static | - |
+| TENANT_B_WAN | 100.70.0.7:20 | connected<br>ospf | - |
 
 #### Router BGP Device Configuration
 

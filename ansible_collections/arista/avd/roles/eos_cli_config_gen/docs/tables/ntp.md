@@ -30,6 +30,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "ntp.authentication_keys.[].key") | String | Required |  |  | Obfuscated key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key_type</samp>](## "ntp.authentication_keys.[].key_type") | String |  |  | Valid Values:<br>- <code>0</code><br>- <code>7</code><br>- <code>8a</code> |  |
     | [<samp>&nbsp;&nbsp;trusted_keys</samp>](## "ntp.trusted_keys") | String |  |  |  | List of trusted-keys as string ex. 10-12,15. |
+    | [<samp>&nbsp;&nbsp;serve</samp>](## "ntp.serve") | Dictionary |  |  |  | Enable Serving NTP to clients. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;serve_all</samp>](## "ntp.serve.serve_all") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "ntp.serve.access_group") | String |  |  |  | Standard ACL to apply to NTP serve. All ACLs are applied in the 'in' direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group</samp>](## "ntp.serve.ipv6_access_group") | String |  |  |  | Standard IPv6 ACL to apply to NTP serve. All ACLs are applied in the 'in' direction. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "ntp.serve.vrfs") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "ntp.serve.vrfs.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serve_all</samp>](## "ntp.serve.vrfs.[].serve_all") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;access_group</samp>](## "ntp.serve.vrfs.[].access_group") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_access_group</samp>](## "ntp.serve.vrfs.[].ipv6_access_group") | String |  |  |  |  |
 
 === "YAML"
 
@@ -77,4 +86,19 @@
 
       # List of trusted-keys as string ex. 10-12,15.
       trusted_keys: <str>
+
+      # Enable Serving NTP to clients.
+      serve:
+        serve_all: <bool>
+
+        # Standard ACL to apply to NTP serve. All ACLs are applied in the 'in' direction.
+        access_group: <str>
+
+        # Standard IPv6 ACL to apply to NTP serve. All ACLs are applied in the 'in' direction.
+        ipv6_access_group: <str>
+        vrfs:
+          - name: <str; required; unique>
+            serve_all: <bool>
+            access_group: <str>
+            ipv6_access_group: <str>
     ```

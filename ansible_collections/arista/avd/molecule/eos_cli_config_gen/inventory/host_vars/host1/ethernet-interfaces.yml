@@ -539,6 +539,7 @@ ethernet_interfaces:
       ip: true
       ldp:
         interface: true
+    ntp_serve: true
     # Test isis auth both sha rx
     isis_authentication:
       both:
@@ -561,6 +562,7 @@ ethernet_interfaces:
       ip: false
       ldp:
         interface: false
+    ntp_serve: false
     # Test isis auth both sha
     isis_authentication:
       both:

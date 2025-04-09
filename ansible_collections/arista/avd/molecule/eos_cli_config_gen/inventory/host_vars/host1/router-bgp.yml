@@ -2131,6 +2131,10 @@ router_bgp:
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       timers: 5 15
+      graceful_restart:
+        enabled: true
+        restart_time: 120
+        stalepath_time: 120
       rd: "192.168.255.3:12"
       route_targets:
         import:

@@ -1,61 +1,6 @@
 [
     {
         "name": "dc1-leaf1a",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1a",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -83,61 +28,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1b",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -177,61 +67,6 @@
     },
     {
         "name": "dc1-leaf1c",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf1c",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -259,61 +94,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2a",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -408,61 +188,6 @@
     },
     {
         "name": "dc1-leaf2c",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-leaf2c",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -496,61 +221,6 @@
     },
     {
         "name": "dc1-spine1",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine1",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -584,61 +254,6 @@
     },
     {
         "name": "dc1-spine2",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-spine2",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -672,61 +287,6 @@
     },
     {
         "name": "dc1-svc-leaf1a",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1a",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -754,61 +314,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-svc-leaf1b",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -848,61 +353,6 @@
     },
     {
         "name": "dc1-wan1",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan1",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -930,61 +380,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc1-wan2",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -1024,61 +419,6 @@
     },
     {
         "name": "dc2-leaf1a",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1a",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -1106,61 +446,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1b",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -1200,61 +485,6 @@
     },
     {
         "name": "dc2-leaf1c",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf1c",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -1282,61 +512,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2a",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -1431,61 +606,6 @@
     },
     {
         "name": "dc2-leaf2b",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2b",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -1574,61 +694,6 @@
     },
     {
         "name": "dc2-leaf2c",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf2c",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -1656,61 +721,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3a.arista.com",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -1750,61 +760,6 @@
     },
     {
         "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-leaf3b.arista.com",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -1838,61 +793,6 @@
     },
     {
         "name": "dc2-spine1",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine1",
         "test": "VerifyEOSExtensions",
         "categories": [
             "software"
@@ -1920,61 +820,6 @@
             "software"
         ],
         "description": "Verifies the TerminAttr version of the device.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyInterfaceDiscards",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces packet discard counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyInterfaceErrDisabled",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interfaces in the errdisabled state.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyInterfaceErrors",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the interfaces error counters are equal to zero.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyInterfaceUtilization",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies that the utilization of interfaces is below a certain threshold.",
-        "result": "unset",
-        "messages": [],
-        "custom_field": null
-    },
-    {
-        "name": "dc2-spine2",
-        "test": "VerifyStormControlDrops",
-        "categories": [
-            "interfaces"
-        ],
-        "description": "Verifies there are no interface storm-control drop counters.",
         "result": "unset",
         "messages": [],
         "custom_field": null
