@@ -180,7 +180,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -216,7 +216,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -284,7 +284,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: Build minimum requirements
         run: |
           pip install uv
@@ -331,7 +331,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -372,7 +372,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -409,7 +409,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -453,7 +453,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: "Install pyavd and Ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
@@ -482,7 +482,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: "Install pyavd and ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
