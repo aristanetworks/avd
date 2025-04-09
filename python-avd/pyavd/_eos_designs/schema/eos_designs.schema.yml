@@ -2185,23 +2185,7 @@ keys:
     documentation_options:
       table: system-settings
     type: dict
-    description: 'MAC address-table aging time.
-
-      Use to change the EOS default of 300.
-
-      '
-    keys:
-      aging_time:
-        type: int
-        convert_types:
-        - str
-        description: 'Aging time in seconds 10-1000000.
-
-          Enter 0 to disable aging.
-
-          '
-        min: 0
-        max: 1000000
+    $ref: eos_cli_config_gen#/keys/mac_address_table
   management_eapi:
     documentation_options:
       table: management-settings
@@ -5055,14 +5039,16 @@ keys:
       table: wan-settings
     default: true
     description: 'This specifies the preferred mechanism to program ECMP routes within
-      kernel for software forwarding.
+      the kernel for software forwarding.
 
-      When enabled, configures environment variable to restart KernelFib agent for
-      ecmp route programming.
+      When enabled, configures an environment variable to restart KernelFib agent
+      for ECMP route programming.
 
-      When disabled, ecmp route programming in kernel is achieved without agent restart.
+      When disabled, ECMP route programming in the kernel is achieved without agent
+      restart.
 
-      This is relevant to Pathfinder and Autovpn designs.'
+      This is relevant to Pathfinder and AUTOVPN designs. This is supported on EOS
+      version 4.33.2 and later.'
   wan_use_evpn_node_settings_for_lan:
     type: bool
     documentation_options:

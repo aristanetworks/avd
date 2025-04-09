@@ -6481,32 +6481,6 @@ class EosDesigns(EosDesignsRootModel):
 
     L3InterfaceProfiles._item_type = L3InterfaceProfilesItem
 
-    class MacAddressTable(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"aging_time": {"type": int}}
-        aging_time: int | None
-        """
-        Aging time in seconds 10-1000000.
-        Enter 0 to disable aging.
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, aging_time: int | None | UndefinedType = Undefined) -> None:
-                """
-                MacAddressTable.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    aging_time:
-                       Aging time in seconds 10-1000000.
-                       Enter 0 to disable aging.
-
-                """
-
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
@@ -56861,7 +56835,7 @@ class EosDesigns(EosDesignsRootModel):
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
         "local_users": {"type": EosCliConfigGen.LocalUsers},
-        "mac_address_table": {"type": MacAddressTable},
+        "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
@@ -57946,14 +57920,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     load_interval: EosCliConfigGen.LoadInterval
     local_users: EosCliConfigGen.LocalUsers
-    mac_address_table: MacAddressTable
-    """
-    MAC address-table aging time.
-    Use to change the EOS default of 300.
-
-
-    Subclass of AvdModel.
-    """
+    mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
     """
     Default is HTTPS management eAPI enabled.
@@ -58892,11 +58859,14 @@ class EosDesigns(EosDesignsRootModel):
     """
     wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool
     """
-    This specifies the preferred mechanism to program ECMP routes within kernel for software forwarding.
-    When enabled, configures environment variable to restart KernelFib agent for ecmp route programming.
-    When disabled, ecmp route programming in kernel is achieved without agent restart.
-    This is relevant
-    to Pathfinder and Autovpn designs.
+    This specifies the preferred mechanism to program ECMP routes within the kernel for software
+    forwarding.
+    When enabled, configures an environment variable to restart KernelFib agent for ECMP
+    route programming.
+    When disabled, ECMP route programming in the kernel is achieved without agent
+    restart.
+    This is relevant to Pathfinder and AUTOVPN designs. This is supported on EOS version 4.33.2
+    and later.
 
     Default value: `True`
     """
@@ -59033,7 +59003,7 @@ class EosDesigns(EosDesignsRootModel):
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
             local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
-            mac_address_table: MacAddressTable | UndefinedType = Undefined,
+            mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
@@ -59738,12 +59708,7 @@ class EosDesigns(EosDesignsRootModel):
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
                 local_users: local_users
-                mac_address_table:
-                   MAC address-table aging time.
-                   Use to change the EOS default of 300.
-
-
-                   Subclass of AvdModel.
+                mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
                    The VRF is set to < mgmt_interface_vrf >.
@@ -60404,11 +60369,14 @@ class EosDesigns(EosDesignsRootModel):
                    When using automatic ceritficate
                    deployment via CloudVision this name must be the same on all WAN routers.
                 wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
-                   This specifies the preferred mechanism to program ECMP routes within kernel for software forwarding.
-                   When enabled, configures environment variable to restart KernelFib agent for ecmp route programming.
-                   When disabled, ecmp route programming in kernel is achieved without agent restart.
-                   This is relevant
-                   to Pathfinder and Autovpn designs.
+                   This specifies the preferred mechanism to program ECMP routes within the kernel for software
+                   forwarding.
+                   When enabled, configures an environment variable to restart KernelFib agent for ECMP
+                   route programming.
+                   When disabled, ECMP route programming in the kernel is achieved without agent
+                   restart.
+                   This is relevant to Pathfinder and AUTOVPN designs. This is supported on EOS version 4.33.2
+                   and later.
                 wan_use_evpn_node_settings_for_lan:
                    PREVIEW: This key is currently not supported and may produce invalid configuration.
                    When true,

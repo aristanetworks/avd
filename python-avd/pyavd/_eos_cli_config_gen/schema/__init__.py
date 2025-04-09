@@ -18466,7 +18466,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"aging_time": {"type": int}, "notification_host_flap": {"type": NotificationHostFlap}}
         aging_time: int | None
-        """Aging time in seconds."""
+        """
+        Aging time in seconds 10-1000000.
+        Enter 0 to disable aging.
+        """
         notification_host_flap: NotificationHostFlap
         """Subclass of AvdModel."""
 
@@ -18482,7 +18485,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    aging_time: Aging time in seconds.
+                    aging_time:
+                       Aging time in seconds 10-1000000.
+                       Enter 0 to disable aging.
                     notification_host_flap: Subclass of AvdModel.
 
                 """

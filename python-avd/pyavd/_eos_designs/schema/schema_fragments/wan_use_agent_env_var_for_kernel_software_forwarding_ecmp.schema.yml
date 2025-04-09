@@ -13,7 +13,7 @@ keys:
     # TODO: AVD 6.0.0 Consider changing default to false
     default: true
     description: |-
-      This specifies the preferred mechanism to program ECMP routes within kernel for software forwarding.
-      When enabled, configures environment variable to restart KernelFib agent for ecmp route programming.
-      When disabled, ecmp route programming in kernel is achieved without agent restart.
-      This is relevant to Pathfinder and Autovpn designs.
+      This specifies the preferred mechanism to program ECMP routes within the kernel for software forwarding.
+      When enabled, configures an environment variable to restart KernelFib agent for ECMP route programming.
+      When disabled, ECMP route programming in the kernel is achieved without agent restart.
+      This is relevant to Pathfinder and AUTOVPN designs. This is supported on EOS version 4.33.2 and later.
