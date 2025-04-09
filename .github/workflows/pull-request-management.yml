@@ -180,11 +180,11 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: Run molecule test
         run: |
-          WHEEL_PATH=$(find /tmp -name "*.whl" | head -n 1)
-          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_PATH[ansible-collection]" "$WHEEL_PATH[molecule-ci]"
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -206,13 +206,21 @@ jobs:
       matrix:
         avd_scenario: ["dhcp_configuration", "dhcp_provisioning"]
         ansible_version: ["ansible-core<2.19.0"]
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
       - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: Run molecule test
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -266,10 +274,17 @@ jobs:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
             pip_requirements: ".github/requirements-ci-dev.txt"
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: Build minimum requirements
         run: |
           pip install uv
@@ -278,7 +293,8 @@ jobs:
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
       - name: Run molecule test
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -309,9 +325,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: Run molecule test
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -342,9 +366,17 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
       - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: Run molecule test
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -371,9 +403,17 @@ jobs:
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
       - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: Run molecule test
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -413,7 +453,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: "Install pyavd and Ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
@@ -442,7 +482,7 @@ jobs:
           name: pyavd
           path: /tmp/
       - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/pyavd
       - name: "Install pyavd and ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
