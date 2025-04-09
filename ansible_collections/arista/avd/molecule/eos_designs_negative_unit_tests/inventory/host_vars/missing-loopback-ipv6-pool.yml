@@ -1,4 +1,3 @@
-fabric_name: FABRIC_MISSING_LOOPBACK_IPV6_POOL
 
 type: l3leaf
 
@@ -13,7 +12,7 @@ l3leaf:
     - group: fabric_missing_loopback_ipv6_pool
       bgp_as: 923
       nodes:
-        - name: missing_loopback_ipv6_pool
+        - name: missing-loopback-ipv6-pool
           id: 1
           mgmt_ip: 192.168.201.116/24
 
