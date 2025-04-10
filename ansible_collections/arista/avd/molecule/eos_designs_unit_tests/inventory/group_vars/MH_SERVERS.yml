@@ -248,12 +248,16 @@ routers:
               # Flexible encapsulation parameters
               encapsulation_vlan:
                 # client_dot1q: 2101 # default is subinterface number
+              raw_eos_cli: |-
+                sflow enable
             - number: 102
               short_esi: 0000:0000:0102 # Required for multihomed port-channels with subinterfaces
               vlan_id: 1102 # default is subinterface number
               # Flexible encapsulation parameters
               encapsulation_vlan:
                 client_dot1q: 2102 # default is subinterface number
+              structured_config:
+                l2_mru: 10000
             # Tests for Auto ESI on subinterfaces
             - number: 103
               short_esi: auto # Required for multihomed port-channels with subinterfaces
