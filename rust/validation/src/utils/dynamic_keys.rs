@@ -9,8 +9,8 @@ use super::walker::Walker;
 pub(crate) fn get_dynamic_keys(key_path: &str, dict: &Map<String, Value>) -> Vec<String> {
     let mut path = key_path.split('.');
     path.next()
-        .and_then(|component| dict.get(component))
-        .map(|value| value.walk(path, None))
+        .and_then(|component| dict.get_key_value(component))
+        .map(|(key, value)| value.walk(path, Some(&mut vec![key.to_string()])))
         .into_iter()
         .flatten()
         .flat_map(|(_, value)| match value {
