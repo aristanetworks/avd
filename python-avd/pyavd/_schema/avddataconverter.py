@@ -21,7 +21,6 @@ SCHEMA_TO_PY_TYPE_MAP = {
 SIMPLE_CONVERTERS = {
     "str": str,
     "int": int,
-    "bool": bool,
 }
 
 if TYPE_CHECKING:

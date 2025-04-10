@@ -13,9 +13,6 @@ path.insert(0, str(Path(__file__).parents[3]))
 from pyavd._errors import AvdValidationError
 from pyavd._schema.avdschema import AvdSchema
 
-# TODO: Test Dynamic valid values.
-#       Test default value with required False.
-
 TEST_SCHEMA = {
     "type": "dict",
     "keys": {
@@ -26,35 +23,14 @@ TEST_SCHEMA = {
             "min": 2,
             "max": 20,
             "valid_values": [0, 11, 22],
-            "dynamic_valid_values": ["valid_values"],  # Part of meta schema but not implemented in converter
+            "dynamic_valid_values": ["dynamic.valid_value"],  # Part of meta schema but not implemented in converter
             "required": True,
             "description": "Some integer",
             "display_name": "Integer",
         },
+        "dynamic": {"type": "list", "items": {"type": "dict", "keys": {"valid_value": {"type": "int"}}}},
     },
 }
-
-TESTS = [
-    # (test_value, expected_errors: tuple, expected_error_messages: tuple)
-    (11, None, None),  # Valid value. No errors.
-    (
-        False,
-        (AvdValidationError,),
-        ("'Validation Error: test_value': '0' is lower than the allowed minimum of 2.",),
-    ),  # False is converted to 0 which is valid but below min.
-    (
-        True,
-        (AvdValidationError,),
-        ("'Validation Error: test_value': '1' is lower than the allowed minimum of 2.", "'Validation Error: test_value': '1' is not one of [0, 11, 22]"),
-    ),  # True is converted to 1 which is not valid.
-    ("11", None, None),  # Converted to 11. No errors.
-    (11.0123, None, None),  # Converted to 11. No errors.
-    (None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",)),  # Required is set, so None is not ignored.
-    (12, (AvdValidationError,), ("'Validation Error: test_value': '12' is not one of [0, 11, 22]",)),  # Invalid value.
-    ([], (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'int'.",)),  # Invalid type.
-    (0, (AvdValidationError,), ("'Validation Error: test_value': '0' is lower than the allowed minimum of 2.",)),  # Valid but below min.
-    (22, (AvdValidationError,), ("'Validation Error: test_value': '22' is higher than the allowed maximum of 20.",)),  # Valid but above max.
-]
 
 
 @pytest.fixture(scope="module")
@@ -62,12 +38,49 @@ def avd_schema() -> AvdSchema:
     return AvdSchema(TEST_SCHEMA)
 
 
-@pytest.mark.parametrize(("test_value", "expected_errors", "expected_error_messages"), TESTS)
-def test_generated_schema(test_value: Any, expected_errors: tuple | None, expected_error_messages: tuple | None, avd_schema: AvdSchema) -> None:
-    instance = {"test_value": test_value}
+@pytest.mark.parametrize(
+    ("test_value", "dynamic_valid_values", "expected_errors", "expected_error_messages"),
+    [
+        pytest.param(11, None, None, None, id="ok-no-coerce-11"),  # Valid value. No errors.
+        pytest.param(
+            False,
+            None,
+            (AvdValidationError,),
+            ("'Validation Error: test_value': '0' is lower than the allowed minimum of 2.",),
+            id="err-coerce-bool-to-int-below-min-0",
+        ),  # False is converted to 0 which is valid but below min.
+        pytest.param(
+            True,
+            None,
+            (AvdValidationError,),
+            ("'Validation Error: test_value': '1' is lower than the allowed minimum of 2.", "'Validation Error: test_value': '1' is not one of [0, 11, 22]"),
+            id="err-coerce-bool-to-int-invalid-value-1",
+        ),
+        pytest.param("11", None, None, None, id="ok-coerce-str-to-int"),
+        pytest.param(11.0123, None, None, None, id="ok-coerce-float-to-int"),
+        pytest.param(
+            None, None, (AvdValidationError,), ("'Validation Error: ': Required key 'test_value' is not set in dict.",), id="err-missing-required-value"
+        ),
+        pytest.param(12, None, (AvdValidationError,), ("'Validation Error: test_value': '12' is not one of [0, 11, 22]",), id="err-invalid-value-12"),
+        pytest.param(12, [12], None, None, id="ok-dynamic-valid-value-12"),
+        pytest.param([], None, (AvdValidationError,), ("'Validation Error: test_value': Invalid type 'list'. Expected a 'int'.",), id="err-invalid-type-list"),
+        pytest.param(0, None, (AvdValidationError,), ("'Validation Error: test_value': '0' is lower than the allowed minimum of 2.",), id="err-below-min-0"),
+        pytest.param(
+            22, None, (AvdValidationError,), ("'Validation Error: test_value': '22' is higher than the allowed maximum of 20.",), id="err-above-max-22"
+        ),
+    ],
+)
+def test_generated_schema(
+    test_value: Any,
+    dynamic_valid_values: list[int] | None,
+    expected_errors: tuple[type[AvdValidationError], ...] | None,
+    expected_error_messages: tuple[str, ...] | None,
+    avd_schema: AvdSchema,
+) -> None:
+    instance = {"test_value": test_value, "dynamic": [{"valid_value": valid_value} for valid_value in dynamic_valid_values or []]}
     list(avd_schema.convert(instance))
     validation_errors = list(avd_schema.validate(instance))
-    if expected_errors:
+    if expected_errors and expected_error_messages:
         for validation_error in validation_errors:
             assert isinstance(validation_error, expected_errors)
             assert str(validation_error) in expected_error_messages

@@ -238,7 +238,9 @@ class PortChannelInterfacesMixin(Protocol):
         """Return structured_config for one port_channel_interface (subinterface)."""
         # Common port_channel_interface settings
         port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
-            name=port_channel_subinterface_name, vlan_id=subinterface.vlan_id or subinterface.number
+            name=port_channel_subinterface_name,
+            vlan_id=subinterface.vlan_id or subinterface.number,
+            eos_cli=subinterface.raw_eos_cli,
         )
         port_channel_interface.encapsulation_vlan.client._update(
             encapsulation="dot1q", vlan=subinterface.encapsulation_vlan.client_dot1q or subinterface.number
@@ -252,6 +254,11 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.evpn_ethernet_segment._update(
                 identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
                 route_target=short_esi_to_route_target(short_esi),
+            )
+
+        if subinterface.structured_config:
+            self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
+                subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
 
         return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))
