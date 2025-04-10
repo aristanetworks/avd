@@ -35710,15 +35710,15 @@ class EosDesigns(EosDesignsRootModel):
                                 "interface": {"type": str},
                             }
                             prefix: str | None
-                            """IPv4_address."""
+                            """Destination IPv4 address."""
                             next_hop: str | None
-                            """IPv4_address."""
+                            """Next-hop IPv4 address."""
                             track_bfd: bool | None
                             """Track next-hop using BFD."""
                             distance: int | None
                             tag: int | None
                             name: str | None
-                            """description."""
+                            """Description of the static route."""
                             metric: int | None
                             interface: str | None
 
@@ -35743,12 +35743,12 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        prefix: IPv4_address.
-                                        next_hop: IPv4_address.
+                                        prefix: Destination IPv4 address.
+                                        next_hop: Next-hop IPv4 address.
                                         track_bfd: Track next-hop using BFD.
                                         distance: distance
                                         tag: tag
-                                        name: description.
+                                        name: Description of the static route.
                                         metric: metric
                                         interface: interface
 

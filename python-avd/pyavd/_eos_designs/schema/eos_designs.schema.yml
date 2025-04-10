@@ -6940,10 +6940,10 @@ $defs:
                         keys:
                           prefix:
                             type: str
-                            description: IPv4_address.
+                            description: Destination IPv4 address.
                           next_hop:
                             type: str
-                            description: IPv4_address.
+                            description: Next-hop IPv4 address.
                           track_bfd:
                             type: bool
                             description: Track next-hop using BFD.
@@ -6961,7 +6961,7 @@ $defs:
                             max: 4294967295
                           name:
                             type: str
-                            description: description.
+                            description: Description of the static route.
                           metric:
                             type: int
                             convert_types:
