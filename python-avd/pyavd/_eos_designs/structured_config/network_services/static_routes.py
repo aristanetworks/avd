@@ -54,7 +54,6 @@ class StaticRoutesMixin(Protocol):
                             metric=static_route.metric,
                             tag=static_route.tag,
                         )
-                        static_route_item.vrf = vrf.name
                         self.structured_config.static_routes.append_unique(static_route_item)
 
                     if not svi.ip_virtual_router_addresses or not svi.ip_address:
