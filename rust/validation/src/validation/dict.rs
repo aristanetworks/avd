@@ -130,7 +130,7 @@ mod tests {
     use super::*;
     use crate::coercion::Coercion as _;
     use crate::context::Context;
-    use crate::feedback::{CoercionNote, Feedback};
+    use crate::feedback::{CoercionNote, Feedback, Issue};
     use crate::validation::test_utils::get_test_store;
 
     #[test]
@@ -365,7 +365,14 @@ mod tests {
         let mut ctx = Context::new(&store);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+        assert!(ctx.violations.is_empty());
+        assert_eq!(
+            ctx.coercions,
+            vec![Feedback {
+                path: vec!["my_dynamic_keys".into()],
+                issue: Issue::DefaultValueInserted
+            }]
+        );
     }
 
     #[test]
@@ -399,7 +406,13 @@ mod tests {
         let mut ctx = Context::new(&store);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.coercions,
+            vec![Feedback {
+                path: vec!["my_dynamic_keys".into()],
+                issue: Issue::DefaultValueInserted
+            }]
+        );
         assert_eq!(
             ctx.violations,
             vec![

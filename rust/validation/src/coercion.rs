@@ -6,7 +6,9 @@ use avdschema::{any::AnySchema, boolean::Bool, dict::Dict, int::Int, list::List,
 use serde_json::{Map, Value};
 
 use crate::{
-    context::Context, feedback::CoercionNote, utils::dynamic_keys::get_dynamic_keys,
+    context::Context,
+    feedback::{CoercionNote, Issue},
+    utils::dynamic_keys::get_dynamic_keys,
     validation::Validation,
 };
 
@@ -34,6 +36,9 @@ impl Coercion<Map<String, Value>> for Dict {
                         None => {
                             if let Some(default_value) = key_schema.default_value() {
                                 dict.insert(key.to_owned(), default_value);
+                                ctx.path.push(key.to_owned());
+                                ctx.add_coercion(Issue::DefaultValueInserted);
+                                ctx.path.pop();
                             }
                         }
                     }

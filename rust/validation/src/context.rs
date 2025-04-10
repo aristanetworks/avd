@@ -4,7 +4,7 @@
 
 use avdschema::Store;
 
-use crate::feedback::{CoercionNote, Feedback, Issue};
+use crate::feedback::{Feedback, Issue};
 
 #[derive(Debug)]
 pub(crate) struct Context<'a> {
@@ -31,10 +31,10 @@ impl<'a> Context<'a> {
         });
     }
 
-    pub(crate) fn add_coercion(&mut self, coercion: impl Into<CoercionNote>) {
+    pub(crate) fn add_coercion(&mut self, coercion: impl Into<Issue>) {
         self.coercions.push(Feedback {
             path: self.path.clone(),
-            issue: coercion.into().into(),
+            issue: coercion.into(),
         });
     }
 }

@@ -14,6 +14,7 @@ pub struct Feedback {
 pub enum Issue {
     Validation(Violation),
     Coercion(CoercionNote),
+    DefaultValueInserted,
     InternalError { message: String },
 }
 
