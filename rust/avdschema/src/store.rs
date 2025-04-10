@@ -118,28 +118,30 @@ mod tests {
         assert_eq!(result.unwrap(), *store);
     }
 
-    // Tests only used for manual performance testing.
-    // #[test]
-    // fn quick_load_avd_store_json() {
-    //     //Depends on dump to be done before. This is just here to test the speed of loading from the file.
-    //     let file_path = get_tmp_file("test_dump_avd_store_resolved.json");
-    //     let result = Store::from_file(Some(file_path));
-    //     assert!(result.is_ok());
-    // }
+    #[test]
+    #[ignore = "Test only used for manual performance testing"]
+    fn quick_load_avd_store_json() {
+        //Depends on dump to be done before. This is just here to test the speed of loading from the file.
+        let file_path = get_tmp_file("test_dump_avd_store_resolved.json");
+        let result = Store::from_file(Some(file_path));
+        assert!(result.is_ok());
+    }
 
-    // #[test]
-    // fn quick_load_avd_store_gz() {
-    //     //Depends on dump to be done before. This is just here to test the speed of loading from the file.
-    //     let file_path = get_tmp_file("test_dump_avd_store_resolved.gz");
-    //     let result = Store::from_file(Some(file_path));
-    //     assert!(result.is_ok());
-    // }
+    #[test]
+    #[ignore = "Test only used for manual performance testing"]
+    fn quick_load_avd_store_gz() {
+        //Depends on dump to be done before. This is just here to test the speed of loading from the file.
+        let file_path = get_tmp_file("test_dump_avd_store_resolved.gz");
+        let result = Store::from_file(Some(file_path));
+        assert!(result.is_ok());
+    }
 
-    // #[test]
-    // fn quick_load_avd_store_xz2() {
-    //     //Depends on dump to be done before. This is just here to test the speed of loading from the file.
-    //     let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
-    //     let result = Store::from_file(Some(file_path));
-    //     assert!(result.is_ok());
-    // }
+    #[test]
+    #[ignore = "Test only used for manual performance testing"]
+    fn quick_load_avd_store_xz2() {
+        //Depends on dump to be done before. This is just here to test the speed of loading from the file.
+        let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
+        let result = Store::from_file(Some(file_path));
+        assert!(result.is_ok());
+    }
 }

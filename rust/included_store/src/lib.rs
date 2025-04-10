@@ -16,7 +16,6 @@
 ///     STORE.get_or_init(get_included_store)
 /// }
 /// ```
-// Added here to avoid it being deemed unused during testing and linting.
 use log::info;
 
 use avdschema::{Load as _, Store};
