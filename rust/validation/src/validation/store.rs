@@ -23,6 +23,8 @@ pub trait StoreValidate<T> {
         yaml: &str,
         schema_name: T,
     ) -> Result<ValidationResult, StoreValidateError>;
+
+    fn coerce_value(&self, value: &mut Value, schema_name: T) -> ValidationResult;
 }
 
 impl StoreValidate<Schema> for Store {
@@ -55,6 +57,12 @@ impl StoreValidate<Schema> for Store {
         schema.validate_value(&value, &mut ctx);
 
         Ok(ctx.into())
+    }
+    fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
+        let mut ctx = Context::new(self);
+        let schema = self.get(schema_name);
+        schema.coerce(value, &mut ctx);
+        ctx.into()
     }
 }
 
@@ -89,6 +97,17 @@ impl StoreValidate<&str> for Store {
             });
 
             Ok(ctx.into())
+        }
+    }
+    fn coerce_value(&self, value: &mut Value, schema_name: &str) -> ValidationResult {
+        if let Ok(schema_type) = Schema::try_from(schema_name) {
+            self.coerce_value(value, schema_type)
+        } else {
+            let mut ctx = Context::new(self);
+            ctx.add_violation(Violation::InvalidSchema {
+                schema: schema_name.into(),
+            });
+            ctx.into()
         }
     }
 }
