@@ -41,6 +41,14 @@ impl TryFrom<&str> for Schema {
         }
     }
 }
+impl From<Schema> for String {
+    fn from(value: Schema) -> Self {
+        match value {
+            Schema::EosDesigns => "eos_designs".to_string(),
+            Schema::EosCliConfigGen => "eos_cli_config_gen".to_string(),
+        }
+    }
+}
 
 #[derive(Debug, derive_more::Display, derive_more::From)]
 pub enum SchemaStoreError {
