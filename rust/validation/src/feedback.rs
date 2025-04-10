@@ -55,7 +55,7 @@ pub enum Violation {
     /// The value is not matching the allowed pattern.
     NotMatchingPattern { pattern: String, found: String },
     /// The dictionary key is not allowed by the schema.
-    UnexpectedKey { key: String },
+    UnexpectedKey,
     /// The value is above the maximum allowed.
     ValueAboveMaximum { maximum: i64, found: i64 },
     /// The value is below the minimum allowed.

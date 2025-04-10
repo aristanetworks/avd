@@ -57,9 +57,9 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
                 .filter(|key| !key.starts_with('_'))
                 .find(|key| !keys.contains_key(key.as_str()))
             {
-                ctx.add_violation(Violation::UnexpectedKey {
-                    key: key.to_string(),
-                });
+                ctx.path.push(key.to_owned());
+                ctx.add_violation(Violation::UnexpectedKey);
+                ctx.path.pop();
             }
         }
     }
@@ -352,8 +352,8 @@ mod tests {
         assert_eq!(
             ctx.violations,
             vec![Feedback {
-                path: vec![],
-                issue: Violation::UnexpectedKey { key: "foo1".into() }.into()
+                path: vec!["foo1".into()],
+                issue: Violation::UnexpectedKey.into()
             }]
         )
     }
