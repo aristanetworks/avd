@@ -81,27 +81,9 @@
                                 "bool"
                             ]
                         },
-                        "convert_types": {
-                            "type": "array",
-                            "description": "List of types to auto-convert from.\nFor 'bool' auto-conversion is supported from 'int' and 'str'",
-                            "items": {
-                                "type": "string",
-                                "enum": [
-                                    "int",
-                                    "str"
-                                ]
-                            }
-                        },
                         "default": {
                             "description": "Default value",
                             "type": "boolean"
-                        },
-                        "valid_values": {
-                            "type": "array",
-                            "description": "List of valid values",
-                            "items": {
-                                "type": "boolean"
-                            }
                         },
                         "display_name": {
                             "$ref": "#/$defs/display_name"
@@ -111,9 +93,6 @@
                         },
                         "required": {
                             "$ref": "#/$defs/required"
-                        },
-                        "dynamic_valid_values": {
-                            "$ref": "#/$defs/dynamic_valid_values"
                         },
                         "deprecation": {
                             "$ref": "#/$defs/deprecation"

@@ -53,16 +53,6 @@ class AvdFactsProtocol(Protocol):
             return getattr(self, key)
         return default_value
 
-    def render(self) -> dict:
-        """
-        Return a dictionary of all @cached_property values.
-
-        If the value is cached, it will automatically get returned from cache
-        If the value is not cached, it will be resolved by the attribute function first.
-        Empty values are removed from the returned data.
-        """
-        return {key: value for key in self.keys() if (value := getattr(self, key)) is not None}
-
     def clear_cache(self) -> None:
         for key in self.keys() + self.internal_keys():
             self.__dict__.pop(key, None)

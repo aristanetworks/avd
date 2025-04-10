@@ -249,6 +249,11 @@ loopback_interfaces:
   - 192.168.255.255/32
 mac_address_table:
   aging_time: 42
+  notification_host_flap:
+    logging: true
+    detection:
+      window: 10
+      moves: 2
 management_api_http:
   enable_http: false
   enable_https: false
