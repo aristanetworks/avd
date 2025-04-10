@@ -46,6 +46,16 @@ impl Validation<Map<String, Value>> for Dict {
             }
         }
     }
+
+    fn default_value(&self) -> Option<Map<String, Value>> {
+        if let Some(value) = &self.base.default {
+            let value = value.to_owned();
+            let map = Map::from_iter(value);
+            Some(map)
+        } else {
+            None
+        }
+    }
 }
 
 fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
@@ -299,6 +309,95 @@ mod tests {
         let input = serde_json::json!({ "my_dynamic_keys": ["dynkey1", "dynkey2"], "dynkey1": 11, "dynkey2": "wrong" });
         let store = get_test_store();
         let mut ctx = Context::new(&store);
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![
+                Feedback {
+                    path: vec!["dynkey1".into()],
+                    issue: Violation::ValueAboveMaximum {
+                        maximum: 10,
+                        found: 11
+                    }
+                    .into()
+                },
+                Feedback {
+                    path: vec!["dynkey2".into()],
+                    issue: Violation::InvalidType {
+                        expected: Type::Int,
+                        found: Type::Str
+                    }
+                    .into()
+                }
+            ]
+        )
+    }
+
+    #[test]
+    fn validate_dynamic_keys_from_defaults_ok() {
+        let schema = Dict {
+            keys: Some(OrderMap::from_iter([(
+                "my_dynamic_keys".into(),
+                List {
+                    items: Some(Box::new(Str::default().into())),
+                    base: Base {
+                        default: Some(vec!["dynkey1".into(), "dynkey2".into()]),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            dynamic_keys: Some(OrderMap::from_iter([(
+                "my_dynamic_keys".into(),
+                Int {
+                    max: Some(10),
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            allow_other_keys: Some(true),
+            ..Default::default()
+        };
+        let mut input = serde_json::json!({ "dynkey1": 5, "dynkey2": 9 });
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
+        schema.coerce(&mut input, &mut ctx);
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_dynamic_keys_from_defaults_err() {
+        let schema = Dict {
+            keys: Some(OrderMap::from_iter([(
+                "my_dynamic_keys".into(),
+                List {
+                    items: Some(Box::new(Str::default().into())),
+                    base: Base {
+                        default: Some(vec!["dynkey1".into(), "dynkey2".into()]),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            dynamic_keys: Some(OrderMap::from_iter([(
+                "my_dynamic_keys".into(),
+                Int {
+                    max: Some(10),
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            allow_other_keys: Some(true),
+            ..Default::default()
+        };
+        let mut input = serde_json::json!({ "dynkey1": 11, "dynkey2": "wrong" });
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
+        schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(

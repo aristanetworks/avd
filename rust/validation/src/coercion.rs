@@ -5,7 +5,10 @@
 use avdschema::{any::AnySchema, boolean::Bool, dict::Dict, int::Int, list::List, str::Str};
 use serde_json::{Map, Value};
 
-use crate::{context::Context, feedback::CoercionNote, utils::dynamic_keys::get_dynamic_keys};
+use crate::{
+    context::Context, feedback::CoercionNote, utils::dynamic_keys::get_dynamic_keys,
+    validation::Validation,
+};
 
 pub(crate) trait Coercion<T>
 where
@@ -21,10 +24,18 @@ impl Coercion<Map<String, Value>> for Dict {
         if let Value::Object(dict) = input {
             if let Some(keys) = &self.keys {
                 for (key, key_schema) in keys {
-                    if let Some(value) = dict.get_mut(key) {
-                        ctx.path.push(key.to_owned());
-                        key_schema.coerce(value, ctx);
-                        ctx.path.pop();
+                    match dict.get_mut(key) {
+                        Some(value) => {
+                            ctx.path.push(key.to_owned());
+                            key_schema.coerce(value, ctx);
+                            ctx.path.pop();
+                        }
+                        // Insert default value since dynamic keys and dynamic values may rely on these.
+                        None => {
+                            if let Some(default_value) = key_schema.default_value() {
+                                dict.insert(key.to_owned(), default_value);
+                            }
+                        }
                     }
                 }
             }

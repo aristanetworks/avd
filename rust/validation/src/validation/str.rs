@@ -47,6 +47,10 @@ impl Validation<String> for Str {
             }
         }
     }
+
+    fn default_value(&self) -> Option<String> {
+        self.base.default.to_owned()
+    }
 }
 
 fn validate_min_length(schema: &Str, input: &str, ctx: &mut Context) {

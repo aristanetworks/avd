@@ -46,6 +46,10 @@ impl Validation<Vec<Value>> for List {
             }
         }
     }
+
+    fn default_value(&self) -> Option<Vec<Value>> {
+        self.base.default.to_owned()
+    }
 }
 
 fn validate_min_length(schema: &List, input: &[Value], ctx: &mut Context) {

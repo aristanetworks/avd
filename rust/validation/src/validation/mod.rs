@@ -24,6 +24,7 @@ pub(crate) trait Validation<T> {
     /// In practice this is only used for structured_config, where we $ref in the full eos_cli_config_gen schema. All other schemas
     /// will be resolved up-front and stored in the schema store.
     fn validate_ref(&self, value: &T, ctx: &mut Context);
+    fn default_value(&self) -> Option<T>;
 }
 
 #[cfg(test)]

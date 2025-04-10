@@ -43,6 +43,9 @@ impl Validation<bool> for Bool {
             }
         }
     }
+    fn default_value(&self) -> Option<bool> {
+        self.base.default
+    }
 }
 
 #[cfg(test)]

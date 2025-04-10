@@ -46,6 +46,10 @@ impl Validation<i64> for Int {
             }
         }
     }
+
+    fn default_value(&self) -> Option<i64> {
+        self.base.default
+    }
 }
 
 fn validate_min(schema: &Int, input: &i64, ctx: &mut Context) {

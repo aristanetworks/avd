@@ -34,5 +34,17 @@ impl Validation<Value> for AnySchema {
         }
     }
 
+    fn default_value(&self) -> Option<Value> {
+        match self {
+            Self::Bool(schema) => schema.default_value().map(Value::Bool),
+            Self::Int(schema) => schema
+                .default_value()
+                .map(|value| Value::Number(value.into())),
+            Self::Str(schema) => schema.default_value().map(Value::String),
+            Self::List(schema) => schema.default_value().map(Value::Array),
+            Self::Dict(schema) => schema.default_value().map(Value::Object),
+        }
+    }
+
     fn validate_ref(&self, _value: &Value, _ctx: &mut Context) {}
 }
