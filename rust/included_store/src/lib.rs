@@ -3,10 +3,12 @@
 // that can be found in the LICENSE file.
 #![deny(unused_crate_dependencies)]
 
-/// The full AVD schema is pre-compiled into this crate as a bytestream of XZ2 compressed JSON.
+/// The full AVD schema is pre-compiled into this crate as a bytestream of GZ compressed JSON.
 /// Include it from various bindings and cache it with OnceLock like:
 /// ```
+/// use std::sync::OnceLock;
 /// use included_store::get_store as get_included_store;
+/// use avdschema::Store;
 ///
 /// static STORE: OnceLock<Store> = OnceLock::new();
 ///
