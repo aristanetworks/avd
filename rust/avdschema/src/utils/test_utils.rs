@@ -92,7 +92,6 @@ pub(crate) fn get_test_bool_schema() -> AnySchema {
             "display_name": "bool",
             "description": "test_bool_schema",
             "required": true,
-            "valid_values": [false],
             "default": false,
             "deprecation": {
                 "warning": true,

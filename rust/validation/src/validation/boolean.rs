@@ -10,11 +10,10 @@ use crate::{
     feedback::{Type, Violation},
 };
 
-use super::{Validation, valid_values::ValidateValidValues as _};
+use super::Validation;
 
 impl Validation<bool> for Bool {
     fn validate(&self, value: &bool, ctx: &mut Context) {
-        self.valid_values.validate(value, ctx);
         self.validate_ref(value, ctx);
     }
 
@@ -50,8 +49,6 @@ impl Validation<bool> for Bool {
 
 #[cfg(test)]
 mod tests {
-    use avdschema::base::valid_values::ValidValues;
-
     use super::*;
     use crate::{
         feedback::{Feedback, Type, Violation},
@@ -86,49 +83,6 @@ mod tests {
                 }
                 .into(),
             }],
-        );
-    }
-
-    #[test]
-    fn validate_valid_values_ok() {
-        let schema = Bool {
-            valid_values: ValidValues {
-                valid_values: Some(vec![false]),
-                ..Default::default()
-            },
-            ..Default::default()
-        };
-        let input = false.into();
-        let store = get_test_store();
-        let mut ctx = Context::new(&store);
-        schema.validate_value(&input, &mut ctx);
-        assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
-    }
-
-    #[test]
-    fn validate_valid_values_err() {
-        let schema = Bool {
-            valid_values: ValidValues {
-                valid_values: Some(vec![false]),
-                ..Default::default()
-            },
-            ..Default::default()
-        };
-        let input = true.into();
-        let store = get_test_store();
-        let mut ctx = Context::new(&store);
-        schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
-        assert_eq!(
-            ctx.violations,
-            vec![Feedback {
-                path: vec![],
-                issue: Violation::InvalidValue {
-                    expected: vec![false].into(),
-                    found: input
-                }
-                .into()
-            }]
         );
     }
 }

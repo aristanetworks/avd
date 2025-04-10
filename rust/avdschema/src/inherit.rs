@@ -81,8 +81,6 @@ where
 impl Inherit for Bool {
     fn inherit(&mut self, other: &Self) {
         self.base.inherit(&other.base);
-        self.convert_types.inherit(&other.convert_types);
-        self.valid_values.inherit(&other.valid_values);
         self.documentation_options
             .inherit(&other.documentation_options);
     }

@@ -4,10 +4,7 @@
 
 use super::{
     any::AnySchema,
-    base::{
-        Base, convert_types::ConvertTypes, documentation_options::DocumentationOptions,
-        valid_values::ValidValues,
-    },
+    base::{Base, documentation_options::DocumentationOptions},
 };
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
@@ -18,10 +15,6 @@ use serde_with::skip_serializing_none;
 pub struct Bool {
     #[serde(flatten)]
     pub base: Base<bool>,
-    #[serde(flatten)]
-    pub convert_types: ConvertTypes,
-    #[serde(flatten)]
-    pub valid_values: ValidValues<bool>,
     pub documentation_options: Option<DocumentationOptions>,
 }
 
