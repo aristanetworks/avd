@@ -108,6 +108,10 @@ fn validate_dynamic_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
         for (key_path, key_schema) in dynamic_keys {
             let keys = get_dynamic_keys(key_path, input);
             // validate the computed dynamic keys' corresponding values
+            ctx.add_violation(Violation::NotMatchingPattern {
+                pattern: format!("{:?}", keys),
+                found: format!("{:?}", input),
+            });
             for key in keys {
                 if let Some(value) = input.get(&key) {
                     ctx.path.push(key);
