@@ -624,11 +624,13 @@ ip routing vrf RED
 | --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 192.168.17.1 | - | 1 | - | - | - |
 | default | 172.18.0.0/16 | 172.18.10.1 | - | 1 | - | - | - |
+| default | 0.0.0.0/0 | 100.64.10.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
 
 ```eos
 !
+ip route 0.0.0.0/0 100.64.10.1
 ip route 172.18.0.0/16 172.18.10.1
 ip route vrf MGMT 0.0.0.0/0 192.168.17.1
 ```
@@ -919,11 +921,11 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| BLUE | 192.168.255.3:100 | connected |
-| default | 192.168.255.3:1 | - |
-| RED | 192.168.255.3:101 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| BLUE | 192.168.255.3:100 | connected | - |
+| default | 192.168.255.3:1 | - | - |
+| RED | 192.168.255.3:101 | connected | - |
 
 #### Router BGP Device Configuration
 

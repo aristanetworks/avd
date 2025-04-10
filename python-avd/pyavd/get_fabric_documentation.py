@@ -8,11 +8,12 @@ from typing import TYPE_CHECKING
 from pyavd.api.fabric_documentation import FabricDocumentation
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd._eos_designs.fabric_documentation_facts import FabricDocumentationFacts
 
 
 def get_fabric_documentation(
-    avd_facts: dict[str, dict],
+    avd_facts: dict[str, EosDesignsFacts],
     structured_configs: dict[str, dict],
     fabric_name: str,
     fabric_documentation: bool = True,

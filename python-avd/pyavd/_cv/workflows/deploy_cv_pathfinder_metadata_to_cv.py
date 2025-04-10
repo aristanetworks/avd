@@ -180,17 +180,25 @@ def upsert_pathfinder(metadata: dict, device: CVDevice, studio_inputs: dict, stu
             warnings.append(warning)
 
     found_index = None
-    for index, router in enumerate(studio_inputs.get("pathfinders", [])):
+    studio_inputs_pathfinders = studio_inputs.setdefault("pathfinders", [])
+    if not isinstance(studio_inputs_pathfinders, list):
+        # Resetting the pathfinders field to a list in case of invalid data.
+        studio_inputs_pathfinders = studio_inputs["pathfinders"] = []
+
+    for index, router in enumerate(studio_inputs_pathfinders):
+        if not isinstance(router, dict):
+            continue
+
         if get(router, "tags.query") == f"device:{device.serial_number}":
             found_index = index
             break
 
     if found_index is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New pathfinder device, adding %s", device.hostname)
-        studio_inputs.setdefault("pathfinders", []).append(pathfinder_metadata)
+        studio_inputs_pathfinders.append(pathfinder_metadata)
     else:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing pathfinder device, updating %s", device.hostname)
-        studio_inputs["pathfinders"][found_index] = pathfinder_metadata
+        studio_inputs_pathfinders[found_index] = pathfinder_metadata
 
     return warnings
 
@@ -237,17 +245,25 @@ def upsert_edge(metadata: dict, device: CVDevice, studio_inputs: dict, studio_sc
         edge_metadata["inputs"]["router"]["services"] = internet_exit_metadata
 
     found_index = None
-    for index, router in enumerate(studio_inputs.get("routers", [])):
+    studio_inputs_routers = studio_inputs.setdefault("routers", [])
+    if not isinstance(studio_inputs_routers, list):
+        # Resetting the routers field to a list in case of invalid data.
+        studio_inputs_routers = studio_inputs["routers"] = []
+
+    for index, router in enumerate(studio_inputs_routers):
+        if not isinstance(router, dict):
+            continue
+
         if get(router, "tags.query") == f"device:{device.serial_number}":
             found_index = index
             break
 
     if found_index is None:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: New edge/transit device, adding %s", device.hostname)
-        studio_inputs.setdefault("routers", []).append(edge_metadata)
+        studio_inputs_routers.append(edge_metadata)
     else:
         LOGGER.info("deploy_cv_pathfinder_metadata_to_cv: Existing edge/transit device, updating %s", device.hostname)
-        studio_inputs["routers"][found_index] = edge_metadata
+        studio_inputs_routers[found_index] = edge_metadata
 
     return warnings
 
@@ -339,6 +355,9 @@ async def deploy_cv_pathfinder_metadata_to_cv(cv_pathfinder_metadata: list[CVPat
         default_value=CV_PATHFINDER_DEFAULT_STUDIO_INPUTS,
     )
     studio_inputs = deepcopy(existing_studio_inputs)
+    if not isinstance(studio_inputs, dict):
+        # Resetting studio inputs to an empty dict in case we received a wrong type (like None)
+        studio_inputs = {}
 
     # Walk through given metadata, skip missing devices or invalid roles.
     # Sort between edges (including transit) and pathfinders

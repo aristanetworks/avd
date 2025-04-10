@@ -14,6 +14,7 @@ l3leaf:
     mlag_peer_l3_ipv4_pool: 10.254.1.96/27
     spanning_tree_priority: 4096
     spanning_tree_mode: mstp
+    spanning_tree_mst_pvst_boundary: true
     ptp:
       enabled: true
       mlag: true
@@ -33,6 +34,7 @@ l3leaf:
             mode: boundary
             mode_one_step: true
             clock_identity: "11:11:11:11:11:11"
+          spanning_tree_mst_pvst_boundary: false
 
         - name: ptp-tests-leaf2
           id: 2

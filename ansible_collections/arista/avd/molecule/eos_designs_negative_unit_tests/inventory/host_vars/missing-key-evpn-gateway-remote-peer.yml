@@ -19,5 +19,4 @@ l3leaf:
             ip_address: 192.168.42.42
 
 expected_error_message: >-
-  The EVPN Gateway remote peer 'not-in-the-inventory' is missing either a `bpg_as`
-  or an `ip_address`.
+  The EVPN Gateway remote peer 'not-in-the-inventory' is missing either `bgp_as` or `ip_address`.

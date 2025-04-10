@@ -1,0 +1,22 @@
+# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipsec_settings:
+    documentation_options:
+      table: wan-settings
+    description: |-
+      Settings applicable to all IPsec connections.
+    type: dict
+    keys:
+      bind_connection_to_interface:
+        type: bool
+        # TODO: 6.0.0 - Consider changing default to true
+        default: false
+        description: |-
+          Allow IPsec connections to be bound to the source interface.
+          Enabling this prevents IPsec connections from using ECMP paths.

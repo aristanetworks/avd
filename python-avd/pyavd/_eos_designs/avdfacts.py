@@ -7,12 +7,14 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Any, Protocol
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 
 class AvdFactsProtocol(Protocol):
-    _hostvars: dict
+    _hostvars: Mapping
     inputs: EosDesigns
     shared_utils: SharedUtilsProtocol
 
@@ -51,23 +53,13 @@ class AvdFactsProtocol(Protocol):
             return getattr(self, key)
         return default_value
 
-    def render(self) -> dict:
-        """
-        Return a dictionary of all @cached_property values.
-
-        If the value is cached, it will automatically get returned from cache
-        If the value is not cached, it will be resolved by the attribute function first.
-        Empty values are removed from the returned data.
-        """
-        return {key: value for key in self.keys() if (value := getattr(self, key)) is not None}
-
     def clear_cache(self) -> None:
         for key in self.keys() + self.internal_keys():
             self.__dict__.pop(key, None)
 
 
 class AvdFacts(AvdFactsProtocol):
-    def __init__(self, hostvars: dict, inputs: EosDesigns, shared_utils: SharedUtilsProtocol) -> None:
+    def __init__(self, hostvars: Mapping, inputs: EosDesigns, shared_utils: SharedUtilsProtocol) -> None:
         self._hostvars = hostvars
         self.inputs = inputs
         self.shared_utils = shared_utils

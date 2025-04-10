@@ -1,0 +1,141 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  ipv6_router_ospf:
+    type: dict
+    display_name: IPv6 router OSPF Configuration
+    keys:
+      process_ids:
+        type: list
+        primary_key: id
+        unique_keys:
+          - vrf
+        items:
+          type: dict
+          keys:
+            id:
+              type: int
+              convert_types:
+                - str
+              description: OSPF process ID.
+            vrf:
+              type: str
+              description: VRF name for OSPF process. Must be unique across all OSPFv3 instances.
+              convert_types:
+                - int
+            router_id:
+              type: str
+              description: IPv4 Address.
+            redistribute:
+              type: dict
+              description: Redistribute routes with OSPFv3.
+              keys:
+                bgp:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include leaked routes while redistributing.
+                      type: bool
+                connected:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include leaked routes while redistributing.
+                      type: bool
+                isis:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    isis_level:
+                      type: str
+                      description: Redistribute IS-IS route level.
+                      valid_values:
+                        - level-1
+                        - level-2
+                        - level-1-2
+                    route_map:
+                      type: str
+                    include_leaked:
+                      description: Include leaked routes while redistributing.
+                      type: bool
+                ospfv3:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      description: Redistribute OSPFv3 routes.
+                    match_external:
+                      description: Redistribute OSPFv3 routes learned from external sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                        include_leaked:
+                          description: Include leaked routes while redistributing.
+                          type: bool
+                    match_internal:
+                      description: Redistribute OSPFv3 routes learned from internal sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                    match_nssa_external:
+                      description: Redistribute OSPFv3 routes learned from external NSSA sources.
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                        route_map:
+                          type: str
+                    route_map:
+                      type: str
+                static:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+                    include_leaked:
+                      type: bool
+                      description: Include leaked routes while redistributing.
+                dhcp:
+                  type: dict
+                  keys:
+                    enabled:
+                      type: bool
+                      required: true
+                    route_map:
+                      type: str
+            auto_cost_reference_bandwidth:
+              type: int
+              convert_types:
+                - str
+              description: Bandwidth in mbps.
+              min: 1
+              max: 4294967

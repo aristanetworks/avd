@@ -9,7 +9,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   flow_tracker:
-    hardware: FLOW-TRACKER-2
+    hardware: FLOW-TRACKER
   ip_address: 10.254.2.2/31
   peer: flow-tracking-tests-leaf1
   peer_interface: Ethernet2
@@ -21,7 +21,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   flow_tracker:
-    hardware: FLOW-TRACKER-2
+    hardware: FLOW-TRACKER
   ip_address: 10.254.2.6/31
   peer: flow-tracking-tests-leaf2
   peer_interface: Ethernet2
@@ -33,7 +33,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   flow_tracker:
-    hardware: FLOW-TRACKER-2
+    hardware: FLOW-TRACKER
   ip_address: 10.254.2.18/31
   peer: flow-tracking-tests-leaf3
   peer_interface: Ethernet2
@@ -45,7 +45,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   flow_tracker:
-    hardware: FLOW-TRACKER-2
+    hardware: FLOW-TRACKER
   ip_address: 10.254.2.22/31
   peer: flow-tracking-tests-leaf4
   peer_interface: Ethernet2
@@ -137,6 +137,16 @@ flow_tracking:
     record:
       format_ipfix_standard_timestamps_counters: true
     trackers:
+    - name: FLOW-TRACKER
+      record_export:
+        on_inactive_timeout: 70000
+        on_interval: 300000
+      exporters:
+      - name: CV-TELEMETRY
+        collector:
+          host: 127.0.0.1
+        local_interface: Loopback0
+        template_interval: 3600000
     - name: FLOW-TRACKER-1
       record_export:
         on_inactive_timeout: 50000

@@ -1351,17 +1351,17 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_APP_Zone | 192.168.255.13:12 | connected |
-| Tenant_A_DB_Zone | 192.168.255.13:13 | connected |
-| Tenant_A_OP_Zone | 192.168.255.13:10 | connected |
-| Tenant_A_WAN_Zone | 192.168.255.13:14 | connected<br>static |
-| Tenant_A_WEB_Zone | 192.168.255.13:11 | connected |
-| Tenant_B_OP_Zone | 192.168.255.13:20 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.13:21 | connected |
-| Tenant_C_OP_Zone | 192.168.255.13:30 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.13:31 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_A_APP_Zone | 192.168.255.13:12 | connected | - |
+| Tenant_A_DB_Zone | 192.168.255.13:13 | connected | - |
+| Tenant_A_OP_Zone | 192.168.255.13:10 | connected | - |
+| Tenant_A_WAN_Zone | 192.168.255.13:14 | connected<br>static | - |
+| Tenant_A_WEB_Zone | 192.168.255.13:11 | connected | - |
+| Tenant_B_OP_Zone | 192.168.255.13:20 | connected | - |
+| Tenant_B_WAN_Zone | 192.168.255.13:21 | connected | - |
+| Tenant_C_OP_Zone | 192.168.255.13:30 | connected | - |
+| Tenant_C_WAN_Zone | 192.168.255.13:31 | connected | - |
 
 #### Router BGP Device Configuration
 

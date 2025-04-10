@@ -3,6 +3,7 @@
 aaa_authentication:
   login:
     default: group TACACS local
+    command_api: local
     console: local
   enable:
     default: group TACACS local

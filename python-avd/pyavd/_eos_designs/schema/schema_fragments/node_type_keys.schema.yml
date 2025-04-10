@@ -141,7 +141,7 @@ keys:
             l1:
               type: bool
               default: false
-              description: "??"
+              description: "Point-to-point services"
             l2:
               type: bool
               default: false

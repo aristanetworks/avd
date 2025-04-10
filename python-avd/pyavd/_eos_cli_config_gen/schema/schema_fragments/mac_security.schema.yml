@@ -104,3 +104,16 @@ keys:
                 allow_active_sak:
                   type: bool
                   description: Allow transmit/receive of encrypted traffic using operational SAK and block otherwise.
+            replay_protection:
+              type: dict
+              keys:
+                disabled:
+                  type: bool
+                  description: Disable replay protection.
+                window:
+                  type: int
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 4294967295
+                  description: Set replay protection window size.

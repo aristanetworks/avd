@@ -8,10 +8,9 @@
 
 ### Agents
 {%     for agent in agents | arista.avd.natural_sort('name') %}
-{# For now only environment_variables supported so if not present do not show the agent at all as no config would be rendered #}
-{%         if agent.environment_variables is arista.avd.defined %}
 
 #### Agent {{ agent.name }}
+{%         if agent.environment_variables is arista.avd.defined %}
 
 ##### Environment Variables
 
@@ -20,6 +19,22 @@
 {%             for envvar in agent.environment_variables %}
 | {{ envvar.name }} | {{ envvar.value }} |
 {%             endfor %}
+{%         endif %}
+{%         if agent.shutdown is arista.avd.defined or agent.shutdown_supervisor_active is arista.avd.defined or agent.shutdown_supervisor_standby is arista.avd.defined %}
+
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+{%             if agent.shutdown is arista.avd.defined %}
+| Shutdown | {{ agent.shutdown }} |
+{%             endif %}
+{%             if agent.shutdown_supervisor_active is arista.avd.defined %}
+| Shutdown on Active Supervisor | {{ agent.shutdown_supervisor_active }} |
+{%             endif %}
+{%             if agent.shutdown_supervisor_standby is arista.avd.defined %}
+| Shutdown on Standby Supervisor | {{ agent.shutdown_supervisor_standby }} |
+{%             endif %}
 {%         endif %}
 {%     endfor %}
 

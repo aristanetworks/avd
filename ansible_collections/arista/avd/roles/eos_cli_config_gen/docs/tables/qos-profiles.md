@@ -29,7 +29,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn") | Dictionary |  |  |  | Explicit Congestion Notification. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;count</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.count") | Boolean |  |  |  | Enable counter for random-detect ECNs. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>milliseconds</code> | Units to be used for the threshold values.<br>This should be one of segments, byte, kbytes, mbytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;units</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.units") | String | Required |  | Valid Values:<br>- <code>segments</code><br>- <code>bytes</code><br>- <code>kbytes</code><br>- <code>mbytes</code><br>- <code>milliseconds</code><br>- <code>microseconds</code> | Units to be used for the threshold values. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.min") | Integer | Required |  | Min: 1 | Random-detect ECN minimum-threshold. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.max") | Integer | Required |  | Min: 1 | Random-detect ECN maximum-threshold. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_probability</samp>](## "qos_profiles.[].tx_queues.[].random_detect.ecn.threshold.max_probability") | Integer |  |  | Min: 1<br>Max: 100 | Random-detect ECN maximum mark probability. |
@@ -134,8 +134,7 @@
                 threshold:
 
                   # Units to be used for the threshold values.
-                  # This should be one of segments, byte, kbytes, mbytes.
-                  units: <str; "segments" | "bytes" | "kbytes" | "mbytes" | "milliseconds"; required>
+                  units: <str; "segments" | "bytes" | "kbytes" | "mbytes" | "milliseconds" | "microseconds"; required>
 
                   # Random-detect ECN minimum-threshold.
                   min: <int; >=1; required>

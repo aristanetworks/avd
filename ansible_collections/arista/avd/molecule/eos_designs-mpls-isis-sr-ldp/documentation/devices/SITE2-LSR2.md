@@ -139,10 +139,10 @@ vlan internal order ascending range 1006 1199
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_SITE1-LSR2_Ethernet3 | - | 100.64.48.11/31 | default | 9178 | False | - | - |
-| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
-| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *100.64.49.1/30 | **default | *9178 | *False | **- | **- |
-| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
-| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | 110 | *100.64.49.5/30 | **default | *9178 | *False | **- | **- |
+| Ethernet12 | P2P_SITE2-LER1_Ethernet11 | 12 | *100.64.49.1/30 | *default | *9178 | *False | *- | *- |
+| Ethernet13 | P2P_SITE2-LER1_Ethernet12 | 12 | *100.64.49.1/30 | *default | *9178 | *False | *- | *- |
+| Ethernet14 | P2P_SITE2-LER1_Ethernet13 | 110 | *100.64.49.5/30 | *default | *9178 | *False | *- | *- |
+| Ethernet15 | P2P_SITE2-LER1_Ethernet14 | 110 | *100.64.49.5/30 | *default | *9178 | *False | *- | *- |
 
 *Inherited from Port-Channel Interface
 

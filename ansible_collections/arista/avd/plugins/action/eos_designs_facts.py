@@ -1,12 +1,13 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-
+from __future__ import annotations
 
 import cProfile
 import pstats
+from collections import ChainMap
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
@@ -18,14 +19,17 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templa
 
 PLUGIN_NAME = "arista.avd.eos_designs_facts"
 
+if TYPE_CHECKING:
+    from ansible.template import Templar
+    from ansible.vars.hostvars import HostVars
+
 try:
-    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts.get_facts import get_facts
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._eos_designs.shared_utils import SharedUtils
     from pyavd._errors import AristaAvdError
     from pyavd.api.pool_manager import PoolManager
 except ImportError as e:
-    EosDesignsFacts = EosDesigns = SharedUtils = PoolManager = RaiseOnUse(
+    get_facts = EosDesigns = SharedUtils = PoolManager = RaiseOnUse(
         AnsibleActionFail(
             f"The '{PLUGIN_NAME}' plugin requires the 'pyavd' Python library. Got import error",
             orig_exc=e,
@@ -66,44 +70,24 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(msg)
 
         # This is not all the hostvars, but just the Ansible Hostvars Manager object where we can retrieve hostvars for each host on-demand.
-        hostvars = task_vars["hostvars"]
+        hostvars: HostVars = task_vars["hostvars"]
 
         # Get updated templar instance to be passed along to our simplified "templater"
-        self.templar = get_templar(self, task_vars)
+        templar = get_templar(self, task_vars)
 
         pool_manager = PoolManager(Path(output_dir))
 
-        avd_switch_facts_instances = self.create_avd_switch_facts_instances(fabric_hosts, hostvars, result, pool_manager)
+        all_inputs, all_hostvars = self.parse_inputs(fabric_hosts, hostvars, result)
         if result.get("failed"):
             # Stop here if any of the devices failed input data validation
             return result
 
-        avd_switch_facts = self.render_avd_switch_facts(avd_switch_facts_instances)
-
-        avd_overlay_peers = {}
-        avd_topology_peers = {}
-        for host in fabric_hosts:
-            host_evpn_route_servers = avd_switch_facts[host]["switch"].get("evpn_route_servers", [])
-            for peer in host_evpn_route_servers:
-                avd_overlay_peers.setdefault(peer, []).append(host)
-
-            host_mpls_route_reflectors = avd_switch_facts[host]["switch"].get("mpls_route_reflectors", [])
-            for peer in host_mpls_route_reflectors:
-                avd_overlay_peers.setdefault(peer, []).append(host)
-
-            host_topology_peers = avd_switch_facts[host]["switch"].get("uplink_peers", [])
-
-            for peer in host_topology_peers:
-                avd_topology_peers.setdefault(peer, []).append(host)
+        avd_switch_facts = self.render_facts(all_inputs=all_inputs, all_hostvars=all_hostvars, pool_manager=pool_manager, templar=templar)
 
         # Save any updated pools.
         result["changed"] = pool_manager.save_updated_pools(dumper_cls=AnsibleDumper)
 
-        result["ansible_facts"] = {
-            "avd_switch_facts": avd_switch_facts,
-            "avd_overlay_peers": avd_overlay_peers,
-            "avd_topology_peers": avd_topology_peers,
-        }
+        result["ansible_facts"] = {"avd_switch_facts": avd_switch_facts}
 
         if cprofile_file:
             profiler.disable()
@@ -112,32 +96,22 @@ class ActionModule(ActionBase):
 
         return result
 
-    def create_avd_switch_facts_instances(self, fabric_hosts: list, hostvars: object, result: dict, pool_manager: PoolManager) -> dict:
+    def parse_inputs(self, fabric_hosts: list, hostvars: HostVars, result: dict) -> tuple[dict[str, EosDesigns], dict[str, dict]]:
         """
         Fetch hostvars for all hosts and perform data conversion & validation.
 
-        Initialize all instances of EosDesignsFacts and insert various references into the variable space.
-        Returns dict with avd_switch_facts_instances.
+        Load data into EosDesigns class
+        Returns
 
-        Parameters
-        ----------
-        fabric_hosts : list
-            List of hostnames
-        hostvars : object
-            Ansible "hostvars" object
-        result : dict
-            Ansible Action result dict which is inplace updated.
-            failure : bool
-            msg : str
+        Args:
+            fabric_hosts: List of hostnames
+            hostvars: Ansible "hostvars" object
+            result: Ansible Action result dict which is inplace updated.
 
         Returns:
-        -------
-        dict
-            hostname1 : dict
-                switch : <EosDesignsFacts object>,
-            hostname2 : dict
-                switch : <EosDesignsFacts object>,
-            ...
+            Tuple of
+                Dict with the loaded data keyed by hostnames.
+                Dict of the raw hostvars keyed by hostnames.
         """
         # Load schema tools once with empty host.
         avdschematools = AvdSchemaTools(
@@ -148,7 +122,8 @@ class ActionModule(ActionBase):
             plugin_name="arista.avd.eos_designs",
         )
 
-        avd_switch_facts = {}
+        all_inputs: dict[str, EosDesigns] = {}
+        all_hostvars: dict[str, dict] = {}
         data_validation_errors = 0
         for host in fabric_hosts:
             # Fetch all templated Ansible vars for this host
@@ -165,56 +140,50 @@ class ActionModule(ActionBase):
                 result["failed"] = True
                 continue
 
-            # Add reference to dict "avd_switch_facts".
-            # This is used to access EosDesignsFacts objects of other switches during rendering of one switch.
-            host_hostvars["avd_switch_facts"] = avd_switch_facts
-
             # Load input vars into the EosDesigns data class.
-            inputs = EosDesigns._from_dict(host_hostvars, load_custom_structured_config=False)
+            host_inputs = EosDesigns._from_dict(host_hostvars)
 
-            # Initialize SharedUtils class to be passed to EosDesignsFacts below.
-            shared_utils = SharedUtils(hostvars=host_hostvars, inputs=inputs, templar=self.templar, schema=avdschematools.avdschema, pool_manager=pool_manager)
-
-            # Create an instance of EosDesignsFacts and insert into common avd_switch_facts dict
-            avd_switch_facts[host] = {"switch": EosDesignsFacts(hostvars=host_hostvars, inputs=inputs, shared_utils=shared_utils)}
-
-            # Add "switch" as a reference to the newly created EosDesignsFacts instance directly in the hostvars
-            # to allow `shared_utils` to work the same when they are called from `EosDesignsFacts` or from `AvdStructuredConfig`.
-            host_hostvars["switch"] = avd_switch_facts[host]["switch"]
+            all_inputs[host] = host_inputs
+            all_hostvars[host] = host_hostvars
 
         # Build result message
         result["msg"] = avdschematools.build_result_message(validation_errors=data_validation_errors)
 
-        return avd_switch_facts
+        return all_inputs, all_hostvars
 
-    def render_avd_switch_facts(self, avd_switch_facts_instances: dict) -> dict:
+    def render_facts(self, all_inputs: dict[str, EosDesigns], pool_manager: PoolManager, all_hostvars: dict[str, dict], templar: Templar) -> dict[str, dict]:
         """
-        Run the render method on each EosDesignsFacts object.
+        Render facts, reraising errors as AnsibleActionFail.
 
-        Parameters
-        ----------
-        avd_switch_facts_instances : dict of EosDesignsFacts
+        Args:
+            all_inputs: EosDesigns instances for each device.
+            pool_manager: Instance of pool_manager to assign from.
+            all_hostvars: Validated hostvars for each device.
+            templar: Ansible templar to render custom jinja templates.
 
         Returns:
-        -------
-        dict
-            hostname1 : dict
-                switch : < switch.* facts >
-            hostname2 : dict
-                switch : < switch.* facts >
+            Facts as dict for each device.
+
+        Raises:
+            AnsibleActionFail for every AristaAvdError raised by pyavd.
         """
-        rendered_facts = {}
-        for host in avd_switch_facts_instances:
-            try:
-                rendered_facts[host] = {"switch": avd_switch_facts_instances[host]["switch"].render()}
-            except AristaAvdError as e:
-                message = f"{str(e).removesuffix('.')} for host '{host}'."
-                raise AnsibleActionFail(message=message) from e
+        try:
+            all_facts = get_facts(all_inputs=all_inputs, pool_manager=pool_manager, all_hostvars=all_hostvars, templar=templar)
+        except AristaAvdError as e:
+            raise AnsibleActionFail(message=str(e)) from e
+
+        all_facts_as_dicts: dict[str, dict] = {}
+        for host, facts in all_facts.items():
+            facts._strip_empties()
+            facts_dict = facts._as_dict()
 
             # If the argument 'template_output' is set, run the output data through jinja2 rendering.
             # This is to resolve any input values with inline jinja using variables/facts set by eos_designs_facts.
             if self.template_output:
-                with self._templar.set_temporary_context(available_variables=avd_switch_facts_instances[host]["switch"]._hostvars):
-                    rendered_facts[host]["switch"] = self._templar.template(rendered_facts[host]["switch"], fail_on_undefined=False)
+                available_variables = ChainMap({"switch": facts_dict}, all_hostvars[host])
+                with self._templar.set_temporary_context(available_variables=available_variables):
+                    facts_dict = self._templar.template(facts_dict, fail_on_undefined=False)
 
-        return rendered_facts
+            all_facts_as_dicts[host] = facts_dict
+
+        return all_facts_as_dicts

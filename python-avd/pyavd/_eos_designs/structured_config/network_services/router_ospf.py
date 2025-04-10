@@ -48,6 +48,11 @@ class RouterOspfMixin(Protocol):
                 )
                 self._update_ospf_interface(process, vrf)
 
+                if vrf.ospf.structured_config:
+                    self.custom_structured_configs.nested.router_ospf.process_ids.obtain(process_id)._deepmerge(
+                        vrf.ospf.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                    )
+
                 if vrf.name != "default":
                     process.vrf = vrf.name
                 if vrf.ospf.bfd:
@@ -93,7 +98,7 @@ class RouterOspfMixin(Protocol):
         """
         Populates the list of OSPF-enabled interfaces for the given VRF.
 
-        This method iterates through L3 interfaces and SVIs, adding those that have OSPF enabled.
+        This method iterates through L3 interfaces, L3 Port-Channels and SVIs, adding those that have OSPF enabled.
 
         Args:
             process: The OSPF process configuration object.
@@ -105,6 +110,10 @@ class RouterOspfMixin(Protocol):
                     if node != self.shared_utils.hostname:
                         continue
                     process.no_passive_interfaces.append(l3_interface.interfaces[node_index])
+
+        for l3_port_channel in vrf.l3_port_channels:
+            if l3_port_channel.ospf.enabled:
+                process.no_passive_interfaces.append(l3_port_channel.name)
 
         for svi in vrf.svis:
             if svi.ospf.enabled:

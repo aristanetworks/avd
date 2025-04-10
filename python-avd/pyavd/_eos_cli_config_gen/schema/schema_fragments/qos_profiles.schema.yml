@@ -92,10 +92,8 @@ keys:
                           units:
                             required: true
                             type: str
-                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds"]
-                            description: |-
-                              Units to be used for the threshold values.
-                              This should be one of segments, byte, kbytes, mbytes.
+                            valid_values: ["segments", "bytes", "kbytes", "mbytes", "milliseconds", "microseconds"]
+                            description: Units to be used for the threshold values.
                           min:
                             type: int
                             required: true

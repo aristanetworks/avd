@@ -25,6 +25,7 @@ SCOPES = [
     "eos_designs",
     "eos_snapshot",
     "eos_validate_state",
+    "anta_runner",
     "plugins",
     "requirements",
     "containers",
@@ -73,6 +74,7 @@ if __name__ == "__main__":
             "eos_designs",
             "eos_cli_config_gen|eos_designs",
             "eos_designs|eos_cli_config_gen",
+            "anta_runner",
             "pyavd",
         ]
     ]
@@ -167,6 +169,14 @@ if __name__ == "__main__":
                 "rn: Feat(eos_cli_config_gen|eos_designs)",
                 "rn: Feat(eos_designs|eos_cli_config_gen)",
             ],
+        },
+    )
+
+    # Add new features in anta_runner
+    categories_list.append(
+        {
+            "title": "New features and enhancements in anta_runner",
+            "labels": ["rn: Feat(anta_runner)"],
         },
     )
 
