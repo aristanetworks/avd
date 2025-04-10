@@ -6,7 +6,10 @@
 
 # Arista AVD A-Care TAC Support Overview
 
-Arista AVD is a multi-domain network automation framework consumable as code, providing a continuous design framework. The AVD project is offered as an open-source project and backed by the world-class Arista Technical Support team through A-Care Service. TAC support for AVD must be purchased separately; see the ordering information below.
+Arista AVD is a network automation framework covering multiple network design domains. AVD is an open-source project maintained by a dedicated Arista engineering team. Customers can purchase TAC support for AVD through the A-Care Service contract. TAC support for AVD must be purchased separately; see the ordering information below.
+
+!!! note
+    Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via GitHub issues.
 
 ## Support Offering
 
@@ -45,7 +48,7 @@ Arista AVD Software Release Policy and Life Cycle defines the various phases of 
 
 **Support Only Phase:**
 
-- Ongoing TAC support.
+- TAC support available.
 - Software upgrade required for bug fixes.
 
 ### Example Release Timeline
