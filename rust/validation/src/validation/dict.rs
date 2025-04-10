@@ -75,7 +75,7 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                     #[cfg(feature = "relaxed_validation_on_root_dicts")]
                     // Don't validate required keys if we are at the rool level.
                     if ctx.path.is_empty() {
-                        break;
+                        continue;
                     }
                     if key_schema.is_required() {
                         ctx.add_violation(Violation::MissingRequiredKey {
