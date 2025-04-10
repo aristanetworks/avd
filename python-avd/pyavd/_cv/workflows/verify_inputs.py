@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import defaultdict
+from itertools import chain
 from logging import getLogger
 from typing import TYPE_CHECKING
 
@@ -74,6 +76,78 @@ def identify_duplicated_devices(devices: list[CVDevice]) -> DuplicatedDevices:
         # Unsafe case where at least one device among those with the same duplicated current_system_mac_address does not have a serial_number set
         else:
             duplicated_devices.system_mac_address.unset_or_mixed_serial_number[current_system_mac_address] = devices_with_current_system_mac_address
+
+    return duplicated_devices
+
+
+def identify_duplicated_devices_candidate_a(devices: list[CVDevice]) -> DuplicatedDevices:
+    """
+    Process list of CVDevice instances to identify those with overlapping serial_number or system_mac_address.
+
+    Return DuplicatedDevices object containing:
+      - Information about CVDevices with overlapping serial_number.
+      - Information about CVDevices with overlapping system_mac_address where at least one of these devices has an unset `serial_number` value.
+      - Information about CVDevices with overlapping system_mac_address and set serial_number.
+    """
+    duplicated_devices = DuplicatedDevices()
+
+    devices_grouped_by_serial_number = defaultdict(lambda: defaultdict(list))
+    devices_grouped_by_system_mac_address = defaultdict(lambda: defaultdict(list))
+    for device in devices:
+        devices_grouped_by_serial_number[device.serial_number][device.system_mac_address].append(device)
+        devices_grouped_by_system_mac_address[device.system_mac_address][device.serial_number].append(device)
+
+    for current_serial_number, data in devices_grouped_by_serial_number.items():
+        # Duplicate serial_number
+        current_duplicated_devices = list(chain.from_iterable(data.values()))
+        if len(current_duplicated_devices) > 1 and current_serial_number:
+            duplicated_devices.serial_number[current_serial_number] = current_duplicated_devices
+
+    for system_mac, data in devices_grouped_by_system_mac_address.items():
+        if system_mac:
+            current_duplicated_devices = list(chain.from_iterable(data.values()))
+            if len(current_duplicated_devices) > 1:
+                if all(device.serial_number for device in current_duplicated_devices):
+                    duplicated_devices.system_mac_address.set_serial_number[system_mac] = current_duplicated_devices
+                else:
+                    duplicated_devices.system_mac_address.unset_or_mixed_serial_number[system_mac] = current_duplicated_devices
+
+    return duplicated_devices
+
+
+def identify_duplicated_devices_candidate_b(devices: list[CVDevice]) -> DuplicatedDevices:
+    """
+    Process list of CVDevice instances to identify those with overlapping serial_number or system_mac_address.
+
+    Return DuplicatedDevices object containing:
+      - Information about CVDevices with overlapping serial_number.
+      - Information about CVDevices with overlapping system_mac_address where at least one of these devices has an unset `serial_number` value.
+      - Information about CVDevices with overlapping system_mac_address and set serial_number.
+    """
+    duplicated_devices = DuplicatedDevices()
+
+    devices_by_serial = defaultdict(list)
+    devices_by_mac = defaultdict(list)
+
+    # filling up the default dicts
+    for device in devices:
+        if device.serial_number is not None:
+            devices_by_serial[device.serial_number].append(device)
+        if device.system_mac_address is not None:
+            devices_by_mac[device.system_mac_address].append(device)
+
+    for serial, device_list in devices_by_serial.items():
+        if len(device_list) > 1:
+            duplicated_devices.serial_number[serial] = device_list
+
+    for mac, device_list in devices_by_mac.items():
+        if len(device_list) > 1:
+            # Check if *all* devices found for this MAC address have a serial number set.
+            if all(d.serial_number is not None for d in device_list):
+                duplicated_devices.system_mac_address.set_serial_number[mac] = device_list
+            else:
+                # If at least one device lacks a serial number, categorize it differently.
+                duplicated_devices.system_mac_address.unset_or_mixed_serial_number[mac] = device_list
 
     return duplicated_devices
 
