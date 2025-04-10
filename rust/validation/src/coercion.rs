@@ -173,3 +173,51 @@ impl Coercion<Value> for AnySchema {
         }
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use serde_json::json;
+
+    use avdschema::base::Base;
+    use avdschema::list::List;
+    use avdschema::str::Str;
+    use ordermap::OrderMap;
+
+    use super::*;
+
+    use crate::context::Context;
+    use crate::feedback::Feedback;
+    use crate::validation::test_utils::get_test_store;
+
+    #[test]
+    fn validate_insertion_of_default_value() {
+        let schema = Dict {
+            keys: Some(OrderMap::from_iter([(
+                "my_dynamic_keys".into(),
+                List {
+                    items: Some(Box::new(Str::default().into())),
+                    base: Base {
+                        default: Some(vec!["dynkey1".into(), "dynkey2".into()]),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            ..Default::default()
+        };
+        let mut input = json!({});
+        let store = get_test_store();
+        let mut ctx = Context::new(&store);
+        schema.coerce(&mut input, &mut ctx);
+        assert!(ctx.violations.is_empty());
+        assert_eq!(
+            ctx.coercions,
+            vec![Feedback {
+                path: vec!["my_dynamic_keys".into()],
+                issue: Issue::DefaultValueInserted
+            }]
+        );
+        assert_eq!(input, json!({"my_dynamic_keys": ["dynkey1", "dynkey2"]}));
+    }
+}
