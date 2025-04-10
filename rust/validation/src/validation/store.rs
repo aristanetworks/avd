@@ -20,7 +20,7 @@ pub trait StoreValidate<T> {
 
     fn validate_yaml(
         &self,
-        json: &str,
+        yaml: &str,
         schema_name: T,
     ) -> Result<ValidationResult, StoreValidateError>;
 }
@@ -42,12 +42,12 @@ impl StoreValidate<Schema> for Store {
     }
     fn validate_yaml(
         &self,
-        json: &str,
+        yaml: &str,
         schema_type: Schema,
     ) -> Result<ValidationResult, StoreValidateError> {
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
-        let mut value = serde_yaml::from_str::<Value>(json)?;
+        let mut value = serde_yaml::from_str::<Value>(yaml)?;
         let mut ctx = Context::new(self);
 
         let schema = self.get(schema_type);
@@ -77,11 +77,11 @@ impl StoreValidate<&str> for Store {
     }
     fn validate_yaml(
         &self,
-        json: &str,
+        yaml: &str,
         schema_name: &str,
     ) -> Result<ValidationResult, StoreValidateError> {
         if let Ok(schema_type) = Schema::try_from(schema_name) {
-            self.validate_yaml(json, schema_type)
+            self.validate_yaml(yaml, schema_type)
         } else {
             let mut ctx = Context::new(self);
             ctx.add_violation(Violation::InvalidSchema {
@@ -97,4 +97,35 @@ impl StoreValidate<&str> for Store {
 pub enum StoreValidateError {
     JsonError(serde_json::Error),
     YamlError(serde_yaml::Error),
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    use crate::{
+        feedback::{Feedback, Type},
+        validation::test_utils::get_test_store,
+    };
+
+    #[test]
+    fn validate_yaml_err() {
+        let input = "key3:\n  some_key: some_value\n";
+        let store = get_test_store();
+        let result = store.validate_yaml(input, "eos_designs");
+        assert!(result.is_ok());
+        let validation_result = result.unwrap();
+        assert!(validation_result.coercions.is_empty());
+        assert_eq!(
+            validation_result.violations,
+            vec![Feedback {
+                path: vec!["key3".into()],
+                issue: Violation::InvalidType {
+                    expected: Type::Str,
+                    found: Type::Dict
+                }
+                .into()
+            },]
+        )
+    }
 }
