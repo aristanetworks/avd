@@ -1461,6 +1461,19 @@ $defs:
               table: node-type-common-configuration
             description: Name of the campus access pod.
             type: str
+          cv_tags_topology_type:
+            documentation_options:
+              table: node-type-common-configuration
+            description: |-
+              PREVIEW: This key is currently not supported
+              Type that CloudVision should use when generating the Topology.
+            type: str
+            valid_values:
+              - "leaf"
+              - "spine"
+              - "core"
+              - "edge"
+              - "member-leaf"
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

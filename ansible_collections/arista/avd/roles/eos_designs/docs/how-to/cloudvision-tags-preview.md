@@ -50,7 +50,7 @@ generate_cv_tags:
 ### CloudVision Topology Tags for Campus deployments
 
 `arista.avd.eos_designs` can generate CloudVision Tags that assist CloudVision with rendering the Campus Topologies.
-This specific usecase is required to support Hybrid workflow of managing Campus fabrics with both AVD and CloudVision Studious where:
+This specific use case is required to support Hybrid workflow of managing Campus fabrics with both AVD and CloudVision Studious where:
 
 - AVD is leveraged to build the fabric, deploy network services and infrastructure-related endpoints (firewalls, routers, access points, etc)
 - Access Interface Configuration Studio (including it's Quick Actions sub-feature) is leveraged for day 2 operations to configure port profiles and ports using CloudVision UI.
@@ -65,11 +65,12 @@ generate_cv_tags:
 
 Once generation of the Campus Topology tags is globally enabled - assign the following variables to all targeted Campus devices:
 
-- `node_type_keys.[].campus` or `campus`
-- `node_type_keys.[].campus_pod` or `campus_pod`
-- `node_type_keys.[].campus_access_pod` if set, else `campus_access_pod` ("Campus Access Pod" should not be assigned to Spines)
+- `campus` or `node_type_keys.[].campus`
+- `campus_pod` or `node_type_keys.[].campus_pod`
+- `campus_access_pod` or `node_type_keys.[].campus_access_pod` ("Campus Access Pod" should not be assigned to Spines)
+- `cv_tags_topology_type` or `node_config.[].cv_tags_topology_type`
 
-![Campus Fabric](../../../../../../../docs/_media/cloudvision_campus_fabric_rererence_desing.png)
+![Campus Fabric](../../../../../../../docs/_media/cloudvision_campus_fabric_reference_desing.png)
 
 Example (only relevant configuration is shown):
 
@@ -99,18 +100,30 @@ l2leaf:
           campus_access_pod: IDF3
     - group: IDF3_3C
       campus_access_pod: IDF3
+      cv_tags_topology_type: "member-leaf"
 ```
+
+Note that for standard Campus `L3LS`, `L2LS` and `L2 Only` designs it is not mandatory to explicitly specify `cv_tags_topology_type` value for Campus `Spine` and Campus `Leaf` devices, as correct Campus-related `cv_tags_topology_type` values will be derived from the default values of the mapped `node_type_key`:
+
+| node_type_key | Default cv_tags_topology_type |
+| ------------- | ------------------------------------------------------------ |
+| spine         | spine                                                        |
+| l3spine       | spine                                                        |
+| leaf          | leaf                                                         |
+| l2leaf        | leaf                                                         |
+| l3leaf        | leaf                                                         |
 
 Providing these input variable will lead to the automatic generation of the following Campus-related CloudVision Tags:
 
-| Campus Tag Name             | Tag type  | Description                                                            | Source of information                                                           |
-| --------------------------- | --------- | ---------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
-| `topology_hint_network_type`| Device    | Identifies associated CloudVision Topology hierarchy type.             | Always set to `campusV2`.                                                       |
-| `topology_hint_type`        | Device    | Identifies role of the device in CloudVision Campus Topology.          | `cv_tags_topology_type` if set, else `node_type_keys.[].cv_tags_topology_type`. |
-| `Campus`                    | Device    | Identifies Campus fabric.                                              | `node_type_keys.[].campus` if set, else `campus`.                               |
-| `Campus-Pod`                | Device    | Identifies Campus pod (spine devices and associated access pods).      | `node_type_keys.[].campus_pod` if set, else `campus_pod`.                       |
-| `Access-Pod`                | Device    | Identifies Campus access pod (Leaf and Member-Leaf devices).           | `node_type_keys.[].campus_access_pod` if set, else `campus_access_pod`.         |
-| `Link-Type`                 | Interface | Identifies system responsible for managing interface and it's purpose. | `ethernet_interfaces.peer_type`.                                                |
+| Campus Tag Name             | Tag type  | Description                                                                          | Source of information                                                                                                                     |
+| --------------------------- | --------- | ------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| `topology_hint_network_type`| Device    | Identifies associated CloudVision Topology hierarchy type.                           | Always set to `campusV2`.                                                                                                                 |
+| `topology_hint_type`        | Device    | Identifies role of the device in CloudVision Campus Topology.                        | `cv_tags_topology_type`, else `node_config.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`, else `Member-Leaf`. |
+| `Role`                      | Device    | Identifies role of the device in CloudVision Campus Topology. Used in CV Dashboards. | `cv_tags_topology_type`, else `node_config.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`, else `Member-Leaf`. |
+| `Campus`                    | Device    | Identifies Campus fabric.                                                            | `campus` , else `node_type_keys.[].campus`.                                                                                               |
+| `Campus-Pod`                | Device    | Identifies Campus pod (spine devices and associated access pods).                    | `campus_pod`, else `node_type_keys.[].campus_pod`.                                                                                        |
+| `Access-Pod`                | Device    | Identifies Campus access pod (Leaf and Member-Leaf devices).                         | `campus_access_pod`, else `node_type_keys.[].campus_access_pod`.                                                                          |
+| `Link-Type`                 | Interface | Identifies system responsible for managing interface and it's purpose.               | `ethernet_interfaces.peer_type`.                                                                                                          |
 
 # CloudVision Custom Tags
 

@@ -8383,7 +8383,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
         """
         PREVIEW: This key is currently not supported
         Type that CloudVision should use when generating the
@@ -8416,7 +8416,7 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 CustomNodeTypeKeysItem.
@@ -8907,7 +8907,7 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
         """
         PREVIEW: This key is currently not supported
         Type that CloudVision should use when generating the
@@ -8940,7 +8940,7 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 NodeTypeKeysItem.
@@ -20247,6 +20247,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -21039,6 +21040,12 @@ class EosDesigns(EosDesignsRootModel):
                     """Name of the campus pod."""
                     campus_access_pod: str | None
                     """Name of the campus access pod."""
+                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Type that CloudVision should use when generating the
+                    Topology.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -21154,6 +21161,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -21712,6 +21720,10 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: Name of the campus.
                                 campus_pod: Name of the campus pod.
                                 campus_access_pod: Name of the campus access pod.
+                                cv_tags_topology_type:
+                                   PREVIEW: This key is currently not supported
+                                   Type that CloudVision should use when generating the
+                                   Topology.
 
                             """
 
@@ -24121,6 +24133,7 @@ class EosDesigns(EosDesignsRootModel):
                             "campus": {"type": str},
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
+                            "cv_tags_topology_type": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -24923,6 +24936,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the campus pod."""
                         campus_access_pod: str | None
                         """Name of the campus access pod."""
+                        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                        """
+                        PREVIEW: This key is currently not supported
+                        Type that CloudVision should use when generating the
+                        Topology.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -25040,6 +25059,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
+                                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -25605,6 +25625,10 @@ class EosDesigns(EosDesignsRootModel):
                                     campus: Name of the campus.
                                     campus_pod: Name of the campus pod.
                                     campus_access_pod: Name of the campus access pod.
+                                    cv_tags_topology_type:
+                                       PREVIEW: This key is currently not supported
+                                       Type that CloudVision should use when generating the
+                                       Topology.
 
                                 """
 
@@ -27939,6 +27963,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     group: str
                     """
@@ -28744,6 +28769,12 @@ class EosDesigns(EosDesignsRootModel):
                     """Name of the campus pod."""
                     campus_access_pod: str | None
                     """Name of the campus access pod."""
+                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Type that CloudVision should use when generating the
+                    Topology.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -28861,6 +28892,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -29428,6 +29460,10 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: Name of the campus.
                                 campus_pod: Name of the campus pod.
                                 campus_access_pod: Name of the campus access pod.
+                                cv_tags_topology_type:
+                                   PREVIEW: This key is currently not supported
+                                   Type that CloudVision should use when generating the
+                                   Topology.
 
                             """
 
@@ -31821,6 +31857,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -32623,6 +32660,12 @@ class EosDesigns(EosDesignsRootModel):
                     """Name of the campus pod."""
                     campus_access_pod: str | None
                     """Name of the campus access pod."""
+                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Type that CloudVision should use when generating the
+                    Topology.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -32740,6 +32783,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -33305,6 +33349,10 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: Name of the campus.
                                 campus_pod: Name of the campus pod.
                                 campus_access_pod: Name of the campus access pod.
+                                cv_tags_topology_type:
+                                   PREVIEW: This key is currently not supported
+                                   Type that CloudVision should use when generating the
+                                   Topology.
 
                             """
 
@@ -41990,6 +42038,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     id: int | None
                     """Unique identifier used for IP addressing and other algorithms."""
@@ -42782,6 +42831,12 @@ class EosDesigns(EosDesignsRootModel):
                     """Name of the campus pod."""
                     campus_access_pod: str | None
                     """Name of the campus access pod."""
+                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Type that CloudVision should use when generating the
+                    Topology.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -42897,6 +42952,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -43455,6 +43511,10 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: Name of the campus.
                                 campus_pod: Name of the campus pod.
                                 campus_access_pod: Name of the campus access pod.
+                                cv_tags_topology_type:
+                                   PREVIEW: This key is currently not supported
+                                   Type that CloudVision should use when generating the
+                                   Topology.
 
                             """
 
@@ -45864,6 +45924,7 @@ class EosDesigns(EosDesignsRootModel):
                             "campus": {"type": str},
                             "campus_pod": {"type": str},
                             "campus_access_pod": {"type": str},
+                            "cv_tags_topology_type": {"type": str},
                         }
                         name: str
                         """The Node Name is used as "hostname"."""
@@ -46666,6 +46727,12 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the campus pod."""
                         campus_access_pod: str | None
                         """Name of the campus access pod."""
+                        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                        """
+                        PREVIEW: This key is currently not supported
+                        Type that CloudVision should use when generating the
+                        Topology.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -46783,6 +46850,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
+                                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -47348,6 +47416,10 @@ class EosDesigns(EosDesignsRootModel):
                                     campus: Name of the campus.
                                     campus_pod: Name of the campus pod.
                                     campus_access_pod: Name of the campus access pod.
+                                    cv_tags_topology_type:
+                                       PREVIEW: This key is currently not supported
+                                       Type that CloudVision should use when generating the
+                                       Topology.
 
                                 """
 
@@ -49682,6 +49754,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     group: str
                     """
@@ -50487,6 +50560,12 @@ class EosDesigns(EosDesignsRootModel):
                     """Name of the campus pod."""
                     campus_access_pod: str | None
                     """Name of the campus access pod."""
+                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Type that CloudVision should use when generating the
+                    Topology.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -50604,6 +50683,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -51171,6 +51251,10 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: Name of the campus.
                                 campus_pod: Name of the campus pod.
                                 campus_access_pod: Name of the campus access pod.
+                                cv_tags_topology_type:
+                                   PREVIEW: This key is currently not supported
+                                   Type that CloudVision should use when generating the
+                                   Topology.
 
                             """
 
@@ -53564,6 +53648,7 @@ class EosDesigns(EosDesignsRootModel):
                         "campus": {"type": str},
                         "campus_pod": {"type": str},
                         "campus_access_pod": {"type": str},
+                        "cv_tags_topology_type": {"type": str},
                     }
                     name: str
                     """The Node Name is used as "hostname"."""
@@ -54366,6 +54451,12 @@ class EosDesigns(EosDesignsRootModel):
                     """Name of the campus pod."""
                     campus_access_pod: str | None
                     """Name of the campus access pod."""
+                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
+                    """
+                    PREVIEW: This key is currently not supported
+                    Type that CloudVision should use when generating the
+                    Topology.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -54483,6 +54574,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -55048,6 +55140,10 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: Name of the campus.
                                 campus_pod: Name of the campus pod.
                                 campus_access_pod: Name of the campus access pod.
+                                cv_tags_topology_type:
+                                   PREVIEW: This key is currently not supported
+                                   Type that CloudVision should use when generating the
+                                   Topology.
 
                             """
 
@@ -55819,7 +55915,7 @@ class EosDesigns(EosDesignsRootModel):
     Make sure to set it in a
     common group_vars file.
     """
-    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
     """
     PREVIEW: This key is currently not supported
     Device type that CloudVision should use when generating
@@ -57390,7 +57486,7 @@ class EosDesigns(EosDesignsRootModel):
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
             cv_server: str | None | UndefinedType = Undefined,
-            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
             cvp_ingestauth_key: str | None | UndefinedType = Undefined,

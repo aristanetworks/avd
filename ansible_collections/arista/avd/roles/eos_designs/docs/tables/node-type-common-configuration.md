@@ -28,6 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.defaults.campus") | String |  |  |  | Name of the campus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.defaults.campus_pod") | String |  |  |  | Name of the campus pod. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.defaults.campus_access_pod") | String |  |  |  | Name of the campus access pod. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.defaults.cv_tags_topology_type") | String |  |  | Valid Values:<br>- <code>leaf</code><br>- <code>spine</code><br>- <code>core</code><br>- <code>edge</code><br>- <code>member-leaf</code> | PREVIEW: This key is currently not supported<br>Type that CloudVision should use when generating the Topology. |
     | [<samp>&nbsp;&nbsp;node_groups</samp>](## "<node_type_keys.key>.node_groups") | List, items: Dictionary |  |  |  | Define variables related to all nodes part of this group. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;group</samp>](## "<node_type_keys.key>.node_groups.[].group") | String | Required, Unique |  |  | The Node Group Name is used for MLAG domain unless set with 'mlag_domain_id'.<br>The Node Group Name is also used for peer description on downstream switches' uplinks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.node_groups.[].nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
@@ -51,6 +52,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus") | String |  |  |  | Name of the campus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus_pod") | String |  |  |  | Name of the campus pod. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod") | String |  |  |  | Name of the campus access pod. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type") | String |  |  | Valid Values:<br>- <code>leaf</code><br>- <code>spine</code><br>- <code>core</code><br>- <code>edge</code><br>- <code>member-leaf</code> | PREVIEW: This key is currently not supported<br>Type that CloudVision should use when generating the Topology. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.node_groups.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "<node_type_keys.key>.node_groups.[].platform") | String |  |  |  | Arista platform family. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mac_address</samp>](## "<node_type_keys.key>.node_groups.[].mac_address") | String |  |  |  | Leverage to document management interface mac address. |
@@ -70,6 +72,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.node_groups.[].campus") | String |  |  |  | Name of the campus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.node_groups.[].campus_pod") | String |  |  |  | Name of the campus pod. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.node_groups.[].campus_access_pod") | String |  |  |  | Name of the campus access pod. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.node_groups.[].cv_tags_topology_type") | String |  |  | Valid Values:<br>- <code>leaf</code><br>- <code>spine</code><br>- <code>core</code><br>- <code>edge</code><br>- <code>member-leaf</code> | PREVIEW: This key is currently not supported<br>Type that CloudVision should use when generating the Topology. |
     | [<samp>&nbsp;&nbsp;nodes</samp>](## "<node_type_keys.key>.nodes") | List, items: Dictionary |  |  |  | Define variables per node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "<node_type_keys.key>.nodes.[].id") | Integer |  |  |  | Unique identifier used for IP addressing and other algorithms. |
@@ -91,6 +94,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus</samp>](## "<node_type_keys.key>.nodes.[].campus") | String |  |  |  | Name of the campus. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_pod") | String |  |  |  | Name of the campus pod. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_access_pod</samp>](## "<node_type_keys.key>.nodes.[].campus_access_pod") | String |  |  |  | Name of the campus access pod. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cv_tags_topology_type</samp>](## "<node_type_keys.key>.nodes.[].cv_tags_topology_type") | String |  |  | Valid Values:<br>- <code>leaf</code><br>- <code>spine</code><br>- <code>core</code><br>- <code>edge</code><br>- <code>member-leaf</code> | PREVIEW: This key is currently not supported<br>Type that CloudVision should use when generating the Topology. |
 
 === "YAML"
 
@@ -164,6 +168,10 @@
 
         # Name of the campus access pod.
         campus_access_pod: <str>
+
+        # PREVIEW: This key is currently not supported
+        # Type that CloudVision should use when generating the Topology.
+        cv_tags_topology_type: <str; "leaf" | "spine" | "core" | "edge" | "member-leaf">
 
       # Define variables related to all nodes part of this group.
       node_groups:
@@ -243,6 +251,10 @@
               # Name of the campus access pod.
               campus_access_pod: <str>
 
+              # PREVIEW: This key is currently not supported
+              # Type that CloudVision should use when generating the Topology.
+              cv_tags_topology_type: <str; "leaf" | "spine" | "core" | "edge" | "member-leaf">
+
           # Unique identifier used for IP addressing and other algorithms.
           id: <int>
 
@@ -307,6 +319,10 @@
 
           # Name of the campus access pod.
           campus_access_pod: <str>
+
+          # PREVIEW: This key is currently not supported
+          # Type that CloudVision should use when generating the Topology.
+          cv_tags_topology_type: <str; "leaf" | "spine" | "core" | "edge" | "member-leaf">
 
       # Define variables per node.
       nodes:
@@ -378,4 +394,8 @@
 
           # Name of the campus access pod.
           campus_access_pod: <str>
+
+          # PREVIEW: This key is currently not supported
+          # Type that CloudVision should use when generating the Topology.
+          cv_tags_topology_type: <str; "leaf" | "spine" | "core" | "edge" | "member-leaf">
     ```

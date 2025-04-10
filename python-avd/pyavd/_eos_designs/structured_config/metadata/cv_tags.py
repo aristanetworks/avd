@@ -3,7 +3,6 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-import re
 from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -44,6 +43,7 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "Campus-Pod",
     "Access-Pod",
     "Link-Type",
+    "Role",
 ]
 """These tag names overlap with CV system tags or topology_hints"""
 
@@ -75,42 +75,34 @@ class CvTagsMixin(Protocol):
         if not self.inputs.generate_cv_tags.topology_hints:
             return
 
-        if not (self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device):
-            for name, value in [
-                ("topology_hint_datacenter", self.inputs.dc_name),
-                ("topology_hint_fabric", self.shared_utils.fabric_name),
-                ("topology_hint_pod", self.inputs.pod_name),
-                ("topology_hint_type", self.shared_utils.hint_type),
-                ("topology_hint_rack", default(self.shared_utils.node_config.rack, self.shared_utils.group)),
-            ]:
-                tag = self._tag_dict(name, value)
-                if tag:
-                    self.structured_config.metadata.cv_tags.device_tags.append_new(name=name, value=tag["value"])
-        else:
+        if self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device:
             self._set_topology_hints_for_campus()
+            return
+
+        for name, value in [
+            ("topology_hint_datacenter", self.inputs.dc_name),
+            ("topology_hint_fabric", self.shared_utils.fabric_name),
+            ("topology_hint_pod", self.inputs.pod_name),
+            ("topology_hint_type", self.shared_utils.hint_type),
+            ("topology_hint_rack", default(self.shared_utils.node_config.rack, self.shared_utils.group)),
+        ]:
+            tag = self._tag_dict(name, value)
+            if tag:
+                self.structured_config.metadata.cv_tags.device_tags.append_new(name=name, value=tag["value"])
 
     def _set_topology_hints_for_campus(self: AvdStructuredConfigMetadataProtocol) -> None:
         """Set the data structure of topology_hint tags for Campus fabric devices."""
         for name, value in [
             ("topology_hint_network_type", CAMPUS_TOPOLOGY_NETWORK_TYPE),
-            (
-                "topology_hint_type",
-                default(
-                    "Spine" if self.shared_utils.hint_type == "spine" else None,
-                    "Leaf"
-                    if (
-                        self.shared_utils.hint_type == "leaf"
-                        and any(re.search("spine", uplink_switches_type, re.IGNORECASE) for uplink_switches_type in self.shared_utils.uplink_switches_types)
-                    )
-                    else None,
-                    "Member-Leaf",
-                ),
-            ),
-            ("Campus", default(self.shared_utils.node_config.campus, self.inputs.campus)),
-            ("Campus-Pod", default(self.shared_utils.node_config.campus_pod, self.inputs.campus_pod)),
+            ("topology_hint_type", self.shared_utils.campus_hint_type),
+            ("Role", self.shared_utils.campus_hint_type),
+            ("Campus", default(self.inputs.campus, self.shared_utils.node_config.campus)),
+            ("Campus-Pod", default(self.inputs.campus_pod, self.shared_utils.node_config.campus_pod)),
             (
                 "Access-Pod",
-                None if self.shared_utils.hint_type == "spine" else default(self.shared_utils.node_config.campus_access_pod, self.inputs.campus_access_pod),
+                None
+                if self.shared_utils.campus_hint_type == "Spine"
+                else default(self.inputs.campus_access_pod, self.shared_utils.node_config.campus_access_pod),
             ),
         ]:
             tag = self._tag_dict(name, value)
@@ -289,7 +281,7 @@ class CvTagsMixin(Protocol):
         tags.append_new(name="Link-Type", value="AVDManaged")
         fabric_peer_types = list(self.inputs._dynamic_keys.custom_node_types.keys()) + list(self.inputs._dynamic_keys.node_types.keys())
 
-        if generic_interface.peer_type in ["mlag_peer"]:
+        if generic_interface.peer_type == "mlag_peer":
             tags.append_new(name="Link-Type", value="Fabric")
             tags.append_new(name="Link-Type", value="MLAG")
         elif generic_interface.peer_type in fabric_peer_types:
@@ -298,9 +290,9 @@ class CvTagsMixin(Protocol):
                 tags.append_new(name="Link-Type", value="Uplink")
             else:
                 tags.append_new(name="Link-Type", value="Downlink")
-        elif generic_interface.peer_type in ["other"]:
+        elif generic_interface.peer_type == "other":
             tags.append_new(name="Link-Type", value="Egress")
-        elif generic_interface.peer_type in ["network_port"]:
+        elif generic_interface.peer_type == "network_port":
             tags.append_new(name="Link-Type", value="NetworkPort")
         elif generic_interface.peer_type:
             tags.append_new(name="Link-Type", value=generic_interface.peer_type.title())
