@@ -67,7 +67,6 @@ router_bgp:
         interval: 500
         min_rx: 500
         multiplier: 3
-      password: pleaseupdate
     - name: SR-TE-PG-1
       remote_as: 65000
     - name: SR-TE-PG-2
