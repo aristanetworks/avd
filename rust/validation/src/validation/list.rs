@@ -5,13 +5,10 @@
 use ordermap::OrderMap;
 use serde_json::Value;
 
-use crate::{
-    feedback::{Feedback, Type, Violation},
-    utils::walker::Walker,
-};
+use crate::feedback::{Feedback, Type, Violation};
 
 use crate::{context::Context, validation::Validation};
-use avdschema::{any::AnySchema, list::List, resolve_ref};
+use avdschema::{Walker, any::AnySchema, list::List, resolve_ref};
 
 impl Validation<Vec<Value>> for List {
     fn validate(&self, input: &Vec<Value>, ctx: &mut Context) {

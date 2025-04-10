@@ -5,7 +5,7 @@
 use ordermap::OrderMap;
 use serde_json::Value;
 
-pub(crate) trait Walker<'a> {
+pub trait Walker<'a> {
     fn walk<'s>(
         &'a self,
         path: impl Iterator<Item = &'s str> + Clone,

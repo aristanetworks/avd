@@ -6,7 +6,7 @@ use serde_json::{Map, Value};
 
 use super::walker::Walker;
 
-pub(crate) fn get_dynamic_keys(key_path: &str, dict: &Map<String, Value>) -> Vec<String> {
+pub fn get_dynamic_keys(key_path: &str, dict: &Map<String, Value>) -> Vec<String> {
     let mut path = key_path.split('.');
     path.next()
         .and_then(|component| dict.get_key_value(component))

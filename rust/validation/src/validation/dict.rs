@@ -2,13 +2,12 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
-use avdschema::{any::AnySchema, dict::Dict, resolve_ref};
+use avdschema::{any::AnySchema, dict::Dict, get_dynamic_keys, resolve_ref};
 use serde_json::{Map, Value};
 
 use crate::{
     context::Context,
     feedback::{Type, Violation},
-    utils::dynamic_keys::get_dynamic_keys,
 };
 
 use super::Validation;
@@ -292,7 +291,7 @@ mod tests {
         let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(ctx.violations, vec![]);
-        assert!(ctx.coercions.is_empty());
+        assert_eq!(ctx.coercions, vec![]);
     }
 
     #[test]
@@ -316,7 +315,7 @@ mod tests {
                 .into(),
             )])),
             dynamic_keys: Some(OrderMap::from_iter([(
-                "my_dynamic_keys".into(),
+                "my_dynamic_keys.key".into(),
                 Int {
                     max: Some(10),
                     ..Default::default()
@@ -331,7 +330,7 @@ mod tests {
         let store = get_test_store();
         let mut ctx = Context::new(&store);
         schema.validate_value(&input, &mut ctx);
-        assert!(ctx.coercions.is_empty());
+        assert_eq!(ctx.coercions, vec![]);
         assert_eq!(
             ctx.violations,
             vec![

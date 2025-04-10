@@ -9,7 +9,6 @@ use log as _;
 mod coercion;
 mod context;
 pub mod feedback;
-mod utils;
 mod validation;
 mod validation_result;
 
