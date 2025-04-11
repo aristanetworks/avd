@@ -44,6 +44,10 @@ pytest = [
 coverage = [
     "coverage[toml]",
 ]
+molecule_test = [
+    "molecule>=6.0",
+    "molecule-plugins[docker]>=23.4.0"
+]
 
 [project.optional-dependencies]
 ansible = [
@@ -60,10 +64,6 @@ ansible-collection = [
     "jsonschema>=3.2.0",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
-]
-molecule-ci = [
-    "molecule>=6.0",
-    "molecule-plugins[docker]>=23.4.0"
 ]
 
 [build-system]
