@@ -11,7 +11,7 @@ use crate::{Schema, Store, any::AnySchema, dict::Dict, get_dynamic_keys};
 
 // Keys that are accepted by the schema from either keys or dynamic keys.
 #[derive(Debug, PartialEq)]
-enum SchemaKey {
+pub enum SchemaKey {
     StaticKey,
     DynamicKey { dynamic_key_path: String },
 }
@@ -46,7 +46,7 @@ impl SchemaKey {
 }
 
 #[derive(Debug, PartialEq)]
-struct SchemaKeys {
+pub struct SchemaKeys {
     keys: OrderMap<String, SchemaKey>,
 }
 impl SchemaKeys {
