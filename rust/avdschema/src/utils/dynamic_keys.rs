@@ -27,3 +27,25 @@ pub fn get_dynamic_keys(key_path: &str, dict: &Map<String, Value>) -> Vec<String
         })
         .collect::<Vec<_>>()
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use serde_json::{Value, json};
+
+    #[test]
+    fn get_dynamic_keys_list_of_dicts() {
+        let value: Value =
+            json!({"outer": [ {"inner": "one"}, {"inner": "two"}, {"inner": "three"}]});
+        let dict = value.as_object().unwrap();
+        let result = get_dynamic_keys("outer.inner", dict);
+        assert_eq!(result, vec!["one", "two", "three"]);
+    }
+    #[test]
+    fn get_dynamic_keys_list_of_strings() {
+        let value: Value = json!({"list": ["one", "two", "three"]});
+        let dict = value.as_object().unwrap();
+        let result = get_dynamic_keys("list", dict);
+        assert_eq!(result, vec!["one", "two", "three"]);
+    }
+}

@@ -42,8 +42,14 @@ pub(crate) fn get_test_store() -> Store {
                     "key2": {
                         "type": "str",
                         "description": "this is from key2",
-                    }
-                }
+                    },
+                },
+                "dynamic_keys": {
+                    "dynamic.key": {
+                        "type": "int",
+                        "max": 10,
+                    },
+                },
             }
         ))
         .unwrap(),

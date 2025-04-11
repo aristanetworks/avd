@@ -11,7 +11,7 @@ use regex::Regex;
 use super::walker::Walker as _;
 
 static REF_REGEX: LazyLock<Regex> =
-    LazyLock::new(|| Regex::new("^([a-z][a-z_]*)#((/[a-z$][a-z0-9_]*)*)$").unwrap());
+    LazyLock::new(|| Regex::new("^([a-z][a-z_]*)#((/[a-z$][\\.a-z0-9_]*)*)$").unwrap());
 
 pub fn resolve_ref<'a>(ref_: &str, store: &'a Store) -> Result<&'a AnySchema, SchemaResolverError> {
     let captures = REF_REGEX.captures(ref_).ok_or(RefSyntax {
