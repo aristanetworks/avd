@@ -1,3 +1,4 @@
+---
 fabric_name: MISSING_CV_TOPOLOGY_KEY
 # Fabric node type keys
 node_type_keys:
@@ -25,5 +26,4 @@ core_interfaces:
       interfaces: [ Ethernet1, Ethernet1 ]
       include_in_underlay_protocol: true
       underlay_multicast: true
-
-expected_error_message: "Found 'use_cv_topology:true' so 'cv_topology' is required."
+expected_error_message: "'cv_topology' is required when 'use_cv_topology' is set to 'true'."

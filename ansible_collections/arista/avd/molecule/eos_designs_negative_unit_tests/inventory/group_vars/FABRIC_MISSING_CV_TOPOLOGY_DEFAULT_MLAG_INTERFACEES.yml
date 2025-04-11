@@ -1,3 +1,4 @@
+---
 fabric_name: FABRIC_MISSING_CV_TOPOLOGY_DEFAULT_MLAG_INTERFACEES
 # Fabric node type keys
 mlag_support: true
