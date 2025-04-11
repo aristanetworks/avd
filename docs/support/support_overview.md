@@ -9,7 +9,7 @@
 Arista AVD is a network automation framework covering multiple network design domains. AVD is an open-source project maintained by a dedicated Arista engineering team. Customers can purchase TAC support for AVD through the A-Care Service contract. TAC support for AVD must be purchased separately; see the ordering information below.
 
 !!! note
-    Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
+    Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via [GitHub discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Support Offering
 

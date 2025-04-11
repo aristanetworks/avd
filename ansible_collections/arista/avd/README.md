@@ -97,8 +97,8 @@ You can also open an [issue](https://github.com/aristanetworks/avd/issues) to re
 
 ## Support
 
-- AVD is an open-source project maintained by a dedicated Arista engineering team. Customers can purchase TAC support for AVD through the [A-Care Service contract](https://avd.arista.com/stable/docs/support/support_overview.html). TAC support for AVD must be purchased separately
-- Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
+- AVD is an open-source project maintained by a dedicated Arista engineering team. Customers can purchase TAC support for AVD through the [A-Care Service contract](https://avd.arista.com/stable/docs/support/support_overview.html). TAC support for AVD must be purchased separately.
+- Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via [GitHub discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Release Notes and Roadmap
 
