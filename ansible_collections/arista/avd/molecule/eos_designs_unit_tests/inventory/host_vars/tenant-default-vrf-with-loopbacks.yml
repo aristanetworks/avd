@@ -6,7 +6,6 @@ l3leaf:
     loopback_ipv4_pool: 10.10.0.0/24
     vtep_loopback_ipv4_pool: 10.11.0.0/24
     vtep_loopback: Loopback1
-    # Possibility to prevent configuration of Tenant VRFs and SVIs. This allows support for centralized routing.
     evpn_services_l2_only: false
   nodes:
     - name: tenant-default-vrf-with-loopbacks
@@ -24,6 +23,7 @@ tenants:
         name: storage_prod
         tags: ['storageProd']
     vrfs:
+      # Testing default vrf with loopbacks, this will not generate config for virtual_source_nat_vrfs
       - name: default
         vrf_vni: 789654
         loopbacks:
