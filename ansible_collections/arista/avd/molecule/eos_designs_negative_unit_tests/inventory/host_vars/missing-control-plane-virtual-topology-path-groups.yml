@@ -15,7 +15,7 @@ wan_router:
       wan_ha:
         enabled: false
       nodes:
-        - name: missing_control-plane-virtual-topology-path-groups
+        - name: missing-control-plane-virtual-topology-path-groups
           id: 1
           l3_interfaces:
             - name: Ethernet1
