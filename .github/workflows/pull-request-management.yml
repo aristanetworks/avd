@@ -185,8 +185,7 @@ jobs:
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
           python -m pip install uv "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
-          cd python-avd
-          uv pip install --dependency-groups molecule_test
+          uv pip install --system --project python-avd --group molecule_test
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -223,8 +222,7 @@ jobs:
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
-          cd python-avd
-          uv pip install --dependency-groups molecule_test
+          uv pip install --system --project python-avd --group molecule_test
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -299,8 +297,7 @@ jobs:
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
-          cd python-avd
-          uv pip install --dependency-groups molecule_test
+          uv pip install --system --project python-avd --group molecule_test
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -342,8 +339,7 @@ jobs:
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
-          cd python-avd
-          uv pip install --dependency-groups molecule_test
+          uv pip install --system --project python-avd --group molecule_test
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -385,8 +381,7 @@ jobs:
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
-          cd python-avd
-          uv pip install --dependency-groups molecule_test
+          uv pip install --system --project python-avd --group molecule_test
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -424,8 +419,7 @@ jobs:
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection, molecule-ci]"
-          cd python-avd
-          uv pip install --dependency-groups molecule_test
+          uv pip install --system --project python-avd --group molecule_test
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
