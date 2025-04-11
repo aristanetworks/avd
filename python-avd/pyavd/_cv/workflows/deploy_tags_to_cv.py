@@ -92,7 +92,7 @@ async def deploy_tags_to_cv(
     LOGGER.info("deploy_tags_to_cv: Got %s tag assignments", len(existing_assignments))
 
     if tag_type == "interface":
-        _verify_overlapping_with_studio(existing_assignments=existing_assignments, designed_assignments=todo_tags, warnings=warnings, strict=strict)
+        _verify_overlapping_with_studio(existing_assignments, todo_tags, warnings, strict=strict)
 
     # Move all existing assignments from TODO: to deployed.
     deployed_tags.extend(tag for tag in todo_tags if (tag.label, tag.value, tag.device.serial_number, getattr(tag, "interface", None)) in existing_assignments)
@@ -155,7 +155,7 @@ async def deploy_tags_to_cv(
 
 
 def _verify_overlapping_with_studio(
-    existing_assignments: list[tuple[str | None]], designed_assignments: list[CVInterfaceTag], warnings: list[Exception], strict: bool
+    existing_assignments: list[tuple[str | None]], designed_assignments: list[CVInterfaceTag], warnings: list[Exception], *, strict: bool
 ) -> None:
     """Verify if AVD is trying to set Link-Type:AVDManaged on interface(s) already tagged by Studio with Link-Type:StudioManaged."""
     overlapping_interfaces: list = [
