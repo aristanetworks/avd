@@ -195,6 +195,8 @@ snmp_server:
   contact: example@example.com
   location: EOS_DESIGNS_UNIT_TESTS MLAG-OSPF-L3LEAF1B
 spanning_tree:
+  mst:
+    pvst_border: true
   no_spanning_tree_vlan: '4094'
 static_routes:
 - vrf: MGMT

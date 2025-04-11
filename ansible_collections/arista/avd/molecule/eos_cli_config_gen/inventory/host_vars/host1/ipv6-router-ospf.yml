@@ -1,0 +1,70 @@
+### Routing - OSPF ###
+ipv6_router_ospf:
+  process_ids:
+    - id: 401
+      vrf: TENANT_A_PROJECT02
+    - id: 301
+      vrf: TEST1
+      redistribute:
+        ospfv3:
+          enabled: true
+    - id: 201
+      vrf: MGMT
+      redistribute:
+        ospfv3:
+          match_internal:
+            enabled: true
+    - id: 101
+      vrf: TEST2
+      redistribute:
+        static:
+          enabled: true
+        connected:
+          enabled: true
+        bgp:
+          enabled: true
+        dhcp:
+          enabled: true
+        isis:
+          enabled: true
+        ospfv3:
+          match_external:
+            enabled: true
+          match_internal:
+            enabled: true
+            route_map: rm-ospf-ospfv3-internal
+          match_nssa_external:
+            enabled: true
+    - id: 100
+      router_id: 192.168.255.3
+      auto_cost_reference_bandwidth: 100
+      redistribute:
+        static:
+          enabled: true
+          route_map: rm-ospf-static
+          include_leaked: true
+        connected:
+          enabled: true
+          route_map: rm-ospf-connected
+          include_leaked: true
+        bgp:
+          enabled: true
+          route_map: rm-ospf-bgp
+          include_leaked: true
+        dhcp:
+          enabled: true
+          route_map: rm-ospf-dhcp
+        isis:
+          enabled: true
+          include_leaked: true
+          route_map: rm-ospf-isis
+          isis_level: level-2
+        ospfv3:
+          enabled: true
+          route_map: rm-ospf-ospfv3
+          match_external:
+            enabled: true
+            route_map: rm-ospf-ospfv3-external
+          match_nssa_external:
+            enabled: true
+            route_map: rm-ospf-ospfv3-nssa-external

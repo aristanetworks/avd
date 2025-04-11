@@ -1013,11 +1013,11 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 #### Router BGP VRFs
 
 {%         if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) | list %}
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart | EVPN Multicast |
+| --- | ------------------- | ------------ | ---------------- | -------------- |
 {%         else %}
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
 {%         endif %}
 {%         for vrf in router_bgp.vrfs | arista.avd.natural_sort('name') %}
 {%             set route_distinguisher = vrf.rd | arista.avd.default("-") %}
@@ -1031,10 +1031,14 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             set multicast_out = [] %}
 {%             do multicast_out.append("IPv4: " ~ multicast) %}
 {%             do multicast_out.append("Transit: " ~ multicast_transit) %}
+{%             set graceful_restart = vrf.graceful_restart.enabled | arista.avd.default("-") %}
+{%             if vrf.graceful_restart.enabled is arista.avd.defined(true) and vrf.graceful_restart.restart_time is arista.avd.defined %}
+{%                 set graceful_restart = graceful_restart ~ " (" ~ vrf.graceful_restart.restart_time ~ "s)" %}
+{%             endif %}
 {%             if router_bgp.vrfs | selectattr('evpn_multicast', 'arista.avd.defined', true) | list %}
-| {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ multicast_out | join("<br>") }} |
+| {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ graceful_restart }} | {{ multicast_out | join("<br>") }} |
 {%             else %}
-| {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} |
+| {{ vrf.name }} | {{ route_distinguisher }} | {{ redistribute | join("<br>") }} | {{ graceful_restart }} |
 {%             endif %}
 {%         endfor %}
 {%     endif %}

@@ -316,6 +316,7 @@ tenant_a:
             node: DC1-LEAF2A
             description: Test-Loopback
             enabled: true
+            hardware_forwarding: true
             ospf:
               enabled: true
               area: 1
@@ -330,6 +331,7 @@ tenant_a:
         vtep_diagnostic:
           loopback: 101
           loopback_ip_range: 10.255.11.0/24
+          hardware_forwarding: true
     l2vlans:
       # L2 vlan as string
       - id: '160'

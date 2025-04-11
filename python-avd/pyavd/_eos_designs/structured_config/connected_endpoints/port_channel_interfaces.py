@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, short_esi_to_route_target, strip_null_from_data
+from pyavd._utils import Undefined, default, short_esi_to_route_target, strip_null_from_data
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -163,12 +163,12 @@ class PortChannelInterfacesMixin(Protocol):
             service_profile=adapter.qos_profile,
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.LinkTrackingGroups),
             ptp=self._get_adapter_ptp(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Ptp),
-            sflow=self._get_adapter_sflow(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.Sflow),
-            flow_tracker=self.shared_utils.new_get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
+            flow_tracker=self.shared_utils.get_flow_tracker(adapter.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
             validate_state=None if (adapter.validate_state if adapter.validate_state is not None else True) else False,
             validate_lldp=None if (adapter.validate_lldp if adapter.validate_lldp is not None else True) else False,
             eos_cli=adapter.port_channel.raw_eos_cli,
         )
+        port_channel_interface.sflow.enable = default(adapter.sflow, self.inputs.fabric_sflow.endpoints)
 
         if adapter.port_channel.subinterfaces:
             port_channel_interface.switchport.enabled = False
@@ -238,7 +238,9 @@ class PortChannelInterfacesMixin(Protocol):
         """Return structured_config for one port_channel_interface (subinterface)."""
         # Common port_channel_interface settings
         port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
-            name=port_channel_subinterface_name, vlan_id=subinterface.vlan_id or subinterface.number
+            name=port_channel_subinterface_name,
+            vlan_id=subinterface.vlan_id or subinterface.number,
+            eos_cli=subinterface.raw_eos_cli,
         )
         port_channel_interface.encapsulation_vlan.client._update(
             encapsulation="dot1q", vlan=subinterface.encapsulation_vlan.client_dot1q or subinterface.number
@@ -252,6 +254,11 @@ class PortChannelInterfacesMixin(Protocol):
             port_channel_interface.evpn_ethernet_segment._update(
                 identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
                 route_target=short_esi_to_route_target(short_esi),
+            )
+
+        if subinterface.structured_config:
+            self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_subinterface_name)._deepmerge(
+                subinterface.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
 
         return strip_null_from_data(port_channel_interface, strip_values_tuple=(None, ""))

@@ -59,6 +59,8 @@ router_ospf:
     - ethernet1
     - ethernet2
     max_lsa: 12000
+    graceful_restart:
+      enabled: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

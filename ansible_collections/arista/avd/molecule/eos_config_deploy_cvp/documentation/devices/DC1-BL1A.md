@@ -704,11 +704,11 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected |
-| Tenant_B_WAN_Zone | 192.168.255.10:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.10:31 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected | - |
+| Tenant_B_WAN_Zone | 192.168.255.10:21 | connected | - |
+| Tenant_C_WAN_Zone | 192.168.255.10:31 | connected | - |
 
 #### Router BGP Device Configuration
 

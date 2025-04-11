@@ -698,6 +698,9 @@ keys:
           keys:
             profile:
               type: str
+        ntp_serve:
+          type: bool
+          description: Enable/disable serving NTP to clients.
         tcp_mss_ceiling:
           type: dict
           description: |-

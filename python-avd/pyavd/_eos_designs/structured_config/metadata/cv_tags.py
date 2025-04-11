@@ -203,14 +203,11 @@ class CvTagsMixin(Protocol):
         if generic_interface.name in self.shared_utils.wan_port_channels:
             wan_port_channel_intf = self.shared_utils.wan_port_channels[generic_interface.name]
             return self._get_cv_pathfinder_wan_interface_tags(wan_port_channel_intf)
-        # Check if input eth interface is member of any L3 Port-Channel wan interface
-        # if so, skip generation of interface tags for such member interface.
-        # TODO: Consider if we should skip this for all port-channel members,
-        # since we would now set it on the port-channel instead.
-        if generic_interface.name in self.shared_utils._wan_port_channel_member_interfaces:
-            return EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
+
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
-        tags.append_new(name="Type", value="lan")
+        # Set Type lan for all other interfaces except port-channel members.
+        if not (isinstance(generic_interface, EosCliConfigGen.EthernetInterfacesItem) and generic_interface.channel_group.id):
+            tags.append_new(name="Type", value="lan")
         return tags
 
     # Generate wan interface tags while accounting for wan interface to be either L3 interface or L3 Port-Channel type

@@ -31,7 +31,8 @@ except ImportError as e:
 
 
 def _test_results_gen(input_path: Path) -> Generator[dict, None, None]:
-    """Generate test results from a JSON file for a specific host.
+    """
+    Generate test results from a JSON file for a specific host.
 
     This function opens the JSON results file created by the `eos_validate_state_runner` action plugin
     and yields each test result as a dictionary.

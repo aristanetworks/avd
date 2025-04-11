@@ -29,7 +29,8 @@ LOGGER = logging.getLogger(__name__)
 
 
 class ConfigManager:
-    """Configuration manager class for the eos_validate_state tests.
+    """
+    Configuration manager class for the eos_validate_state tests.
 
     This class is used to manage the structured configuration of the devices and to generate variables for the eos_validate_state tests.
 
@@ -37,7 +38,8 @@ class ConfigManager:
     """
 
     def __init__(self, device_name: str, hostvars: Mapping) -> None:
-        """Initialize the ConfigManager class.
+        """
+        Initialize the ConfigManager class.
 
         Args:
         ----
@@ -53,7 +55,8 @@ class ConfigManager:
         self.dps_mapping = self.get_dps_mapping()
 
     def get_host_structured_config(self, host: str) -> Mapping:
-        """Get a specified host's structured configuration from the hostvars.
+        """
+        Get a specified host's structured configuration from the hostvars.
 
         Args:
         ----
@@ -90,7 +93,8 @@ class ConfigManager:
         return self._get_loopback_mappings["dps_mapping"]
 
     def _get_ip_address(self, host: str, interfaces: list, vtep_interface: str) -> tuple[str, str] | None:
-        """Retrieve the IP address for a given VTEP interface on a host.
+        """
+        Retrieve the IP address for a given VTEP interface on a host.
 
         Parameters
         ----------
@@ -116,7 +120,8 @@ class ConfigManager:
 
     @cached_property
     def _get_loopback_mappings(self) -> dict:
-        """Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
+        """
+        Generate the loopback mappings for the eos_validate_state tests, which are used in AvdTestBase subclasses.
 
         Returns:
         -------

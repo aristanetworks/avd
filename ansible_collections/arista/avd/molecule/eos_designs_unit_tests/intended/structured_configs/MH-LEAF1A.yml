@@ -426,7 +426,9 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0000:0000:0101
     route_target: 00:00:00:00:01:01
+  eos_cli: sflow enable
 - name: Port-Channel11.102
+  l2_mru: 10000
   encapsulation_vlan:
     client:
       encapsulation: dot1q

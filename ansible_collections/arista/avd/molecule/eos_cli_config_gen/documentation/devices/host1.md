@@ -68,6 +68,9 @@
 - [System Boot Settings](#system-boot-settings)
   - [Boot Secret Summary](#boot-secret-summary)
   - [System Boot Device Configuration](#system-boot-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -157,6 +160,7 @@
   - [Router Service Insertion Configuration](#router-service-insertion-configuration)
   - [Router Traffic-Engineering](#router-traffic-engineering)
   - [Router OSPF](#router-ospf)
+  - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
@@ -304,6 +308,14 @@
 | V1 | 42 |
 | V2 | 666 |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown | True |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
 #### Agent KernelFib
 
 ##### Environment Variables
@@ -312,12 +324,26 @@
 | ---- | ----- |
 | KERNELFIB_PROGRAM_ALL_ECMP | true |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
+#### Agent NotRendered
+
 #### Agents Device Configuration
 
 ```eos
 !
 agent Dummy environment V1=42:V2=666
+agent Dummy shutdown
+agent Dummy shutdown supervisor active
+agent Dummy shutdown supervisor standby
 agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
+agent KernelFib shutdown supervisor active
+agent KernelFib shutdown supervisor standby
 ```
 
 ### Management Interfaces
@@ -559,6 +585,7 @@ ntp server 10.1.1.1
 ntp server 10.1.1.2 prefer
 ntp server 20.20.20.1 key <removed>
 ntp server ie.pool.ntp.org iburst key <removed>
+ntp serve all
 ```
 
 ### PTP
@@ -1882,6 +1909,19 @@ dhcp server vrf VRF01
 boot secret 5 <removed>
 ```
 
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
+```
+
 ## Monitoring
 
 ### TerminAttr Daemon
@@ -2488,6 +2528,8 @@ hardware access-list mechanism tcam
 hardware speed-group 1 serdes 10g
 hardware speed-group 2 serdes 25g
 hardware speed-group 3/1 serdes 25g
+!
+hardware access-list update default-result permit
 ```
 
 ### VM Tracer Sessions
@@ -4304,6 +4346,7 @@ interface Ethernet9
    multicast ipv4 boundary ACL_MULTICAST out
    multicast ipv6 static
    mpls ip
+   ntp serve
    isis authentication mode sha key-id 2 rx-disabled
    isis authentication key 0 <removed>
 !
@@ -4313,6 +4356,7 @@ interface Ethernet10
    ip address 172.31.128.10/31
    no mpls ldp interface
    no mpls ip
+   no ntp serve
    isis authentication mode sha key-id 2
    isis authentication key 0 <removed>
 !
@@ -5299,6 +5343,7 @@ interface Port-Channel5
    l2 mtu 8000
    l2 mru 8000
    mlag 5
+   ntp serve
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
@@ -5407,6 +5452,7 @@ interface Port-Channel15
    switchport mode trunk
    switchport
    mlag 15
+   no ntp serve
    service-policy type qos input pmap_test1
    service-profile experiment
    qos trust cos
@@ -6251,11 +6297,14 @@ interface Vlan25
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
 !
 interface Vlan26
+   ntp serve
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ipv6 ospf network point-to-point
+   ipv6 ospf area 0.0.0.29
 !
 interface Vlan41
    description SVI Description
@@ -6327,6 +6376,7 @@ interface Vlan75
    multicast ipv6 boundary ff00::/16 out
    multicast ipv6 boundary ff01::/16 out
    multicast ipv4 static
+   no ntp serve
    ip address virtual 10.10.75.1/24
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
 !
@@ -7401,6 +7451,76 @@ router ospf 600
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
 ```
 
+### IPv6 Router OSPF
+
+#### IPv6 Router OSPF Summary
+
+| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth |
+| ---------- | --- | --------- | ----------------------------- |
+| 100 | - | 192.168.255.3 | 100 |
+| 101 | TEST2 | - | - |
+| 201 | MGMT | - | - |
+| 301 | TEST1 | - | - |
+| 401 | TENANT_A_PROJECT02 | - | - |
+
+#### IPv6 Router OSPF Router Redistribution
+
+| Process ID | VRF | Source Protocol | Include Leaked | Route Map |
+| ---------- | --- | --------------- | -------------- | --------- |
+| 100 | - |connected | enabled | rm-ospf-connected |
+| 100 | - |static | enabled | rm-ospf-static |
+| 100 | - |bgp | enabled | rm-ospf-bgp |
+| 100 | - |dhcp | - | rm-ospf-dhcp |
+| 100 | - |isis level-2 | enabled | rm-ospf-isis |
+| 100 | - |ospfv3 | enabled | rm-ospf-ospfv3 |
+| 100 | - |ospfv3 match external | enabled | rm-ospf-ospfv3-external |
+| 100 | - |ospfv3 match nssa external | enabled | rm-ospf-ospfv3-nssa-external |
+| 101 | TEST2 |connected | - | - |
+| 101 | TEST2 |static | - | - |
+| 101 | TEST2 |bgp | - | - |
+| 101 | TEST2 |dhcp | - | - |
+| 101 | TEST2 |isis | - | - |
+| 101 | TEST2 |ospfv3 match external | enabled | - |
+| 101 | TEST2 |ospfv3 match internal | enabled | rm-ospf-ospfv3-internal |
+| 101 | TEST2 |ospfv3 match nssa external | enabled | - |
+| 201 | MGMT |ospfv3 match internal | enabled | - |
+| 301 | TEST1 |ospfv3 | enabled | - |
+
+#### IPv6 Router OSPF Device Configuration
+
+```eos
+!
+ipv6 router ospf 100
+   router-id 192.168.255.3
+   auto-cost reference-bandwidth 100
+   redistribute bgp include leaked route-map rm-ospf-bgp
+   redistribute dhcp route-map rm-ospf-dhcp
+   redistribute connected include leaked route-map rm-ospf-connected
+   redistribute isis include leaked level-2 route-map rm-ospf-isis
+   redistribute ospfv3 leaked route-map rm-ospf-ospfv3
+   redistribute ospfv3 leaked match external route-map rm-ospf-ospfv3-external
+   redistribute ospfv3 leaked match nssa-external route-map rm-ospf-ospfv3-nssa-external
+   redistribute static include leaked route-map rm-ospf-static
+!
+ipv6 router ospf 101 vrf TEST2
+   redistribute bgp
+   redistribute dhcp
+   redistribute connected
+   redistribute isis
+   redistribute ospfv3 leaked match internal route-map rm-ospf-ospfv3-internal
+   redistribute ospfv3 leaked match external
+   redistribute ospfv3 leaked match nssa-external
+   redistribute static
+!
+ipv6 router ospf 201 vrf MGMT
+   redistribute ospfv3 leaked match internal
+!
+ipv6 router ospf 301 vrf TEST1
+   redistribute ospfv3 leaked
+!
+ipv6 router ospf 401 vrf TENANT_A_PROJECT02
+```
+
 ### Router ISIS
 
 #### Router ISIS Summary
@@ -8180,20 +8300,20 @@ ASN Notation: asdot
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| BLUE-C1 | 1.0.1.1:101 | static<br>ospf | IPv4: False<br>Transit: False |
-| RED-C1 | 1.0.1.1:102 | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
-| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
-| Tenant_B | 10.50.64.15:30002 | - | IPv4: False<br>Transit: False |
-| VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | IPv4: False<br>Transit: False |
-| VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | IPv4: False<br>Transit: False |
-| VRF03 | - | dynamic | IPv4: False<br>Transit: False |
-| YELLOW-C1 | 1.0.1.1:103 | - | IPv4: False<br>Transit: False |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart | EVPN Multicast |
+| --- | ------------------- | ------------ | ---------------- | -------------- |
+| BLUE-C1 | 1.0.1.1:101 | static<br>ospf | - | IPv4: False<br>Transit: False |
+| RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
+| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | - | IPv4: True<br>Transit: False |
+| Tenant_B | 10.50.64.15:30002 | - | - | IPv4: False<br>Transit: False |
+| VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
+| VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
+| VRF03 | - | dynamic | - | IPv4: False<br>Transit: False |
+| YELLOW-C1 | 1.0.1.1:103 | - | - | IPv4: False<br>Transit: False |
 
 #### Router BGP Session Trackers
 
@@ -9093,6 +9213,9 @@ router bgp 65101
       route-target export evpn 12:12
       router-id 192.168.255.3
       timers bgp 5 15
+      graceful-restart restart-time 120
+      graceful-restart stalepath-time 120
+      graceful-restart
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 next-hop-self
       neighbor 10.255.251.1 description ABCDEFG
@@ -10217,9 +10340,9 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Global
 
-| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
-| ------------------- | -------------------- | ----------------------|
-| True | True | True |
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | ----------------------| -------------------------- |
+| True | True | True | True |
 
 #### 802.1X MAC based authentication
 
@@ -10241,6 +10364,14 @@ ip as-path access-list mylist2 deny _64517$ igp
 | SSL profile | Profile1 |
 | IPv4 Access-list | ACL |
 | Start limit | Infinite |
+
+#### 802.1X VLAN Assignment Groups
+
+| VLAN Group Name | Members |
+| --------------- | ------- |
+| Assignment_1 | 400-407 |
+| Assignment_2 | 55 |
+| Assignment_3 | 1,3,15-20 |
 
 #### 802.1X Supplicant
 

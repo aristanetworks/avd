@@ -161,7 +161,8 @@ class ActionModule(ActionBase):
         return json.loads(json.dumps(validated_args))
 
     def prepare_task_vars(self, task_vars: dict, structured_config_filename: str, *, read_structured_config_from_file: bool) -> dict:
-        """Read the structured_config and render inline Jinja.
+        """
+        Read the structured_config and render inline Jinja.
 
         Parameters
         ----------
@@ -265,7 +266,8 @@ def setup_module_logging(hostname: str, result: dict) -> None:
 
 
 def read_vars(filename: Path | str) -> dict:
-    """Read the file at filename and return the content as dict.
+    """
+    Read the file at filename and return the content as dict.
 
     The function supports either `json` or `yaml` format.
 
