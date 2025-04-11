@@ -79,7 +79,7 @@ Release notes and porting guide for version 5.x.x can be found here:
 
 ## Support Matrix
 
-The following table depicts the Arista Validated Designs release support matrix, including the timelines for each major software train (based on the lifecycle policy) and  the current state of support for each train.
+The following table depicts the AVD release support matrix, including the timelines for each major software train (based on the life cycle policy) and  the current state of support for each train.
 
 | Release | Current Status | Initial Release Date | End of Support |
 | ------- | -------------- | -------------------- | -------------- |
