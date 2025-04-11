@@ -81,10 +81,10 @@ Release notes and porting guide for version 5.x.x can be found here:
 
 The following table depicts the AVD release support matrix, including the timelines for each major software train (based on the life cycle policy) and  the current state of support for each train.
 
-| Release | Current Status | Initial Release Date | End of Support |
-| ------- | -------------- | -------------------- | -------------- |
-| 5.x.x | Active Development | Oct-2024 | TBD |
-| 4.x.x | Maintenance Phase | Jun-2023 | Oct-2025 |
+| Release | Initial Release Date | Maintenance Phase | Support Only Phase | End of Support |
+| ------- | -------------------- | ----------------- | ------------------ | -------------- |
+| 5.x.x | Oct-2024 | - | - | - |
+| 4.x.x | Jun-2023 | Oct-2024 | Apr-2025 | Oct-2025 |
 
 ## Ordering Information
 
