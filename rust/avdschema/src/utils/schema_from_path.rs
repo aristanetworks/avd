@@ -20,7 +20,7 @@ impl SchemaKey {
     /// "eos_cli_config_gen#/keys/somekey/items/" or
     /// "eos_designs#/dynamic_keys/connected_endpoint_keys.key"
     /// For dynamic keys the first item of the path is replaced with with dynamic key path.
-    fn get_schema_ref_from_path(&self, schema: &Schema, data_path: &[String]) -> String {
+    pub fn get_schema_ref_from_path(&self, schema: &Schema, data_path: &[String]) -> String {
         let schema_name: String = (*schema).into();
         let mut path = data_path.iter();
         let mut schema_ref = format!("{schema_name}#");
@@ -50,7 +50,7 @@ pub struct SchemaKeys {
     keys: OrderMap<String, SchemaKey>,
 }
 impl SchemaKeys {
-    fn try_from_schema_with_value(
+    pub fn try_from_schema_with_value(
         schema: &AnySchema,
         value: &Value,
     ) -> Result<Self, SchemaKeysError> {
