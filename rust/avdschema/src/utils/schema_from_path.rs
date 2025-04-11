@@ -47,7 +47,7 @@ impl SchemaKey {
 
 #[derive(Debug, PartialEq)]
 pub struct SchemaKeys {
-    keys: OrderMap<String, SchemaKey>,
+    pub keys: OrderMap<String, SchemaKey>,
 }
 impl SchemaKeys {
     pub fn try_from_schema_with_value(
