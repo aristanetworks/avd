@@ -15,7 +15,7 @@ Arista AVD is a network automation framework covering multiple network design do
 
 - AVD software is covered by [A-Care Priority Levels](https://www.arista.com/assets/data/tac/downloads/SRPriorityLevels.pdf).
 - TAC support covers software defects and troubleshooting Q&A.
-- Provide comprehensive software lifecycle policy for AVD according to the AVD software life cycle policy detailed below.
+- Provide comprehensive software life cycle policy for AVD according to the AVD software life cycle policy detailed below.
 
 ## Support Scope
 
