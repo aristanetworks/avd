@@ -10,10 +10,44 @@ use crate::resolve::{errors::SchemaResolverError, resolve_ref::resolve_ref};
 use crate::{Schema, Store, any::AnySchema, dict::Dict, get_dynamic_keys};
 
 // Keys that are accepted by the schema from either keys or dynamic keys.
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
+enum SchemaKey {
+    StaticKey,
+    DynamicKey { dynamic_key_path: String },
+}
+impl SchemaKey {
+    /// Return a schema $ref like
+    /// "eos_cli_config_gen#/keys/somekey/items/" or
+    /// "eos_designs#/dynamic_keys/connected_endpoint_keys.key"
+    /// For dynamic keys the first item of the path is replaced with with dynamic key path.
+    fn get_schema_ref_from_path(&self, schema: &Schema, data_path: &[String]) -> String {
+        let schema_name: String = (*schema).into();
+        let mut path = data_path.iter();
+        let mut schema_ref = format!("{schema_name}#");
+        match path.next() {
+            Some(root_key) => match self {
+                SchemaKey::DynamicKey { dynamic_key_path } => {
+                    schema_ref.push_str(format!("/dynamic_keys/{dynamic_key_path}").as_str())
+                }
+                SchemaKey::StaticKey => schema_ref.push_str(format!("/keys/{root_key}").as_str()),
+            },
+            None => return schema_ref,
+        }
+        for step in path {
+            if step.parse::<usize>().is_ok() {
+                schema_ref.push_str("/items");
+            } else {
+                schema_ref.push_str("/keys/");
+                schema_ref.push_str(step);
+            }
+        }
+        schema_ref
+    }
+}
+
+#[derive(Debug, PartialEq)]
 struct SchemaKeys {
-    keys: Vec<String>,
-    key_to_dynamic_key_path: OrderMap<String, String>,
+    keys: OrderMap<String, SchemaKey>,
 }
 impl SchemaKeys {
     fn try_from_schema_with_value(
@@ -24,25 +58,45 @@ impl SchemaKeys {
             .try_into()
             .map_err(|_err| SchemaKeysError::SchemaNotDict)?;
         let dict = value.as_object().ok_or(SchemaKeysError::ValueNotADict)?;
-        Ok(SchemaKeys {
-            keys: dict_schema
-                .keys
-                .as_ref()
-                .map(|keys| Vec::from_iter(keys.keys().map(|key| key.to_owned())))
-                .unwrap_or_default(),
-            key_to_dynamic_key_path: dict_schema
+        let mut schema_keys = SchemaKeys {
+            keys: OrderMap::from_iter(
+                dict_schema
+                    .keys
+                    .as_ref()
+                    .map(|keys| {
+                        keys.keys()
+                            .map(|key| (key.to_owned(), SchemaKey::StaticKey))
+                            .collect::<Vec<_>>()
+                    })
+                    .unwrap_or_default(),
+            ),
+        };
+
+        schema_keys.keys.extend(
+            dict_schema
                 .dynamic_keys
                 .as_ref()
                 .map(|dynamic_keys| {
-                    OrderMap::from_iter(dynamic_keys.keys().flat_map(|key_path| {
-                        get_dynamic_keys(key_path, dict)
-                            .iter()
-                            .map(|dynamic_key| (dynamic_key.to_owned(), key_path.to_owned()))
-                            .collect::<Vec<_>>()
-                    }))
+                    dynamic_keys
+                        .keys()
+                        .flat_map(|dynamic_key_path| {
+                            get_dynamic_keys(dynamic_key_path, dict)
+                                .iter()
+                                .map(|dynamic_key| {
+                                    (
+                                        dynamic_key.to_owned(),
+                                        SchemaKey::DynamicKey {
+                                            dynamic_key_path: dynamic_key_path.to_owned(),
+                                        },
+                                    )
+                                })
+                                .collect::<Vec<_>>()
+                        })
+                        .collect::<Vec<_>>()
                 })
                 .unwrap_or_default(),
-        })
+        );
+        Ok(schema_keys)
     }
 }
 
@@ -52,24 +106,14 @@ pub enum SchemaKeysError {
     SchemaNotDict,
 }
 
-#[derive(Debug)]
+#[derive(Debug, derive_more::From)]
 pub enum GetSchemaFromPathError {
     SchemaKeys(SchemaKeysError),
     SchemaResolve(SchemaResolverError),
 }
-impl From<SchemaKeysError> for GetSchemaFromPathError {
-    fn from(value: SchemaKeysError) -> Self {
-        GetSchemaFromPathError::SchemaKeys(value)
-    }
-}
-impl From<SchemaResolverError> for GetSchemaFromPathError {
-    fn from(value: SchemaResolverError) -> Self {
-        GetSchemaFromPathError::SchemaResolve(value)
-    }
-}
-// Given a data path return the schema covering this.
-// Assumes that dynamic keys can only exist at the root level.
-// Assumes that the root level is a dict.
+/// Given a data path return the schema covering this.
+/// Assumes that dynamic keys can only exist at the root level.
+/// Assumes that the root level is a dict.
 pub fn get_schema_from_path<'a>(
     schema_id: Schema,
     store: &'a Store,
@@ -82,56 +126,15 @@ pub fn get_schema_from_path<'a>(
         None => Ok(Some(schema)),
         Some(root_key) => {
             let schema_keys = SchemaKeys::try_from_schema_with_value(schema, data_value)?;
-            if schema_keys.keys.contains(root_key) {
-                // Regular key so we can just build a regular ref and get the schema.
-                let schema_ref = get_schema_ref_from_path(&schema_id, data_path);
-                Ok(Some(resolve_ref(&schema_ref, store)?))
-            } else if let Some(dynamic_key_path) = schema_keys.key_to_dynamic_key_path.get(root_key)
-            {
-                // Dynamic key so we build a special ref and get the schema.
-                let schema_ref = get_dynamic_key_schema_ref_from_path(
-                    &schema_id,
-                    dynamic_key_path,
-                    path.as_slice(),
-                );
-                Ok(Some(resolve_ref(&schema_ref, store)?))
-            } else {
-                Ok(None)
+            match schema_keys.keys.get(root_key) {
+                None => Ok(None),
+                Some(schema_key) => {
+                    let schema_ref = schema_key.get_schema_ref_from_path(&schema_id, data_path);
+                    Ok(Some(resolve_ref(&schema_ref, store)?))
+                }
             }
         }
     }
-}
-
-pub fn get_schema_ref_from_path(schema: &Schema, path: &[String]) -> String {
-    let schema_name: String = (*schema).into();
-    let mut schema_ref = format!("{schema_name}#");
-    for step in path {
-        if step.parse::<usize>().is_ok() {
-            schema_ref.push_str("/items");
-        } else {
-            schema_ref.push_str("/keys/");
-            schema_ref.push_str(step);
-        }
-    }
-    schema_ref
-}
-
-pub fn get_dynamic_key_schema_ref_from_path(
-    schema: &Schema,
-    dynamic_key_path: &String,
-    rest_of_path: &[String],
-) -> String {
-    let schema_name: String = (*schema).into();
-    let mut schema_ref = format!("{schema_name}#/dynamic_keys/{dynamic_key_path}");
-    for step in rest_of_path {
-        if step.parse::<usize>().is_ok() {
-            schema_ref.push_str("/items");
-        } else {
-            schema_ref.push_str("/keys/");
-            schema_ref.push_str(step);
-        }
-    }
-    schema_ref
 }
 
 #[cfg(test)]
@@ -186,13 +189,29 @@ mod tests {
         let result = SchemaKeys::try_from_schema_with_value(&schema, &value);
         assert!(result.is_ok());
         let schema_keys = result.unwrap();
-        assert_eq!(schema_keys.keys, vec!["outer", "another_key"]);
         assert_eq!(
-            schema_keys.key_to_dynamic_key_path,
-            OrderMap::<String, String>::from_iter(vec![
-                ("one".into(), "outer.inner".into()),
-                ("two".into(), "outer.inner".into()),
-                ("three".into(), "outer.inner".into()),
+            schema_keys.keys,
+            OrderMap::from([
+                ("outer".into(), SchemaKey::StaticKey),
+                ("another_key".into(), SchemaKey::StaticKey),
+                (
+                    "one".into(),
+                    SchemaKey::DynamicKey {
+                        dynamic_key_path: "outer.inner".into()
+                    }
+                ),
+                (
+                    "two".into(),
+                    SchemaKey::DynamicKey {
+                        dynamic_key_path: "outer.inner".into()
+                    }
+                ),
+                (
+                    "three".into(),
+                    SchemaKey::DynamicKey {
+                        dynamic_key_path: "outer.inner".into()
+                    }
+                ),
             ])
         );
     }
@@ -230,7 +249,7 @@ mod tests {
         let opt = result.unwrap();
         assert!(opt.is_some());
         let schema = opt.unwrap();
-        assert_eq!(schema, &store.eos_designs);
+        assert_eq!(schema, &store.eos_cli_config_gen);
     }
 
     #[test]
