@@ -1,0 +1,10 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - hardware access list update default result permit #}
+{% if hardware.access_list.update_default_result_permit is arista.avd.defined(true) %}
+!
+hardware access-list update default-result permit
+{% endif %}
