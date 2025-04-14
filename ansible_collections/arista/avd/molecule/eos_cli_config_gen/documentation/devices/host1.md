@@ -2528,6 +2528,8 @@ hardware access-list mechanism tcam
 hardware speed-group 1 serdes 10g
 hardware speed-group 2 serdes 25g
 hardware speed-group 3/1 serdes 25g
+!
+hardware access-list update default-result permit
 ```
 
 ### VM Tracer Sessions
