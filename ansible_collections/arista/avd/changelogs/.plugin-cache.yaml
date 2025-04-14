@@ -58,6 +58,11 @@ plugins:
   inventory: {}
   lookup: {}
   module:
+    anta_workflow:
+      description: Uses ANTA from Ansible
+      name: anta_workflow
+      namespace: ''
+      version_added: 5.3.0
     configlet_build_config:
       description: Build arista.cvp.configlet configuration.
       name: configlet_build_config
@@ -131,4 +136,4 @@ plugins:
         than group_vars or host_vars
       name: global_vars
       version_added: 4.0.0
-version: 5.2.0
+version: 5.3.0
