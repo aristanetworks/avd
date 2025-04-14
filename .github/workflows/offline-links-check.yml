@@ -40,6 +40,7 @@ jobs:
             --exclude "www.docker.com" \
             --exclude "hub.docker.com" \
             --exclude "tech-library.arista.com" \
+            --exclude "www.arista.com.*" \
             --max-connections-per-host 30 \
             --max-redirections 3 \
             --rate-limit 1 \
