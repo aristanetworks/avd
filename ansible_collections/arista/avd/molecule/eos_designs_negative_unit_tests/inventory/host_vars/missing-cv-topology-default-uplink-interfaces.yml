@@ -1,5 +1,5 @@
 ---
-fabric_name: MISSING_CV_TOPOLOGY_DEFAULT_UPLINK_INTERFACES
+fabric_name: FABRIC_MISSING_CV_TOPOLOGY_DEFAULT_UPLINK_INTERFACES
 # Fabric node type keys
 node_type_keys:
   - key: core_router
