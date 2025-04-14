@@ -5841,7 +5841,7 @@ keys:
           description: Set domain names to complete unqualified host names.
           deprecation:
             warning: true
-            new_key: ip_name_server_groups[].ip_domain_lists
+            new_key: ip_domain_lists
             remove_in_version: 6.0.0
         ip_domain_lists:
           type: list
