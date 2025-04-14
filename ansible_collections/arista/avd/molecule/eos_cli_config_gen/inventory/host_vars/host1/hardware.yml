@@ -3,6 +3,7 @@
 hardware:
   access_list:
     mechanism: tcam
+    update_default_result_permit: true
   speed_groups:
     - speed_group: 1
       serdes: 10g

@@ -1467,6 +1467,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vr
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
 --8<--
 
+#### Network services VRF L3 Port-Channels configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
+--8<--
+
 #### Network services VRF Loopbacks configuration
 
 Loopbacks are usually configured with `vtep_diagnostic` which supports IP pools etc.
