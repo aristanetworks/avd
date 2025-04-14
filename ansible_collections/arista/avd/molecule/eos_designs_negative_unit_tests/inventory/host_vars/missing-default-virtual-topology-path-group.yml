@@ -1,4 +1,4 @@
-# Testing missing path-groups under control_plane_virtual_topology
+# Testing missing default-virtual-topology path-group
 type: wan_router
 
 wan_router:
@@ -15,7 +15,7 @@ wan_router:
       wan_ha:
         enabled: false
       nodes:
-        - name: missing-default-virtual-topology-path-groups
+        - name: missing-default-virtual-topology-path-group
           id: 1
           l3_interfaces:
             - name: Ethernet1
