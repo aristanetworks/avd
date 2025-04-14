@@ -25,6 +25,7 @@ l3_edge:
       ip: [192.168.0.2/31, 192.168.0.3/31]
       ptp:
         enabled: true
+        profile: null
 
 expected_error_message: >-
   PTP Profile 'THIS-PROFILE-DOES-NOT-EXIST' referenced under `ptp.profile` node variables
