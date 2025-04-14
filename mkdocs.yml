@@ -221,3 +221,4 @@ nav:
   - Versioning: docs/versioning/semantic-versioning.md
   - AVD Dev Containers:
       - Overview: docs/containers/overview.md
+  - Support: docs/support/support_overview.md

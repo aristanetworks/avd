@@ -35,8 +35,13 @@
     | [<samp>&nbsp;&nbsp;range</samp>](## "internal_vlan_order.range") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;beginning</samp>](## "internal_vlan_order.range.beginning") | Integer | Required |  | Min: 2<br>Max: 4094 | First VLAN ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ending</samp>](## "internal_vlan_order.range.ending") | Integer | Required |  | Min: 2<br>Max: 4094 | Last VLAN ID. |
-    | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  | MAC address-table aging time.<br>Use to change the EOS default of 300.<br> |
+    | [<samp>mac_address_table</samp>](## "mac_address_table") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;aging_time</samp>](## "mac_address_table.aging_time") | Integer |  |  | Min: 0<br>Max: 1000000 | Aging time in seconds 10-1000000.<br>Enter 0 to disable aging.<br> |
+    | [<samp>&nbsp;&nbsp;notification_host_flap</samp>](## "mac_address_table.notification_host_flap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "mac_address_table.notification_host_flap.logging") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "mac_address_table.notification_host_flap.detection") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "mac_address_table.notification_host_flap.detection.window") | Integer |  |  | Min: 2<br>Max: 300 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moves</samp>](## "mac_address_table.notification_host_flap.detection.moves") | Integer |  |  | Min: 2<br>Max: 10 |  |
     | [<samp>queue_monitor_length</samp>](## "queue_monitor_length") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;notifying</samp>](## "queue_monitor_length.notifying") | Boolean |  |  |  | If True, `eos_designs` will configure `queue-monitor length notifying` according to the<br>`platform_settings.[].feature_support.queue_monitor_length_notify` setting.<br> |
@@ -184,14 +189,16 @@
 
         # Last VLAN ID.
         ending: <int; 2-4094; required>
-
-    # MAC address-table aging time.
-    # Use to change the EOS default of 300.
     mac_address_table:
 
       # Aging time in seconds 10-1000000.
       # Enter 0 to disable aging.
       aging_time: <int; 0-1000000>
+      notification_host_flap:
+        logging: <bool>
+        detection:
+          window: <int; 2-300>
+          moves: <int; 2-10>
     queue_monitor_length:
       enabled: <bool; required>
 

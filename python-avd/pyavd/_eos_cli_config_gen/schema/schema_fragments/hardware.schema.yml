@@ -15,6 +15,9 @@ keys:
           mechanism:
             type: str
             valid_values: ["algomatch", "none", "tcam"]
+          update_default_result_permit:
+            type: bool
+            description: Accept the packets when access-list is being updated.
       speed_groups:
         type: list
         primary_key: speed_group
