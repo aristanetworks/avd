@@ -169,3 +169,14 @@
     padding: .6rem .8rem;
     color: var(--md-primary-fg-color--light);
 }
+
+/* Versioning colors*/
+.v-gr {
+    color: green
+}
+.v-r {
+    color: red
+}
+.v-ygr {
+    color: yellowgreen
+}
