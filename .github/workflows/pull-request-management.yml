@@ -184,7 +184,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install molecule "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection]"
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -220,7 +220,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install molecule molecule-plugins[docker] "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection]"
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -294,7 +294,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install molecule "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection]"       
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -335,7 +335,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install molecule "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection]" 
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -376,7 +376,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install molecule "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection]"
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -413,7 +413,7 @@ jobs:
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install molecule "${{ matrix.ansible_version}}" --no-cache-dir /tmp/pyavd/*.whl "$WHEEL_FILE[ansible-collection]"
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -457,7 +457,7 @@ jobs:
       - name: "Install pyavd and Ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
+          pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
           pip install ${{ matrix.pip_installation }} --upgrade
       - name: "Run ansible-test sanity"
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
@@ -486,8 +486,7 @@ jobs:
       - name: "Install pyavd and ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-          python -m pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]"
-          pip install "ansible-core<2.19.0"
+          pip install "ansible-core<2.19.0" --no-cache-dir "$WHEEL_FILE[ansible-collection]"
       - name: "Run ansible-test units"
         run: |
           cd ansible_collections/arista/avd/
@@ -514,7 +513,8 @@ jobs:
             3.13
       - name: "Install Python requirements"
         run: |
-          pip install "ansible-core<2.19.0" -r .github/requirements-ci-dev.txt --upgrade
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
+          pip install "ansible-core<2.19.0" --no-cache-dir "$WHEEL_FILE[ansible-collection]"
       - name: "Run ansible-test integration test cases"
         run: |
           cd ansible_collections/arista/avd/
