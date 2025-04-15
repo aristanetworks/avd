@@ -110,6 +110,7 @@ The plugin offers the following capabilities:
           #   hide_statuses:
           #     - success
           #     - skipped
+        strict_mode: true
 ```
 
 ## Authors

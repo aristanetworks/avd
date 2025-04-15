@@ -174,4 +174,5 @@ EXAMPLES = r"""
           #   hide_statuses:
           #     - success
           #     - skipped
+        strict_mode: true
 """
