@@ -511,17 +511,6 @@ jobs:
           python-version: |
             3.12
             3.13
-      # - name: Download pyavd Artifact
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: pyavd
-      #     path: /tmp/
-      # - name: Extract pyavd wheel package
-      #   run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
-      # - name: "Install Python requirements"
-      #   run: |
-      #     WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
-      #     pip install "ansible-core<2.19.0" --no-cache-dir "$WHEEL_FILE[ansible-collection]"
       - name: "Install Python requirements"
         run: |
           pip install "ansible-core<2.19.0" -r .github/requirements-ci-dev.txt --upgrade
@@ -615,9 +604,17 @@ jobs:
             3.11
             3.12
             3.13
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: "Install Python & Ansible requirements"
         run: |
-          pip install -r .github/requirements-ci-dev.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
+          pip install --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Download collection
         uses: actions/download-artifact@v4
         with:
