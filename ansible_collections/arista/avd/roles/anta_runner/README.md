@@ -331,7 +331,7 @@ anta_reports_dir: "{{ anta_dir }}/{{ anta_reports_dir_name }}"
 
 # Paths for the generated reports. Supports JSON, CSV, and Markdown.
 anta_report_json_path: "{{ anta_reports_dir + '/anta_report.json' if anta_reports_dir else none }}"
-anta_report_md_path: "{{ anta_reports_dir + '/anta_report.md' if anta_reports_dir else none}}"
+anta_report_md_path: "{{ anta_reports_dir + '/anta_report.md' if anta_reports_dir else none }}"
 anta_report_csv_path: "{{ anta_reports_dir + '/anta_report.csv' if anta_reports_dir else none }}"
 ```
 
@@ -340,11 +340,14 @@ anta_report_csv_path: "{{ anta_reports_dir + '/anta_report.csv' if anta_reports_
 
     **Examples:**
 
-    To disable the creation of AVD-generated catalogs and CSV report:
-
     ```yaml
-    avd_catalogs_dir: null
-    anta_report_csv_path: null
+    avd_catalogs_dir: null      # Disable AVD-generated catalogs
+    user_catalogs_dir: null     # Disable user-defined catalogs, if any
+    anta_runner_logs_dir: null  # Disable all ANTA log files
+    anta_reports_dir: null      # Disable all report files
+    anta_report_json_path: null # Disable JSON report
+    anta_report_md_path: null   # Disable Markdown report
+    anta_report_csv_path: null  # Disable CSV Report
     ```
 
 ## AVD-generated Catalog Test Index
