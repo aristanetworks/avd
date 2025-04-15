@@ -511,6 +511,13 @@ jobs:
           python-version: |
             3.12
             3.13
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/
+      - name: Extract pyavd wheel package
+        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
       - name: "Install Python requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
