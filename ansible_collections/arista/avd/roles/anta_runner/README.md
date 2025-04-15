@@ -321,8 +321,7 @@ user_catalogs_dir: "{{ anta_dir }}/{{ user_catalogs_dir_name }}"
 avd_catalogs_dir_name: "avd_catalogs"
 avd_catalogs_dir: "{{ anta_dir }}/{{ avd_catalogs_dir_name }}"
 
-# Directory for the ANTA debug's logs. When running the role with `-vvv`,
-# all ANTA logs will be stored here by batch.
+# Directory for ANTA logs. ANTA logs are stored in per-batch files.
 anta_runner_logs_dir_name: "logs"
 anta_runner_logs_dir: "{{ anta_dir }}/{{ anta_runner_logs_dir_name }}"
 
@@ -331,10 +330,22 @@ anta_reports_dir_name: "reports"
 anta_reports_dir: "{{ anta_dir }}/{{ anta_reports_dir_name }}"
 
 # Paths for the generated reports. Supports JSON, CSV, and Markdown.
-anta_report_json_path: "{{ anta_reports_dir }}/anta_report.json"
-anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
-anta_report_csv_path: "{{ anta_reports_dir }}/anta_report.csv"
+anta_report_json_path: "{{ anta_reports_dir + '/anta_report.json' if anta_reports_dir else none }}"
+anta_report_md_path: "{{ anta_reports_dir + '/anta_report.md' if anta_reports_dir else none}}"
+anta_report_csv_path: "{{ anta_reports_dir + '/anta_report.csv' if anta_reports_dir else none }}"
 ```
+
+!!! tip
+    You can disable the generation of certain files by setting their corresponding path variables to `null`.
+
+    **Examples:**
+
+    To disable the creation of AVD-generated catalogs and CSV report:
+
+    ```yaml
+    avd_catalogs_dir: null
+    anta_report_csv_path: null
+    ```
 
 ## AVD-generated Catalog Test Index
 

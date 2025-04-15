@@ -33,6 +33,6 @@ anta_reports_dir_name: "reports"
 anta_reports_dir: "{{ anta_dir }}/{{ anta_reports_dir_name }}"
 
 # ANTA report paths.
-anta_report_json_path: "{{ anta_reports_dir }}/anta_report.json"
-anta_report_md_path: "{{ anta_reports_dir }}/anta_report.md"
-anta_report_csv_path: "{{ anta_reports_dir }}/anta_report.csv"
+anta_report_json_path: "{{ anta_reports_dir + '/anta_report.json' if anta_reports_dir else none }}"
+anta_report_md_path: "{{ anta_reports_dir + '/anta_report.md' if anta_reports_dir else none}}"
+anta_report_csv_path: "{{ anta_reports_dir + '/anta_report.csv' if anta_reports_dir else none }}"
