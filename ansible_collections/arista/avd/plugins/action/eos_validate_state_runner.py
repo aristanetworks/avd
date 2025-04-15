@@ -9,7 +9,6 @@ from json import dump
 from typing import TYPE_CHECKING, Any
 
 from ansible.errors import AnsibleActionFail
-from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.eos_validate_state_utils import AnsibleEOSDevice, ConfigManager, get_anta_results
@@ -19,6 +18,12 @@ from ansible_collections.arista.avd.plugins.plugin_utils.utils import (
     get_validated_path,
     get_validated_value,
 )
+
+# AnsibleDumper moved in the devel version of Ansible and it makes sanity sad.
+try:
+    from ansible._internal._yaml._dumper import AnsibleDumper
+except ImportError:
+    from ansible.parsing.yaml.dumper import AnsibleDumper
 
 if TYPE_CHECKING:
     from collections.abc import Mapping
