@@ -899,6 +899,8 @@ router_ospf:
     - Ethernet22
     - Ethernet23
     redistribute:
+      connected:
+        enabled: true
       bgp:
         enabled: true
 service_routing_protocols_model: multi-agent

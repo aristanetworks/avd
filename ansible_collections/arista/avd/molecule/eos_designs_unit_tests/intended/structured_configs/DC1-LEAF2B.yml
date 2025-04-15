@@ -837,6 +837,8 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet24
     redistribute:
+      connected:
+        enabled: true
       bgp:
         enabled: true
 service_routing_protocols_model: multi-agent
