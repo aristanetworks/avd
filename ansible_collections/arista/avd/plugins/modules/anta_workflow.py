@@ -124,6 +124,12 @@ options:
             type: list
             elements: str
             choices: ["success", "failure", "error", "skipped", "unset"]
+  strict_mode:
+    description: |-
+      Controls the final status of the Ansible task based on the aggregated ANTA test results.
+      It determines if the plugin reports `failed: true` or `changed: true` back to Ansible when ANTA tests fail or error.
+    type: bool
+    default: false
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
