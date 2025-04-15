@@ -26,7 +26,6 @@ wan_router:
               dhcp_accept_default_route: true
               ip_address: 172.16.0.2/30
               peer_ip: 172.16.0.1/30
-              ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
 
 wan_carriers:
   - name: ATT
@@ -36,19 +35,6 @@ wan_carriers:
 wan_path_groups:
   - id: 100
     name: INET
-
-ipv4_acls:
-  - name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
-    entries:
-      - sequence: 15
-        action: deny
-        protocol: ip
-        source: any
-        destination: interface_ip
-      - action: permit
-        protocol: ip
-        source: peer_ip
-        destination: interface_ip
 
 cv_pathfinder_regions:
   - name: AVD_Land_East
@@ -76,36 +62,13 @@ tenants:
   - name: TenantA
     mac_vrf_vni_base: 1000
     vrfs:
-      - name: default
-        vrf_id: 1
-        # Checking static route on VRF default is redistributed in a route-map
-        static_routes:
-          - destination_address_prefix: 66.66.66.0/24
-            gateway: 172.17.0.0
-            nodes: [missing-default-virtual-topology-path-groups]
       - name: PROD
-        # Showing that wan_vni and vrf_id can be different. `vrf_id` influences the subinterface id.
         vrf_id: 142
-        svis:
-          - id: 100
-            name: VLAN100
-            ip_address_virtual: 10.0.100.1/241
 
 wan_virtual_topologies:
   vrfs:
     - name: PROD
       wan_vni: 2
-  control_plane_virtual_topology:
-    name: CUSTOM-CP-POLICY
-    lowest_hop_count: true
-    constraints:
-      jitter: 5
-    path_groups:
-      - names: [INET]
-        preference: preferred
-      - names: [MPLS]
-        preference: alternate
-
   policies:
     - name: DEFAULT-POLICY
       default_virtual_topology:
