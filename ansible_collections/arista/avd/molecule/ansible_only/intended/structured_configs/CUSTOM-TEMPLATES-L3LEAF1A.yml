@@ -50,6 +50,24 @@ ethernet_interfaces:
   peer: CUSTOM-TEMPLATES-L2LEAF1B
   peer_interface: Ethernet1
   peer_type: l2leaf
+- name: Ethernet8
+  description: TEST_CUSTOM_PREFIX_CORE_INTERFACES_RTR-1_Ethernet2
+  shutdown: false
+  mtu: 9214
+  peer: RTR-1
+  peer_interface: Ethernet2
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet7
+  description: TEST_CUSTOM_PREFIX_L3_EDGE_RTR-1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  peer: RTR-1
+  peer_interface: Ethernet1
+  peer_type: other
+  switchport:
+    enabled: false
 - name: Ethernet11
   description: TEST_CUSTOM_PREFIX_SERVER-1_Nic1_management
   shutdown: false
