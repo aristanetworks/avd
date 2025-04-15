@@ -336,7 +336,7 @@ anta_report_csv_path: "{{ anta_reports_dir + '/anta_report.csv' if anta_reports_
 ```
 
 !!! tip
-    You can disable the generation of certain files by setting their corresponding path variables to `null`.
+    You can disable the generation of certain files by setting their corresponding directory or path variables to `null`.
 
     **Examples:**
 
