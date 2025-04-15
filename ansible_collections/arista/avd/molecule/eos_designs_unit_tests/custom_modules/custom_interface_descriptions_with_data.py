@@ -33,6 +33,12 @@ class CustomAvdInterfaceDescriptions(AvdInterfaceDescriptions):
         if data.link_type == "underlay_l2":
             return f"{self._custom_description_prefix}_{link_peer}_{data.peer_interface}"
 
+        if data.link_type == "l3_edge":
+            return f"{self._custom_description_prefix}_L3_EDGE_{link_peer}_{data.peer_interface}"
+
+        if data.link_type == "core_interfaces":
+            return f"{self._custom_description_prefix}_CORE_INTERFACES_{link_peer}_{data.peer_interface}"
+
         return ""
 
     def underlay_port_channel_interface(self, data: InterfaceDescriptionData) -> str:
