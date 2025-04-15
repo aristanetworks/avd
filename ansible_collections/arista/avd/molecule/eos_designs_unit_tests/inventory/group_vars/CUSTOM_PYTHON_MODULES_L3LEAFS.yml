@@ -48,3 +48,17 @@ tenants:
             tags: ['opzone']
             enabled: true
             ip_address_virtual: 10.1.10.1/24
+
+l3_edge:
+  p2p_links:
+    - id: 1
+      nodes: [CUSTOM-PYTHON_MODULES-L3LEAF1A, RTR-1]
+      interfaces: [ Ethernet10,  Ethernet1 ]
+      include_in_underlay_protocol: false
+
+core_interfaces:
+  p2p_links:
+    - id: 1
+      nodes: [CUSTOM-PYTHON_MODULES-L3LEAF1A, RTR-1]
+      interfaces: [ Ethernet11,  Ethernet2 ]
+      include_in_underlay_protocol: false

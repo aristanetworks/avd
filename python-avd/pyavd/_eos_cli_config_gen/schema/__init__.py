@@ -13064,12 +13064,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AccessList(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"mechanism": {"type": str}}
+            _fields: ClassVar[dict] = {"mechanism": {"type": str}, "update_default_result_permit": {"type": bool}}
             mechanism: Literal["algomatch", "none", "tcam"] | None
+            update_default_result_permit: bool | None
+            """Accept the packets when access-list is being updated."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, mechanism: Literal["algomatch", "none", "tcam"] | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    mechanism: Literal["algomatch", "none", "tcam"] | None | UndefinedType = Undefined,
+                    update_default_result_permit: bool | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     AccessList.
 
@@ -13078,6 +13085,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         mechanism: mechanism
+                        update_default_result_permit: Accept the packets when access-list is being updated.
 
                     """
 
