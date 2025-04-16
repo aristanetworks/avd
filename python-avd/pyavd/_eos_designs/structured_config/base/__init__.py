@@ -116,9 +116,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
                     vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
                 )
         else:
-            self.structured_config.static_routes.append_new(
-                vrf=self.inputs.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway
-            )
+            self.structured_config.static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway)
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
@@ -133,9 +131,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
                 )
             return
 
-        self.structured_config.ipv6_static_routes.append_new(
-            vrf=self.inputs.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway
-        )
+        self.structured_config.ipv6_static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway)
 
     @structured_config_contributor
     def service_routing_protocols_model(self) -> None:
