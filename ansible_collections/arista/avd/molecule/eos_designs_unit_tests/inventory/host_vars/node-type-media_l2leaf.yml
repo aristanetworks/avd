@@ -1,0 +1,11 @@
+type: media_l2leaf
+
+media_l2leaf:
+  nodes:
+    - name: node-type-media_l2leaf
+      loopback_ipv4_pool: 192.168.255.0/24
+      id: 1
+      bgp_as: 65001
+
+ptp_settings:
+  enabled: true

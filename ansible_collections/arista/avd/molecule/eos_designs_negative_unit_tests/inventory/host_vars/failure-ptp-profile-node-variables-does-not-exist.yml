@@ -1,0 +1,70 @@
+# failure-ptp-profile-node-variables-does-not-exist
+# ---
+# type: spine
+
+# spine:
+#   defaults:
+#     id: 10
+#     platform: vEOS-LAB
+#     loopback_ipv4_pool: 10.255.0.0/27
+#     bgp_as: 65200
+#     # ptp:
+#     #   enabled: true
+#     #   mode: boundary
+#     #   mode_one_step: true
+
+#   nodes:
+#     - name: failure-ptp-profile-node-variables-does-not-exist
+#       id: 1
+#       mgmt_ip: 192.168.0.11/24
+#       ptp:
+#         enabled: true
+#         # profile: adsfasdfsa
+#         # profile: smpte2059-2
+
+# ptp_settings:
+#   enabled: true
+#   profile: smpte2059-2
+
+# ptp_profiles:
+#   - profile: myptpprofile
+#     announce:
+#       interval: 2
+#       timeout: 10
+#     delay_req: 2
+#     sync_message:
+#       interval: 2
+#     transport: ipv4
+
+---
+type: l3spine
+l3spine:
+  nodes:
+    - name: failure-ptp-profile-node-variables-does-not-exist
+      id: 1
+      loopback_ipv4_pool: 192.168.100.0/24
+      ptp:
+        enabled: true
+
+l3_edge:
+  p2p_links:
+    - ip: [10.10.10.0/31, 10.10.10.1/31]
+      nodes: [peer1, failure-p2p_links-more-than-2-nodes]
+      interfaces: [Ethernet1, Ethernet1]
+
+ptp_settings:
+  enabled: true
+  profile: smpte2059-2
+
+ptp_profiles:
+  - profile: myptpprofile
+    announce:
+      interval: 2
+      timeout: 10
+    delay_req: 2
+    sync_message:
+      interval: 2
+    transport: ipv4
+
+expected_error_message: >-
+  p2p_links model is intended to work for only two devices per entry.
