@@ -47,6 +47,24 @@ ethernet_interfaces:
   peer: CUSTOM-PYTHON_MODULES-L3LEAF2
   peer_interface: Ethernet1.1
   peer_type: l3leaf
+- name: Ethernet11
+  description: TEST_CUSTOM_PREFIX_CORE_INTERFACES_RTR-1_Ethernet2
+  shutdown: false
+  mtu: 9214
+  peer: RTR-1
+  peer_interface: Ethernet2
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet10
+  description: TEST_CUSTOM_PREFIX_L3_EDGE_RTR-1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  peer: RTR-1
+  peer_interface: Ethernet1
+  peer_type: other
+  switchport:
+    enabled: false
 hostname: CUSTOM-PYTHON_MODULES-L3LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
