@@ -7378,6 +7378,8 @@ class EosDesigns(EosDesignsRootModel):
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
                 number: int | None
                 """Subinterface number."""
@@ -7399,6 +7401,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                """
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
 
                 if TYPE_CHECKING:
 
@@ -7409,6 +7418,8 @@ class EosDesigns(EosDesignsRootModel):
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SubinterfacesItem.
@@ -7430,6 +7441,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
 
                         """
 
@@ -11029,6 +11044,8 @@ class EosDesigns(EosDesignsRootModel):
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
                 number: int | None
                 """Subinterface number."""
@@ -11050,6 +11067,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                """
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
 
                 if TYPE_CHECKING:
 
@@ -11060,6 +11084,8 @@ class EosDesigns(EosDesignsRootModel):
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SubinterfacesItem.
@@ -11081,6 +11107,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
 
                         """
 
@@ -17352,6 +17382,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "short_esi": {"type": str},
                                 "vlan_id": {"type": int},
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             }
                             number: int | None
                             """Subinterface number."""
@@ -17373,6 +17405,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                            eos_cli_config_gen.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -17383,6 +17422,8 @@ class EosDesigns(EosDesignsRootModel):
                                     short_esi: str | None | UndefinedType = Undefined,
                                     vlan_id: int | None | UndefinedType = Undefined,
                                     encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     SubinterfacesItem.
@@ -17404,6 +17445,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                           eos_cli_config_gen.
 
                                     """
 
@@ -36175,6 +36220,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bfd": {"type": bool},
                         "bfd_timers": {"type": BfdTimers},
                         "ebgp_multihop": {"type": int},
+                        "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
                         "password": {"type": str},
                         "passive": {"type": bool},
@@ -36257,6 +36303,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ebgp_multihop: int | None
                     """Time-to-live in range of hops."""
+                    next_hop_peer: bool | None
                     next_hop_self: bool | None
                     password: str | None
                     passive: bool | None
@@ -36321,6 +36368,7 @@ class EosDesigns(EosDesignsRootModel):
                             bfd: bool | None | UndefinedType = Undefined,
                             bfd_timers: BfdTimers | UndefinedType = Undefined,
                             ebgp_multihop: int | None | UndefinedType = Undefined,
+                            next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
                             password: str | None | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
@@ -36390,6 +36438,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ebgp_multihop: Time-to-live in range of hops.
+                                next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
                                 password: password
                                 passive: passive
@@ -40521,6 +40570,7 @@ class EosDesigns(EosDesignsRootModel):
                             "bfd": {"type": bool},
                             "bfd_timers": {"type": BfdTimers},
                             "ebgp_multihop": {"type": int},
+                            "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
                             "password": {"type": str},
                             "passive": {"type": bool},
@@ -40603,6 +40653,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ebgp_multihop: int | None
                         """Time-to-live in range of hops."""
+                        next_hop_peer: bool | None
                         next_hop_self: bool | None
                         password: str | None
                         passive: bool | None
@@ -40667,6 +40718,7 @@ class EosDesigns(EosDesignsRootModel):
                                 bfd: bool | None | UndefinedType = Undefined,
                                 bfd_timers: BfdTimers | UndefinedType = Undefined,
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
+                                next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
                                 password: str | None | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
@@ -40736,6 +40788,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ebgp_multihop: Time-to-live in range of hops.
+                                    next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
                                     password: password
                                     passive: passive

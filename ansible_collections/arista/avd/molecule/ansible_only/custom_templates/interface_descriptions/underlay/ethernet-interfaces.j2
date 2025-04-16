@@ -11,4 +11,16 @@
 {%-     else -%}
 {{ description_prefix }}_{{ link.peer | upper }}_{{ link.peer_interface }}
 {%-     endif -%}
+{%- elif link.type is arista.avd.defined('l3_edge') -%}
+{%-     if switch.struct_cfg.tags is arista.avd.defined() -%}
+{{ description_prefix }}_L3_EDGE_{{ link.peer | upper }}_{{ link.peer_interface }} {{ switch.struct_cfg.tags | arista.avd.default() }}
+{%-     else -%}
+{{ description_prefix }}_L3_EDGE_{{ link.peer | upper }}_{{ link.peer_interface }}
+{%-     endif -%}
+{%- elif link.type is arista.avd.defined('core_interfaces') -%}
+{%-     if switch.struct_cfg.tags is arista.avd.defined() -%}
+{{ description_prefix }}_CORE_INTERFACES_{{ link.peer | upper }}_{{ link.peer_interface }} {{ switch.struct_cfg.tags | arista.avd.default() }}
+{%-     else -%}
+{{ description_prefix }}_CORE_INTERFACES_{{ link.peer | upper }}_{{ link.peer_interface }}
+{%-     endif -%}
 {%- endif -%}
