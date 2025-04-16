@@ -11,6 +11,7 @@ bgp_peer_groups:
     password: "htm4AZe9mIQOO1uiMuGgYQ=="
     listen_range_prefixes:
       - 192.168.130.0/24
+      - 192.168.131.0/24
 
 wan_stun_dtls_disable: true
 
@@ -84,6 +85,13 @@ wan_rr:
           static_routes:
             - prefix: 0.0.0.0/0
           peer_ip: 10.8.8.9
+    - name: autovpn-rr3
+      id: 3
+      wan_role: client
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: NOC
+          ip_address: dhcp
 
 wan_path_groups:
   - name: MPLS
@@ -98,6 +106,8 @@ wan_path_groups:
     id: 102
     # Testing this knob for AutoVPN
     excluded_from_default_policy: true
+  - name: NET
+    id: 102
 
 wan_carriers:
   - name: Comcast
@@ -108,6 +118,9 @@ wan_carriers:
     trusted: true
   - name: MPLS-SP-1
     path_group: MPLS
+    trusted: true
+  - name: NOC
+    path_group: NET
     trusted: true
 
 # SVI and L2VLAN is inserted to ensure these are *not* rendered.
@@ -175,6 +188,11 @@ wan_virtual_topologies:
               preference: preferred
             - names: [INET]
               preference: alternate
+    - name: MISSING-LOAD-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: IT
 
 application_classification:
   application_profiles:

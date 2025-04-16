@@ -10,7 +10,7 @@ application_traffic_recognition:
     ipv4_prefixes:
     - name: PFX-LOCAL-VTEP-IP
       prefix_values:
-      - 192.168.131.2/32
+      - 192.168.255.1/32
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
@@ -19,24 +19,21 @@ application_traffic_recognition:
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
-  - name: IT
-  - name: VOICE
-  - name: VIDEO
 config_end: true
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
-  ip_address: 192.168.131.2/32
+  ip_address: 192.168.255.1/32
   flow_tracker:
     hardware: FLOW-TRACKER
 enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: ATT_888
+  description: ATT
   shutdown: false
-  ip_address: 10.8.8.8/31
+  ip_address: 10.1.1.1/24
   peer_type: l3_interface
   switchport:
     enabled: false
@@ -54,23 +51,23 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: autovpn-rr2
+hostname: missing-wan-control-load-balance-policy
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.31.2:0
+    extcommunities: soo 192.168.42.1:0
 ip_routing: true
 ip_security:
   ike_policies:
-  - name: AUTOVPN-IKE
-    local_id: 192.168.131.2
+  - name: CP-IKE-POLICY
+    local_id: 192.168.255.1
   sa_policies:
-  - name: AUTOVPN-SA
+  - name: CP-SA-POLICY
   profiles:
-  - name: AUTOVPN
-    ike_policy: AUTOVPN-IKE
-    sa_policy: AUTOVPN-SA
+  - name: CP-PROFILE
+    ike_policy: CP-IKE-POLICY
+    sa_policy: CP-SA-POLICY
     connection: start
     shared_key: ABCDEF1234567890
     dpd:
@@ -83,21 +80,31 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.31.2/32
+  ip_address: 192.168.42.1/32
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_security:
+  ssl_profiles:
+  - name: STUN-DTLS
+    tls_versions: '1.2'
+    trust_certificate:
+      certificates:
+      - aristaDeviceCertProvisionerDefaultRootCA.crt
+    certificate:
+      file: STUN-DTLS.crt
+      key: STUN-DTLS.key
 metadata:
-  fabric_name: EOS_DESIGNS_UNIT_TESTS
+  fabric_name: EOS_DESIGNS_FAILURES
 platform:
   sfe:
-    data_plane_cpu_allocation_max: 2
+    data_plane_cpu_allocation_max: 1
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 192.168.31.0/24 eq 32
+    action: permit 192.168.42.0/24 eq 32
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -106,7 +113,7 @@ route_maps:
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
     set:
-    - extcommunity soo 192.168.31.2:0 additive
+    - extcommunity soo 192.168.42.1:0 additive
 - name: RM-EVPN-EXPORT-VRF-DEFAULT
   sequence_numbers:
   - sequence: 10
@@ -120,20 +127,17 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65000'
-  router_id: 192.168.31.2
+  router_id: 192.168.42.1
   maximum_paths:
     paths: 16
   updates:
     wait_install: true
-  bgp_cluster_id: 192.168.31.2
+  bgp_cluster_id: 192.168.42.1
   bgp:
     default:
       ipv4_unicast: false
   listen_ranges:
-  - prefix: 192.168.130.0/24
-    peer_group: WAN-OVERLAY-PEERS
-    remote_as: '65000'
-  - prefix: 192.168.131.0/24
+  - prefix: 192.168.255.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
   peer_groups:
@@ -151,24 +155,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
-  - name: WAN-RR-OVERLAY-PEERS
-    type: wan
-    remote_as: '65000'
-    update_source: Dps1
-    route_reflector_client: true
-    bfd: true
-    bfd_timers:
-      interval: 1000
-      min_rx: 1000
-      multiplier: 10
-    send_community: all
-    maximum_routes: 0
-    ttl_maximum_hops: 1
-  neighbors:
-  - ip_address: 192.168.131.1
-    peer_group: WAN-RR-OVERLAY-PEERS
-    peer: autovpn-rr1
-    description: autovpn-rr1_Dps1
   redistribute:
     connected:
       enabled: true
@@ -178,16 +164,11 @@ router_bgp:
     - name: WAN-OVERLAY-PEERS
       activate: true
       encapsulation: path-selection
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: true
-      encapsulation: path-selection
     next_hop:
       resolution_disabled: true
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
-      activate: false
-    - name: WAN-RR-OVERLAY-PEERS
       activate: false
   address_family_path_selection:
     bgp:
@@ -197,11 +178,9 @@ router_bgp:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
-    - name: WAN-RR-OVERLAY-PEERS
-      activate: true
   vrfs:
   - name: default
-    rd: 192.168.31.2:1
+    rd: 192.168.42.1:1
     route_targets:
       import:
       - address_family: evpn
@@ -215,40 +194,18 @@ router_bgp:
 router_path_selection:
   peer_dynamic_source: stun
   path_groups:
-  - name: MPLS
-    id: 100
   - name: INET
     id: 101
-    ipsec_profile: AUTOVPN
+  - name: MPLS
+    id: 101
+    ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Ethernet1
-    static_peers:
-    - router_ip: 192.168.131.1
-      name: autovpn-rr1
-      ipv4_addresses:
-      - 10.7.7.7
-  - name: LTE
-    id: 102
-  - name: NET
-    id: 102
   load_balance_policies:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
-      priority: 42
     - name: MPLS
-    - name: NET
-  - name: LB-DEFAULT-AUTOVPN-POLICY-IT
-    path_groups:
-    - name: MPLS
-    - name: INET
-      priority: 2
-  - name: LB-PROD-AUTOVPN-POLICY-VOICE
-    path_groups:
-    - name: INET
-  - name: LB-PROD-AUTOVPN-POLICY-VIDEO
-    path_groups:
-    - name: INET
   - name: LB-PROD-AUTOVPN-POLICY-DEFAULT
     path_groups:
     - name: INET
@@ -258,19 +215,9 @@ router_path_selection:
     - id: 10
       application_profile: APP-PROFILE-CONTROL-PLANE
       load_balance: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
-    - id: 20
-      application_profile: IT
-      load_balance: LB-DEFAULT-AUTOVPN-POLICY-IT
   - name: PROD-AUTOVPN-POLICY
     default_match:
       load_balance: LB-PROD-AUTOVPN-POLICY-DEFAULT
-    rules:
-    - id: 10
-      application_profile: VOICE
-      load_balance: LB-PROD-AUTOVPN-POLICY-VOICE
-    - id: 20
-      application_profile: VIDEO
-      load_balance: LB-PROD-AUTOVPN-POLICY-VIDEO
   vrfs:
   - name: default
     path_selection_policy: DEFAULT-AUTOVPN-POLICY-WITH-CP
@@ -283,20 +230,18 @@ router_path_selection:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-static_routes:
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 10.8.8.9
 stun:
   server:
     local_interfaces:
     - Ethernet1
+    ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: autovpn-rr2_VTEP
+    description: missing-wan-control-load-balance-policy_VTEP
     vxlan:
       source_interface: Dps1
       udp_port: 4789
