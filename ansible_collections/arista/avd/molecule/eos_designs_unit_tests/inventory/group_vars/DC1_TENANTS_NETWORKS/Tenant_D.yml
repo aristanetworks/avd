@@ -115,6 +115,9 @@ tenant_d:
         ospf:
           enabled: true
           process_id: 123
+          bfd: true
+          redistribute_bgp:
+            enabled: true
         svis:
           - id: 1234
             name: VRF_DEFAULT_SVI_WITH_OSPF
