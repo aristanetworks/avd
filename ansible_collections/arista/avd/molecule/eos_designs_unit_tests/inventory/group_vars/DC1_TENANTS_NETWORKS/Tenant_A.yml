@@ -297,6 +297,8 @@ tenant_a:
           router_id: diagnostic_loopback
           redistribute_connected:
             enabled: true
+          redistribute_bgp:
+            enabled: false
         l3_interfaces:
           - interfaces:
               - Ethernet22

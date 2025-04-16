@@ -839,8 +839,6 @@ router_ospf:
     redistribute:
       connected:
         enabled: true
-      bgp:
-        enabled: true
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
