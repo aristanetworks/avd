@@ -339,12 +339,12 @@ ip_routing: true
 ip_virtual_router_mac_address: 00:dc:00:00:00:0a
 ipv6_static_routes:
 - vrf: Tenant_D_OP_Zone
-  destination_address_prefix: ::/0
-  gateway: 2001:db8:311::4
+  prefix: ::/0
+  next_hop: 2001:db8:311::4
   name: IPv6-test-2
 - vrf: Tenant_D_OP_Zone
-  destination_address_prefix: 2001:dba::/32
-  gateway: 2001:db8:310::1
+  prefix: 2001:dba::/32
+  next_hop: 2001:db8:310::1
   track_bfd: true
   name: Track-bfd-network-services
 is_deployed: true
@@ -913,18 +913,18 @@ spanning_tree:
     priority: 4096
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 - vrf: Tenant_D_OP_Zone
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 10.3.11.4
+  prefix: 0.0.0.0/0
+  next_hop: 10.3.11.4
 - vrf: Tenant_D_OP_Zone
-  destination_address_prefix: 1.1.1.0/24
-  gateway: 10.3.11.4
+  prefix: 1.1.1.0/24
+  next_hop: 10.3.11.4
   track_bfd: true
   name: Track-bfd-network-services
 - vrf: Tenant_D_OP_Zone
-  destination_address_prefix: 10.3.11.0/24
+  prefix: 10.3.11.0/24
   interface: Vlan411
   name: VARP
 tcam_profile:
