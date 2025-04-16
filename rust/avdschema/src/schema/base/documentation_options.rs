@@ -5,7 +5,7 @@
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
-/// Special options used for generating documentation
+/// Settings used for generating documentation for all other types than dict.
 #[skip_serializing_none]
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
@@ -17,7 +17,7 @@ pub struct DocumentationOptions {
     pub table: Option<String>,
 }
 
-/// Special options used for generating documentation
+/// Settings options used for generating documentation for a dict.
 #[skip_serializing_none]
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

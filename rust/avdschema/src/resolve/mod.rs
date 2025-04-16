@@ -20,6 +20,8 @@ pub fn resolve_schema<'a>(
     schema.resolve(store)
 }
 
+/// Inplace resolve all $ref in Self.
+/// All $ref are are looked up in the provided Store.
 trait Resolve {
     fn resolve(&mut self, store: &Store) -> Result<(), SchemaResolverError>
     where
@@ -101,6 +103,7 @@ impl Resolve for AnySchema {
     }
 }
 
+/// Returns bool indicating if the two given schemas are of the same type.
 fn is_same_schema(a: &AnySchema, b: &AnySchema) -> bool {
     matches!(
         (a, b),

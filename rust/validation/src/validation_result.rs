@@ -7,6 +7,8 @@ use serde::Serialize;
 
 use crate::{context::Context, feedback::Feedback};
 
+/// Result of coercion and/or validation.
+/// Holds multiple Feedback objects pointing to each Issue.
 #[derive(Debug, Serialize)]
 pub struct ValidationResult {
     pub violations: Vec<Feedback>,

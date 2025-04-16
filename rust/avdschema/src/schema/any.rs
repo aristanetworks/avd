@@ -11,7 +11,8 @@ use crate::utils::load::LoadFromFragments;
 
 use super::{boolean::Bool, dict::Dict, int::Int, list::List, str::Str};
 
-#[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
+/// Enum covering all AVD Schema types.
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, derive_more::From)]
 #[serde(tag = "type", rename_all = "lowercase")]
 pub enum AnySchema {
     Bool(Bool),
@@ -20,37 +21,14 @@ pub enum AnySchema {
     List(List),
     Dict(Dict),
 }
-impl From<Bool> for AnySchema {
-    fn from(value: Bool) -> Self {
-        Self::Bool(value)
-    }
-}
-impl From<Int> for AnySchema {
-    fn from(value: Int) -> Self {
-        Self::Int(value)
-    }
-}
-impl From<Str> for AnySchema {
-    fn from(value: Str) -> Self {
-        Self::Str(value)
-    }
-}
-impl From<List> for AnySchema {
-    fn from(value: List) -> Self {
-        Self::List(value)
-    }
-}
-impl From<Dict> for AnySchema {
-    fn from(value: Dict) -> Self {
-        Self::Dict(value)
-    }
-}
+
 impl Dump for AnySchema {}
 impl Load for AnySchema {}
 #[cfg(feature = "dump_load_files")]
 impl LoadFromFragments for AnySchema {}
 
 impl From<&AnySchema> for String {
+    /// Get schema type as Python-like type string
     fn from(value: &AnySchema) -> Self {
         match value {
             AnySchema::Bool(_) => "bool".to_string(),
@@ -63,6 +41,7 @@ impl From<&AnySchema> for String {
 }
 
 impl From<&mut AnySchema> for String {
+    /// Get schema type as Python-like type string
     fn from(value: &mut AnySchema) -> Self {
         match value {
             AnySchema::Bool(_) => "bool".to_string(),

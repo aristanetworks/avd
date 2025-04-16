@@ -13,6 +13,7 @@ use super::{
     },
 };
 
+/// Enum for string formats allowed by the Str schema.
 #[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "snake_case")]
 pub enum Format {
@@ -28,6 +29,7 @@ pub enum Format {
     Mac,
 }
 
+/// AVD Schema for string data.
 #[skip_serializing_none]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

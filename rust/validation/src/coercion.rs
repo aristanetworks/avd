@@ -17,6 +17,13 @@ pub(crate) trait Coercion<T>
 where
     for<'x> &'x Self: TryFrom<&'x AnySchema>,
 {
+    /// Recursively coerce the given value into the type specified by the schema.
+    /// Also insert default values since dynamic keys and dynamic values may rely on these.
+    ///
+    /// Coercion is called before validation, to allow a more "loose" validation of types.
+    /// This is especially useful when the input is coming from YAML where all types are inferred from strings.
+    ///
+    ///  TODO: Decide whether we should limit this to only coerce according to `convert_types`.
     fn coerce(&self, input: &mut Value, ctx: &mut Context);
 }
 impl Coercion<bool> for Bool {

@@ -4,6 +4,9 @@
   ~ that can be found in the LICENSE file.
   -->
 
+> [!WARNING]
+> This code is work-in-progress and is not currently being used by AVD.
+
 ```mermaid
 ---
 title: Rust crate layout

@@ -8,6 +8,8 @@ use crate::{
     utils::{dump::Dump, load::Load},
 };
 
+/// Schema store containing the AVD schemas.
+/// The store is used as entrypoint for validation and when resolving a $ref pointing to a specific schema.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
 pub struct Store {
     pub eos_cli_config_gen: AnySchema,
@@ -33,6 +35,7 @@ pub enum Schema {
 impl TryFrom<&str> for Schema {
     type Error = SchemaStoreError;
 
+    /// Try to get the Schema Enum variant for the string.
     fn try_from(value: &str) -> Result<Self, Self::Error> {
         match value {
             "eos_designs" => Ok(Self::EosDesigns),
@@ -42,6 +45,7 @@ impl TryFrom<&str> for Schema {
     }
 }
 impl From<Schema> for String {
+    /// Get the schema name as string.
     fn from(value: Schema) -> Self {
         match value {
             Schema::EosDesigns => "eos_designs".to_string(),

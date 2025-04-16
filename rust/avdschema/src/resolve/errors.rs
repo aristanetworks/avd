@@ -6,6 +6,9 @@ use crate::store::SchemaStoreError;
 
 use super::walker::SchemaWalkError;
 
+// Errors in this file are returned by SchemaResolve.
+// Other utilities using SchemaResolve may also return these wrapped in their own Enums.
+
 #[derive(Debug, derive_more::Display, derive_more::From)]
 pub enum SchemaResolverError {
     SchemaType(SchemaType),

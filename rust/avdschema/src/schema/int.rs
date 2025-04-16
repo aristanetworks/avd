@@ -15,6 +15,7 @@ use super::{
     },
 };
 
+/// AVD Schema for integer data.
 #[skip_serializing_none]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

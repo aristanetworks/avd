@@ -3,9 +3,6 @@
 // that can be found in the LICENSE file.
 #![deny(unused_crate_dependencies)]
 
-// Avoiding unused issues, since log is only used under python_bindings.
-use log as _;
-
 mod coercion;
 mod context;
 pub mod feedback;

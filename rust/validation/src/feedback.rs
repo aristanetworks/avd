@@ -4,38 +4,35 @@
 use serde::Serialize;
 use serde_json::Value;
 
+/// Feedback item carried in the Context under either `coercions` or `violations`
 #[derive(Debug, PartialEq, Serialize)]
 pub struct Feedback {
+    /// Data path which the feedback concerns.
     pub path: Vec<String>,
     pub issue: Issue,
 }
 
-#[derive(Debug, PartialEq, Serialize)]
+/// Issue is wrapped in Feedback and added to the Context during coercion and validation.
+#[derive(Debug, PartialEq, Serialize, derive_more::From)]
 pub enum Issue {
+    /// Violation found during validation.
     Validation(Violation),
+    /// Coercion performed during coercion.
     Coercion(CoercionNote),
+    /// Default value as specified in the schema was inserted into the data.
     DefaultValueInserted,
+    /// Some internal error occurred.
     InternalError { message: String },
 }
 
-impl From<CoercionNote> for Issue {
-    fn from(value: CoercionNote) -> Self {
-        Self::Coercion(value)
-    }
-}
-
-impl From<Violation> for Issue {
-    fn from(value: Violation) -> Self {
-        Self::Validation(value)
-    }
-}
-
+/// One coercion performed during recursive coercion.
 #[derive(Debug, PartialEq, Eq, Serialize)]
 pub struct CoercionNote {
     pub found: Value,
     pub made: Value,
 }
 
+/// One violation found during recursive validation.
 #[derive(Debug, PartialEq, Serialize)]
 pub enum Violation {
     /// The length is above the maximum allowed.
@@ -65,6 +62,7 @@ pub enum Violation {
     ValueNotUnique { other_path: Vec<String> },
 }
 
+/// Data Type used in Violation.
 #[derive(Debug, PartialEq, Serialize)]
 pub enum Type {
     Null,
@@ -74,7 +72,6 @@ pub enum Type {
     List,
     Dict,
 }
-
 impl From<&Value> for Type {
     fn from(value: &Value) -> Self {
         match value {
@@ -88,27 +85,10 @@ impl From<&Value> for Type {
     }
 }
 
-#[derive(Debug, PartialEq, Serialize)]
+/// List of valid values used in Violation
+#[derive(Debug, PartialEq, Serialize, derive_more::From)]
 pub enum ViolationValidValues {
     Bool(Vec<bool>),
     Int(Vec<i64>),
     Str(Vec<String>),
-}
-
-impl From<Vec<bool>> for ViolationValidValues {
-    fn from(value: Vec<bool>) -> Self {
-        ViolationValidValues::Bool(value)
-    }
-}
-
-impl From<Vec<i64>> for ViolationValidValues {
-    fn from(value: Vec<i64>) -> Self {
-        ViolationValidValues::Int(value)
-    }
-}
-
-impl From<Vec<String>> for ViolationValidValues {
-    fn from(value: Vec<String>) -> Self {
-        ViolationValidValues::Str(value)
-    }
 }

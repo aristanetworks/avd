@@ -11,7 +11,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use serde_with::skip_serializing_none;
 
-// DataValue marks the allowed types to be used as generics in Base, ValidValues and default values.
+/// DataValue marks the allowed types to be used as generics in Base, ValidValues and default values.
 pub trait DataValue {}
 impl DataValue for bool {}
 impl DataValue for i64 {}
@@ -21,6 +21,7 @@ impl DataValue for OrderMap<String, Value> {}
 // Vec<Value> corresponds to a list
 impl DataValue for Vec<Value> {}
 
+/// Schema properties shared by all schema types.
 #[skip_serializing_none]
 #[derive(Debug, Default, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

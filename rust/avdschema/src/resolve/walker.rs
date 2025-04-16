@@ -9,6 +9,8 @@ use ordermap::OrderMap;
 use crate::{any::AnySchema, dict::Dict, list::List};
 
 pub(crate) trait Walker {
+    /// Walk a schema according to the given path.
+    /// Returns a reference to the schema at the path or an error.
     fn walk<'a, I>(&self, path: Peekable<I>) -> Result<&AnySchema, SchemaWalkError>
     where
         I: Iterator<Item = &'a str> + std::fmt::Debug;

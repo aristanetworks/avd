@@ -9,6 +9,7 @@ use super::{
 use serde::{Deserialize, Serialize};
 use serde_with::skip_serializing_none;
 
+/// AVD Schema for boolean data.
 #[skip_serializing_none]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

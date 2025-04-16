@@ -12,18 +12,25 @@ use crate::{
 use super::Validation;
 
 pub trait StoreValidate<T> {
+    /// Entrypoint for validating a JSON document against the given schema name.
     fn validate_json(
         &self,
         json: &str,
         schema_name: T,
     ) -> Result<ValidationResult, StoreValidateError>;
 
+    /// Entrypoint for validating a YAML document against the given schema name.
     fn validate_yaml(
         &self,
         yaml: &str,
         schema_name: T,
     ) -> Result<ValidationResult, StoreValidateError>;
 
+    /// Coerce the given value recursively to match the types of the schema.
+    /// Returns a ValidationResult where only coercions have been populated.
+    ///
+    /// Used by external tools to coerce the data and inserting default values
+    /// before trying to resolve refs based on data paths.
     fn coerce_value(&self, value: &mut Value, schema_name: T) -> ValidationResult;
 }
 

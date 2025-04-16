@@ -10,9 +10,13 @@ use regex::Regex;
 
 use super::walker::Walker as _;
 
+/// Regex matching $ref syntax according the AVD metaschema.
 static REF_REGEX: LazyLock<Regex> =
     LazyLock::new(|| Regex::new("^([a-z][a-z_]*)#((/[a-z$][\\.a-z0-9_]*)*)$").unwrap());
 
+/// Resolve the given ref by first finding the relevant schema in in the store
+/// and afterwards walk that schema according to the path.
+/// Returns the schema pointed to by the ref, or an error for invalid ref.
 pub fn resolve_ref<'a>(ref_: &str, store: &'a Store) -> Result<&'a AnySchema, SchemaResolverError> {
     let captures = REF_REGEX.captures(ref_).ok_or(RefSyntax {
         schema_ref: ref_.to_owned(),
@@ -32,7 +36,7 @@ pub fn resolve_ref<'a>(ref_: &str, store: &'a Store) -> Result<&'a AnySchema, Sc
 
     let path_iter = schema_path.split('/').skip(1).peekable();
     let schema = store.get(schema_name.try_into()?);
-    schema.walk(path_iter).map_err(|err| err.into())
+    Ok(schema.walk(path_iter)?)
 }
 
 #[cfg(test)]

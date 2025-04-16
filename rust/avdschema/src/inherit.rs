@@ -27,6 +27,8 @@ impl InheritableWithClone for Format {}
 impl InheritableWithClone for Box<AnySchema> {}
 
 pub trait Inherit {
+    /// Inherit schema data from another schema.
+    /// Used when resolving $ref by deep-inheriting the schema pointed to by the $ref.
     fn inherit(&mut self, other: &Self);
 }
 impl<T> Inherit for Option<T>

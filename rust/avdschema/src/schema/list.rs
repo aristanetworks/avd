@@ -10,6 +10,7 @@ use crate::schema::base::Base;
 
 use super::{any::AnySchema, base::documentation_options::DocumentationOptions};
 
+/// AVD Schema for list data.
 #[skip_serializing_none]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]

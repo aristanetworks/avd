@@ -12,6 +12,7 @@ use super::{
     base::{Base, documentation_options::DocumentationOptionsDict},
 };
 
+/// AVD Schema for dictionary data.
 #[skip_serializing_none]
 #[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize)]
 #[serde(deny_unknown_fields)]
