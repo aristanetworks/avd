@@ -899,7 +899,7 @@ router_ospf:
     - Ethernet22
     - Ethernet23
     redistribute:
-      bgp:
+      connected:
         enabled: true
 service_routing_protocols_model: multi-agent
 snmp_server:
