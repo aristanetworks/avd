@@ -132,6 +132,8 @@ jobs:
   build_pyavd:
     name: Build pyavd
     runs-on: ubuntu-latest
+    outputs:
+      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -139,17 +141,18 @@ jobs:
           python-version: |
             3.12
       - name: Create pyavd wheel
+        id: build_step
         working-directory: ./python-avd
         run: |
           pip install build
-          python -m build --wheel --outdir /tmp/pyavd
-      - name: Compress wheel packages
-        run: tar -czf /tmp/pyavd.tar.gz -C /tmp pyavd
+          python -m build --wheel
+          WHEEL_FILE=$(find ./** -name "*.whl" -print0 -type f | xargs -0 -n 1 basename)
+          echo "wheel_file=$WHEEL_FILE" >> "$GITHUB_OUTPUT"
       - name: Upload pyavd artifact
         uses: actions/upload-artifact@v4
         with:
           name: pyavd
-          path: /tmp/pyavd.tar.gz
+          path: ./python-avd/**/*.whl
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -178,13 +181,10 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd
       - name: Run molecule test
         run: |
-          WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
-          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "$WHEEL_FILE[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/dist/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
           cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
@@ -214,9 +214,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -282,9 +280,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: Build minimum requirements
         run: |
           pip install uv
@@ -329,9 +325,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -370,9 +364,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -407,9 +399,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: Run molecule test
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl" | head -n 1)
@@ -451,9 +441,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: "Install pyavd and Ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
@@ -479,9 +467,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: "Install pyavd and ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
@@ -607,9 +593,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pyavd
-          path: /tmp/
-      - name: Extract pyavd wheel package
-        run: tar -xzf /tmp/pyavd.tar.gz -C /tmp/
+          path: /tmp/pyavd/
       - name: "Install Python & Ansible requirements"
         run: |
           WHEEL_FILE=$(find /tmp/pyavd/ -name "*.whl")
