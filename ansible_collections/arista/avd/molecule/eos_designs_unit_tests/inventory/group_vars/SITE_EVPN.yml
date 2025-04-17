@@ -74,7 +74,7 @@ wan_router:
     - name: cv-pathfinder-edge-wan-gateway-spine-uplink
       cv_pathfinder_region: AVD_Land_West
       cv_pathfinder_site: Site12
-      # Adding uplink to leaf for EVPN
+      # Adding uplink to spine for EVPN
       uplink_switches: [cv-pathfinder-spine1]
       uplink_type: p2p
       uplink_interfaces: [Ethernet52]
