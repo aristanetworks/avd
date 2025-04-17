@@ -57,7 +57,8 @@ class UtilsMixin(Protocol):
             self._filtered_adapters(filtered_connected_endpoints, connected_endpoints_key)
 
         for connected_endpoints_key in self.inputs._dynamic_keys.connected_endpoints:
-            self._filtered_adapters(filtered_connected_endpoints, connected_endpoints_key)
+            if connected_endpoints_key.key not in self.inputs.custom_connected_endpoints_keys:
+                self._filtered_adapters(filtered_connected_endpoints, connected_endpoints_key)
 
         return filtered_connected_endpoints
 
@@ -92,9 +93,9 @@ class UtilsMixin(Protocol):
             if filtered_adapters:
                 # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
                 connected_endpoint.adapters = filtered_adapters
-                inputs_connected_endpoints_keys = self.inputs.connected_endpoints_keys.get(
+                inputs_connected_endpoints_keys = self.inputs.custom_connected_endpoints_keys.get(
                     connected_endpoints_key.key
-                ) or self.inputs.custom_connected_endpoints_keys.get(connected_endpoints_key.key)
+                ) or self.inputs.connected_endpoints_keys.get(connected_endpoints_key.key)
                 connected_endpoint._internal_data.type = inputs_connected_endpoints_keys.type
                 filtered_connected_endpoints.append(connected_endpoint)
 

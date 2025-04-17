@@ -87,6 +87,12 @@ tenants:
         name: duplicate l2vlan210_with_trunk_groups not in use. Should not get configured anywhere
         trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
 
+custom_connected_endpoints_keys:
+  - key: servers
+    type: custom_server
+  - key: monitor
+    type: monitor
+
 servers:
   - name: server_with_tg_100
     adapters:
@@ -115,10 +121,6 @@ servers:
         port_channel:
           mode: active
           description: portchannel
-
-custom_connected_endpoints_keys:
-  - key: monitor
-    type: monitor
 
 monitor:
   - name: custom_connected_endpoint

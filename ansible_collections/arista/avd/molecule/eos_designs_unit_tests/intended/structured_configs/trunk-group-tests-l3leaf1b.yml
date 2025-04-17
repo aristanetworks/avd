@@ -49,6 +49,15 @@ ethernet_interfaces:
   peer: trunk-group-tests-l2leaf3
   peer_interface: Ethernet2
   peer_type: l2leaf
+- name: Ethernet13
+  description: CUSTOM_SERVER_server_with_tg_300_Nic2
+  shutdown: false
+  channel_group:
+    id: 13
+    mode: active
+  peer: server_with_tg_300
+  peer_interface: Nic2
+  peer_type: custom_server
 - name: Ethernet31
   description: MONITOR_custom_connected_endpoint_Nic102
   shutdown: false
@@ -57,15 +66,6 @@ ethernet_interfaces:
   peer_type: monitor
   switchport:
     enabled: true
-- name: Ethernet13
-  description: SERVER_server_with_tg_300_Nic2
-  shutdown: false
-  channel_group:
-    id: 13
-    mode: active
-  peer: server_with_tg_300
-  peer_interface: Nic2
-  peer_type: server
 hostname: trunk-group-tests-l3leaf1b
 ip_igmp_snooping:
   globally_enabled: true
