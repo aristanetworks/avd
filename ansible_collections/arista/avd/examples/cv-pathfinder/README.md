@@ -512,6 +512,11 @@ ansible_collections/arista/avd/examples/cv-pathfinder/group_vars/SITE4.yml
 --8<--
 ```
 
+1. Setting the overlay routing protocol to eBGP. This is required to enable EVPN on the LAN side in conjunction with `wan_use_evpn_node_settings_for_lan` set in the `WAN/cv-pathfinder-settings.yml` group var file.
+2. The uplink type `p2p` is used to connect to the LAN switches using EVPN.
+3. Set the `evpn_role` to client to enable EVPN on the LAN side.
+4. Declares `site4-border1` as the EVPN server to pair with to receive LAN side EVPN routes.
+
 ## The playbooks
 
 The playbook is also the same, as the actions to execute in the fabric are the same. It is important to validate the `hosts` variable in the playbook to include all Ansible groups.

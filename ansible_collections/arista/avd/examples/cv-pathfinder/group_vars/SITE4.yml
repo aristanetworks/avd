@@ -2,7 +2,7 @@
 # SITE4 variables
 # Use eBGP as underlay routing protocol on SITE4, the default is 'none' for WAN routers.
 underlay_routing_protocol: ebgp
-overlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp # (1)!
 
 l3leaf:
   defaults:
@@ -34,16 +34,15 @@ wan_router:
       always_include_vrfs_in_tenants: [all]
     uplink_interfaces: [Ethernet1, Ethernet2]
     uplink_switches: [site4-border1, site4-border2]
-    uplink_type: p2p # (1)!
-    evpn_role: client
-    evpn_route_servers: [site4-border1]
+    uplink_type: p2p # (2)!
+    evpn_role: client # (3)!
+    evpn_route_servers: [site4-border1] # (4)!
     bgp_as: 65000
   node_groups:
     - group: SITE4
       cv_pathfinder_region: REGION1
       cv_pathfinder_site: SITE4
-      # Making this site a transit site
-      cv_pathfinder_transit_mode: region # (2)!
+      cv_pathfinder_transit_mode: region
       wan_ha:
         enabled: false
       nodes:
