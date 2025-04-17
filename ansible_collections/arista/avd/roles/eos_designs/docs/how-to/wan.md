@@ -53,6 +53,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
   - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in preview
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
+- EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations
 
@@ -696,7 +697,8 @@ The following LAN scenarios are supported:
 - Single Router L3 EBGP LAN
 - Single Router L2 LAN
 - Dual Router L3 EBGP LAN with HA
-- Dual Router using one directed connected HA interface.
+- Dual Router using one directed connected HA interface
+- [PREVIEW] - Single Router EVPN Gateway
 
 Some design points:
 
@@ -865,6 +867,37 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
     If it is the case, only one interface can be used for Direct HA, and the port-channel creation can be disabled using `wan_ha.use_port_channel_for_direct_ha: false`.
 
     It is *not* possible to use multiple direct HA links while disabling the port-channel.
+
+#### EVPN Gateway LAN [PREVIEW]
+
+- the LAN routes are received via EVPN
+- Enabling the gateway requires to configure:
+  - `wan_use_evpn_node_settings_for_lan: True`
+  - `overlay_routing_protocol: ebgp` for the WAN router
+  - `evpn_role: client` for the WAN router
+  - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.
+- When all the conditions are met, the WAN router configuration will add the Gateway parameter and inject the following configuration:
+
+    ```
+    router adaptive-virtual-topology
+       topology role edge gateway vxlan # Notice the gateway VXLAN
+       [...]
+    [...]
+    router bgp <AS>
+       ...
+       !
+       address-family evpn
+          neighbor WAN_RR activate
+          neighbor WAN_RR domain remote
+          neighbor WAN_RR encapsulation path-selection
+          neighbor DC1_RR activate
+          neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+    ```
+
+!!! warning
+
+    TODO: Add a drawing.
+    TOI: https://www.arista.com/en/support/toi/eos-4-32-2f/20422-l3-evpn-dci-gateway-using-dps-interconnect
 
 #### OSPF LAN (NOT SUPPORTED)
 

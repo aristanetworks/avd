@@ -366,7 +366,7 @@ router_bgp:
   neighbors:
   - ip_address: 172.18.0.26
     peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65000'
+    remote_as: '65042'
     peer: leaf-wan-use-evpn-on-lan
     description: leaf-wan-use-evpn-on-lan_Ethernet2
   - ip_address: 192.168.144.1

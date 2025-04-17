@@ -4,8 +4,6 @@ wan_use_evpn_node_settings_for_lan: true
 # enabling EVPN on LAN
 overlay_routing_protocol: ebgp
 
-bgp_as: 65000
-
 # Spine switch group
 spine:
   defaults:
@@ -55,6 +53,7 @@ wan_router:
     filter:
       always_include_vrfs_in_tenants: [TenantA, TenantD]
       deny_vrfs: [IT]
+    bgp_as: 65000
   nodes:
     - name: cv-pathfinder-edge-wan-use-evpn-on-lan
       cv_pathfinder_region: AVD_Land_West
