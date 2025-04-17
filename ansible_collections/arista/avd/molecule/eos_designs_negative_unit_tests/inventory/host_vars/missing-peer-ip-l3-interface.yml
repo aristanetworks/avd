@@ -1,0 +1,19 @@
+---
+type: spine
+spine:
+  nodes:
+    - name: missing-peer-ip-l3-interface
+      id: 1
+      evpn_role: none
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 192.168.1.2/31
+          peer: peer1
+          peer_interface: eth1
+          # peer_ip: 192.168.1.3 # No peer_ip
+          static_routes:
+            - prefix: 0.0.0.0/0
+
+expected_error_message: "Cannot set a static_route route for interface Ethernet1 because 'peer_ip' is missing."
