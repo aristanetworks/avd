@@ -46,4 +46,4 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
         self.structured_config.router_adaptive_virtual_topology.site._update(name=wan_site.name, id=wan_site.id)
 
         if self.shared_utils.evpn_wan_gateway:
-            self.structured_config.router_adaptive_virtual_topology._update(gateway_vxlan=True)
+            self.structured_config.router_adaptive_virtual_topology.gateway_vxlan = True
