@@ -214,7 +214,7 @@ class CvTagsMixin(Protocol):
         if self.inputs.generate_cv_tags.topology_hints and self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device:
             for management_interface in self.structured_config.management_interfaces:
                 tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
-                tags.append_new(name="Link-Type", value="AVDManaged")
+                tags.append_new(name="Link-Type", value="AVD-Managed")
                 tags.append_new(name="Link-Type", value="Management")
                 self.structured_config.metadata.cv_tags.interface_tags.append_new(interface=management_interface.name, tags=tags)
 
@@ -275,7 +275,7 @@ class CvTagsMixin(Protocol):
     ) -> EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags:
         """Return list of Campus interface tags for a given interface of a Campus device."""
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
-        tags.append_new(name="Link-Type", value="AVDManaged")
+        tags.append_new(name="Link-Type", value="AVD-Managed")
         fabric_peer_types = list(self.inputs._dynamic_keys.custom_node_types.keys()) + list(self.inputs._dynamic_keys.node_types.keys())
 
         if generic_interface.peer_type == "mlag_peer":
@@ -287,11 +287,11 @@ class CvTagsMixin(Protocol):
                 tags.append_new(name="Link-Type", value="Uplink")
             else:
                 tags.append_new(name="Link-Type", value="Downlink")
-        elif generic_interface.peer_type == "other":
+        elif generic_interface.peer_type in ["other", "l3_interface"]:
             tags.append_new(name="Link-Type", value="Egress")
         elif generic_interface.peer_type == "network_port":
-            tags.append_new(name="Link-Type", value="NetworkPort")
+            tags.append_new(name="Link-Type", value="Network-Port")
         elif generic_interface.peer_type:
-            tags.append_new(name="Link-Type", value=generic_interface.peer_type.title())
+            tags.append_new(name="Link-Type", value=generic_interface.peer_type.title().replace("_", "-"))
 
         return tags

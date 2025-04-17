@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-MANAGED_BY = {"AVD": {"label": "Link-Type", "value": "AVDManaged"}, "Studios": {"label": "Link-Type", "value": "StudioManaged"}}
+MANAGED_BY = {"AVD": {"label": "Link-Type", "value": "AVD-Managed"}, "Studios": {"label": "Link-Type", "value": "Studio-Managed"}}
 
 
 async def deploy_tags_to_cv(
@@ -157,7 +157,7 @@ async def deploy_tags_to_cv(
 def _verify_overlapping_with_studio(
     existing_assignments: list[tuple[str | None]], designed_assignments: list[CVInterfaceTag], warnings: list[Exception], *, strict: bool
 ) -> None:
-    """Verify if AVD is trying to set Link-Type:AVDManaged on interface(s) already tagged by Studio with Link-Type:StudioManaged."""
+    """Verify if AVD is trying to set Link-Type:AVD-Managed on interface(s) already tagged by Studio with Link-Type:Studio-Managed."""
     overlapping_interfaces: list = [
         {
             "avd": (
