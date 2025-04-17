@@ -200,8 +200,8 @@ To customize or create new node types, please refer to [node type customization]
 | l2spine            | ✘               | port-channel | none      | ✘           | ✅                  | ✘                   | ✘    | ✅           | ✅                  | ✘        | ✘                         | ✘                        | |
 | super_spine        | ✅              | p2p          | none      | ✘           | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | eBGP                      | eBGP                     | |
 | overlay_controller | ✅              | p2p          | server    | ✘           | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | eBGP                      | eBGP                     | |
-| wan_rr             | ✅              | p2p          | server    | ✘           | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server   | none                      | iBGP                     | AutoVPN RR or Pathfinder depending on the e` value. |
-| wan_router         | ✅              | p2p          | client    | ✘           | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client   | none                      | iBGP                     | Edge routers for AutoVPN or Edge and Transit routers for CV Pathfindeing on the `wan_mode` value. |
+| wan_rr             | ✅              | p2p          | server    | ✘           | ✘                   | ✅                  | ✅   | ✘            | ✘                   | server   | none                      | iBGP                     | AutoVPN RR or Pathfinder depending on the `wan_mode` value. |
+| wan_router         | ✅              | p2p          | client    | ✘           | ✘                   | ✅                  | ✅   | ✘            | ✘                   | client   | none                      | iBGP                     | Edge routers for AutoVPN or Edge and Transit routers for CV Pathfinder on the `wan_mode` value. |
 | p                  | ✅              | p2p          | none      | none, LSR   | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | ISIS-SR                   | iBGP                     | |
 | rr                 | ✅              | p2p          | server    | server, LSR | ✘                   | ✘                   | ✘    | ✘            | ✘                   | ✘        | ISIS-SR                   | iBGP                     | EVPN with MPLS encapsulation |
 | pe                 | ✅              | p2p          | client    | client, LSR | ✅                  | ✅                  | ✘    | ✘            | ✅                  | ✘        | ISIS-SR                   | iBGP                     | EVPN with MPLS encapsulation, L1 Network Services (PW) |
@@ -477,7 +477,7 @@ underlay_ethernet_interfaces:
 
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
-- `{{ link.type }} (underlay_p2p or underlay_l2)`
+- `{{ link.type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
 - All group/hostvars
 
 underlay_port_channel_interfaces:
@@ -1465,6 +1465,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vr
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
+--8<--
+
+#### Network services VRF L3 Port-Channels configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
 --8<--
 
 #### Network services VRF Loopbacks configuration

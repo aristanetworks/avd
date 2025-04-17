@@ -1,7 +1,8 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-"""AVD Jinja2 test contains.
+"""
+AVD Jinja2 test contains.
 
 The test checks if a list contains any of the value(s) passed in test_value.
 """
@@ -14,7 +15,8 @@ from jinja2.runtime import Undefined
 
 
 def contains(value: list[Any], test_value: Any | list[Any] = None) -> bool:
-    """The test checks if a list contains any of the value(s) passed in test_value.
+    """
+    The test checks if a list contains any of the value(s) passed in test_value.
 
     If 'value' is Undefined, None or not a list then the test has failed.
 

@@ -1,0 +1,37 @@
+# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+$defs:
+  rx_queue_settings:
+    type: dict
+    description: |-
+      Receive queue parameters for platform SFE interface profile.
+      This setting is ignored unless the `platform_sfe_interface_profile.supported` is set as `true` under `platform_settings.feature_support` for the `platform` set on this device.
+    keys:
+      count:
+        type: int
+        min: 1
+        convert_types:
+          - str
+        description: |-
+          Number of receive queues.
+          The maximum value is determined by `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the `platform` set on this device.
+      workers:
+        type: list
+        items:
+          type: str
+          convert_types:
+            - int
+          description: |-
+            Worker ids specified as values or range of values such as 0-4 or 7.
+            Valid values are between 0 and one less than maximum value determined by `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the `platform` set on this device.
+      mode:
+        type: str
+        description: Mode applicable to the workers.
+        valid_values:
+          - shared
+          - exclusive

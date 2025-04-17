@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import get, short_esi_to_route_target
+from pyavd._utils import default, short_esi_to_route_target
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import natural_sort
 
@@ -31,26 +31,26 @@ class PortChannelInterfacesMixin(Protocol):
         # Port channel set is used to avoid creating the same underlay port-channel multiple times.
         port_channel_set = set()
         for link in self._underlay_links:
-            if link["type"] != "underlay_l2" or link.get("channel_group_id") is None:
+            if link.type != "underlay_l2" or link.channel_group_id is None:
                 continue
 
-            if (channel_group_id := link.get("channel_group_id")) in port_channel_set:
+            if link.channel_group_id in port_channel_set:
                 continue
 
-            port_channel_set.add(channel_group_id)
+            port_channel_set.add(link.channel_group_id)
 
-            port_channel_name = f"Port-Channel{link['channel_group_id']}"
+            port_channel_name = f"Port-Channel{link.channel_group_id}"
 
             description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface=port_channel_name,
                     link_type="underlay_l2",
-                    peer=link["peer"],
-                    peer_interface=f"Port-Channel{link['peer_channel_group_id']}",
-                    peer_channel_group_id=link["peer_channel_group_id"],
-                    port_channel_id=link["channel_group_id"],
-                    peer_node_group=link.get("peer_node_group"),
+                    peer=link.peer,
+                    peer_interface=f"Port-Channel{link.peer_channel_group_id}",
+                    peer_channel_group_id=link.peer_channel_group_id,
+                    port_channel_id=link.channel_group_id,
+                    peer_node_group=link.peer_node_group,
                 )
             )
             port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
@@ -58,32 +58,30 @@ class PortChannelInterfacesMixin(Protocol):
                 description=description or None,
                 shutdown=False,
                 service_profile=self.inputs.p2p_uplinks_qos_profile,
-                flow_tracker=self.shared_utils.new_get_flow_tracker(link.get("flow_tracking"), EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
-                spanning_tree_portfast=link.get("spanning_tree_portfast"),
+                flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
+                spanning_tree_portfast=link.spanning_tree_portfast,
             )
             port_channel_interface.switchport._update(enabled=True, mode="trunk")
-            port_channel_interface.switchport.trunk.native_vlan = link.get("native_vlan")
+            port_channel_interface.switchport.trunk.native_vlan = link.native_vlan
 
-            if (trunk_groups := link.get("trunk_groups")) is not None:
-                port_channel_interface.switchport.trunk.groups.extend(trunk_groups)
-            elif (vlans := link.get("vlans")) is not None:
-                port_channel_interface.switchport.trunk.allowed_vlan = vlans
+            if link.trunk_groups:
+                port_channel_interface.switchport.trunk.groups.extend(link.trunk_groups)
+            elif link.vlans is not None:
+                port_channel_interface.switchport.trunk.allowed_vlan = link.vlans
 
-            if sflow := link.get("sflow"):
-                port_channel_interface.sflow.enable = sflow["enable"]
+            port_channel_interface.sflow.enable = link.sflow_enabled
 
-            if link_tracking_groups := link.get("link_tracking_groups"):
-                for link_tracking_group in link_tracking_groups:
-                    port_channel_interface.link_tracking_groups.append_new(
-                        name=link_tracking_group["name"],
-                        direction=link_tracking_group["direction"],
-                    )
+            for link_tracking_group in link.link_tracking_groups:
+                port_channel_interface.link_tracking_groups.append_new(
+                    name=link_tracking_group.name,
+                    direction=link_tracking_group.direction,
+                )
 
             # Configure MLAG on MLAG switches if either 'mlag_on_orphan_port_channel_downlink' or 'link.mlag' is True
-            if self.shared_utils.mlag is True and any([self.inputs.mlag_on_orphan_port_channel_downlink, link.get("mlag", True)]):
-                port_channel_interface.mlag = int(channel_group_id)
+            if self.shared_utils.mlag and any([self.inputs.mlag_on_orphan_port_channel_downlink, default(link.mlag, True)]):  # noqa: FBT003
+                port_channel_interface.mlag = link.channel_group_id
 
-            if (short_esi := link.get("short_esi")) is not None:
+            if short_esi := link.short_esi:
                 port_channel_interface.evpn_ethernet_segment._update(
                     identifier=f"{self.inputs.evpn_short_esi_prefix}{short_esi}",
                     route_target=short_esi_to_route_target(short_esi),
@@ -91,7 +89,7 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface.lacp_id = short_esi.replace(":", ".")
 
             # PTP
-            if get(link, "ptp.enable") is True:
+            if link.ptp.enable:
                 # Apply PTP profile config if using the new ptp config style
                 if self.shared_utils.ptp_enabled:
                     # Create a copy and removes the .profile attribute since the target model has a .profile key with a different schema.
@@ -102,11 +100,11 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface.ptp.enable = True
 
             # Inband ZTP Port-Channel LACP Fallback
-            if get(link, "inband_ztp_vlan"):
-                port_channel_interface._update(lacp_fallback_mode="individual", lacp_fallback_timeout=get(link, "inband_ztp_lacp_fallback_delay"))
+            if link.inband_ztp_vlan:
+                port_channel_interface._update(lacp_fallback_mode="individual", lacp_fallback_timeout=link.inband_ztp_lacp_fallback_delay)
 
             # Structured Config
-            if structured_config := link.get("structured_config"):
+            if structured_config := link.structured_config:
                 self.custom_structured_configs.nested.port_channel_interfaces.obtain(port_channel_name)._deepmerge(
                     EosCliConfigGen.PortChannelInterfacesItem._from_dict(structured_config), list_merge=self.custom_structured_configs.list_merge_strategy
                 )
@@ -211,7 +209,7 @@ class PortChannelInterfacesMixin(Protocol):
         if not self.shared_utils.use_port_channel_for_direct_ha:
             return
 
-        direct_wan_ha_links_flow_tracker = self.shared_utils.new_get_flow_tracker(
+        direct_wan_ha_links_flow_tracker = self.shared_utils.get_flow_tracker(
             self.shared_utils.node_config.wan_ha.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
         )
         port_channel_name = f"Port-Channel{self.shared_utils.wan_ha_port_channel_id}"

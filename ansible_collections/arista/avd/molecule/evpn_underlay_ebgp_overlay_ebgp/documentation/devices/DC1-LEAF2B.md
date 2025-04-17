@@ -977,14 +977,14 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_APP_Zone | 192.168.255.11:12 | connected |
-| Tenant_A_DB_Zone | 192.168.255.11:13 | connected |
-| Tenant_A_OP_Zone | 192.168.255.11:10 | connected |
-| Tenant_A_WEB_Zone | 192.168.255.11:11 | connected |
-| Tenant_B_OP_Zone | 192.168.255.11:20 | connected |
-| Tenant_C_OP_Zone | 192.168.255.11:30 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_A_APP_Zone | 192.168.255.11:12 | connected | - |
+| Tenant_A_DB_Zone | 192.168.255.11:13 | connected | - |
+| Tenant_A_OP_Zone | 192.168.255.11:10 | connected | - |
+| Tenant_A_WEB_Zone | 192.168.255.11:11 | connected | - |
+| Tenant_B_OP_Zone | 192.168.255.11:20 | connected | - |
+| Tenant_C_OP_Zone | 192.168.255.11:30 | connected | - |
 
 #### Router BGP Device Configuration
 

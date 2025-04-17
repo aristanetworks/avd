@@ -29,6 +29,9 @@ management api gnmi
 {%                     if transport.ip_access_group is arista.avd.defined %}
       ip access-group {{ transport.ip_access_group }}
 {%                     endif %}
+{%                     if transport.authorization_requests is arista.avd.defined(true) %}
+      authorization requests
+{%                     endif %}
 {%                     if transport.notification_timestamp is arista.avd.defined %}
       notification timestamp {{ transport.notification_timestamp }}
 {%                     endif %}

@@ -579,10 +579,10 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_APP_Zone | 192.168.255.5:12 | connected |
-| Tenant_A_WEB_Zone | 192.168.255.5:11 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_A_APP_Zone | 192.168.255.5:12 | connected | - |
+| Tenant_A_WEB_Zone | 192.168.255.5:11 | connected | - |
 
 #### Router BGP Device Configuration
 

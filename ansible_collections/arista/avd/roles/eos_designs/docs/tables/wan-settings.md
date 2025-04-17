@@ -7,6 +7,8 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ipsec_settings</samp>](## "ipsec_settings") | Dictionary |  |  |  | Settings applicable to all IPsec connections. |
+    | [<samp>&nbsp;&nbsp;bind_connection_to_interface</samp>](## "ipsec_settings.bind_connection_to_interface") | Boolean |  | `False` |  | Allow IPsec connections to be bound to the source interface.<br>Enabling this prevents IPsec connections from using ECMP paths. |
     | [<samp>wan_encapsulation</samp>](## "wan_encapsulation") | String |  | `path-selection` | Valid Values:<br>- <code>path-selection</code><br>- <code>vxlan</code> | Select the encapsulation to use for EVPN peerings for WAN BGP peers. |
     | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: The `wan_ha` key is currently not supported. |
     | [<samp>&nbsp;&nbsp;lan_ha_path_group_name</samp>](## "wan_ha.lan_ha_path_group_name") | String |  | `LAN_HA` |  | When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.<br>This key allows to overwrite the default LAN HA path-group name. |
@@ -29,6 +31,13 @@
 === "YAML"
 
     ```yaml
+    # Settings applicable to all IPsec connections.
+    ipsec_settings:
+
+      # Allow IPsec connections to be bound to the source interface.
+      # Enabling this prevents IPsec connections from using ECMP paths.
+      bind_connection_to_interface: <bool; default=False>
+
     # Select the encapsulation to use for EVPN peerings for WAN BGP peers.
     wan_encapsulation: <str; "path-selection" | "vxlan"; default="path-selection">
 

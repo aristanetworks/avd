@@ -24,7 +24,8 @@ class AvdTestAvtPath(AvdTestBase):
     anta_module = "anta.tests.avt"
 
     def _get_static_peers(self, path_groups: list) -> list:
-        """Extract static peers from path groups after validation.
+        """
+        Extract static peers from path groups after validation.
 
         Parameters
         ----------

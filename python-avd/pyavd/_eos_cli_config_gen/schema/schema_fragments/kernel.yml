@@ -1,0 +1,8 @@
+type: dict
+keys:
+  kernel:
+    type: dict
+    keys:
+      software_forwarding_ecmp:
+        type: bool
+        description: Program ECMP routes in the kernel.

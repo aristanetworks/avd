@@ -194,6 +194,10 @@ ethernet_interfaces:
           # no-drop
           no_drop: true
     spanning_tree_bpduguard: disabled
+    spanning_tree_bpduguard_rate_limit:
+      enabled: true
+      count: 10
+      interval: 3
     spanning_tree_bpdufilter: disabled
     # test for switchport settings
     switchport:
@@ -247,6 +251,9 @@ ethernet_interfaces:
     priority_flow_control:
       enabled: false
     spanning_tree_guard: root
+    spanning_tree_bpduguard_rate_limit:
+      enabled: false
+      count: 10
     tcp_mss_ceiling:
       ipv6_segment_size: 65
     # test for switchport settings
@@ -305,6 +312,9 @@ ethernet_interfaces:
     priority_flow_control:
       enabled: true
     spanning_tree_guard: disabled
+    spanning_tree_bpduguard_rate_limit:
+      count: 10
+      interval: 15
     tcp_mss_ceiling:
       ipv4_segment_size: 65
     multicast:
@@ -529,6 +539,7 @@ ethernet_interfaces:
       ip: true
       ldp:
         interface: true
+    ntp_serve: true
     # Test isis auth both sha rx
     isis_authentication:
       both:
@@ -551,6 +562,7 @@ ethernet_interfaces:
       ip: false
       ldp:
         interface: false
+    ntp_serve: false
     # Test isis auth both sha
     isis_authentication:
       both:

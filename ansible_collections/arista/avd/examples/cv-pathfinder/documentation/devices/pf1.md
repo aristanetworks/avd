@@ -813,9 +813,9 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| default | 192.168.255.1:1 | - |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| default | 192.168.255.1:1 | - | - |
 
 #### Router BGP Device Configuration
 

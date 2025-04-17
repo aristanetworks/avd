@@ -6,7 +6,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._schema.avdschema import AvdSchema
 
 from .cv_topology import CvTopology
 from .filtered_tenants import FilteredTenantsMixin
@@ -31,8 +30,10 @@ from .utils import UtilsMixin
 from .wan import WanMixin
 
 if TYPE_CHECKING:
+    from collections.abc import Mapping
+
+    from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
-    from pyavd._schema.avdschema import AvdSchema
     from pyavd.api.pool_manager import PoolManager
 
 
@@ -62,10 +63,11 @@ class SharedUtilsProtocol(
 ):
     """Protocol for the SharedUtils Class with commonly used methods / cached_properties to be shared between all the python modules loaded in eos_designs."""
 
-    hostvars: dict
+    hostname: str
+    hostvars: Mapping
     inputs: EosDesigns
     templar: object
-    schema: AvdSchema
+    peer_facts: Mapping[str, EosDesignsFactsProtocol]
     pool_manager: PoolManager | None
 
 
@@ -82,9 +84,18 @@ class SharedUtils(SharedUtilsProtocol):
     value to be handled in calling function.
     """
 
-    def __init__(self, hostvars: dict, inputs: EosDesigns, templar: object, schema: AvdSchema, pool_manager: PoolManager | None = None) -> None:
+    def __init__(
+        self,
+        hostname: str,
+        hostvars: Mapping,
+        inputs: EosDesigns,
+        templar: object,
+        peer_facts: Mapping[str, EosDesignsFactsProtocol],
+        pool_manager: PoolManager | None = None,
+    ) -> None:
+        self.hostname = hostname
         self.hostvars = hostvars
         self.inputs = inputs
         self.templar = templar
-        self.schema = schema
+        self.peer_facts = peer_facts
         self.pool_manager = pool_manager

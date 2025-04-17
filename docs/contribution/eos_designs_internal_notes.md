@@ -28,14 +28,9 @@ flowchart TD
 
 The `arista.avd.eos_designs_facts` module is an Ansible Action Plugin providing the following capabilities:
 
-- Set `avd_switch_facts` fact containing `switch` facts per switch.
-- Set `avd_topology_peers` fact containing a list of downlink switches per host. This list is built based on the `uplink_switches` from all other hosts.
-- Set `avd_evpn_overlay_peers` fact containing a list of EVPN overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
-- Set `avd_evpn_overlay_peers` fact containing a list of EVPN or MPLS overlay peers per host. This list is built based on the `evpn_route_servers` and `mpls_route_reflectors` from all other hosts.
+- Set `avd_switch_facts` fact containing  internal AVD facts per switch.
 
 The plugin is designed to `run_once`. With this, Ansible will set the same facts on all devices, so all devices can lookup values of any other device without using the slower `hostvars`.
-
-The facts can also be copied to the "root" `switch` variable in a task run per device (see example below).
 
 The module is used in `arista.avd.eos_designs` to set facts for devices, which are then used by Python modules loaded in `arista.avd.eos_designs_structured_config` to generate the `structured_configuration`.
 
@@ -54,30 +49,13 @@ See the full argument spec [here](../plugins/Modules_and_action_plugins/eos_desi
 ```yaml
 ansible_facts:
   avd_switch_facts:
-    <switch_1>:
-      switch:
-        < switch.* facts used by eos_designs >
-    <switch_2>:
-      ...
-  avd_topology_peers:
-    <uplink_switch_1>:
-      - <downlink_switch_1>
-      - <downlink_switch_2>
-      - <downlink_switch_3>
-    <uplink_switch_1>:
-      ...
-  avd_overlay_peers:
-    <route_server_1>:
-      - <route_server_client_1>
-      - <route_server_client_2>
-      - <route_server_client_3>
-    <route_server_2>:
-      - <route_server_client_1>
-      - <route_server_client_2>
-      - <route_server_client_3>
+    <switch_1>: < dict with internal AVD facts used within eos_designs >
+    <switch_2>: ...
 ```
 
-The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `--tags facts,debug`.
+The facts for each device follows the schema described [here](./eos_designs_facts_internal/tables/eos_designs_facts.md).
+
+The facts can be inspected in a file per device by running the `arista.avd.eos_designs` role with `-e avd_eos_designs_debug="{{ true }}"`.
 
 #### Internal structure
 

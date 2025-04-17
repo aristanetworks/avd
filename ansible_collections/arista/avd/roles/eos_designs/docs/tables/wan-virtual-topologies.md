@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;application_profile</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.application_profile") | String |  | `APP-PROFILE-CONTROL-PLANE` |  | The application profile to use for control plane traffic.<br><br>The application profile should be defined under `application_classification.application_profiles`.<br>If not defined AVD will auto generate an application profile using the provided name or the default value.<br><br>If not overwritten elsewhere, the application profile is generated matching one application matching the control plane traffic either sourced from or destined to the WAN route servers. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.lowest_hop_count") | Boolean |  | `False` |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.lowest_hop_count") | Boolean |  |  |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.control_plane_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
@@ -36,7 +36,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].id") | Integer |  |  | Min: 2<br>Max: 253 | ID of the AVT in each VRFs. ID must be unique across all virtual topologies in a policy.<br>ID 1 is reserved for the default_virtual_toplogy.<br>ID 254 is reserved for the control_plane_virtual_topology.<br><br>`id` is required when `wan_mode` is 'cv-pathfinder'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].lowest_hop_count") | Boolean |  | `False` |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].lowest_hop_count") | Boolean |  |  |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].application_virtual_topologies.[].constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
@@ -52,7 +52,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop_unmatched</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.drop_unmatched") | Boolean |  | `False` |  | When set, no `catch-all` match is configured for the policy and unmatched traffic is dropped. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.traffic_class") | Integer |  |  | Min: 0<br>Max: 7 | Set traffic-class for matched traffic. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.dscp") | Integer |  |  | Min: 0<br>Max: 63 | Set DSCP for matched traffic. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.lowest_hop_count") | Boolean |  | `False` |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;lowest_hop_count</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.lowest_hop_count") | Boolean |  |  |  | Prefer paths with lowest hop-count.<br>Only applicable for `wan_mode: "cv-pathfinder"`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;constraints</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;jitter</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.jitter") | Integer |  |  | Min: 0<br>Max: 10000 | Jitter requirement for this load balance policy in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;latency</samp>](## "wan_virtual_topologies.policies.[].default_virtual_topology.constraints.latency") | Integer |  |  | Min: 0<br>Max: 10000 | One way delay requirement for this load balance policy in milliseconds. |
@@ -119,7 +119,7 @@
 
         # Prefer paths with lowest hop-count.
         # Only applicable for `wan_mode: "cv-pathfinder"`.
-        lowest_hop_count: <bool; default=False>
+        lowest_hop_count: <bool>
         constraints:
 
           # Jitter requirement for this load balance policy in milliseconds.
@@ -204,7 +204,7 @@
 
               # Prefer paths with lowest hop-count.
               # Only applicable for `wan_mode: "cv-pathfinder"`.
-              lowest_hop_count: <bool; default=False>
+              lowest_hop_count: <bool>
               constraints:
 
                 # Jitter requirement for this load balance policy in milliseconds.
@@ -256,7 +256,7 @@
 
             # Prefer paths with lowest hop-count.
             # Only applicable for `wan_mode: "cv-pathfinder"`.
-            lowest_hop_count: <bool; default=False>
+            lowest_hop_count: <bool>
             constraints:
 
               # Jitter requirement for this load balance policy in milliseconds.

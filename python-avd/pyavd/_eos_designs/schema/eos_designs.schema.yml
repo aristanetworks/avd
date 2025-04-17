@@ -1889,6 +1889,14 @@ keys:
       table: system-settings
     $ref: eos_cli_config_gen#/keys/hardware_counters
     type: dict
+  inband_ztp_bootstrap_file:
+    type: str
+    description: "Bootstrap URL configured in DHCP to use for inband ZTP.\nIf not
+      set and `cvp_instance_ips` is set then the bootstrap value will be set to:\n
+      \   `https://{cvp_instance_ips[0]}/ztp/bootstrap`\nOtherwise no value will be
+      configured."
+    documentation_options:
+      table: management-settings
   internal_vlan_order:
     documentation_options:
       table: system-settings
@@ -1925,6 +1933,18 @@ keys:
       range:
         beginning: 1006
         ending: 1199
+  ipsec_settings:
+    documentation_options:
+      table: wan-settings
+    description: Settings applicable to all IPsec connections.
+    type: dict
+    keys:
+      bind_connection_to_interface:
+        type: bool
+        default: false
+        description: 'Allow IPsec connections to be bound to the source interface.
+
+          Enabling this prevents IPsec connections from using ECMP paths.'
   ipv4_acls:
     type: list
     primary_key: name
@@ -2165,23 +2185,7 @@ keys:
     documentation_options:
       table: system-settings
     type: dict
-    description: 'MAC address-table aging time.
-
-      Use to change the EOS default of 300.
-
-      '
-    keys:
-      aging_time:
-        type: int
-        convert_types:
-        - str
-        description: 'Aging time in seconds 10-1000000.
-
-          Enter 0 to disable aging.
-
-          '
-        min: 0
-        max: 1000000
+    $ref: eos_cli_config_gen#/keys/mac_address_table
   management_eapi:
     documentation_options:
       table: management-settings
@@ -2192,6 +2196,10 @@ keys:
       '
     type: dict
     keys:
+      enabled:
+        description: Enable/Disable api http-commands.
+        type: bool
+        default: true
       enable_http:
         type: bool
       enable_https:
@@ -2643,7 +2651,7 @@ keys:
             l1:
               type: bool
               default: false
-              description: ??
+              description: Point-to-point services
             l2:
               type: bool
               default: false
@@ -3394,6 +3402,20 @@ keys:
                 Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
 
                 '
+            platform_sfe_interface_profile:
+              type: dict
+              description: Support for Platform SFE Interface Profiles.
+              keys:
+                supported:
+                  type: bool
+                  default: false
+                  description: Capability flag for generation of SFE interface profile.
+                max_rx_queues:
+                  type: int
+                  default: 6
+                  convert_types:
+                  - str
+                  description: Maximum rx_queue count supported on any interface.
         management_interface:
           type: str
           default: Management1
@@ -3567,14 +3589,28 @@ keys:
         non_mlag: 330
     - platforms:
       - AWE-5310
-      - AWE-5510
-      - AWE-7250R
       - AWE-7230R
       feature_support:
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        platform_sfe_interface_profile:
+          supported: true
+          max_rx_queues: 6
+      management_interface: Management1/1
+      p2p_uplinks_mtu: 9194
+    - platforms:
+      - AWE-5510
+      - AWE-7250R
+      feature_support:
+        bgp_update_wait_for_convergence: true
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+        platform_sfe_interface_profile:
+          supported: true
+          max_rx_queues: 16
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
     - platforms:
@@ -4632,6 +4668,12 @@ keys:
       table: ospf-settings
     type: bool
     default: false
+  underlay_ospf_graceful_restart:
+    documentation_options:
+      table: ospf-settings
+    type: bool
+    default: false
+    description: Enable graceful restart for OSPF underlay.
   underlay_ospf_max_lsa:
     documentation_options:
       table: ospf-settings
@@ -5817,6 +5859,18 @@ $defs:
                       - str
                       min: 1
                       max: 4094
+                raw_eos_cli:
+                  type: str
+                  description: EOS CLI rendered directly on the port-channel subinterface
+                    in the final EOS configuration.
+                structured_config:
+                  type: dict
+                  relaxed_validation: true
+                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                    for eos_cli_config_gen.
+                  documentation_options:
+                    hide_keys: true
+                  $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in
@@ -6395,7 +6449,8 @@ $defs:
           type: list
           primary_key: name
           description: 'VRFs will only be configured on a node if any of the underlying
-            objects like `svis` or `l3_interfaces` apply to the node.
+            objects like `svis`, `l3_interfaces` or `l3_port_channels` apply to the
+            node.
 
 
             It is recommended to only define a VRF in one Tenant. If the same VRF
@@ -6636,6 +6691,13 @@ $defs:
                           description: Comma separated list of prefixes (IPv6 address/Mask)
                             or ranges (IPv6_address-IPv6_address).
                           format: ipv6_pool
+                  hardware_forwarding:
+                    type: bool
+                    description: 'Enable hardware forwarding for diagnostic loopbacks.
+                      This is required for correct forwarding in VRFs without physical
+                      interfaces.
+
+                      '
               ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -6705,6 +6767,14 @@ $defs:
                     items:
                       type: str
                       description: Hostname.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>]
+                      for eos_cli_config_gen.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -7045,6 +7115,200 @@ $defs:
                         in the final EOS configuration.
 
                         '
+              l3_port_channels:
+                documentation_options:
+                  table: network-services-vrfs-l3-port-channel-settings
+                type: list
+                description: 'List of L3 Port-Channels.
+
+                  This will create IP routed Port-Channels inside the VRF.
+
+                  '
+                items:
+                  type: dict
+                  keys:
+                    name:
+                      type: str
+                      required: true
+                      description: 'Port-Channel interface name like ''Port-Channel2''
+                        or subinterface name like ''Port-Channel2.42''.
+
+                        For a Port-Channel subinterface, the parent Port-Channel interface
+                        must be defined as well.'
+                      pattern: Port-Channel[\d/]+(\.[\d]+)?
+                    node:
+                      type: str
+                      required: true
+                      description: Node.
+                    description:
+                      type: str
+                      description: 'Interface description.
+
+                        If not set, a default description will be configured with
+                        ''[<peer>[ <peer_port_channel>]]''.'
+                    mode:
+                      type: str
+                      description: 'Port-Channel mode.
+
+                        Should not be set on Port-Channel subinterfaces.'
+                      valid_values:
+                      - active
+                      - passive
+                      - 'on'
+                      default: active
+                    member_interfaces:
+                      description: 'Port-Channel member interfaces.
+
+                        Should not be set on Port-Channel subinterfaces.'
+                      type: list
+                      primary_key: name
+                      items:
+                        type: dict
+                        keys:
+                          name:
+                            type: str
+                            required: true
+                            description: 'Ethernet interface name like ''Ethernet2''.
+
+                              Member interface cannot be subinterface.'
+                            pattern: Ethernet[\d/]+
+                          description:
+                            type: str
+                            description: 'Interface description for this member.
+
+                              If not set, a default description will be configured
+                              with ''[<peer>[ <peer_interface>]]''.'
+                          peer:
+                            type: str
+                            description: 'The peer device name. Used for description
+                              and documentation.
+
+                              If not set, this inherits the peer setting on the port-channel
+                              interface.'
+                          peer_interface:
+                            type: str
+                            description: The peer device interface. Used for description
+                              and documentation.
+                          speed:
+                            type: str
+                            description: Speed should be set in the format `<interface_speed>`
+                              or `forced <interface_speed>` or `auto <interface_speed>`.
+                          structured_config:
+                            type: dict
+                            relaxed_validation: true
+                            documentation_options:
+                              hide_keys: true
+                            description: Custom structured config for the member ethernet
+                              interface.
+                            $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+                    ip_address:
+                      type: str
+                      description: IPv4 address/Mask.
+                    encapsulation_dot1q_vlan:
+                      description: For subinterfaces the dot1q vlan is derived from
+                        the interface name by default, but can also be specified.
+                      type: int
+                      convert_types:
+                      - str
+                      min: 1
+                      max: 4094
+                    enabled:
+                      type: bool
+                      default: true
+                      description: Enable or Shutdown the interface.
+                    peer:
+                      type: str
+                      description: The peer device name. Used for description and
+                        documentation.
+                    peer_port_channel:
+                      type: str
+                      description: The peer device port-channel interface. Used for
+                        description and documentation.
+                    mtu:
+                      type: int
+                      convert_types:
+                      - str
+                      description: MTU can only be set on the parent Port-Channel.
+                    ipv4_acl_in:
+                      description: Name of the IPv4 access-list to be assigned in
+                        the ingress direction.
+                      type: str
+                      convert_types:
+                      - int
+                    ipv4_acl_out:
+                      description: Name of the IPv4 Access-list to be assigned in
+                        the egress direction.
+                      type: str
+                      convert_types:
+                      - int
+                    ospf:
+                      type: dict
+                      description: OSPF interface configuration.
+                      keys:
+                        enabled:
+                          type: bool
+                        point_to_point:
+                          type: bool
+                          default: false
+                        area:
+                          type: str
+                          convert_types:
+                          - int
+                          description: OSPF area ID.
+                          default: 0.0.0.0
+                        cost:
+                          type: int
+                          convert_types:
+                          - str
+                          description: OSPF link cost.
+                        authentication:
+                          type: str
+                          valid_values:
+                          - simple
+                          - message-digest
+                        simple_auth_key:
+                          type: str
+                          description: Password used with simple authentication.
+                        message_digest_keys:
+                          type: list
+                          items:
+                            type: dict
+                            keys:
+                              id:
+                                type: int
+                                convert_types:
+                                - str
+                              hash_algorithm:
+                                type: str
+                                valid_values:
+                                - md5
+                                - sha1
+                                - sha256
+                                - sha384
+                                - sha512
+                                default: sha512
+                              key:
+                                type: str
+                                description: Key password.
+                    flow_tracking:
+                      type: dict
+                      $ref: eos_designs#/$defs/flow_tracking_link
+                      description: Configures flow-tracking on the interface. Overrides
+                        `fabric_flow_tracking.l3_port_channels` setting.
+                    structured_config:
+                      type: dict
+                      relaxed_validation: true
+                      description: Custom structured config added under port_channel_interfaces.[name=<interface>]
+                        for eos_cli_config_gen.
+                      documentation_options:
+                        hide_keys: true
+                      $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+                    raw_eos_cli:
+                      type: str
+                      description: 'EOS CLI rendered directly on the Port-Channel
+                        interface in the final EOS configuration.
+
+                        '
               loopbacks:
                 documentation_options:
                   table: network-services-vrfs-loopbacks-settings
@@ -7086,6 +7350,13 @@ $defs:
                           - int
                           description: OSPF area ID.
                           default: 0.0.0.0
+                    hardware_forwarding:
+                      type: bool
+                      description: 'Enable hardware forwarding for this loopback.
+                        This is required for correct forwarding in VRFs without physical
+                        interfaces.
+
+                        '
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Loopback interface
@@ -7860,6 +8131,8 @@ $defs:
             type: str
             format: cidr
           mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the management gateway for the device. It takes
               precedence over the global `mgmt_gateway`.
@@ -7870,6 +8143,8 @@ $defs:
             type: str
             format: cidr
           ipv6_mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the ipv6 management gateway for the device.
               It takes precedence over the global `ipv6_mgmt_gateway`.
@@ -8861,6 +9136,11 @@ $defs:
               table: node-type-l2-mlag-configuration
             type: bool
             default: false
+          spanning_tree_mst_pvst_boundary:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            type: bool
+            description: Enable MST PVST border ports.
           virtual_router_mac_address:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -9532,6 +9812,8 @@ $defs:
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
           flow_tracker_type:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             valid_values:
             - sampled
@@ -9679,6 +9961,26 @@ $defs:
           type: str
           description: Speed should be set in the format `<interface_speed>` or `forced
             <interface_speed>` or `auto <interface_speed>`.
+        receive_bandwidth:
+          type: int
+          description: 'Maximum allowed receive bandwidth (download) in Mbps for this
+            interface.
+
+            This is currently used on CVaaS to provide more information in the visualization.'
+          min: 1
+          max: 4294967295
+          convert_types:
+          - str
+        transmit_bandwidth:
+          type: int
+          description: 'Maximum allowed transmit bandwidth (upload) in Mbps for this
+            interface.
+
+            This is currently used on CVaaS to provide more information in the visualization.'
+          min: 1
+          max: 4294967295
+          convert_types:
+          - str
         peer:
           type: str
           description: The peer device name. Used for description and documentation.
@@ -9790,6 +10092,9 @@ $defs:
                       internet-exit service provider using this local interface.
 
                       Examples: ''1-3'' or ''100,200,300'''
+        rx_queue:
+          type: dict
+          $ref: eos_designs#/$defs/rx_queue_settings
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS
@@ -9870,8 +10175,12 @@ $defs:
                 type: str
                 description: Speed should be set in the format `<interface_speed>`
                   or `forced <interface_speed>` or `auto <interface_speed>`.
+              rx_queue:
+                type: dict
+                $ref: eos_designs#/$defs/rx_queue_settings
               structured_config:
                 type: dict
+                relaxed_validation: true
                 documentation_options:
                   hide_keys: true
                 description: Custom structured config for the member ethernet interface.
@@ -10017,6 +10326,7 @@ $defs:
             setting.
         structured_config:
           type: dict
+          relaxed_validation: true
           documentation_options:
             hide_keys: true
           description: Custom structured config for the Port-Channel interface.
@@ -10210,6 +10520,10 @@ $defs:
                 interface of the peer."
             mode:
               type: str
+              valid_values:
+              - 'on'
+              - active
+              - passive
               default: active
             nodes_child_interfaces:
               type: list
@@ -10252,6 +10566,42 @@ $defs:
 
             Note! The content of this dictionary is _not_ validated by the schema,
             since it can be either ethernet_interfaces or port_channel_interfaces.'
+  rx_queue_settings:
+    type: dict
+    description: 'Receive queue parameters for platform SFE interface profile.
+
+      This setting is ignored unless the `platform_sfe_interface_profile.supported`
+      is set as `true` under `platform_settings.feature_support` for the `platform`
+      set on this device.'
+    keys:
+      count:
+        type: int
+        min: 1
+        convert_types:
+        - str
+        description: 'Number of receive queues.
+
+          The maximum value is determined by `platform_sfe_interface_profile.max_rx_queues`
+          under `platform_settings.feature_support` for the `platform` set on this
+          device.'
+      workers:
+        type: list
+        items:
+          type: str
+          convert_types:
+          - int
+          description: 'Worker ids specified as values or range of values such as
+            0-4 or 7.
+
+            Valid values are between 0 and one less than maximum value determined
+            by `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support`
+            for the `platform` set on this device.'
+      mode:
+        type: str
+        description: Mode applicable to the workers.
+        valid_values:
+        - shared
+        - exclusive
   svi:
     type: dict
     $ref: eos_designs#/$defs/svi_settings
@@ -10659,7 +11009,6 @@ $defs:
 
           Only applicable for `wan_mode: "cv-pathfinder"`.'
         type: bool
-        default: false
         $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/lowest_hop_count
       constraints:
         type: dict

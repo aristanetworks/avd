@@ -65,6 +65,24 @@ $defs:
           type: str
           description: |-
             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
+        receive_bandwidth:
+          type: int
+          description: |-
+            Maximum allowed receive bandwidth (download) in Mbps for this interface.
+            This is currently used on CVaaS to provide more information in the visualization.
+          min: 1
+          max: 4294967295
+          convert_types:
+            - str
+        transmit_bandwidth:
+          type: int
+          description: |-
+            Maximum allowed transmit bandwidth (upload) in Mbps for this interface.
+            This is currently used on CVaaS to provide more information in the visualization.
+          min: 1
+          max: 4294967295
+          convert_types:
+            - str
         peer:
           type: str
           description: |-
@@ -169,6 +187,9 @@ $defs:
                     description: |-
                       Number range to use for Tunnel interfaces to an internet-exit service provider using this local interface.
                       Examples: '1-3' or '100,200,300'
+        rx_queue:
+          type: dict
+          $ref: "eos_designs#/$defs/rx_queue_settings"
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the interface in the final EOS configuration.

@@ -10,6 +10,7 @@
     | [<samp>aaa_authentication</samp>](## "aaa_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;login</samp>](## "aaa_authentication.login") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_authentication.login.default") | String |  |  |  | Login authentication method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;command_api</samp>](## "aaa_authentication.login.command_api") | String |  |  |  | Command-API authentication method(s) as a string.<br>This feature is not yet visible in EOS.<br>This feature only supports local authentication at the moment.<br>Examples:<br>- "local"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;console</samp>](## "aaa_authentication.login.console") | String |  |  |  | Console authentication method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br> |
     | [<samp>&nbsp;&nbsp;enable</samp>](## "aaa_authentication.enable") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "aaa_authentication.enable.default") | String |  |  |  | Enable authentication method(s) as a string.<br>Examples:<br>- "group tacacs+ local"<br>- "group MYGROUP none"<br>- "group radius group MYGROUP local"<br> |
@@ -37,6 +38,13 @@
         # - "group MYGROUP none"
         # - "group radius group MYGROUP local"
         default: <str>
+
+        # Command-API authentication method(s) as a string.
+        # This feature is not yet visible in EOS.
+        # This feature only supports local authentication at the moment.
+        # Examples:
+        # - "local"
+        command_api: <str>
 
         # Console authentication method(s) as a string.
         # Examples:

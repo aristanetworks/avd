@@ -13,6 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cos</samp>](## "switchport_default.phone.cos") | Integer |  |  | Min: 0<br>Max: 7 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trunk</samp>](## "switchport_default.phone.trunk") | String |  |  | Valid Values:<br>- <code>tagged</code><br>- <code>untagged</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "switchport_default.phone.vlan") | Integer |  |  | Min: 1<br>Max: 4094 | VLAN ID. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;access_list_bypass</samp>](## "switchport_default.phone.access_list_bypass") | Boolean |  |  |  | Bypass phone traffic from configured access-list. |
 
 === "YAML"
 
@@ -25,4 +26,7 @@
 
         # VLAN ID.
         vlan: <int; 1-4094>
+
+        # Bypass phone traffic from configured access-list.
+        access_list_bypass: <bool>
     ```

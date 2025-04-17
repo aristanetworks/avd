@@ -23,7 +23,6 @@ $defs:
           Prefer paths with lowest hop-count.
           Only applicable for `wan_mode: "cv-pathfinder"`.
         type: bool
-        default: false
         $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/lowest_hop_count"
       constraints:
         type: dict

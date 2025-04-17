@@ -136,6 +136,7 @@ application_traffic_recognition:
         - name: user_defined_app1
         - name: aim
           service: chat
+          # Render multiple services in same application
         - name: aim
           service: audio-video
       application_transports:

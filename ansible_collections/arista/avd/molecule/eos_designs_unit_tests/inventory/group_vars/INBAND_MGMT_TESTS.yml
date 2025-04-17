@@ -46,6 +46,8 @@ spine:
   nodes:
     - name: inband-mgmt-spine1-ztp
       id: 1
+    - name: inband-mgmt-spine2-ztp
+      id: 2
 
 l3leaf:
   defaults:
@@ -60,7 +62,7 @@ l3leaf:
     - name: inband-mgmt-parent
       id: 1
       inband_ztp: true
-      uplink_switches: [inband-mgmt-spine1-ztp]
+      uplink_switches: [inband-mgmt-spine1-ztp, inband-mgmt-spine2-ztp]
       uplink_ipv4_pool: 172.16.255.0/24
     - name: inband-mgmt-parent-vrf
       inband_mgmt_vrf: INBANDMGMT
