@@ -58914,12 +58914,17 @@ class EosDesigns(EosDesignsRootModel):
     """
     This specifies the preferred mechanism to program ECMP routes within the kernel for software
     forwarding.
-    When enabled, configures an environment variable to restart KernelFib agent for ECMP
-    route programming.
-    When disabled, ECMP route programming in the kernel is achieved without agent
-    restart.
-    This is relevant to Pathfinder and AUTOVPN designs. This is supported on EOS version 4.33.2
-    and later.
+    For wan router, by default we configure ecmp programming in kernel.
+    There are two
+    mechanisms - cli or environment variable. Cli is available starting 4.33.2 release.
+    This knob
+    controls if environment variable should be used instead of cli.
+    When enabled, configures an
+    environment variable to restart KernelFib agent for ECMP route programming.
+    When disabled, ECMP
+    route programming in the kernel is achieved using cli without agent restart.
+    This is relevant to
+    Pathfinder and AUTOVPN designs.
 
     Default value: `True`
     """
@@ -60424,12 +60429,17 @@ class EosDesigns(EosDesignsRootModel):
                 wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
                    This specifies the preferred mechanism to program ECMP routes within the kernel for software
                    forwarding.
-                   When enabled, configures an environment variable to restart KernelFib agent for ECMP
-                   route programming.
-                   When disabled, ECMP route programming in the kernel is achieved without agent
-                   restart.
-                   This is relevant to Pathfinder and AUTOVPN designs. This is supported on EOS version 4.33.2
-                   and later.
+                   For wan router, by default we configure ecmp programming in kernel.
+                   There are two
+                   mechanisms - cli or environment variable. Cli is available starting 4.33.2 release.
+                   This knob
+                   controls if environment variable should be used instead of cli.
+                   When enabled, configures an
+                   environment variable to restart KernelFib agent for ECMP route programming.
+                   When disabled, ECMP
+                   route programming in the kernel is achieved using cli without agent restart.
+                   This is relevant to
+                   Pathfinder and AUTOVPN designs.
                 wan_use_evpn_node_settings_for_lan:
                    PREVIEW: This key is currently not supported and may produce invalid configuration.
                    When true,
