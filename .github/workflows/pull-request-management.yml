@@ -183,9 +183,9 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
         run: |
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -216,9 +216,9 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
         run: |
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -276,9 +276,9 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
         run: |
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -314,9 +314,9 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
         run: |
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -352,9 +352,9 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
         run: |
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -386,9 +386,9 @@ jobs:
           name: pyavd
           path: /tmp/pyavd/
       - name: Run molecule test
-        working-directory: ansible_collections/arista/avd
         run: |
           python -m pip install "${{ matrix.ansible_version}}" --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -430,8 +430,8 @@ jobs:
         run: |
           pip install  ${{ matrix.pip_installation }} --no-cache-dir "/tmp/pyavd/${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
       - name: "Run ansible-test sanity"
-        # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
         working-directory: ansible_collections/arista/avd
+        # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
         run: |
           ansible-test sanity --color yes -v ${{ matrix.skip_test }}
 
