@@ -878,7 +878,7 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
   - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.
 - When all the conditions are met, the WAN router configuration will add the Gateway parameter and inject the following configuration:
 
-    ```
+    ```bash
     router adaptive-virtual-topology
        topology role edge gateway vxlan # Notice the gateway VXLAN
        [...]
