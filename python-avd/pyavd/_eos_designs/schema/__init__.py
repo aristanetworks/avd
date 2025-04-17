@@ -58938,14 +58938,16 @@ class EosDesigns(EosDesignsRootModel):
     `connected_endpoints_keys` should be
     defined in the top level group_vars for the fabric.
     The default values will be overridden if
-    defining this key, so it is recommended to copy the defaults and modify them or utilize the
-    `custom_connected_endpoints_keys` key,
-    which serves to augment rather than replace the default
-    configuration.
+    defining this key, so it is recommended to copy the defaults and modify them.
+    If you need to add
+    custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named
+    identically to default `connected_endpoints_keys` entries,
+    custom entries will replace the
+    equivalent default entry.
 
 
-    Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items. Primary key is
-    `key` (`str`).
+    Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items.
+    Primary key is `key` (`str`).
 
     Default value: `lambda cls: coerce_type([{"key": "servers", "type": "server", "description": "Server"}, {"key": "firewalls", "type": "firewall", "description": "Firewall"}, {"key": "routers", "type": "router", "description": "Router"}, {"key": "load_balancers", "type": "load_balancer", "description": "Load Balancer"}, {"key": "storage_arrays", "type": "storage_array", "description": "Storage Array"}, {"key": "cpes", "type": "cpe", "description": "CPE"}, {"key": "workstations", "type": "workstation", "description": "Workstation"}, {"key": "access_points", "type": "access_point", "description": "Access Point"}, {"key": "phones", "type": "phone", "description": "Phone"}, {"key": "printers", "type": "printer", "description": "Printer"}, {"key": "cameras", "type": "camera", "description": "Camera"}, {"key": "generic_devices", "type": "generic_device", "description": "Generic Device"}], target_type=cls)`
     """
@@ -60917,14 +60919,16 @@ class EosDesigns(EosDesignsRootModel):
                    `connected_endpoints_keys` should be
                    defined in the top level group_vars for the fabric.
                    The default values will be overridden if
-                   defining this key, so it is recommended to copy the defaults and modify them or utilize the
-                   `custom_connected_endpoints_keys` key,
-                   which serves to augment rather than replace the default
-                   configuration.
+                   defining this key, so it is recommended to copy the defaults and modify them.
+                   If you need to add
+                   custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named
+                   identically to default `connected_endpoints_keys` entries,
+                   custom entries will replace the
+                   equivalent default entry.
 
 
-                   Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items. Primary key is
-                   `key` (`str`).
+                   Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items.
+                   Primary key is `key` (`str`).
                 core_interfaces: Subclass of AvdModel.
                 custom_structured_configuration_list_merge:
                    The List-merge strategy used when merging custom structured configurations.

@@ -565,10 +565,12 @@ keys:
       the fabric.
 
       The default values will be overridden if defining this key, so it is recommended
-      to copy the defaults and modify them or utilize the `custom_connected_endpoints_keys`
-      key,
+      to copy the defaults and modify them.
 
-      which serves to augment rather than replace the default configuration.
+      If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`
+      - if named identically to default `connected_endpoints_keys` entries,
+
+      custom entries will replace the equivalent default entry.
 
       '
     type: list

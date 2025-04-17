@@ -11,7 +11,7 @@
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "custom_connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "custom_connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "custom_connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
-    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  | See (+) on YAML tab |  | Endpoints connecting to the fabric can be grouped by using separate keys.<br>The keys can be customized to provide a better organization or grouping of your data.<br>`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them or utilize the `custom_connected_endpoints_keys` key,<br>which serves to augment rather than replace the default configuration.<br> |
+    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  | See (+) on YAML tab |  | Endpoints connecting to the fabric can be grouped by using separate keys.<br>The keys can be customized to provide a better organization or grouping of your data.<br>`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br>If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named identically to default `connected_endpoints_keys` entries,<br>custom entries will replace the equivalent default entry.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
@@ -38,8 +38,9 @@
     # Endpoints connecting to the fabric can be grouped by using separate keys.
     # The keys can be customized to provide a better organization or grouping of your data.
     # `connected_endpoints_keys` should be defined in the top level group_vars for the fabric.
-    # The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them or utilize the `custom_connected_endpoints_keys` key,
-    # which serves to augment rather than replace the default configuration.
+    # The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
+    # If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named identically to default `connected_endpoints_keys` entries,
+    # custom entries will replace the equivalent default entry.
     connected_endpoints_keys: # (1)!
       - key: <str; required; unique>
 
