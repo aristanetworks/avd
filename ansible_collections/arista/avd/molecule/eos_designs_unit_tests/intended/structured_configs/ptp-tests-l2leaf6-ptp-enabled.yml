@@ -5,33 +5,33 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: L2_ptp-tests-leaf1_Ethernet12
+  description: L2_ptp-tests-leaf1_Ethernet16
   shutdown: false
   channel_group:
     id: 1
     mode: active
   peer: ptp-tests-leaf1
-  peer_interface: Ethernet12
+  peer_interface: Ethernet16
   peer_type: l3leaf
 - name: Ethernet2
-  description: L2_ptp-tests-leaf2_Ethernet12
+  description: L2_ptp-tests-leaf2_Ethernet16
   shutdown: false
   channel_group:
     id: 1
     mode: active
   peer: ptp-tests-leaf2
-  peer_interface: Ethernet12
+  peer_interface: Ethernet16
   peer_type: l3leaf
 - name: Ethernet3
-  description: L2_ptp-tests-leaf6_Ethernet12
+  description: L2_ptp-tests-leaf6_Ethernet16
   shutdown: false
   channel_group:
     id: 1
     mode: active
   peer: ptp-tests-leaf6
-  peer_interface: Ethernet12
+  peer_interface: Ethernet16
   peer_type: l3leaf
-hostname: ptp-tests-l2leaf2-ptp-enabled
+hostname: ptp-tests-l2leaf6-ptp-enabled
 ip_igmp_snooping:
   globally_enabled: true
 is_deployed: true
@@ -44,7 +44,7 @@ metadata:
   fabric_name: PTP_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: L2_ptp-tests-leaf1_Port-Channel12
+  description: L2_ptp-tests-leaf1_Port-Channel16
   shutdown: false
   ptp:
     enable: true
@@ -62,9 +62,9 @@ port_channel_interfaces:
       allowed_vlan: '11'
 ptp:
   mode: boundary
-  clock_identity: 00:1C:73:7f:00:02
+  clock_identity: 00:1C:73:7f:00:06
   priority1: 127
-  priority2: 2
+  priority2: 6
   domain: 127
   monitor:
     enabled: true
@@ -86,8 +86,8 @@ spanning_tree:
     priority: 32768
 static_routes:
 - vrf: MGMT
-  prefix: 0.0.0.0/0
-  next_hop: 192.168.0.1
+  destination_address_prefix: 0.0.0.0/0
+  gateway: 192.168.0.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

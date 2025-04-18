@@ -69,3 +69,13 @@ l3leaf:
                   sync: 14
             priority1: 40
             priority2: 1
+
+        - name: ptp-tests-leaf6
+          id: 6
+          bgp_as: 65103
+          mgmt_ip: 192.168.0.103/24
+          uplink_switch_interfaces:
+            - Ethernet7
+            - Ethernet8
+          ptp:
+            enabled: false

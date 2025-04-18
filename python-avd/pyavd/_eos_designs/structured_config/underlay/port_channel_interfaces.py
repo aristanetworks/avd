@@ -66,6 +66,8 @@ class PortChannelInterfacesMixin(Protocol):
 
             if link.trunk_groups:
                 port_channel_interface.switchport.trunk.groups.extend(link.trunk_groups)
+            # For l2vlans id is a primary key, we have to define it.
+            # This condition will always be true.
             elif link.vlans is not None:
                 port_channel_interface.switchport.trunk.allowed_vlan = link.vlans
 
