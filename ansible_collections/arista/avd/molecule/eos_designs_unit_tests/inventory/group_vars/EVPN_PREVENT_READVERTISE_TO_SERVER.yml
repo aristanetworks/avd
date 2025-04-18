@@ -13,7 +13,6 @@ l3leaf:
       id: 103
       bgp_as: 65001
       evpn_route_servers: [evpn-prevent-readvertise-to-server-2, evpn-prevent-readvertise-to-server-3]
-      mpls_overlay_role: client
       evpn_gateway:
         evpn_l3:
           enabled: true
