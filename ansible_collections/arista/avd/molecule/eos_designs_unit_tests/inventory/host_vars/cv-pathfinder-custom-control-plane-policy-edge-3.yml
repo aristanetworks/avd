@@ -35,7 +35,7 @@ wan_virtual_topologies:
           - names: [LTE]
             preference: 42
         internet_exit:
-            policy: ZSCALER-EXIT-POLICY-2
+          policy: ZSCALER-EXIT-POLICY-2
       application_virtual_topologies:
         - application_profile: VIDEO
           path_groups:
