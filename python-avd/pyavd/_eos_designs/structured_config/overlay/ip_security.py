@@ -36,9 +36,6 @@ class IpSecurityMixin(Protocol):
         if not self.inputs.wan_ipsec_profiles:
             msg = "wan_ipsec_profiles"
             raise AristaAvdMissingVariableError(msg)
-        if not self.inputs.wan_ipsec_profiles.control_plane:
-            msg = "wan_ipsec_profiles.control_plane"
-            raise AristaAvdMissingVariableError(msg)
 
         if self.shared_utils.is_wan_client and self.inputs.wan_ipsec_profiles.data_plane:
             self._set_data_plane()
