@@ -521,6 +521,8 @@ wan_path_groups:
     id: 100
     dps_keepalive:
       interval: 300
+    import_path_groups:
+      - remote: LTE
   - name: INET
     id: 101
   - name: LTE

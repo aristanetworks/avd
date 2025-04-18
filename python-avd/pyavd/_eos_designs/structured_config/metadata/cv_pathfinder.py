@@ -97,11 +97,15 @@ class CvPathfinderMixin(Protocol):
         """Set the metadata for VRFs by parsing the generated structured config and flatten it a bit (like hiding load-balance policies)."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         load_balance_policies = self.structured_config.router_path_selection.load_balance_policies
+        # TODO: To get an empty avt vrfs and empty load balance policies we need to set the wan_mode as autovpn but this function _metadata_vrfs trigger
+        # when the wan_mode is cvpathfinder. So we need to remove this condition after discussion with maintainers.
         if not avt_vrfs or not load_balance_policies:
             return
 
         avt_policies = self.structured_config.router_adaptive_virtual_topology.policies
 
+        # TODO: The method _metadata_vrfs call when self.shared_utils.is_cv_pathfinder_server and under that
+        # we are already checking for self.shared_utils.is_wan_server. So there is no use of this condition.
         if self.shared_utils.is_wan_server:
             # On pathfinders, verify that the Load Balance policies have at least one priority one except for the HA path-group
             for lb_policy in load_balance_policies:
@@ -117,12 +121,14 @@ class CvPathfinderMixin(Protocol):
                     raise AristaAvdError(msg)
 
         for vrf in avt_vrfs:
+            # TODO: We always adding the policy in avt vrfs. Need to remove this condition after discussion with maintainers
             if not vrf.policy:
                 continue
 
             avt_policy = avt_policies[vrf.policy]
             metadata_vrf = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem(name=vrf.name, vni=self._get_vni_for_vrf_name(vrf.name))
             for profile in vrf.profiles:
+                # TODO: We always adding the profile name in avt vrfs. Need to remove this condition after discussion with maintainers
                 if not profile.name:
                     continue
                 lb_policy = load_balance_policies[self.shared_utils.generate_lb_policy_name(profile.name)]
@@ -148,7 +154,8 @@ class CvPathfinderMixin(Protocol):
         if vrf_name not in self.inputs.wan_virtual_topologies.vrfs or (wan_vni := self.inputs.wan_virtual_topologies.vrfs[vrf_name].wan_vni) is None:
             if vrf_name == "default":
                 return 1
-
+            # TODO: Unable to reproduce this error as vrf_name collected from _filtered_wan_vrfs which filter out the vrf from wan_virtual_topologies.vrfs.
+            # Need to remove it after discussion with maintainers
             msg = f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata."
             raise AristaAvdError(msg)
 
