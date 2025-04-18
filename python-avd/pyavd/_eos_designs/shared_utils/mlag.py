@@ -69,6 +69,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
+        # TODO: The part after and is already checked in self.mlag
         if self.mlag and self.node_group_is_primary_and_peer_hostname is not None:
             return "primary" if self.node_group_is_primary_and_peer_hostname[0] else "secondary"
 
@@ -126,6 +127,7 @@ class MlagMixin(Protocol):
             return self.ip_addressing.mlag_ip_primary()
         if self.mlag_role == "secondary":
             return self.ip_addressing.mlag_ip_secondary()
+        # TODO: unable to reach this condition
         return None
 
     @cached_property
@@ -156,6 +158,7 @@ class MlagMixin(Protocol):
                 msg = f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids"
                 raise AristaAvdInvalidInputsError(msg)
             return {"primary": self.mlag_peer_id, "secondary": self.id}
+        # TODO: unable to reach this condition
         return None
 
     @cached_property
