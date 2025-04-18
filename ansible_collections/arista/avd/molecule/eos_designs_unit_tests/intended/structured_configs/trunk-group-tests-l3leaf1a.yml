@@ -79,6 +79,14 @@ ethernet_interfaces:
   peer_type: monitor
   switchport:
     enabled: true
+- name: Ethernet111
+  description: TESTING_TYPE_1_testing_Nic1
+  shutdown: false
+  peer: testing
+  peer_interface: Nic1
+  peer_type: Testing_Type_1
+  switchport:
+    enabled: true
 hostname: trunk-group-tests-l3leaf1a
 ip_igmp_snooping:
   globally_enabled: true

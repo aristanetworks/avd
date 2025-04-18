@@ -93,6 +93,18 @@ custom_connected_endpoints_keys:
   - key: monitor
     type: monitor
 
+connected_endpoints_keys:
+  - key: Testing_1
+    type: Testing_Type_1
+
+Testing_1:
+  - name: testing
+    adapters:
+      - endpoint_ports: [ Nic1 ]
+        switch_ports: [ Ethernet111 ]
+        switches: [ trunk-group-tests-l3leaf1a ]
+        trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS ]
+
 servers:
   - name: server_with_tg_100
     adapters:
