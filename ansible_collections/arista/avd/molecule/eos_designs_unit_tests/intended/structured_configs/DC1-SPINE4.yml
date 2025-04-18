@@ -91,6 +91,48 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet16
+  description: P2P_LINK_TO_CV-TOPOLOGY-LEAF3A_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.10.101.2/31
+  peer: CV-TOPOLOGY-LEAF3A
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet17
+  description: P2P_LINK_TO_CV-TOPOLOGY-LEAF3B_Ethernet1
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.10.101.4/31
+  peer: CV-TOPOLOGY-LEAF3B
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet20
+  description: P2P_LINK_TO_CV-MLAG-OSPF-L3LEAF1A_Ethernet1
+  shutdown: false
+  speed: forced 40gfull
+  mtu: 1500
+  ip_address: 10.10.101.6/31
+  peer: CV-MLAG-OSPF-L3LEAF1A
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet21
+  description: P2P_LINK_TO_CV-MLAG-OSPF-L3LEAF1B_Ethernet1
+  shutdown: false
+  speed: forced 40gfull
+  mtu: 1500
+  ip_address: 10.10.101.8/31
+  peer: CV-MLAG-OSPF-L3LEAF1B
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 - name: Ethernet22
   description: P2P_LINK_TO_DC1-BL1A_Ethernet4
   shutdown: false
@@ -316,6 +358,26 @@ router_bgp:
     remote_as: '65103'
     peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet52/1
+  - ip_address: 10.10.101.3
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-TOPOLOGY-LEAF3A
+    description: CV-TOPOLOGY-LEAF3A_Ethernet1
+  - ip_address: 10.10.101.5
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-TOPOLOGY-LEAF3B
+    description: CV-TOPOLOGY-LEAF3B_Ethernet1
+  - ip_address: 10.10.101.7
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-MLAG-OSPF-L3LEAF1A
+    description: CV-MLAG-OSPF-L3LEAF1A_Ethernet1
+  - ip_address: 10.10.101.9
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-MLAG-OSPF-L3LEAF1B
+    description: CV-MLAG-OSPF-L3LEAF1B_Ethernet1
   - ip_address: 172.31.254.167
     peer_group: UNDERLAY-PEERS
     remote_as: '65104'
@@ -356,6 +418,26 @@ router_bgp:
     remote_as: '65111'
     peer: DC1_UNDEPLOYED_LEAF1B
     description: DC1_UNDEPLOYED_LEAF1B_Ethernet52/1
+  - ip_address: 192.168.255.36
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-MLAG-OSPF-L3LEAF1A
+    description: CV-MLAG-OSPF-L3LEAF1A
+  - ip_address: 192.168.255.37
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-MLAG-OSPF-L3LEAF1B
+    description: CV-MLAG-OSPF-L3LEAF1B
+  - ip_address: 192.168.255.34
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-TOPOLOGY-LEAF3A
+    description: CV-TOPOLOGY-LEAF3A
+  - ip_address: 192.168.255.35
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65161'
+    peer: CV-TOPOLOGY-LEAF3B
+    description: CV-TOPOLOGY-LEAF3B
   - ip_address: 192.168.255.14
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65104'
