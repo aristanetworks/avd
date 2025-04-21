@@ -91,6 +91,16 @@ ethernet_interfaces:
   peer_type: l3leaf
   switchport:
     enabled: false
+- name: Ethernet13
+  description: P2P_LINK_TO_MH-LEAF2B_Ethernet11
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.10.102.4/31
+  peer: MH-LEAF2B
+  peer_interface: Ethernet11
+  peer_type: wan_router
+  switchport:
+    enabled: false
 - name: Ethernet18
   description: P2P_LINK_TO_MLAG-OSPF-L3LEAF1A_Ethernet1
   shutdown: false
@@ -372,6 +382,11 @@ router_bgp:
     remote_as: '65103'
     peer: DC1-SVC3B
     description: DC1-SVC3B_Ethernet49/1
+  - ip_address: 10.10.102.5
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65153'
+    peer: MH-LEAF2B
+    description: MH-LEAF2B_Ethernet11
   - ip_address: 10.10.101.7
     peer_group: UNDERLAY-PEERS
     remote_as: '65161'

@@ -81,9 +81,6 @@ class RouteMapsMixin(Protocol):
         self._redistribute_static_to_bgp_route_map()
 
     def _route_maps_vrf_default_check(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
-        if not self._vrf_default_evpn:
-            return False
-
         if any((self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router)):
             return True
 
@@ -158,8 +155,7 @@ class RouteMapsMixin(Protocol):
                     type="permit",
                     match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-STATIC-VRF-DEFAULT"]),
                 )
-        if not sequence_numbers:
-            return
+
         self.structured_config.route_maps.append_new(name="RM-EVPN-EXPORT-VRF-DEFAULT", sequence_numbers=sequence_numbers)
 
     def _bgp_underlay_peers_route_map(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
@@ -187,9 +183,6 @@ class RouteMapsMixin(Protocol):
                 type="deny",
                 match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-STATIC-VRF-DEFAULT"]),
             )
-
-        if not sequence_numbers:
-            return
 
         sequence_numbers.append_new(
             sequence=20,

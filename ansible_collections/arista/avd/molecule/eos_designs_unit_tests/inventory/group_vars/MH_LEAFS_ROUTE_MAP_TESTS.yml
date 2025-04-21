@@ -1,0 +1,65 @@
+type: wan_router
+underlay_filter_redistribute_connected: false
+wan_mode: autovpn
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.130.0/24
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+wan_path_groups:
+  - name: MPLS
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    id: 100
+  - name: INET
+    id: 101
+    default_preference: 42
+wan_ipsec_profiles:
+  control_plane:
+    ike_policy_name: AUTOVPN-IKE
+    sa_policy_name: AUTOVPN-SA
+    profile_name: AUTOVPN
+    shared_key: ABCDEF1234567890
+
+wan_router:
+  defaults:
+    uplink_ipv4_pool: 10.10.102.0/24
+    loopback_ipv4_pool: 192.168.250.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:DC:01
+    platform: vEOS-LAB
+    uplink_switches: ['DC1-SPINE1']
+    uplink_interfaces: ['Ethernet11']
+    mlag: false
+  node_groups:
+    - group: MH_L3LEAF2
+      link_tracking:
+        enabled: true
+        groups:
+          - name: Eth-conn-to-router
+            recovery_delay: 520
+      # Set lacp-id port range to 257-768
+      lacp_port_id_range:
+        enabled: true
+        offset: 256
+        size: 512
+      nodes:
+        - name: MH-LEAF2B
+          id: 3
+          wan_role: server
+          bgp_as: 65153
+          mgmt_ip: 192.168.201.106/24
+          uplink_switch_interfaces: [Ethernet13]
+          data_plane_cpu_allocation_max: 1
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: Comcast
+              # wan_circuit_id: 666
+              ip_address: 10.1.1.1/24
+              dhcp_accept_default_route: true

@@ -1,6 +1,8 @@
 ---
 type: l3leaf
 
+underlay_filter_redistribute_connected: false
+
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.10.0.0/24
