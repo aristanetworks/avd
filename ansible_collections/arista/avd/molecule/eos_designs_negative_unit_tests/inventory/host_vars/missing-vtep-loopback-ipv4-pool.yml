@@ -1,0 +1,20 @@
+---
+fabric_name: FABRIC_MISSING_VTEP_LOOPBACK_IPV4_POOL
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    platform: vEOS-LAB
+  node_groups:
+    - group: fabric_missing_vtep_loopback_ipv4_pool
+      bgp_as: 923
+      nodes:
+        - name: missing-vtep-loopback-ipv4-pool
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+
+expected_error_message: >-
+  'vtep_loopback_ipv4_pool' is required but was not found for host 'missing-vtep-loopback-ipv4-pool'.

@@ -1,0 +1,29 @@
+---
+fabric_name: FABRIC_MISSING_CV_TOPOLOGY_KEY
+# Fabric node type keys
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+bgp_as: 65000
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv4_pool: 10.0.0.0/24
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+  nodes:
+    - name: missing-cv-topology
+      id: 1
+use_cv_topology: true
+core_interfaces:
+  p2p_links:
+    - nodes: [ missing-cv-topology, peer1 ]
+      id: 10
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+      as: [65000, 65002]
+      interfaces: [ Ethernet1, Ethernet1 ]
+      include_in_underlay_protocol: true
+      underlay_multicast: true
+expected_error_message: "'cv_topology' is required when 'use_cv_topology' is set to 'true'."
