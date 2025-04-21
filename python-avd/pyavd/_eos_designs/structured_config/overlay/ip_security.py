@@ -102,16 +102,15 @@ class IpSecurityMixin(Protocol):
         as suggested would prevent Pathfinders to establish IPsec tunnels between themselves
         which is undesirable.
         """
-        if self.shared_utils.wan_role is not None:
-            self.structured_config.ip_security.profiles.append_new(
-                name=profile_name,
-                ike_policy=ike_policy_name,
-                sa_policy=sa_policy_name,
-                connection="start",
-                shared_key=key,
-                mode="transport",
-                dpd=EosCliConfigGen.IpSecurity.ProfilesItem.Dpd(interval=10, time=50, action="clear"),
-            )
+        self.structured_config.ip_security.profiles.append_new(
+            name=profile_name,
+            ike_policy=ike_policy_name,
+            sa_policy=sa_policy_name,
+            connection="start",
+            shared_key=key,
+            mode="transport",
+            dpd=EosCliConfigGen.IpSecurity.ProfilesItem.Dpd(interval=10, time=50, action="clear"),
+        )
 
     def _set_key_controller(self: AvdStructuredConfigOverlayProtocol, profile_name: str) -> None:
         """Set the key_controller structure if the device is not a RR or pathfinder."""
