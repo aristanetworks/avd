@@ -177,7 +177,7 @@ static_routes:
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG
+  description: Applying structured config from l3_vlan only when not set on the main vlan.
   shutdown: false
   ip_address: 192.168.253.204/31
   mtu: 9214
