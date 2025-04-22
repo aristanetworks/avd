@@ -18,15 +18,6 @@ bgp_peer_groups:
     listen_range_prefixes:
       - 192.168.255.0/24
 
-wan_route_servers:
-  - hostname: cv-pathfinder-pathfinder
-    vtep_ip: 10.10.10.10
-    path_groups:
-      - name: INET
-        interfaces:
-          - name: Ethernet1
-            public_ip: 192.168.55.55
-
 wan_ipsec_profiles:
   control_plane:
     shared_key: ABCDEF1234567890
@@ -68,44 +59,6 @@ wan_virtual_topologies:
     lowest_hop_count: true
     constraints:
       jitter: 5
-  vrfs:
-    - name: PROD
-      wan_vni: 42
-  policies:
-    - name: DEFAULT-POLICY
-      default_virtual_topology:
-        drop_unmatched: true
-      application_virtual_topologies:
-        - application_profile: TEST
-          path_groups:
-            - names: [INET]
-          internet_exit:
-            policy: ZSCALER-EXIT-POLICY-1
-          id: 42
-        - application_profile: TEST2
-          path_groups:
-            - names: [INET]
-          internet_exit:
-            policy: ZSCALER-EXIT-POLICY-2
-          id: 43
-
-application_classification:
-  application_profiles:
-    - name: TEST
-    - name: TEST2
-
-cv_pathfinder_internet_exit_policies:
-  - name: ZSCALER-EXIT-POLICY-1
-    type: zscaler
-    zscaler:
-      domain_name: test.local
-      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
-  - name: ZSCALER-EXIT-POLICY-2
-    fallback_to_system_default: false
-    type: zscaler
-    zscaler:
-      domain_name: test.local
-      ipsec_key_salt: THIS_SHOULD_BE_VAULTED
 
 expected_error_message: >-
   The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy
