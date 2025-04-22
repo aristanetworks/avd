@@ -652,7 +652,12 @@ class WanMixin(Protocol):
     @cached_property
     def evpn_wan_gateway(self: SharedUtilsProtocol) -> bool:
         """Return whether device is running in wan gateway mode."""
-        gateway = self.wan_role == "client" and self.evpn_role != "none" and self.overlay_routing_protocol != "none" and self.inputs.wan_use_evpn_node_settings_for_lan
+        gateway = (
+            self.wan_role == "client"
+            and self.evpn_role != "none"
+            and self.overlay_routing_protocol != "none"
+            and self.inputs.wan_use_evpn_node_settings_for_lan
+        )
         if not gateway:
             return False
 
