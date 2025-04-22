@@ -23,7 +23,7 @@ spine:
     loopback_ipv4_pool: 10.0.254.0/24
     bgp_as: 64999
   nodes:
-    - name: inband-mgmt-spine1-ztp
+    - name: missing-valid-ipv4-address-ntp-servers-spine
       id: 1
 
 expected_error_message: >-

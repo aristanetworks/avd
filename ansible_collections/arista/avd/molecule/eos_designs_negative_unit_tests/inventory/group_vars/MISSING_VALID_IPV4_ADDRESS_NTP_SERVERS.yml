@@ -30,8 +30,8 @@ l3leaf:
       # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
       only_vlans_in_use: true
   nodes:
-    - name: inband-mgmt-parent
+    - name: missing-valid-ipv4-address-ntp-servers-leaf
       id: 1
       inband_ztp: true
-      uplink_switches: [inband-mgmt-spine1-ztp]
+      uplink_switches: [missing-valid-ipv4-address-ntp-servers-spine]
       uplink_ipv4_pool: 172.16.255.0/24
