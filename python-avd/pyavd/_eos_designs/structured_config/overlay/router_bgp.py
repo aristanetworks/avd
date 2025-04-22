@@ -117,7 +117,7 @@ class RouterBgpMixin(Protocol):
                 peer_groups.append(mpls_peer_group)
 
             # TODO: AVD 6.0.0 remove the check for WAN routers.
-            if self.shared_utils.overlay_evpn_vxlan is True:
+            if self.shared_utils.overlay_evpn_vxlan is True and (not self.shared_utils.is_wan_router or self.inputs.wan_use_evpn_node_settings_for_lan):
                 evpn_overlay_peer_group = self._generate_base_peer_group("evpn", "evpn_overlay_peers")
                 evpn_overlay_peer_group.remote_as = self.shared_utils.bgp_as
                 # EVPN OVERLAY peer group - also in EBGP..
@@ -175,8 +175,7 @@ class RouterBgpMixin(Protocol):
             if self._is_wan_server_with_peers:
                 peer_groups.append_new(name=self.inputs.bgp_peer_groups.wan_rr_overlay_peers.name, activate=False)
 
-        # TODO: no elif
-        if self.shared_utils.overlay_evpn_vxlan is True:
+        if self.shared_utils.overlay_evpn_vxlan is True and (not self.shared_utils.is_wan_router or self.inputs.wan_use_evpn_node_settings_for_lan):
             peer_groups.append_new(name=self.inputs.bgp_peer_groups.evpn_overlay_peers.name, activate=False)
 
         if self.shared_utils.overlay_routing_protocol == "ebgp" and (

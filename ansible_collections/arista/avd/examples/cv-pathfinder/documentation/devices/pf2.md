@@ -939,6 +939,19 @@ ip prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 | -------- | ---- | ----- | --- | ------------- | -------- |
 | 10 | permit | extcommunity ECL-EVPN-SOO | - | - | - |
 
+##### RM-EVPN-SOO-IN
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | extcommunity ECL-EVPN-SOO | - | - | - |
+| 20 | permit | - | - | - | - |
+
+##### RM-EVPN-SOO-OUT
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | permit | - | extcommunity soo 192.168.255.2:0 additive | - | - |
+
 #### Route-maps Device Configuration
 
 ```eos
@@ -949,6 +962,14 @@ route-map RM-CONN-2-BGP permit 10
 !
 route-map RM-EVPN-EXPORT-VRF-DEFAULT permit 10
    match extcommunity ECL-EVPN-SOO
+!
+route-map RM-EVPN-SOO-IN deny 10
+   match extcommunity ECL-EVPN-SOO
+!
+route-map RM-EVPN-SOO-IN permit 20
+!
+route-map RM-EVPN-SOO-OUT permit 10
+   set extcommunity soo 192.168.255.2:0 additive
 ```
 
 ### IP Extended Community Lists
