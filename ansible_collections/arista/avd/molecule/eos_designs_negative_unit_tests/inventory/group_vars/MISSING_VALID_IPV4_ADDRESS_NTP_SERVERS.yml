@@ -1,0 +1,56 @@
+---
+
+# Testing reverting to <5.0.0 description since 'inband-mgmt-subnet' exposes the uppercase peer hostname on a port-channel.
+underlay_l2_ethernet_description: "{peer!u}_{peer_interface}"
+underlay_l2_port_channel_description: "{peer_node_group_or_uppercase_peer}_Po{peer_port_channel_id}"
+
+default_node_types:
+  - match_hostnames:
+      - inband-mgmt-spine.*
+    node_type: spine
+  - match_hostnames:
+      - inband-mgmt-parent.*
+    node_type: l3leaf
+  - match_hostnames:
+      - inband-mgmt-.*
+    node_type: l2leaf
+
+default_mgmt_method: none
+
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ default ]
+    downlink_interfaces: [ Ethernet1-10 ]
+  - types: [ l3leaf, l2leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-10 ]
+    mlag_interfaces: [ Ethernet11-20 ]
+    downlink_interfaces: [ Ethernet21-30 ]
+
+cvp_instance_ips:
+  - apiserver.arista.io
+
+name_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+ntp_settings:
+  servers:
+    # - name: 2.2.2.55
+    - name: pool.ntp.org
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.0.255.0/24
+    vtep_loopback_ipv4_pool: 10.0.254.0/24
+    virtual_router_mac_address: 00:1c:73:00:dc:01
+    bgp_as: 65000-65100
+    filter:
+      # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
+      only_vlans_in_use: true
+  nodes:
+    - name: inband-mgmt-parent
+      id: 1
+      inband_ztp: true
+      uplink_switches: [inband-mgmt-spine1-ztp]
+      uplink_ipv4_pool: 172.16.255.0/24

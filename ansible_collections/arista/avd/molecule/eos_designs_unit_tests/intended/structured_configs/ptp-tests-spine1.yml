@@ -1,6 +1,21 @@
 aaa_root:
   disabled: true
 config_end: true
+dhcp_servers:
+- vrf: default
+  subnets:
+  - subnet: 10.254.2.0/31
+    name: inband ztp for ptp-tests-leaf1-Ethernet1
+    default_gateway: 10.254.2.0
+    ranges:
+    - start: 10.254.2.1
+      end: 10.254.2.1
+  - subnet: 10.254.2.2/31
+    name: inband ztp for ptp-tests-leaf1-Ethernet2
+    default_gateway: 10.254.2.2
+    ranges:
+    - start: 10.254.2.3
+      end: 10.254.2.3
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -9,6 +24,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.0/31
+  dhcp_server_ipv4: true
   ptp:
     enable: true
     announce:
@@ -28,6 +44,7 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 10.254.2.2/31
+  dhcp_server_ipv4: true
   ptp:
     enable: true
     announce:
@@ -229,6 +246,12 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 10.255.0.0/27 eq 32
+- name: PL-P2P-LINKS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.254.2.0/31
+  - sequence: 20
+    action: permit 10.254.2.2/31
 ptp:
   mode: boundary
   mode_one_step: true
@@ -255,6 +278,10 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 70
+    type: permit
+    match:
+    - ip address prefix-list PL-P2P-LINKS
 router_bfd:
   multihop:
     interval: 300

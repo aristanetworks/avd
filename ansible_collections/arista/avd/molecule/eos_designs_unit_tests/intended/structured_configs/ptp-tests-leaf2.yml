@@ -13,6 +13,10 @@ ethernet_interfaces:
   peer: ptp-tests-leaf1
   peer_interface: Ethernet9
   peer_type: mlag_peer
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 4092
 - name: Ethernet10
   description: MLAG_ptp-tests-leaf1_Ethernet10
   shutdown: false
@@ -22,6 +26,10 @@ ethernet_interfaces:
   peer: ptp-tests-leaf1
   peer_interface: Ethernet10
   peer_type: mlag_peer
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 4092
 - name: Ethernet1
   description: P2P_ptp-tests-spine1_Ethernet3
   shutdown: false
@@ -157,6 +165,8 @@ port_channel_interfaces:
 - name: Port-Channel9
   description: MLAG_ptp-tests-leaf1_Port-Channel9
   shutdown: false
+  lacp_fallback_timeout: 30
+  lacp_fallback_mode: individual
   ptp:
     enable: true
     announce:

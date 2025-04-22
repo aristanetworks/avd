@@ -1,0 +1,51 @@
+
+
+# Testing reverting to <5.0.0 description since 'inband-mgmt-subnet' exposes the uppercase peer hostname on a port-channel.
+underlay_l2_ethernet_description: "{peer!u}_{peer_interface}"
+underlay_l2_port_channel_description: "{peer_node_group_or_uppercase_peer}_Po{peer_port_channel_id}"
+
+default_node_types:
+  - match_hostnames:
+      - inband-mgmt-spine.*
+    node_type: spine
+  - match_hostnames:
+      - inband-mgmt-parent.*
+    node_type: l3leaf
+  - match_hostnames:
+      - inband-mgmt-.*
+    node_type: l2leaf
+
+default_mgmt_method: none
+
+default_interfaces:
+  - types: [ spine ]
+    platforms: [ default ]
+    downlink_interfaces: [ Ethernet1-10 ]
+  - types: [ l3leaf, l2leaf ]
+    platforms: [ default ]
+    uplink_interfaces: [ Ethernet1-10 ]
+    mlag_interfaces: [ Ethernet11-20 ]
+    downlink_interfaces: [ Ethernet21-30 ]
+
+cvp_instance_ips:
+  - apiserver.arista.io
+
+name_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+ntp_settings:
+  servers:
+    # - name: 2.2.2.55
+    - name: pool.ntp.org
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.0.254.0/24
+    bgp_as: 64999
+  nodes:
+    - name: inband-mgmt-spine1-ztp
+      id: 1
+
+expected_error_message: >-
+  When in-band ZTP is enabled, at least one NTP server's `name` field provided under `ntp_settings.servers` must be a valid IPv4 address.
