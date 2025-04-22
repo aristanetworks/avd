@@ -48,6 +48,7 @@ class RouterMsdpMixin(Protocol):
         self.structured_config.router_msdp.originator_id_local_interface = "Loopback0"
         for peer in natural_sort(peers):
             peer_facts = self.shared_utils.get_peer_facts(peer)
+            # TODO: router_id is always set by method router_id in python-avd/pyavd/api/ip_addressing/__init__.py.
             if not peer_facts.router_id:
                 msg = f"'router_id' is required but was not found for {peer}."
                 raise AristaAvdInvalidInputsError(msg)
