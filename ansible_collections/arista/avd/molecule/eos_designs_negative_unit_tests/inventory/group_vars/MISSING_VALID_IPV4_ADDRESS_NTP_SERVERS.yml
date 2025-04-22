@@ -1,34 +1,16 @@
 ---
-
-# Testing reverting to <5.0.0 description since 'inband-mgmt-subnet' exposes the uppercase peer hostname on a port-channel.
-underlay_l2_ethernet_description: "{peer!u}_{peer_interface}"
-underlay_l2_port_channel_description: "{peer_node_group_or_uppercase_peer}_Po{peer_port_channel_id}"
-
-default_node_types:
-  - match_hostnames:
-      - inband-mgmt-spine.*
-    node_type: spine
-  - match_hostnames:
-      - inband-mgmt-parent.*
-    node_type: l3leaf
-  - match_hostnames:
-      - inband-mgmt-.*
-    node_type: l2leaf
-
+type: l3leaf
 default_mgmt_method: none
 
 default_interfaces:
-  - types: [ spine ]
-    platforms: [ default ]
-    downlink_interfaces: [ Ethernet1-10 ]
-  - types: [ l3leaf, l2leaf ]
+  - types: [ l3leaf ]
     platforms: [ default ]
     uplink_interfaces: [ Ethernet1-10 ]
     mlag_interfaces: [ Ethernet11-20 ]
     downlink_interfaces: [ Ethernet21-30 ]
 
 cvp_instance_ips:
-  - apiserver.arista.io
+  - apiserver
 
 name_servers:
   - 1.1.1.1
@@ -36,7 +18,6 @@ name_servers:
 
 ntp_settings:
   servers:
-    # - name: 2.2.2.55
     - name: pool.ntp.org
 
 l3leaf:
