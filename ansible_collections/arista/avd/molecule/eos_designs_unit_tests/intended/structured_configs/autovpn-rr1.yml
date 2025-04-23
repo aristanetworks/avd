@@ -134,9 +134,6 @@ router_bgp:
   - prefix: 192.168.130.0/24
     peer_group: WAN-OVERLAY-PEERS
     remote_as: '65000'
-  - prefix: 192.168.131.0/24
-    peer_group: WAN-OVERLAY-PEERS
-    remote_as: '65000'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
@@ -230,15 +227,12 @@ router_path_selection:
       - 10.8.8.8
   - name: LTE
     id: 102
-  - name: NET
-    id: 102
   load_balance_policies:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
       priority: 42
     - name: MPLS
-    - name: NET
   - name: LB-DEFAULT-AUTOVPN-POLICY-IT
     path_groups:
     - name: MPLS
