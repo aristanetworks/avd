@@ -51,30 +51,4 @@ wan_carriers:
     path_group: INET
     trusted: true
 
-tenants:
-  - name: TenantA
-    vrfs:
-      - name: default
-        vrf_id: 1
-      - name: PROD
-        vrf_id: 42
-
-wan_virtual_topologies:
-  vrfs:
-    - name: PROD
-      wan_vni: 42
-  policies:
-    - name: DEFAULT-POLICY
-      default_virtual_topology:
-        drop_unmatched: true
-      application_virtual_topologies:
-        - application_profile: TEST
-          id: 42
-          path_groups:
-            - names: [INET]
-
-application_classification:
-  application_profiles:
-    - name: TEST
-
 expected_error_message: "'wan_ipsec_profiles' is required but was not found."
