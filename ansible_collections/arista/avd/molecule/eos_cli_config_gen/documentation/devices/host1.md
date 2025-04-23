@@ -455,6 +455,15 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 ##### mynameserver0
 
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| atd.lab.com |
+| avd.lab.com |
+
+###### Name Server
+
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
 | 1.1.1.1 | default | 0 |
@@ -465,7 +474,13 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 DNS Domain: arista.avd.com
 
-IP Domain List: domain-list1
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| domain-list1 |
+
+###### Name Server
 
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
@@ -489,6 +504,8 @@ ip name-server group mynameserver0
    name-server vrf default 1.1.1.1 priority 0
    name-server vrf default 8.8.8.8
    name-server vrf default 2.2.2.2 priority 1
+   ip domain-list atd.lab.com
+   ip domain-list avd.lab.com
 !
 ip name-server group mynameserver1
    name-server vrf default 1.1.1.1
