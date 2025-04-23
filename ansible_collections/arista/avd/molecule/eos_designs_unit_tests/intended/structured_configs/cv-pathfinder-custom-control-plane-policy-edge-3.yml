@@ -50,16 +50,43 @@ flow_tracking:
         template_interval: 3600000
     shutdown: false
 hostname: cv-pathfinder-custom-control-plane-policy-edge-3
+ip_access_lists:
+- name: ACL-NAT-IE-ZSCALER
+  entries:
+  - sequence: 10
+    action: permit
+    protocol: ip
+    source: any
+    destination: any
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
     extcommunities: soo 192.168.42.3:511
+ip_nat:
+  profiles:
+  - name: NAT-IE-ZSCALER
+    source:
+      dynamic:
+      - access_list: ACL-NAT-IE-ZSCALER
+        nat_type: pool
+        pool_name: PORT-ONLY-POOL
+  pools:
+  - name: PORT-ONLY-POOL
+    type: port-only
+    ranges:
+    - first_port: 1500
+      last_port: 65535
 ip_routing: true
 ip_security:
   ike_policies:
   - name: CP-IKE-POLICY
     local_id: 192.168.142.3
+  - name: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    local_id_fqdn: cv-pathfinder-custom-control-plane-policy-edge-3_ZSCALER-EXIT-POLICY-1@test.local
+    ike_lifetime: 24
+    encryption: aes256
+    dh_group: 24
   sa_policies:
   - name: DP-SA-POLICY
     esp:
@@ -69,6 +96,13 @@ ip_security:
     esp:
       encryption: aes256gcm128
     pfs_dh_group: 14
+  - name: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    sa_lifetime:
+      value: 8
+    esp:
+      integrity: sha256
+      encryption: aes256
+    pfs_dh_group: 24
   profiles:
   - name: DP-PROFILE
     sa_policy: DP-SA-POLICY
@@ -89,6 +123,15 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+  - name: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+    ike_policy: IE-ZSCALER-EXIT-POLICY-1-IKE-POLICY
+    sa_policy: IE-ZSCALER-EXIT-POLICY-1-SA-POLICY
+    connection: start
+    shared_key: 0007054B145A1F0E0928424A0C0B48140718180B276627273D21301C0B5B130D57575D1E44010F11154015525755501958643C347B76283634497E332F3B6C7C612530262E5F5A333002021717001D0D262B323C2373666E726122373D32
+    dpd:
+      interval: 10
+      time: 60
+      action: clear
   key_controller:
     profile: DP-PROFILE
 is_deployed: true
@@ -146,6 +189,77 @@ metadata:
       carrier: ATT
       circuit_id: '666'
       pathgroup: INET
+    internet_exit_policies:
+    - name: ZSCALER-EXIT-POLICY-1
+      type: zscaler
+      city: Santa Clara, CA
+      country: United States
+      firewall: false
+      ips_control: false
+      acceptable_use_policy: false
+      vpn_credentials:
+      - fqdn: cv-pathfinder-custom-control-plane-policy-edge-3_ZSCALER-EXIT-POLICY-1@test.local
+        vpn_type: UFQDN
+        pre_shared_key: 0007054B145A1F0E0928424A0C0B48140718180B276627273D21301C0B5B130D57575D1E44010F11154015525755501958643C347B76283634497E332F3B6C7C612530262E5F5A333002021717001D0D262B323C2373666E726122373D32
+      tunnels:
+      - name: Tunnel100
+        preference: Preferred
+        endpoint:
+          ip_address: 10.37.121.1
+          datacenter: FMT1
+          city: Fremont, CA
+          country: United States
+          region: us-west1
+          latitude: '37'
+          longitude: '-121'
+      - name: Tunnel101
+        preference: Alternate
+        endpoint:
+          ip_address: 10.39.77.1
+          datacenter: WAS1
+          city: Washington, DC
+          country: United States
+          region: us-east1
+          latitude: '39'
+          longitude: '-77'
+      - name: Tunnel102
+        preference: Alternate
+        endpoint:
+          ip_address: 10.50.9.1
+          datacenter: FRA4
+          city: Frankfurt
+          country: Germany
+          region: eu-west1
+          latitude: '50'
+          longitude: '9'
+monitor_connectivity:
+  shutdown: false
+  interface_sets:
+  - name: SET-Tunnel100
+    interfaces: Tunnel100
+  - name: SET-Tunnel101
+    interfaces: Tunnel101
+  - name: SET-Tunnel102
+    interfaces: Tunnel102
+  hosts:
+  - name: IE-Tunnel100
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+    ip: 10.37.121.1
+    local_interfaces: SET-Tunnel100
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+  - name: IE-Tunnel101
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
+    ip: 10.39.77.1
+    local_interfaces: SET-Tunnel101
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
+  - name: IE-Tunnel102
+    description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
+    ip: 10.50.9.1
+    local_interfaces: SET-Tunnel102
+    address_only: false
+    url: http://gateway.zscalerbeta.net/vpntest
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -201,6 +315,7 @@ router_adaptive_virtual_topology:
   profiles:
   - name: CUSTOM-CP-POLICY
     load_balance_policy: LB-CUSTOM-CP-POLICY
+    internet_exit_policy: ZSCALER-EXIT-POLICY-1
   - name: DEFAULT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-POLICY-VIDEO
   - name: DEFAULT-POLICY-DEFAULT
@@ -362,6 +477,24 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+router_internet_exit:
+  policies:
+  - name: ZSCALER-EXIT-POLICY-1
+    exit_groups:
+    - name: ZSCALER-EXIT-POLICY-1_PRI
+    - name: ZSCALER-EXIT-POLICY-1_SEC
+    - name: ZSCALER-EXIT-POLICY-1_TER
+    - name: system-default-exit-group
+  exit_groups:
+  - name: ZSCALER-EXIT-POLICY-1_PRI
+    local_connections:
+    - name: IE-Tunnel100
+  - name: ZSCALER-EXIT-POLICY-1_SEC
+    local_connections:
+    - name: IE-Tunnel101
+  - name: ZSCALER-EXIT-POLICY-1_TER
+    local_connections:
+    - name: IE-Tunnel102
 router_path_selection:
   path_groups:
   - name: INET
@@ -395,11 +528,36 @@ router_path_selection:
     - name: INET
   tcp_mss_ceiling:
     ipv4_segment_size: auto
+router_service_insertion:
+  enabled: true
+  connections:
+  - name: IE-Tunnel100
+    tunnel_interface:
+      primary: Tunnel100
+    monitor_connectivity_host: IE-Tunnel100
+  - name: IE-Tunnel101
+    tunnel_interface:
+      primary: Tunnel101
+    monitor_connectivity_host: IE-Tunnel101
+  - name: IE-Tunnel102
+    tunnel_interface:
+      primary: Tunnel102
+    monitor_connectivity_host: IE-Tunnel102
 router_traffic_engineering:
   enabled: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
+static_routes:
+- destination_address_prefix: 10.37.121.1/32
+  gateway: 172.16.9.4
+  name: IE-ZSCALER-PRI
+- destination_address_prefix: 10.39.77.1/32
+  gateway: 172.16.9.4
+  name: IE-ZSCALER-SEC
+- destination_address_prefix: 10.50.9.1/32
+  gateway: 172.16.9.4
+  name: IE-ZSCALER-TER
 stun:
   client:
     server_profiles:
@@ -410,6 +568,34 @@ stun:
       ip_address: 10.9.9.9
       ssl_profile: profileA
 transceiver_qsfp_default_mode_4x10: false
+tunnel_interfaces:
+- name: Tunnel100
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 PRI
+  mtu: 1394
+  ip_address: unnumbered Loopback0
+  tunnel_mode: ipsec
+  source_interface: Ethernet1
+  destination: 10.37.121.1
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
+- name: Tunnel101
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 SEC
+  mtu: 1394
+  ip_address: unnumbered Loopback0
+  tunnel_mode: ipsec
+  source_interface: Ethernet1
+  destination: 10.39.77.1
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
+- name: Tunnel102
+  description: Internet Exit ZSCALER-EXIT-POLICY-1 TER
+  mtu: 1394
+  ip_address: unnumbered Loopback0
+  tunnel_mode: ipsec
+  source_interface: Ethernet1
+  destination: 10.50.9.1
+  ipsec_profile: IE-ZSCALER-EXIT-POLICY-1-PROFILE
+  nat_profile: NAT-IE-ZSCALER
 vrfs:
 - name: MGMT
   ip_routing: false

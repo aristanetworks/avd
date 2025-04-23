@@ -20,6 +20,8 @@ wan_virtual_topologies:
         preference: preferred
       - names: [MPLS]
         preference: alternate
+    internet_exit:
+      policy: ZSCALER-EXIT-POLICY-1
     lowest_hop_count: true
     constraints:
       jitter: 5
@@ -32,6 +34,8 @@ wan_virtual_topologies:
           - names: [INET]
           - names: [LTE]
             preference: 42
+        internet_exit:
+          policy: ZSCALER-EXIT-POLICY-2
       application_virtual_topologies:
         - application_profile: VIDEO
           path_groups:
