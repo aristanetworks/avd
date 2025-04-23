@@ -36,8 +36,7 @@ class StaticRoutesMixin(Protocol):
             for vrf in tenant.vrfs:
                 # Static routes are already filtered inside filtered_tenants
                 for static_route in vrf.static_routes:
-                    static_route_item = EosCliConfigGen.StaticRoutesItem()
-                    static_route_item._update(
+                    static_route_item = EosCliConfigGen.StaticRoutesItem(
                         vrf=vrf.name,
                         prefix=static_route.destination_address_prefix,
                         interface=static_route.interface,
