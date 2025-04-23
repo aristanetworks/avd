@@ -16,11 +16,22 @@
 
 DNS Domain: {{ group.dns_domain }}
 {%         endif %}
-{%         if group.ip_domain_list is arista.avd.defined %}
+{%         if group.ip_domain_list is arista.avd.defined or group.ip_domain_lists is arista.avd.defined %}
 
-IP Domain List: {{ group.ip_domain_list }}
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+{%             if group.ip_domain_list is arista.avd.defined %}
+| {{ group.ip_domain_list }} |
+{%             endif %}
+{%             for domain in group.ip_domain_lists | arista.avd.natural_sort %}
+| {{ domain }} |
+{%             endfor %}
 {%         endif %}
 {%         if group.name_servers is arista.avd.defined %}
+
+###### Name Server
 
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
