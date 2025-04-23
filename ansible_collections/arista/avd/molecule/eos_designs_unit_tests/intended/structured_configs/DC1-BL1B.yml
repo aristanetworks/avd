@@ -616,6 +616,7 @@ router_ospf:
         route_map: RM_TEST
       bgp:
         enabled: true
+        route_map: Tenant_ospf_redistribute_bgp_route_map
 service_routing_protocols_model: multi-agent
 sflow:
   vrfs:

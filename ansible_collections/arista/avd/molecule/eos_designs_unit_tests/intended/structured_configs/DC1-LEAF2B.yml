@@ -837,7 +837,7 @@ router_ospf:
     no_passive_interfaces:
     - Ethernet24
     redistribute:
-      bgp:
+      connected:
         enabled: true
 service_routing_protocols_model: multi-agent
 snmp_server:

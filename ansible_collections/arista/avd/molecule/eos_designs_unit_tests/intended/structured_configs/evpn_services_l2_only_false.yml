@@ -531,6 +531,7 @@ router_ospf:
   - id: 123
     passive_interface_default: true
     router_id: 192.168.255.109
+    bfd_enable: true
     no_passive_interfaces:
     - Vlan1234
     redistribute:
