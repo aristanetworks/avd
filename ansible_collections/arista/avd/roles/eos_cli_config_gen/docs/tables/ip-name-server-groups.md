@@ -14,7 +14,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "ip_name_server_groups.[].name_servers.[].vrf") | String | Required |  |  | VRF Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "ip_name_server_groups.[].name_servers.[].priority") | Integer |  |  | Min: 0<br>Max: 15 | Priority value (lower is first). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;dns_domain</samp>](## "ip_name_server_groups.[].dns_domain") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_domain_list</samp>](## "ip_name_server_groups.[].ip_domain_list") | String |  |  |  | Set domain names to complete unqualified host names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_domain_list</samp>](## "ip_name_server_groups.[].ip_domain_list") <span style="color:red">deprecated</span> | String |  |  |  | Set domain names to complete unqualified host names.<span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ip_domain_lists</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_domain_lists</samp>](## "ip_name_server_groups.[].ip_domain_lists") | List, items: String |  |  |  | Set domain names to complete unqualified host names. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "ip_name_server_groups.[].ip_domain_lists.[]") | String |  |  |  |  |
 
 === "YAML"
 
@@ -34,5 +36,12 @@
         dns_domain: <str>
 
         # Set domain names to complete unqualified host names.
+        # This key is deprecated.
+        # Support will be removed in AVD version 6.0.0.
+        # Use <samp>ip_domain_lists</samp> instead.
         ip_domain_list: <str>
+
+        # Set domain names to complete unqualified host names.
+        ip_domain_lists:
+          - <str>
     ```
