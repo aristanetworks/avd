@@ -60,16 +60,16 @@ impl Validation<Map<String, Value>> for Dict {
 fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
     if !schema.allow_other_keys.unwrap_or_default() {
         if let Some(keys) = &schema.keys {
-            if let Some(key) = input
+            input
                 .keys()
                 // keys starting with "_" are passed over to allow for custom usage
                 .filter(|key| !key.starts_with('_'))
-                .find(|key| !keys.contains_key(key.as_str()))
-            {
-                ctx.path.push(key.to_owned());
-                ctx.add_violation(Violation::UnexpectedKey);
-                ctx.path.pop();
-            }
+                .filter(|key| !keys.contains_key(key.as_str()))
+                .for_each(|key| {
+                    ctx.path.push(key.to_owned());
+                    ctx.add_violation(Violation::UnexpectedKey);
+                    ctx.path.pop();
+                });
         }
     }
 }
