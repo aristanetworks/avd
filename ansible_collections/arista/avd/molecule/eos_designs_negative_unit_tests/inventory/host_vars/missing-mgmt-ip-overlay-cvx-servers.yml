@@ -1,0 +1,24 @@
+type: cvxserver
+
+overlay_routing_protocol: CVX
+overlay_cvx_servers: [missing-mgmt-ip-overlay-cvx-servers]
+node_type_keys:
+  - key: cvxserver
+    type: cvxserver
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+
+cvxserver:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+  nodes:
+    - name: missing-mgmt-ip-overlay-cvx-servers
+      bgp_as: 65001
+      id: 1
+
+expected_error_message: >-
+  'mgmt_ip' for CVX Server missing-mgmt-ip-overlay-cvx-servers is required.

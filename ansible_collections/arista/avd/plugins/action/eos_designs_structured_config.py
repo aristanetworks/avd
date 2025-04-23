@@ -1,9 +1,11 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from __future__ import annotations
 
 import cProfile
 import json
+import logging
 import pstats
 from collections import ChainMap
 from typing import Any
@@ -15,7 +17,7 @@ from ansible.plugins.action import ActionBase, display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.schema.avdschematools import AvdSchemaTools
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import get_templar, write_file
+from ansible_collections.arista.avd.plugins.plugin_utils.utils import AvdSwitchFactsDefaultDict, get_templar, write_file
 
 PLUGIN_NAME = "arista.avd.eos_designs_structured_config"
 try:
@@ -29,6 +31,8 @@ except ImportError as e:
             orig_exc=e,
         ),
     )
+
+LOGGER = logging.getLogger()
 
 
 class ActionModule(ActionBase):
@@ -60,7 +64,13 @@ class ActionModule(ActionBase):
         template_output = self._task.args.get("template_output", False)
         validation_mode = self._task.args.get("validation_mode")
 
-        task_vars["switch"] = get(task_vars, f"avd_switch_facts..{hostname}..switch", separator="..", default={})
+        avd_switch_facts = get(task_vars, "avd_switch_facts", required=True)
+
+        # Initialise defaultdict that loads facts from json files on demand.
+        all_facts = AvdSwitchFactsDefaultDict(avd_switch_facts)
+
+        # TODO: AVD 6.0.0 remove 'switch'
+        task_vars["switch"] = avd_switch_facts[hostname]
 
         # Read ansible variables and perform templating to support inline jinja2
         for var in task_vars:
@@ -88,8 +98,10 @@ class ActionModule(ActionBase):
 
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         try:
-            output = get_structured_config(
-                vars=dict(task_vars),
+            structured_config = get_structured_config(
+                hostname=hostname,
+                all_facts=all_facts,
+                hostvars=dict(task_vars),
                 input_schema_tools=input_schema_tools,
                 result=result,
                 templar=self.templar,
@@ -97,9 +109,12 @@ class ActionModule(ActionBase):
         except Exception as error:
             raise AnsibleActionFail(message=str(error)) from error
 
-        if result.get("failed"):
+        if result.get("failed") or not structured_config:
             # Something failed in schema validation.
+            result["failed"] = True
             return result
+
+        output = structured_config._as_dict()
 
         # We use ChainMap to avoid copying large amounts of data around, mapping in
         #  - output (containing structured_config at this point)
@@ -173,7 +188,9 @@ class ActionModule(ActionBase):
         else:
             result["changed"] = True
 
+        # TODO: AVD 6.0.0 consider not setting facts at all.
         result["ansible_facts"] = output
+        # TODO: AVD 6.0.0 remove 'switch'
         result["ansible_facts"]["switch"] = task_vars.get("switch")
 
         if cprofile_file:

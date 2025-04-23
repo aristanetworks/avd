@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;protocol_lldp_bypass</samp>](## "dot1x.protocol_lldp_bypass") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;protocol_bpdu_bypass</samp>](## "dot1x.protocol_bpdu_bypass") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;dynamic_authorization</samp>](## "dot1x.dynamic_authorization") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;statistics_packets_dropped</samp>](## "dot1x.statistics_packets_dropped") | Boolean |  |  |  | Enable the 802.1X port authentication dropped data packet statistics. |
     | [<samp>&nbsp;&nbsp;mac_based_authentication</samp>](## "dot1x.mac_based_authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;delay</samp>](## "dot1x.mac_based_authentication.delay") | Integer |  |  | Min: 0<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;hold_period</samp>](## "dot1x.mac_based_authentication.hold_period") | Integer |  |  | Min: 1<br>Max: 300 |  |
@@ -38,6 +39,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vendor_class_id</samp>](## "dot1x.radius_av_pair.dhcp.vendor_class_id") | Dictionary |  |  |  | Vendor class identifier (DHCP Option 60). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "dot1x.radius_av_pair.dhcp.vendor_class_id.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;auth_only</samp>](## "dot1x.radius_av_pair.dhcp.vendor_class_id.auth_only") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;filter_id</samp>](## "dot1x.radius_av_pair.filter_id") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;delimiter_period</samp>](## "dot1x.radius_av_pair.filter_id.delimiter_period") | Boolean |  |  |  | Use period as the delimiter. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6_required</samp>](## "dot1x.radius_av_pair.filter_id.ipv4_ipv6_required") | Boolean |  |  |  | Enable filters for IPv4 and IPv6 traffic. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiple</samp>](## "dot1x.radius_av_pair.filter_id.multiple") | Boolean |  |  |  | Multiple attribute. |
     | [<samp>&nbsp;&nbsp;aaa</samp>](## "dot1x.aaa") | Dictionary |  |  |  | Configure AAA parameters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;unresponsive</samp>](## "dot1x.aaa.unresponsive") | Dictionary |  |  |  | Configure AAA timeout options. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eap_response</samp>](## "dot1x.aaa.unresponsive.eap_response") | String |  |  | Valid Values:<br>- <code>success</code><br>- <code>disabled</code> | EAP response to send. |
@@ -74,6 +79,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "dot1x.supplicant.profiles.[].ssl_profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;logging</samp>](## "dot1x.supplicant.logging") | Boolean |  |  |  | Enable supplicant logging. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;disconnect_cached_results_timeout</samp>](## "dot1x.supplicant.disconnect_cached_results_timeout") | Integer |  |  | Min: 60<br>Max: 65535 | Timeout in seconds for removing a disconnected supplicant. |
+    | [<samp>&nbsp;&nbsp;vlan_assignment_groups</samp>](## "dot1x.vlan_assignment_groups") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "dot1x.vlan_assignment_groups.[].name") | String | Required, Unique |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;members</samp>](## "dot1x.vlan_assignment_groups.[].members") | String | Required |  |  | VLAN value(s) or range(s) of VLAN values. |
 
 === "YAML"
 
@@ -83,6 +91,9 @@
       protocol_lldp_bypass: <bool>
       protocol_bpdu_bypass: <bool>
       dynamic_authorization: <bool>
+
+      # Enable the 802.1X port authentication dropped data packet statistics.
+      statistics_packets_dropped: <bool>
       mac_based_authentication:
         delay: <int; 0-300>
         hold_period: <int; 1-300>
@@ -125,6 +136,16 @@
           vendor_class_id:
             enabled: <bool; required>
             auth_only: <bool>
+        filter_id:
+
+          # Use period as the delimiter.
+          delimiter_period: <bool>
+
+          # Enable filters for IPv4 and IPv6 traffic.
+          ipv4_ipv6_required: <bool>
+
+          # Multiple attribute.
+          multiple: <bool>
 
       # Configure AAA parameters.
       aaa:
@@ -223,4 +244,9 @@
 
         # Timeout in seconds for removing a disconnected supplicant.
         disconnect_cached_results_timeout: <int; 60-65535>
+      vlan_assignment_groups:
+        - name: <str; required; unique>
+
+          # VLAN value(s) or range(s) of VLAN values.
+          members: <str; required>
     ```

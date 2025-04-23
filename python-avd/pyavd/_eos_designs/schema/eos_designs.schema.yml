@@ -1933,6 +1933,18 @@ keys:
       range:
         beginning: 1006
         ending: 1199
+  ipsec_settings:
+    documentation_options:
+      table: wan-settings
+    description: Settings applicable to all IPsec connections.
+    type: dict
+    keys:
+      bind_connection_to_interface:
+        type: bool
+        default: false
+        description: 'Allow IPsec connections to be bound to the source interface.
+
+          Enabling this prevents IPsec connections from using ECMP paths.'
   ipv4_acls:
     type: list
     primary_key: name
@@ -2173,23 +2185,7 @@ keys:
     documentation_options:
       table: system-settings
     type: dict
-    description: 'MAC address-table aging time.
-
-      Use to change the EOS default of 300.
-
-      '
-    keys:
-      aging_time:
-        type: int
-        convert_types:
-        - str
-        description: 'Aging time in seconds 10-1000000.
-
-          Enter 0 to disable aging.
-
-          '
-        min: 0
-        max: 1000000
+    $ref: eos_cli_config_gen#/keys/mac_address_table
   management_eapi:
     documentation_options:
       table: management-settings
@@ -2200,6 +2196,10 @@ keys:
       '
     type: dict
     keys:
+      enabled:
+        description: Enable/Disable api http-commands.
+        type: bool
+        default: true
       enable_http:
         type: bool
       enable_https:
@@ -2651,7 +2651,7 @@ keys:
             l1:
               type: bool
               default: false
-              description: ??
+              description: Point-to-point services
             l2:
               type: bool
               default: false
@@ -4668,6 +4668,12 @@ keys:
       table: ospf-settings
     type: bool
     default: false
+  underlay_ospf_graceful_restart:
+    documentation_options:
+      table: ospf-settings
+    type: bool
+    default: false
+    description: Enable graceful restart for OSPF underlay.
   underlay_ospf_max_lsa:
     documentation_options:
       table: ospf-settings
@@ -5853,6 +5859,18 @@ $defs:
                       - str
                       min: 1
                       max: 4094
+                raw_eos_cli:
+                  type: str
+                  description: EOS CLI rendered directly on the port-channel subinterface
+                    in the final EOS configuration.
+                structured_config:
+                  type: dict
+                  relaxed_validation: true
+                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>]
+                    for eos_cli_config_gen.
+                  documentation_options:
+                    hide_keys: true
+                  $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in
@@ -6673,6 +6691,13 @@ $defs:
                           description: Comma separated list of prefixes (IPv6 address/Mask)
                             or ranges (IPv6_address-IPv6_address).
                           format: ipv6_pool
+                  hardware_forwarding:
+                    type: bool
+                    description: 'Enable hardware forwarding for diagnostic loopbacks.
+                      This is required for correct forwarding in VRFs without physical
+                      interfaces.
+
+                      '
               ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -6742,6 +6767,14 @@ $defs:
                     items:
                       type: str
                       description: Hostname.
+                  structured_config:
+                    type: dict
+                    relaxed_validation: true
+                    description: Custom structured config added under router_ospf.process_ids.[process_id=<process_id>]
+                      for eos_cli_config_gen.
+                    documentation_options:
+                      hide_keys: true
+                    $ref: eos_cli_config_gen#/keys/router_ospf/keys/process_ids/items
               redistribute_ospf:
                 documentation_options:
                   table: network-services-vrfs-ospf-settings
@@ -7317,6 +7350,13 @@ $defs:
                           - int
                           description: OSPF area ID.
                           default: 0.0.0.0
+                    hardware_forwarding:
+                      type: bool
+                      description: 'Enable hardware forwarding for this loopback.
+                        This is required for correct forwarding in VRFs without physical
+                        interfaces.
+
+                        '
                     raw_eos_cli:
                       type: str
                       description: 'EOS CLI rendered directly on the Loopback interface
@@ -8091,6 +8131,8 @@ $defs:
             type: str
             format: cidr
           mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the management gateway for the device. It takes
               precedence over the global `mgmt_gateway`.
@@ -8101,6 +8143,8 @@ $defs:
             type: str
             format: cidr
           ipv6_mgmt_gateway:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             description: This key sets the ipv6 management gateway for the device.
               It takes precedence over the global `ipv6_mgmt_gateway`.
@@ -9092,6 +9136,11 @@ $defs:
               table: node-type-l2-mlag-configuration
             type: bool
             default: false
+          spanning_tree_mst_pvst_boundary:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            type: bool
+            description: Enable MST PVST border ports.
           virtual_router_mac_address:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -9763,6 +9812,8 @@ $defs:
               This setting is useful on virtual Route Reflectors and Pathfinders where
               more CPU cores should be allocated for control plane.'
           flow_tracker_type:
+            documentation_options:
+              table: node-type-common-configuration
             type: str
             valid_values:
             - sampled

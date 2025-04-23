@@ -430,12 +430,12 @@ class FieldTypeHintSrc(AnnotationSrc):
         imports = set()
         if self.field_type == "list" and self.list_item_type in [None, "Any"]:
             imports.add("from typing import Any")
-
-        if "Literal[" in self.field_type:
+        elif "Literal[" in self.field_type:
             imports.add("from typing import Literal")
-
-        if self.field_type.startswith("EosCliConfigGen."):
+        elif self.field_type.startswith("EosCliConfigGen."):
             imports.add("from pyavd._eos_cli_config_gen.schema import EosCliConfigGen")
+        elif self.field_type.startswith("EosDesigns."):
+            imports.add("from pyavd._eos_designs.schema import EosDesigns")
 
         if not self.annotations:
             return imports

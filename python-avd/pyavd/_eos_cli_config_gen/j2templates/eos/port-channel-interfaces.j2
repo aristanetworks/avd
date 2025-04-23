@@ -487,6 +487,13 @@ interface {{ port_channel_interface.name }}
    ip nat service-profile {{ port_channel_interface.ip_nat.service_profile }}
 {%         endif %}
 {%     endif %}
+{%     if port_channel_interface.ntp_serve is arista.avd.defined %}
+{%         if port_channel_interface.ntp_serve %}
+   ntp serve
+{%         else %}
+   no ntp serve
+{%         endif %}
+{%     endif %}
 {%     if port_channel_interface.ospf_cost is arista.avd.defined %}
    ip ospf cost {{ port_channel_interface.ospf_cost }}
 {%     endif %}

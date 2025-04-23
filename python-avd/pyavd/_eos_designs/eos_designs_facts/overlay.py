@@ -6,11 +6,14 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
+from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
+from pyavd._utils import remove_cached_property_type
+
 if TYPE_CHECKING:
-    from . import EosDesignsFactsProtocol
+    from . import EosDesignsFactsGeneratorProtocol
 
 
-class OverlayMixin(Protocol):
+class OverlayMixin(EosDesignsFactsProtocol, Protocol):
     """
     Mixin Class used to generate some of the EosDesignsFacts.
 
@@ -18,18 +21,21 @@ class OverlayMixin(Protocol):
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
+    @remove_cached_property_type
     @cached_property
-    def evpn_role(self: EosDesignsFactsProtocol) -> str | None:
+    def evpn_role(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.evpn_role
 
+    @remove_cached_property_type
     @cached_property
-    def mpls_overlay_role(self: EosDesignsFactsProtocol) -> str | None:
+    def mpls_overlay_role(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.mpls_overlay_role
 
+    @remove_cached_property_type
     @cached_property
-    def evpn_route_servers(self: EosDesignsFactsProtocol) -> list:
+    def evpn_route_servers(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.EvpnRouteServers:
         """
         Exposed in avd_switch_facts.
 
@@ -38,31 +44,34 @@ class OverlayMixin(Protocol):
         """
         if self.shared_utils.underlay_router is True:
             if self.evpn_role == "client":
-                return self.shared_utils.node_config.evpn_route_servers._as_list() or self.shared_utils.uplink_switches
-            return self.shared_utils.node_config.evpn_route_servers._as_list()
-        return []
+                return EosDesignsFactsProtocol.EvpnRouteServers(self.shared_utils.node_config.evpn_route_servers or self.shared_utils.uplink_switches)
+            return EosDesignsFactsProtocol.EvpnRouteServers(self.shared_utils.node_config.evpn_route_servers)
+        return EosDesignsFactsProtocol.EvpnRouteServers()
 
+    @remove_cached_property_type
     @cached_property
-    def mpls_route_reflectors(self: EosDesignsFactsProtocol) -> list | None:
+    def mpls_route_reflectors(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.MplsRouteReflectors:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_router is True and (
             self.mpls_overlay_role in ["client", "server"] or (self.evpn_role in ["client", "server"] and self.shared_utils.overlay_evpn_mpls)
         ):
-            return self.shared_utils.node_config.mpls_route_reflectors._as_list()
-        return None
+            return EosDesignsFactsProtocol.MplsRouteReflectors(self.shared_utils.node_config.mpls_route_reflectors)
+        return EosDesignsFactsProtocol.MplsRouteReflectors()
 
+    @remove_cached_property_type
     @cached_property
-    def overlay(self: EosDesignsFactsProtocol) -> dict | None:
+    def overlay(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsProtocol.Overlay:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_router is True:
-            return {
-                "peering_address": self.shared_utils.overlay_peering_address,
-                "evpn_mpls": self.shared_utils.overlay_evpn_mpls,
-            }
-        return None
+            return EosDesignsFactsProtocol.Overlay(
+                peering_address=self.shared_utils.overlay_peering_address,
+                evpn_mpls=self.shared_utils.overlay_evpn_mpls,
+            )
+        return EosDesignsFactsProtocol.Overlay()
 
+    @remove_cached_property_type
     @cached_property
-    def vtep_ip(self: EosDesignsFactsProtocol) -> str | None:
+    def vtep_ip(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """Exposed in avd_switch_facts."""
         if self.shared_utils.vtep or self.shared_utils.is_wan_router:
             return self.shared_utils.vtep_ip

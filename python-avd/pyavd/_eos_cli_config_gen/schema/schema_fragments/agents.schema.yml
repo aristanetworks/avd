@@ -32,3 +32,12 @@ keys:
                   - bool
                 required: true
                 description: Environment variable value.
+        shutdown:
+          description: Shutdown the agent process.
+          type: bool
+        shutdown_supervisor_active:
+          description: Shutdown the agent process for active supervisors.
+          type: bool
+        shutdown_supervisor_standby:
+          description: Shutdown the agent process for standby supervisors.
+          type: bool

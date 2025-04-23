@@ -24,6 +24,7 @@ l3leaf:
     uplink_interfaces: ["Ethernet1"]
   node_groups:
     - group: MLAG_OSPF_L3LEAF1
+      spanning_tree_mst_pvst_boundary: true
       nodes:
         - name: MLAG-OSPF-L3LEAF1A
           id: 4

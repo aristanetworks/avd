@@ -300,6 +300,7 @@ class SrcGenDict(SrcGenBase):
             return None
 
         classes, fields = self.get_children_classes_and_fields()
+        base_classes = self.get_base_classes() or ["AvdModel"]
         return ModelSrc(
             name=self.get_class_name(),
             base_classes=self.get_base_classes(),
@@ -307,7 +308,7 @@ class SrcGenDict(SrcGenBase):
             fields=fields,
             imports=self.get_imports(),
             allow_extra=self.schema.allow_other_keys or False,
-            description="Subclass of AvdModel.",
+            description=f"Subclass of {', '.join(base_classes)}.",
         )
 
     def get_base_classes(self) -> list[str]:
@@ -366,16 +367,27 @@ class SrcGenRootDict(SrcGenDict):
 
     def get_base_classes(self) -> list[str]:
         """Return a list of base classes."""
-        if self.get_class_name() == "EosDesigns":
-            return ["EosDesignsRootModel"]
-        return ["EosCliConfigGenRootModel"]
+        match self.get_class_name():
+            case "EosDesigns":
+                return ["EosDesignsRootModel"]
+            case "EosCliConfigGen":
+                return ["EosCliConfigGenRootModel"]
+
+            case class_name if class_name.endswith("Protocol"):
+                return ["Protocol"]
+
+        return ["AvdModel"]
 
     def get_imports(self) -> set[str]:
         imports = super().get_imports()
-        if self.get_class_name() == "EosDesigns":
-            imports.add("from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel")
-        else:
-            imports.add("from pyavd._schema.models.eos_cli_config_gen_root_model import EosCliConfigGenRootModel")
+        match self.get_class_name():
+            case "EosDesigns":
+                imports.add("from pyavd._schema.models.eos_designs_root_model import EosDesignsRootModel")
+            case "EosCliConfigGen":
+                imports.add("from pyavd._schema.models.eos_cli_config_gen_root_model import EosCliConfigGenRootModel")
+            case class_name if class_name.endswith("Protocol"):
+                imports.add("from typing import Protocol")
+
         return imports
 
     def get_children_classes_and_fields(self) -> tuple[list[ModelSrc | ListSrc], list[FieldSrc]]:

@@ -4,6 +4,7 @@
 
 import json
 import sys
+from importlib import import_module
 from importlib.metadata import Distribution, PackageNotFoundError, metadata, version
 from pathlib import Path
 from subprocess import PIPE, Popen
@@ -12,7 +13,6 @@ from typing import Any
 import yaml
 from ansible import constants as C  # noqa: N812
 from ansible.errors import AnsibleActionFail
-from ansible.module_utils.compat.importlib import import_module
 from ansible.plugins.action import ActionBase
 from ansible.utils.collection_loader._collection_finder import _get_collection_metadata
 from ansible.utils.display import Display
@@ -109,7 +109,8 @@ def _parse_requirements(req_str: str) -> tuple[Requirement, list[str]]:
 
 
 def _check_requirement(req: Requirement, requirements_dict: dict[str, Any]) -> bool:
-    """Check one requirement and in-place update requirement_dict.
+    """
+    Check one requirement and in-place update requirement_dict.
 
     Returns:
         boolean: True if the check succeeds, False otherwise

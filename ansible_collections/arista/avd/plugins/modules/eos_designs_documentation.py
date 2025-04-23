@@ -75,5 +75,3 @@ EXAMPLES = r"""
   check_mode: false
   run_once: true
 """
-
-# TODO: RETURN

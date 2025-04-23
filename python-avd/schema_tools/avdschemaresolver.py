@@ -70,7 +70,7 @@ class AvdSchemaResolver:
         except PointerToNowhere:
             msg = (
                 f"Unable to resolve $ref: '{resolved_schema['$ref']}'."
-                "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][a-z0-9_]*)*$'."
+                "Make sure to adhere to the strict format '^(eos_cli_config_gen|eos_designs)#(/[a-z$][\\.a-z0-9_]*)*$'."
             )
             raise RuntimeError(msg) from None
         ref_schema = deepcopy(resolved.contents)
@@ -123,9 +123,13 @@ class AvdSchemaResolver:
                 in_subvalues={"keys", "dynamic_keys", "$defs"},
             ),
         )
-        resources = [
-            ("avd_meta_schema", DRAFT7.create_resource(store["avd_meta_schema"])),
-            ("eos_cli_config_gen", avd_meta_schema_spec.create_resource(store["eos_cli_config_gen"])),
-            ("eos_designs", avd_meta_schema_spec.create_resource(store["eos_designs"])),
-        ]
+        resources = [("avd_meta_schema", DRAFT7.create_resource(store["avd_meta_schema"]))]
+        resources.extend(
+            (
+                schema_name,
+                avd_meta_schema_spec.create_resource(store[schema_name]),
+            )
+            for schema_name in store
+            if schema_name != "avd_meta_schema"
+        )
         return Registry().with_resources(resources)

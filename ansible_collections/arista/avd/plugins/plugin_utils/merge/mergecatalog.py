@@ -28,7 +28,8 @@ else:
 
 
 def merge_catalogs(*args: dict) -> dict:
-    """Merge catalogs according to the ANTA catalog structure.
+    """
+    Merge catalogs according to the ANTA catalog structure.
 
     Args:
     ----

@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Literal, Protocol, TypeVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, default, get_ip_from_pool
 
 if TYPE_CHECKING:
@@ -110,23 +110,31 @@ class UtilsMixin(Protocol):
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
-        peer_type = "other" if peer_facts is None else peer_facts.get("type", "other")
+        peer_type = "other" if peer_facts is None else peer_facts.type
 
         # Set ip or fallback to list with None values
-        ip = p2p_link.ip or [None, None]
+        ips = p2p_link.ip or [None, None]
         # Set bgp_as or fallback to list with None values
         bgp_as = p2p_link.field_as or [None, None]
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
+        try:
+            ip = ips[index]
+            peer_ip = ips[peer_index]
+            description = descriptions[index]
+        except IndexError as exc:
+            msg = "p2p_links model is intended to work for only two devices per entry."
+            raise AristaAvdError(msg) from exc
+
         data = {
             "peer": peer,
             "peer_type": peer_type,
-            "ip": ip[index],
-            "peer_ip": ip[peer_index],
+            "ip": ip,
+            "peer_ip": peer_ip,
             "bgp_as": str(bgp_as[index]) if index < len(bgp_as) and bgp_as[index] else None,
             "peer_bgp_as": str(bgp_as[peer_index]) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
-            "description": descriptions[index],
+            "description": description,
         }
 
         if (
@@ -230,8 +238,6 @@ class UtilsMixin(Protocol):
         Covers common config that is applicable to both port-channels and ethernet interfaces.
         This config will only be used on the main interface - so not port-channel members.
         """
-        index = p2p_link.nodes.index(self.shared_utils.hostname)
-
         interface._update(
             name=p2p_link_data["interface"],
             peer=p2p_link_data["peer"],
@@ -258,8 +264,8 @@ class UtilsMixin(Protocol):
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
 
-        if p2p_link.ip:
-            interface.ip_address = p2p_link.ip[index]
+        if p2p_link_data["ip"]:
+            interface.ip_address = p2p_link_data["ip"]
 
         if p2p_link.include_in_underlay_protocol:
             if p2p_link.underlay_multicast and self.shared_utils.underlay_multicast:
@@ -296,7 +302,7 @@ class UtilsMixin(Protocol):
         elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
             interface.sflow.enable = p2p_link_sflow
 
-        if (p2p_link_flow_tracking := self.shared_utils.new_get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
+        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
             interface.flow_tracker = p2p_link_flow_tracking
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003

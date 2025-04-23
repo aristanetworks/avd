@@ -7,7 +7,6 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import get
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -115,7 +114,7 @@ class UtilsMixin(Protocol):
 
         return int((odd_id - 1) / 2)
 
-    def _get_downlink_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
+    def _get_downlink_ipv4_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int] | tuple[None, None]:
         """
         Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index.
 
@@ -124,18 +123,21 @@ class UtilsMixin(Protocol):
         """
         uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
         uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
-        peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
-        downlink_pools = get(peer_facts, "downlink_pools")
-
+        peer_facts = self.shared_utils.get_peer_facts(uplink_switch)
+        downlink_pools = peer_facts.downlink_pools
         if not downlink_pools:
             return (None, None)
 
-        for downlink_pool_and_interfaces in downlink_pools:
-            downlink_interfaces = range_expand(get(downlink_pool_and_interfaces, "downlink_interfaces"))
+        for downlink_pool in downlink_pools:
+            if not downlink_pool.ipv4_pool:
+                # TODO: Consider making it required in the schema
+                continue
+
+            downlink_interfaces = range_expand(downlink_pool.downlink_interfaces)
 
             for interface_index, downlink_interface in enumerate(downlink_interfaces):
                 if uplink_switch_interface == downlink_interface:
-                    return (get(downlink_pool_and_interfaces, "ipv4_pool"), interface_index)
+                    return (downlink_pool.ipv4_pool, interface_index)
 
         # If none of the interfaces match up, throw error
         msg = (

@@ -51,7 +51,8 @@ def wrap_plugin(plugin_type: Literal["filter", "test"], name: str) -> Callable:
     def wrap_plugin_decorator(func: Callable) -> Callable:
         @wraps(func)
         def plugin_wrapper(*args: Any, **kwargs: Any) -> Any:
-            """Wrapper function for plugins.
+            """
+            Wrapper function for plugins.
 
             NOTE: if the same warning is raised multiple times, Ansible Display() will print only one
             """

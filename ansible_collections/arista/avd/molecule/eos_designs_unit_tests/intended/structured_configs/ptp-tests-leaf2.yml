@@ -393,6 +393,8 @@ router_bgp:
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: mstp
+  mst:
+    pvst_border: true
   mst_instances:
   - id: '0'
     priority: 4096

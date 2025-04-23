@@ -781,10 +781,10 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| TENANT_B_INTRA | 100.70.0.7:19 | connected<br>static |
-| TENANT_B_WAN | 100.70.0.7:20 | connected<br>ospf |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| TENANT_B_INTRA | 100.70.0.7:19 | connected<br>static | - |
+| TENANT_B_WAN | 100.70.0.7:20 | connected<br>ospf | - |
 
 #### Router BGP Device Configuration
 
