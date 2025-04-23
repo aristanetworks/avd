@@ -14665,13 +14665,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         NameServers._item_type = NameServersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "name_servers": {"type": NameServers}, "dns_domain": {"type": str}, "ip_domain_list": {"type": str}}
+        class IpDomainLists(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpDomainLists._item_type = str
+
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "name_servers": {"type": NameServers},
+            "dns_domain": {"type": str},
+            "ip_domain_list": {"type": str},
+            "ip_domain_lists": {"type": IpDomainLists},
+        }
         name: str
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
         ip_domain_list: str | None
         """Set domain names to complete unqualified host names."""
+        ip_domain_lists: IpDomainLists
+        """
+        Set domain names to complete unqualified host names.
+
+        Subclass of AvdList with `str` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -14682,6 +14699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
                 ip_domain_list: str | None | UndefinedType = Undefined,
+                ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpNameServerGroupsItem.
@@ -14694,6 +14712,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
                     ip_domain_list: Set domain names to complete unqualified host names.
+                    ip_domain_lists:
+                       Set domain names to complete unqualified host names.
+
+                       Subclass of AvdList with `str` items.
 
                 """
 
