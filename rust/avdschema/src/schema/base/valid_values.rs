@@ -12,5 +12,6 @@ use serde_with::skip_serializing_none;
 pub struct ValidValues<T> {
     /// List of valid values
     pub valid_values: Option<Vec<T>>,
+    /// Path to variable under the parent dictionary containing valid values.
     pub dynamic_valid_values: Option<Vec<String>>,
 }
