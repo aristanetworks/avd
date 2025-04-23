@@ -6,7 +6,7 @@ use avdschema::Store;
 
 use crate::feedback::{Feedback, Issue};
 
-/// The Context object is passed along duing coercion and validation.
+/// The Context object is passed along during coercion and validation.
 /// All coercions and violations will be registered in the context with the path carried in the context.
 /// The store is used for looking up schema references.
 #[derive(Debug)]
