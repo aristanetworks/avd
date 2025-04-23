@@ -70,6 +70,8 @@ l3leaf:
             priority1: 40
             priority2: 1
 
+    - group: ptp-test-leaf1
+      nodes:
         - name: ptp-tests-leaf6
           id: 6
           bgp_as: 65103

@@ -24,41 +24,14 @@ ethernet_interfaces:
   peer_type: spine
   switchport:
     enabled: false
-- name: Ethernet11
-  description: L2_ptp-tests-l2leaf1-ptp-disabled_Ethernet3
-  shutdown: false
-  channel_group:
-    id: 11
-    mode: active
-  peer: ptp-tests-l2leaf1-ptp-disabled
-  peer_interface: Ethernet3
-  peer_type: l2leaf
-- name: Ethernet12
-  description: L2_ptp-tests-l2leaf2-ptp-enabled_Ethernet3
-  shutdown: false
-  channel_group:
-    id: 12
-    mode: active
-  peer: ptp-tests-l2leaf2-ptp-enabled
-  peer_interface: Ethernet3
-  peer_type: l2leaf
-- name: Ethernet14
-  description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Ethernet3
-  shutdown: false
-  channel_group:
-    id: 14
-    mode: active
-  peer: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
-  peer_interface: Ethernet3
-  peer_type: l2leaf
 - name: Ethernet16
-  description: L2_ptp-tests-l2leaf6-ptp-enabled_Ethernet3
+  description: L2_ptp-tests-l2leaf6-ptp-enabled_Ethernet1
   shutdown: false
   channel_group:
     id: 16
     mode: active
   peer: ptp-tests-l2leaf6-ptp-enabled
-  peer_interface: Ethernet3
+  peer_interface: Ethernet1
   peer_type: l2leaf
 hostname: ptp-tests-leaf6
 ip_igmp_snooping:
@@ -90,32 +63,6 @@ metadata:
   platform: vEOS-lab
   fabric_name: PTP_TESTS
 port_channel_interfaces:
-- name: Port-Channel11
-  description: L2_ptp-tests-l2leaf1-ptp-disabled_Port-Channel1
-  shutdown: false
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: '11'
-- name: Port-Channel12
-  description: L2_ptp-tests-l2leaf2-ptp-enabled_Port-Channel1
-  shutdown: false
-  ptp:
-    enable: true
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: '11'
-- name: Port-Channel14
-  description: L2_ptp-tests-l2leaf2-ptp-enabled-uplink-disabled_Port-Channel1
-  shutdown: false
-  switchport:
-    enabled: true
-    mode: trunk
-    trunk:
-      allowed_vlan: '11'
 - name: Port-Channel16
   description: L2_ptp-tests-l2leaf6-ptp-enabled_Port-Channel1
   shutdown: false

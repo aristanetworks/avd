@@ -22,15 +22,6 @@ ethernet_interfaces:
   peer: ptp-tests-leaf2
   peer_interface: Ethernet14
   peer_type: l3leaf
-- name: Ethernet3
-  description: L2_ptp-tests-leaf6_Ethernet14
-  shutdown: false
-  channel_group:
-    id: 1
-    mode: active
-  peer: ptp-tests-leaf6
-  peer_interface: Ethernet14
-  peer_type: l3leaf
 hostname: ptp-tests-l2leaf2-ptp-enabled-uplink-disabled
 ip_igmp_snooping:
   globally_enabled: true
@@ -44,7 +35,7 @@ metadata:
   fabric_name: PTP_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: L2_ptp-tests-leaf1_Port-Channel14
+  description: L2_ptp-test-leaf_Port-Channel14
   shutdown: false
   switchport:
     enabled: true
