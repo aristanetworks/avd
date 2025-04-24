@@ -47,6 +47,11 @@ wan_router:
               wan_circuit_id: 666
               dhcp_accept_default_route: true
               ip_address: dhcp
+              peer_ip: 172.16.9.4
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: ZSCALER-EXIT-POLICY-2
+                    tunnel_interface_numbers: 100-102
         - name: cv-pathfinder-custom-control-plane-policy-edge-3
           id: 3
           l3_interfaces:
@@ -57,6 +62,11 @@ wan_router:
               wan_circuit_id: 666
               dhcp_accept_default_route: true
               ip_address: dhcp
+              peer_ip: 172.16.9.4
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: ZSCALER-EXIT-POLICY-1
+                    tunnel_interface_numbers: 100-102
 
 wan_rr:
   defaults:
