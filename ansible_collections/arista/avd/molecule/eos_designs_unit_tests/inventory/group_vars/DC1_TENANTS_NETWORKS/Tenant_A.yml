@@ -139,6 +139,7 @@ tenant_a:
           max_lsa: 15000
           redistribute_bgp:
             enabled: true
+            route_map: Tenant_ospf_redistribute_bgp_route_map
           redistribute_connected:
             enabled: true
             route_map: RM_TEST
@@ -294,6 +295,10 @@ tenant_a:
         ospf:
           enabled: true
           router_id: diagnostic_loopback
+          redistribute_connected:
+            enabled: true
+          redistribute_bgp:
+            enabled: false
         l3_interfaces:
           - interfaces:
               - Ethernet22
