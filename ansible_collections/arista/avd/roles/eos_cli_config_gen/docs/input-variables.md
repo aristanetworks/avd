@@ -469,6 +469,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-clie
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
 --8<--
 
+### IP name server groups
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-server-groups.md
+--8<--
+
 ### IP SSH client source-interfaces
 
 --8<--

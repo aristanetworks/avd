@@ -108,7 +108,8 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
 
 ### Update Documentation
 
-If the proposed feature requires any changes to the documentation, make sure to update it accordingly.
+1. If the proposed feature requires any changes to the documentation, update the documentation accordingly.
+2. For new top-level feature data models, include a link to the corresponding schema documentation file (e.g., `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/<data-model>.md`) in the `ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/input-variables.md` file.
 
 ### Run Pre-commit Checks
 
