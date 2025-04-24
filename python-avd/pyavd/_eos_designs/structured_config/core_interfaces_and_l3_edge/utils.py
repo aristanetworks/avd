@@ -204,12 +204,8 @@ class UtilsMixin(Protocol):
 
         if self.shared_utils.ptp_enabled:
             # Apply PTP profile config from node settings when profile is not defined on p2p_link
-            # TODO: if profile is not defined then it pick the default hence we need to define null, need to discuss with @ClausHolbechArista and @gmuloc
             if not p2p_link.ptp.profile:
-                ptp_profile_config = self.shared_utils.ptp_profile
-                if hasattr(ptp_profile_config, "profile"):
-                    delattr(ptp_profile_config, "profile")
-                ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
+                ptp_config = self.shared_utils.ptp_profile._cast_as(output_type, ignore_extra_keys=True)
 
             # Apply PTP profile defined for the p2p_link
             elif p2p_link.ptp.profile not in self.inputs.ptp_profiles:
