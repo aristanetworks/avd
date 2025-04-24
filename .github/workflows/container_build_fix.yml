@@ -1,7 +1,7 @@
 # this workflow can be triggered manually to initiate any build if it fails
 name: fix container build
 
-on:
+"on":
   workflow_dispatch:
     inputs:
       container_name:
