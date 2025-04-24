@@ -380,8 +380,8 @@
         - feature_support:
             bgp_update_wait_install: false
             interface_storm_control: false
-            p2p_uplinks_mtu: 9194
             queue_monitor_length_notify: false
+          p2p_uplinks_mtu: 9194
           platforms:
           - CloudEOS
         - feature_support:
