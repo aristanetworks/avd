@@ -1,0 +1,17 @@
+fabric_name: FABRIC_UNDEFINED_PEER
+
+type: overlay-controller
+overlay_controller:
+  nodes:
+    - name: undefined-peer-facts
+      bgp_as: 65123
+      uplink_switches: [L3LEAF1A, L3LEAF1B] # undefined node names
+      uplink_switch_interfaces: [Ethernet10, Ethernet10]
+      uplink_interfaces: [Ethernet1, Ethernet2]
+      loopback_ipv4_pool: 10.254.254.0/24
+      uplink_ipv4_pool: 10.254.255.0/24
+      id: 32
+
+expected_error_message: >-
+  Facts not found for node 'L3LEAF1A'. Something in the input vars is pointing to this node.
+  Check that 'L3LEAF1A' is in the inventory and is part of the group set by 'fabric_name'. Node is required.

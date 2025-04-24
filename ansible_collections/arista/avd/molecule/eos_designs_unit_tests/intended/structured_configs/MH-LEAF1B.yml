@@ -426,7 +426,9 @@ port_channel_interfaces:
   evpn_ethernet_segment:
     identifier: 0000:0000:0000:0000:0101
     route_target: 00:00:00:00:01:01
+  eos_cli: sflow enable
 - name: Port-Channel11.102
+  l2_mru: 10000
   encapsulation_vlan:
     client:
       encapsulation: dot1q
@@ -564,8 +566,8 @@ snmp_server:
   location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1B
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 transceiver_qsfp_default_mode_4x10: true
 virtual_source_nat_vrfs:
 - name: Tenant_X_OP_Zone

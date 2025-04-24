@@ -11,7 +11,11 @@ keys:
     keys:
       aging_time:
         type: int
-        description: Aging time in seconds.
+        description: |
+          Aging time in seconds 10-1000000.
+          Enter 0 to disable aging.
+        min: 0
+        max: 1000000
         convert_types:
         - str
       notification_host_flap:

@@ -1,0 +1,26 @@
+---
+type: l3leaf
+mgmt_gateway: 192.168.0.1
+overlay_routing_protocol: ebgp
+evpn_prevent_readvertise_to_server: true
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+  nodes:
+    - name: evpn-prevent-readvertise-to-server-1
+      id: 103
+      bgp_as: 65001
+      evpn_route_servers: [evpn-prevent-readvertise-to-server-2, evpn-prevent-readvertise-to-server-3]
+      evpn_gateway:
+        evpn_l3:
+          enabled: true
+    - name: evpn-prevent-readvertise-to-server-2
+      id: 104
+      bgp_as: 65002
+      evpn_role: server
+    - name: evpn-prevent-readvertise-to-server-3
+      id: 105
+      bgp_as: 65003
+      evpn_role: server
