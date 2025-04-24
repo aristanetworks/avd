@@ -14665,13 +14665,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         NameServers._item_type = NameServersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "name_servers": {"type": NameServers}, "dns_domain": {"type": str}, "ip_domain_list": {"type": str}}
+        class IpDomainLists(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpDomainLists._item_type = str
+
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "name_servers": {"type": NameServers},
+            "dns_domain": {"type": str},
+            "ip_domain_list": {"type": str},
+            "ip_domain_lists": {"type": IpDomainLists},
+        }
         name: str
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
         ip_domain_list: str | None
         """Set domain names to complete unqualified host names."""
+        ip_domain_lists: IpDomainLists
+        """
+        Set domain names to complete unqualified host names.
+
+        Subclass of AvdList with `str` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -14682,6 +14699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
                 ip_domain_list: str | None | UndefinedType = Undefined,
+                ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpNameServerGroupsItem.
@@ -14694,6 +14712,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
                     ip_domain_list: Set domain names to complete unqualified host names.
+                    ip_domain_lists:
+                       Set domain names to complete unqualified host names.
+
+                       Subclass of AvdList with `str` items.
 
                 """
 
@@ -17009,8 +17031,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
             "destination_address_prefix": {"type": str},
+            "prefix": {"type": str},
             "interface": {"type": str},
             "gateway": {"type": str},
+            "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
             "tag": {"type": int},
@@ -17020,8 +17044,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         vrf: str | None
         destination_address_prefix: str | None
         """IPv6 Network/Mask."""
+        prefix: str | None
+        """IPv6 Network/Mask."""
         interface: str | None
         gateway: str | None
+        """IPv6 Address."""
+        next_hop: str | None
         """IPv6 Address."""
         track_bfd: bool | None
         """Track next-hop using BFD."""
@@ -17038,8 +17066,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 vrf: str | None | UndefinedType = Undefined,
                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                prefix: str | None | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
                 tag: int | None | UndefinedType = Undefined,
@@ -17055,8 +17085,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     vrf: vrf
                     destination_address_prefix: IPv6 Network/Mask.
+                    prefix: IPv6 Network/Mask.
                     interface: interface
                     gateway: IPv6 Address.
+                    next_hop: IPv6 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
                     tag: tag
@@ -58851,8 +58883,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
             "destination_address_prefix": {"type": str},
+            "prefix": {"type": str},
             "interface": {"type": str},
             "gateway": {"type": str},
+            "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
             "tag": {"type": int},
@@ -58863,8 +58897,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """VRF Name."""
         destination_address_prefix: str | None
         """IPv4_network/Mask."""
+        prefix: str | None
+        """IPv4_network/Mask."""
         interface: str | None
         gateway: str | None
+        """IPv4 Address."""
+        next_hop: str | None
         """IPv4 Address."""
         track_bfd: bool | None
         """Track next-hop using BFD."""
@@ -58881,8 +58919,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 vrf: str | None | UndefinedType = Undefined,
                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                prefix: str | None | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
                 tag: int | None | UndefinedType = Undefined,
@@ -58898,8 +58938,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     vrf: VRF Name.
                     destination_address_prefix: IPv4_network/Mask.
+                    prefix: IPv4_network/Mask.
                     interface: interface
                     gateway: IPv4 Address.
+                    next_hop: IPv4 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
                     tag: tag

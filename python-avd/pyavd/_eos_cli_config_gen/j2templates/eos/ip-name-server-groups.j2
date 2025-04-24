@@ -16,6 +16,9 @@ ip name-server group {{ name_server_group.name }}
 {%     if name_server_group.dns_domain is arista.avd.defined %}
    dns domain {{ name_server_group.dns_domain }}
 {%     endif %}
+{%     for domain in name_server_group.ip_domain_lists | arista.avd.natural_sort %}
+   ip domain-list {{ domain }}
+{%     endfor %}
 {%     if name_server_group.ip_domain_list is arista.avd.defined %}
    ip domain-list {{ name_server_group.ip_domain_list }}
 {%     endif %}

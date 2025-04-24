@@ -1,7 +1,8 @@
 ---
 ip_name_server_groups:
   - name: mynameserver1
-    ip_domain_list: domain-list1
+    ip_domain_lists:
+      - domain-list1
     dns_domain: arista.avd.com
     name_servers:
       - ip_address: 8.8.8.8
@@ -24,6 +25,9 @@ ip_name_server_groups:
         priority: 3
 
   - name: mynameserver0
+    ip_domain_lists:
+      - avd.lab.com
+      - atd.lab.com
     name_servers:
       - ip_address: 8.8.8.8
         vrf: default
