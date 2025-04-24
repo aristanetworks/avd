@@ -73,7 +73,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             return
 
         self.structured_config.static_routes.append_new(
-            destination_address_prefix="0.0.0.0/0", gateway=self.shared_utils.inband_mgmt_gateway, vrf=self.shared_utils.inband_mgmt_vrf
+            prefix="0.0.0.0/0", next_hop=self.shared_utils.inband_mgmt_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
 
     @structured_config_contributor
@@ -82,7 +82,7 @@ class AvdStructuredConfigInbandManagement(StructuredConfigGenerator):
             return
 
         self.structured_config.ipv6_static_routes.append_new(
-            destination_address_prefix="::/0", gateway=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
+            prefix="::/0", next_hop=self.shared_utils.inband_mgmt_ipv6_gateway, vrf=self.shared_utils.inband_mgmt_vrf
         )
 
     @structured_config_contributor
