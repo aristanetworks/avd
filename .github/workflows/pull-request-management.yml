@@ -288,7 +288,7 @@ jobs:
       - name: Build minimum requirements
         run: |
           pip install uv
-          uv pip compile python-avd/pyproject.toml --resolution=lowest-direct > ${{ matrix.pip_requirements }}
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > ${{ matrix.pip_requirements }}
           cat ${{ matrix.pip_requirements }}
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
       - name: Install pyavd and Ansible requirements
