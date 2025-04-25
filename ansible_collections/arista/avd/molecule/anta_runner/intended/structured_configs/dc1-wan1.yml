@@ -555,12 +555,12 @@ spanning_tree:
   mode: none
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 172.16.1.1
-- destination_address_prefix: 172.18.0.0/16
-  gateway: 172.18.3.1
-- destination_address_prefix: 100.64.0.0/16
-  gateway: 100.64.3.1
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+- prefix: 172.18.0.0/16
+  next_hop: 172.18.3.1
+- prefix: 100.64.0.0/16
+  next_hop: 100.64.3.1
 stun:
   client:
     server_profiles:
