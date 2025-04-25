@@ -1,5 +1,5 @@
 # this workflow can be triggered manually to initiate any build if it fails
-name: fix container build
+name: Manual container build
 
 "on":
   workflow_dispatch:
@@ -7,14 +7,14 @@ name: fix container build
       container_name:
         type: choice
         required: true
-        description: "select image name to build"
+        description: "select image type to build"
         options: [universal]
         default: "universal"
       container_tags:
         type: string
         required: false
         description: "container image tags"
-        default: "fix"  # this is a special tag that can be used for testing
+        default: "test"  # this is a special tag that can be used for testing
       python_version:
         type: choice
         required: true
@@ -24,10 +24,10 @@ name: fix container build
       github_tag:
         type: string
         required: true
-        description: "Github tag/branch that will be used to build the image"
+        description: "Github tag/branch that will be used to build the image. For example: devel, v5.3.0"
 
 jobs:
-  fix_container_build:
+  manual_container_build:
     uses: ./.github/workflows/container_build_template.yml
     with:
       container_name: ${{ inputs.container_name }}
