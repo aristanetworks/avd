@@ -29,6 +29,7 @@ from pyavd._cv.api.arista.studio.v1 import (
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
 
+from .async_decorators import grpc_unavailable_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import CVResourceNotFound, get_cv_client_exception
 
@@ -48,6 +49,7 @@ class StudioMixin(Protocol):
 
     studio_api_version: Literal["v1"] = "v1"
 
+    @grpc_unavailable_handler()
     async def get_studio(
         self: CVClientProtocol,
         studio_id: str,
@@ -126,6 +128,7 @@ class StudioMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def get_studio_inputs(
         self: CVClientProtocol,
         studio_id: str,
@@ -232,6 +235,7 @@ class StudioMixin(Protocol):
 
         return studio_inputs or default_value
 
+    @grpc_unavailable_handler()
     async def get_studio_inputs_with_path(
         self: CVClientProtocol,
         studio_id: str,
@@ -332,6 +336,7 @@ class StudioMixin(Protocol):
             return json.loads(response.value.inputs)
         return default_value
 
+    @grpc_unavailable_handler()
     async def set_studio_inputs(
         self: CVClientProtocol,
         studio_id: str,
@@ -373,6 +378,7 @@ class StudioMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def get_topology_studio_inputs(
         self: CVClientProtocol,
         workspace_id: str,
@@ -429,6 +435,7 @@ class StudioMixin(Protocol):
             )
         return topology_inputs
 
+    @grpc_unavailable_handler()
     async def set_topology_studio_inputs(
         self: CVClientProtocol,
         workspace_id: str,

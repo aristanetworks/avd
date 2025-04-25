@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING, Literal, Protocol
 from pyavd._cv.api.arista.inventory.v1 import Device, DeviceKey, DeviceServiceStub, DeviceStreamRequest
 from pyavd._cv.api.arista.time import TimeBounds
 
+from .async_decorators import grpc_unavailable_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -22,6 +23,7 @@ class InventoryMixin(Protocol):
 
     inventory_api_version: Literal["v1"] = "v1"
 
+    @grpc_unavailable_handler()
     async def get_inventory_devices(
         self: CVClientProtocol,
         devices: list[tuple[str, str, str]] | None = None,

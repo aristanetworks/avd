@@ -18,6 +18,7 @@ from pyavd._cv.api.arista.swg.v1 import (
     SwgKey,
 )
 
+from .async_decorators import grpc_unavailable_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -37,6 +38,7 @@ class SwgMixin(Protocol):
 
     swg_api_version: Literal["v1"] = "v1"
 
+    @grpc_unavailable_handler()
     async def set_swg_device(
         self: CVClientProtocol,
         device_id: str,
@@ -73,6 +75,7 @@ class SwgMixin(Protocol):
 
         return response.time, response.value
 
+    @grpc_unavailable_handler()
     async def wait_for_swg_endpoint_status(
         self: CVClientProtocol,
         device_id: str,

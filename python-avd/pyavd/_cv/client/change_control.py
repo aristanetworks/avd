@@ -24,6 +24,7 @@ from pyavd._cv.api.arista.changecontrol.v1 import (
     FlagConfig,
 )
 
+from .async_decorators import grpc_unavailable_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -50,6 +51,7 @@ class ChangeControlMixin(Protocol):
 
     workspace_api_version: Literal["v1"] = "v1"
 
+    @grpc_unavailable_handler()
     async def get_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -80,6 +82,7 @@ class ChangeControlMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def set_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -115,6 +118,7 @@ class ChangeControlMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def approve_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -152,6 +156,7 @@ class ChangeControlMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def start_change_control(
         self: CVClientProtocol,
         change_control_id: str,
@@ -184,6 +189,7 @@ class ChangeControlMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def wait_for_change_control_state(
         self: CVClientProtocol,
         cc_id: str,

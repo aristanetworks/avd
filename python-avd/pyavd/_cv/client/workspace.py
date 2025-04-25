@@ -22,6 +22,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceStreamRequest,
 )
 
+from .async_decorators import grpc_unavailable_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -48,6 +49,7 @@ class WorkspaceMixin(Protocol):
 
     workspace_api_version: Literal["v1"] = "v1"
 
+    @grpc_unavailable_handler()
     async def get_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -80,6 +82,7 @@ class WorkspaceMixin(Protocol):
 
         return response.value
 
+    @grpc_unavailable_handler()
     async def create_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -110,6 +113,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
+    @grpc_unavailable_handler()
     async def abandon_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -138,6 +142,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
+    @grpc_unavailable_handler()
     async def build_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -166,6 +171,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
+    @grpc_unavailable_handler()
     async def delete_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -186,6 +192,7 @@ class WorkspaceMixin(Protocol):
         response = await client.delete(request, metadata=self._metadata, timeout=timeout)
         return response.key
 
+    @grpc_unavailable_handler()
     async def submit_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -215,6 +222,7 @@ class WorkspaceMixin(Protocol):
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
 
+    @grpc_unavailable_handler()
     async def wait_for_workspace_response(
         self: CVClientProtocol,
         workspace_id: str,

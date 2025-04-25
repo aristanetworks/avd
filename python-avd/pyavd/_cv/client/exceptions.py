@@ -84,3 +84,7 @@ class CVMessageSizeExceeded(CVClientException):
     """Maximum GRPC message size"""
     size: int
     """Actual GRPC message size"""
+
+
+class CVGRPCStatusUnavailable(CVClientException):
+    """CloudVision gRPC status is unavailable."""

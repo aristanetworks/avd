@@ -3,15 +3,19 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from asyncio import sleep as asyncio_sleep
 from functools import wraps
 from inspect import signature
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, get_origin
 
+from grpclib import Status
+from grpclib.exceptions import GRPCError
+
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
-from .exceptions import CVMessageSizeExceeded
+from .exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded
 from .versioning import CvVersion
 
 if TYPE_CHECKING:
@@ -150,3 +154,52 @@ class LimitCvVersion:
             raise LookupError(msg)
 
         return wrapper_cv_version
+
+
+def grpc_unavailable_handler(max_retries: int = 5, initial_delay: int = 1, factor: int = 2) -> Callable:
+    """
+    Decorator to retry an async function upon getting gRPC Status.UNAVAILABLE (14).
+
+    Uses exponential backoff mechanism.
+
+    Args:
+        max_retries (int): Maximum number of retry attempts. Total attempts = 1 + max_retries.
+        initial_delay (int): Initial delay in seconds before the first retry.
+        factor (int): Multiplier for the delay in subsequent retries.
+    """
+
+    def decorator(func: Callable) -> Callable:
+        @wraps(func)
+        async def wrapper(*args: Any, **kwargs: Any) -> Any:
+            if max_retries < 1:
+                return await func(*args, **kwargs)
+            for attempt in range(1, max_retries + 2):
+                try:
+                    return await func(*args, **kwargs)
+                except GRPCError as e:  # noqa: PERF203
+                    if e.status == Status.UNAVAILABLE:
+                        if attempt < max_retries + 1:
+                            delay = initial_delay * (factor ** (attempt - 1))
+                            LOGGER.warning(
+                                "async_grpc_unavailable_retry: Attempt %s/%s to execute call '%s' returned '%s'. Retrying after '%s' second(s) ..",
+                                attempt,
+                                max_retries + 1,
+                                func.__name__,
+                                e,
+                                delay,
+                            )
+                            await asyncio_sleep(delay)
+                        else:
+                            LOGGER.warning(
+                                "async_grpc_unavailable_retry: Attempt '%s/%s' to execute call '%s' returned '%s'.", attempt, max_retries + 1, func.__name__, e
+                            )
+                            raise CVGRPCStatusUnavailable(e)
+                    else:
+                        raise
+                except Exception:
+                    raise
+            raise CVGRPCStatusUnavailable
+
+        return wrapper
+
+    return decorator

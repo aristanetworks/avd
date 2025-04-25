@@ -27,6 +27,7 @@ from pyavd._cv.api.arista.tag.v2 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 
+from .async_decorators import grpc_unavailable_handler
 from .constants import DEFAULT_API_TIMEOUT
 from .exceptions import get_cv_client_exception
 
@@ -56,6 +57,7 @@ class TagMixin(Protocol):
     tags_api_version: Literal["v2"] = "v2"
     # TODO: Ensure the to document that we only support v2 of this api - hence only the CV versions supporting that.
 
+    @grpc_unavailable_handler()
     async def get_tags(
         self: CVClientProtocol,
         workspace_id: str,
@@ -126,6 +128,7 @@ class TagMixin(Protocol):
 
         return tags
 
+    @grpc_unavailable_handler()
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
@@ -170,6 +173,7 @@ class TagMixin(Protocol):
 
         return tag_keys
 
+    @grpc_unavailable_handler()
     async def get_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -240,6 +244,7 @@ class TagMixin(Protocol):
 
         return tag_assignments
 
+    @grpc_unavailable_handler()
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -285,6 +290,7 @@ class TagMixin(Protocol):
 
         return tag_assignment_keys
 
+    @grpc_unavailable_handler()
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
