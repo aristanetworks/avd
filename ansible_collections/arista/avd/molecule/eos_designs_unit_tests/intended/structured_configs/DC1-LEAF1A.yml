@@ -424,14 +424,14 @@ spanning_tree:
     priority: 4096
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 - vrf: Tenant_A_APP_Zone
-  destination_address_prefix: 10.2.32.0/24
+  prefix: 10.2.32.0/24
   interface: Vlan132
   name: VARP
 - vrf: Tenant_A_APP_Zone
-  destination_address_prefix: 10.3.32.0/24
+  prefix: 10.3.32.0/24
   interface: Vlan132
   name: VARP
 transceiver_qsfp_default_mode_4x10: true
