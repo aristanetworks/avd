@@ -2,18 +2,6 @@
 type: spine
 default_mgmt_method: none
 
-default_interfaces:
-  - types: [ spine ]
-    platforms: [ default ]
-    downlink_interfaces: [ Ethernet1-10 ]
-
-cvp_instance_ips:
-  - apiserver
-
-name_servers:
-  - 1.1.1.1
-  - 8.8.8.8
-
 ntp_settings:
   servers:
     - name: pool.ntp.org
