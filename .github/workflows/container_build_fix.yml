@@ -1,0 +1,36 @@
+# this workflow can be triggered manually to initiate any build if it fails
+name: Manual container build
+
+"on":
+  workflow_dispatch:
+    inputs:
+      container_name:
+        type: choice
+        required: true
+        description: "select image type to build"
+        options: [universal]
+        default: "universal"
+      container_tags:
+        type: string
+        required: false
+        description: "container image tags"
+        default: "test"  # this is a special tag that can be used for testing
+      python_version:
+        type: choice
+        required: true
+        description: "select Python version"
+        options: ["3.10", "3.11", "3.12", "3.13"]
+        default: "3.11"
+      github_tag:
+        type: string
+        required: true
+        description: "Github tag/branch that will be used to build the image. For example: devel, v5.3.0"
+
+jobs:
+  manual_container_build:
+    uses: ./.github/workflows/container_build_template.yml
+    with:
+      container_name: ${{ inputs.container_name }}
+      container_tags: ${{ inputs.container_tags }}
+      python_version: ${{ inputs.python_version }}
+      github_tag: ${{ inputs.github_tag }}
