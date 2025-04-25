@@ -128,6 +128,7 @@ class CvTagsMixin(Protocol):
                 value = generate_tag.value
             elif generate_tag.data_path is not None:
                 value = get_v2(self.structured_config, generate_tag.data_path)
+                # TODO: Unable to get this condition. Need to discuss with maintainers
                 if isinstance(type(value), AvdBase):
                     msg = (
                         f"'generate_cv_tags.device_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
@@ -155,6 +156,7 @@ class CvTagsMixin(Protocol):
                     value = generate_tag.value
                 elif generate_tag.data_path is not None:
                     value = get_v2(ethernet_interface, generate_tag.data_path)
+                    # TODO: Unable to get this condition. Need to discuss with maintainers
                     if type(value) in [list, dict]:
                         msg = (
                             f"'generate_cv_tags.interface_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
