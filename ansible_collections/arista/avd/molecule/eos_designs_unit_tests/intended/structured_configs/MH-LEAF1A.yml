@@ -263,6 +263,12 @@ loopback_interfaces:
   vrf: Tenant_X_OP_Zone
   ip_address: 10.255.1.33/32
   ipv6_address: 2001:db8:1::1/128
+- name: Loopback200
+  description: VRF_with_loopback_ip_pools_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: VRF_with_loopback_ip_pools
+  ip_address: 10.101.102.33/32
+  ipv6_address: 2001:db8:1::1/128
 management_api_http:
   enable_https: true
   default_services: false
@@ -278,6 +284,7 @@ management_interfaces:
   gateway: 192.168.200.5
 metadata:
   platform: vEOS-LAB
+  pod_name: TENANT_NETWORKS_POD
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
   local_interface:
@@ -529,6 +536,22 @@ router_bgp:
     redistribute_routes:
     - learned
     vlan: '310'
+  - name: VRF_with_loopback_ip_pools
+    rd: 192.168.255.33:22
+    route_targets:
+      both:
+      - '22:22'
+    redistribute_routes:
+    - learned
+    vlan: '315'
+  - name: VRF_without_loopback_ip_pools
+    rd: 192.168.255.33:23
+    route_targets:
+      both:
+      - '23:23'
+    redistribute_routes:
+    - learned
+    vlan: '316'
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -560,10 +583,40 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+  - name: VRF_with_loopback_ip_pools
+    rd: 192.168.255.33:22
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '22:22'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '22:22'
+    router_id: 10.101.102.33
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF_without_loopback_ip_pools
+    rd: 192.168.255.33:23
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '23:23'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '23:23'
+    router_id: 192.168.255.33
+    redistribute:
+      connected:
+        enabled: true
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS MH-LEAF1A
+  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD MH-LEAF1A
 static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
@@ -573,12 +626,31 @@ virtual_source_nat_vrfs:
 - name: Tenant_X_OP_Zone
   ip_address: 10.255.1.33
   ipv6_address: 2001:db8:1::1
+- name: VRF_with_loopback_ip_pools
+  ip_address: 10.101.102.33
+  ipv6_address: 2001:db8:1::1
 vlan_interfaces:
 - name: Vlan310
   description: Tenant_X_OP_Zone_1
   shutdown: false
   vrf: Tenant_X_OP_Zone
   ip_address_virtual: 10.1.10.1/24
+  tenant: Tenant_X
+  tags:
+  - opzone
+- name: Vlan315
+  description: Tenant_network_vrf_1
+  shutdown: false
+  vrf: VRF_with_loopback_ip_pools
+  ip_address_virtual: 10.1.10.2/24
+  tenant: Tenant_X
+  tags:
+  - opzone
+- name: Vlan316
+  description: Tenant_network_vrf_2
+  shutdown: false
+  vrf: VRF_without_loopback_ip_pools
+  ip_address_virtual: 10.1.10.3/24
   tenant: Tenant_X
   tags:
   - opzone
@@ -591,10 +663,22 @@ vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
   tenant: Tenant_X
+- id: 315
+  name: Tenant_network_vrf_1
+  tenant: Tenant_X
+- id: 316
+  name: Tenant_network_vrf_2
+  tenant: Tenant_X
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_X_OP_Zone
+  ip_routing: true
+  tenant: Tenant_X
+- name: VRF_with_loopback_ip_pools
+  ip_routing: true
+  tenant: Tenant_X
+- name: VRF_without_loopback_ip_pools
   ip_routing: true
   tenant: Tenant_X
 vxlan_interface:
@@ -606,6 +690,14 @@ vxlan_interface:
       vlans:
       - id: 310
         vni: 11310
+      - id: 315
+        vni: 11315
+      - id: 316
+        vni: 11316
       vrfs:
       - name: Tenant_X_OP_Zone
         vni: 20
+      - name: VRF_with_loopback_ip_pools
+        vni: 22
+      - name: VRF_without_loopback_ip_pools
+        vni: 23
