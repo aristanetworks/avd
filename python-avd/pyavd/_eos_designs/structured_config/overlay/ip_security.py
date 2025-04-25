@@ -36,9 +36,6 @@ class IpSecurityMixin(Protocol):
         if not self.inputs.wan_ipsec_profiles:
             msg = "wan_ipsec_profiles"
             raise AristaAvdMissingVariableError(msg)
-        if not self.inputs.wan_ipsec_profiles.control_plane:
-            msg = "wan_ipsec_profiles.control_plane"
-            raise AristaAvdMissingVariableError(msg)
 
         if self.shared_utils.is_wan_client and self.inputs.wan_ipsec_profiles.data_plane:
             self._set_data_plane()
@@ -105,16 +102,15 @@ class IpSecurityMixin(Protocol):
         as suggested would prevent Pathfinders to establish IPsec tunnels between themselves
         which is undesirable.
         """
-        if self.shared_utils.wan_role is not None:
-            self.structured_config.ip_security.profiles.append_new(
-                name=profile_name,
-                ike_policy=ike_policy_name,
-                sa_policy=sa_policy_name,
-                connection="start",
-                shared_key=key,
-                mode="transport",
-                dpd=EosCliConfigGen.IpSecurity.ProfilesItem.Dpd(interval=10, time=50, action="clear"),
-            )
+        self.structured_config.ip_security.profiles.append_new(
+            name=profile_name,
+            ike_policy=ike_policy_name,
+            sa_policy=sa_policy_name,
+            connection="start",
+            shared_key=key,
+            mode="transport",
+            dpd=EosCliConfigGen.IpSecurity.ProfilesItem.Dpd(interval=10, time=50, action="clear"),
+        )
 
     def _set_key_controller(self: AvdStructuredConfigOverlayProtocol, profile_name: str) -> None:
         """Set the key_controller structure if the device is not a RR or pathfinder."""

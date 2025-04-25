@@ -1,0 +1,16 @@
+---
+# Test for missing "mgmt_ip" and "ipv6_mgmt_ip", when "default_mgmt_method" is "oob"
+default_mgmt_method: oob
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: missing-mgmt-ip-ipv6-mgmt-ip
+
+ntp_settings:
+  servers:
+    - name: 10.10.10.1
+    - name: 10.10.10.2
+
+expected_error_message: "'default_mgmt_method: oob' requires either 'mgmt_ip' or 'ipv6_mgmt_ip' to be set."

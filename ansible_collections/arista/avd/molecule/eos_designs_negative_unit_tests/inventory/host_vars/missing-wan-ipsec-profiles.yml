@@ -1,0 +1,54 @@
+---
+# Testing missing wan_ipsec_profiles
+wan_mode: cv-pathfinder
+# Disabling underlay for tests
+underlay_routing_protocol: none
+
+type: wan_router
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  nodes:
+    - name: missing-wan-ipsec-profiles
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 666
+          peer_ip: 1.1.1.1
+          ip_address: dhcp
+          dhcp_ip: 10.0.0.145
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+expected_error_message: "'wan_ipsec_profiles' is required but was not found."

@@ -53,3 +53,7 @@ sflow_settings:
       port: 1234
 fabric_sflow:
   l3_interfaces: true
+
+# Test for ntp_settings without servers
+ntp_settings:
+  server_vrf: use_inband_mgmt_vrf
