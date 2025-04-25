@@ -100,6 +100,34 @@ jobs:
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
 
+  # -------------------------------------- #
+  # Build PyAVD wheel and upload artifact
+  # -------------------------------------- #
+  build_pyavd:
+    name: Build pyavd
+    runs-on: ubuntu-latest
+    outputs:
+      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: |
+            3.12
+      - name: Create pyavd wheel and output wheel path
+        id: build_step
+        working-directory: ./python-avd
+        run: |
+          pip install build
+          python -m build --wheel
+          WHEEL_FILE=$(find ./** -name "*.whl" -print0 -type f | xargs -0 -n 1 basename)
+          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
+      - name: Upload pyavd artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pyavd
+          path: ./python-avd/dist/*.whl
+
   # ----------------------------------- #
   # Test Requirements
   # ----------------------------------- #
@@ -130,34 +158,6 @@ jobs:
       - name: "Install Python requirements"
         run: |
           pip install /tmp/pyavd/*.whl -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
-
-  # -------------------------------------- #
-  # Build PyAVD wheel and upload artifact
-  # -------------------------------------- #
-  build_pyavd:
-    name: Build pyavd
-    runs-on: ubuntu-latest
-    outputs:
-      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: |
-            3.12
-      - name: Create pyavd wheel and output wheel path
-        id: build_step
-        working-directory: ./python-avd
-        run: |
-          pip install build
-          python -m build --wheel
-          WHEEL_FILE=$(find ./** -name "*.whl" -print0 -type f | xargs -0 -n 1 basename)
-          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
-      - name: Upload pyavd artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pyavd
-          path: ./python-avd/dist/*.whl
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
