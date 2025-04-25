@@ -61,35 +61,28 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             msg = "The WAN control-plane load-balance policy is empty. Make sure at least one path-group can be used in the policy"
             raise AristaAvdError(msg)
 
-        if self.inputs.wan_mode == "autovpn":
-            output_policy.rules.append_new(
-                id=10,
-                application_profile=self.inputs.wan_virtual_topologies.control_plane_virtual_topology.application_profile,
-                load_balance=load_balance_policy.name,
-            )
-        else:  # cv-pathfinder
-            output_policy.matches.append_new(
-                application_profile=self.inputs.wan_virtual_topologies.control_plane_virtual_topology.application_profile,
-                avt_profile=self._wan_control_plane_profile_name,
-                traffic_class=control_plane_virtual_topology.traffic_class,
-                dscp=control_plane_virtual_topology.dscp,
-            )
+        output_policy.matches.append_new(
+            application_profile=self.inputs.wan_virtual_topologies.control_plane_virtual_topology.application_profile,
+            avt_profile=self._wan_control_plane_profile_name,
+            traffic_class=control_plane_virtual_topology.traffic_class,
+            dscp=control_plane_virtual_topology.dscp,
+        )
 
-            # Add profile
-            profile = EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem(
-                name=self._wan_control_plane_profile_name,
-                load_balance_policy=load_balance_policy.name,
-            )
+        # Add profile
+        profile = EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem(
+            name=self._wan_control_plane_profile_name,
+            load_balance_policy=load_balance_policy.name,
+        )
 
-            # Handling Internet Exit
-            if control_plane_virtual_topology.internet_exit.policy:
-                self._verify_internet_exit_policy(control_plane_virtual_topology.internet_exit.policy, output_policy.name)
-                if self._internet_exit_policy_has_local_interfaces(control_plane_virtual_topology.internet_exit.policy):
-                    profile.internet_exit_policy = control_plane_virtual_topology.internet_exit.policy
-                self._set_internet_exit_policy(control_plane_virtual_topology, output_policy.name)
+        # Handling Internet Exit
+        if control_plane_virtual_topology.internet_exit.policy:
+            self._verify_internet_exit_policy(control_plane_virtual_topology.internet_exit.policy, output_policy.name)
+            if self._internet_exit_policy_has_local_interfaces(control_plane_virtual_topology.internet_exit.policy):
+                profile.internet_exit_policy = control_plane_virtual_topology.internet_exit.policy
+            self._set_internet_exit_policy(control_plane_virtual_topology, output_policy.name)
 
-            self.structured_config.router_adaptive_virtual_topology.profiles.append(profile)
-            cv_pathfinder_policy_profiles.append_new(name=self._wan_control_plane_profile_name, id=254)
+        self.structured_config.router_adaptive_virtual_topology.profiles.append(profile)
+        cv_pathfinder_policy_profiles.append_new(name=self._wan_control_plane_profile_name, id=254)
 
         # Add load_balance_policy
         self.structured_config.router_path_selection.load_balance_policies.append(load_balance_policy)
