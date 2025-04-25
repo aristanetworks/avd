@@ -463,24 +463,24 @@ spanning_tree:
     priority: 4096
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 10.3.4.0/24
-  gateway: 1.2.3.4
+  prefix: 10.3.4.0/24
+  next_hop: 1.2.3.4
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 1.1.1.0/24
+  prefix: 1.1.1.0/24
   interface: vlan101
-  gateway: 10.1.1.1
+  next_hop: 10.1.1.1
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 1.1.2.0/24
+  prefix: 1.1.2.0/24
   interface: vlan101
-  gateway: 10.1.1.1
+  next_hop: 10.1.1.1
   distance: 200
   tag: 666
   name: RT-TO-FAKE-DMZ
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 10.3.5.0/24
+  prefix: 10.3.5.0/24
   interface: Null0
 tcam_profile:
   system: vxlan-routing

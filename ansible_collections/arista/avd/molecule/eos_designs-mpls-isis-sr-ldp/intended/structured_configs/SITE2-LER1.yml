@@ -562,12 +562,12 @@ spanning_tree:
     priority: 4096
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 - vrf: TENANT_B_INTRA
-  destination_address_prefix: 123.0.10.0/24
+  prefix: 123.0.10.0/24
   interface: Ethernet6.10
-  gateway: 123.1.1.3
+  next_hop: 123.1.1.3
   name: TENANT_B_SITE_5_SUBNET
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:

@@ -13064,12 +13064,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class AccessList(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"mechanism": {"type": str}}
+            _fields: ClassVar[dict] = {"mechanism": {"type": str}, "update_default_result_permit": {"type": bool}}
             mechanism: Literal["algomatch", "none", "tcam"] | None
+            update_default_result_permit: bool | None
+            """Accept the packets when access-list is being updated."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, mechanism: Literal["algomatch", "none", "tcam"] | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    mechanism: Literal["algomatch", "none", "tcam"] | None | UndefinedType = Undefined,
+                    update_default_result_permit: bool | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     AccessList.
 
@@ -13078,6 +13085,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         mechanism: mechanism
+                        update_default_result_permit: Accept the packets when access-list is being updated.
 
                     """
 
@@ -14657,13 +14665,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         NameServers._item_type = NameServersItem
 
-        _fields: ClassVar[dict] = {"name": {"type": str}, "name_servers": {"type": NameServers}, "dns_domain": {"type": str}, "ip_domain_list": {"type": str}}
+        class IpDomainLists(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        IpDomainLists._item_type = str
+
+        _fields: ClassVar[dict] = {
+            "name": {"type": str},
+            "name_servers": {"type": NameServers},
+            "dns_domain": {"type": str},
+            "ip_domain_list": {"type": str},
+            "ip_domain_lists": {"type": IpDomainLists},
+        }
         name: str
         name_servers: NameServers
         """Subclass of AvdList with `NameServersItem` items."""
         dns_domain: str | None
         ip_domain_list: str | None
         """Set domain names to complete unqualified host names."""
+        ip_domain_lists: IpDomainLists
+        """
+        Set domain names to complete unqualified host names.
+
+        Subclass of AvdList with `str` items.
+        """
 
         if TYPE_CHECKING:
 
@@ -14674,6 +14699,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 name_servers: NameServers | UndefinedType = Undefined,
                 dns_domain: str | None | UndefinedType = Undefined,
                 ip_domain_list: str | None | UndefinedType = Undefined,
+                ip_domain_lists: IpDomainLists | UndefinedType = Undefined,
             ) -> None:
                 """
                 IpNameServerGroupsItem.
@@ -14686,6 +14712,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name_servers: Subclass of AvdList with `NameServersItem` items.
                     dns_domain: dns_domain
                     ip_domain_list: Set domain names to complete unqualified host names.
+                    ip_domain_lists:
+                       Set domain names to complete unqualified host names.
+
+                       Subclass of AvdList with `str` items.
 
                 """
 
@@ -17001,8 +17031,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
             "destination_address_prefix": {"type": str},
+            "prefix": {"type": str},
             "interface": {"type": str},
             "gateway": {"type": str},
+            "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
             "tag": {"type": int},
@@ -17012,8 +17044,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         vrf: str | None
         destination_address_prefix: str | None
         """IPv6 Network/Mask."""
+        prefix: str | None
+        """IPv6 Network/Mask."""
         interface: str | None
         gateway: str | None
+        """IPv6 Address."""
+        next_hop: str | None
         """IPv6 Address."""
         track_bfd: bool | None
         """Track next-hop using BFD."""
@@ -17030,8 +17066,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 vrf: str | None | UndefinedType = Undefined,
                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                prefix: str | None | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
                 tag: int | None | UndefinedType = Undefined,
@@ -17047,8 +17085,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     vrf: vrf
                     destination_address_prefix: IPv6 Network/Mask.
+                    prefix: IPv6 Network/Mask.
                     interface: interface
                     gateway: IPv6 Address.
+                    next_hop: IPv6 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
                     tag: tag
@@ -18466,7 +18506,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {"aging_time": {"type": int}, "notification_host_flap": {"type": NotificationHostFlap}}
         aging_time: int | None
-        """Aging time in seconds."""
+        """
+        Aging time in seconds 10-1000000.
+        Enter 0 to disable aging.
+        """
         notification_host_flap: NotificationHostFlap
         """Subclass of AvdModel."""
 
@@ -18482,7 +18525,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    aging_time: Aging time in seconds.
+                    aging_time:
+                       Aging time in seconds 10-1000000.
+                       Enter 0 to disable aging.
                     notification_host_flap: Subclass of AvdModel.
 
                 """
@@ -35336,6 +35381,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "bfd": {"type": bool},
                 "bfd_timers": {"type": BfdTimers},
                 "ebgp_multihop": {"type": int},
+                "next_hop_peer": {"type": bool},
                 "next_hop_self": {"type": bool},
                 "password": {"type": str},
                 "passive": {"type": bool},
@@ -35404,6 +35450,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             ebgp_multihop: int | None
             """Time-to-live in range of hops."""
+            next_hop_peer: bool | None
             next_hop_self: bool | None
             password: str | None
             passive: bool | None
@@ -35465,6 +35512,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     bfd: bool | None | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
                     ebgp_multihop: int | None | UndefinedType = Undefined,
+                    next_hop_peer: bool | None | UndefinedType = Undefined,
                     next_hop_self: bool | None | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
                     passive: bool | None | UndefinedType = Undefined,
@@ -35524,6 +35572,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                            Subclass of AvdModel.
                         ebgp_multihop: Time-to-live in range of hops.
+                        next_hop_peer: next_hop_peer
                         next_hop_self: next_hop_self
                         password: password
                         passive: passive
@@ -35946,6 +35995,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "missing_policy": {"type": MissingPolicy},
                 "allowas_in": {"type": AllowasIn},
                 "ebgp_multihop": {"type": int},
+                "next_hop_peer": {"type": bool},
                 "next_hop_self": {"type": bool},
                 "link_bandwidth": {"type": LinkBandwidth},
                 "rib_in_pre_policy_retain": {"type": RibInPrePolicyRetain},
@@ -36024,6 +36074,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ebgp_multihop: int | None
             """Time-to-live in range of hops."""
+            next_hop_peer: bool | None
             next_hop_self: bool | None
             link_bandwidth: LinkBandwidth
             """Subclass of AvdModel."""
@@ -36074,6 +36125,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     missing_policy: MissingPolicy | UndefinedType = Undefined,
                     allowas_in: AllowasIn | UndefinedType = Undefined,
                     ebgp_multihop: int | None | UndefinedType = Undefined,
+                    next_hop_peer: bool | None | UndefinedType = Undefined,
                     next_hop_self: bool | None | UndefinedType = Undefined,
                     link_bandwidth: LinkBandwidth | UndefinedType = Undefined,
                     rib_in_pre_policy_retain: RibInPrePolicyRetain | UndefinedType = Undefined,
@@ -36136,6 +36188,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Subclass of AvdModel.
                         allowas_in: Subclass of AvdModel.
                         ebgp_multihop: Time-to-live in range of hops.
+                        next_hop_peer: next_hop_peer
                         next_hop_self: next_hop_self
                         link_bandwidth: Subclass of AvdModel.
                         rib_in_pre_policy_retain: Subclass of AvdModel.
@@ -46354,6 +46407,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "description": {"type": str},
                     "route_reflector_client": {"type": bool},
                     "ebgp_multihop": {"type": int},
+                    "next_hop_peer": {"type": bool},
                     "next_hop_self": {"type": bool},
                     "shutdown": {"type": bool},
                     "bfd": {"type": bool},
@@ -46409,6 +46463,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 route_reflector_client: bool | None
                 ebgp_multihop: int | None
                 """Time-to-live in range of hops."""
+                next_hop_peer: bool | None
                 next_hop_self: bool | None
                 shutdown: bool | None
                 bfd: bool | None
@@ -46463,6 +46518,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         description: str | None | UndefinedType = Undefined,
                         route_reflector_client: bool | None | UndefinedType = Undefined,
                         ebgp_multihop: int | None | UndefinedType = Undefined,
+                        next_hop_peer: bool | None | UndefinedType = Undefined,
                         next_hop_self: bool | None | UndefinedType = Undefined,
                         shutdown: bool | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
@@ -46514,6 +46570,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             description: description
                             route_reflector_client: route_reflector_client
                             ebgp_multihop: Time-to-live in range of hops.
+                            next_hop_peer: next_hop_peer
                             next_hop_self: next_hop_self
                             shutdown: shutdown
                             bfd: Enable BFD.
@@ -58826,8 +58883,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
             "destination_address_prefix": {"type": str},
+            "prefix": {"type": str},
             "interface": {"type": str},
             "gateway": {"type": str},
+            "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
             "tag": {"type": int},
@@ -58838,8 +58897,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """VRF Name."""
         destination_address_prefix: str | None
         """IPv4_network/Mask."""
+        prefix: str | None
+        """IPv4_network/Mask."""
         interface: str | None
         gateway: str | None
+        """IPv4 Address."""
+        next_hop: str | None
         """IPv4 Address."""
         track_bfd: bool | None
         """Track next-hop using BFD."""
@@ -58856,8 +58919,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 vrf: str | None | UndefinedType = Undefined,
                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                prefix: str | None | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
                 tag: int | None | UndefinedType = Undefined,
@@ -58873,8 +58938,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     vrf: VRF Name.
                     destination_address_prefix: IPv4_network/Mask.
+                    prefix: IPv4_network/Mask.
                     interface: interface
                     gateway: IPv4 Address.
+                    next_hop: IPv4 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
                     tag: tag

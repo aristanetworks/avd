@@ -477,7 +477,7 @@ underlay_ethernet_interfaces:
 
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
-- `{{ link.type }} (underlay_p2p or underlay_l2)`
+- `{{ link.type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
 - All group/hostvars
 
 underlay_port_channel_interfaces:
@@ -1465,6 +1465,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vr
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-interfaces-settings.md
+--8<--
+
+#### Network services VRF L3 Port-Channels configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/network-services-vrfs-l3-port-channel-settings.md
 --8<--
 
 #### Network services VRF Loopbacks configuration

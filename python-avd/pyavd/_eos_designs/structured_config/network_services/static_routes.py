@@ -36,8 +36,17 @@ class StaticRoutesMixin(Protocol):
             for vrf in tenant.vrfs:
                 # Static routes are already filtered inside filtered_tenants
                 for static_route in vrf.static_routes:
-                    static_route_item = static_route._cast_as(EosCliConfigGen.StaticRoutesItem, ignore_extra_keys=True)
-                    static_route_item.vrf = vrf.name
+                    static_route_item = EosCliConfigGen.StaticRoutesItem(
+                        vrf=vrf.name,
+                        prefix=static_route.destination_address_prefix,
+                        interface=static_route.interface,
+                        next_hop=static_route.gateway,
+                        track_bfd=static_route.track_bfd,
+                        distance=static_route.distance,
+                        tag=static_route.tag,
+                        metric=static_route.metric,
+                        name=static_route.name,
+                    )
                     self.structured_config.static_routes.append_unique(static_route_item)
 
                 for svi in vrf.svis:
@@ -51,7 +60,7 @@ class StaticRoutesMixin(Protocol):
                             continue
 
                         static_route_item = EosCliConfigGen.StaticRoutesItem(
-                            destination_address_prefix=str(ipaddress.ip_network(virtual_router_address, strict=False)),
+                            prefix=str(ipaddress.ip_network(virtual_router_address, strict=False)),
                             vrf=vrf.name,
                             name="VARP",
                             interface=f"Vlan{svi.id}",
@@ -62,7 +71,7 @@ class StaticRoutesMixin(Protocol):
     def set_zscaler_ie_connection_static_route(self: AvdStructuredConfigNetworkServicesProtocol, destination_ip: str, name: str, next_hop: str) -> None:
         """Set the static route for one Zscaler Internet Exit connection."""
         self.structured_config.static_routes.append_new(
-            destination_address_prefix=f"{destination_ip}/32",
+            prefix=f"{destination_ip}/32",
             name=name,
-            gateway=next_hop,
+            next_hop=next_hop,
         )
