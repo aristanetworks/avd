@@ -3588,6 +3588,13 @@ keys:
         mlag: 300
         non_mlag: 330
     - platforms:
+      - CloudEOS
+      feature_support:
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+      p2p_uplinks_mtu: 9194
+    - platforms:
       - AWE-5310
       - AWE-7230R
       feature_support:

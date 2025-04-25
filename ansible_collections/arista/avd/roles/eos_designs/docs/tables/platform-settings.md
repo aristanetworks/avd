@@ -378,6 +378,13 @@
             mlag: 300
             non_mlag: 330
         - feature_support:
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          p2p_uplinks_mtu: 9194
+          platforms:
+          - CloudEOS
+        - feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
             interface_storm_control: false
