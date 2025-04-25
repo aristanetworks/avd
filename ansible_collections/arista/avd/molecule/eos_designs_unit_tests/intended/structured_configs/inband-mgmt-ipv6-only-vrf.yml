@@ -42,8 +42,8 @@ ip_name_servers:
   vrf: MGMT
 ipv6_static_routes:
 - vrf: INBANDMGMT
-  destination_address_prefix: ::/0
-  gateway: 2a00:107::1
+  prefix: ::/0
+  next_hop: 2a00:107::1
 is_deployed: true
 management_api_http:
   enable_https: true

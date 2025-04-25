@@ -1,5 +1,6 @@
 ---
 # AVD_LAB Tenants Networks
+pod_name: TENANT_NETWORKS_POD
 tenants:
   # Tenant A Specific Information - VRFs / VLANs
   - name: Tenant_X
@@ -30,3 +31,29 @@ tenants:
         static_routes:
           - destination_address_prefix: 10.0.0.0/8
             gateway: 10.2.10.100
+      - name: VRF_with_loopback_ip_pools
+        vrf_id: 22
+        vtep_diagnostic:
+          loopback: 200
+          loopback_ip_pools:
+            - pod: TENANT_NETWORKS_POD
+              ipv4_pool: 10.101.102.0/24
+              ipv6_pool: 2001:db8:1::-2001:db8:1:7fff::, 2001:db8:1:8000::/49
+        svis:
+          - id: 315
+            name: Tenant_network_vrf_1
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.2/24
+        bgp:
+          router_id: diagnostic_loopback
+      - name: VRF_without_loopback_ip_pools
+        vrf_id: 23
+        vtep_diagnostic:
+          loopback: 300
+        svis:
+          - id: 316
+            name: Tenant_network_vrf_2
+            tags: [opzone]
+            enabled: true
+            ip_address_virtual: 10.1.10.3/24

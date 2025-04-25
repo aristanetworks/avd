@@ -172,12 +172,12 @@ spanning_tree:
   no_spanning_tree_vlan: '4094'
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.0.1
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.0.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan4094
-  description: MLAG
+  description: Description from mlag_peer_l3_vlan_structured_config.
   shutdown: false
   ip_address: 192.168.253.204/31
   mtu: 9214

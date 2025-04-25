@@ -11,8 +11,6 @@ jobs:
     if: github.repository == 'aristanetworks/avd'
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo '${{ toJson(github.event.workflow_run) }}'
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
@@ -63,7 +61,7 @@ jobs:
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
           merge-multiple: true
 
-      - name: 'Get PR context'
+      - name: Get PR context
         # Source: https://github.com/orgs/community/discussions/25220#discussioncomment-11316244
         id: pr-context
         if: github.event.workflow_run.event == 'pull_request'

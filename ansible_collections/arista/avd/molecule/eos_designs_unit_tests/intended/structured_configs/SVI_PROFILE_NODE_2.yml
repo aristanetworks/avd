@@ -131,18 +131,18 @@ router_ospf:
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 10.0.0.1
+  prefix: 0.0.0.0/0
+  next_hop: 10.0.0.1
 - vrf: svi_profile_tests_vrf
-  destination_address_prefix: 10.4.10.0/24
+  prefix: 10.4.10.0/24
   interface: Vlan410
   name: VARP
 - vrf: svi_profile_tests_vrf
-  destination_address_prefix: 10.4.11.0/24
+  prefix: 10.4.11.0/24
   interface: Vlan411
   name: VARP
 - vrf: svi_profile_tests_vrf
-  destination_address_prefix: 10.4.12.0/24
+  prefix: 10.4.12.0/24
   interface: Vlan412
   name: VARP
 transceiver_qsfp_default_mode_4x10: true
