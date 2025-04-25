@@ -3030,56 +3030,6 @@ Name-server Group: mynameserver1
 ```eos
 !
 monitor connectivity
-   vrf blue
-      interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
-      local-interfaces VRF_GLOBAL_SET default
-      !
-      host server4
-         description
-         server4_connectivity_monitor
-         local-interfaces VRF_GLOBAL_SET
-         ip 10.10.20.1
-         url https://server2.local.com
-         !
-         exit
-      !
-      host server5
-         description
-         server5_connectivity_monitor
-         local-interfaces VRF_GLOBAL_SET address-only
-         ip 10.10.20.11
-         url https://server5.local.com
-         !
-         exit
-      !
-      host server6
-         !
-         exit
-      !
-      exit
-   !
-   vrf red
-      interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
-      interface set VRF_HOST_SET Loopback12-14, 19-23
-      description
-      vrf_connectivity_monitor
-      local-interfaces VRF_GLOBAL_SET address-only default
-      !
-      host server2
-         description
-         server2_connectivity_monitor
-         local-interfaces VRF_HOST_SET address-only
-         ip 10.10.20.1
-         icmp echo size 1300
-         url https://server2.local.com
-         !
-         exit
-      !
-      exit
-   !
-   vrf yellow
-      !
-      exit
    name-server group mynameserver1
    interval 5
    no shutdown
@@ -3109,6 +3059,43 @@ monitor connectivity
       icmp echo size 1200
    !
    host server4
+   !
+   vrf blue
+      interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
+      local-interfaces VRF_GLOBAL_SET default
+      !
+      host server4
+         description
+         server4_connectivity_monitor
+         local-interfaces VRF_GLOBAL_SET
+         ip 10.10.20.1
+         url https://server2.local.com
+      !
+      host server5
+         description
+         server5_connectivity_monitor
+         local-interfaces VRF_GLOBAL_SET address-only
+         ip 10.10.20.11
+         url https://server5.local.com
+      !
+      host server6
+   !
+   vrf red
+      interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
+      interface set VRF_HOST_SET Loopback12-14, 19-23
+      description
+      vrf_connectivity_monitor
+      local-interfaces VRF_GLOBAL_SET address-only default
+      !
+      host server2
+         description
+         server2_connectivity_monitor
+         local-interfaces VRF_HOST_SET address-only
+         ip 10.10.20.1
+         icmp echo size 1300
+         url https://server2.local.com
+   !
+   vrf yellow
 ```
 
 ## Monitor Layer 1 Logging
