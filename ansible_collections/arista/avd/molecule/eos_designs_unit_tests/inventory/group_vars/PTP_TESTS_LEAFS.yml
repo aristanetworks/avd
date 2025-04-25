@@ -26,7 +26,6 @@ l3leaf:
         - name: ptp-tests-leaf1
           id: 1
           bgp_as: 65101
-          inband_ztp: true
           mgmt_ip: 192.168.0.101/24
           uplink_switch_interfaces:
             - Ethernet1
