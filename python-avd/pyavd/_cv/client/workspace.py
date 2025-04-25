@@ -11,6 +11,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     Request,
     RequestParams,
     Response,
+    ResponseStatus,
     Workspace,
     WorkspaceConfig,
     WorkspaceConfigDeleteRequest,
@@ -246,12 +247,20 @@ class WorkspaceMixin(Protocol):
             responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
             async for response in responses:
                 if request_id in response.value.responses.values:
-                    LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                    return response.value.responses.values[request_id], response.value
-                LOGGER.debug(
-                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s",
-                    request_id,
-                    response.value.state,
-                )
+                    LOGGER.info(
+                        "wait_for_workspace_response: Got response for request '%s' at '%s' UTC: %s",
+                        request_id,
+                        response.time,
+                        response.value.responses.values[request_id],
+                    )
+                    if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
+                        return response.value.responses.values[request_id], response.value
+                else:
+                    LOGGER.debug(
+                        "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
+                        request_id,
+                        response.value.state,
+                        response.value.responses.values,
+                    )
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Request ID '{request_id}") or e
