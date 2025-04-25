@@ -79,6 +79,7 @@ management_interfaces:
   gateway: 192.168.200.5
 metadata:
   platform: vEOS-LAB
+  pod_name: TENANT_NETWORKS_POD
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
   local_interface:
@@ -101,11 +102,11 @@ port_channel_interfaces:
     enabled: true
     mode: trunk
     trunk:
-      allowed_vlan: '310'
+      allowed_vlan: 310,315-316
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS MH-L2LEAF1A
+  location: EOS_DESIGNS_UNIT_TESTS TENANT_NETWORKS_POD MH-L2LEAF1A
 spanning_tree:
   mode: mstp
   mst_instances:
@@ -124,6 +125,12 @@ vlan_internal_order:
 vlans:
 - id: 310
   name: Tenant_X_OP_Zone_1
+  tenant: Tenant_X
+- id: 315
+  name: Tenant_network_vrf_1
+  tenant: Tenant_X
+- id: 316
+  name: Tenant_network_vrf_2
   tenant: Tenant_X
 vrfs:
 - name: MGMT
