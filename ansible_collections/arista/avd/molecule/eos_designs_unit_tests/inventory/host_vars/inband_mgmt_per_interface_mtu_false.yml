@@ -1,0 +1,39 @@
+underlay_l2_ethernet_description: "{peer!u}_{peer_interface}"
+underlay_l2_port_channel_description: "{peer_node_group_or_uppercase_peer}_Po{peer_port_channel_id}"
+
+default_node_types:
+  - match_hostnames:
+      - inband_mgmt_per_interface_mtu_false
+    node_type: l2leaf
+
+default_interfaces:
+  - types: [ l3leaf, l2leaf ]
+    platforms: [ default ]
+
+default_mgmt_method: none
+
+cvp_instance_ips:
+  - apiserver.arista.io
+
+name_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+custom_platform_settings:
+  - feature_support:
+      per_interface_mtu: false
+    platforms: ['default']
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    filter:
+      # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
+      only_vlans_in_use: true
+  nodes:
+    - name: inband_mgmt_per_interface_mtu_false
+      inband_mgmt_vlan: 108
+      inband_mgmt_ip: 192.168.103.22/24
+      uplink_type: port-channel
+      id: 1
