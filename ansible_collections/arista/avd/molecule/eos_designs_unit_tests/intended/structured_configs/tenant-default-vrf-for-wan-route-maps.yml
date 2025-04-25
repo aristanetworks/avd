@@ -8,51 +8,25 @@ agents:
 application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
-    - name: PFX-LOCAL-VTEP-IP
-      prefix_values:
-      - 192.168.254.35/32
+    - name: PFX-PATHFINDERS
   applications:
     ipv4_applications:
     - name: APP-CONTROL-PLANE
-      src_prefix_set_name: PFX-LOCAL-VTEP-IP
+      dest_prefix_set_name: PFX-PATHFINDERS
   application_profiles:
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
 config_end: true
-daemon_terminattr:
-  cvaddrs:
-  - 192.168.200.11:9910
-  cvauth:
-    method: key
-    key: telarista
-  cvvrf: MGMT
-  disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 dps_interfaces:
 - name: Dps1
   description: DPS Interface
   mtu: 9194
-  ip_address: 192.168.254.35/32
   flow_tracker:
     hardware: FLOW-TRACKER
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet11
-  description: P2P_LINK_TO_DC1-SPINE1_Ethernet13
-  shutdown: false
-  mtu: 1500
-  link_tracking_groups:
-  - name: Eth-conn-to-router
-    direction: upstream
-  ip_address: 10.10.102.5/31
-  peer: DC1-SPINE1
-  peer_interface: Ethernet13
-  peer_type: spine
-  switchport:
-    enabled: false
 - name: Ethernet1
   description: Comcast
   shutdown: false
@@ -74,26 +48,17 @@ flow_tracking:
         local_interface: Loopback0
         template_interval: 3600000
     shutdown: false
-hostname: MH-LEAF2B
+hostname: tenant-default-vrf-for-wan-route-maps
 ip_extcommunity_lists:
 - name: ECL-EVPN-SOO
   entries:
   - type: permit
-    extcommunities: soo 192.168.250.35:0
-ip_name_servers:
-- ip_address: 192.168.200.5
-  vrf: MGMT
-- ip_address: 8.8.8.8
-  vrf: MGMT
-- ip_address: 2001:db8::1
-  vrf: MGMT
-- ip_address: 2001:db8::2
-  vrf: MGMT
+    extcommunities: soo 10.10.0.3:0
 ip_routing: true
 ip_security:
   ike_policies:
   - name: AUTOVPN-IKE
-    local_id: 192.168.254.35
+    local_id: 10.11.0.3
   sa_policies:
   - name: AUTOVPN-SA
   profiles:
@@ -107,47 +72,21 @@ ip_security:
       time: 50
       action: clear
     mode: transport
+  key_controller:
+    profile: AUTOVPN
 is_deployed: true
-lacp:
-  port_id:
-    range:
-      begin: 257
-      end: 768
-link_tracking_groups:
-- name: Eth-conn-to-router
-  recovery_delay: 520
-local_users:
-- name: admin
-  disabled: true
-  privilege: 15
-  role: network-admin
-  no_password: true
-- name: cvpadmin
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$rZKcbIZ7iWGAWTUM$TCgDn1KcavS0s.OV8lacMTUkxTByfzcGlFlYUWroxYuU7M/9bIodhRO7nXGzMweUxvbk8mJmQl8Bh44cRktUj.
-  ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkU=
-    cvpadmin@hostmachine.local
-  secondary_ssh_key: ssh-rsa AAAAB3NzaC1yc2EAA82spi2mkxp4FgaLi4CjWkpnL1A/MD7WhrSNgqXToF7QCb9Lidagy9IHafQxfu7LwkFdyQIMu8XNwDZIycuf29wHbDdz1N+YNVK8zwyNAbMOeKMqblsEm2YIorgjzQX1m9+/rJeFBKz77PSgeMp/Rc3txFVuSmFmeTy3aMkz=
-    cvpadmin@hostmachine.local
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.250.35/32
+  ip_address: 10.10.0.3/32
+- name: Loopback1
+  shutdown: false
+  ip_address: 192.168.1.1/32
 management_api_http:
   enable_https: true
-  default_services: false
   enable_vrfs:
   - name: MGMT
-management_interfaces:
-- name: Management1
-  description: OOB_MANAGEMENT
-  shutdown: false
-  vrf: MGMT
-  ip_address: 192.168.201.106/24
-  type: oob
-  gateway: 192.168.200.5
 management_security:
   ssl_profiles:
   - name: STUN-DTLS
@@ -159,54 +98,55 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
-  platform: vEOS-LAB
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-ntp:
-  local_interface:
-    name: Management1
-    vrf: MGMT
-  servers:
-  - name: 192.168.200.5
-    preferred: true
-    vrf: MGMT
-  - name: 2001:db8::3
-    vrf: MGMT
-platform:
-  sfe:
-    data_plane_cpu_allocation_max: 1
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.0.0/24 eq 32
 route_maps:
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
+- name: RM-CONN-2-BGP
   sequence_numbers:
   - sequence: 10
     type: permit
     match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 10.10.0.3:0 additive
+- name: RM-EVPN-SOO-IN
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
     - extcommunity ECL-EVPN-SOO
+  - sequence: 20
+    type: permit
+- name: RM-EVPN-SOO-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - extcommunity soo 10.10.0.3:0 additive
 router_bfd:
   multihop:
-    interval: 1200
-    min_rx: 1200
+    interval: 300
+    min_rx: 300
     multiplier: 3
 router_bgp:
-  as: '65153'
-  router_id: 192.168.250.35
+  as: '65101'
+  router_id: 10.10.0.3
   maximum_paths:
     paths: 16
   updates:
     wait_install: true
-  bgp_cluster_id: 192.168.250.35
   bgp:
     default:
       ipv4_unicast: false
-  listen_ranges:
-  - prefix: 192.168.130.0/24
-    peer_group: WAN-OVERLAY-PEERS
-    remote_as: '65153'
   peer_groups:
   - name: WAN-OVERLAY-PEERS
     type: wan
-    remote_as: '65153'
-    update_source: Dps1
-    route_reflector_client: true
+    remote_as: '65101'
+    update_source: Loopback1
     bfd: true
     bfd_timers:
       interval: 1000
@@ -219,13 +159,14 @@ router_bgp:
   redistribute:
     connected:
       enabled: true
+      route_map: RM-CONN-2-BGP
   address_family_evpn:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
       activate: true
+      route_map_in: RM-EVPN-SOO-IN
+      route_map_out: RM-EVPN-SOO-OUT
       encapsulation: path-selection
-    next_hop:
-      resolution_disabled: true
   address_family_ipv4:
     peer_groups:
     - name: WAN-OVERLAY-PEERS
@@ -240,38 +181,34 @@ router_bgp:
       activate: true
   vrfs:
   - name: default
-    rd: 192.168.250.35:1
+    rd: 10.10.0.3:789654
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - '1:1'
+        - 789654:789654
       export:
       - address_family: evpn
         route_targets:
-        - '1:1'
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+        - 789654:789654
 router_path_selection:
-  peer_dynamic_source: stun
   path_groups:
-  - name: MPLS
-    id: 100
   - name: INET
     id: 101
     ipsec_profile: AUTOVPN
     local_interfaces:
     - name: Ethernet1
+    dynamic_peers:
+      enabled: true
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
       priority: 42
-    - name: MPLS
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
       priority: 42
-    - name: MPLS
   policies:
   - name: DEFAULT-POLICY-WITH-CP
     default_match:
@@ -286,29 +223,17 @@ router_path_selection:
   tcp_mss_ceiling:
     ipv4_segment_size: auto
 service_routing_protocols_model: multi-agent
-snmp_server:
-  contact: example@example.com
-  location: EOS_DESIGNS_UNIT_TESTS MH-LEAF2B
 spanning_tree:
   mode: none
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
-stun:
-  server:
-    local_interfaces:
-    - Ethernet1
-    ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: MH-LEAF2B_VTEP
+    description: tenant-default-vrf-for-wan-route-maps_VTEP
     vxlan:
-      source_interface: Dps1
+      source_interface: Loopback1
       udp_port: 4789
       vrfs:
       - name: default

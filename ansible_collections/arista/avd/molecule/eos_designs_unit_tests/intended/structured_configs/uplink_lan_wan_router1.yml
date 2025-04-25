@@ -173,6 +173,10 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.1.0/24 eq 32
+- name: PL-SVI-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.10.0/24
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -180,6 +184,12 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+    set:
+    - extcommunity soo 192.168.1.1:1 additive
+  - sequence: 30
+    type: permit
+    match:
+    - ip address prefix-list PL-SVI-VRF-DEFAULT
     set:
     - extcommunity soo 192.168.1.1:1 additive
 - name: RM-EVPN-SOO-IN
@@ -270,6 +280,9 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true
@@ -305,6 +318,18 @@ router_bgp:
     - name: WAN-OVERLAY-PEERS
       activate: true
   vrfs:
+  - name: default
+    rd: 192.168.1.1:111
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 111:111
+      export:
+      - address_family: evpn
+        route_targets:
+        - 111:111
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: VRF1
     rd: 192.168.1.1:123
     route_targets:
@@ -320,18 +345,6 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
-  - name: default
-    rd: 192.168.1.1:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
 router_path_selection:
   path_groups:
   - name: INET
@@ -369,7 +382,7 @@ vxlan_interface:
       source_interface: Dps1
       udp_port: 4789
       vrfs:
-      - name: VRF1
-        vni: 123
       - name: default
         vni: 1
+      - name: VRF1
+        vni: 123
