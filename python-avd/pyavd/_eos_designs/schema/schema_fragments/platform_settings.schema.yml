@@ -127,7 +127,7 @@ keys:
                   convert_types:
                     - str
                   description: Maximum rx_queue count supported on any interface.
-            all_active_multihoming:
+            evpn_gateway_all_active_multihoming:
               type: bool
               default: false
               description: Support for all-active EVPN gateway redundancy.
@@ -235,7 +235,7 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         feature_support:
-          all_active_multihoming: true
+          evpn_gateway_all_active_multihoming: true
       - platforms:
           - 7500R
           - 7500R2
@@ -254,7 +254,7 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         feature_support:
-          all_active_multihoming: true
+          evpn_gateway_all_active_multihoming: true
       - platforms:
           - 7358X4
         management_interface: Management1/1
@@ -289,7 +289,7 @@ keys:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
-          all_active_multihoming: true
+          evpn_gateway_all_active_multihoming: true
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -303,7 +303,7 @@ keys:
           bgp_update_wait_install: false
           interface_storm_control: false
           queue_monitor_length_notify: false
-          all_active_multihoming: true
+          evpn_gateway_all_active_multihoming: true
         management_interface: Management0
         reload_delay:
           mlag: 300

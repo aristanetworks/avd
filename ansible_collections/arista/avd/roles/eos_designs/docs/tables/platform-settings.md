@@ -28,7 +28,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -58,7 +58,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all_active_multihoming</samp>](## "platform_settings.[].feature_support.all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -131,7 +131,7 @@
             max_rx_queues: <int; default=6>
 
           # Support for all-active EVPN gateway redundancy.
-          all_active_multihoming: <bool; default=False>
+          evpn_gateway_all_active_multihoming: <bool; default=False>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -209,7 +209,7 @@
             max_rx_queues: <int; default=6>
 
           # Support for all-active EVPN gateway redundancy.
-          all_active_multihoming: <bool; default=False>
+          evpn_gateway_all_active_multihoming: <bool; default=False>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -311,7 +311,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
         - feature_support:
-            all_active_multihoming: true
+            evpn_gateway_all_active_multihoming: true
           platforms:
           - 7280R3
           reload_delay:
@@ -328,7 +328,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
         - feature_support:
-            all_active_multihoming: true
+            evpn_gateway_all_active_multihoming: true
           management_interface: Management0
           platforms:
           - 7500R3
@@ -363,9 +363,9 @@
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
         - feature_support:
-            all_active_multihoming: true
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
+            evpn_gateway_all_active_multihoming: true
             interface_storm_control: false
             queue_monitor_length_notify: false
           platforms:
@@ -377,9 +377,9 @@
             mlag: 300
             non_mlag: 330
         - feature_support:
-            all_active_multihoming: true
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
+            evpn_gateway_all_active_multihoming: true
             interface_storm_control: false
             queue_monitor_length_notify: false
           management_interface: Management0

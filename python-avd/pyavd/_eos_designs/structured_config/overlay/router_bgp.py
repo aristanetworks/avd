@@ -220,7 +220,7 @@ class RouterBgpMixin(Protocol):
                     if self.shared_utils.node_config.mlag:
                         msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
                         raise AristaAvdError(msg)
-                    if not self.shared_utils.platform_settings.feature_support.all_active_multihoming:
+                    if not self.shared_utils.platform_settings.feature_support.evpn_gateway_all_active_multihoming:
                         msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
                         raise AristaAvdError(msg)
                     if self.shared_utils.overlay_ipvpn_gateway:
