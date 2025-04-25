@@ -180,8 +180,8 @@ anta_runner_batch_size: 5
 # Run ANTA in dry-run mode. This will generate the tests but not execute them.
 anta_runner_dry_run: false
 
-# Controls the final status of the Ansible task based on the aggregated ANTA test results.
-# It determines if the plugin reports `failed: true` or `changed: true` back to Ansible when ANTA tests fail or error.
+# When `true`, the plugin returns `failed: true` if any ANTA tests fail or error.
+# Otherwise, the plugin returns `changed: true` in such cases.
 anta_strict_mode: false
 ```
 
