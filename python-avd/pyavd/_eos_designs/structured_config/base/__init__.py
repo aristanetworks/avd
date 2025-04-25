@@ -113,12 +113,10 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix=mgmt_destination_network, gateway=self.shared_utils.mgmt_gateway
+                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
                 )
         else:
-            self.structured_config.static_routes.append_new(
-                vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix="0.0.0.0/0", gateway=self.shared_utils.mgmt_gateway
-            )
+            self.structured_config.static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway)
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
@@ -129,13 +127,11 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if self.inputs.ipv6_mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.ipv6_mgmt_destination_networks:
                 self.structured_config.ipv6_static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix=mgmt_destination_network, gateway=self.shared_utils.ipv6_mgmt_gateway
+                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.ipv6_mgmt_gateway
                 )
             return
 
-        self.structured_config.ipv6_static_routes.append_new(
-            vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix="::/0", gateway=self.shared_utils.ipv6_mgmt_gateway
-        )
+        self.structured_config.ipv6_static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway)
 
     @structured_config_contributor
     def service_routing_protocols_model(self) -> None:
