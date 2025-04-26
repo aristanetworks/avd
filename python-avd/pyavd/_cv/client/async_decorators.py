@@ -181,7 +181,7 @@ def grpc_unavailable_handler(max_retries: int = 5, initial_delay: int = 1, facto
                         if attempt < max_retries + 1:
                             delay = initial_delay * (factor ** (attempt - 1))
                             LOGGER.warning(
-                                "async_grpc_unavailable_retry: Attempt %s/%s to execute call '%s' returned '%s'. Retrying after '%s' second(s) ..",
+                                "async_grpc_unavailable_retry: Attempt %s/%s to execute call '%s' returned '%s'. Retrying after '%s' second(s)..",
                                 attempt,
                                 max_retries + 1,
                                 func.__name__,
@@ -191,7 +191,7 @@ def grpc_unavailable_handler(max_retries: int = 5, initial_delay: int = 1, facto
                             await asyncio_sleep(delay)
                         else:
                             LOGGER.warning(
-                                "async_grpc_unavailable_retry: Attempt '%s/%s' to execute call '%s' returned '%s'.", attempt, max_retries + 1, func.__name__, e
+                                "async_grpc_unavailable_retry: Attempt %s/%s to execute call '%s' returned '%s'.", attempt, max_retries + 1, func.__name__, e
                             )
                             raise CVGRPCStatusUnavailable(e)
                     else:

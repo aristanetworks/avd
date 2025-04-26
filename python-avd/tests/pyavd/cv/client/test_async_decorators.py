@@ -1,10 +1,19 @@
 # Copyright (c) 2024-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import pytest
+import logging
+import re
+from contextlib import nullcontext as does_not_raise
+from typing import Any
+from unittest.mock import AsyncMock, patch
 
-from pyavd._cv.client.async_decorators import LimitCvVersion, grpc_msg_size_handler
-from pyavd._cv.client.exceptions import CVMessageSizeExceeded
+import pytest
+from _pytest.python_api import RaisesContext
+from grpclib import Status
+from grpclib.exceptions import GRPCError
+
+from pyavd._cv.client.async_decorators import LimitCvVersion, grpc_msg_size_handler, grpc_unavailable_handler
+from pyavd._cv.client.exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 
 INVALID_VERSION_TESTS = [
@@ -40,6 +49,7 @@ class CvClass:
 
     def __init__(self, version: CvVersion) -> None:
         self._cv_version = version
+        self._grpc_call_count = 0
 
     @LimitCvVersion(min_ver="2024.1.0", max_ver="2024.1.99")
     async def version_limited_method(self) -> tuple[str, str]:
@@ -68,6 +78,19 @@ class CvClass:
 
         # return list with len of fields for this execution.
         return [len(field)]
+
+    @grpc_unavailable_handler()
+    async def grpc_method(
+        self,
+        failures: int,
+        inner_exception: GRPCError | None,
+    ) -> GRPCError | str:
+        self._grpc_call_count += 1
+        if self._grpc_call_count > failures > 0:
+            return "gRPC call succeeded"
+        if inner_exception:
+            raise inner_exception
+        return "gRPC call succeeded"
 
 
 @pytest.mark.asyncio
@@ -107,3 +130,129 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
 
     with pytest.raises(KeyError, match="grpc_msg_size_handler decorator is unable to find the list_field .+"):
         await grpc_msg_size_handler(list_field="_field")(function_with_wrong_arg)(["foo", "bar"])
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    (
+        "failures",
+        "function_calls",
+        "logs_qty",
+        "log_patterns",
+        "inner_exception",
+        "outer_exception",
+        "outer_exception_patterns",
+        "fut_return",
+    ),
+    [
+        pytest.param(0, 1, 0, [], None, does_not_raise(), [], "gRPC call succeeded", id="NO_GRPC_FAILURES"),
+        pytest.param(
+            1,
+            2,
+            1,
+            [
+                "async_grpc_unavailable_retry: Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+            ],
+            GRPCError(Status.UNAVAILABLE),
+            does_not_raise(),
+            [],
+            "gRPC call succeeded",
+            id="ONE_GRPC_STATUS_UNAVAILABLE_FAILURE",
+        ),
+        pytest.param(
+            3,
+            4,
+            3,
+            [
+                "async_grpc_unavailable_retry: Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+            ],
+            GRPCError(Status.UNAVAILABLE),
+            does_not_raise(),
+            [],
+            "gRPC call succeeded",
+            id="THREE_GRPC_STATUS_UNAVAILABLE_FAILURES",
+        ),
+        pytest.param(
+            6,
+            6,
+            6,
+            [
+                "async_grpc_unavailable_retry: Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 4/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 5/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 6/6 to execute call '.*' returned '.*'\\.",
+            ],
+            GRPCError(Status.UNAVAILABLE),
+            pytest.raises(CVGRPCStatusUnavailable),
+            ["Status\\.UNAVAILABLE: 14"],
+            None,
+            id="SIX_GRPC_STATUS_UNAVAILABLE_FAILURES",
+        ),
+        pytest.param(
+            7,
+            6,
+            6,
+            [
+                "async_grpc_unavailable_retry: Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 2/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 4/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 5/6 to execute call '.*' returned '.*'\\. Retrying after '[0-9]+' second\\(s\\)\\.\\.",
+                "async_grpc_unavailable_retry: Attempt 6/6 to execute call '.*' returned '.*'\\.",
+            ],
+            GRPCError(Status.UNAVAILABLE),
+            pytest.raises(CVGRPCStatusUnavailable),
+            ["Status\\.UNAVAILABLE: 14"],
+            None,
+            id="SEVEN_GRPC_STATUS_UNAVAILABLE_FAILURES",
+        ),
+        pytest.param(
+            1,
+            1,
+            0,
+            [],
+            GRPCError(Status.INVALID_ARGUMENT),
+            pytest.raises(GRPCError),
+            ["Status\\.INVALID_ARGUMENT: 3"],
+            None,
+            id="ONE_GRPC_STATUS_INVALID_ARGUMENT_FAILURE",
+        ),
+    ],
+)
+async def test_grpc_method(
+    caplog: pytest.LogCaptureFixture,
+    failures: int,
+    function_calls: int,
+    logs_qty: int,
+    log_patterns: list[str],
+    inner_exception: GRPCError | None,
+    outer_exception: RaisesContext | does_not_raise,
+    outer_exception_patterns: list[str],
+    fut_return: Any,
+) -> None:
+    with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
+        mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+        with caplog.at_level(logging.DEBUG), outer_exception as exc_info:
+            # Engage FUT
+            resp = await mocked_cv_client.grpc_method(failures, inner_exception)
+
+        # Assert number of log messages
+        assert len(caplog.records) == logs_qty
+
+        # Assert that log messages match expected log patterns
+        for expected_pattern in log_patterns:
+            assert any(re.search(re.compile(expected_pattern), str(record.message)) for record in caplog.records)
+
+        # If exception is raised, assert that exception value contains all expected exception patterns
+        if exc_info and (exception_string := str(exc_info.value)):
+            for expected_pattern in outer_exception_patterns:
+                assert re.search(re.compile(expected_pattern), exception_string)
+
+        if fut_return:
+            assert resp == fut_return
+        assert mocked_cv_client._grpc_call_count == function_calls
+        assert sleep_mock.call_count == min(failures if isinstance(inner_exception, GRPCError) and inner_exception.status == Status.UNAVAILABLE else 0, 5)
