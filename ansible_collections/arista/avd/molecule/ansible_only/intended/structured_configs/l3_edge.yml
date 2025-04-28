@@ -1,0 +1,170 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: ethernet4
+  description: Custom description on l3_edge eth4
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.4.1/31
+  peer: peer4
+  peer_interface: ethernet4
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet5
+  description: Custom description to peer peer5 ethernet5
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.5.1/31
+  peer: peer5
+  peer_interface: ethernet5
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Ethernet6
+  description: TEST_CUSTOM_PREFIX_L3_EDGE_PEER6_Ethernet6
+  shutdown: false
+  channel_group:
+    id: 6
+    mode: active
+  peer: peer6
+  peer_interface: Ethernet6
+  peer_type: other
+- name: Ethernet7
+  description: Custom description to peer peer7 Ethernet7
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  peer: peer7
+  peer_interface: Ethernet7
+  peer_type: other
+hostname: l3_edge
+ip_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 1.2.3.1/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: ANSIBLE_ONLY
+port_channel_interfaces:
+- name: Port-Channel6
+  description: Custom static description
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.6.1/31
+  peer: peer6
+  peer_interface: Port-Channel6
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel7
+  description: Custom dynamic description to peer7
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.7.1/31
+  peer: peer7
+  peer_interface: Port-Channel7
+  peer_type: other
+  switchport:
+    enabled: false
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 1.2.3.0/24 eq 32
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:7f:00:01
+  priority1: 127
+  priority2: 1
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bgp:
+  as: '65000'
+  router_id: 1.2.3.1
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  neighbors:
+  - ip_address: 192.168.4.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '650001'
+    peer: peer4
+    description: peer4
+  - ip_address: 192.168.5.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '650001'
+    peer: peer5
+    description: peer5
+  - ip_address: 192.168.6.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '650001'
+    peer: peer6
+    description: peer6
+  - ip_address: 192.168.7.2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '650001'
+    peer: peer7
+    description: peer7
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

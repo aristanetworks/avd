@@ -17,13 +17,20 @@
 {%         if static_route.vrf is arista.avd.defined and static_route.vrf != 'default' %}
 {%             set static_route_cli = static_route_cli ~ " vrf " ~ static_route.vrf %}
 {%         endif %}
-{%         if static_route.destination_address_prefix is arista.avd.defined %}
+{%         if static_route.prefix is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " " ~ static_route.prefix %}
+{%         elif static_route.destination_address_prefix is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.destination_address_prefix %}
 {%         endif %}
 {%         if  static_route.interface is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.interface | capitalize %}
 {%         endif %}
-{%         if static_route.gateway is arista.avd.defined %}
+{%         if static_route.next_hop is arista.avd.defined %}
+{%             set static_route_cli = static_route_cli ~ " " ~ static_route.next_hop %}
+{%             if static_route.track_bfd is arista.avd.defined(true) %}
+{%                 set static_route_cli = static_route_cli ~ " track bfd" %}
+{%             endif %}
+{%         elif static_route.gateway is arista.avd.defined %}
 {%             set static_route_cli = static_route_cli ~ " " ~ static_route.gateway %}
 {%             if static_route.track_bfd is arista.avd.defined(true) %}
 {%                 set static_route_cli = static_route_cli ~ " track bfd" %}
