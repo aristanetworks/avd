@@ -52,52 +52,39 @@ class UtilsMixin(Protocol):
 
         Adapters are filtered to contain only the ones connected to this switch.
         """
+        dynamic_connected_endpoints, connected_endpoints_inputs = self.shared_utils.get_merged_connected_endpoints_keys()
         filtered_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints()
-        for connected_endpoints_key in self.inputs._dynamic_keys.custom_connected_endpoints:
-            self._filtered_adapters(filtered_connected_endpoints, connected_endpoints_key)
+        for connected_endpoints_key in dynamic_connected_endpoints:
+            for connected_endpoint in connected_endpoints_key.value:
+                filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
+                for adapter_index, adapter in enumerate(connected_endpoint.adapters):
+                    adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
+                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
+                    if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
+                        continue
 
-        for connected_endpoints_key in self.inputs._dynamic_keys.connected_endpoints:
-            if connected_endpoints_key.key not in self.inputs.custom_connected_endpoints_keys:
-                self._filtered_adapters(filtered_connected_endpoints, connected_endpoints_key)
+                    # Verify that length of all lists are the same
+                    nodes_length = len(adapter_settings.switches)
+                    endpoint_ports = adapter_settings.endpoint_ports
+                    if len(adapter_settings.switch_ports) != nodes_length or (endpoint_ports and len(endpoint_ports) != nodes_length):
+                        msg = (
+                            f"Length of lists 'switches' ({len(adapter.switches)}), 'switch_ports' ({len(adapter.switch_ports)}), "
+                            f"'endpoint_ports' ({len(endpoint_ports) or '-'}) (if used) did not match on adapter {adapter_index} on"
+                            f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
+                            " Notice that some or all of these variables could be inherited from 'port_profiles'"
+                        )
+                        raise AristaAvdError(msg)
+
+                    filtered_adapters.append(adapter_settings)
+
+                if filtered_adapters:
+                    # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
+                    connected_endpoint.adapters = filtered_adapters
+                    inputs_connected_endpoints_keys = connected_endpoints_inputs.get(connected_endpoints_key.key)
+                    connected_endpoint._internal_data.type = inputs_connected_endpoints_keys.type
+                    filtered_connected_endpoints.append(connected_endpoint)
 
         return filtered_connected_endpoints
-
-    def _filtered_adapters(
-        self: AvdStructuredConfigConnectedEndpointsProtocol,
-        filtered_connected_endpoints: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints,
-        connected_endpoints_key: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem,
-    ) -> None:
-        """Filtering adapters connected to this switch."""
-        for connected_endpoint in connected_endpoints_key.value:
-            filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
-            for adapter_index, adapter in enumerate(connected_endpoint.adapters):
-                adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
-                adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
-                    continue
-
-                # Verify that length of all lists are the same
-                nodes_length = len(adapter_settings.switches)
-                endpoint_ports = adapter_settings.endpoint_ports
-                if len(adapter_settings.switch_ports) != nodes_length or (endpoint_ports and len(endpoint_ports) != nodes_length):
-                    msg = (
-                        f"Length of lists 'switches' ({len(adapter.switches)}), 'switch_ports' ({len(adapter.switch_ports)}), "
-                        f"'endpoint_ports' ({len(endpoint_ports) or '-'}) (if used) did not match on adapter {adapter_index} on"
-                        f" connected_endpoint '{connected_endpoint.name}' under '{connected_endpoints_key.key}'."
-                        " Notice that some or all of these variables could be inherited from 'port_profiles'"
-                    )
-                    raise AristaAvdError(msg)
-
-                filtered_adapters.append(adapter_settings)
-
-            if filtered_adapters:
-                # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
-                connected_endpoint.adapters = filtered_adapters
-                inputs_connected_endpoints_keys = self.inputs.custom_connected_endpoints_keys.get(
-                    connected_endpoints_key.key
-                ) or self.inputs.connected_endpoints_keys.get(connected_endpoints_key.key)
-                connected_endpoint._internal_data.type = inputs_connected_endpoints_keys.type
-                filtered_connected_endpoints.append(connected_endpoint)
 
     @cached_property
     def _filtered_network_ports(self: AvdStructuredConfigConnectedEndpointsProtocol) -> EosDesigns.NetworkPorts:

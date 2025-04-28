@@ -89,24 +89,23 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         if self.shared_utils.configure_inband_mgmt:
             vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
-        for connected_endpoints_keys in [self.inputs._dynamic_keys.custom_connected_endpoints, self.inputs._dynamic_keys.connected_endpoints]:
-            for connected_endpoints_key in connected_endpoints_keys:
-                for connected_endpoint in connected_endpoints_key.value:
-                    for index, adapter in enumerate(connected_endpoint.adapters):
-                        adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{index}]"
-                        adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                        if self.shared_utils.hostname not in adapter_settings.switches:
-                            # This switch is not connected to this endpoint. Skipping.
-                            continue
-
-                        adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
-                        vlans.update(adapter_vlans)
-                        trunk_groups.update(adapter_trunk_groups)
-                        if len(vlans) >= 4094:
-                            # No need to check further, since the set is now containing all vlans.
-                            # The trunk group list may not be complete, but it will not matter, since we will
-                            # configure all vlans anyway.
-                            return vlans, trunk_groups
+        dynamic_connected_endpoints, _ = self.shared_utils.get_merged_connected_endpoints_keys()
+        for connected_endpoints_key in dynamic_connected_endpoints:
+            for connected_endpoint in connected_endpoints_key.value:
+                for index, adapter in enumerate(connected_endpoint.adapters):
+                    adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{index}]"
+                    adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
+                    if self.shared_utils.hostname not in adapter_settings.switches:
+                        # This switch is not connected to this endpoint. Skipping.
+                        continue
+                    adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
+                    vlans.update(adapter_vlans)
+                    trunk_groups.update(adapter_trunk_groups)
+                    if len(vlans) >= 4094:
+                        # No need to check further, since the set is now containing all vlans.
+                        # The trunk group list may not be complete, but it will not matter, since we will
+                        # configure all vlans anyway.
+                        return vlans, trunk_groups
 
         for index, network_port_item in enumerate(self.inputs.network_ports):
             for switch_regex in network_port_item.switches:
