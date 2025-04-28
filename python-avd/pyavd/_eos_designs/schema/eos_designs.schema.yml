@@ -5055,23 +5055,14 @@ keys:
     documentation_options:
       table: wan-settings
     default: true
-    description: 'This specifies the preferred mechanism to program ECMP routes within
-      the kernel for software forwarding.
+    description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
+      different ways depending on the EOS version.
 
-      For wan router, by default we configure ecmp programming in kernel.
 
-      There are two mechanisms - cli or environment variable. Cli is available starting
-      4.33.2 release.
+      - `true`: For older EOS versions use an agent environment variable. Changing
+      this requires a restart of the KernelFib agent.
 
-      This knob controls if environment variable should be used instead of cli.
-
-      When enabled, configures an environment variable to restart KernelFib agent
-      for ECMP route programming.
-
-      When disabled, ECMP route programming in the kernel is achieved using cli without
-      agent restart.
-
-      This is relevant to Pathfinder and AUTOVPN designs.'
+      - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
   wan_use_evpn_node_settings_for_lan:
     type: bool
     documentation_options:

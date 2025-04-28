@@ -26,7 +26,7 @@
     | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder or AutoVPN only. |
     | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | WAN STUN connections are authenticated and secured with DTLS by default.<br>For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
     | [<samp>wan_stun_dtls_profile_name</samp>](## "wan_stun_dtls_profile_name") | String |  | `STUN-DTLS` |  | Name of the SSL profile used for DTLS on WAN STUN connections.<br>When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers. |
-    | [<samp>wan_use_agent_env_var_for_kernel_software_forwarding_ecmp</samp>](## "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp") | Boolean |  | `True` |  | This specifies the preferred mechanism to program ECMP routes within the kernel for software forwarding.<br>For wan router, by default we configure ecmp programming in kernel.<br>There are two mechanisms - cli or environment variable. Cli is available starting 4.33.2 release.<br>This knob controls if environment variable should be used instead of cli.<br>When enabled, configures an environment variable to restart KernelFib agent for ECMP route programming.<br>When disabled, ECMP route programming in the kernel is achieved using cli without agent restart.<br>This is relevant to Pathfinder and AUTOVPN designs. |
+    | [<samp>wan_use_agent_env_var_for_kernel_software_forwarding_ecmp</samp>](## "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp") | Boolean |  | `True` |  | For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.<br><br>- `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.<br>- `false`: For newer EOS versions (starting 4.33.2) use the proper CLI. |
     | [<samp>wan_use_evpn_node_settings_for_lan</samp>](## "wan_use_evpn_node_settings_for_lan") | Boolean |  | `False` |  | PREVIEW: This key is currently not supported and may produce invalid configuration.<br>When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`<br>node settings for LAN side on WAN devices. Otherwise these will be ignored for WAN.<br>This will be the default in AVD version 6.0.0 and this option will be removed. |
 
 === "YAML"
@@ -97,13 +97,10 @@
     # When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.
     wan_stun_dtls_profile_name: <str; default="STUN-DTLS">
 
-    # This specifies the preferred mechanism to program ECMP routes within the kernel for software forwarding.
-    # For wan router, by default we configure ecmp programming in kernel.
-    # There are two mechanisms - cli or environment variable. Cli is available starting 4.33.2 release.
-    # This knob controls if environment variable should be used instead of cli.
-    # When enabled, configures an environment variable to restart KernelFib agent for ECMP route programming.
-    # When disabled, ECMP route programming in the kernel is achieved using cli without agent restart.
-    # This is relevant to Pathfinder and AUTOVPN designs.
+    # For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.
+    #
+    # - `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.
+    # - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.
     wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: <bool; default=True>
 
     # PREVIEW: This key is currently not supported and may produce invalid configuration.
