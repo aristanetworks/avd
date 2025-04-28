@@ -54,6 +54,11 @@ env:
       python_version:
         required: true
         type: string
+      # github_tag is only required for manual container build
+      github_tag:
+        required: false
+        type: string
+        default: ""
 
 jobs:
   build_image:
@@ -131,10 +136,17 @@ jobs:
       - name: Find ansible and pyavd install location
         id: find-install-locations
         run: |
-          PYAVD_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git@${{ github.ref_name }}#subdirectory=python-avd"
-          ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ github.ref_name }}"
-          echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> $GITHUB_OUTPUT
-          echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+          if [ -z "${{ inputs.github_tag }}" ]; then
+            PYAVD_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git@${{ github.ref_name }}#subdirectory=python-avd"
+            ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ github.ref_name }}"
+            echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+            echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+          else
+            PYAVD_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git@${{ inputs.github_tag }}#subdirectory=python-avd"
+            ANSIBLE_INSTALL_LOCATION="git+https://github.com/${{ github.repository }}.git#/ansible_collections/arista/avd/,${{ inputs.github_tag }}"
+            echo "ansible_install_location=$ANSIBLE_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+            echo "pyavd_install_location=$PYAVD_INSTALL_LOCATION" >> $GITHUB_OUTPUT
+          fi
 
       # This check is temporarily deactivated, will be rewised in later PRs
       #
