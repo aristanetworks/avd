@@ -1,0 +1,132 @@
+---
+type: wan_router
+wan_mode: cv-pathfinder
+underlay_routing_protocol: ebgp
+
+ipv4_prefix_list_catalog:
+  - name: ALLOW-DEFAULT
+    sequence_numbers:
+      - sequence: 10
+        action: permit 0.0.0.0/0
+  - name: PL2
+    sequence_numbers:
+      - sequence: 10
+        action: permit 5.0.0.0/0
+      - sequence: 20
+        action: deny 10.0.0.0/24
+
+cv_pathfinder_regions:
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+        location: Miami
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+wan_stun_dtls_profile_name: profileA
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+    uplink_ipv4_pool: 172.17.0.0/16
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      uplink_type: p2p-vrfs
+      uplink_interfaces: [Ethernet52]
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      wan_ha:
+        enabled: false
+      nodes:
+        - name: ipv4-acls-internet-exit-access-lists
+          id: 2
+          uplink_switch_interfaces: [Ethernet2]
+          l3_interfaces:
+            - name: Ethernet3
+              wan_carrier: ATT
+              wan_circuit_id: 404
+              ip_address: dhcp
+              peer_ip: 172.31.0.1
+              dhcp_ip: 10.0.0.145
+              cv_pathfinder_internet_exit:
+                policies:
+                  - name: ZSCALER-EXIT-POLICY-1
+                    tunnel_interface_numbers: 100-102
+                  - name: ZSCALER-EXIT-POLICY-2
+                    tunnel_interface_numbers: 110-112
+                  - name: DIRECT-EXIT-POLICY-1
+                  - name: DIRECT-EXIT-POLICY-2
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AVT-POLICY
+      wan_vni: 1
+  policies:
+    - name: DEFAULT-AVT-POLICY
+      default_virtual_topology:
+        path_groups:
+          - names: [INET, Equinix]
+          - names: [MPLS]
+            preference: 4223
+      application_virtual_topologies:
+        - application_profile: VIDEO
+          path_groups:
+            - names: [MPLS, INET, Equinix]
+              preference: preferred
+          internet_exit:
+            policy: DIRECT-EXIT-POLICY-1
+          id: 3
+
+application_classification:
+  application_profiles:
+    - name: VIDEO
+      categories:
+        - name: VIDEO1
+
+  categories:
+    - name: VIDEO1
+
+cv_pathfinder_internet_exit_policies:
+  - name: DIRECT-EXIT-POLICY-1
+    fallback_to_system_default: false
+    type: direct
+
+ipv4_acls:
+  - name: ACL-NAT-IE-DIRECT
+    entries:
+      - sequence: 20
+        action: permit
+        protocol: ip
+        source: interface_ip
+        destination: any
+
+expected_error_message: >-
+  ipv4_acls[name=ACL-NAT-IE-DIRECT] field substitution is not supported for internet exit access lists

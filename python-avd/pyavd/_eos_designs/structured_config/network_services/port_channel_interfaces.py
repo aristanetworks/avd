@@ -8,7 +8,9 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._utils import short_esi_to_route_target
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils import default, get_ip_from_ip_prefix, short_esi_to_route_target
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -28,21 +30,31 @@ class PortChannelInterfacesMixin(Protocol):
         """
         Set structured config for port_channel_interfaces.
 
-        Only used with L1 network services
+        Only used with L1 network services or L3 network services
         """
-        if not self.shared_utils.network_services_l1:
+        if not self.shared_utils.network_services_l1 and not self.shared_utils.network_services_l3:
             return
 
-        # Keeping separate list of auto-generated parent interfaces
-        # This is used to check for conflicts between auto-generated parents
-        # At the end of _set_point_to_point_port_channel_interfaces, parent interfaces are
-        # added to structured_config if they were not explicitly configured.
-        potential_parent_interfaces = EosCliConfigGen.PortChannelInterfaces()
+        # l3 port-channels tracking structures
+        subif_parent_port_channel_names: set[str] = set()
+        """Collect all L3 subinterface parent port-channel names across tenants."""
+        regular_l3_port_channel_names: set[str] = set()
+        """Collect all L3 subinterface parent port-channel names across tenants."""
 
-        # Set to collect all the physical port-channels explicitly configured by _set_point_to_point_port_channel_interfaces.
+        # point_to_point port-channels tracking structures.
+        potential_parent_interfaces = EosCliConfigGen.PortChannelInterfaces()
+        """
+        Keeping separate list of auto-generated parent interfaces for point-to-point port-channel
+        This is used to check for conflicts between auto-generated parents
+        At the end of _set_point_to_point_port_channel_interfaces, parent interfaces are
+        added to structured_config if they were not explicitly configured.
+        """
         configured_physical_po: set[str] = set()
+        """Set to collect all the physical port-channels explicitly configured by _set_point_to_point_port_channel_interfaces."""
 
         for tenant in self.shared_utils.filtered_tenants:
+            self._set_l3_port_channels(tenant, subif_parent_port_channel_names, regular_l3_port_channel_names)
+
             if not tenant.point_to_point_services:
                 continue
 
@@ -51,6 +63,138 @@ class PortChannelInterfacesMixin(Protocol):
             for potential_parent_interface in potential_parent_interfaces:
                 if potential_parent_interface.name not in configured_physical_po:
                     self.structured_config.port_channel_interfaces.append(potential_parent_interface)
+
+        # Sanity check if there are any L3 sub-interfaces for which parent Port-channel is not explicitly specified
+        # This does not concerned point-to-point port channels.
+        if missing_parent_port_channels := subif_parent_port_channel_names.difference(regular_l3_port_channel_names):
+            msg = (
+                f"One or more L3 Port-Channels '{', '.join(natural_sort(missing_parent_port_channels))}' "
+                "need to be specified as they have sub-interfaces referencing them."
+            )
+            raise AristaAvdInvalidInputsError(msg)
+
+    def _set_l3_port_channels(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
+        subif_parent_port_channel_names: set[str],
+        regular_l3_port_channel_names: set[str],
+    ) -> None:
+        """
+        Set the port-channel interfaces for all network-services tenants in structured configuration.
+
+        Raises:
+            AristaAvdInvalidInputsError:
+                if any subinterface is using a non supported key
+                Or
+                if any subinterface is defined without a parent interface.
+        """
+        for vrf in tenant.vrfs:
+            for l3_port_channel in vrf.l3_port_channels:
+                if l3_port_channel.node != self.shared_utils.hostname:
+                    continue
+
+                if not (is_subinterface := "." in l3_port_channel.name):
+                    # This is a regular Port-Channel (not sub-interface)
+                    regular_l3_port_channel_names.add(l3_port_channel.name)
+                    subif_parent_port_channel_names.add(l3_port_channel.name)
+                else:
+                    parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
+                    subif_parent_port_channel_names.add(parent_port_channel_name)
+
+                    # Validation for l3_port_channel subinterface
+                    if l3_port_channel.member_interfaces:
+                        msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'member_interfaces' set. This is not a valid setting."
+                        raise AristaAvdInvalidInputsError(msg)
+                    if l3_port_channel._get("mode"):
+                        # implies 'mode' is set when not applicable for a sub-interface
+                        msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mode' set. This is not a valid setting."
+                        raise AristaAvdInvalidInputsError(msg)
+                    if l3_port_channel._get("mtu"):
+                        # implies 'mtu' is set when not applicable for a sub-interface
+                        msg = f"L3 Port-Channel sub-interface '{l3_port_channel.name}' has 'mtu' set. This is not a valid setting."
+                        raise AristaAvdInvalidInputsError(msg)
+
+                if not (interface_description := l3_port_channel.description):
+                    interface_description = "_".join(filter(None, [l3_port_channel.peer, l3_port_channel.peer_port_channel]))
+
+                # Resolve interface IP
+                interface_ip = l3_port_channel.ip_address
+                if interface_ip and "/" in interface_ip:
+                    interface_ip = get_ip_from_ip_prefix(interface_ip)
+
+                # Generate their structured config for the l3_port_channels.
+                port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
+                    name=l3_port_channel.name,
+                    peer=l3_port_channel.peer,
+                    mtu=l3_port_channel.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+                    description=interface_description or None,
+                    ip_address=l3_port_channel.ip_address,
+                    shutdown=not l3_port_channel.enabled,
+                    eos_cli=l3_port_channel.raw_eos_cli,
+                    flow_tracker=self.shared_utils.get_flow_tracker(
+                        l3_port_channel.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker
+                    ),
+                    vrf=vrf.name if vrf.name != "default" else None,
+                    peer_type="l3_port_channel",
+                    peer_interface=l3_port_channel.peer_port_channel if l3_port_channel.peer_port_channel else None,
+                )
+                if l3_port_channel.ipv4_acl_in:
+                    acl = self.shared_utils.get_ipv4_acl(
+                        name=l3_port_channel.ipv4_acl_in,
+                        interface_name=l3_port_channel.name,
+                        interface_ip=interface_ip,
+                    )
+                    port_channel_interface.access_group_in = acl.name
+                    self._set_ipv4_acl(acl)
+
+                if l3_port_channel.ipv4_acl_out:
+                    acl = self.shared_utils.get_ipv4_acl(
+                        name=l3_port_channel.ipv4_acl_out,
+                        interface_name=l3_port_channel.name,
+                        interface_ip=interface_ip,
+                    )
+                    port_channel_interface.access_group_out = acl.name
+                    self._set_ipv4_acl(acl)
+
+                if not is_subinterface:
+                    port_channel_interface.switchport.enabled = False
+
+                if l3_port_channel.ospf.enabled and vrf.ospf.enabled:
+                    port_channel_interface._update(
+                        ospf_area=l3_port_channel.ospf.area,
+                        ospf_network_point_to_point=l3_port_channel.ospf.point_to_point,
+                        ospf_cost=l3_port_channel.ospf.cost,
+                    )
+                    ospf_authentication = l3_port_channel.ospf.authentication
+                    if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_port_channel.ospf.simple_auth_key) is not None:
+                        port_channel_interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
+                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_port_channel.ospf.message_digest_keys) is not None:
+                        for ospf_key in ospf_message_digest_keys:
+                            if not (ospf_key.id and ospf_key.key):
+                                continue
+                            port_channel_interface.ospf_message_digest_keys.append_new(
+                                id=ospf_key.id,
+                                hash_algorithm=ospf_key.hash_algorithm,
+                                key=ospf_key.key,
+                            )
+                        if port_channel_interface.ospf_message_digest_keys:
+                            port_channel_interface.ospf_authentication = ospf_authentication
+
+                if is_subinterface:
+                    port_channel_interface.encapsulation_dot1q.vlan = default(
+                        l3_port_channel.encapsulation_dot1q_vlan, int(l3_port_channel.name.split(".", maxsplit=1)[-1])
+                    )
+                    if not l3_port_channel.ip_address:
+                        msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
+                        msg += f"[name={l3_port_channel.name}].ip_address"
+                        raise AristaAvdMissingVariableError(msg)
+
+                if l3_port_channel.structured_config:
+                    self.custom_structured_configs.nested.port_channel_interfaces.obtain(l3_port_channel.name)._deepmerge(
+                        l3_port_channel.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                    )
+
+                self.structured_config.port_channel_interfaces.append(port_channel_interface)
 
     def _set_point_to_point_port_channel_interfaces(
         self: AvdStructuredConfigNetworkServicesProtocol,

@@ -740,10 +740,10 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| VRF10 | 10.255.0.4:10 | connected |
-| VRF11 | 10.255.0.4:11 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| VRF10 | 10.255.0.4:10 | connected | - |
+| VRF11 | 10.255.0.4:11 | connected | - |
 
 #### Router BGP Device Configuration
 

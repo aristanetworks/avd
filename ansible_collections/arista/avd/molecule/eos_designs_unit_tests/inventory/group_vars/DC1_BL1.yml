@@ -27,3 +27,10 @@ overlay_rd_type:
 
 overlay_rt_type:
   admin_subfield: "bgp_as"
+
+override_sflow:
+  vrfs:
+    - name: OOB
+      # Need to overwrite at host var level for platform with different management interface
+      # This tests was run with inline Jinja previously
+      source_interface: Management99

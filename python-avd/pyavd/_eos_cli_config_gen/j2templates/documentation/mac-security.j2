@@ -28,8 +28,8 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ---------------------------- |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback | Replay Protection Disabled | Replay Protection Window |
+| ------ | ------------------- | ------------ | --- | ---------------------------- | -------------------------- | ------------------------ |
 {%             set cipher = profile.cipher | arista.avd.default('-') %}
 {%             set key_server_priority = profile.mka.key_server_priority | arista.avd.default('-') %}
 {%             set rekey_period = profile.mka.session.rekey_period | arista.avd.default('-') %}
@@ -38,7 +38,9 @@ FIPS restrictions enabled.
 {%             if traffic_unprotected == "allow" and profile.traffic_unprotected.allow_active_sak is arista.avd.defined(true) %}
 {%                 set traffic_unprotected = traffic_unprotected ~ " active-sak" %}
 {%             endif %}
-| {{ cipher }} | {{ key_server_priority }} | {{ rekey_period }} | {{ sci }} | {{ traffic_unprotected }} |
+{%             set replay_protection_disabled = profile.replay_protection.disabled | arista.avd.default('-') %}
+{%             set replay_protection_window = profile.replay_protection.window | arista.avd.default('-') %}
+| {{ cipher }} | {{ key_server_priority }} | {{ rekey_period }} | {{ sci }} | {{ traffic_unprotected }} | {{ replay_protection_disabled }} | {{ replay_protection_window }} |
 {%             if profile.connection_keys is arista.avd.defined %}
 
 ###### Keys

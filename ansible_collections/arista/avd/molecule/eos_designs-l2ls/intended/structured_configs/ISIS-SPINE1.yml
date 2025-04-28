@@ -74,11 +74,11 @@ router_isis:
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 172.31.0.1
+  prefix: 0.0.0.0/0
+  next_hop: 172.31.0.1
 - vrf: default
-  destination_address_prefix: 10.1.0.0/16
-  gateway: 10.1.100.100
+  prefix: 10.1.0.0/16
+  next_hop: 10.1.100.100
 transceiver_qsfp_default_mode_4x10: true
 vlan_interfaces:
 - name: Vlan110

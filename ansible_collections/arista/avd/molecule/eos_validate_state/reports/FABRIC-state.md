@@ -218,7 +218,7 @@
 | 134 | dc1-leaf1a | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 135 | dc1-leaf1a | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 136 | dc1-leaf1a | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 137 | dc1-leaf1a | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 137 | dc1-leaf1a | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 138 | dc1-leaf1a | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 139 | dc1-leaf1a | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 140 | dc1-leaf1a | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -375,7 +375,7 @@
 | 291 | dc1-leaf1b | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 292 | dc1-leaf1b | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 293 | dc1-leaf1b | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 294 | dc1-leaf1b | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 294 | dc1-leaf1b | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 295 | dc1-leaf1b | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 296 | dc1-leaf1b | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 297 | dc1-leaf1b | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -465,7 +465,7 @@
 | 381 | dc1-leaf1c | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 382 | dc1-leaf1c | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 383 | dc1-leaf1c | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 384 | dc1-leaf1c | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 384 | dc1-leaf1c | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 385 | dc1-leaf1c | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 386 | dc1-leaf1c | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 387 | dc1-leaf1c | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -612,7 +612,7 @@
 | 528 | dc1-leaf2a | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 529 | dc1-leaf2a | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 530 | dc1-leaf2a | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 531 | dc1-leaf2a | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 531 | dc1-leaf2a | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 532 | dc1-leaf2a | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 533 | dc1-leaf2a | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 534 | dc1-leaf2a | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -726,7 +726,7 @@
 | 642 | dc1-leaf2c | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 643 | dc1-leaf2c | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 644 | dc1-leaf2c | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 645 | dc1-leaf2c | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 645 | dc1-leaf2c | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 646 | dc1-leaf2c | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 647 | dc1-leaf2c | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 648 | dc1-leaf2c | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -755,16 +755,16 @@
 | 671 | dc1-spine1 | BFD | VerifyBFDPeersHealth | Verifies the health of IPv4 BFD peers across all VRFs. | - | NOT RUN | - |
 | 672 | dc1-spine1 | BFD | VerifyBFDPeersIntervals | Verifies the timers of IPv4 BFD peer sessions. | - | NOT RUN | - |
 | 673 | dc1-spine1 | BFD | VerifyBFDSpecificPeers | Verifies the state of IPv4 BFD peer sessions. | - | NOT RUN | - |
-| 674 | dc1-spine1 | BGP | VerifyBGPAdvCommunities | Verifies that advertised communities are standard, extended and large for BGP peers. | - | NOT RUN | - |
-| 675 | dc1-spine1 | BGP | VerifyBGPExchangedRoutes | Verifies the advertised and received routes of BGP peers. | - | NOT RUN | - |
-| 676 | dc1-spine1 | BGP | VerifyBGPPeerASNCap | Verifies the four octet ASN capability of BGP peers. | - | NOT RUN | - |
+| 674 | dc1-spine1 | BGP | VerifyBGPAdvCommunities | Verifies that advertised communities are standard, extended and large for BGP IPv4 peer(s). | - | NOT RUN | - |
+| 675 | dc1-spine1 | BGP | VerifyBGPExchangedRoutes | Verifies the advertised and received routes of BGP IPv4 peer(s). | - | NOT RUN | - |
+| 676 | dc1-spine1 | BGP | VerifyBGPPeerASNCap | Verifies the four octet ASN capability of BGP IPv4 peer(s). | - | NOT RUN | - |
 | 677 | dc1-spine1 | BGP | VerifyBGPPeerCount | Verifies the count of BGP peers for given address families. | - | NOT RUN | - |
-| 678 | dc1-spine1 | BGP | VerifyBGPPeerMD5Auth | Verifies the MD5 authentication and state of IPv4 BGP peers in a specified VRF. | - | NOT RUN | - |
-| 679 | dc1-spine1 | BGP | VerifyBGPPeerMPCaps | Verifies the multiprotocol capabilities of BGP peers. | - | NOT RUN | - |
-| 680 | dc1-spine1 | BGP | VerifyBGPPeerRouteRefreshCap | Verifies the route refresh capabilities of a BGP peer in a specified VRF. | - | NOT RUN | - |
+| 678 | dc1-spine1 | BGP | VerifyBGPPeerMD5Auth | Verifies the MD5 authentication and state of IPv4 BGP peer(s) in a specified VRF. | - | NOT RUN | - |
+| 679 | dc1-spine1 | BGP | VerifyBGPPeerMPCaps | Verifies the multiprotocol capabilities of BGP IPv4 peer(s). | - | NOT RUN | - |
+| 680 | dc1-spine1 | BGP | VerifyBGPPeerRouteRefreshCap | Verifies the route refresh capabilities of IPv4 BGP peer(s) in a specified VRF. | - | NOT RUN | - |
 | 681 | dc1-spine1 | BGP | VerifyBGPPeersHealth | Verifies the health of BGP peers for given address families. | - | NOT RUN | - |
 | 682 | dc1-spine1 | BGP | VerifyBGPSpecificPeers | Verifies the health of specific BGP peer(s) for given address families. | - | NOT RUN | - |
-| 683 | dc1-spine1 | BGP | VerifyBGPTimers | Verifies the timers of BGP peers. | - | NOT RUN | - |
+| 683 | dc1-spine1 | BGP | VerifyBGPTimers | Verifies the timers of BGP IPv4 peer(s). | - | NOT RUN | - |
 | 684 | dc1-spine1 | BGP | VerifyEVPNType2Route | Verifies the EVPN Type-2 routes for a given IPv4 or MAC address and VNI. | - | NOT RUN | - |
 | 685 | dc1-spine1 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | - | NOT RUN | - |
 | 686 | dc1-spine1 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | - | NOT RUN | - |
@@ -842,7 +842,7 @@
 | 758 | dc1-spine1 | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 759 | dc1-spine1 | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 760 | dc1-spine1 | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 761 | dc1-spine1 | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 761 | dc1-spine1 | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 762 | dc1-spine1 | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 763 | dc1-spine1 | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 764 | dc1-spine1 | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -871,16 +871,16 @@
 | 787 | dc1-spine2 | BFD | VerifyBFDPeersHealth | Verifies the health of IPv4 BFD peers across all VRFs. | - | NOT RUN | - |
 | 788 | dc1-spine2 | BFD | VerifyBFDPeersIntervals | Verifies the timers of IPv4 BFD peer sessions. | - | NOT RUN | - |
 | 789 | dc1-spine2 | BFD | VerifyBFDSpecificPeers | Verifies the state of IPv4 BFD peer sessions. | - | NOT RUN | - |
-| 790 | dc1-spine2 | BGP | VerifyBGPAdvCommunities | Verifies that advertised communities are standard, extended and large for BGP peers. | - | NOT RUN | - |
-| 791 | dc1-spine2 | BGP | VerifyBGPExchangedRoutes | Verifies the advertised and received routes of BGP peers. | - | NOT RUN | - |
-| 792 | dc1-spine2 | BGP | VerifyBGPPeerASNCap | Verifies the four octet ASN capability of BGP peers. | - | NOT RUN | - |
+| 790 | dc1-spine2 | BGP | VerifyBGPAdvCommunities | Verifies that advertised communities are standard, extended and large for BGP IPv4 peer(s). | - | NOT RUN | - |
+| 791 | dc1-spine2 | BGP | VerifyBGPExchangedRoutes | Verifies the advertised and received routes of BGP IPv4 peer(s). | - | NOT RUN | - |
+| 792 | dc1-spine2 | BGP | VerifyBGPPeerASNCap | Verifies the four octet ASN capability of BGP IPv4 peer(s). | - | NOT RUN | - |
 | 793 | dc1-spine2 | BGP | VerifyBGPPeerCount | Verifies the count of BGP peers for given address families. | - | NOT RUN | - |
-| 794 | dc1-spine2 | BGP | VerifyBGPPeerMD5Auth | Verifies the MD5 authentication and state of IPv4 BGP peers in a specified VRF. | - | NOT RUN | - |
-| 795 | dc1-spine2 | BGP | VerifyBGPPeerMPCaps | Verifies the multiprotocol capabilities of BGP peers. | - | NOT RUN | - |
-| 796 | dc1-spine2 | BGP | VerifyBGPPeerRouteRefreshCap | Verifies the route refresh capabilities of a BGP peer in a specified VRF. | - | NOT RUN | - |
+| 794 | dc1-spine2 | BGP | VerifyBGPPeerMD5Auth | Verifies the MD5 authentication and state of IPv4 BGP peer(s) in a specified VRF. | - | NOT RUN | - |
+| 795 | dc1-spine2 | BGP | VerifyBGPPeerMPCaps | Verifies the multiprotocol capabilities of BGP IPv4 peer(s). | - | NOT RUN | - |
+| 796 | dc1-spine2 | BGP | VerifyBGPPeerRouteRefreshCap | Verifies the route refresh capabilities of IPv4 BGP peer(s) in a specified VRF. | - | NOT RUN | - |
 | 797 | dc1-spine2 | BGP | VerifyBGPPeersHealth | Verifies the health of BGP peers for given address families. | - | NOT RUN | - |
 | 798 | dc1-spine2 | BGP | VerifyBGPSpecificPeers | Verifies the health of specific BGP peer(s) for given address families. | - | NOT RUN | - |
-| 799 | dc1-spine2 | BGP | VerifyBGPTimers | Verifies the timers of BGP peers. | - | NOT RUN | - |
+| 799 | dc1-spine2 | BGP | VerifyBGPTimers | Verifies the timers of BGP IPv4 peer(s). | - | NOT RUN | - |
 | 800 | dc1-spine2 | BGP | VerifyEVPNType2Route | Verifies the EVPN Type-2 routes for a given IPv4 or MAC address and VNI. | - | NOT RUN | - |
 | 801 | dc1-spine2 | Configuration | VerifyRunningConfigDiffs | Verifies there is no difference between the running-config and the startup-config. | - | NOT RUN | - |
 | 802 | dc1-spine2 | Configuration | VerifyZeroTouch | Verifies ZeroTouch is disabled. | - | NOT RUN | - |
@@ -958,7 +958,7 @@
 | 874 | dc1-spine2 | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 875 | dc1-spine2 | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 876 | dc1-spine2 | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 877 | dc1-spine2 | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 877 | dc1-spine2 | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 878 | dc1-spine2 | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 879 | dc1-spine2 | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 880 | dc1-spine2 | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1087,7 +1087,7 @@
 | 1003 | dc1-svc-leaf1a | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1004 | dc1-svc-leaf1a | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1005 | dc1-svc-leaf1a | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1006 | dc1-svc-leaf1a | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1006 | dc1-svc-leaf1a | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1007 | dc1-svc-leaf1a | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1008 | dc1-svc-leaf1a | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1009 | dc1-svc-leaf1a | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1216,7 +1216,7 @@
 | 1132 | dc1-svc-leaf1b | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1133 | dc1-svc-leaf1b | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1134 | dc1-svc-leaf1b | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1135 | dc1-svc-leaf1b | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1135 | dc1-svc-leaf1b | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1136 | dc1-svc-leaf1b | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1137 | dc1-svc-leaf1b | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1138 | dc1-svc-leaf1b | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1317,7 +1317,7 @@
 | 1233 | dc1-wan1 | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1234 | dc1-wan1 | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1235 | dc1-wan1 | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1236 | dc1-wan1 | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1236 | dc1-wan1 | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1237 | dc1-wan1 | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1238 | dc1-wan1 | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1239 | dc1-wan1 | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1420,7 +1420,7 @@
 | 1336 | dc1-wan2 | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1337 | dc1-wan2 | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1338 | dc1-wan2 | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1339 | dc1-wan2 | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1339 | dc1-wan2 | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1340 | dc1-wan2 | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1341 | dc1-wan2 | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1342 | dc1-wan2 | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1578,7 +1578,7 @@
 | 1494 | dc2-leaf1a | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1495 | dc2-leaf1a | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1496 | dc2-leaf1a | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1497 | dc2-leaf1a | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1497 | dc2-leaf1a | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1498 | dc2-leaf1a | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1499 | dc2-leaf1a | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1500 | dc2-leaf1a | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1740,7 +1740,7 @@
 | 1656 | dc2-leaf1b | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1657 | dc2-leaf1b | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1658 | dc2-leaf1b | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1659 | dc2-leaf1b | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1659 | dc2-leaf1b | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1660 | dc2-leaf1b | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1661 | dc2-leaf1b | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1662 | dc2-leaf1b | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1817,7 +1817,7 @@
 | 1733 | dc2-leaf1c | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1734 | dc2-leaf1c | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1735 | dc2-leaf1c | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1736 | dc2-leaf1c | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1736 | dc2-leaf1c | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1737 | dc2-leaf1c | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1738 | dc2-leaf1c | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1739 | dc2-leaf1c | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -1979,7 +1979,7 @@
 | 1895 | dc2-leaf2a | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 1896 | dc2-leaf2a | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 1897 | dc2-leaf2a | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 1898 | dc2-leaf2a | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 1898 | dc2-leaf2a | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 1899 | dc2-leaf2a | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 1900 | dc2-leaf2a | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 1901 | dc2-leaf2a | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -2142,7 +2142,7 @@
 | 2058 | dc2-leaf2b | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 2059 | dc2-leaf2b | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 2060 | dc2-leaf2b | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 2061 | dc2-leaf2b | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 2061 | dc2-leaf2b | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 2062 | dc2-leaf2b | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 2063 | dc2-leaf2b | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 2064 | dc2-leaf2b | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -2219,7 +2219,7 @@
 | 2135 | dc2-leaf2c | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 2136 | dc2-leaf2c | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 2137 | dc2-leaf2c | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 2138 | dc2-leaf2c | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 2138 | dc2-leaf2c | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 2139 | dc2-leaf2c | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 2140 | dc2-leaf2c | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 2141 | dc2-leaf2c | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -2382,7 +2382,7 @@
 | 2298 | dc2-leaf3a.arista.com | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 2299 | dc2-leaf3a.arista.com | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 2300 | dc2-leaf3a.arista.com | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 2301 | dc2-leaf3a.arista.com | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 2301 | dc2-leaf3a.arista.com | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 2302 | dc2-leaf3a.arista.com | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 2303 | dc2-leaf3a.arista.com | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 2304 | dc2-leaf3a.arista.com | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -2542,7 +2542,7 @@
 | 2458 | dc2-leaf3b.arista.com | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 2459 | dc2-leaf3b.arista.com | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 2460 | dc2-leaf3b.arista.com | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 2461 | dc2-leaf3b.arista.com | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 2461 | dc2-leaf3b.arista.com | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 2462 | dc2-leaf3b.arista.com | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 2463 | dc2-leaf3b.arista.com | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 2464 | dc2-leaf3b.arista.com | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -2645,7 +2645,7 @@
 | 2561 | dc2-spine1 | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 2562 | dc2-spine1 | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 2563 | dc2-spine1 | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 2564 | dc2-spine1 | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 2564 | dc2-spine1 | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 2565 | dc2-spine1 | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 2566 | dc2-spine1 | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 2567 | dc2-spine1 | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |
@@ -2743,7 +2743,7 @@
 | 2659 | dc2-spine2 | Security | VerifyTelnetStatus | Verifies if Telnet is disabled in the default VRF. | - | NOT RUN | - |
 | 2660 | dc2-spine2 | Services | VerifyDNSLookup | Verifies the DNS name to IP address resolution. | - | NOT RUN | - |
 | 2661 | dc2-spine2 | Services | VerifyDNSServers | Verifies if the DNS (Domain Name Service) servers are correctly configured. | - | NOT RUN | - |
-| 2662 | dc2-spine2 | Services | VerifyErrdisableRecovery | Verifies the errdisable recovery reason, status, and interval. | - | NOT RUN | - |
+| 2662 | dc2-spine2 | Services | VerifyErrdisableRecovery | Verifies the error disable recovery functionality. | - | NOT RUN | - |
 | 2663 | dc2-spine2 | Services | VerifyHostname | Verifies the hostname of a device. | - | NOT RUN | - |
 | 2664 | dc2-spine2 | SNMP | VerifySnmpIPv4Acl | Verifies if the SNMP agent has IPv4 ACL(s) configured. | - | NOT RUN | - |
 | 2665 | dc2-spine2 | SNMP | VerifySnmpIPv6Acl | Verifies if the SNMP agent has IPv6 ACL(s) configured. | - | NOT RUN | - |

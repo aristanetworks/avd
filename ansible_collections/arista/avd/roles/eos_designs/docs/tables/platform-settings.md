@@ -25,6 +25,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -51,6 +55,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform_sfe_interface_profile</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile") | Dictionary |  |  |  | Support for Platform SFE Interface Profiles. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -112,6 +120,18 @@
           # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
           # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
           bgp_update_wait_for_convergence: <bool; default=True>
+
+          # Support for Platform SFE Interface Profiles.
+          platform_sfe_interface_profile:
+
+            # Capability flag for generation of SFE interface profile.
+            supported: <bool; default=False>
+
+            # Maximum rx_queue count supported on any interface.
+            max_rx_queues: <int; default=6>
+
+          # Support for all-active EVPN gateway redundancy.
+          evpn_gateway_all_active_multihoming: <bool; default=False>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -178,6 +198,18 @@
           # This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
           # Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
           bgp_update_wait_for_convergence: <bool; default=True>
+
+          # Support for Platform SFE Interface Profiles.
+          platform_sfe_interface_profile:
+
+            # Capability flag for generation of SFE interface profile.
+            supported: <bool; default=False>
+
+            # Maximum rx_queue count supported on any interface.
+            max_rx_queues: <int; default=6>
+
+          # Support for all-active EVPN gateway redundancy.
+          evpn_gateway_all_active_multihoming: <bool; default=False>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -278,7 +310,9 @@
             mlag: 900
             non_mlag: 1020
           tcam_profile: vxlan-routing
-        - platforms:
+        - feature_support:
+            evpn_gateway_all_active_multihoming: true
+          platforms:
           - 7280R3
           reload_delay:
             mlag: 900
@@ -293,7 +327,9 @@
             mlag: 900
             non_mlag: 1020
           tcam_profile: vxlan-routing
-        - management_interface: Management0
+        - feature_support:
+            evpn_gateway_all_active_multihoming: true
+          management_interface: Management0
           platforms:
           - 7500R3
           - 7800R3
@@ -329,6 +365,7 @@
         - feature_support:
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
+            evpn_gateway_all_active_multihoming: true
             interface_storm_control: false
             queue_monitor_length_notify: false
           platforms:
@@ -342,6 +379,7 @@
         - feature_support:
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
+            evpn_gateway_all_active_multihoming: true
             interface_storm_control: false
             queue_monitor_length_notify: false
           management_interface: Management0
@@ -354,17 +392,38 @@
             mlag: 300
             non_mlag: 330
         - feature_support:
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            queue_monitor_length_notify: false
+          p2p_uplinks_mtu: 9194
+          platforms:
+          - CloudEOS
+        - feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
             interface_storm_control: false
+            platform_sfe_interface_profile:
+              max_rx_queues: 6
+              supported: true
             queue_monitor_length_notify: false
           management_interface: Management1/1
           p2p_uplinks_mtu: 9194
           platforms:
           - AWE-5310
+          - AWE-7230R
+        - feature_support:
+            bgp_update_wait_for_convergence: true
+            bgp_update_wait_install: false
+            interface_storm_control: false
+            platform_sfe_interface_profile:
+              max_rx_queues: 16
+              supported: true
+            queue_monitor_length_notify: false
+          management_interface: Management1/1
+          p2p_uplinks_mtu: 9194
+          platforms:
           - AWE-5510
           - AWE-7250R
-          - AWE-7230R
         - feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false

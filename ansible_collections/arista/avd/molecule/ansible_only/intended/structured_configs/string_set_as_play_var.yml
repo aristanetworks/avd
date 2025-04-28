@@ -1,0 +1,44 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet7
+  description: PHYSICAL_PORT_DESCRIPTION
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  peer: OLD_SW-1/6
+  peer_type: server
+hostname: string_set_as_play_var
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+link_tracking_groups:
+- name: LT_GROUP1
+  recovery_delay: 300
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  platform: 720XP
+  fabric_name: ANSIBLE_ONLY
+port_channel_interfaces:
+- name: Port-Channel7
+  description: test of var set under play vars
+  shutdown: false
+  switchport:
+    enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

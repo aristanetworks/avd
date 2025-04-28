@@ -1,0 +1,3 @@
+---
+# This must be the same value for all devices in the molecule scenario.
+fabric_name: EOS_DESIGNS_UNIT_TESTS

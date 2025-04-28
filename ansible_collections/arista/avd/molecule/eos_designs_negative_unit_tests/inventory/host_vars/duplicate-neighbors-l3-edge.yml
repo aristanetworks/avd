@@ -1,0 +1,34 @@
+---
+# Minimum config to only test the specific feature.
+type: spine
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: duplicate-neighbors-l3-edge
+      id: 1
+
+l3_edge:
+  p2p_links:
+    - nodes: [duplicate-neighbors-l3-edge, peer1]
+      interfaces: [ethernet1, ethernet1]
+      id: 1
+      profile: profile1
+      as: [65000, 65002]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+
+    - nodes: [duplicate-neighbors-l3-edge, peer2]
+      # duplicate neighbors for duplicate-neighbors-l3-edge
+      interfaces: [ethernet3, ethernet2]
+      id: 2
+      profile: profile2
+      as: [65000, 65002]
+      ip: [192.168.0.2/31, 192.168.0.3/31]
+
+expected_error_message: >-
+  Found duplicate objects with conflicting data while generating configuration for Neighbors. {'ip_address': '192.168.0.3',
+  'peer_group': 'IPv4-UNDERLAY-PEERS', 'remote_as': '65002', 'local_as': '65000', 'peer': 'peer2', 'description': 'peer2'}
+  conflicts with {'ip_address': '192.168.0.3', 'peer_group': 'IPv4-UNDERLAY-PEERS', 'remote_as': '65002', 'local_as': '65000',
+  'peer': 'peer1', 'description': 'peer1'}.

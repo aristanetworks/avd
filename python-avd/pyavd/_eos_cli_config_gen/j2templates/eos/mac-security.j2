@@ -50,5 +50,11 @@ mac security
 {%         if profile.l2_protocols.lldp.mode is arista.avd.defined %}
       l2-protocol lldp {{ profile.l2_protocols.lldp.mode }}
 {%         endif %}
+{%         if profile.replay_protection.disabled is arista.avd.defined(true) %}
+      replay protection disabled
+{%         endif %}
+{%         if profile.replay_protection.window is arista.avd.defined %}
+      replay protection window {{ profile.replay_protection.window }}
+{%         endif %}
 {%     endfor %}
 {% endif %}

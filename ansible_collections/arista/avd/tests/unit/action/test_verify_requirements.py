@@ -45,9 +45,30 @@ def test__validate_python_version(mocked_version, expected_return) -> None:
         "serial": mocked_version[4],
     }
     assert bool(info["python_path"])
-    # if mocked_version[:2] == MIN_PYTHON_SUPPORTED_VERSION:
-    #     # Check for depreecation of PYTHON 3.8
-    #     assert len(result["deprecations"]) == 1
+
+
+def test__validate_python_version_deprecation_message() -> None:
+    """Test to verify the deprecation message."""
+    info: dict[str, str | int] = {}
+    result = {}  # As in ansible module result
+    version_info = namedtuple("version_info", "major minor micro releaselevel serial")
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.DEPRECATE_MIN_PYTHON_SUPPORTED_VERSION", True),
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.sys") as mocked_sys,
+    ):
+        mocked_sys.version_info = version_info(*MIN_PYTHON_SUPPORTED_VERSION, 42, "final", 0)
+        ret = _validate_python_version(info, result)
+    assert ret is True
+    assert info["python_version_info"] == {
+        "major": MIN_PYTHON_SUPPORTED_VERSION[0],
+        "minor": MIN_PYTHON_SUPPORTED_VERSION[1],
+        "micro": 42,
+        "releaselevel": "final",
+        "serial": 0,
+    }
+    assert bool(info["python_path"])
+    # Check for deprecation of PYTHON min version
+    assert len(result["deprecations"]) == 1
 
 
 @pytest.mark.parametrize(
@@ -105,6 +126,52 @@ def test__validate_python_requirements(n_reqs, mocked_version, requirement_versi
             patched_version.side_effect = PackageNotFoundError()
         ret = _validate_python_requirements(requirements, result)
         assert ret == expected_return
+
+
+@pytest.mark.parametrize(
+    ("extras", "running_from_source", "expected_return"),
+    [
+        pytest.param(False, False, True, id="pyavd - no extra - not running from source"),
+        pytest.param(True, False, True, id="pyavd - extra - not running from source"),
+        pytest.param(False, True, True, id="pyavd - no extra - running from source"),
+        pytest.param(False, True, True, id="pyavd - extra - running from source"),
+    ],
+)
+def test__validate_python_requirements_pyavd(extras: bool, running_from_source: bool, expected_return: bool) -> None:
+    """
+    Testing behavior of the function for pyavd when running from source or not.
+    """
+    result = {}
+    req = f"pyavd{'[ansible-collection]' if extras else ''}==5.3.0"
+
+    requirements = [req]
+
+    with (
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.version") as patched_version,
+        patch("ansible_collections.arista.avd.plugins.action.verify_requirements.RUNNING_FROM_SOURCE", running_from_source),
+    ):
+        patched_version.return_value = "5.3.0"
+        ret = _validate_python_requirements(requirements, result)
+        assert ret == expected_return
+    python_req_result = result["python_requirements"]
+    if running_from_source:
+        assert python_req_result["valid"]["pyavd"]["installed"] == "running from source"
+        # only pyavd is expected for this test when running from source with or without extra
+        assert (
+            len(python_req_result["valid"])
+            + len(python_req_result["mismatched"])
+            + len(python_req_result["not_found"])
+            + len(python_req_result["parsing_failed"])
+            == 1
+        )
+    elif extras:
+        assert (
+            len(python_req_result["valid"])
+            + len(python_req_result["mismatched"])
+            + len(python_req_result["not_found"])
+            + len(python_req_result["parsing_failed"])
+            > 1
+        )
 
 
 @pytest.mark.parametrize(

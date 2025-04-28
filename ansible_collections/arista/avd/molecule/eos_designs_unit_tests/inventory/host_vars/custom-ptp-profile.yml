@@ -45,8 +45,8 @@ l3leaf:
     bgp_as: 65042
   nodes:
     - name: custom-ptp-profile
-      loopback_ipv4_address: 10.42.42.42/32
-      vtep_loopback_ipv4_address: 10.42.42.42/32
+      loopback_ipv4_address: 10.42.42.42
+      vtep_loopback_ipv4_address: 10.42.42.42
       id: 12
       ptp:
         profile: my-custom-ptp-profile

@@ -196,6 +196,7 @@ router_bgp:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+serial_number: DEADBEEFC0FFEE
 service_routing_protocols_model: multi-agent
 snmp_server:
   location: TWODC_5STAGE_CLOS DC1 DC1_POD1 DC1-POD1-SPINE2
@@ -203,8 +204,8 @@ spanning_tree:
   mode: none
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.1.254
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.1.254
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
@@ -214,4 +215,3 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
-serial_number: DEADBEEFC0FFEE

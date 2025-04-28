@@ -692,9 +692,9 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_B_OP_Zone | 192.168.255.8:20 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_B_OP_Zone | 192.168.255.8:20 | connected | - |
 
 #### Router BGP Device Configuration
 

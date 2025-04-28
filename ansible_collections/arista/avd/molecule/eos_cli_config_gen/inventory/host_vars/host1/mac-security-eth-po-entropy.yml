@@ -32,6 +32,8 @@ mac_security:
       traffic_unprotected:
         action: allow
         allow_active_sak: true
+      replay_protection:
+        disabled: true
     - name: A3
       cipher: aes256-gcm-xpn
       connection_keys:
@@ -40,3 +42,5 @@ mac_security:
           fallback: false
       traffic_unprotected:
         action: drop
+      replay_protection:
+        window: 20000

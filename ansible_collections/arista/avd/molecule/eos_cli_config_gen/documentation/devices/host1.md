@@ -68,6 +68,9 @@
 - [System Boot Settings](#system-boot-settings)
   - [Boot Secret Summary](#boot-secret-summary)
   - [System Boot Device Configuration](#system-boot-device-configuration)
+- [Kernel Settings](#kernel-settings)
+  - [Kernel Device Summary](#kernel-device-summary)
+  - [Kernel Device configuration](#kernel-device-configuration)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
   - [Custom daemons](#custom-daemons)
@@ -157,6 +160,7 @@
   - [Router Service Insertion Configuration](#router-service-insertion-configuration)
   - [Router Traffic-Engineering](#router-traffic-engineering)
   - [Router OSPF](#router-ospf)
+  - [IPv6 Router OSPF](#ipv6-router-ospf)
   - [Router ISIS](#router-isis)
   - [Router BGP](#router-bgp)
   - [PBR Policy Maps](#pbr-policy-maps)
@@ -304,6 +308,14 @@
 | V1 | 42 |
 | V2 | 666 |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown | True |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
 #### Agent KernelFib
 
 ##### Environment Variables
@@ -312,12 +324,26 @@
 | ---- | ----- |
 | KERNELFIB_PROGRAM_ALL_ECMP | true |
 
+##### Shutdown
+
+| Setting | Value |
+| ------- | ----- |
+| Shutdown on Active Supervisor | True |
+| Shutdown on Standby Supervisor | True |
+
+#### Agent NotRendered
+
 #### Agents Device Configuration
 
 ```eos
 !
 agent Dummy environment V1=42:V2=666
+agent Dummy shutdown
+agent Dummy shutdown supervisor active
+agent Dummy shutdown supervisor standby
 agent KernelFib environment KERNELFIB_PROGRAM_ALL_ECMP=true
+agent KernelFib shutdown supervisor active
+agent KernelFib shutdown supervisor standby
 ```
 
 ### Management Interfaces
@@ -429,6 +455,15 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 ##### mynameserver0
 
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| atd.lab.com |
+| avd.lab.com |
+
+###### Name Server
+
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
 | 1.1.1.1 | default | 0 |
@@ -439,7 +474,13 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 DNS Domain: arista.avd.com
 
-IP Domain List: domain-list1
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| domain-list1 |
+
+###### Name Server
 
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
@@ -463,6 +504,8 @@ ip name-server group mynameserver0
    name-server vrf default 1.1.1.1 priority 0
    name-server vrf default 8.8.8.8
    name-server vrf default 2.2.2.2 priority 1
+   ip domain-list atd.lab.com
+   ip domain-list avd.lab.com
 !
 ip name-server group mynameserver1
    name-server vrf default 1.1.1.1
@@ -559,6 +602,7 @@ ntp server 10.1.1.1
 ntp server 10.1.1.2 prefer
 ntp server 20.20.20.1 key <removed>
 ntp server ie.pool.ntp.org iburst key <removed>
+ntp serve all
 ```
 
 ### PTP
@@ -815,10 +859,12 @@ management accounts
 
 #### Management API gNMI Summary
 
-| Transport | SSL Profile | VRF | Notification Timestamp | ACL | Port |
-| --------- | ----------- | --- | ---------------------- | --- | ---- |
-| MGMT | gnmi | MGMT | send-time | acl1 | 6030 |
-| mytransport | - | - | send-time | acl1 | 6032 |
+| Transport | SSL Profile | VRF | Notification Timestamp | ACL | Port | Authorization Requests |
+| --------- | ----------- | --- | ---------------------- | --- | ---- | ---------------------- |
+| MGMT | gnmi | MGMT | send-time | acl1 | 6030 | - |
+| mytransport | - | - | send-time | acl1 | 6032 | - |
+| arTrue | - | - | send-time | acl1 | 6030 | True |
+| arFalse | - | - | send-time | acl1 | 6030 | False |
 
 | Transport | Destination | Destination Port | gNMI SSL Profile | Tunnel SSL Profile | VRF | Local Interface | Local Port | Target ID |
 | --------- | ----------- | ---------------- | ---------------- | ------------------ | --- | --------------- | ---------- | --------- |
@@ -835,6 +881,15 @@ Provider eos-native is configured.
 ```eos
 !
 management api gnmi
+   transport grpc arFalse
+      ip access-group acl1
+      notification timestamp send-time
+   !
+   transport grpc arTrue
+      ip access-group acl1
+      authorization requests
+      notification timestamp send-time
+   !
    transport grpc MGMT
       ssl profile gnmi
       vrf MGMT
@@ -1371,6 +1426,7 @@ aaa group server tacacs+ TACACS2
 | Type | Sub-type | User Stores |
 | ---- | -------- | ---------- |
 | Login | default | group TACACS local |
+| Login | command-api | local |
 | Login | console | local |
 
 AAA Authentication on-failure log has been enabled
@@ -1385,6 +1441,7 @@ Policy lockout has been enabled. After **3** failed login attempts within **900*
 
 ```eos
 aaa authentication login default group TACACS local
+aaa authentication login command-api local
 aaa authentication login console local
 aaa authentication enable default group TACACS local
 aaa authentication dot1x default group RADIUS1
@@ -1854,6 +1911,7 @@ dhcp server vrf VRF01
 | -------------- | --------- | --------- |
 | Ethernet64 | True | True |
 | Port-Channel112 | True | True |
+| Vlan2002 | True | True |
 
 ## System Boot Settings
 
@@ -1866,6 +1924,19 @@ dhcp server vrf VRF01
 ```eos
 !
 boot secret 5 <removed>
+```
+
+## Kernel Settings
+
+### Kernel Device Summary
+
+- Kernel software forwarding ECMP enabled
+
+### Kernel Device configuration
+
+```eos
+!
+kernel software forwarding ecmp
 ```
 
 ## Monitoring
@@ -2474,6 +2545,8 @@ hardware access-list mechanism tcam
 hardware speed-group 1 serdes 10g
 hardware speed-group 2 serdes 25g
 hardware speed-group 3/1 serdes 25g
+!
+hardware access-list update default-result permit
 ```
 
 ### VM Tracer Sessions
@@ -3532,6 +3605,7 @@ ip security
 #### Switchport Defaults Summary
 
 - Default Switchport Mode: access
+- Default Switchport Phone Access-list Bypass: True
 - Default Switchport Phone COS: 0
 - Default Switchport Phone Trunk: tagged
 - Default Switchport Phone VLAN: 69
@@ -3541,6 +3615,8 @@ ip security
 ```eos
 !
 switchport default mode access
+!
+switchport default phone access-list bypass
 !
 switchport default phone cos 0
 !
@@ -3805,8 +3881,8 @@ interface Dps1
 | Ethernet64 | DHCP server interface | - | 192.168.42.42/24 | default | - | - | - | - |
 | Ethernet65 | Multiple VRIDs | - | 192.0.2.2/25 | default | - | False | - | - |
 | Ethernet66 | Multiple VRIDs and tracking | - | 192.0.2.2/25 | default | - | False | - | - |
-| Ethernet80 | LAG Member | 17 | *192.0.2.3/31 | **default | **- | **- | **- | **- |
-| Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | 112 | *dhcp | **default | **- | **- | **- | **- |
+| Ethernet80 | LAG Member | 17 | *192.0.2.3/31 | *default | *- | *- | *- | *- |
+| Ethernet81/2 | LAG Member LACP fallback LLDP ZTP VLAN | 112 | *dhcp | *default | *- | *- | *- | *- |
 | Ethernet81/3 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
 | Ethernet81/4 | Traffic Engineering Interface | - | 100.64.127.0/31 | default | - | False | - | - |
 
@@ -4087,6 +4163,8 @@ interface Ethernet2
    storm-control all level 10
    spanning-tree bpduguard disable
    spanning-tree bpdufilter disable
+   spanning-tree bpduguard rate-limit enable
+   spanning-tree bpduguard rate-limit count 10 interval 3
 !
 interface Ethernet3
    !! testing single line comment
@@ -4123,6 +4201,8 @@ interface Ethernet3
    ptp vlan 2
    no priority-flow-control
    spanning-tree guard root
+   spanning-tree bpduguard rate-limit disable
+   spanning-tree bpduguard rate-limit count 10
    switchport backup-link Ethernet4
    !
    sync-e
@@ -4155,6 +4235,7 @@ interface Ethernet4
    switchport port-security violation protect
    priority-flow-control on
    spanning-tree guard none
+   spanning-tree bpduguard rate-limit count 10 interval 15
 !
 interface Ethernet5
    description Molecule Routing
@@ -4282,6 +4363,7 @@ interface Ethernet9
    multicast ipv4 boundary ACL_MULTICAST out
    multicast ipv6 static
    mpls ip
+   ntp serve
    isis authentication mode sha key-id 2 rx-disabled
    isis authentication key 0 <removed>
 !
@@ -4291,6 +4373,7 @@ interface Ethernet10
    ip address 172.31.128.10/31
    no mpls ldp interface
    no mpls ip
+   no ntp serve
    isis authentication mode sha key-id 2
    isis authentication key 0 <removed>
 !
@@ -5277,6 +5360,7 @@ interface Port-Channel5
    l2 mtu 8000
    l2 mru 8000
    mlag 5
+   ntp serve
    ptp enable
    ptp mpass
    ptp delay-mechanism e2e
@@ -5385,6 +5469,7 @@ interface Port-Channel15
    switchport mode trunk
    switchport
    mlag 15
+   no ntp serve
    service-policy type qos input pmap_test1
    service-profile experiment
    qos trust cos
@@ -5939,6 +6024,7 @@ interface Loopback100
    description TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
    vrf TENANT_A_PROJECT02
    ip address 10.1.255.3/32
+   hardware forwarding id
 ```
 
 ### Tunnel Interfaces
@@ -6228,11 +6314,14 @@ interface Vlan25
    ipv6 virtual-router address 1b11:3a00:22b0:16::15
 !
 interface Vlan26
+   ntp serve
    ip ospf cost 99
    ip ospf network point-to-point
    ip ospf authentication message-digest
    ip ospf area 0.0.0.24
    ip ospf message-digest-key 55 md5 7 <removed>
+   ipv6 ospf network point-to-point
+   ipv6 ospf area 0.0.0.29
 !
 interface Vlan41
    description SVI Description
@@ -6304,6 +6393,7 @@ interface Vlan75
    multicast ipv6 boundary ff00::/16 out
    multicast ipv6 boundary ff01::/16 out
    multicast ipv4 static
+   no ntp serve
    ip address virtual 10.10.75.1/24
    ipv6 virtual-router address 1b11:3a00:22b0:1000::1
 !
@@ -6551,6 +6641,8 @@ interface Vlan2002
    no autostate
    vrf Tenant_B
    ip verify unicast source reachable-via rx
+   dhcp server ipv4
+   dhcp server ipv6
    isis enable EVPN_UNDERLAY
    isis bfd
    isis authentication mode md5 rx-disabled
@@ -7176,6 +7268,7 @@ router traffic-engineering
             segment-list label-stack 900002 900010 900011 900012
    router-id ipv4 10.0.0.1
    router-id ipv6 2001:beef:cafe::1
+   twamp-light sender profile test-profile
    !
    flex-algo
       flex-algo 128 test-algo
@@ -7373,6 +7466,76 @@ router ospf 600
    area 0.0.20.25 nssa default-information-originate metric-type 1
    area 0.0.20.26 nssa no-summary
    area 0.0.20.26 nssa default-information-originate metric 50 metric-type 1 nssa-only
+```
+
+### IPv6 Router OSPF
+
+#### IPv6 Router OSPF Summary
+
+| Process ID | VRF | Router ID | Auto Cost Reference Bandwidth |
+| ---------- | --- | --------- | ----------------------------- |
+| 100 | - | 192.168.255.3 | 100 |
+| 101 | TEST2 | - | - |
+| 201 | MGMT | - | - |
+| 301 | TEST1 | - | - |
+| 401 | TENANT_A_PROJECT02 | - | - |
+
+#### IPv6 Router OSPF Router Redistribution
+
+| Process ID | VRF | Source Protocol | Include Leaked | Route Map |
+| ---------- | --- | --------------- | -------------- | --------- |
+| 100 | - |connected | enabled | rm-ospf-connected |
+| 100 | - |static | enabled | rm-ospf-static |
+| 100 | - |bgp | enabled | rm-ospf-bgp |
+| 100 | - |dhcp | - | rm-ospf-dhcp |
+| 100 | - |isis level-2 | enabled | rm-ospf-isis |
+| 100 | - |ospfv3 | enabled | rm-ospf-ospfv3 |
+| 100 | - |ospfv3 match external | enabled | rm-ospf-ospfv3-external |
+| 100 | - |ospfv3 match nssa external | enabled | rm-ospf-ospfv3-nssa-external |
+| 101 | TEST2 |connected | - | - |
+| 101 | TEST2 |static | - | - |
+| 101 | TEST2 |bgp | - | - |
+| 101 | TEST2 |dhcp | - | - |
+| 101 | TEST2 |isis | - | - |
+| 101 | TEST2 |ospfv3 match external | enabled | - |
+| 101 | TEST2 |ospfv3 match internal | enabled | rm-ospf-ospfv3-internal |
+| 101 | TEST2 |ospfv3 match nssa external | enabled | - |
+| 201 | MGMT |ospfv3 match internal | enabled | - |
+| 301 | TEST1 |ospfv3 | enabled | - |
+
+#### IPv6 Router OSPF Device Configuration
+
+```eos
+!
+ipv6 router ospf 100
+   router-id 192.168.255.3
+   auto-cost reference-bandwidth 100
+   redistribute bgp include leaked route-map rm-ospf-bgp
+   redistribute dhcp route-map rm-ospf-dhcp
+   redistribute connected include leaked route-map rm-ospf-connected
+   redistribute isis include leaked level-2 route-map rm-ospf-isis
+   redistribute ospfv3 leaked route-map rm-ospf-ospfv3
+   redistribute ospfv3 leaked match external route-map rm-ospf-ospfv3-external
+   redistribute ospfv3 leaked match nssa-external route-map rm-ospf-ospfv3-nssa-external
+   redistribute static include leaked route-map rm-ospf-static
+!
+ipv6 router ospf 101 vrf TEST2
+   redistribute bgp
+   redistribute dhcp
+   redistribute connected
+   redistribute isis
+   redistribute ospfv3 leaked match internal route-map rm-ospf-ospfv3-internal
+   redistribute ospfv3 leaked match external
+   redistribute ospfv3 leaked match nssa-external
+   redistribute static
+!
+ipv6 router ospf 201 vrf MGMT
+   redistribute ospfv3 leaked match internal
+!
+ipv6 router ospf 301 vrf TEST1
+   redistribute ospfv3 leaked
+!
+ipv6 router ospf 401 vrf TENANT_A_PROJECT02
 ```
 
 ### Router ISIS
@@ -7691,6 +7854,14 @@ ASN Notation: asdot
 | Address Family | ipv4 |
 | Send community | standard large |
 
+##### NHP
+
+| Settings | Value |
+| -------- | ----- |
+| Next-hop peer | True |
+| BFD | True |
+| BFD Timers | interval: 500, min_rx: 500, multiplier: 3 |
+
 ##### NO-COMMUNITY
 
 | Settings | Value |
@@ -7887,6 +8058,8 @@ ASN Notation: asdot
 | 101.0.3.6 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | True(interval: 2500, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 101.0.3.7 | - | BLUE-C1 | - | - | - | - | True | - | - | - | - |
 | 101.0.3.8 | - | BLUE-C1 | - | - | - | - | False | - | - | - | - |
+| 10.10.10.0 | - | NHP-PEER | - | - | - | - | Inherited from peer group NHP(interval: 500, min_rx: 500, multiplier: 3) | - | - | - | - |
+| 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | - | - | - | - | - | - |
@@ -8154,20 +8327,22 @@ ASN Notation: asdot
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute | EVPN Multicast |
-| --- | ------------------- | ------------ | -------------- |
-| BLUE-C1 | 1.0.1.1:101 | static<br>ospf | IPv4: False<br>Transit: False |
-| RED-C1 | 1.0.1.1:102 | - | IPv4: False<br>Transit: False |
-| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | IPv4: False<br>Transit: False |
-| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | IPv4: True<br>Transit: True |
-| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | IPv4: True<br>Transit: False |
-| Tenant_B | 10.50.64.15:30002 | - | IPv4: False<br>Transit: False |
-| VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | IPv4: False<br>Transit: False |
-| VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | IPv4: False<br>Transit: False |
-| VRF03 | - | dynamic | IPv4: False<br>Transit: False |
-| YELLOW-C1 | 1.0.1.1:103 | - | IPv4: False<br>Transit: False |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart | EVPN Multicast |
+| --- | ------------------- | ------------ | ---------------- | -------------- |
+| BLUE-C1 | 1.0.1.1:101 | static<br>ospf | - | IPv4: False<br>Transit: False |
+| NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
+| NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
+| RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
+| Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT02 | 192.168.255.3:12 | connected<br>static | True (120s) | IPv4: False<br>Transit: False |
+| TENANT_A_PROJECT03 | 192.168.255.3:13 | - | - | IPv4: True<br>Transit: True |
+| TENANT_A_PROJECT04 | 192.168.255.3:14 | - | - | IPv4: True<br>Transit: False |
+| Tenant_B | 10.50.64.15:30002 | - | - | IPv4: False<br>Transit: False |
+| VRF01 | - | user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
+| VRF02 | - | dynamic<br>user<br>static<br>rip<br>ospf<br>ospfv3<br>isis<br>connected<br>bgp<br>attached_host | - | IPv4: False<br>Transit: False |
+| VRF03 | - | dynamic | - | IPv4: False<br>Transit: False |
+| YELLOW-C1 | 1.0.1.1:103 | - | - | IPv4: False<br>Transit: False |
 
 #### Router BGP Session Trackers
 
@@ -8271,6 +8446,10 @@ router bgp 65101
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor MULTIPLE-COMMUNITY peer group
    neighbor MULTIPLE-COMMUNITY send-community standard large
+   neighbor NHP peer group
+   neighbor NHP next-hop-peer
+   neighbor NHP bfd
+   neighbor NHP bfd interval 500 min-rx 500 multiplier 3
    neighbor NO-COMMUNITY peer group
    neighbor OBS_WAN peer group
    neighbor OBS_WAN remote-as 65000
@@ -8328,6 +8507,7 @@ router bgp 65101
    neighbor WELCOME_ROUTERS remote-as 65001
    neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor 1.1.1.1 remote-as 1
+   neighbor 1.1.1.1 next-hop-peer
    neighbor 1.1.1.1 description TEST
    neighbor 1b11:3a00:22b0:0088::1 peer group IPV6-UNDERLAY
    neighbor 1b11:3a00:22b0:0088::3 peer group IPV6-UNDERLAY
@@ -8636,6 +8816,7 @@ router bgp 65101
       no neighbor IPV4-UNDERLAY additional-paths send
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor NHP activate
       neighbor OBS_WAN activate
       neighbor OBS_WAN additional-paths send limit 8
       neighbor SEDI activate
@@ -8982,6 +9163,12 @@ router bgp 65101
       EOF
 
    !
+   vrf NHP-PEER
+      neighbor 10.10.10.0 peer group NHP
+   !
+   vrf NHP-PEER1
+      neighbor 11.11.11.0 next-hop-peer
+   !
    vrf RED-C1
       rd 1.0.1.1:102
       neighbor 10.1.1.0 peer group OBS_WAN
@@ -9067,6 +9254,9 @@ router bgp 65101
       route-target export evpn 12:12
       router-id 192.168.255.3
       timers bgp 5 15
+      graceful-restart restart-time 120
+      graceful-restart stalepath-time 120
+      graceful-restart
       neighbor 10.255.251.1 peer group MLAG-IPv4-UNDERLAY-PEER
       neighbor 10.255.251.1 next-hop-self
       neighbor 10.255.251.1 description ABCDEFG
@@ -10191,9 +10381,9 @@ ip as-path access-list mylist2 deny _64517$ igp
 
 #### 802.1X Global
 
-| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization |
-| ------------------- | -------------------- | ----------------------|
-| True | True | True |
+| System Auth Control | Protocol LLDP Bypass | Dynamic Authorization | Dropped Packets Statistics |
+| ------------------- | -------------------- | ----------------------| -------------------------- |
+| True | True | True | True |
 
 #### 802.1X MAC based authentication
 
@@ -10215,6 +10405,14 @@ ip as-path access-list mylist2 deny _64517$ igp
 | SSL profile | Profile1 |
 | IPv4 Access-list | ACL |
 | Start limit | Infinite |
+
+#### 802.1X VLAN Assignment Groups
+
+| VLAN Group Name | Members |
+| --------------- | ------- |
+| Assignment_1 | 400-407 |
+| Assignment_2 | 55 |
+| Assignment_3 | 1,3,15-20 |
 
 #### 802.1X Supplicant
 
@@ -11798,9 +11996,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ---------------------------- |
-| aes128-gcm | 100 | 30 | True | allow |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback | Replay Protection Disabled | Replay Protection Window |
+| ------ | ------------------- | ------------ | --- | ---------------------------- | -------------------------- | ------------------------ |
+| aes128-gcm | 100 | 30 | True | allow | - | - |
 
 ###### Keys
 
@@ -11820,9 +12018,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ---------------------------- |
-| - | - | - | - | allow active-sak |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback | Replay Protection Disabled | Replay Protection Window |
+| ------ | ------------------- | ------------ | --- | ---------------------------- | -------------------------- | ------------------------ |
+| - | - | - | - | allow active-sak | True | - |
 
 ###### Keys
 
@@ -11834,9 +12032,9 @@ FIPS restrictions enabled.
 
 ###### Settings
 
-| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback |
-| ------ | ------------------- | ------------ | --- | ---------------------------- |
-| aes256-gcm-xpn | - | - | - | drop |
+| Cipher | Key-Server Priority | Rekey-Period | SCI | Traffic Unprotected Fallback | Replay Protection Disabled | Replay Protection Window |
+| ------ | ------------------- | ------------ | --- | ---------------------------- | -------------------------- | ------------------------ |
+| aes256-gcm-xpn | - | - | - | drop | - | 20000 |
 
 ###### Keys
 
@@ -11866,11 +12064,13 @@ mac security
    profile A2
       key 1234b 7 <removed>
       traffic unprotected allow active-sak
+      replay protection disabled
    !
    profile A3
       cipher aes256-gcm-xpn
       key ab 7 <removed>
       traffic unprotected drop
+      replay protection window 20000
 ```
 
 ### Traffic Policies information

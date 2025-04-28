@@ -61,6 +61,7 @@ jobs:
             Revert
           # Configure which scopes are allowed.
           scopes: |
+            anta_runner
             build_output_folders
             cvp_configlet_upload
             dhcp_provisioner

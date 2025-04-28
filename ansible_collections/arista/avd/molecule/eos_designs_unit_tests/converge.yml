@@ -3,10 +3,7 @@
   hosts: EOS_DESIGNS_UNIT_TESTS
   gather_facts: false
   connection: local
-  vars:
-    string_set_as_play_var: "test of var set under play vars"
   tasks:
-
     - name: Generate intended variables
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:

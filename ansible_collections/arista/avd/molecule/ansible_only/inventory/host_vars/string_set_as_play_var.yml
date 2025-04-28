@@ -1,0 +1,21 @@
+loopback_ipv4_pool: 192.168.0.0/24
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: string_set_as_play_var
+      platform: 720XP
+      link_tracking:
+        enabled: true
+
+servers:
+  # Making sure our variables can read playbook variables
+  - name: OLD_SW-1/6
+    adapters:
+      - switches: [string_set_as_play_var, dummy]
+        switch_ports: [Ethernet7, Ethernet8]
+        description: "PHYSICAL_PORT_DESCRIPTION"
+        port_channel:
+          mode: "active"
+          description: "{{ string_set_as_play_var }}"

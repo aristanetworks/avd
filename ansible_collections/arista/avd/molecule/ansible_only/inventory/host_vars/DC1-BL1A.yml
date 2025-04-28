@@ -1,0 +1,84 @@
+---
+my_special_dci_ethernet_interfaces:
+  - name: Ethernet4000
+    ip_address: 10.3.2.1/21
+
+custom_structured_configuration_list_merge: append
+
+use_router_general_for_router_id: true
+
+# Test appending to list of ip name-servers.
+override_ip_name_servers:
+  - ip_address: 1.1.1.1
+    vrf: MGMT
+
+# Testing empty key
+cvp_ingestauth_key: ""
+
+# Testing router id loopback description override
+router_id_loopback_description: "MY_ROUTER_ID_LOOPBACK"
+
+vtep_vvtep_ip: 192.168.255.255/32
+
+# Testing event_monitor
+event_monitor:
+  enabled: true
+
+# Testing load_interval_default
+load_interval:
+  default: 6
+
+# Testing unsupported_transceiver
+unsupported_transceiver:
+  license_name: key1
+  license_key: dsafDSFfvadskjh3424
+
+# Testing queue_monitor_streaming
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: ACL-QMS
+  ipv6_access_group: ACLv6-QMS
+  max_connections: 8
+  vrf: vrf1
+
+# Testing event_handlers
+event_handlers:
+  - name: evpn-blacklist-recovery
+    actions:
+      bash_command: FastCli -p 15 -c "clear bgp evpn host-flap"
+    delay: 300
+    trigger: on-logging
+    trigger_on_logging:
+      regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+    asynchronous: true
+
+# Testing with inline jinja - targeting base.py loaded in eos_designs_structured_config.
+# Since base.py is not performing any templating, the vars must be templated before handed over to the python class.
+template_timezone: "correctly_templated_timezone"
+timezone: "{{ template_timezone }}"
+
+# Test Mac address table variables
+mac_address_table:
+  aging_time: 42
+
+# Testing custom_structured_configuration setting a dict key from inline jinja with switch.x facts.
+# Rare customer use case, but known to be in the field, so we should make sure this does not break.
+#
+# Unless switch.x is available in hostvars when eos_designs_structured_config run, this will _overwrite_ the
+# dict (aging_time: 42 will disappear), since the unresolved jinja will be seen as a string,
+# so combine is not possible.
+#
+# TODO: Refactor custom_structured_configuration_ to Python and load switch facts from avd_switch_facts
+# _before_ performing input data templating. Then we can remove switch facts from global vars
+my_mac_address_table:
+  notification_host_flap:
+    logging: "{{ switch.id == 6 }}"
+
+override_mac_address_table: "{{ my_mac_address_table }}"
+
+# Test that we can enable CloudVision Tag generation
+# for a single device in a Fabric. The structured config for this node
+# should have CloudVision tags generated for it. All other nodes in
+# eos_designs_unit_tests should not have any CloudVision tags generated for them
+generate_cv_tags:
+  topology_hints: true

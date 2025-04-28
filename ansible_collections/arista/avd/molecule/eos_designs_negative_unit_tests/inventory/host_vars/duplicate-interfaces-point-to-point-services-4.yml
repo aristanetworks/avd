@@ -52,4 +52,4 @@ expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Network Services point-to-point EthernetInterfaces.
   Interface Ethernet6.1000 defined under tenants[TENANT_A].point_to_point_services[TEN_A_site2_site5_eline_port_based].endpoints[0] conflicts with
   {'name': 'Ethernet6.1000', 'description': None, 'shutdown': False, 'mtu': None, 'vrf': 'TEST', 'encapsulation_dot1q':
-  {'vlan': 1000}, 'ip_address': '10.42.255.0/31', 'access_group_in': None, 'access_group_out': None, 'peer_type': 'l3_interface', 'eos_cli': None}.
+  {'vlan': 1000}, 'ip_address': '10.42.255.0/31', 'peer_type': 'l3_interface', 'eos_cli': None}.

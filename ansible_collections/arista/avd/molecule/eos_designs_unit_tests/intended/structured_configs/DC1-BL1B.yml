@@ -161,13 +161,6 @@ ip_access_lists:
     protocol: ip
     source: any
     destination: 10.10.50.10
-- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
-  entries:
-  - sequence: 15
-    action: deny
-    protocol: ip
-    source: any
-    destination: 10.10.50.20
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet12
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -175,6 +168,13 @@ ip_access_lists:
     protocol: ip
     source: 10.10.50.10
     destination: any
+- name: TEST-IPV4-ACL-WITH-IP-FIELDS-IN_Ethernet13.10
+  entries:
+  - sequence: 15
+    action: deny
+    protocol: ip
+    source: any
+    destination: 10.10.50.20
 - name: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT_Ethernet13.10
   entries:
   - remark: Some remark will not require source and destination fields.
@@ -616,6 +616,7 @@ router_ospf:
         route_map: RM_TEST
       bgp:
         enabled: true
+        route_map: Tenant_ospf_redistribute_bgp_route_map
 service_routing_protocols_model: multi-agent
 sflow:
   vrfs:
@@ -635,11 +636,11 @@ spanning_tree:
     priority: 4096
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 10.3.4.0/24
-  gateway: 1.2.3.4
+  prefix: 10.3.4.0/24
+  next_hop: 1.2.3.4
 tcam_profile:
   system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true

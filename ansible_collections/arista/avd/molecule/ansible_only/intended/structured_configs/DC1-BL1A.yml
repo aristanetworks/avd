@@ -1,0 +1,220 @@
+aaa_root:
+  disabled: true
+clock:
+  timezone: correctly_templated_timezone
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_DC1-SPINE1_Ethernet1
+  shutdown: false
+  speed: forced 100gfull
+  mtu: 9214
+  ip_address: 172.31.254.41/31
+  peer: DC1-SPINE1
+  peer_interface: Ethernet1
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_DC1-SPINE1_Ethernet2
+  shutdown: false
+  speed: forced 100gfull
+  mtu: 9214
+  ip_address: 172.31.254.43/31
+  peer: DC1-SPINE1
+  peer_interface: Ethernet2
+  peer_type: spine
+  switchport:
+    enabled: false
+event_handlers:
+- name: evpn-blacklist-recovery
+  actions:
+    bash_command: FastCli -p 15 -c "clear bgp evpn host-flap"
+  delay: 300
+  trigger: on-logging
+  trigger_on_logging:
+    regex: EVPN-3-BLACKLISTED_DUPLICATE_MAC
+  asynchronous: true
+event_monitor:
+  enabled: true
+hostname: DC1-BL1A
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:dc:00:00:00:0a
+is_deployed: true
+load_interval:
+  default: 6
+loopback_interfaces:
+- name: Loopback0
+  description: MY_ROUTER_ID_LOOPBACK
+  shutdown: false
+  ip_address: 192.168.255.14/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 192.168.254.14/32
+  ip_address_secondaries:
+  - 192.168.255.255/32
+mac_address_table:
+  aging_time: 42
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.110/24
+  type: oob
+metadata:
+  platform: 7280R
+  fabric_name: ANSIBLE_ONLY
+  cv_tags:
+    device_tags:
+    - name: topology_hint_fabric
+      value: ANSIBLE_ONLY
+    - name: topology_hint_type
+      value: leaf
+    - name: topology_hint_rack
+      value: DC1_BL1
+platform:
+  sand:
+    lag:
+      hardware_only: true
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.255.0/25 eq 32
+  - sequence: 20
+    action: permit 192.168.255.128/26 eq 32
+  - sequence: 30
+    action: permit 192.168.255.192/29 eq 32
+  - sequence: 40
+    action: permit 192.168.255.200/32 eq 32
+  - sequence: 50
+    action: permit 192.168.254.0/25 eq 32
+  - sequence: 60
+    action: permit 192.168.254.128/26 eq 32
+  - sequence: 70
+    action: permit 192.168.254.192/29 eq 32
+  - sequence: 80
+    action: permit 192.168.254.200/32 eq 32
+  - sequence: 90
+    action: permit 192.168.255.255/32
+queue_monitor_streaming:
+  enable: true
+  ip_access_group: ACL-QMS
+  ipv6_access_group: ACLv6-QMS
+  max_connections: 8
+  vrf: vrf1
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65104'
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp_defaults:
+  - distance bgp 20 200 200
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: UNDERLAY-PEERS
+    type: ipv4
+    password: 0nsCUm70mvSTxVO0ldytrg==
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    password: q+VNViP5i4rVjW1cxFv2wA==
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 172.31.254.40
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: DC1-SPINE1
+    description: DC1-SPINE1_Ethernet1
+  - ip_address: 172.31.254.42
+    peer_group: UNDERLAY-PEERS
+    remote_as: '65001'
+    peer: DC1-SPINE1
+    description: DC1-SPINE1_Ethernet2
+  - ip_address: 192.168.255.1
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65001'
+    peer: DC1-SPINE1
+    description: DC1-SPINE1_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+router_general:
+  router_id:
+    ipv4: 192.168.255.14
+service_routing_protocols_model: multi-agent
+service_unsupported_transceiver:
+  license_name: key1
+  license_key: dsafDSFfvadskjh3424
+sflow:
+  vrfs:
+  - name: OOB
+    destinations:
+    - destination: 192.168.200.10
+    - destination: 10.0.200.90
+    source_interface: Management1
+spanning_tree:
+  root_super: true
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+tcam_profile:
+  system: vxlan-routing
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: DC1-BL1A_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789

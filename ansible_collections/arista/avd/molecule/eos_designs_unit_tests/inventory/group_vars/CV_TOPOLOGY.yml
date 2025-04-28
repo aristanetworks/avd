@@ -1,0 +1,88 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      key: arista123arista
+    - id: 2
+      key: please_vault_me
+
+type: l3leaf
+mgmt_interface: null # To get the coverage for get(self.cv_topology_config, "mgmt_interface")
+use_cv_topology: true
+cv_topology:
+  - hostname: CV-MLAG-OSPF-L3LEAF1A
+    platform: vEOS-LAB
+    interfaces:
+      - name: Management1
+      - name: Ethernet5
+        neighbor: MLAG-OSPF-L3LEAF1B
+        neighbor_interface: Ethernet5
+      - name: Ethernet6
+        neighbor: MLAG_SAME_SUBNET_L3LEAF1B
+        neighbor_interface: Ethernet6
+  - hostname: CV-TOPOLOGY-LEAF3A
+    platform: vEOS-LAB
+    interfaces:
+      - name: Ethernet16
+        neighbor: DC1-SPINE4
+        neighbor_interface: Ethernet16
+
+# Providing select default interfaces to be used by `use_cv_topology`
+# for automatically deriving the topology from the given `cv_topology`
+default_interfaces:
+  - platforms: [ vEOS-LAB ]
+    types: [ l3leaf ]
+    uplink_interfaces: [ Ethernet1-22 ]
+    mlag_interfaces: [ Ethernet4-6 ]
+
+platform_settings:
+  - platforms: [vEOS-LAB]
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    management_interface: null # To get the coverage for get(self.cv_topology_config, "mgmt_interface")
+l3leaf:
+  defaults:
+    mgmt_interface: null # To get the coverage for get(self.cv_topology_config, "mgmt_interface")
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+    uplink_switches: ["DC1-SPINE4"]
+    uplink_interfaces: ["Ethernet1"]
+  node_groups:
+    - group: CV-MLAG_OSPF_L3LEAF1
+      spanning_tree_mst_pvst_boundary: true
+      uplink_interface_speed: forced 40gfull
+      nodes:
+        - name: CV-MLAG-OSPF-L3LEAF1A
+          id: 4
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.114/24
+          uplink_switch_interfaces: [Ethernet20]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: CV-MLAG-OSPF-L3LEAF1B
+          id: 5
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.115/24
+          uplink_switch_interfaces: [Ethernet21]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+    - group: CV-NON-MLAG
+      mlag: false
+      nodes:
+        - name: CV-TOPOLOGY-LEAF3A
+          id: 2
+          mgmt_ip: 192.168.201.109/24
+          bgp_as: 65161
+          uplink_switch_interfaces: [Ethernet16]
+        - name: CV-TOPOLOGY-LEAF3B
+          id: 3
+          mgmt_ip: 192.168.201.110/24
+          bgp_as: 65161
+          uplink_switch_interfaces: [Ethernet17]

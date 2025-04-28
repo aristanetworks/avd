@@ -485,10 +485,10 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| C1_VRF1 | 10.255.1.2:10 | connected<br>ospf |
-| C2_VRF1 | 10.255.1.2:20 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| C1_VRF1 | 10.255.1.2:10 | connected<br>ospf | - |
+| C2_VRF1 | 10.255.1.2:20 | connected | - |
 
 #### Router BGP Device Configuration
 

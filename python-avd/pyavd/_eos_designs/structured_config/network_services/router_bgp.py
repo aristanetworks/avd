@@ -56,7 +56,7 @@ class RouterBgpMixin(Protocol):
         # Configure MLAG iBGP peer-group if needed. The function updates structured config directly.
         # Catches cases where underlay is not BGP but we still need MLAG iBGP peering.
         if not self.shared_utils.underlay_bgp and self.need_mlag_peer_group:
-            self.structured_config.router_bgp._deepmerge(self.shared_utils.get_router_bgp_with_mlag_peer_group(self.custom_structured_configs))
+            self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs)
 
     def _router_bgp_peer_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """
@@ -220,10 +220,10 @@ class RouterBgpMixin(Protocol):
 
                 if vrf.name == "default":
                     # VRF default is added directly under router_bgp
-                    bgp_vrf = cast(EosCliConfigGen.RouterBgp, bgp_vrf)
+                    bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
                     self.structured_config.router_bgp._deepmerge(bgp_vrf)
                 else:
-                    bgp_vrf = cast(EosCliConfigGen.RouterBgp.VrfsItem, bgp_vrf)
+                    bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                     bgp_vrf.name = vrf.name
                     self.structured_config.router_bgp.vrfs.append(bgp_vrf)
 
@@ -256,7 +256,7 @@ class RouterBgpMixin(Protocol):
             else:
                 target["route_targets"].append(rt.route_target)
 
-        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default:
+        if vrf.name == "default" and self._vrf_default_evpn and self._route_maps_vrf_default_check():
             # Special handling of vrf default with evpn.
 
             if (target := get_item(route_targets["export"], "address_family", "evpn")) is None:

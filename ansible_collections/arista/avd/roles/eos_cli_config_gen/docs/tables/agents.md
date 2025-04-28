@@ -12,6 +12,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;environment_variables</samp>](## "agents.[].environment_variables") | List, items: Dictionary |  |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "agents.[].environment_variables.[].name") | String | Required, Unique |  |  | Environment variable name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value</samp>](## "agents.[].environment_variables.[].value") | String | Required |  |  | Environment variable value. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "agents.[].shutdown") | Boolean |  |  |  | Shutdown the agent process. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown_supervisor_active</samp>](## "agents.[].shutdown_supervisor_active") | Boolean |  |  |  | Shutdown the agent process for active supervisors. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown_supervisor_standby</samp>](## "agents.[].shutdown_supervisor_standby") | Boolean |  |  |  | Shutdown the agent process for standby supervisors. |
 
 === "YAML"
 
@@ -27,4 +30,13 @@
 
             # Environment variable value.
             value: <str; required>
+
+        # Shutdown the agent process.
+        shutdown: <bool>
+
+        # Shutdown the agent process for active supervisors.
+        shutdown_supervisor_active: <bool>
+
+        # Shutdown the agent process for standby supervisors.
+        shutdown_supervisor_standby: <bool>
     ```

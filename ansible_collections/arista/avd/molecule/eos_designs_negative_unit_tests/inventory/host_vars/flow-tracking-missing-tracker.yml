@@ -1,0 +1,24 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: flow-tracking-missing-tracker
+      id: 1
+      # Could as well be hardware
+      flow_tracker_type: sampled
+
+fabric_flow_tracking:
+  endpoints:
+    enabled: true
+    name: I-DO-NOT-EXIST
+
+servers:
+  - name: test
+    adapters:
+      - switches: [flow-tracking-missing-tracker]
+        switch_ports: [Ethernet1]
+        flow_tracking:
+          enabled: true
+
+expected_error_message: >-
+  The flow tracker 'I-DO-NOT-EXIST' is being used for at least one interface,
+  but is not configured in 'self.inputs.flow_tracking_settings'.

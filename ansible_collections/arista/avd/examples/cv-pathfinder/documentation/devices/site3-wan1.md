@@ -431,8 +431,8 @@ interface Dps1
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet1.42 | RED-TEST | - | 10.42.3.1/24 | RED | - | False | - | - |
 | Ethernet1.666 | BLUE-TEST | - | 10.66.3.1/24 | BLUE | - | False | - | - |
-| Ethernet4 | inet-cloud_Ethernet8 | 4 | *dhcp | **default | **- | *False | *ACL-INTERNET-IN_Port-Channel4 | **- |
-| Ethernet5 | inet-cloud_Ethernet9 | 4 | *dhcp | **default | **- | *False | *ACL-INTERNET-IN_Port-Channel4 | **- |
+| Ethernet4 | inet-cloud_Ethernet8 | 4 | *dhcp | *default | *- | *False | *ACL-INTERNET-IN_Port-Channel4 | *- |
+| Ethernet5 | inet-cloud_Ethernet9 | 4 | *dhcp | *default | *- | *False | *ACL-INTERNET-IN_Port-Channel4 | *- |
 
 *Inherited from Port-Channel Interface
 
@@ -864,11 +864,11 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| BLUE | 192.168.255.11:100 | connected |
-| default | 192.168.255.11:1 | - |
-| RED | 192.168.255.11:101 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| BLUE | 192.168.255.11:100 | connected | - |
+| default | 192.168.255.11:1 | - | - |
+| RED | 192.168.255.11:101 | connected | - |
 
 #### Router BGP Device Configuration
 

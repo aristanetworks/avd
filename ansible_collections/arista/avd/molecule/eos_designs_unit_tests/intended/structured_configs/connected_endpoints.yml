@@ -70,13 +70,6 @@ ethernet_interfaces:
     mode: active
   peer: OLD_SW-1/6
   peer_type: server
-- name: Ethernet9
-  description: test of var set under play vars
-  shutdown: false
-  peer: SERVER_WITH_PLAYVAR_DESCRIPTION
-  peer_type: server
-  switchport:
-    enabled: true
 - name: Ethernet10
   description: PHYSICAL_PORT_DESCRIPTION_1
   shutdown: false

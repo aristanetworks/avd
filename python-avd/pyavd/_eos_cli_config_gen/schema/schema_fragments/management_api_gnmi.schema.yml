@@ -50,6 +50,9 @@ keys:
                       Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.
                   convert_types:
                     - str
+                authorization_requests:
+                  type: bool
+                  description: Use per-RPC authorization.
           grpc_tunnels:
             type: list
             primary_key: name

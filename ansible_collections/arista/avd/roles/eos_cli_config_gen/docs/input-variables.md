@@ -469,6 +469,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-http-clie
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-servers.md
 --8<--
 
+### IP name server groups
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ip-name-server-groups.md
+--8<--
+
 ### IP SSH client source-interfaces
 
 --8<--
@@ -911,6 +917,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-l2-vp
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/router-ospf.md
 --8<--
 
+### IPV6 Router OSPF
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/ipv6-router-ospf.md
+--8<--
+
 ### Router path selection
 
 --8<--
@@ -1077,6 +1089,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/system.md
 
 --8<--
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/tcam-profile.md
+--8<--
+
+### Kernel
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/kernel.md
 --8<--
 
 ## Metadata

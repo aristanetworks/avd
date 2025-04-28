@@ -610,6 +610,13 @@ interface {{ ethernet_interface.name }}
    ip nat service-profile {{ ethernet_interface.ip_nat.service_profile }}
 {%         endif %}
 {%     endif %}
+{%     if ethernet_interface.ntp_serve is arista.avd.defined %}
+{%         if ethernet_interface.ntp_serve %}
+   ntp serve
+{%         else %}
+   no ntp serve
+{%         endif %}
+{%     endif %}
 {%     if ethernet_interface.ospf_cost is arista.avd.defined %}
    ip ospf cost {{ ethernet_interface.ospf_cost }}
 {%     endif %}
@@ -978,6 +985,18 @@ interface {{ ethernet_interface.name }}
 {%         else %}
    spanning-tree guard {{ ethernet_interface.spanning_tree_guard }}
 {%         endif %}
+{%     endif %}
+{%     if ethernet_interface.spanning_tree_bpduguard_rate_limit.enabled is arista.avd.defined(true) %}
+   spanning-tree bpduguard rate-limit enable
+{%     elif ethernet_interface.spanning_tree_bpduguard_rate_limit.enabled is arista.avd.defined(false) %}
+   spanning-tree bpduguard rate-limit disable
+{%     endif %}
+{%     if ethernet_interface.spanning_tree_bpduguard_rate_limit.count is arista.avd.defined %}
+{%         set rate_limit_count = "spanning-tree bpduguard rate-limit count " ~ ethernet_interface.spanning_tree_bpduguard_rate_limit.count %}
+{%         if ethernet_interface.spanning_tree_bpduguard_rate_limit.interval is arista.avd.defined %}
+{%             set rate_limit_count = rate_limit_count ~ " interval " ~ ethernet_interface.spanning_tree_bpduguard_rate_limit.interval %}
+{%         endif %}
+   {{ rate_limit_count }}
 {%     endif %}
 {%     if ethernet_interface.logging.event.spanning_tree is arista.avd.defined(true) %}
    logging event spanning-tree

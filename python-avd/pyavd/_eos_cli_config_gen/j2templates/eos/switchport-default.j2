@@ -12,6 +12,10 @@ switchport default mode routed
 switchport default mode access
 {% endif %}
 {# switchport default phone #}
+{% if switchport_default.phone.access_list_bypass is arista.avd.defined(true) %}
+!
+switchport default phone access-list bypass
+{% endif %}
 {% if switchport_default.phone.cos is arista.avd.defined %}
 !
 switchport default phone cos {{ switchport_default.phone.cos }}

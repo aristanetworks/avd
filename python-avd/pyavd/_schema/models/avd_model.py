@@ -182,7 +182,7 @@ class AvdModel(AvdBase):
             field_info = self._fields[field]
 
             if issubclass(field_info["type"], AvdBase):
-                value = cast(AvdBase, value)
+                value = cast("AvdBase", value)
                 value._strip_empties()
                 if not value:
                     to_be_deleted.add(field)
@@ -209,7 +209,7 @@ class AvdModel(AvdBase):
             key = self._field_to_key_map.get(field, field)
 
             if issubclass(self._fields[field]["type"], AvdBase):
-                value = cast(AvdBase, value)
+                value = cast("AvdBase", value)
                 value = None if value._created_from_null else value._dump(include_default_values=include_default_values)
 
             as_dict[key] = value
@@ -225,7 +225,7 @@ class AvdModel(AvdBase):
                 default_value = self._get_field_default_value(field)
 
                 if issubclass(self._fields[field]["type"], AvdBase):
-                    default_value = cast(AvdBase, default_value)
+                    default_value = cast("AvdBase", default_value)
                     default_value = default_value._dump(include_default_values=include_default_values)
 
                 # Removing field_ prefix if needed.
@@ -302,8 +302,8 @@ class AvdModel(AvdBase):
             field_type = self._fields[field]["type"]
             if issubclass(field_type, AvdBase):
                 # Merge in to the existing object
-                old_value = cast(AvdBase, old_value)
-                new_value = cast(AvdBase, new_value)
+                old_value = cast("AvdBase", old_value)
+                new_value = cast("AvdBase", new_value)
                 old_value._deepmerge(new_value, list_merge=list_merge)
                 continue
 
@@ -357,14 +357,14 @@ class AvdModel(AvdBase):
             field_type = self._fields[field]["type"]
             if issubclass(field_type, AvdModel):
                 # Inherit into the existing object.
-                old_value = cast(AvdModel, old_value)
-                new_value = cast(AvdModel, new_value)
+                old_value = cast("AvdModel", old_value)
+                new_value = cast("AvdModel", new_value)
                 old_value._deepinherit(new_value)
                 continue
             if issubclass(field_type, AvdIndexedList):
                 # Inherit into the existing object.
-                old_value = cast(AvdIndexedList, old_value)
-                new_value = cast(AvdIndexedList, new_value)
+                old_value = cast("AvdIndexedList", old_value)
+                new_value = cast("AvdIndexedList", new_value)
                 old_value._deepinherit(new_value)
                 continue
 
@@ -408,7 +408,7 @@ class AvdModel(AvdBase):
                 if issubclass(field_info["type"], AvdBase):
                     # TODO: Consider using the TypeError we raise below to ensure we know the outer type.
                     # TODO: with suppress(TypeError):
-                    value = cast(AvdBase, value)
+                    value = cast("AvdBase", value)
                     new_args[field] = value._cast_as(new_type._fields[field]["type"], ignore_extra_keys=ignore_extra_keys)
                     continue
 

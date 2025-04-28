@@ -61,6 +61,9 @@ router traffic-engineering
 {%     if router_traffic_engineering.router_id.ipv6 is arista.avd.defined %}
    router-id ipv6 {{ router_traffic_engineering.router_id.ipv6 }}
 {%     endif %}
+{%     if router_traffic_engineering.twamp_light_sender_profile is arista.avd.defined %}
+   twamp-light sender profile {{ router_traffic_engineering.twamp_light_sender_profile }}
+{%     endif %}
 {%     if router_traffic_engineering.flex_algos is arista.avd.defined %}
    !
    flex-algo

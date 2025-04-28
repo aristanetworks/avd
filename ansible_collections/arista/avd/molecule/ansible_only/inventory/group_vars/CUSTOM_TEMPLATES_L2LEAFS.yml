@@ -1,0 +1,22 @@
+---
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [CUSTOM-TEMPLATES-L3LEAF1A, CUSTOM-TEMPLATES-L3LEAF1B]
+    mlag_interfaces: [Ethernet3, Ethernet4]
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: CUSTOM_TEMPLATES_L2LEAF1
+      nodes:
+        - name: CUSTOM-TEMPLATES-L2LEAF1A
+          id: 1
+          mgmt_ip: 192.168.200.103/24
+          uplink_switch_interfaces: [Ethernet5, Ethernet5 ]
+        - name: CUSTOM-TEMPLATES-L2LEAF1B
+          id: 1
+          mgmt_ip: 192.168.200.103/24
+          uplink_switch_interfaces: [Ethernet6, Ethernet6 ]

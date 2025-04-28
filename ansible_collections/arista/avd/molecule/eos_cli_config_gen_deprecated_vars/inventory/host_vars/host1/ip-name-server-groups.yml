@@ -1,0 +1,5 @@
+---
+ip_name_server_groups:
+  - name: mynameserver1
+    ip_domain_list: domain-list1
+    dns_domain: arista.avd.com
