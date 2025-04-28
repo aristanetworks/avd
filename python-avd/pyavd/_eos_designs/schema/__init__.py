@@ -1105,11 +1105,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Default value: `"active"`"""
                 channel_id_algorithm: Literal["first_port", "p2p_link_id"]
                 """
-                Configures how to generate the port-channel ID. By default an id is generated based on the first
+                Configures how to generate the port-channel ID.
+                By default the ID is generated based on the first
                 switch port from node_child_interfaces[].interfaces.
-
-                The `p2p_link_id` setting will use the `id`
-                for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                The `p2p_link_id` setting will use the `id` for
+                each link added with the `channel_id_offset` to determine the port-channel ID.
 
                 Default value: `"first_port"`
                 """
@@ -1156,11 +1156,11 @@ class EosDesigns(EosDesignsRootModel):
                                name and port_channel interface of the peer.
                             mode: mode
                             channel_id_algorithm:
-                               Configures how to generate the port-channel ID. By default an id is generated based on the first
+                               Configures how to generate the port-channel ID.
+                               By default the ID is generated based on the first
                                switch port from node_child_interfaces[].interfaces.
-
-                               The `p2p_link_id` setting will use the `id`
-                               for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                               The `p2p_link_id` setting will use the `id` for
+                               each link added with the `channel_id_offset` to determine the port-channel ID.
                             channel_id_offset: channel_id_offset
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
@@ -1668,11 +1668,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Default value: `"active"`"""
                 channel_id_algorithm: Literal["first_port", "p2p_link_id"]
                 """
-                Configures how to generate the port-channel ID. By default an id is generated based on the first
+                Configures how to generate the port-channel ID.
+                By default the ID is generated based on the first
                 switch port from node_child_interfaces[].interfaces.
-
-                The `p2p_link_id` setting will use the `id`
-                for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                The `p2p_link_id` setting will use the `id` for
+                each link added with the `channel_id_offset` to determine the port-channel ID.
 
                 Default value: `"first_port"`
                 """
@@ -1719,11 +1719,11 @@ class EosDesigns(EosDesignsRootModel):
                                name and port_channel interface of the peer.
                             mode: mode
                             channel_id_algorithm:
-                               Configures how to generate the port-channel ID. By default an id is generated based on the first
+                               Configures how to generate the port-channel ID.
+                               By default the ID is generated based on the first
                                switch port from node_child_interfaces[].interfaces.
-
-                               The `p2p_link_id` setting will use the `id`
-                               for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                               The `p2p_link_id` setting will use the `id` for
+                               each link added with the `channel_id_offset` to determine the port-channel ID.
                             channel_id_offset: channel_id_offset
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
@@ -5049,11 +5049,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Default value: `"active"`"""
                 channel_id_algorithm: Literal["first_port", "p2p_link_id"]
                 """
-                Configures how to generate the port-channel ID. By default an id is generated based on the first
+                Configures how to generate the port-channel ID.
+                By default the ID is generated based on the first
                 switch port from node_child_interfaces[].interfaces.
-
-                The `p2p_link_id` setting will use the `id`
-                for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                The `p2p_link_id` setting will use the `id` for
+                each link added with the `channel_id_offset` to determine the port-channel ID.
 
                 Default value: `"first_port"`
                 """
@@ -5100,11 +5100,11 @@ class EosDesigns(EosDesignsRootModel):
                                name and port_channel interface of the peer.
                             mode: mode
                             channel_id_algorithm:
-                               Configures how to generate the port-channel ID. By default an id is generated based on the first
+                               Configures how to generate the port-channel ID.
+                               By default the ID is generated based on the first
                                switch port from node_child_interfaces[].interfaces.
-
-                               The `p2p_link_id` setting will use the `id`
-                               for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                               The `p2p_link_id` setting will use the `id` for
+                               each link added with the `channel_id_offset` to determine the port-channel ID.
                             channel_id_offset: channel_id_offset
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
@@ -5612,11 +5612,11 @@ class EosDesigns(EosDesignsRootModel):
                 """Default value: `"active"`"""
                 channel_id_algorithm: Literal["first_port", "p2p_link_id"]
                 """
-                Configures how to generate the port-channel ID. By default an id is generated based on the first
+                Configures how to generate the port-channel ID.
+                By default the ID is generated based on the first
                 switch port from node_child_interfaces[].interfaces.
-
-                The `p2p_link_id` setting will use the `id`
-                for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                The `p2p_link_id` setting will use the `id` for
+                each link added with the `channel_id_offset` to determine the port-channel ID.
 
                 Default value: `"first_port"`
                 """
@@ -5663,11 +5663,11 @@ class EosDesigns(EosDesignsRootModel):
                                name and port_channel interface of the peer.
                             mode: mode
                             channel_id_algorithm:
-                               Configures how to generate the port-channel ID. By default an id is generated based on the first
+                               Configures how to generate the port-channel ID.
+                               By default the ID is generated based on the first
                                switch port from node_child_interfaces[].interfaces.
-
-                               The `p2p_link_id` setting will use the `id`
-                               for each link added with the `channel_id_offset` to determine the port-channel interface name.
+                               The `p2p_link_id` setting will use the `id` for
+                               each link added with the `channel_id_offset` to determine the port-channel ID.
                             channel_id_offset: channel_id_offset
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 

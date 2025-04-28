@@ -55,7 +55,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local port-channel interface name.<br>  - `peer_interface`: The port-channel interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>Falls back to the description on the `p2p_link` if set. Otherwise default description is set by `default_underlay_p2p_port_channel_description`.<br>By default the description is templated from the name and port_channel interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.mode") | String |  | `active` | Valid Values:<br>- <code>on</code><br>- <code>active</code><br>- <code>passive</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_algorithm</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.channel_id_algorithm") | String |  | `first_port` | Valid Values:<br>- <code>first_port</code><br>- <code>p2p_link_id</code> | Configures how to generate the port-channel ID. By default an id is generated based on the first switch port from node_child_interfaces[].interfaces.<br><br>The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_algorithm</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.channel_id_algorithm") | String |  | `first_port` | Valid Values:<br>- <code>first_port</code><br>- <code>p2p_link_id</code> | Configures how to generate the port-channel ID.<br>By default the ID is generated based on the first switch port from node_child_interfaces[].interfaces.<br>The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_offset</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.channel_id_offset") | Integer |  |  | Min: 0<br>Max: 900000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "core_interfaces.p2p_links_profiles.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
@@ -108,7 +108,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "core_interfaces.p2p_links.[].port_channel") | Dictionary |  |  |  | Port-channel parameters. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "core_interfaces.p2p_links.[].port_channel.description") | String |  |  |  | Description or description template to be used on the port-channel interface.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `peer`: The name of the peer.<br>  - `interface`: The local port-channel interface name.<br>  - `peer_interface`: The port-channel interface on the peer.<br>  - `port_channel_id`: The local port-channel ID.<br>  - `peer_port_channel_id`: The ID of the port-channel on the peer.<br><br>Falls back to the description on the `p2p_link` if set. Otherwise default description is set by `default_underlay_p2p_port_channel_description`.<br>By default the description is templated from the name and port_channel interface of the peer. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "core_interfaces.p2p_links.[].port_channel.mode") | String |  | `active` | Valid Values:<br>- <code>on</code><br>- <code>active</code><br>- <code>passive</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_algorithm</samp>](## "core_interfaces.p2p_links.[].port_channel.channel_id_algorithm") | String |  | `first_port` | Valid Values:<br>- <code>first_port</code><br>- <code>p2p_link_id</code> | Configures how to generate the port-channel ID. By default an id is generated based on the first switch port from node_child_interfaces[].interfaces.<br><br>The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_algorithm</samp>](## "core_interfaces.p2p_links.[].port_channel.channel_id_algorithm") | String |  | `first_port` | Valid Values:<br>- <code>first_port</code><br>- <code>p2p_link_id</code> | Configures how to generate the port-channel ID.<br>By default the ID is generated based on the first switch port from node_child_interfaces[].interfaces.<br>The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;channel_id_offset</samp>](## "core_interfaces.p2p_links.[].port_channel.channel_id_offset") | Integer |  |  | Min: 0<br>Max: 900000 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes_child_interfaces</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;node</samp>](## "core_interfaces.p2p_links.[].port_channel.nodes_child_interfaces.[].node") | String | Required, Unique |  |  |  |
@@ -270,9 +270,9 @@
             description: <str>
             mode: <str; "on" | "active" | "passive"; default="active">
 
-            # Configures how to generate the port-channel ID. By default an id is generated based on the first switch port from node_child_interfaces[].interfaces.
-            #
-            # The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel interface name.
+            # Configures how to generate the port-channel ID.
+            # By default the ID is generated based on the first switch port from node_child_interfaces[].interfaces.
+            # The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel ID.
             channel_id_algorithm: <str; "first_port" | "p2p_link_id"; default="first_port">
             channel_id_offset: <int; 0-900000>
             nodes_child_interfaces:
@@ -432,9 +432,9 @@
             description: <str>
             mode: <str; "on" | "active" | "passive"; default="active">
 
-            # Configures how to generate the port-channel ID. By default an id is generated based on the first switch port from node_child_interfaces[].interfaces.
-            #
-            # The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel interface name.
+            # Configures how to generate the port-channel ID.
+            # By default the ID is generated based on the first switch port from node_child_interfaces[].interfaces.
+            # The `p2p_link_id` setting will use the `id` for each link added with the `channel_id_offset` to determine the port-channel ID.
             channel_id_algorithm: <str; "first_port" | "p2p_link_id"; default="first_port">
             channel_id_offset: <int; 0-900000>
             nodes_child_interfaces:
