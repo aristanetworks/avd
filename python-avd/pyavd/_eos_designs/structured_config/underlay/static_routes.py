@@ -40,7 +40,5 @@ class StaticRoutesMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
 
             for l3_generic_interface_static_route in l3_generic_interface.static_routes:
-                static_route = EosCliConfigGen.StaticRoutesItem(
-                    destination_address_prefix=l3_generic_interface_static_route.prefix, gateway=l3_generic_interface.peer_ip
-                )
+                static_route = EosCliConfigGen.StaticRoutesItem(prefix=l3_generic_interface_static_route.prefix, next_hop=l3_generic_interface.peer_ip)
                 self.structured_config.static_routes.append_unique(static_route)

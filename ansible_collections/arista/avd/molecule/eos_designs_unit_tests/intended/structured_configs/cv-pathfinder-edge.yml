@@ -969,21 +969,21 @@ service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 static_routes:
-- destination_address_prefix: 172.16.0.0/16
-  gateway: 172.16.5.4
-- destination_address_prefix: 172.16.0.0/16
-  gateway: 172.16.5.9
+- prefix: 172.16.0.0/16
+  next_hop: 172.16.5.4
+- prefix: 172.16.0.0/16
+  next_hop: 172.16.5.9
 - vrf: default
-  destination_address_prefix: 66.66.66.0/24
-  gateway: 172.17.0.0
-- destination_address_prefix: 10.37.121.1/32
-  gateway: 172.20.20.21
+  prefix: 66.66.66.0/24
+  next_hop: 172.17.0.0
+- prefix: 10.37.121.1/32
+  next_hop: 172.20.20.21
   name: IE-ZSCALER-PRI
-- destination_address_prefix: 10.39.77.1/32
-  gateway: 172.20.20.21
+- prefix: 10.39.77.1/32
+  next_hop: 172.20.20.21
   name: IE-ZSCALER-SEC
-- destination_address_prefix: 10.50.9.1/32
-  gateway: 172.20.20.21
+- prefix: 10.50.9.1/32
+  next_hop: 172.20.20.21
   name: IE-ZSCALER-TER
 stun:
   client:
