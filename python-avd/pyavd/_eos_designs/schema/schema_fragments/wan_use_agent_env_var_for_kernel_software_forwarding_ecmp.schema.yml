@@ -10,7 +10,7 @@ keys:
     type: bool
     documentation_options:
       table: wan-settings
-    # TODO: AVD 6.0.0 Consider changing default to false
+    # TODO: AVD 6.0.0 change default to false
     default: true
     description: |-
       This specifies the preferred mechanism to program ECMP routes within the kernel for software forwarding.
