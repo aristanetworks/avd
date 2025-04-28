@@ -93,6 +93,14 @@ wan_rr:
           wan_carrier: Another-ISP
           wan_circuit_id: 999
           ip_address: 10.9.9.9/31
+      # Test for l3_port_channels
+      l3_port_channels:
+        - name: Port-Channel5
+          ip_address: 10.7.7.5/31
+          peer: peer2
+          peer_port_channel: Port-Channel16
+          peer_ip: 10.7.7.8/31
+          wan_carrier: Another-ISP
 
 wan_virtual_topologies:
   vrfs:
