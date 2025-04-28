@@ -37257,9 +37257,10 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         static_routes: StaticRoutes
                         """
-                        Static routes with SVI as the gateway.
+                        Static routes to be configured on every device where the SVI is configured.
 
-                        Subclass of AvdList with `StaticRoutesItem` items.
+                        Subclass of AvdList
+                        with `StaticRoutesItem` items.
                         """
                         evpn_vlan_bundle: str | None
                         """
@@ -37515,9 +37516,10 @@ class EosDesigns(EosDesignsRootModel):
                                        Tags are also matched against the "node_group" name under node type settings.
                                        Subclass of AvdList with `str` items.
                                     static_routes:
-                                       Static routes with SVI as the gateway.
+                                       Static routes to be configured on every device where the SVI is configured.
 
-                                       Subclass of AvdList with `StaticRoutesItem` items.
+                                       Subclass of AvdList
+                                       with `StaticRoutesItem` items.
                                     evpn_vlan_bundle:
                                        Name of a bundle defined under 'evpn_vlan_bundles' to inherit configuration.
                                        This setting overrides

@@ -6951,7 +6951,8 @@ $defs:
                         description: Tag value.
                     static_routes:
                       type: list
-                      description: Static routes with SVI as the gateway.
+                      description: Static routes to be configured on every device
+                        where the SVI is configured.
                       items:
                         type: dict
                         keys:
