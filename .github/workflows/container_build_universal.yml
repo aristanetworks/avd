@@ -3,6 +3,8 @@ name: Build universal container
 
 "on":
   push:
+    branches:
+      - devel
     paths:
       - containers/universal/**
       - .github/workflows/container_build_template.yml
@@ -16,7 +18,7 @@ name: Build universal container
 
 jobs:
   build_universal_container:
-    if: ( github.repository == 'aristanetworks/avd' && github.ref == 'refs/heads/devel' ) || vars.DEBUG_CONTAINER_ACTIONS == 'true'
+    if: github.repository == 'aristanetworks/avd'
     uses: ./.github/workflows/container_build_template.yml
     strategy:
       matrix:

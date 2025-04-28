@@ -5,9 +5,14 @@ l3leaf:
     loopback_ipv4_pool: 10.42.0.0/24
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
+    uplink_switches: [missing-valid-ipv4-address-ntp-servers-spine]
+    uplink_switch_interfaces: [Ethernet1]
+    uplink_ipv4_pool: 10.1.1.0/24
   nodes:
     - name: duplicate-interfaces-connected-endpoints
       id: 42
+      inband_ztp: true
+      uplink_interfaces: [Ethernet1]
 
 type: l3leaf
 
