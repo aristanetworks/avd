@@ -100,6 +100,24 @@ ethernet_interfaces:
   peer: peer6
   peer_interface: Ethernet8
   peer_type: other
+- name: Ethernet9
+  description: P2P_peer7_Ethernet9
+  shutdown: false
+  channel_group:
+    id: 9
+    mode: active
+  peer: peer7
+  peer_interface: Ethernet9
+  peer_type: other
+- name: Ethernet10
+  description: P2P_peer7_Ethernet10
+  shutdown: false
+  channel_group:
+    id: 9
+    mode: active
+  peer: peer7
+  peer_interface: Ethernet10
+  peer_type: other
 hostname: l3_edge_bgp
 ip_routing: true
 is_deployed: true
@@ -126,12 +144,22 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel7
-  description: P2P_peer6_Port-Channel7
+  description: Custom port-channel description
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.10/31
   peer: peer6
   peer_interface: Port-Channel7
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel9
+  description: P2P_peer7_Port-Channel9
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.12/31
+  peer: peer7
+  peer_interface: Port-Channel9
   peer_type: other
   switchport:
     enabled: false
@@ -207,6 +235,11 @@ router_bgp:
     remote_as: '65006'
     peer: peer6
     description: peer6
+  - ip_address: 192.168.0.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65006'
+    peer: peer7
+    description: peer7
   redistribute:
     connected:
       enabled: true
