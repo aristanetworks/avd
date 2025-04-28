@@ -8,6 +8,9 @@ from typing import TYPE_CHECKING, Any, Protocol
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError
 from pyavd._schema.models.avd_base import AvdBase
+from pyavd._schema.models.avd_indexed_list import AvdIndexedList
+from pyavd._schema.models.avd_list import AvdList
+from pyavd._schema.models.avd_model import AvdModel
 from pyavd._utils import default, get_v2
 
 if TYPE_CHECKING:
@@ -128,8 +131,7 @@ class CvTagsMixin(Protocol):
                 value = generate_tag.value
             elif generate_tag.data_path is not None:
                 value = get_v2(self.structured_config, generate_tag.data_path)
-                # TODO: Unable to get this condition. Need to discuss with maintainers
-                if isinstance(type(value), AvdBase):
+                if isinstance(value, (AvdBase, AvdList, AvdIndexedList, AvdModel)):
                     msg = (
                         f"'generate_cv_tags.device_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                         f"points to a list or dict. This is not supported for cloudvision tag data_paths."
@@ -156,8 +158,7 @@ class CvTagsMixin(Protocol):
                     value = generate_tag.value
                 elif generate_tag.data_path is not None:
                     value = get_v2(ethernet_interface, generate_tag.data_path)
-                    # TODO: Unable to get this condition. Need to discuss with maintainers
-                    if type(value) in [list, dict]:
+                    if isinstance(value, (AvdBase, AvdList, AvdIndexedList, AvdModel)):
                         msg = (
                             f"'generate_cv_tags.interface_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                             f"points to a variable of type {type(value).__name__}. This is not supported for cloudvision tag data_paths."
