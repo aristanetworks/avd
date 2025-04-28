@@ -29,7 +29,7 @@ class EthernetInterfacesMixin(Protocol):
                 ethernet_interface = EosCliConfigGen.EthernetInterfacesItem()
                 self._update_common_interface_cfg(p2p_link, p2p_link_data, ethernet_interface)
                 ethernet_interface.ptp = self._get_ptp_config_interface(p2p_link, output_type=EosCliConfigGen.EthernetInterfacesItem.Ptp)
-                ethernet_interface.description = self._p2p_link_ethernet_description(p2p_link_data)
+                ethernet_interface.description = self._p2p_link_ethernet_description(p2p_link_data) or None
                 ethernet_interface.speed = p2p_link.speed
                 self.structured_config.ethernet_interfaces.append(ethernet_interface)
 
@@ -41,7 +41,7 @@ class EthernetInterfacesMixin(Protocol):
                     peer_interface=member["peer_interface"],
                     peer_type=p2p_link_data["peer_type"],
                     shutdown=False,
-                    description=self._port_channel_member_description(p2p_link_data, member),
+                    description=self._port_channel_member_description(p2p_link_data, member) or None,
                     speed=p2p_link.speed,
                 )
                 ethernet_interface.channel_group.id = p2p_link_data["port_channel_id"]
