@@ -109,6 +109,7 @@ ARGUMENT_SPEC = {
             },
         },
     },
+    "strict_mode": {"type": "bool", "default": False},
 }
 
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
@@ -195,7 +196,9 @@ class ActionModule(ActionBase):
                 batch_results = executor.map(run_anta, batches)
 
             # Build the ANTA reports
-            build_reports(batch_results, get(PLUGIN_ARGS, "report"))
+            result_manager = build_reports(batch_results, get(PLUGIN_ARGS, "report"))
+
+            result = update_ansible_result(result, result_manager, strict_mode=get(PLUGIN_ARGS, "strict_mode"))
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
@@ -240,8 +243,8 @@ def run_anta(devices: list[str]) -> ResultManager:
     return result_manager
 
 
-def build_reports(batch_results: Iterator[ResultManager], report_settings: dict) -> None:
-    """Build the ANTA reports from the batch results."""
+def build_reports(batch_results: Iterator[ResultManager], report_settings: dict) -> ResultManager:
+    """Build the ANTA reports from the batch results and return the aggregated results."""
     hide_statuses = get(report_settings, "filters.hide_statuses")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
@@ -278,6 +281,43 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict)
         path = Path(json_output_path)
         with path.open("w", encoding="UTF-8") as file:
             file.write(result_manager.json)
+
+    return result_manager
+
+
+def update_ansible_result(result: dict[str, Any], result_manager: ResultManager, *, strict_mode: bool = False) -> dict[str, Any]:
+    """
+    Update the Ansible result dictionary from the aggregated ANTA results.
+
+    If a test failed or errored, the Ansible task is set to 'failed' if `strict_mode`
+    is True or 'changed' if False.
+    """
+    anta_summary = {
+        "total_tests": result_manager.get_total_results(),
+        "passed": result_manager.get_total_results({"success"}),
+        "failed": result_manager.get_total_results({"failure"}),
+        "error": result_manager.get_total_results({"error"}),
+        "skipped": result_manager.get_total_results({"skipped"}),
+        "unset": result_manager.get_total_results({"unset"}),
+        "devices_with_failures": [],
+        "devices_with_errors": [],
+    }
+    for device, stat in result_manager.device_stats.items():
+        if stat.tests_failure_count:
+            anta_summary["devices_with_failures"].append(device)
+        if stat.tests_error_count:
+            anta_summary["devices_with_errors"].append(device)
+
+    result["anta_summary"] = anta_summary
+
+    # Update task status based on test failures and errors
+    if result_manager.get_status() in {"failure", "error"}:
+        if strict_mode:
+            result["failed"] = True
+        else:
+            result["changed"] = True
+
+    return result
 
 
 def get_ansible_vars(device_list: list[str], action_plugin_vars: ActionPluginVars) -> dict[str, dict[str, Any]]:
@@ -451,7 +491,7 @@ def load_one_structured_config(device: str, structured_config_dir: str, structur
         return json.load(stream)
 
 
-def setup_queue_listener(result: dict, queue: Queue) -> QueueListener:
+def setup_queue_listener(result: dict[str, Any], queue: Queue) -> QueueListener:
     """
     Setup and start the queue listener for centralized log handling.
 
