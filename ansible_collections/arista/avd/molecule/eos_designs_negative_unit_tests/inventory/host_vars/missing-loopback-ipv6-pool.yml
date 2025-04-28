@@ -1,0 +1,19 @@
+type: l3leaf
+
+underlay_ipv6: true
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.0.0/24
+    loopback_ipv4_offset: 32
+    platform: vEOS-LAB
+  node_groups:
+    - group: fabric_missing_loopback_ipv6_pool
+      bgp_as: 923
+      nodes:
+        - name: missing-loopback-ipv6-pool
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+
+expected_error_message: >-
+  'loopback_ipv6_pool' is required but was not found.

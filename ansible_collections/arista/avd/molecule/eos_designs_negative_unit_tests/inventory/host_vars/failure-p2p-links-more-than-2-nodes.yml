@@ -2,14 +2,14 @@
 type: l3spine
 l3spine:
   nodes:
-    - name: failure-p2p_links-more-than-2-nodes
+    - name: failure-p2p-links-more-than-2-nodes
       id: 1
       loopback_ipv4_pool: 192.168.100.0/24
 
 l3_edge:
   p2p_links:
     - ip: [10.10.10.0/31, 10.10.10.1/31]
-      nodes: [peer1, peer2, failure-p2p_links-more-than-2-nodes]
+      nodes: [peer1, peer2, failure-p2p-links-more-than-2-nodes]
       interfaces: [Ethernet1, Ethernet1]
 
 expected_error_message: >-

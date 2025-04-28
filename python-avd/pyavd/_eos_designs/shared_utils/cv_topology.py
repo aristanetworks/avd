@@ -44,7 +44,7 @@ class CvTopology(Protocol):
             return None
 
         if not self.inputs.cv_topology:
-            msg = "Found 'use_cv_topology:true' so 'cv_topology' is required."
+            msg = "'cv_topology' is required when 'use_cv_topology' is set to 'true'."
             raise AristaAvdInvalidInputsError(msg)
 
         if self.hostname not in self.inputs.cv_topology:
