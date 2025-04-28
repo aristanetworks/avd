@@ -14,12 +14,7 @@ from _pytest.python_api import RaisesContext
 
 from pyavd._cv.client.exceptions import CVDuplicatedDevices
 from pyavd._cv.workflows.models import CVDevice
-from pyavd._cv.workflows.verify_inputs import (
-    identify_duplicated_devices,
-    identify_duplicated_devices_candidate_a,
-    identify_duplicated_devices_candidate_b,
-    verify_device_inputs,
-)
+from pyavd._cv.workflows.verify_inputs import identify_duplicated_devices, verify_device_inputs
 
 TWO_DUPED_SERIAL_PATTERNS = [
     "\\('Duplicated devices found in inventory.*\\{"
@@ -609,19 +604,7 @@ def test_verify_device_inputs(
             IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_EXPECTED_RETURN,
             identify_duplicated_devices,
             id="IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_ORIGINAL_FUNCTION",
-        ),
-        pytest.param(
-            IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY,
-            IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_EXPECTED_RETURN,
-            identify_duplicated_devices_candidate_a,
-            id="IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_CANDIDATE_A",
-        ),
-        pytest.param(
-            IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY,
-            IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_EXPECTED_RETURN,
-            identify_duplicated_devices_candidate_b,
-            id="IDENTIFY_DUPLICATED_DEVICES_FULL_INVENTORY_CANDIDATE_B",
-        ),
+        )
     ],
 )
 @pytest.mark.usefixtures("generate_x_mock_cvdevices")
