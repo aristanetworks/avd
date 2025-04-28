@@ -1,0 +1,21 @@
+---
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.0.254.0/24
+    bgp_as: 64999
+  nodes:
+    - name: inband-ztp-without-ntp-spine
+      id: 1
+l3leaf:
+  defaults:
+    bgp_as: 65000
+    loopback_ipv4_pool: 10.0.255.0/24
+    vtep_loopback_ipv4_pool: 10.0.254.0/24
+  nodes:
+    - name: inband-ztp-without-ntp-leaf
+      id: 7
+      inband_ztp: true
+      uplink_switches: [inband-ztp-without-ntp-spine]
+      uplink_interfaces: [Ethernet1]
+      uplink_switch_interfaces: [Ethernet1]
+      uplink_ipv4_pool: 172.16.255.0/24
