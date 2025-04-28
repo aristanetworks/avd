@@ -140,6 +140,9 @@ router bgp {{ router_bgp.as }}
 {%         if peer_group.next_hop_self is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} next-hop-self
 {%         endif %}
+{%         if peer_group.next_hop_peer is arista.avd.defined(true) %}
+   neighbor {{ peer_group.name }} next-hop-peer
+{%         endif %}
 {%         if peer_group.next_hop_unchanged is arista.avd.defined(true) %}
    neighbor {{ peer_group.name }} next-hop-unchanged
 {%         endif %}
@@ -305,6 +308,9 @@ router bgp {{ router_bgp.as }}
 {%         endif %}
 {%         if neighbor.next_hop_self is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} next-hop-self
+{%         endif %}
+{%         if neighbor.next_hop_peer is arista.avd.defined(true) %}
+   neighbor {{ neighbor.ip_address }} next-hop-peer
 {%         endif %}
 {%         if neighbor.shutdown is arista.avd.defined(true) %}
    neighbor {{ neighbor.ip_address }} shutdown
@@ -2765,6 +2771,9 @@ router bgp {{ router_bgp.as }}
 {%             endif %}
 {%             if neighbor.next_hop_self is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} next-hop-self
+{%             endif %}
+{%             if neighbor.next_hop_peer is arista.avd.defined(true) %}
+      neighbor {{ neighbor.ip_address }} next-hop-peer
 {%             endif %}
 {%             if neighbor.shutdown is arista.avd.defined(true) %}
       neighbor {{ neighbor.ip_address }} shutdown

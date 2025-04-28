@@ -60,6 +60,13 @@ router_bgp:
       peer_filter: my-peer-filter
       remote_as: 65444
   peer_groups:
+    - name: NHP
+      next_hop_peer: true
+      bfd: true
+      bfd_timers:
+        interval: 500
+        min_rx: 500
+        multiplier: 3
     - name: SR-TE-PG-1
       remote_as: 65000
     - name: SR-TE-PG-2
@@ -479,6 +486,8 @@ router_bgp:
       - name: TEST_RCF
         rcf_in: Address_Family_IPV4_In()
         rcf_out: Address_Family_IPV4_Out()
+      - name: NHP
+        activate: true
       - name: EVPN-OVERLAY-PEERS
         activate: false
       - name: IPv4-UNDERLAY-PEERS
@@ -1218,6 +1227,7 @@ router_bgp:
       remote_as: 1
       shutdown: false
       description: TEST
+      next_hop_peer: true
     - ip_address: 192.168.251.1
       shutdown: true
     - ip_address: 192.168.251.2
@@ -1861,6 +1871,14 @@ router_bgp:
         dynamic:
           enabled: true
           rcf: VRF_RCF_DYNAMIC()
+    - name: NHP-PEER
+      neighbors:
+        - ip_address: 10.10.10.0
+          peer_group: NHP
+    - name: NHP-PEER1
+      neighbors:
+        - ip_address: 11.11.11.0
+          next_hop_peer: true
     - name: BLUE-C1
       rd: 1.0.1.1:101
       bgp:

@@ -93,6 +93,7 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  platform: vEOS-lab
   fabric_name: WAN
 ntp:
   local_interface:
@@ -160,8 +161,8 @@ spanning_tree:
   mode: none
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.17.1
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.17.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

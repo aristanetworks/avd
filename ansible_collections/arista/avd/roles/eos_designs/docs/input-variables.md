@@ -477,7 +477,7 @@ underlay_ethernet_interfaces:
 
 - `{{ link.peer }}`
 - `{{ link.peer_interface }}`
-- `{{ link.type }} (underlay_p2p or underlay_l2)`
+- `{{ link.type }} (underlay_p2p, underlay_l2, l3_edge or core_interfaces)`
 - All group/hostvars
 
 underlay_port_channel_interfaces:

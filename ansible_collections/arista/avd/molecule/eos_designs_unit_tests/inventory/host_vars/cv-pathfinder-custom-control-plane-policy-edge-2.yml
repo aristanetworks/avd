@@ -24,6 +24,8 @@ wan_virtual_topologies:
     constraints:
       jitter: 5
     application_profile: CUSTOM-CP-APP-PROFILE
+    internet_exit:
+      policy: ZSCALER-EXIT-POLICY-1
   policies:
     # Name of the DEFAULT-POLICY being overwritten
     - name: DEFAULT-POLICY
@@ -32,6 +34,8 @@ wan_virtual_topologies:
           - names: [INET]
           - names: [LTE]
             preference: 42
+        internet_exit:
+          policy: ZSCALER-EXIT-POLICY-2
       application_virtual_topologies:
         - application_profile: VIDEO
           path_groups:
