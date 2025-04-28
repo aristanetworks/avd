@@ -92,6 +92,8 @@ l3leaf:
           evpn_route_servers: [ bgp-peer-groups-2 ]
           mpls_route_reflectors: [ bgp-peer-groups-2 ]
           mpls_overlay_role: client
+          mlag_peer_l3_vlan_structured_config:
+            description: "Description from mlag_peer_l3_vlan_structured_config."
           evpn_gateway:
             evpn_l3:
               enabled: true

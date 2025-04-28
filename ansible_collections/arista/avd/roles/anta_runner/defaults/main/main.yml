@@ -21,5 +21,9 @@ anta_runner_batch_size: 5
 # Run ANTA in dry-run mode. This will generate the tests but not execute them.
 anta_runner_dry_run: false
 
+# When `true`, the plugin returns `failed: true` if any ANTA tests fail or error.
+# Otherwise, the plugin returns `changed: true` in such cases.
+anta_strict_mode: false
+
 # Structured configuration file format. Supported formats: yml, yaml, json.
 avd_structured_config_file_format: "yml"

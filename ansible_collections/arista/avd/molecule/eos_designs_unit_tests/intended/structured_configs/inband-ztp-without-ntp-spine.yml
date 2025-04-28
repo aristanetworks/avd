@@ -1,0 +1,126 @@
+aaa_root:
+  disabled: true
+config_end: true
+dhcp_servers:
+- vrf: default
+  subnets:
+  - subnet: 172.16.255.12/31
+    name: inband ztp for inband-ztp-without-ntp-leaf-Ethernet1
+    default_gateway: 172.16.255.12
+    ranges:
+    - start: 172.16.255.13
+      end: 172.16.255.13
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_inband-ztp-without-ntp-leaf_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.16.255.12/31
+  dhcp_server_ipv4: true
+  peer: inband-ztp-without-ntp-leaf
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+hostname: inband-ztp-without-ntp-spine
+ip_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.0.254.1/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.254.0/24 eq 32
+- name: PL-P2P-LINKS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 172.16.255.12/31
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+  - sequence: 70
+    type: permit
+    match:
+    - ip address prefix-list PL-P2P-LINKS
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '64999'
+  router_id: 10.0.254.1
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 172.16.255.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: inband-ztp-without-ntp-leaf
+    description: inband-ztp-without-ntp-leaf_Ethernet1
+  - ip_address: 10.0.255.7
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65000'
+    peer: inband-ztp-without-ntp-leaf
+    description: inband-ztp-without-ntp-leaf_Loopback0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

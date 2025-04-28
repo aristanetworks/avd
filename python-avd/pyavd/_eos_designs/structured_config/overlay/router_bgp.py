@@ -216,7 +216,30 @@ class RouterBgpMixin(Protocol):
                     domain_remote=True,
                     activate=True,
                 )
-
+                if self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enabled:
+                    if self.shared_utils.node_config.mlag:
+                        msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
+                        raise AristaAvdError(msg)
+                    if not self.shared_utils.platform_settings.feature_support.evpn_gateway_all_active_multihoming:
+                        msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
+                        raise AristaAvdError(msg)
+                    if self.shared_utils.overlay_ipvpn_gateway:
+                        msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
+                        raise AristaAvdError(msg)
+                    if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
+                        msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
+                        raise AristaAvdError(msg)
+                    self.structured_config.router_bgp.address_family_evpn._update(
+                        domain_identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
+                        domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
+                    )
+                    self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
+                        domain="all",
+                        identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier,
+                        route_target_import=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import,
+                    )
+                    if self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path:
+                        self.structured_config.router_bgp.bgp.bestpath.d_path = True
             if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                 self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
                     enable=True, inter_domain=self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain
@@ -258,7 +281,7 @@ class RouterBgpMixin(Protocol):
             if self.inputs.evpn_import_pruning:
                 self.structured_config.router_bgp.address_family_evpn.route.import_match_failure_action = "discard"
 
-        if self.shared_utils.overlay_dpath is True:
+        if self.shared_utils.overlay_dpath:
             self.structured_config.router_bgp.address_family_evpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.evpn_domain_id
 
         if self.shared_utils.is_wan_server:
