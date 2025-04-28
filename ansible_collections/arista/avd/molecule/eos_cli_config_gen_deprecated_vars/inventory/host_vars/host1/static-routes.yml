@@ -1,0 +1,9 @@
+---
+static_routes:
+  - vrf: default
+    destination_address_prefix: 1.1.2.0/24
+    interface: vlan1001
+    gateway: 10.1.1.1
+    distance: 200
+    tag: 666
+    name: RT-TO-FAKE-DMZ

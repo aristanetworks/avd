@@ -8,8 +8,8 @@ ip_igmp_snooping:
   globally_enabled: true
 ipv6_static_routes:
 - vrf: MGMT
-  destination_address_prefix: ::/0
-  gateway: 0200::2
+  prefix: ::/0
+  next_hop: 0200::2
 is_deployed: true
 management_api_http:
   enable_https: true

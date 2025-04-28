@@ -32,7 +32,7 @@ l3_edge:
       ipv4_pool: 192.168.0.0/24
 
   p2p_links:
-      # P2P link without routing. Settings set via profile
+    # P2P link without routing. Settings set via profile
     - nodes: [l3_edge_bgp, peer1]
       interfaces: [ethernet1, ethernet1]
       id: 1
@@ -59,31 +59,49 @@ l3_edge:
       ip_pool: pool1
       id: 4
       as: [65000, 65004]
-      descriptions: ["Custom description on l3_edge_bgp eth4", "Custom description on peer4 eth4"]
+      descriptions:
+        [
+          "Custom description on l3_edge_bgp eth4",
+          "Custom description on peer4 eth4",
+        ]
 
     # P2P link with Port-Channel with underlay routing and and IP set manually.
-    - nodes: [ l3_edge_bgp, peer5 ]
+    - nodes: [l3_edge_bgp, peer5]
       ip: [192.168.0.8/31, 192.168.0.9/31]
       as: [65000, 65005]
       port_channel:
         mode: active
         nodes_child_interfaces:
           - node: l3_edge_bgp
-            interfaces: [ Ethernet5, Ethernet6 ]
+            interfaces: [Ethernet5, Ethernet6]
           - node: peer5
-            interfaces: [ Ethernet5, Ethernet6 ]
+            interfaces: [Ethernet5, Ethernet6]
       include_in_underlay_protocol: true
 
     # P2P link with Port-Channel with underlay routing and IP set via ip_pool and id.
-    - nodes: [ l3_edge_bgp, peer6 ]
+    - nodes: [l3_edge_bgp, peer6]
       ip_pool: pool1
       id: 6
       as: [65000, 65006]
       port_channel:
         mode: active
+        description: Custom port-channel description
         nodes_child_interfaces:
           - node: l3_edge_bgp
-            interfaces: [ Ethernet7, Ethernet8 ]
+            interfaces: [Ethernet7, Ethernet8]
           - node: peer6
-            interfaces: [ Ethernet7, Ethernet8 ]
+            interfaces: [Ethernet7, Ethernet8]
       include_in_underlay_protocol: true
+
+    # P2P link with Port-Channel with underlay routing and IP set via ip_pool and id.
+    - nodes: [l3_edge_bgp, peer7]
+      ip_pool: pool1
+      id: 7
+      as: [65000, 65006]
+      port_channel:
+        mode: active
+        nodes_child_interfaces:
+          - node: l3_edge_bgp
+            interfaces: [Ethernet9, Ethernet10]
+          - node: peer7
+            interfaces: [Ethernet9, Ethernet10]

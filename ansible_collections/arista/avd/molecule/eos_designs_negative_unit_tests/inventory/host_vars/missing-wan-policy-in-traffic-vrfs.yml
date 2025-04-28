@@ -1,0 +1,72 @@
+---
+type: wan_router
+wan_mode: autovpn
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    wan_role: server
+    data_plane_cpu_allocation_max: 1
+  nodes:
+    - name: missing-wan-policy-in-traffic-vrfs
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      id: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          ip_address: 10.1.1.1/24
+
+wan_path_groups:
+  - name: INET
+    id: 101
+  - name: MPLS
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: MPLS
+    trusted: true
+
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      policy: PROD-AUTOVPN-POLICY
+      wan_vni: 42
+    - name: WAN-VRF-NO-AF
+      # using same policy to avoid noise
+      policy: PROD-AUTOVPN-POLICY
+      wan_vni: 200
+  policies:
+    - name: PROD-AUTOVPN-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+        path_groups:
+          - names: [MPLS]
+
+expected_error_message: >-
+  The policy `wan_virtual_topologies.policies[PROD-AUTOVPN-POLICY]` cannot match any traffic but is assigned to a VRF.
+  Make sure at least one path-group present on the device is used in the policy.
