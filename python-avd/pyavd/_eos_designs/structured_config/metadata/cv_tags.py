@@ -223,8 +223,7 @@ class CvTagsMixin(Protocol):
         """Return list of wan interface tags for cv_pathfinder solution for a given wan interface."""
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
         tags.append_new(name="Type", value="wan")
-        if wan_interface.wan_carrier:
-            tags.append_new(name="Carrier", value=str(wan_interface.wan_carrier))
+        tags.append_new(name="Carrier", value=str(wan_interface.wan_carrier))
         if wan_interface.wan_circuit_id:
             tags.append_new(name="Circuit", value=str(wan_interface.wan_circuit_id))
         return tags
