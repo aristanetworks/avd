@@ -5839,6 +5839,15 @@ keys:
         ip_domain_list:
           type: str
           description: Set domain names to complete unqualified host names.
+          deprecation:
+            warning: true
+            new_key: ip_domain_lists
+            remove_in_version: 6.0.0
+        ip_domain_lists:
+          type: list
+          description: Set domain names to complete unqualified host names.
+          items:
+            type: str
   ip_name_servers:
     type: list
     items:
@@ -6695,9 +6704,23 @@ keys:
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        prefix:
+          type: str
+          description: IPv6 Network/Mask.
         interface:
           type: str
         gateway:
+          type: str
+          description: IPv6 Address.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: next_hop
+        next_hop:
           type: str
           description: IPv6 Address.
         track_bfd:
@@ -13803,6 +13826,8 @@ keys:
               description: Time-to-live in range of hops.
               convert_types:
               - str
+            next_hop_peer:
+              type: bool
             next_hop_self:
               type: bool
             password:
@@ -14180,6 +14205,8 @@ keys:
               description: Time-to-live in range of hops.
               convert_types:
               - str
+            next_hop_peer:
+              type: bool
             next_hop_self:
               type: bool
             link_bandwidth:
@@ -17590,6 +17617,8 @@ keys:
                     min: 1
                     max: 255
                     description: Time-to-live in range of hops.
+                  next_hop_peer:
+                    type: bool
                   next_hop_self:
                     type: bool
                   shutdown:
@@ -21996,9 +22025,23 @@ keys:
         destination_address_prefix:
           type: str
           description: IPv4_network/Mask.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        prefix:
+          type: str
+          description: IPv4_network/Mask.
         interface:
           type: str
         gateway:
+          type: str
+          description: IPv4 Address.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: next_hop
+        next_hop:
           type: str
           description: IPv4 Address.
         track_bfd:

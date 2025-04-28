@@ -1,0 +1,70 @@
+---
+type: spine
+
+node_type_keys:
+  - key: spine
+    type: spine
+    # Make sure this does not take over and generate empty string
+    interface_descriptions:
+      underlay_ethernet_interfaces: "custom_templates/interface_descriptions/underlay/ethernet-interfaces.j2"
+      underlay_port_channel_interfaces: "custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2"
+
+spine:
+  nodes:
+    - name: l3_edge
+      ptp:
+        enabled: true
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links:
+    - nodes: [l3_edge, peer4]
+      interfaces: [ethernet4, ethernet4]
+      ip: [192.168.4.1/31, 192.168.4.2/31]
+      as: [65000, 650001]
+      descriptions:
+        - "Custom description on l3_edge eth4"
+        - "Custom description on peer eth4"
+    - nodes: [l3_edge, peer5]
+      interfaces: [ethernet5, ethernet5]
+      as: [65000, 650001]
+      ip: [192.168.5.1/31, 192.168.5.2/31]
+      descriptions:
+        - "Custom description to peer {peer} {peer_interface}"
+        - "Custom description to peer {peer} {peer_interface}"
+
+    # Port-channel description set manually should take precedence over the template
+    # The members will use the template
+    - nodes: [l3_edge, peer6]
+      ip: [192.168.6.1/31, 192.168.6.2/31]
+      as: [65000, 650001]
+      port_channel:
+        mode: active
+        description: "Custom static description"
+        nodes_child_interfaces:
+          - node: l3_edge
+            interfaces: [Ethernet6]
+          - node: peer6
+            interfaces: [Ethernet6]
+      include_in_underlay_protocol: true
+
+    # Port-channel description set manually should take precedence over the template
+    # The members will NOT use the template
+    - nodes: [l3_edge, peer7]
+      ip: [192.168.7.1/31, 192.168.7.2/31]
+      as: [65000, 650001]
+      descriptions:
+        - "Custom description to peer {peer} {peer_interface}"
+        - "Custom description to peer {peer} {peer_interface}"
+      port_channel:
+        mode: active
+        description: "Custom dynamic description to {peer}"
+        nodes_child_interfaces:
+          - node: l3_edge
+            interfaces: [Ethernet7]
+          - node: peer7
+            interfaces: [Ethernet7]
+      include_in_underlay_protocol: true

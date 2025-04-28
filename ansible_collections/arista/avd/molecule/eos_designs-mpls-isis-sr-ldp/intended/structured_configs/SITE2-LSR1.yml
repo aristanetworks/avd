@@ -166,8 +166,8 @@ spanning_tree:
   mode: none
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.200.5
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.200.5
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

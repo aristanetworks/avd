@@ -1,0 +1,6 @@
+---
+ipv6_static_routes:
+  - vrf: TENANT_A_PROJECT01
+    destination_address_prefix: 2a01:cb04:4e6:a300::/64
+    interface: vlan1001
+    gateway: 2a01:cb04:4e6:100::1
