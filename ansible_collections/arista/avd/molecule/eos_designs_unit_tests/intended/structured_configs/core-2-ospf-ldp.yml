@@ -318,9 +318,6 @@ router_general:
   router_id:
     ipv4: 10.0.0.2
     ipv6: 2000:1234:ffff:ffff::2
-router_multicast:
-  ipv4:
-    routing: true
 router_ospf:
   process_ids:
   - id: 101
