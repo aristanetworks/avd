@@ -80,8 +80,7 @@ class UtilsMixin(Protocol):
                 if filtered_adapters:
                     # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
                     connected_endpoint.adapters = filtered_adapters
-                    inputs_connected_endpoints_keys = connected_endpoints_inputs.get(connected_endpoints_key.key)
-                    connected_endpoint._internal_data.type = inputs_connected_endpoints_keys.type
+                    connected_endpoint._internal_data.type = connected_endpoints_inputs.get(connected_endpoints_key.key).type
                     filtered_connected_endpoints.append(connected_endpoint)
 
         return filtered_connected_endpoints
