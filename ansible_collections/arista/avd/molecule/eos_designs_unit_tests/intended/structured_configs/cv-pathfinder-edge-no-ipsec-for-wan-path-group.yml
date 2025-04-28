@@ -1,10 +1,5 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
 application_traffic_recognition:
   field_sets:
     ipv4_prefixes:
@@ -146,6 +141,8 @@ ip_security:
     profile: DP-PROFILE
   connection_tx_interface_match_source_ip: true
 is_deployed: true
+kernel:
+  software_forwarding_ecmp: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID

@@ -57932,6 +57932,7 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
+        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": True},
         "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
@@ -59700,6 +59701,18 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"STUN-DTLS"`
     """
+    wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool
+    """
+    For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
+    EOS version.
+
+    - `true`: For older EOS versions use an agent environment variable. Changing this
+    requires a restart of the KernelFib agent.
+    - `false`: For newer EOS versions (starting 4.33.2) use
+    the proper CLI.
+
+    Default value: `True`
+    """
     wan_use_evpn_node_settings_for_lan: bool
     """
     PREVIEW: This key is currently not supported and may produce invalid configuration.
@@ -59935,6 +59948,7 @@ class EosDesigns(EosDesignsRootModel):
             wan_route_servers: WanRouteServers | UndefinedType = Undefined,
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
+            wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
             wan_use_evpn_node_settings_for_lan: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
@@ -61197,6 +61211,14 @@ class EosDesigns(EosDesignsRootModel):
                    Name of the SSL profile used for DTLS on WAN STUN connections.
                    When using automatic ceritficate
                    deployment via CloudVision this name must be the same on all WAN routers.
+                wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
+                   For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
+                   EOS version.
+
+                   - `true`: For older EOS versions use an agent environment variable. Changing this
+                   requires a restart of the KernelFib agent.
+                   - `false`: For newer EOS versions (starting 4.33.2) use
+                   the proper CLI.
                 wan_use_evpn_node_settings_for_lan:
                    PREVIEW: This key is currently not supported and may produce invalid configuration.
                    When true,
