@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
@@ -91,7 +91,7 @@ class CvPathfinderMixin(Protocol):
 
     def _metadata_pathfinder_vtep_ips(self: AvdStructuredConfigMetadataProtocol) -> None:
         for wan_route_server in self.shared_utils.filtered_wan_route_servers:
-            self.structured_config.metadata.cv_pathfinder.pathfinders.append_new(vtep_ip=wan_route_server.vtep_ip)
+            self.structured_config.metadata.cv_pathfinder.pathfinders.append_new(vtep_ip=cast("str", wan_route_server.vtep_ip))
 
     def _metadata_vrfs(self: AvdStructuredConfigMetadataProtocol) -> None:
         """Set the metadata for VRFs by parsing the generated structured config and flatten it a bit (like hiding load-balance policies)."""
@@ -113,15 +113,17 @@ class CvPathfinderMixin(Protocol):
                 raise AristaAvdError(msg)
 
         for vrf in avt_vrfs:
-            avt_policy = avt_policies[vrf.policy]
+            vrf_policy = cast("str", vrf.policy)
+            avt_policy = avt_policies[vrf_policy]
             metadata_vrf = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem(
                 name=vrf.name, vni=1 if vrf.name == "default" else self.inputs.wan_virtual_topologies.vrfs[vrf.name].wan_vni
             )
             for profile in vrf.profiles:
-                lb_policy = load_balance_policies[self.shared_utils.generate_lb_policy_name(profile.name)]
-                avt = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem.AvtsItem(id=profile.id, name=profile.name)
+                profile_name = cast("str", profile.name)
+                lb_policy = load_balance_policies[self.shared_utils.generate_lb_policy_name(profile_name)]
+                avt = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem.AvtsItem(id=profile.id, name=profile_name)
                 for match in avt_policy.matches:
-                    if match.avt_profile == profile.name and match.application_profile and match.application_profile != "default":
+                    if match.avt_profile == profile_name and match.application_profile and match.application_profile != "default":
                         avt.application_profiles.append(match.application_profile)
 
                 avt.constraints._update(
