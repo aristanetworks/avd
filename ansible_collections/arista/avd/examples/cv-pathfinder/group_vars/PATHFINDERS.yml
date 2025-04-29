@@ -2,6 +2,7 @@
 # WAN Pathfinder nodes variables
 wan_rr:
   defaults:
+    platform: CloudEOS
     data_plane_cpu_allocation_max: 1  # (1)!
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
