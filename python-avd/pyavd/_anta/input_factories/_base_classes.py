@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from logging import getLogger
 from typing import TYPE_CHECKING
 
-from pyavd._anta.logs import LogMessage
+from pyavd._anta.logs import LogMessage, TestLoggerAdapter
 
 if TYPE_CHECKING:
     from anta.models import AntaTest
 
-    from pyavd._anta.logs import TestLoggerAdapter
     from pyavd._anta.models import DeviceTestContext
 
 
@@ -34,12 +34,14 @@ class AntaTestInputFactory(ABC):
         Custom logger used for the input factory.
     """
 
-    def __init__(self, device_context: DeviceTestContext, logger: TestLoggerAdapter) -> None:
+    def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
         """Initialize the `AntaTestInputFactory`."""
         self.device = device_context
         self.structured_config = device_context.structured_config
         self.structured_configs = device_context.structured_configs
-        self.logger = logger
+
+        # Create the logger adapter for the test input factory
+        self.logger = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
 
     @abstractmethod
     def create(self) -> list[AntaTest.Input] | None:

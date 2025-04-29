@@ -22,9 +22,6 @@ if TYPE_CHECKING:
     from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig, TestSpec
 
 
-LOGGER = getLogger(__name__)
-
-
 def create_catalog(
     hostname: str,
     structured_config: dict[str, Any],
@@ -41,8 +38,7 @@ def create_catalog(
     )
     tests: list[AntaTestDefinition] = []
     for test in test_specs:
-        test_logger = TestLoggerAdapter.create(device=hostname, test=test.test_class.name, logger=LOGGER)
-        test_definitions = create_test_definitions(test, device_context, test_logger)
+        test_definitions = create_test_definitions(test, device_context)
 
         # Skip the test if we couldn't create the test definitions. Logging is done when creating the test definitions
         if test_definitions is None:
@@ -63,8 +59,10 @@ def create_catalog(
     return AntaCatalog(tests=tests)
 
 
-def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestContext, logger: TestLoggerAdapter) -> list[AntaTestDefinition] | None:
+def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestContext) -> list[AntaTestDefinition] | None:
     """Create the AntaTestDefinition's from this TestSpec instance."""
+    logger = TestLoggerAdapter(logger=getLogger(__name__), extra={"device": device_context.hostname, "test": test_spec.test_class.name})
+
     # Skip the test if the conditional keys are not present in the structured config
     if test_spec.conditional_keys and not all(get_v2(device_context.structured_config, key.value) for key in test_spec.conditional_keys):
         keys = StructuredConfigKey.to_string_list(test_spec.conditional_keys)
@@ -89,7 +87,7 @@ def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestConte
     # Create the AntaTest.Input instance(s) from the input factory if available
     if test_spec.input_factory is not None:
         logger.debug(LogMessage.INPUT_RENDERING, caller="input factory")
-        factory = test_spec.input_factory(device_context, logger)  # pylint: disable=not-callable
+        factory = test_spec.input_factory(device_context, test_spec.test_class.name)  # pylint: disable=not-callable
         results = factory.create()
         if results is None:
             logger.debug(LogMessage.INPUT_NONE_FOUND)
