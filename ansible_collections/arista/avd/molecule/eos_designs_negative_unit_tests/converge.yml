@@ -410,7 +410,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
-  hosts: inband_mgmt_missing_id_with_ipv6subnet
+  hosts: inband_mgmt_missing_id_with_ipv6_subnet
   gather_facts: false
   connection: local
   tasks:

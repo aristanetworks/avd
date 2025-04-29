@@ -1,0 +1,35 @@
+fabric_name: FABRIC_INBAND_MANAGEMENT_IPV6
+
+default_node_types:
+  - match_hostnames:
+      - inband_mgmt_missing_id_with_ipv6_subnet
+    node_type: l2leaf
+
+default_interfaces:
+  - types: [ l3leaf, l2leaf ]
+    platforms: [ default ]
+
+default_mgmt_method: none
+
+cvp_instance_ips:
+  - apiserver.arista.io
+
+name_servers:
+  - 1.1.1.1
+  - 8.8.8.8
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    filter:
+      only_vlans_in_use: true
+  nodes:
+    - name: inband_mgmt_missing_id_with_ipv6_subnet
+      inband_mgmt_vlan: 109
+      inband_mgmt_ipv6_subnet: 2a00:104::/64
+      # uplink_type: port-channel
+
+expected_error_message: >-
+  'id' is not set on 'inband_mgmt_missing_id_with_ipv6_subnet' and is required to set inband_mgmt_ipv6_address from
+  inband_mgmt_ipv6_subnet for host 'inband_mgmt_missing_id_with_ipv6_subnet'.
