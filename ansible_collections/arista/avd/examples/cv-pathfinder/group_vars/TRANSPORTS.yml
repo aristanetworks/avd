@@ -3,8 +3,8 @@
 # These routers are used to mock Service Providers in the example.
 spine:
   defaults:
+    platform: vEOS-lab
     loopback_ipv4_pool: 172.31.255.0/24
-
   nodes:
     - name: mpls-cloud
       id: 22

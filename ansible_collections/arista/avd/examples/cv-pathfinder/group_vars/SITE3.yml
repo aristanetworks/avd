@@ -2,6 +2,8 @@
 # SITE3 variables
 
 l2leaf:
+  defaults:
+    platform: vEOS-lab
   nodes:
     - name: site3-leaf1
       mgmt_ip: 192.168.17.21/24
@@ -9,6 +11,7 @@ l2leaf:
 
 wan_router:
   defaults:
+    platform: CloudEOS
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     uplink_ipv4_pool: 10.0.3.0/24

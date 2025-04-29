@@ -134,6 +134,7 @@ management_interfaces:
     transmit: false
     receive: false
 metadata:
+  platform: vEOS-lab
   fabric_name: WAN
 mlag_configuration:
   domain_id: SITE2

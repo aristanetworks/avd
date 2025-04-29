@@ -10,6 +10,7 @@ from .as_path import AsPathMixin
 from .dhcp_servers import DhcpServersMixin
 from .ethernet_interfaces import EthernetInterfacesMixin
 from .ip_access_lists import IpAccesslistsMixin
+from .kernel_settings import KernelSettingsMixin
 from .loopback_interfaces import LoopbackInterfacesMixin
 from .mpls import MplsMixin
 from .port_channel_interfaces import PortChannelInterfacesMixin
@@ -43,6 +44,7 @@ class AvdStructuredConfigUnderlayProtocol(
     StaticRoutesMixin,
     MplsMixin,
     AgentsMixin,
+    KernelSettingsMixin,
     IpAccesslistsMixin,
     DhcpServersMixin,
     UtilsMixin,
