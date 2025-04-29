@@ -202,6 +202,16 @@ class MlagMixin(Protocol):
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
+    @cached_property
+    def mlag_dual_primary_detection(self: SharedUtilsProtocol) -> bool:
+        if self.node_config.mlag_dual_primary_detection:
+            if not self.node_config.mgmt_ip or not self.get_peer_facts(self.mlag_peer).mgmt_ip:
+                msg = f"'mlag_dual_primary_detection' is enabled but 'mgmt_ip' is not configured on {self.hostname} or its peer"
+                raise AristaAvdInvalidInputsError(msg)
+
+            return True
+        return False
+
     def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
         """
         Update router_bgp structured_config covering the MLAG peer_group(s) and associated address_family activations.

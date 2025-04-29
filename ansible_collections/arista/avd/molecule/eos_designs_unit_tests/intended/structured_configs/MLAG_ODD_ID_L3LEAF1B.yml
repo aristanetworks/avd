@@ -50,6 +50,13 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.201.117/24
+  type: oob
 metadata:
   platform: vEOS-LAB
   fabric_name: FABRIC_IP_ADDRESSING
@@ -57,10 +64,6 @@ mlag_configuration:
   domain_id: MLAG_ODD_ID_L3LEAF1
   local_interface: Vlan4094
   peer_address: 10.10.255.2
-  peer_address_heartbeat:
-    peer_ip: 192.168.201.116
-    vrf: MGMT
-  dual_primary_detection_delay: 5
   peer_link: Port-Channel5
 port_channel_interfaces:
 - name: Port-Channel5

@@ -4,9 +4,6 @@ fabric_ip_addressing:
     algorithm: "odd_id"
 l3leaf:
   defaults:
-    # mlag_dual_primary_detection is true and mgmt_ip is not set,
-    # will not generate the peer heartbeat configuration
-    mlag_dual_primary_detection: true
     mlag_peer_ipv4_pool: 10.10.255.0/24
     mlag_peer_l3_ipv4_pool: 10.10.224.0/24
     loopback_ipv4_pool: 192.168.255.0/24
@@ -23,3 +20,4 @@ l3leaf:
           mgmt_ip: 192.168.201.116/24
         - name: MLAG_ODD_ID_L3LEAF1B
           id: 4
+          mgmt_ip: 192.168.201.117/24
