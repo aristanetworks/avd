@@ -50,10 +50,10 @@ generate_cv_tags:
 ## CloudVision Topology Tags for Campus deployments
 
 `arista.avd.eos_designs` can generate CloudVision Tags that assist CloudVision with rendering the Campus Topologies.
-This specific use case is required to support Hybrid workflow of managing Campus fabrics with both AVD and CloudVision Studious where:
+This specific use case is required to support Hybrid workflow of managing Campus fabrics with both AVD and CloudVision Studios where:
 
-- AVD is leveraged to build the fabric, deploy network services and infrastructure-related endpoints (firewalls, routers, access points, etc)
-- Access Interface Configuration Studio (including it's Quick Actions sub-feature) is leveraged for day 2 operations to configure port profiles and ports using CloudVision UI.
+- AVD is leveraged to build the fabric, deploy network services and infrastructure-related endpoints (firewalls, routers, access points, etc.).
+- Access Interface Configuration Studio (including it's Quick Actions sub-feature) is leveraged for day-2 operations to configure port profiles and ports using CloudVision UI.
 
 Both `generate_cv_tags.topology_hints` an `generate_cv_tags.campus_fabric` must be set to `true` to globally enable generation of the Campus Topology tags:
 
