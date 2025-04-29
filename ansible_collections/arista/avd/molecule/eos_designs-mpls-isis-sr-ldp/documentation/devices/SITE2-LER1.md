@@ -377,6 +377,7 @@ interface Port-Channel4.1000
    !
    encapsulation vlan
       client dot1q 1000 network client
+   storm-control broadcast level 10
 !
 interface Port-Channel4.1001
    no shutdown

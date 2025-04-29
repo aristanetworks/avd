@@ -310,6 +310,7 @@ port_channel_interfaces:
     network:
       encapsulation: client
   peer_type: point_to_point_service
+  eos_cli: storm-control broadcast level 10
 - name: Port-Channel4.1001
   shutdown: false
   encapsulation_vlan:

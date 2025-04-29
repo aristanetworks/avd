@@ -35,8 +35,12 @@ tenants:
         type: vpws-pseudowire
         subinterfaces:
           - number: 1000
+            raw_eos_cli: |-
+              storm-control broadcast level 10
           - number: 1001
           - number: 1002
+            structured_config:
+              comment: Test structured_config for subinterface
           - number: 1003
           - number: 1004
         endpoints:
