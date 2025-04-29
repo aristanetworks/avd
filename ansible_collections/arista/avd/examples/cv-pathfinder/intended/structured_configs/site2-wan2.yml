@@ -89,7 +89,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_site2-leaf2_Ethernet3
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.2.15/31
@@ -101,7 +101,7 @@ ethernet_interfaces:
 - name: Ethernet1.100
   description: P2P_site2-leaf2_Ethernet3.100_VRF_BLUE
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   vrf: BLUE
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -114,7 +114,7 @@ ethernet_interfaces:
 - name: Ethernet1.101
   description: P2P_site2-leaf2_Ethernet3.101_VRF_RED
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   vrf: RED
   flow_tracker:
     hardware: FLOW-TRACKER
@@ -282,6 +282,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  platform: CloudEOS
   fabric_name: WAN
   cv_tags:
     device_tags:
