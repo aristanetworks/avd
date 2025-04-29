@@ -205,7 +205,7 @@ class RouterBgpMixin(Protocol):
             if self.shared_utils.evpn_wan_gateway:
                 wan_overlay_peer_group.domain_remote = True
 
-            if self.shared_utils.wan_role != "server":
+            if self.shared_utils.is_wan_client:
                 wan_overlay_peer_group._update(
                     route_map_in="RM-EVPN-SOO-IN",
                     route_map_out="RM-EVPN-SOO-OUT",
@@ -264,7 +264,7 @@ class RouterBgpMixin(Protocol):
                     peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True)
 
             # TODO: this is written for matching either evpn_mpls or evpn_vlxan based for iBGP see if we cannot make this better.
-            if self.shared_utils.overlay_vtep is True and self.shared_utils.evpn_role != "server" and overlay_peer_group:
+            if self.shared_utils.overlay_vtep is True and self.shared_utils.evpn_role == "client" and overlay_peer_group:
                 overlay_peer_group._update(
                     route_map_in="RM-EVPN-SOO-IN",
                     route_map_out="RM-EVPN-SOO-OUT",
