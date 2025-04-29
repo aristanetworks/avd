@@ -120,7 +120,7 @@ jobs:
         run: |
           pip install build
           python -m build --wheel
-          WHEEL_FILE=$(find ./** -name "*.whl" -print0 -type f | xargs -0 -n 1 basename)
+          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
           echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
       - name: Upload pyavd artifact
         uses: actions/upload-artifact@v4
