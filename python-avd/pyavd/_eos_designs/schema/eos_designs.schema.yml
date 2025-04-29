@@ -7448,13 +7448,13 @@ $defs:
                       deprecation:
                         warning: true
                         remove_in_version: 6.0.0
-                        new_keys: prefix
+                        new_key: prefix
                     gateway:
                       type: str
                       deprecation:
                         warning: true
                         remove_in_version: 6.0.0
-                        new_keys: next_hop
+                        new_key: next_hop
                     nodes:
                       type: list
                       items:
