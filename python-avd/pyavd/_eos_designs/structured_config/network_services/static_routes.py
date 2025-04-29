@@ -53,8 +53,8 @@ class StaticRoutesMixin(Protocol):
                     for static_route in svi.static_routes:
                         static_route_item = EosCliConfigGen.StaticRoutesItem()
                         static_route_item._update(
-                            destination_address_prefix=static_route.prefix,
-                            gateway=static_route.next_hop,
+                            prefix=static_route.prefix,
+                            next_hop=static_route.next_hop,
                             vrf=vrf.name,
                             interface=static_route.interface,
                             track_bfd=static_route.track_bfd,

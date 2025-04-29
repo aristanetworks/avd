@@ -642,8 +642,8 @@ static_routes:
   prefix: 10.3.4.0/24
   next_hop: 1.2.3.4
 - vrf: Tenant_A_WAN_Zone
-  destination_address_prefix: 10.3.5.0/24
-  gateway: 1.2.3.4
+  prefix: 10.3.5.0/24
+  next_hop: 1.2.3.4
   name: SVI_static_route
 tcam_profile:
   system: vxlan-routing
