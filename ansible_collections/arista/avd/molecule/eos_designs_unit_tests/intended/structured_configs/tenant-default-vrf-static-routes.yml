@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: missing-vrf-default-ipv4-subnets
+hostname: tenant-default-vrf-static-routes
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -149,7 +149,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: missing-vrf-default-ipv4-subnets_VTEP
+    description: tenant-default-vrf-static-routes_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
