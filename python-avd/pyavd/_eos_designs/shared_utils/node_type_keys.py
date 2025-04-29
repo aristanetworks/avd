@@ -7,6 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_designs.schema import EosDesigns
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get, get_item
 
 if TYPE_CHECKING:
@@ -192,7 +193,7 @@ class NodeTypeKeysMixin(Protocol):
     """
 
     @cached_property
-    def node_type_key_data(self: SharedUtilsProtocol) -> EosDesigns.NodeTypeKeysItem | None:
+    def node_type_key_data(self: SharedUtilsProtocol) -> EosDesigns.NodeTypeKeysItem:
         """node_type_key_data containing settings for this node_type."""
         for node_type_key in self.inputs.custom_node_type_keys:
             if node_type_key.type == self.type:
@@ -205,4 +206,6 @@ class NodeTypeKeysMixin(Protocol):
             if node_type_key.type == self.type:
                 return node_type_key
 
-        return None
+        # This should never happen, as it should be caught during validation
+        msg = f"Could not find the given type '{self.type}' in node_type_keys or custom_node_type_keys."
+        raise AristaAvdInvalidInputsError(msg)
