@@ -5050,6 +5050,19 @@ keys:
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
+  wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    default: true
+    description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
+      different ways depending on the EOS version.
+
+
+      - `true`: For older EOS versions use an agent environment variable. Changing
+      this requires a restart of the KernelFib agent.
+
+      - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
   wan_use_evpn_node_settings_for_lan:
     type: bool
     documentation_options:

@@ -431,9 +431,9 @@ interface Dps1
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_site2-leaf1_Ethernet3 | - | 10.0.2.13/31 | default | 9214 | False | - | - |
-| Ethernet1.100 | P2P_site2-leaf1_Ethernet3.100_VRF_BLUE | - | 10.0.2.13/31 | BLUE | 9214 | False | - | - |
-| Ethernet1.101 | P2P_site2-leaf1_Ethernet3.101_VRF_RED | - | 10.0.2.13/31 | RED | 9214 | False | - | - |
+| Ethernet1 | P2P_site2-leaf1_Ethernet3 | - | 10.0.2.13/31 | default | 9194 | False | - | - |
+| Ethernet1.100 | P2P_site2-leaf1_Ethernet3.100_VRF_BLUE | - | 10.0.2.13/31 | BLUE | 9194 | False | - | - |
+| Ethernet1.101 | P2P_site2-leaf1_Ethernet3.101_VRF_RED | - | 10.0.2.13/31 | RED | 9194 | False | - | - |
 | Ethernet3 | ACME-MPLS-INC_mpls-site2-wan1_mpls-cloud_Ethernet7 | - | 172.18.20.2/24 | default | - | False | - | - |
 | Ethernet5 | WAN_HA_site2-wan2_Ethernet5 | - | 10.42.0.0/31 | default | 9194 | False | - | - |
 
@@ -444,7 +444,7 @@ interface Dps1
 interface Ethernet1
    description P2P_site2-leaf1_Ethernet3
    no shutdown
-   mtu 9214
+   mtu 9194
    no switchport
    flow tracker hardware FLOW-TRACKER
    ip address 10.0.2.13/31
@@ -452,7 +452,7 @@ interface Ethernet1
 interface Ethernet1.100
    description P2P_site2-leaf1_Ethernet3.100_VRF_BLUE
    no shutdown
-   mtu 9214
+   mtu 9194
    encapsulation dot1q vlan 100
    flow tracker hardware FLOW-TRACKER
    vrf BLUE
@@ -461,7 +461,7 @@ interface Ethernet1.100
 interface Ethernet1.101
    description P2P_site2-leaf1_Ethernet3.101_VRF_RED
    no shutdown
-   mtu 9214
+   mtu 9194
    encapsulation dot1q vlan 101
    flow tracker hardware FLOW-TRACKER
    vrf RED

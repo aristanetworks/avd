@@ -39,7 +39,7 @@ class MonitorSessionsMixin(Protocol):
             for session_config in session_configs_list[1:]:
                 merged_settings._deepmerge(session_config)
 
-            if merged_settings.session_settings.access_group:
+            if merged_settings.session_settings._get("access_group"):
                 for session in session_configs_list:
                     if session.source_settings.access_group:
                         msg = (
