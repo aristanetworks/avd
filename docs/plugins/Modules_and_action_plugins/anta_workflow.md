@@ -64,6 +64,7 @@ The plugin offers the following capabilities:
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;json_output</samp> | str | optional | None |  | Path to the JSON report file. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;filters</samp> | dict | optional | None |  | Filters used to hide specific test statuses from the reports. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hide_statuses</samp> | list | optional | None | Valid values:<br>- <code>success</code><br>- <code>failure</code><br>- <code>error</code><br>- <code>skipped</code><br>- <code>unset</code> | List of test statuses to hide from the reports. |
+| <samp>strict_mode</samp> | bool | optional | False |  | When `strict_mode` is `true`, the plugin returns `failed: true` if any ANTA tests fail or error.<br>Otherwise, the plugin returns `changed: true` in such cases. |
 
 ## See Also
 
@@ -109,6 +110,7 @@ The plugin offers the following capabilities:
           #   hide_statuses:
           #     - success
           #     - skipped
+        strict_mode: true
 ```
 
 ## Authors

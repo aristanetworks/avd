@@ -5,6 +5,8 @@
 wan_mode: cv-pathfinder
 # Disabling underlay for tests
 underlay_routing_protocol: none
+# Prefer mechanism that avoids agent restart for kernel software forwarding of ecmp routes
+wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: false
 
 type: wan_router
 
