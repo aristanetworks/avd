@@ -421,8 +421,8 @@ interface Dps1
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_site4-border1_Ethernet3 | - | 10.0.4.57/31 | default | 9214 | False | - | - |
-| Ethernet2 | P2P_site4-border2_Ethernet3 | - | 10.0.4.59/31 | default | 9214 | False | - | - |
+| Ethernet1 | P2P_site4-border1_Ethernet3 | - | 10.0.4.57/31 | default | 9194 | False | - | - |
+| Ethernet2 | P2P_site4-border2_Ethernet3 | - | 10.0.4.59/31 | default | 9194 | False | - | - |
 | Ethernet3 | ACME-MPLS-INC_mpls-site4-wan1_mpls-cloud_Ethernet8 | - | 172.18.40.2/24 | default | - | False | - | - |
 | Ethernet4 | REGION1-INTERNET-CORP_inet-site4-wan1_inet-cloud_Ethernet10 | - | 100.64.40.2/24 | default | - | False | ACL-INTERNET-IN_Ethernet4 | - |
 
@@ -433,7 +433,7 @@ interface Dps1
 interface Ethernet1
    description P2P_site4-border1_Ethernet3
    no shutdown
-   mtu 9214
+   mtu 9194
    no switchport
    flow tracker hardware FLOW-TRACKER
    ip address 10.0.4.57/31
@@ -441,7 +441,7 @@ interface Ethernet1
 interface Ethernet2
    description P2P_site4-border2_Ethernet3
    no shutdown
-   mtu 9214
+   mtu 9194
    no switchport
    flow tracker hardware FLOW-TRACKER
    ip address 10.0.4.59/31

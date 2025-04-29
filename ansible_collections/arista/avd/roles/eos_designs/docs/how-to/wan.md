@@ -868,35 +868,38 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
 
     It is *not* possible to use multiple direct HA links while disabling the port-channel.
 
-#### EVPN Gateway LAN [PREVIEW]
+#### EVPN Gateway LAN (PREVIEW)
 
 - the LAN routes are received via EVPN
 - Enabling the gateway requires to configure:
-  - `wan_use_evpn_node_settings_for_lan: True`
+  - `wan_use_evpn_node_settings_for_lan: true`
   - `overlay_routing_protocol: ebgp` for the WAN router
   - `evpn_role: client` for the WAN router
   - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.
-- When all the conditions are met, the WAN router configuration will add the Gateway parameter and inject the following configuration:
+- When all the conditions are met, the EVPN Gateway using DPS Interconnect is enabled and the following configuration is added to the WAN router:
 
-    ```bash
-    router adaptive-virtual-topology
-       topology role edge gateway vxlan # Notice the gateway VXLAN
-       [...]
-    [...]
-    router bgp <AS>
-       ...
-       !
-       address-family evpn
-          neighbor WAN_RR activate
-          neighbor WAN_RR domain remote
-          neighbor WAN_RR encapsulation path-selection
-          neighbor DC1_RR activate
-          neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
-    ```
+```shell
+router adaptive-virtual-topology
+   topology role edge gateway vxlan # (1)!
+   [...]
+[...]
+router bgp <AS>
+   ...
+   !
+   address-family evpn
+      neighbor WAN_RR activate
+      neighbor WAN_RR domain remote
+      neighbor WAN_RR encapsulation path-selection
+      neighbor DC1_RR activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+```
+
+1. Notice the gateway VXLAN
 
 !!! warning
 
     TODO: Add a drawing.
+
     TOI: https://www.arista.com/en/support/toi/eos-4-32-2f/20422-l3-evpn-dci-gateway-using-dps-interconnect
 
 #### OSPF LAN (NOT SUPPORTED)

@@ -89,7 +89,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: P2P_site4-border1_Ethernet3
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.4.57/31
@@ -101,7 +101,7 @@ ethernet_interfaces:
 - name: Ethernet2
   description: P2P_site4-border2_Ethernet3
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   flow_tracker:
     hardware: FLOW-TRACKER
   ip_address: 10.0.4.59/31
@@ -259,6 +259,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  platform: CloudEOS
   fabric_name: WAN
   cv_tags:
     device_tags:
@@ -690,12 +691,12 @@ spanning_tree:
   mode: none
 static_routes:
 - vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.17.1
-- destination_address_prefix: 172.18.0.0/16
-  gateway: 172.18.40.1
-- destination_address_prefix: 100.64.0.0/16
-  gateway: 100.64.40.1
+  prefix: 0.0.0.0/0
+  next_hop: 192.168.17.1
+- prefix: 172.18.0.0/16
+  next_hop: 172.18.40.1
+- prefix: 100.64.0.0/16
+  next_hop: 100.64.40.1
 stun:
   client:
     server_profiles:

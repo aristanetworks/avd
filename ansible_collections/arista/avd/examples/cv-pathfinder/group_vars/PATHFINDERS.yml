@@ -1,6 +1,5 @@
 ---
 # WAN Pathfinder nodes variables
-# overlay_routing_protocol: none
 
 wan_rr:
   defaults:
