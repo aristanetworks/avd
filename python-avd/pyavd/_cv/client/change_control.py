@@ -218,7 +218,6 @@ class ChangeControlMixin(Protocol):
                 if hasattr(response, "value") and response.value.status == CHANGE_CONTROL_STATUS_MAP[state]:
                     LOGGER.info("wait_for_change_control_complete: Got response for request '%s': %s", cc_id, response.value.status)
                     return response.value
-                LOGGER.debug("wait_for_change_control_complete: Status of change control is '%s.'", response)
 
         except Exception as e:
             raise get_cv_client_exception(e, f"CC ID '{cc_id}')") or e
