@@ -296,7 +296,7 @@ jobs:
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ${{ matrix.pip_requirements }}
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r "${{ matrix.pip_requirements }}"
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
