@@ -320,5 +320,5 @@ class UtilsMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             return p2p_link.id + p2p_link.port_channel._get("channel_id_offset", 0)
 
-        # channel_id_algorithm == "first_port"
+        # channel_id_algorithm "first_port"
         return int("".join(re.findall(r"\d", node_data.interfaces[0])))
