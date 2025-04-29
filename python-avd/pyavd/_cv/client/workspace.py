@@ -11,6 +11,7 @@ from pyavd._cv.api.arista.workspace.v1 import (
     Request,
     RequestParams,
     Response,
+    ResponseStatus,
     Workspace,
     WorkspaceConfig,
     WorkspaceConfigDeleteRequest,
@@ -224,10 +225,11 @@ class WorkspaceMixin(Protocol):
         """
         Monitor a Workspace using arista.workspace.v1.WorkspaceService.Subscribe API for a response to the given request_id.
 
-        Blocks until a response is returned or timed out.
+        Blocks until a response in a terminal state (ResponseStatus.SUCCESS or ResponseStatus.FAIL) is returned or timed out.
+        Responses in an intermediate state (ResponseStatus.UNSPECIFIED) are logged only.
 
         Parameters:
-            workspace_id: Unique identifier the Workspace.
+            workspace_id: Unique identifier for the Workspace.
             request_id: Unique identifier for the Request.
             timeout: Timeout in seconds for the Workspace to build.
 
@@ -247,11 +249,14 @@ class WorkspaceMixin(Protocol):
             async for response in responses:
                 if request_id in response.value.responses.values:
                     LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                    return response.value.responses.values[request_id], response.value
-                LOGGER.debug(
-                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s",
-                    request_id,
-                    response.value.state,
-                )
+                    if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
+                        return response.value.responses.values[request_id], response.value
+                else:
+                    LOGGER.debug(
+                        "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
+                        request_id,
+                        response.value.state,
+                        response.value.responses.values,
+                    )
         except Exception as e:
             raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Request ID '{request_id}") or e
