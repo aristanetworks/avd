@@ -268,10 +268,12 @@ jobs:
           # Testing all scenario with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
           - "ansible-core>=2.16.0,<2.17.0"
         # Also test minimum ansible version for one scenario.
+        pip_requirements:
+          - .github/requirements-ci-molecule.txt
         include:
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core==2.16.0"
-            pip_requirements: 'tmp-requirements-minimum.txt'
+            pip_requirements: "tmp-requirements-minimum.txt"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.18.0"
           - avd_scenario: "eos_designs_unit_tests"
@@ -289,11 +291,12 @@ jobs:
         run: |
           pip install uv
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > ${{ matrix.pip_requirements }}
+          cat .github/requirements-ci-molecule.txt >> ${{ matrix.pip_requirements }}
           cat ${{ matrix.pip_requirements }}
         if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
       - name: Install pyavd and Ansible requirements
         run: |
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ${{ matrix.pip_requirements }}
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
