@@ -189,6 +189,12 @@ metadata:
         value: Another-ISP
       - name: Circuit
         value: '999'
+    - interface: Port-Channel5
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Another-ISP
   cv_pathfinder:
     role: pathfinder
     vtep_ip: 192.168.144.1
@@ -209,6 +215,10 @@ metadata:
       circuit_id: '999'
       pathgroup: INET
       public_ip: 10.9.9.9
+    - name: Port-Channel5
+      carrier: Another-ISP
+      pathgroup: INET
+      public_ip: 10.7.7.5
     pathgroups:
     - name: MPLS
       carriers:
@@ -379,6 +389,16 @@ metadata:
 platform:
   sfe:
     data_plane_cpu_allocation_max: 1
+port_channel_interfaces:
+- name: Port-Channel5
+  description: Another-ISP_peer2_Port-Channel16
+  shutdown: false
+  ip_address: 10.7.7.5/31
+  peer: peer2
+  peer_interface: Port-Channel16
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -592,6 +612,7 @@ router_path_selection:
     local_interfaces:
     - name: Ethernet1
     - name: Ethernet3
+    - name: Port-Channel5
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
@@ -645,6 +666,7 @@ stun:
     - Ethernet1
     - Ethernet2
     - Ethernet3
+    - Port-Channel5
     ssl_profile: profileA
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
