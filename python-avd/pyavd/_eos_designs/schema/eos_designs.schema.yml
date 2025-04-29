@@ -8047,6 +8047,25 @@ $defs:
                       description: Subinterface number.
                       convert_types:
                       - str
+                    port_channel:
+                      type: dict
+                      keys:
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: 'Custom structured config added on the port
+                            channel subinterface for eos_cli_config_gen.
+
+                            '
+                          documentation_options:
+                            hide_keys: true
+                          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+                        raw_eos_cli:
+                          type: str
+                          description: 'EOS cli commands rendered on the port channel
+                            subinterface.
+
+                            '
                     structured_config:
                       type: dict
                       relaxed_validation: true

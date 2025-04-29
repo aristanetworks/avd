@@ -211,6 +211,7 @@ port_channel_interfaces:
       encapsulation: client
   peer_type: point_to_point_service
 - name: Port-Channel3.1002
+  comment: Test structured_config for subinterface
   shutdown: false
   encapsulation_vlan:
     client:

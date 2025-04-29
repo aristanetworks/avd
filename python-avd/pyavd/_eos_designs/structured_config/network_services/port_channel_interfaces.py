@@ -241,15 +241,15 @@ class PortChannelInterfacesMixin(Protocol):
                             name=subif_name,
                             peer_type="point_to_point_service",
                             shutdown=False,
-                            eos_cli=subif.raw_eos_cli,
+                            eos_cli=subif.port_channel.raw_eos_cli,
                             encapsulation_vlan=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan(
                                 client=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan.Client(encapsulation="dot1q", vlan=subif.number),
                                 network=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan.Network(encapsulation="client"),
                             ),
                         )
-                        if subif.structured_config:
+                        if subif.port_channel.structured_config:
                             self.custom_structured_configs.nested.port_channel_interfaces.obtain(subif_name)._deepmerge(
-                                subif.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                                subif.port_channel.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
                             )
 
                 else:

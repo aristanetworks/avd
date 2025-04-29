@@ -338,6 +338,7 @@ interface Port-Channel3.1001
       client dot1q 1001 network client
 !
 interface Port-Channel3.1002
+   !! Test structured_config for subinterface
    no shutdown
    !
    encapsulation vlan

@@ -7,6 +7,13 @@ tenants:
       # Port-based vpws service
       - name: TEN_A_site2_site5_eline_port_based
         type: vpws-pseudowire
+        subinterfaces:
+          - number: 100
+            raw_eos_cli: |-
+              storm-control broadcast level 10
+          - number: 101
+            structured_config:
+              comment: Test structured_config for subinterface
         endpoints:
           - id: 26
             nodes: ["SITE1-LER1"]
@@ -35,12 +42,14 @@ tenants:
         type: vpws-pseudowire
         subinterfaces:
           - number: 1000
-            raw_eos_cli: |-
-              storm-control broadcast level 10
+            port_channel:
+              raw_eos_cli: |-
+                storm-control broadcast level 10
           - number: 1001
           - number: 1002
-            structured_config:
-              comment: Test structured_config for subinterface
+            port_channel:
+              structured_config:
+                comment: Test structured_config for subinterface
           - number: 1003
           - number: 1004
         endpoints:
