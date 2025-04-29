@@ -35,4 +35,3 @@ default_node_types:
   - node_type: spine
     match_hostnames:
       - .*-cloud
-      - site.*-spine.*
