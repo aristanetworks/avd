@@ -194,7 +194,7 @@ $defs:
               valid_values:
                 - "first_port"
                 - "p2p_link_id"
-              default: "first_port"
+              default: first_port
               description: |-
                   Configures how to generate the port-channel ID.
                   By default the ID is generated based on the first switch port from node_child_interfaces[].interfaces.
