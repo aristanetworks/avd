@@ -12,7 +12,7 @@ import pytest
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AntaWorkflowFilter, AntaWorkflowHandler
 from ansible_collections.arista.avd.plugins.plugin_utils.utils.anta_workflow_logging import ANTA_LIBRARIES
 
-from conftest import create_log_record
+from .conftest import create_log_record
 
 
 class TestAntaWorkflowFilter:
