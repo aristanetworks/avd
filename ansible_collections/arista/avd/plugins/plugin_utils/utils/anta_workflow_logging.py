@@ -87,20 +87,17 @@ class AntaWorkflowHandler(logging.Handler):
         # Get the unique_id injected by the AntaLoggingFilter
         unique_id = getattr(record, "unique_id", "unknown")
 
-        message = str(self._format_msg(record))
+        # Format the message including unique_id
+        base_message = self.format(record)
+        final_message = f"[{unique_id}] {base_message}"
 
         if record.levelno >= logging.ERROR:
             self.log_stats[unique_id]["error_count"] += 1
-            self.display.error(message, wrap_text=False)
+            self.display.error(final_message, wrap_text=False)
         elif record.levelno == logging.WARNING:
             self.log_stats[unique_id]["warning_count"] += 1
-            self.display.warning(message)
+            self.display.warning(final_message)
         elif record.levelno == logging.INFO:
-            self.display.v(message)
+            self.display.v(final_message)
         elif record.levelno == logging.DEBUG:
-            self.display.vvv(message)
-
-    def _format_msg(self, record: logging.LogRecord) -> str:
-        """Format the log record message, prepending the unique_id if present."""
-        base_message = self.format(record)
-        return f"[{record.unique_id}] {base_message}" if hasattr(record, "unique_id") else base_message
+            self.display.vvv(final_message)
