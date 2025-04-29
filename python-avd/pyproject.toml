@@ -57,7 +57,9 @@ ansible-collection = [
     "PyYAML>=6.0.1",
     "treelib>=1.5.5",
     # jsonschema is required for the arista.cvp Ansible collection
-    "jsonschema>=3.2.0",
+    # "jsonschema>=3.2.0",
+    # Testing the working min for nwo...
+    "jsonschema>=4.9.1",
     # distlib is required to install the collection from source as it is using manifest
     "distlib>=0.3.9",
 ]
