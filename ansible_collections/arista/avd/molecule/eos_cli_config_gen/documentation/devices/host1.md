@@ -3357,7 +3357,7 @@ STP mode: **rapid-pvst**
 - Spanning Tree disabled for VLANs: **105,202,505-506**
 - Global BPDU Guard for Edge ports is disabled.
 - Global BPDU Filter for Edge ports is disabled.
-- Spanning Tree port-id allocation port-channel minimum range is 201 and maximum range is 2001.
+- Range of port-ids reserved for port-channels: 201-2001.
 
 ### Spanning Tree Device Configuration
 
