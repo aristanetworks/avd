@@ -157,7 +157,7 @@ jobs:
           path: /tmp/pyavd/
       - name: "Install Python requirements"
         run: |
-          pip install /tmp/pyavd/*.whl -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
