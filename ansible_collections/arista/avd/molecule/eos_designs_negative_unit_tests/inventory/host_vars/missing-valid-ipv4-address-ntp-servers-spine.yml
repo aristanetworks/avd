@@ -1,0 +1,21 @@
+---
+type: spine
+default_mgmt_method: none
+
+cvp_instance_ips:
+  - apiserver
+
+ntp_settings:
+  servers:
+    - name: pool.ntp.org
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.0.254.0/24
+    bgp_as: 64999
+  nodes:
+    - name: missing-valid-ipv4-address-ntp-servers-spine
+      id: 1
+
+expected_error_message: >-
+  When in-band ZTP is enabled, at least one NTP server's `name` field provided under `ntp_settings.servers` must be a valid IPv4 address.
