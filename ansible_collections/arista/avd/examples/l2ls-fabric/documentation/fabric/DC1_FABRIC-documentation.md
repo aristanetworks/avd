@@ -94,7 +94,6 @@
 | Key | Type | Description |
 | --- | ---- | ----------- |
 | firewalls | firewall | - |
-| routers | router | - |
 | servers | server | - |
 
 ### Firewalls

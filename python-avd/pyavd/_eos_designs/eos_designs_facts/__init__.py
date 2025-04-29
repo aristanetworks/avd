@@ -271,10 +271,13 @@ class EosDesignsFactsGeneratorProtocol(
 
         Used for fabric docs
         """
-        _, connected_endpoints_inputs = self.shared_utils.get_merged_connected_endpoints_keys()
+        dynamic_connected_endpoints, connected_endpoints_inputs = self.shared_utils.get_merged_connected_endpoints_keys()
         connected_endpoints_keys = EosDesignsFactsProtocol.ConnectedEndpointsKeys()
         for entry in connected_endpoints_inputs:
-            connected_endpoints_keys.append(EosDesignsFactsProtocol.ConnectedEndpointsKeysItem(key=entry.key, type=entry.type, description=entry.description))
+            if entry.key in dynamic_connected_endpoints:
+                connected_endpoints_keys.append(
+                    EosDesignsFactsProtocol.ConnectedEndpointsKeysItem(key=entry.key, type=entry.type, description=entry.description)
+                )
 
         return connected_endpoints_keys
 
