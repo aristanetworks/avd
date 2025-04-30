@@ -10631,8 +10631,8 @@ $defs:
                     type: int
                     convert_types:
                     - str
-                    description: Port-Channel ID. If no channel_id is specified, an
-                      id is generated from the first switch port in the port channel.
+                    description: Port-Channel ID. If no `channel_id` is specified,
+                      an id is generated using the `channel_id_algorithm`.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in

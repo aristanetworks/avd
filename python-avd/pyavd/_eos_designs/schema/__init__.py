@@ -1034,8 +1034,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -1061,8 +1061,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -1603,8 +1603,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -1630,8 +1630,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -4990,8 +4990,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -5017,8 +5017,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -5559,8 +5559,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -5586,8 +5586,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
