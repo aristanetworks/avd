@@ -49,6 +49,7 @@ l3leaf:
               enabled: true
               uplink_interfaces:
                 - Ethernet1
+                - Ethernet2
               mlag: true
     # Test multicast configuration with mlag pair sharing same vlan for l3 peering (4094)
     # Expected results:

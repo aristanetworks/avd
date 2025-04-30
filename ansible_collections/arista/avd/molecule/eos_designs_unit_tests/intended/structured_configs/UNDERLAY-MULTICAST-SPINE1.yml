@@ -22,6 +22,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.4/31
+  pim:
+    ipv4:
+      sparse_mode: true
   peer: UNDERLAY-MULTICAST-L3LEAF1B
   peer_interface: Ethernet1
   peer_type: l3leaf
