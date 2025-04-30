@@ -16,3 +16,12 @@
 
 - name: Test Change Control False
   import_playbook: cc_false.yml
+
+- name: Test cv_deploy with devices with uniquely set serial_numbers and system_mac_addresses
+  import_playbook: no_duplicated_devices.yml
+
+- name: Test cv_deploy with duplicated devices in inventory and default cv_strict_system_mac_address
+  import_playbook: duplicated_devices.yml
+
+- name: Test cv_deploy with duplicated devices in inventory and non-default cv_strict_system_mac_address
+  import_playbook: duplicated_devices_strict_system_mac.yml
