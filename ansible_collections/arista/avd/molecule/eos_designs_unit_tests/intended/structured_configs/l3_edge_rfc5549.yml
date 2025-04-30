@@ -40,19 +40,19 @@ router_bgp:
   neighbors:
   - ip_address: 192.168.0.5
     remote_as: '65003'
-    peer: peer3
-    description: peer3
+    peer: peer_without_underlay_with_ebgp
+    description: peer_without_underlay_with_ebgp
     peer_group: IPv4-UNDERLAY-PEERS
   - ip_address: 192.168.0.7
     remote_as: '65004'
-    peer: peer4
-    description: peer4
+    peer: peer_with_underlay_with_ebgp
+    description: peer_with_underlay_with_ebgp
     peer_group: IPv4-UNDERLAY-PEERS
   neighbor_interfaces:
   - name: ethernet2
     remote_as: '65002'
-    peer: peer2
-    description: peer2
+    peer: peer_with_underlay
+    description: peer_with_underlay
     peer_group: IPv4-UNDERLAY-PEERS
 service_routing_protocols_model: multi-agent
 ipv6_unicast_routing: true
@@ -96,7 +96,7 @@ route_maps:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 ethernet_interfaces:
 - name: ethernet1
-  peer: peer1
+  peer: peer_without_underlay
   peer_interface: ethernet1
   peer_type: other
   switchport:
@@ -104,9 +104,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.0/31
-  description: P2P_peer1_ethernet1
+  description: P2P_peer_without_underlay_ethernet1
 - name: ethernet2
-  peer: peer2
+  peer: peer_with_underlay
   peer_interface: ethernet2
   peer_type: other
   switchport:
@@ -115,9 +115,9 @@ ethernet_interfaces:
   mtu: 9214
   ip_address: 192.168.0.2/31
   ipv6_enable: true
-  description: P2P_peer2_ethernet2
+  description: P2P_peer_with_underlay_ethernet2
 - name: ethernet3
-  peer: peer3
+  peer: peer_without_underlay_with_ebgp
   peer_interface: ethernet3
   peer_type: other
   switchport:
@@ -125,9 +125,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.4/31
-  description: P2P_peer3_ethernet3
+  description: P2P_peer_without_underlay_with_ebgp_ethernet3
 - name: ethernet4
-  peer: peer4
+  peer: peer_with_underlay_with_ebgp
   peer_interface: ethernet4
   peer_type: other
   switchport:
@@ -135,4 +135,4 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.6/31
-  description: P2P_peer4_ethernet4
+  description: P2P_peer_with_underlay_with_ebgp_ethernet4
