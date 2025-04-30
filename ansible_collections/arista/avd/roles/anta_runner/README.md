@@ -393,9 +393,9 @@ The `anta_runner` utilizes Ansible verbosity flags (`-v`, `-vv`, `-vvv`) to cont
 ### File Logging
 
 - **Detailed Logs:** A dedicated log file is created for each ANTA execution run within the directory specified by the `anta_runner_logs_dir` variable (default is `<inventory_dir>/anta/logs/`).
-- **File Naming:** Files are named using the unique run ID (e.g., `anta_runner_logs_dir/anta-run-xxxxxxxx.log`).
+- **File Naming:** Files are named using the unique run ID and the plugin execution timestamp (e.g., `anta_runner_logs_dir/<timestamp>_anta-run-xxxxxxxx.log`).
 - **Content:** These files capture *all* log messages generated during that specific run, respecting the verbosity level set for the playbook. This includes potentially verbose `INFO` and `DEBUG` messages from ANTA libraries.
-- **Correlation for Debugging:** You can use the unique ID from a console message (e.g., `anta-run-1234abcd`) to locate the corresponding detailed log file (`anta_runner_logs_dir/anta-run-1234abcd.log`) for deeper investigation.
+- **Correlation for Debugging:** You can use the unique ID from a console message (e.g., `anta-run-a67ac5e5`) to locate the corresponding detailed log file (`anta_runner_logs_dir/20250430T190428Z_anta-run-a67ac5e5.log`) for deeper investigation.
 
 !!! tip
     The `anta_runner_logs_dir` can accumulate logs over time. Implementing custom cleanup strategies or utilizing log rotation tools for this directory is recommended for long-term maintenance.
