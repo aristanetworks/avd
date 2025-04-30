@@ -1219,12 +1219,12 @@ router bgp {{ router_bgp.as }}
 {%                 endif %}
 {%             endif %}
 {%             if neighbor.next_hop.address_family_ipv6.enabled is arista.avd.defined %}
-{%                 if neighbor.next_hop.address_family_ipv6.enabled is arista.avd.defined(true) %}
+{%                 if neighbor.next_hop.address_family_ipv6.enabled %}
 {%                     set ipv6_originate_cli = "neighbor " ~ neighbor.ip_address ~ " next-hop address-family ipv6" %}
 {%                     if neighbor.next_hop.address_family_ipv6.originate is arista.avd.defined(true) %}
 {%                         set ipv6_originate_cli = ipv6_originate_cli ~ " originate" %}
 {%                     endif %}
-{%                 elif neighbor.next_hop.address_family_ipv6.enabled is arista.avd.defined(false) %}
+{%                 else %}
 {%                     set ipv6_originate_cli = "no neighbor " ~ neighbor.ip_address ~ " next-hop address-family ipv6" %}
 {%                 endif %}
       {{ ipv6_originate_cli }}
