@@ -50,13 +50,9 @@ router_isis:
   address_family_ipv4:
     enabled: true
     maximum_paths: 4
-    fast_reroute_ti_lfa:
-      mode: node-protection
   address_family_ipv6:
     enabled: true
     maximum_paths: 4
-    fast_reroute_ti_lfa:
-      mode: node-protection
   segment_routing_mpls:
     enabled: true
     router_id: 10.0.0.3
