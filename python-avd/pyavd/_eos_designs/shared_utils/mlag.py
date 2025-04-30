@@ -205,8 +205,8 @@ class MlagMixin(Protocol):
     @cached_property
     def mlag_dual_primary_detection(self: SharedUtilsProtocol) -> bool:
         if self.node_config.mlag_dual_primary_detection:
-            if not self.node_config.mgmt_ip or not self.get_peer_facts(self.mlag_peer).mgmt_ip:
-                msg = f"'mlag_dual_primary_detection' is enabled but 'mgmt_ip' is not configured on {self.hostname} or its peer"
+            if not self.node_config.mgmt_ip:
+                msg = f"'mlag_dual_primary_detection' is enabled but 'mgmt_ip' is not configured on {self.hostname}."
                 raise AristaAvdInvalidInputsError(msg)
 
             return True
