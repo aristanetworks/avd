@@ -55,8 +55,9 @@ class CVClientProtocol(
         return self
 
     async def __aexit__(self, _exc_type: type[BaseException] | None, _exc_val: BaseException | None, _exc_tb: TracebackType | None) -> None:
-        self._channel.close()
-        self._channel = None
+        if self._channel is not None:
+            self._channel.close()
+            self._channel = None
 
     def _connect(self) -> None:
         # TODO: Verify connection

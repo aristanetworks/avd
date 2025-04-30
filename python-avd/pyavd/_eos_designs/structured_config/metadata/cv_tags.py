@@ -7,7 +7,9 @@ from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError
-from pyavd._schema.models.avd_base import AvdBase
+from pyavd._schema.models.avd_indexed_list import AvdIndexedList
+from pyavd._schema.models.avd_list import AvdList
+from pyavd._schema.models.avd_model import AvdModel
 from pyavd._utils import default, get_v2
 
 if TYPE_CHECKING:
@@ -128,7 +130,7 @@ class CvTagsMixin(Protocol):
                 value = generate_tag.value
             elif generate_tag.data_path is not None:
                 value = get_v2(self.structured_config, generate_tag.data_path)
-                if isinstance(type(value), AvdBase):
+                if isinstance(value, (AvdList, AvdIndexedList, AvdModel)):
                     msg = (
                         f"'generate_cv_tags.device_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                         f"points to a list or dict. This is not supported for cloudvision tag data_paths."
@@ -155,7 +157,7 @@ class CvTagsMixin(Protocol):
                     value = generate_tag.value
                 elif generate_tag.data_path is not None:
                     value = get_v2(ethernet_interface, generate_tag.data_path)
-                    if type(value) in [list, dict]:
+                    if isinstance(value, (AvdList, AvdIndexedList, AvdModel)):
                         msg = (
                             f"'generate_cv_tags.interface_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                             f"points to a variable of type {type(value).__name__}. This is not supported for cloudvision tag data_paths."
@@ -221,8 +223,7 @@ class CvTagsMixin(Protocol):
         """Return list of wan interface tags for cv_pathfinder solution for a given wan interface."""
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
         tags.append_new(name="Type", value="wan")
-        if wan_interface.wan_carrier:
-            tags.append_new(name="Carrier", value=str(wan_interface.wan_carrier))
+        tags.append_new(name="Carrier", value=str(wan_interface.wan_carrier))
         if wan_interface.wan_circuit_id:
             tags.append_new(name="Circuit", value=str(wan_interface.wan_circuit_id))
         return tags

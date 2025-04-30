@@ -1,0 +1,25 @@
+type: spine
+
+spine:
+  nodes:
+    - name: invalid-generate-cv-device-tags-data-path
+      id: 1
+      loopback_ipv4_pool: 10.10.255.0/24
+      bgp_as: 65000
+      rack: ABC567
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 10.20.30.40/24
+          description: Test interface
+          peer: Someotherdevice
+          peer_ip: 10.20.30.50/24
+
+generate_cv_tags:
+  topology_hints: true
+  device_tags:
+    - name: myaname
+      data_path: ethernet_interfaces
+
+expected_error_message: >-
+  'generate_cv_tags.device_tags[name=myaname].data_path' (ethernet_interfaces) points to a list or dict.
+  This is not supported for cloudvision tag data_paths.
