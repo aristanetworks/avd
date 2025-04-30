@@ -7485,7 +7485,7 @@ $defs:
                         new_key: next_hop
                     next_hop:
                       type: str
-                      description: Next-hop IPv4 address.
+                      description: Next-hop IPv6 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.

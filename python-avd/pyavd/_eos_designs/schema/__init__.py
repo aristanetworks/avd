@@ -38601,7 +38601,7 @@ class EosDesigns(EosDesignsRootModel):
                         """Destination prefix."""
                         gateway: str | None
                         next_hop: str | None
-                        """Next-hop IPv4 address."""
+                        """Next-hop IPv6 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -38640,7 +38640,7 @@ class EosDesigns(EosDesignsRootModel):
                                     destination_address_prefix: IPv6_address.
                                     prefix: Destination prefix.
                                     gateway: gateway
-                                    next_hop: Next-hop IPv4 address.
+                                    next_hop: Next-hop IPv6 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
