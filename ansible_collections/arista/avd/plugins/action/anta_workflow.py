@@ -8,6 +8,7 @@ import logging
 from asyncio import run
 from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
+from datetime import datetime, timezone
 from logging.handlers import QueueHandler, QueueListener
 from multiprocessing import Queue, get_context
 from pathlib import Path
@@ -120,6 +121,7 @@ PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
 LOG_QUEUE: Queue = Queue()
+TIMESTAMP: str = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
 class ActionModule(ActionBase):
@@ -197,10 +199,10 @@ class ActionModule(ActionBase):
                 batches = [deployed_devices[i : i + batch_size] for i in range(0, len(deployed_devices), batch_size)]
                 batch_results = executor.map(run_anta, batches)
 
-            # Build the ANTA reports
-            result_manager = build_reports(batch_results, get(PLUGIN_ARGS, "report"))
+            # Build the ANTA reports and summary
+            summary = build_reports(batch_results, log_stats, report_settings=get(PLUGIN_ARGS, "report"))
 
-            result = update_ansible_result(result, result_manager, log_stats, strict_mode=get(PLUGIN_ARGS, "strict_mode"))
+            result = update_ansible_result(result, summary, strict_mode=get(PLUGIN_ARGS, "strict_mode"))
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
@@ -213,12 +215,13 @@ class ActionModule(ActionBase):
         return result
 
 
-def run_anta(devices: list[str]) -> ResultManager:
+def run_anta(devices: list[str]) -> tuple[str, list[str], ResultManager]:
     """Run ANTA."""
-    joined_devices = ", ".join(devices)
+    # Generate a unique ID for this child process run
+    unique_id = f"anta-run-{str(uuid4())[:8]}"
 
     # Setup child process logging
-    setup_child_process_logging(LOG_QUEUE, display.verbosity)
+    setup_child_process_logging(LOG_QUEUE, display.verbosity, unique_id)
 
     # Build the objects required to run ANTA
     result_manager, inventory, catalog = build_anta_runner_objects(devices)
@@ -227,25 +230,30 @@ def run_anta(devices: list[str]) -> ResultManager:
     run_mode = "dry-run" if dry_run else "run"
 
     # Run ANTA
+    joined_devices = ", ".join(devices)
     LOGGER.info("Starting ANTA %s for devices: %s", run_mode, joined_devices)
     run(anta_runner(result_manager, inventory, catalog, tags=tags, dry_run=dry_run))
 
     LOGGER.info("ANTA %s completed for devices: %s", run_mode, joined_devices)
-    return result_manager
+    return unique_id, devices, result_manager
 
 
-def build_reports(batch_results: Iterator[ResultManager], report_settings: dict) -> ResultManager:
-    """Build the ANTA reports from the batch results and return the aggregated results."""
+def build_reports(
+    batch_results: Iterator[tuple[str, list[str], ResultManager]], log_stats: defaultdict[str, dict[str, int]], report_settings: dict[str, Any]
+) -> dict[str, Any]:
+    """Build the ANTA reports from the batch results and return a summary dictionary containing overall statistics."""
+    summary = {"runs": {}, "test_stats": {}}
     hide_statuses = get(report_settings, "filters.hide_statuses")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
 
-    # Merge all results
+    # Merge all results and update the summary with devices per run
     result_manager = ResultManager()
-    for manager in batch_results:
-        for result in manager.results:
-            result_manager.add(result)
+    for run_id, devices, manager in batch_results:
+        summary["runs"][run_id] = {"devices": devices}
+        for res in manager.results:
+            result_manager.add(res)
 
     # Filter the results based on the hide_statuses if provided
     if hide_statuses:
@@ -273,12 +281,33 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict)
         with path.open("w", encoding="UTF-8") as file:
             file.write(result_manager.json)
 
-    return result_manager
+    # Update the summary with ANTA test stats
+    test_stats = {
+        "total_tests": result_manager.get_total_results(),
+        "tests_passed": result_manager.get_total_results({"success"}),
+        "tests_failed": result_manager.get_total_results({"failure"}),
+        "tests_error": result_manager.get_total_results({"error"}),
+        "tests_skipped": result_manager.get_total_results({"skipped"}),
+        "tests_unset": result_manager.get_total_results({"unset"}),
+        "devices_with_test_failures": [],
+        "devices_with_test_errors": [],
+    }
+    for device, stat in result_manager.device_stats.items():
+        if stat.tests_failure_count:
+            test_stats["devices_with_test_failures"].append(device)
+        if stat.tests_error_count:
+            test_stats["devices_with_test_errors"].append(device)
+    summary["test_stats"] = test_stats
+
+    # Update the summary with log_stats if any were found
+    if log_stats:
+        for run_id, data in log_stats.items():
+            summary["runs"].setdefault(run_id, {}).update(data)
+
+    return summary
 
 
-def update_ansible_result(
-    result: dict[str, Any], result_manager: ResultManager, log_stats: defaultdict[str, dict[str, int]], *, strict_mode: bool = False
-) -> dict[str, Any]:
+def update_ansible_result(result: dict[str, Any], summary: dict[str, Any], *, strict_mode: bool = False) -> dict[str, Any]:
     """
     Update the Ansible result dictionary from aggregated ANTA test results and workflow log statistics.
 
@@ -292,8 +321,7 @@ def update_ansible_result(
 
     Args:
         result: The Ansible result dictionary to update.
-        result_manager: The ANTA ResultManager containing test results from all runs.
-        log_stats: Dictionary containing {'error_count': int, 'warning_count': int} per unique_id.
+        summary: The summary dictionary created from `build_reports` containing aggregated test statistics and run/device mapping.
         strict_mode: If True, task fails on any test failure/error. If False, task changes.
                      Logged workflow errors always cause failure.
 
@@ -304,9 +332,9 @@ def update_ansible_result(
     total_log_errors = 0
     total_log_warnings = 0
 
-    for stats in log_stats.values():
-        total_log_errors += stats.get("error_count", 0)
-        total_log_warnings += stats.get("warning_count", 0)
+    for run_data in summary["runs"].values():
+        total_log_errors += run_data.get("error_count", 0)
+        total_log_warnings += run_data.get("warning_count", 0)
 
     log_message_parts = []
     if total_log_errors > 0:
@@ -322,27 +350,10 @@ def update_ansible_result(
     failed_by_logs = total_log_errors > 0
     result["failed"] = failed_by_logs
 
-    # Process ANTA test results
-    anta_test_summary = {
-        "total_tests": result_manager.get_total_results(),
-        "tests_passed": result_manager.get_total_results({"success"}),
-        "tests_failed": result_manager.get_total_results({"failure"}),
-        "tests_error": result_manager.get_total_results({"error"}),
-        "tests_skipped": result_manager.get_total_results({"skipped"}),
-        "tests_unset": result_manager.get_total_results({"unset"}),
-        "devices_with_test_failures": [],
-        "devices_with_test_errors": [],
-    }
-    for device, stat in result_manager.device_stats.items():
-        if stat.tests_failure_count:
-            anta_test_summary["devices_with_test_failures"].append(device)
-        if stat.tests_error_count:
-            anta_test_summary["devices_with_test_errors"].append(device)
-    result["anta_test_summary"] = anta_test_summary
-
     # Intermediate flags for test outcomes
-    has_test_issues = anta_test_summary["tests_failed"] > 0 or anta_test_summary["tests_error"] > 0
-    no_tests_run = anta_test_summary["total_tests"] == 0
+    test_stats = summary["test_stats"]
+    has_test_issues = test_stats["tests_failed"] > 0 or test_stats["tests_error"] > 0
+    no_tests_run = test_stats["total_tests"] == 0
 
     # Determine final status and test result message based on tests and strict_mode
     test_result_msg = ""
@@ -370,14 +381,14 @@ def update_ansible_result(
         # Tests ran, no issues found, and no log errors
         test_result_msg = "ANTA tests completed without reported failures/errors."
 
-    # Add log statistics if any were found
-    if log_stats:
-        result["anta_process_log_stats"] = dict(log_stats)
-
     # Combine messages
     final_msg = ". ".join(filter(None, [workflow_log_msg, test_result_msg]))
     if final_msg:
         result["msg"] = final_msg
+
+    # Populate final result dictionary directly from summary
+    result["anta_log_stats"] = summary["runs"]
+    result["anta_test_summary"] = summary["test_stats"]
 
     return result
 
@@ -594,7 +605,7 @@ def setup_parent_process_logging(log_queue: Queue, verbosity: int) -> None:
     setup_root_logger(unique_id="anta-workflow", log_queue=log_queue, verbosity=verbosity)
 
 
-def setup_child_process_logging(log_queue: Queue, verbosity: int) -> None:
+def setup_child_process_logging(log_queue: Queue, verbosity: int, unique_id: str) -> None:
     """
     Initialize logging for child processes.
 
@@ -604,22 +615,21 @@ def setup_child_process_logging(log_queue: Queue, verbosity: int) -> None:
     Args:
       log_queue: Shared queue used to send logs from this child process to the listener thread.
       verbosity: Ansible verbosity level used to set the appropriate log level.
+      unique_id: Identifier for the current run that will be prepended to all logs.
     """
-    # Generate a unique ID for this child process run
-    child_unique_id = f"anta-run-{str(uuid4())[:8]}"
-
     # Clear root handlers inherited from the parent process
     root_logger = logging.getLogger()
     root_logger.handlers.clear()
 
-    setup_root_logger(unique_id=child_unique_id, log_queue=log_queue, verbosity=verbosity)
+    setup_root_logger(unique_id=unique_id, log_queue=log_queue, verbosity=verbosity)
 
     # If logs_dir is provided, set up a per-child process log file that captures ALL logs at the verbosity level
     logs_dir = get(PLUGIN_ARGS, "runner.logs_dir")
     if logs_dir:
-        log_filename = f"{logs_dir}/{child_unique_id}.log"
+        # Prepend the global timestamp to help retrieve run files from the same plugin execution
+        log_filename = f"{logs_dir}/{TIMESTAMP}_{unique_id}.log"
         file_handler = logging.FileHandler(log_filename, delay=True)
-        file_formatter = logging.Formatter("%(asctime)s [%(levelname)s] [PID:%(process)d] %(name)s: %(message)s")
+        file_formatter = logging.Formatter(f"%(asctime)s [%(levelname)s] [PID:%(process)d] [{unique_id}] %(name)s: %(message)s")
         file_handler.setFormatter(file_formatter)
         root_logger.addHandler(file_handler)
 
