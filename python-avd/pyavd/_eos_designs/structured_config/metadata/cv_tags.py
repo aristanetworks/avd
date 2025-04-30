@@ -131,7 +131,7 @@ class CvTagsMixin(Protocol):
                 value = generate_tag.value
             elif generate_tag.data_path is not None:
                 value = get_v2(self.structured_config, generate_tag.data_path)
-                if isinstance(value, (AvdBase, AvdList, AvdIndexedList, AvdModel)):
+                if isinstance(value, (AvdList, AvdIndexedList, AvdModel)):
                     msg = (
                         f"'generate_cv_tags.device_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                         f"points to a list or dict. This is not supported for cloudvision tag data_paths."
@@ -158,7 +158,7 @@ class CvTagsMixin(Protocol):
                     value = generate_tag.value
                 elif generate_tag.data_path is not None:
                     value = get_v2(ethernet_interface, generate_tag.data_path)
-                    if isinstance(value, (AvdBase, AvdList, AvdIndexedList, AvdModel)):
+                    if isinstance(value, (AvdList, AvdIndexedList, AvdModel)):
                         msg = (
                             f"'generate_cv_tags.interface_tags[name={generate_tag.name}].data_path' ({generate_tag.data_path}) "
                             f"points to a variable of type {type(value).__name__}. This is not supported for cloudvision tag data_paths."
