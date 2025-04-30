@@ -40,7 +40,6 @@ l3leaf:
               uplinks: true
               uplink_interfaces:
                 - Ethernet1
-              mlag: false
         - name: UNDERLAY-MULTICAST-L3LEAF1B
           id: 2
           mgmt_ip: 192.168.200.106/24
@@ -48,7 +47,8 @@ l3leaf:
           underlay_multicast:
             pim_sm:
               enabled: true
-              uplinks: false
+              uplink_interfaces:
+                - Ethernet1
               mlag: true
     # Test multicast configuration with mlag pair sharing same vlan for l3 peering (4094)
     # Expected results:
@@ -67,18 +67,12 @@ l3leaf:
           mgmt_ip: 192.168.200.107/24
           uplink_switch_interfaces: [Ethernet3, Ethernet3]
           underlay_multicast:
-            static:
+            pim_sm:
               enabled: true
-              uplinks: true
-              uplink_interfaces:
-                - Ethernet1
-              mlag: false
         - name: UNDERLAY-MULTICAST-L3LEAF2B
           id: 4
           mgmt_ip: 192.168.200.108/24
           underlay_multicast:
-            static:
+            pim_sm:
               enabled: true
-              uplinks: false
-              mlag: true
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
