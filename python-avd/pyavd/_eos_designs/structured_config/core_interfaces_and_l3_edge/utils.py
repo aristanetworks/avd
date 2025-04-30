@@ -143,8 +143,7 @@ class UtilsMixin(Protocol):
         ):
             node_data = p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.hostname]
             # Port-channel
-            default_channel_id = int("".join(re.findall(r"\d", node_data.interfaces[0])))
-            portchannel_id = node_data.channel_id or default_channel_id
+            portchannel_id = self._get_channel_id(p2p_link, node_data)
 
             if peer not in p2p_link.port_channel.nodes_child_interfaces:
                 msg = f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces"
@@ -310,3 +309,16 @@ class UtilsMixin(Protocol):
             if p2p_link.include_in_underlay_protocol is True and self.shared_utils.underlay_ldp and default(p2p_link.mpls_ldp, True):  # noqa: FBT003
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
+
+    def _get_channel_id(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, node_data: dict) -> int:
+        """Returns a channel ID for one p2p_link."""
+        if node_data.channel_id:
+            return node_data.channel_id
+        if p2p_link.port_channel.channel_id_algorithm == "p2p_link_id":
+            if not p2p_link.id:
+                msg = f"'id' is not set for p2p link on {self.shared_utils.hostname} but the selected 'channel_id_algorithm' is 'p2p_link_id'."
+                raise AristaAvdInvalidInputsError(msg)
+            return p2p_link.id + p2p_link.port_channel._get("channel_id_offset", 0)
+
+        # channel_id_algorithm "first_port"
+        return int("".join(re.findall(r"\d", node_data.interfaces[0])))

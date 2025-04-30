@@ -1,0 +1,25 @@
+type: spine
+
+spine:
+  nodes:
+    - name: invalid-generate-cv-device-tags
+      id: 1
+      loopback_ipv4_pool: 10.10.255.0/24
+      bgp_as: 65000
+      rack: ABC567
+      l3_interfaces:
+        - name: Ethernet1
+          ip_address: 10.20.30.40/24
+          description: Test interface
+          peer: Someotherdevice
+          peer_ip: 10.20.30.50/24
+
+generate_cv_tags:
+  topology_hints: true
+  device_tags:
+    - name: bgp
+      value: myvalue
+
+expected_error_message: >-
+  The CloudVision tag name 'generate_cv_tags.device_tags[name=bgp] is invalid.
+  System Tags cannot be overridden. Try using a different name for this tag.
