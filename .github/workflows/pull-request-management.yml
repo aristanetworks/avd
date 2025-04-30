@@ -293,7 +293,7 @@ jobs:
           sh .github/check-git-status.sh
 
   molecule_eos_designs_minimum_requirements:
-    name: Validate eos_designs
+    name: Validate eos_designs with minimum requirements
     runs-on: ubuntu-latest
     needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
@@ -316,7 +316,7 @@ jobs:
           pip install uv
           uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > min_requirements.txt
           python -m pip install -r .github/requirements-ci-molecule.txt
-          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r min_requirements.txt
+          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r min_requirements.txt
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
