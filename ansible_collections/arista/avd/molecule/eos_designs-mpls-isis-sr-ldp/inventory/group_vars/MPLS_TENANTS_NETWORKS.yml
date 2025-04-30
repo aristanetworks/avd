@@ -13,7 +13,7 @@ tenants:
               storm-control broadcast level 10
           - number: 101
             structured_config:
-              comment: Test structured_config for subinterface
+              comment: Test structured_config for Ethernet subinterface
         endpoints:
           - id: 26
             nodes: ["SITE1-LER1"]
@@ -44,12 +44,12 @@ tenants:
           - number: 1000
             port_channel:
               raw_eos_cli: |-
-                storm-control broadcast level 10
+                storm-control broadcast level 15
           - number: 1001
           - number: 1002
             port_channel:
               structured_config:
-                comment: Test structured_config for subinterface
+                comment: Test structured_config for Port-Channel subinterface
           - number: 1003
           - number: 1004
         endpoints:

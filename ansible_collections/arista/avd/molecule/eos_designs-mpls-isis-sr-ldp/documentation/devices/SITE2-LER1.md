@@ -310,7 +310,7 @@ interface Ethernet7.100
    storm-control broadcast level 10
 !
 interface Ethernet7.101
-   !! Test structured_config for subinterface
+   !! Test structured_config for Ethernet subinterface
    no shutdown
    encapsulation vlan
       client dot1q 101 network client
@@ -394,7 +394,7 @@ interface Port-Channel4.1000
    !
    encapsulation vlan
       client dot1q 1000 network client
-   storm-control broadcast level 10
+   storm-control broadcast level 15
 !
 interface Port-Channel4.1001
    no shutdown
@@ -403,7 +403,7 @@ interface Port-Channel4.1001
       client dot1q 1001 network client
 !
 interface Port-Channel4.1002
-   !! Test structured_config for subinterface
+   !! Test structured_config for Port-Channel subinterface
    no shutdown
    !
    encapsulation vlan

@@ -40544,9 +40544,9 @@ class EosDesigns(EosDesignsRootModel):
 
                             _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem}, "raw_eos_cli": {"type": str}}
                             structured_config: EosCliConfigGen.PortChannelInterfacesItem
-                            """Custom structured config added on the port channel subinterface for eos_cli_config_gen."""
+                            """Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen."""
                             raw_eos_cli: str | None
-                            """EOS cli commands rendered on the port channel subinterface."""
+                            """EOS cli commands rendered on the Port-Channel subinterface."""
 
                             if TYPE_CHECKING:
 
@@ -40563,8 +40563,8 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        structured_config: Custom structured config added on the port channel subinterface for eos_cli_config_gen.
-                                        raw_eos_cli: EOS cli commands rendered on the port channel subinterface.
+                                        structured_config: Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                                        raw_eos_cli: EOS cli commands rendered on the Port-Channel subinterface.
 
                                     """
 
@@ -40577,11 +40577,16 @@ class EosDesigns(EosDesignsRootModel):
                         number: int
                         """Subinterface number."""
                         port_channel: PortChannel
-                        """Subclass of AvdModel."""
+                        """
+                        Settings to be applied to the Port-Channel subinterface connected to the service.
+
+                        Subclass of
+                        AvdModel.
+                        """
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
-                        """Custom structured config added on the subinterface for eos_cli_config_gen."""
+                        """Custom structured config added on the Ethernet subinterface for eos_cli_config_gen."""
                         raw_eos_cli: str | None
-                        """EOS cli commands rendered on the subinterface."""
+                        """EOS cli commands rendered on the Ethernet subinterface."""
 
                         if TYPE_CHECKING:
 
@@ -40601,9 +40606,13 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     number: Subinterface number.
-                                    port_channel: Subclass of AvdModel.
-                                    structured_config: Custom structured config added on the subinterface for eos_cli_config_gen.
-                                    raw_eos_cli: EOS cli commands rendered on the subinterface.
+                                    port_channel:
+                                       Settings to be applied to the Port-Channel subinterface connected to the service.
+
+                                       Subclass of
+                                       AvdModel.
+                                    structured_config: Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                                    raw_eos_cli: EOS cli commands rendered on the Ethernet subinterface.
 
                                 """
 

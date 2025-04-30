@@ -8049,12 +8049,14 @@ $defs:
                       - str
                     port_channel:
                       type: dict
+                      description: Settings to be applied to the Port-Channel subinterface
+                        connected to the service.
                       keys:
                         structured_config:
                           type: dict
                           relaxed_validation: true
-                          description: 'Custom structured config added on the port
-                            channel subinterface for eos_cli_config_gen.
+                          description: 'Custom structured config added on the Port-Channel
+                            subinterface for eos_cli_config_gen.
 
                             '
                           documentation_options:
@@ -8062,15 +8064,15 @@ $defs:
                           $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
                         raw_eos_cli:
                           type: str
-                          description: 'EOS cli commands rendered on the port channel
+                          description: 'EOS cli commands rendered on the Port-Channel
                             subinterface.
 
                             '
                     structured_config:
                       type: dict
                       relaxed_validation: true
-                      description: 'Custom structured config added on the subinterface
-                        for eos_cli_config_gen.
+                      description: 'Custom structured config added on the Ethernet
+                        subinterface for eos_cli_config_gen.
 
                         '
                       documentation_options:
@@ -8078,7 +8080,7 @@ $defs:
                       $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
                     raw_eos_cli:
                       type: str
-                      description: 'EOS cli commands rendered on the subinterface.
+                      description: 'EOS cli commands rendered on the Ethernet subinterface.
 
                         '
               endpoints:
