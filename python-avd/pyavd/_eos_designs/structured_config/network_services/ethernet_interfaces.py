@@ -288,8 +288,9 @@ class EthernetInterfacesMixin(Protocol):
                                 name=subif_name,
                                 peer_type="point_to_point_service",
                                 shutdown=False,
-                                eos_cli=subif.raw_eos_cli,
                             )
+                            if subif.raw_eos_cli:
+                                interface.eos_cli = subif.raw_eos_cli
                             interface.encapsulation_vlan.client.encapsulation = "dot1q"
                             interface.encapsulation_vlan.client.vlan = subif.number
                             interface.encapsulation_vlan.network.encapsulation = "client"
