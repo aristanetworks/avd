@@ -312,11 +312,13 @@ jobs:
       - name: Install pyavd and Ansible minimum requirements
         # Installing molecule and requirements in different pip command because of jsonschema>=3.2.0 in AVD is incompatible
         # with jsonschema>=4.9.1 in molecule when using pip compile with lowest
+        # Need to delete min_requirements afterwards otherwise git status is sad
         run: |
           pip install uv
-          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > min_requirements.txt
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > /tmp/pyavd/min_requirements.txt
+          cat /tmp/pyavd/min_requirements.txt
           python -m pip install -r .github/requirements-ci-molecule.txt
-          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r min_requirements.txt
+          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
       - name: Run molecule test
         working-directory: ansible_collections/arista/avd
         run: |
