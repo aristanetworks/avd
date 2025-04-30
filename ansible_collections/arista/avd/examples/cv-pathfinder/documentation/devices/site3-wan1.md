@@ -443,7 +443,7 @@ interface Dps1
 interface Ethernet1
    description L2_site3-leaf1_Ethernet1
    no shutdown
-   mtu 9214
+   mtu 9194
    no switchport
 !
 interface Ethernet1.42

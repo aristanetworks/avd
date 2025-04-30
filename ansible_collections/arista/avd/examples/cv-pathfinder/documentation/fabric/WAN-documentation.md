@@ -17,20 +17,20 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| WAN | spine | inet-cloud | 192.168.17.31/24 | - | Provisioned | - |
-| WAN | spine | mpls-cloud | 192.168.17.30/24 | - | Provisioned | - |
-| WAN | wan_rr | pf1 | 192.168.17.10/24 | - | Provisioned | - |
-| WAN | wan_rr | pf2 | 192.168.17.11/24 | - | Provisioned | - |
-| WAN | l3leaf | site1-border1 | 192.168.17.14/24 | - | Provisioned | - |
-| WAN | l3leaf | site1-border2 | 192.168.17.15/24 | - | Provisioned | - |
-| WAN | wan_router | site1-wan1 | 192.168.17.12/24 | - | Provisioned | - |
-| WAN | wan_router | site1-wan2 | 192.168.17.13/24 | - | Provisioned | - |
-| WAN | l3leaf | site2-leaf1 | 192.168.17.18/24 | - | Provisioned | - |
-| WAN | l3leaf | site2-leaf2 | 192.168.17.19/24 | - | Provisioned | - |
-| WAN | wan_router | site2-wan1 | 192.168.17.16/24 | - | Provisioned | - |
-| WAN | wan_router | site2-wan2 | 192.168.17.17/24 | - | Provisioned | - |
-| WAN | l2leaf | site3-leaf1 | 192.168.17.21/24 | - | Provisioned | - |
-| WAN | wan_router | site3-wan1 | 192.168.17.20/24 | - | Provisioned | - |
+| WAN | spine | inet-cloud | 192.168.17.31/24 | vEOS-lab | Provisioned | - |
+| WAN | spine | mpls-cloud | 192.168.17.30/24 | vEOS-lab | Provisioned | - |
+| WAN | wan_rr | pf1 | 192.168.17.10/24 | CloudEOS | Provisioned | - |
+| WAN | wan_rr | pf2 | 192.168.17.11/24 | CloudEOS | Provisioned | - |
+| WAN | l3leaf | site1-border1 | 192.168.17.14/24 | vEOS-lab | Provisioned | - |
+| WAN | l3leaf | site1-border2 | 192.168.17.15/24 | vEOS-lab | Provisioned | - |
+| WAN | wan_router | site1-wan1 | 192.168.17.12/24 | CloudEOS | Provisioned | - |
+| WAN | wan_router | site1-wan2 | 192.168.17.13/24 | CloudEOS | Provisioned | - |
+| WAN | l3leaf | site2-leaf1 | 192.168.17.18/24 | vEOS-lab | Provisioned | - |
+| WAN | l3leaf | site2-leaf2 | 192.168.17.19/24 | vEOS-lab | Provisioned | - |
+| WAN | wan_router | site2-wan1 | 192.168.17.16/24 | CloudEOS | Provisioned | - |
+| WAN | wan_router | site2-wan2 | 192.168.17.17/24 | CloudEOS | Provisioned | - |
+| WAN | l2leaf | site3-leaf1 | 192.168.17.21/24 | vEOS-lab | Provisioned | - |
+| WAN | wan_router | site3-wan1 | 192.168.17.20/24 | CloudEOS | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
