@@ -115,6 +115,7 @@ ARGUMENT_SPEC = {
 }
 
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
+# TODO: Consider aggregating some of them into a SHARED_VARS dict or use multiprocessing.Manager()
 STRUCTURED_CONFIGS: dict[str, dict[str, Any]] | None = None
 MINIMAL_STRUCTURED_CONFIGS: dict[str, MinimalStructuredConfig] | None = None
 PLUGIN_ARGS: dict[str, Any] | None = None
@@ -216,7 +217,16 @@ class ActionModule(ActionBase):
 
 
 def run_anta(devices: list[str]) -> tuple[str, list[str], ResultManager]:
-    """Run ANTA."""
+    """
+    Run ANTA for the provided list of devices.
+
+    Args:
+      devices: The targeted devices for this run.
+
+    Returns:
+      tuple: A tuple with the unique ID, the list of devices and the ResultManager
+             containing test results of this run.
+    """
     # Generate a unique ID for this child process run
     unique_id = f"anta-run-{str(uuid4())[:8]}"
 
@@ -387,7 +397,7 @@ def update_ansible_result(result: dict[str, Any], summary: dict[str, Any], *, st
         result["msg"] = final_msg
 
     # Populate final result dictionary directly from summary
-    result["anta_log_stats"] = summary["runs"]
+    result["anta_summary"] = summary["runs"]
     result["anta_test_summary"] = summary["test_stats"]
 
     return result
