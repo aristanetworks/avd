@@ -3,6 +3,9 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+eos_cli: '! TEST RAW_EOS_CLI
+
+  '
 hostname: isis-system-id-format-using-node-id
 ip_igmp_snooping:
   globally_enabled: true
