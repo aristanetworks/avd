@@ -158,3 +158,22 @@ class CVTimeOuts:
 
     workspace_build_timeout: float = 300.0
     change_control_creation_timeout: float = 300.0
+
+
+@dataclass
+class DuplicatedSystemMacAddress:
+    unset_or_mixed_serial_number: dict[str, list[CVDevice]] = field(default_factory=dict)
+    """Dictionary holding CVDevices with duplicated system_mac_address and at least one device with unset serial_number."""
+    set_serial_number: dict[str, list[CVDevice]] = field(default_factory=dict)
+    """Dictionary holding CVDevices with duplicated system_mac_address and set serial_number."""
+
+
+@dataclass
+class DuplicatedDevices:
+    system_mac_address: DuplicatedSystemMacAddress = field(default_factory=DuplicatedSystemMacAddress)
+    """Object holding CVDevices with duplicated system_mac_address."""
+    serial_number: dict[str, list[CVDevice]] = field(default_factory=dict)
+    """Dictionary holding CVDevices with duplicated serial_number."""
+
+    def detected(self) -> bool:
+        return any([self.serial_number, self.system_mac_address.unset_or_mixed_serial_number, self.system_mac_address.set_serial_number])
