@@ -1,0 +1,91 @@
+---
+# Testing autovpn empty load balance policy
+wan_mode: autovpn
+# Disabling underlay for tests
+underlay_routing_protocol: none
+
+bgp_as: 65000
+
+generate_cv_tags:
+  topology_hints: true
+  interface_tags:
+    - name: myname
+      value: myvalue
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.130.0/24
+      - 192.168.131.0/24
+
+wan_stun_dtls_disable: true
+
+wan_ipsec_profiles:
+  control_plane:
+    ike_policy_name: AUTOVPN-IKE
+    sa_policy_name: AUTOVPN-SA
+    profile_name: AUTOVPN
+    shared_key: ABCDEF1234567890
+
+default_node_types:
+  - node_type: wan_rr
+    match_hostnames:
+      - autovpn-cv-interface-tags-test
+
+wan_rr:
+  defaults:
+    loopback_ipv4_pool: 192.168.31.0/24
+    vtep_loopback_ipv4_pool: 192.168.131.0/24
+    data_plane_cpu_allocation_max: 2
+  nodes:
+    - name: autovpn-cv-interface-tags-test
+      id: 3
+      wan_role: client
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: NOC
+          ip_address: dhcp
+      l3_port_channels:
+        - name: Port-Channel10
+          ip_address: dhcp
+
+wan_path_groups:
+  - name: MPLS
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    id: 100
+  - name: NET
+    id: 102
+
+wan_carriers:
+  - name: NOC
+    path_group: NET
+    trusted: true
+
+wan_virtual_topologies:
+  vrfs:
+    - name: default
+      policy: DEFAULT-AUTOVPN-POLICY
+      wan_vni: 1
+  policies:
+    - name: DEFAULT-AUTOVPN-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: IT
+          path_groups:
+            - names: [MPLS]
+              preference: preferred
+            - names: [INET]
+              preference: alternate
+    - name: MISSING-LOAD-POLICY
+      default_virtual_topology:
+        drop_unmatched: true
+      application_virtual_topologies:
+        - application_profile: IT
+
+application_classification:
+  application_profiles:
+    - name: IT
