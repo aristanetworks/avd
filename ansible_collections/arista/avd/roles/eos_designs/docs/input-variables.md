@@ -179,8 +179,6 @@ A stale entry is an entry that was not accessed during the run.
 
     To reuse a freed ID, first remove the old device and run AVD. Then add the new device and rerun AVD.
 
-The pool manager stores data in a YAML file per fabric. The default path is `<root_dir>/intended/data/<fabric_name>-ids.yml`
-
 !!! tip
     It is possible to override the automatic assignments by editing the data files manually.
     Just make sure to have a backup or use source control like Git and rerun AVD after changing the file.
