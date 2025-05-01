@@ -185,6 +185,10 @@ The pool manager stores data in a YAML file per fabric. The default path is `<ro
     It is possible to override the automatic assignments by editing the data files manually.
     Just make sure to have a backup or use source control like Git and rerun AVD after changing the file.
 
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-numbering.md
+--8<--
+
 ## Node Type Variables
 
 The following tables provide information on the default node types that are pre-defined in `eos_designs`.
