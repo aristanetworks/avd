@@ -6,7 +6,7 @@
 
 # Arista AVD - Architect, Validate, Deploy
 
-<center><img src="docs/_media/avd-diagram.png" alt="Arista AVD Overview" width="400"/></center>
+<center><img src="docs/_media/avd-logo.png" alt="Arista AVD Overview" width="400"/></center>
 
 Arista AVD is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
