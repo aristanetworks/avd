@@ -69,7 +69,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
-        # TODO: The part after and is already checked in self.mlag
+        # Note: self.node_group_is_primary_and_peer_hostname is always set when self.mlag is true, so this is just to make type-checker happy.
         if self.mlag and self.node_group_is_primary_and_peer_hostname is not None:
             return "primary" if self.node_group_is_primary_and_peer_hostname[0] else "secondary"
 
@@ -149,12 +149,12 @@ class MlagMixin(Protocol):
         """
         if self.mlag_role == "primary":
             if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids"
+                msg = f"'id' is required to compute MLAG ids"
                 raise AristaAvdInvalidInputsError(msg)
             return {"primary": self.id, "secondary": self.mlag_peer_id}
         if self.mlag_role == "secondary":
             if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required to compute MLAG ids"
+                msg = f"'id' is required to compute MLAG ids"
                 raise AristaAvdInvalidInputsError(msg)
             return {"primary": self.mlag_peer_id, "secondary": self.id}
         return None
@@ -162,7 +162,7 @@ class MlagMixin(Protocol):
     @cached_property
     def mlag_port_channel_id(self: SharedUtilsProtocol) -> int:
         if not self.mlag_interfaces:
-            msg = f"'mlag_interfaces' not set on '{self.hostname}."
+            msg = f"'mlag_interfaces' not set"
             raise AristaAvdInvalidInputsError(msg)
         default_mlag_port_channel_id = int("".join(findall(r"\d", self.mlag_interfaces[0])))
         return default(self.node_config.mlag_port_channel_id, default_mlag_port_channel_id)
@@ -201,16 +201,6 @@ class MlagMixin(Protocol):
         if self.use_separate_peer_group_for_mlag_vrfs:
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
-
-    @cached_property
-    def mlag_dual_primary_detection(self: SharedUtilsProtocol) -> bool:
-        if self.node_config.mlag_dual_primary_detection:
-            if not self.node_config.mgmt_ip:
-                msg = f"'mlag_dual_primary_detection' is enabled but 'mgmt_ip' is not configured on {self.hostname}."
-                raise AristaAvdInvalidInputsError(msg)
-
-            return True
-        return False
 
     def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
         """
