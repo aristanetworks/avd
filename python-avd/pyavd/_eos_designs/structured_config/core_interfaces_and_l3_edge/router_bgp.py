@@ -42,7 +42,7 @@ class RouterBgpMixin(Protocol):
                     remote_as=p2p_link_data["peer_bgp_as"],
                     peer=p2p_link_data["peer"],
                     description=p2p_link_data["peer"],
-                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name if p2p_link.include_in_underlay_protocol else Undefined,
+                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                 )
                 continue
 
