@@ -1,6 +1,5 @@
 # Project information
-site_name: Arista AVD
-site_author: Arista Ansible Team
+site_author: Arista AVD Team
 site_description: Arista AVD documentation
 copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
@@ -15,7 +14,7 @@ repo_url: https://github.com/aristanetworks/avd
 use_directory_urls: false
 edit_uri: edit/devel/
 theme:
-  logo: docs/_media/arista-logo.png
+  logo: docs/_media/arista-avd-logo.png
   name: material
   features:
     - content.code.annotate
