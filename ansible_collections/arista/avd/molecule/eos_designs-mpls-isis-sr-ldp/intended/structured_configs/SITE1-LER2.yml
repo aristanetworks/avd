@@ -248,10 +248,6 @@ port_channel_interfaces:
 - name: Port-Channel8
   description: CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
   shutdown: false
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0101
-    route_target: 03:03:02:02:01:01
-  lacp_id: 0303.0202.0101
   switchport:
     enabled: false
 - name: Port-Channel8.111
@@ -262,9 +258,6 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 111
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0111
-    route_target: 03:03:02:02:01:11
 - name: Port-Channel8.222
   encapsulation_vlan:
     client:
@@ -273,9 +266,6 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 222
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0222
-    route_target: 03:03:02:02:02:22
 - name: Port-Channel8.333
   encapsulation_vlan:
     client:
@@ -284,9 +274,6 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 434
-  evpn_ethernet_segment:
-    identifier: 0000:0000:0303:0202:0333
-    route_target: 03:03:02:02:03:33
 router_bfd:
   multihop:
     interval: 300
@@ -331,56 +318,7 @@ router_bgp:
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE2-LER1
     description: SITE2-LER1_Loopback0
-  vlans:
-  - id: 10
-    tenant: TENANT_A
-    rd: 100.70.0.6:10010
-    route_targets:
-      both:
-      - 65000:10010
-    redistribute_routes:
-    - learned
-  - id: 20
-    tenant: TENANT_A
-    rd: 100.70.0.6:123456
-    route_targets:
-      both:
-      - 65000:123456
-    redistribute_routes:
-    - learned
-  - id: 2020
-    tenant: TENANT_B
-    rd: 100.70.0.6:22020
-    route_targets:
-      both:
-      - 65000:22020
-    redistribute_routes:
-    - learned
-  vpws:
-  - name: TENANT_B
-    rd: 100.70.0.6:2000
-    route_targets:
-      import_export: 65000:2000
-    pseudowires:
-    - name: TEN_B_site3_site5_eline_vlan_based_1000
-      id_local: 31000
-      id_remote: 51000
-    - name: TEN_B_site3_site5_eline_vlan_based_1001
-      id_local: 31001
-      id_remote: 51001
-    - name: TEN_B_site3_site5_eline_vlan_based_1002
-      id_local: 31002
-      id_remote: 51002
-    - name: TEN_B_site3_site5_eline_vlan_based_1003
-      id_local: 31003
-      id_remote: 51003
-    - name: TEN_B_site3_site5_eline_vlan_based_1004
-      id_local: 31004
-      id_remote: 51004
-  address_family_evpn:
-    neighbor_default:
-      encapsulation: mpls
-      next_hop_self_source_interface: Loopback0
+  address_family_rtc:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: true
@@ -394,28 +332,7 @@ router_bgp:
       activate: true
     neighbor_default_encapsulation_mpls_next_hop_self:
       source_interface: Loopback0
-  address_family_vpn_ipv6:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
-    neighbor_default_encapsulation_mpls_next_hop_self:
-      source_interface: Loopback0
   vrfs:
-  - name: TENANT_B_INTRA
-    rd: 100.70.0.6:19
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '65000:19'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '65000:19'
-    router_id: 100.70.0.6
-    redistribute:
-      connected:
-        enabled: true
   - name: TENANT_B_WAN
     rd: 100.70.0.6:20
     route_targets:
@@ -423,14 +340,8 @@ router_bgp:
       - address_family: vpn-ipv4
         route_targets:
         - '65000:20'
-      - address_family: vpn-ipv6
-        route_targets:
-        - '65000:20'
       export:
       - address_family: vpn-ipv4
-        route_targets:
-        - '65000:20'
-      - address_family: vpn-ipv6
         route_targets:
         - '65000:20'
     router_id: 100.70.0.6

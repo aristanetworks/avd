@@ -5,30 +5,24 @@ l3leaf:
     loopback_ipv4_pool: 169.254.102.0/24
     vtep_loopback_ipv4_pool: 169.253.103.0/24
     virtual_router_mac_address: 00:1c:73:00:00:99
+    bgp_as: 65233
   nodes:
-    - name: evpn_gateway_all_active_mh_gw_without_enabled_d_path
+    - name: evpn_gateway_all_active_mh_gw_enabled_d_path_false
       id: 1
       platform: vEOS
       mlag: false
-      bgp_as: 65233
-      mgmt_ip: 192.168.0.204/24
+      mgmt_ip: 192.168.0.205/24
       evpn_gateway:
         all_active_multihoming:
           enabled: true
-          evpn_domain_id_local: "65200:2"
-          evpn_domain_id_remote: "65100:1"
+          enable_d_path: false
+          evpn_domain_id_local: "65200:1"
+          evpn_domain_id_remote: "65100:2"
           evpn_ethernet_segment:
             identifier: 0000:0001:0001:0000:0509
             rt_import: 00:00:00:00:07:09
-        evpn_l2:
-          enabled: true
         evpn_l3:
           enabled: true
-          inter_domain: true
-        remote_peers:
-          - hostname: DCI_TEST
-            ip_address: 192.168.100.10
-            bgp_as: 65002
 
 tenants:
   - name: TENANT1

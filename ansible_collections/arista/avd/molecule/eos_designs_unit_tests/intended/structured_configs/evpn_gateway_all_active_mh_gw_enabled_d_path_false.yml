@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: evpn_gateway_all_active_mh_gw_without_enabled_d_path
+hostname: evpn_gateway_all_active_mh_gw_enabled_d_path_false
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -266,7 +266,7 @@ vrfs:
   tenant: TENANT1
 vxlan_interface:
   vxlan1:
-    description: evpn_gateway_all_active_mh_gw_without_enabled_d_path_VTEP
+    description: evpn_gateway_all_active_mh_gw_enabled_d_path_false_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
