@@ -7,9 +7,9 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import TYPE_CHECKING
 
-from pyavd._utils import default
+from pyavd._utils import AvdStringFormatter, default
 
-from .base_classes import AssignmentKey, Pool, PoolAssignment, PoolCollection, PoolKey
+from .base_classes import AssignmentKey, Pool, PoolAssignment, PoolCollection
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
@@ -20,30 +20,26 @@ class NodeIdAssignmentKey(AssignmentKey):
     hostname: str
 
 
-@dataclass(frozen=True)
-class NodeIdPoolKey(PoolKey):
-    fabric_name: str
-    dc_name: str | None
-    pod_name: str | None
-    type: str
-
-
 @dataclass()
-class NodeIdPoolCollection(PoolCollection[NodeIdPoolKey, NodeIdAssignmentKey, int]):
+class NodeIdPoolCollection(PoolCollection[NodeIdAssignmentKey, int]):
     pools_key: str = "node_id_pools"
-    pools: dict[PoolKey, Pool[NodeIdPoolKey, NodeIdAssignmentKey, int]] = field(default_factory=dict)
-    pool_cls: type[Pool[NodeIdPoolKey, NodeIdAssignmentKey, int]] = Pool[NodeIdPoolKey, NodeIdAssignmentKey, int]
-    pool_key_cls: type[NodeIdPoolKey] = NodeIdPoolKey
+    pools: dict[str, Pool[NodeIdAssignmentKey, int]] = field(default_factory=dict)
+    pool_cls: type[Pool[NodeIdAssignmentKey, int]] = Pool[NodeIdAssignmentKey, int]
     assignment_cls: type[PoolAssignment[NodeIdAssignmentKey, int]] = PoolAssignment[NodeIdAssignmentKey, int]
     assignment_key_cls: type[NodeIdAssignmentKey] = NodeIdAssignmentKey
     value_type: type = int
     min_value: int = 1
 
     @staticmethod
-    def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> NodeIdPoolKey:
+    def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
         """Returns the pool key to use for this device."""
-        return NodeIdPoolKey(
-            fabric_name=shared_utils.fabric_name, dc_name=shared_utils.inputs.dc_name, pod_name=shared_utils.inputs.pod_name, type=shared_utils.type
+        return AvdStringFormatter().format(
+            shared_utils.inputs.fabric_numbering_node_id_pool,
+            fabric_name=shared_utils.fabric_name,
+            dc_name=shared_utils.inputs.dc_name,
+            pod_name=shared_utils.inputs.pod_name,
+            type=shared_utils.type,
+            rack=shared_utils.node_config.rack,
         )
 
     @staticmethod

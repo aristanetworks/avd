@@ -20,7 +20,6 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 T_ValueType = TypeVar("T_ValueType", int, str)
-T_PoolKeyType = TypeVar("T_PoolKeyType", bound="PoolKey")
 T_AssignmentKeyType = TypeVar("T_AssignmentKeyType", bound="AssignmentKey")
 
 FILE_HEADER = """\
@@ -30,17 +29,8 @@ FILE_HEADER = """\
 
 
 @dataclass(frozen=True)
-class PoolKey:
-    """Base class for Pool Key classes. Kept separate from AssignmentKey base class to provide stronger type checking with the TypeVar T_PoolKeyType."""
-
-    @classmethod
-    def from_dict(cls, data: dict) -> Self:
-        return cls(**data)
-
-
-@dataclass(frozen=True)
 class AssignmentKey:
-    """Base class for Assignment Key classes. Kept separate from PoolKey base class to provide stronger type checking with the TypeVar T_AssignmentKeyType."""
+    """Base class for Assignment Key classes."""
 
     @classmethod
     def from_dict(cls, data: dict) -> Self:
@@ -58,11 +48,11 @@ class PoolAssignment(Generic[T_AssignmentKeyType, T_ValueType]):
 
 
 @dataclass
-class Pool(Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
-    """One Pool of resources indexed by T_PoolKeyType. Currently only supporting a pool of Integers."""
+class Pool(Generic[T_AssignmentKeyType, T_ValueType]):
+    """One Pool of resources indexed by T_AssignmentKeyType. Currently only supporting a pool of Integers."""
 
-    collection: PoolCollection[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]
-    pool_key: T_PoolKeyType
+    collection: PoolCollection[T_AssignmentKeyType, T_ValueType]
+    pool_key: str
     assignments: dict[T_AssignmentKeyType, PoolAssignment[T_AssignmentKeyType, T_ValueType]]
 
     def _is_value_available(self, value: T_ValueType) -> bool:
@@ -77,7 +67,7 @@ class Pool(Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
 
     def _next_available(self) -> T_ValueType:
         if self.collection.value_type is int:
-            collection = cast("PoolCollection[T_PoolKeyType, T_AssignmentKeyType, int]", self.collection)
+            collection = cast("PoolCollection[T_AssignmentKeyType, int]", self.collection)
             assignments = cast("dict[T_AssignmentKeyType, PoolAssignment[T_AssignmentKeyType, int]]", self.assignments)
             existing_ids = {assignment.value for assignment in assignments.values()}
             # Create a filterfalse generator from a range starting from the min_value, excluding the values that are already assigned.
@@ -132,26 +122,20 @@ class Pool(Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
     def as_dict(self) -> dict:
         """Returns a dict representing the object."""
         return {
-            "pool_key": asdict(
-                self.pool_key,
-            ),
+            "pool_key": self.pool_key,
             "assignments": natural_sort([assignment.as_dict() for assignment in self.assignments.values()], sort_key="value"),
         }
 
     @classmethod
-    def from_dict(
-        cls, data: dict, collection: PoolCollection[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]
-    ) -> Pool[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]:
+    def from_dict(cls, data: dict, collection: PoolCollection[T_AssignmentKeyType, T_ValueType]) -> Pool[T_AssignmentKeyType, T_ValueType]:
         """Returns pool from file data."""
         if not isinstance(data, dict):
             msg = f"Invalid type for 'pool' '{type(data)}'. Expected a dict."
             raise TypeError(msg)
 
-        if not isinstance(pool_key_dict := data["pool_key"], dict):
-            msg = f"Invalid type for 'pool_key' '{type(pool_key_dict)}'. Expected a dict."
+        if not isinstance(pool_key := data["pool_key"], str):
+            msg = f"Invalid type for 'pool_key' '{type(pool_key)}'. Expected a str."
             raise TypeError(msg)
-
-        pool_key = collection.pool_key_cls.from_dict(pool_key_dict)
 
         if not isinstance(pool_assignments := data["assignments"], list):
             msg = f"Invalid type for 'assignments' '{type(pool_assignments)}'. Expected a list."
@@ -182,9 +166,9 @@ class Pool(Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
 
 
 @dataclass
-class PoolCollection(ABC, Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
+class PoolCollection(ABC, Generic[T_AssignmentKeyType, T_ValueType]):
     """
-    Collection of similar Pool instances indexed by a T_PoolKeyType.
+    Collection of similar Pool instances indexed by a str.
 
     We will maintain a collection of pools per file.
     """
@@ -192,9 +176,8 @@ class PoolCollection(ABC, Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueTyp
     pools_file: Path
     # Using field(init=False) on fields that are expected to have a default value set on the subclass.
     pools_key: str = field(init=False)
-    _pools: dict[T_PoolKeyType, Pool[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]] = field(init=False)
-    pool_cls: type[Pool[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]] = field(init=False)
-    pool_key_cls: type[T_PoolKeyType] = field(init=False)
+    _pools: dict[str, Pool[T_AssignmentKeyType, T_ValueType]] = field(init=False)
+    pool_cls: type[Pool[T_AssignmentKeyType, T_ValueType]] = field(init=False)
     assignment_cls: type[PoolAssignment[T_AssignmentKeyType, T_ValueType]] = field(init=False)
     assignment_key_cls: type[T_AssignmentKeyType] = field(init=False)
     value_type: type[T_ValueType] = field(init=False)
@@ -219,14 +202,14 @@ class PoolCollection(ABC, Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueTyp
             msg = f"An error occurred during parsing of '{self.pools_file}': {e.__class__.__name__}: {e}"
             raise TypeError(msg) from e
 
-    def _pools_from_list(self, data: list) -> dict[T_PoolKeyType, Pool[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]]:
+    def _pools_from_list(self, data: list) -> dict[str, Pool[T_AssignmentKeyType, T_ValueType]]:
         """Returns pools from file data."""
         if not isinstance(data, list):
             msg = f"Invalid type '{type(data)}'. Expected a list."
             raise TypeError(msg)
         return {pool.pool_key: pool for item in data if (pool := self.pool_cls.from_dict(item, collection=self))}
 
-    def get_pool(self, pool_key: T_PoolKeyType) -> Pool[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]:
+    def get_pool(self, pool_key: str) -> Pool[T_AssignmentKeyType, T_ValueType]:
         """
         Returns the pool for the given key if found in the collection.
 
@@ -241,7 +224,7 @@ class PoolCollection(ABC, Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueTyp
     def __remove_stale_assignments(self) -> None:
         """Remove stale assignments from all pools in the collection and remove empty pools afterwards."""
         len_before = len(self._pools)
-        non_empty_pools: dict[T_PoolKeyType, Pool] = {}
+        non_empty_pools: dict[str, Pool] = {}
         for pool_key, pool in self._pools.items():
             pool._remove_stale_assignments()
             if pool.assignments:
@@ -281,8 +264,8 @@ class PoolCollection(ABC, Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueTyp
 
     @staticmethod
     @abstractmethod
-    def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> T_PoolKeyType:
-        """Returns the pool key to use for tthis device."""
+    def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
+        """Returns the pool key to use for this device."""
 
     @staticmethod
     @abstractmethod

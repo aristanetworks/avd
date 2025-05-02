@@ -5,8 +5,4 @@ node_id_pools:
   - key:
       hostname: fabric_numbering_node_id
     value: 1
-  pool_key:
-    dc_name: null
-    fabric_name: EOS_DESIGNS_UNIT_TESTS
-    pod_name: null
-    type: spine
+  pool_key: fabric_name=EOS_DESIGNS_UNIT_TESTS/type=spine
