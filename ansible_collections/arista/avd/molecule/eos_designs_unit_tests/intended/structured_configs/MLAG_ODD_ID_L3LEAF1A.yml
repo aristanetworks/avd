@@ -88,11 +88,7 @@ queue_monitor_length:
     high: 100
     low: 10
   log: 100
-  cpu:
-    thresholds:
-      high: 200000
-      low: 100000
-  tx_latency: true
+  notifying: true
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
