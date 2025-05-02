@@ -5859,6 +5859,7 @@ keys:
           description: IPv4 or IPv6 address for DNS server.
         vrf:
           description: VRF Name.
+          required: true
           type: str
           convert_types:
           - int
