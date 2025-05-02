@@ -4,11 +4,11 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Arista Validated Designs
+# Arista AVD - Architect, Validate, Deploy
 
 <center><img src="docs/_media/avd-diagram.svg" alt="Arista AVD Overview" width="800"/></center>
 
-Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
+Arista AVD is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
 **[Documentation](https://avd.arista.com)**
 

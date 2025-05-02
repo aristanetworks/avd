@@ -21,7 +21,7 @@ authors:
 ### OPTIONAL but strongly recommended
 
 # A short summary description of the collection
-description: Ansible Roles & Modules to support Arista Validated Designs and Deployment Guides
+description: Ansible Roles & Modules to support Arista AVD
 
 # The path to the license file for the collection. This path is relative to the root of the collection. This key is
 # mutually exclusive with 'license'
