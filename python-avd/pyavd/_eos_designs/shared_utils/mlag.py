@@ -149,12 +149,12 @@ class MlagMixin(Protocol):
         """
         if self.mlag_role == "primary":
             if self.id is None:
-                msg = f"'id' is required to compute MLAG ids"
+                msg = "'id' is required to compute MLAG ids"
                 raise AristaAvdInvalidInputsError(msg)
             return {"primary": self.id, "secondary": self.mlag_peer_id}
         if self.mlag_role == "secondary":
             if self.id is None:
-                msg = f"'id' is required to compute MLAG ids"
+                msg = "'id' is required to compute MLAG ids"
                 raise AristaAvdInvalidInputsError(msg)
             return {"primary": self.mlag_peer_id, "secondary": self.id}
         return None
@@ -162,7 +162,7 @@ class MlagMixin(Protocol):
     @cached_property
     def mlag_port_channel_id(self: SharedUtilsProtocol) -> int:
         if not self.mlag_interfaces:
-            msg = f"'mlag_interfaces' not set"
+            msg = "'mlag_interfaces' not set"
             raise AristaAvdInvalidInputsError(msg)
         default_mlag_port_channel_id = int("".join(findall(r"\d", self.mlag_interfaces[0])))
         return default(self.node_config.mlag_port_channel_id, default_mlag_port_channel_id)
