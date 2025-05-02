@@ -65,8 +65,6 @@ mlag_configuration:
   local_interface: Vlan4094
   peer_address: 10.10.255.3
   peer_link: Port-Channel5
-  reload_delay_mlag: '300'
-  reload_delay_non_mlag: '330'
 port_channel_interfaces:
 - name: Port-Channel5
   description: MLAG_MLAG_ODD_ID_L3LEAF1B_Port-Channel5
@@ -84,6 +82,17 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+queue_monitor_length:
+  enabled: true
+  default_thresholds:
+    high: 100
+    low: 10
+  log: 100
+  cpu:
+    thresholds:
+      high: 200000
+      low: 100000
+  tx_latency: true
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
