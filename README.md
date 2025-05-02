@@ -8,7 +8,7 @@
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/avd) ![License](https://img.shields.io/github/license/aristanetworks/avd)
 
-<img src="docs/_media/avd-logo.png" alt="Arista AVD" width="300"/>
+<img src="docs/_media/avd-logo.png" alt="Arista AVD" width="150"/>
 
 Arista AVD is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
