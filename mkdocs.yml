@@ -15,7 +15,7 @@ repo_url: https://github.com/aristanetworks/avd
 use_directory_urls: false
 edit_uri: edit/devel/
 theme:
-  logo: docs/_media/arista-avd-logo.png
+  logo: docs/_media/arista-logo.png
   name: material
   features:
     - content.code.annotate
