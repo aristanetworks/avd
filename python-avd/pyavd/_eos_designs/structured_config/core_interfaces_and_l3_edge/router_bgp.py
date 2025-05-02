@@ -62,7 +62,7 @@ class RouterBgpMixin(Protocol):
             )
 
             # For the combination of underlay-routing, rfc5549 and ebgp we will add the neighbor using the regular logic above,
-            # but since it is also included in the underlay peer group whichis configured for rfc5549,
+            # but since it is also included in the underlay peer group which is configured for rfc5549,
             # we need to override the nexthop behavior for this neighbor.
             if self.inputs.underlay_rfc5549 and p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol == "ebgp":
                 address_family_ipv4_neighbor = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.NeighborsItem(
