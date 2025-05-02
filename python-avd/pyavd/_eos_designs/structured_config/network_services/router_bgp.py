@@ -211,7 +211,12 @@ class RouterBgpMixin(Protocol):
                 if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
                     bgp_vrf.redistribute.ospf.enabled = True
 
-                if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
+                if (
+                    bgp_vrf.neighbors
+                    and self.inputs.bgp_update_wait_install
+                    and self.shared_utils.platform_settings.feature_support.hardware_features
+                    and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
+                ):
                     bgp_vrf.updates.wait_install = True
 
                 # Skip adding the VRF if we have no config.

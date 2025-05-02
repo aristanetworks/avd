@@ -60,7 +60,10 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             return
 
         platform_bgp_update_wait_for_convergence = self.shared_utils.platform_settings.feature_support.bgp_update_wait_for_convergence
-        platform_bgp_update_wait_install = self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
+        platform_bgp_update_wait_install = (
+            self.shared_utils.platform_settings.feature_support.hardware_features
+            and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
+        )
 
         if self.shared_utils.is_wan_router:
             # Special defaults for WAN routers
@@ -288,8 +291,15 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
     @structured_config_contributor
     def queue_monitor_length(self) -> None:
-        """queue_monitor_length set based on queue_monitor_length data-model and platform_settings.feature_support.queue_monitor_length_notify fact."""
-        if not self.inputs.queue_monitor_length:
+        """
+        Set queue_monitor_length.
+
+        Contributing data sources:
+          - queue_monitor_length data-model
+          - platform_settings.feature_support.hardware_features fact
+          - platform_settings.feature_support.queue_monitor_length_notify fact.
+        """
+        if not (self.shared_utils.platform_settings.feature_support.hardware_features and self.inputs.queue_monitor_length):
             return
 
         # Remove notifying key if not supported by the platform settings.
@@ -410,7 +420,9 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
     @structured_config_contributor
     def queue_monitor_streaming(self) -> None:
-        """queue_monitor_streaming set based on queue_monitor_streaming data-model."""
+        """queue_monitor_streaming set based on queue_monitor_streaming data-model and platform_settings.feature_support.hardware_features fact."""
+        if not self.shared_utils.platform_settings.feature_support.hardware_features:
+            return
         self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
 
     @structured_config_contributor

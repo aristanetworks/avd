@@ -19,6 +19,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "custom_platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "custom_platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "custom_platform_settings.[].feature_support") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_features</samp>](## "custom_platform_settings.[].feature_support.hardware_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:<br>  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.<br>  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.<br>  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.<br>  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
@@ -49,6 +50,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_features</samp>](## "platform_settings.[].feature_support.hardware_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:<br>  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.<br>  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.<br>  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.<br>  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
@@ -103,6 +105,14 @@
         # <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         p2p_uplinks_mtu: <int; 68-65535>
         feature_support:
+
+          # An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:
+          #   - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.
+          #   - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.
+          #   - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.
+          #   - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
+          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+          hardware_features: <bool; default=True>
           queue_monitor_length_notify: <bool; default=True>
           interface_storm_control: <bool; default=True>
           poe: <bool; default=False>
@@ -181,6 +191,14 @@
         # <node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.
         p2p_uplinks_mtu: <int; 68-65535>
         feature_support:
+
+          # An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:
+          #   - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.
+          #   - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.
+          #   - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.
+          #   - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
+          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+          hardware_features: <bool; default=True>
           queue_monitor_length_notify: <bool; default=True>
           interface_storm_control: <bool; default=True>
           poe: <bool; default=False>
@@ -364,10 +382,8 @@
             131072
         - feature_support:
             bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
             evpn_gateway_all_active_multihoming: true
-            interface_storm_control: false
-            queue_monitor_length_notify: false
+            hardware_features: false
           platforms:
           - VEOS
           - VEOS-LAB
@@ -378,10 +394,8 @@
             non_mlag: 330
         - feature_support:
             bgp_update_wait_for_convergence: false
-            bgp_update_wait_install: false
             evpn_gateway_all_active_multihoming: true
-            interface_storm_control: false
-            queue_monitor_length_notify: false
+            hardware_features: false
           management_interface: Management0
           platforms:
           - CEOS
@@ -392,12 +406,12 @@
             mlag: 300
             non_mlag: 330
         - feature_support:
-            bgp_update_wait_install: false
-            interface_storm_control: false
-            queue_monitor_length_notify: false
+            hardware_features: false
           p2p_uplinks_mtu: 9194
           platforms:
+          - CLOUDEOS
           - CloudEOS
+          - cloudEOS
         - feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false

@@ -3358,6 +3358,19 @@ keys:
         feature_support:
           type: dict
           keys:
+            hardware_features:
+              type: bool
+              default: true
+              description: "An abstracted feature indicating aggregated support for
+                the following common EOS capabilities that depend on hardware components:\n
+                \ - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`,
+                `queue_monitor_streaming`.\n  - `storm-control`. Included structured
+                configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.\n
+                \ - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.\n
+                \ - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`,
+                `router_bgp.vrfs.[].updates.wait_install`.\nFeature should typically
+                be set to \"False\" for all virtual EOS platforms (e.g., vEOS-lab,
+                cEOSLab, cloudEOS).\n"
             queue_monitor_length_notify:
               type: bool
               default: true
@@ -3574,10 +3587,8 @@ keys:
       - vEOS
       - vEOS-lab
       feature_support:
+        hardware_features: false
         bgp_update_wait_for_convergence: false
-        bgp_update_wait_install: false
-        interface_storm_control: false
-        queue_monitor_length_notify: false
         evpn_gateway_all_active_multihoming: true
       reload_delay:
         mlag: 300
@@ -3588,21 +3599,19 @@ keys:
       - ceos
       - cEOSLab
       feature_support:
+        hardware_features: false
         bgp_update_wait_for_convergence: false
-        bgp_update_wait_install: false
-        interface_storm_control: false
-        queue_monitor_length_notify: false
         evpn_gateway_all_active_multihoming: true
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
     - platforms:
+      - CLOUDEOS
       - CloudEOS
+      - cloudEOS
       feature_support:
-        bgp_update_wait_install: false
-        interface_storm_control: false
-        queue_monitor_length_notify: false
+        hardware_features: false
       p2p_uplinks_mtu: 9194
     - platforms:
       - AWE-5310

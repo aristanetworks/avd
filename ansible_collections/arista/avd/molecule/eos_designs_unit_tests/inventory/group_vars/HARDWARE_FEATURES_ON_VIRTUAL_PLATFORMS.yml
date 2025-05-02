@@ -1,0 +1,95 @@
+---
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    bgp_as: 65001
+    loopback_ipv4_pool: 10.10.10.0/24
+    vtep_loopback_ipv4_pool: 10.10.20.0/24
+  nodes:
+    - name: HARDWARE_FEATURES_VEOS_LAB
+      id: 1
+      platform: vEOS-lab
+    - name: HARDWARE_FEATURES_CEOS_LAB
+      id: 2
+      platform: cEOSLab
+    - name: HARDWARE_FEATURES_CLOUDEOS
+      id: 3
+      platform: cloudEOS
+    - name: HARDWARE_FEATURES_720XP
+      id: 4
+      # Supports PoE
+      platform: 720XP
+    - name: HARDWARE_FEATURES_7280R
+      id: 5
+      # Supports queue-monitor length notifying
+      platform: 7280R
+
+# Test queue-monitor
+queue_monitor_length:
+  enabled: true
+  notifying: true
+queue_monitor_streaming:
+  enable: true
+
+# Test PoE
+servers:
+  - name: TEST_POE_SERVER
+    adapters:
+      - switch_ports:
+          - Ethernet7
+          - Ethernet7
+          - Ethernet7
+          - Ethernet7
+          - Ethernet7
+        switches:
+          - HARDWARE_FEATURES_VEOS_LAB
+          - HARDWARE_FEATURES_CEOS_LAB
+          - HARDWARE_FEATURES_CLOUDEOS
+          - HARDWARE_FEATURES_720XP
+          - HARDWARE_FEATURES_7280R
+        endpoint_ports:
+          - ETH1_NO_POE
+          - ETH2_NO_POE
+          - ETH3_NO_POE
+          - ETH4_WITH_POE
+          - ETH5_NO_POE
+        poe:
+          reboot:
+            action: maintain
+
+# Test BGP
+tenants:
+  - name: TENANT1
+    vrfs:
+      - name: VRF10
+        vrf_vni: 10
+        l3_interfaces:
+          - interfaces:
+              - Ethernet5
+              - Ethernet5
+              - Ethernet5
+              - Ethernet5
+              - Ethernet5
+            ip_addresses:
+              - 10.10.40.1/24
+              - 10.10.40.2/24
+              - 10.10.40.3/24
+              - 10.10.40.4/24
+              - 10.10.40.5/24
+            nodes:
+              - HARDWARE_FEATURES_VEOS_LAB
+              - HARDWARE_FEATURES_CEOS_LAB
+              - HARDWARE_FEATURES_CLOUDEOS
+              - HARDWARE_FEATURES_720XP
+              - HARDWARE_FEATURES_7280R
+        bgp_peers:
+          - ip_address: 10.10.40.100
+            remote_as: 65002
+            nodes:
+              - HARDWARE_FEATURES_VEOS_LAB
+              - HARDWARE_FEATURES_CEOS_LAB
+              - HARDWARE_FEATURES_CLOUDEOS
+              - HARDWARE_FEATURES_720XP
+              - HARDWARE_FEATURES_7280R
