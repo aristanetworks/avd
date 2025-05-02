@@ -1300,7 +1300,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
             structured_config: dict
@@ -1426,7 +1426,7 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
                         structured_config:
                            Custom structured config for interfaces.
@@ -1843,7 +1843,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
             structured_config: dict
@@ -1969,7 +1969,7 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
                         structured_config:
                            Custom structured config for interfaces.
@@ -5204,7 +5204,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
             structured_config: dict
@@ -5330,7 +5330,7 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
                         structured_config:
                            Custom structured config for interfaces.
@@ -5747,7 +5747,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
             configured.
             """
             structured_config: dict
@@ -5873,7 +5873,7 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the RFC5549 underlay if
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
                            configured.
                         structured_config:
                            Custom structured config for interfaces.

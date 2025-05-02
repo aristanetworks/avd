@@ -10625,7 +10625,7 @@ $defs:
           description: 'Enables deviation of the routing protocol used on this link
             from the fabric underlay default.
 
-            - ebgp: Enforce plain IPv4 BGP peering and excempt the neighbor from the
+            - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
             RFC5549 underlay if configured.'
         structured_config:
           type: dict
