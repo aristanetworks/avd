@@ -36,7 +36,7 @@ class RouterBgpMixin(Protocol):
 
             # RFC5549
             # When routing protocol is not set, we just add the neighbor_interface and continue.
-            if self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp":
+            if self.inputs.underlay_rfc5549 and p2p_link.include_in_underlay_protocol and p2p_link.routing_protocol != "ebgp":
                 self.structured_config.router_bgp.neighbor_interfaces.append_new(
                     name=p2p_link_data["interface"],
                     remote_as=p2p_link_data["peer_bgp_as"],
