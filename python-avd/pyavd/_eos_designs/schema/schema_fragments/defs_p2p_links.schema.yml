@@ -189,6 +189,21 @@ $defs:
               type: str
               valid_values: ["on", "active", "passive"]
               default: active
+            channel_id_algorithm:
+              type: str
+              valid_values:
+                - "first_port"
+                - "p2p_link_id"
+              default: first_port
+              description: |-
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id` for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+            channel_id_offset:
+              description: Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and `channel_id` is not set.
+              type: int
+              convert_types:
+                - str
             nodes_child_interfaces:
               type: list
               primary_key: node
@@ -206,7 +221,7 @@ $defs:
                     type: int
                     convert_types:
                       - str
-                    description: Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the port channel.
+                    description: Port-Channel ID. If no `channel_id` is specified, an id is generated using the `channel_id_algorithm`.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
