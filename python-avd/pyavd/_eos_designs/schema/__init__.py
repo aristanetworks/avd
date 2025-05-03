@@ -9759,8 +9759,10 @@ class EosDesigns(EosDesignsRootModel):
             `ethernet_interfaces.[].poe`.
               - `BGP wait-install`. Included structured configuration paths:
             `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
-            Feature should
-            typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+              - `hardware speed-
+            group`. Included structured configuration paths: `hardware.speed_groups`.
+            Feature should typically
+            be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
 
             Default value: `True`
             """
@@ -9846,8 +9848,10 @@ class EosDesigns(EosDesignsRootModel):
                            `ethernet_interfaces.[].poe`.
                              - `BGP wait-install`. Included structured configuration paths:
                            `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
-                           Feature should
-                           typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+                             - `hardware speed-
+                           group`. Included structured configuration paths: `hardware.speed_groups`.
+                           Feature should typically
+                           be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
                         queue_monitor_length_notify: queue_monitor_length_notify
                         interface_storm_control: interface_storm_control
                         poe: poe
@@ -10110,8 +10114,10 @@ class EosDesigns(EosDesignsRootModel):
             `ethernet_interfaces.[].poe`.
               - `BGP wait-install`. Included structured configuration paths:
             `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
-            Feature should
-            typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+              - `hardware speed-
+            group`. Included structured configuration paths: `hardware.speed_groups`.
+            Feature should typically
+            be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
 
             Default value: `True`
             """
@@ -10197,8 +10203,10 @@ class EosDesigns(EosDesignsRootModel):
                            `ethernet_interfaces.[].poe`.
                              - `BGP wait-install`. Included structured configuration paths:
                            `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
-                           Feature should
-                           typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+                             - `hardware speed-
+                           group`. Included structured configuration paths: `hardware.speed_groups`.
+                           Feature should typically
+                           be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
                         queue_monitor_length_notify: queue_monitor_length_notify
                         interface_storm_control: interface_storm_control
                         poe: poe

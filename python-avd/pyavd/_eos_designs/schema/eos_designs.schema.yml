@@ -3368,9 +3368,10 @@ keys:
                 configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.\n
                 \ - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.\n
                 \ - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`,
-                `router_bgp.vrfs.[].updates.wait_install`.\nFeature should typically
-                be set to \"False\" for all virtual EOS platforms (e.g., vEOS-lab,
-                cEOSLab, cloudEOS).\n"
+                `router_bgp.vrfs.[].updates.wait_install`.\n  - `hardware speed-group`.
+                Included structured configuration paths: `hardware.speed_groups`.\nFeature
+                should typically be set to \"False\" for all virtual EOS platforms
+                (e.g., vEOS-lab, cEOSLab, cloudEOS).\n"
             queue_monitor_length_notify:
               type: bool
               default: true

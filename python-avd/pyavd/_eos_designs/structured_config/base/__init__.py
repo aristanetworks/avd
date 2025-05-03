@@ -176,6 +176,8 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
         Converting nested dict to list of dict to support avd_v4.0.
         """
+        if not self.shared_utils.platform_settings.feature_support.hardware_features:
+            return
         platform_speed_groups = self.inputs.platform_speed_groups
         switch_platform = self.shared_utils.platform
         if not platform_speed_groups or switch_platform is None:

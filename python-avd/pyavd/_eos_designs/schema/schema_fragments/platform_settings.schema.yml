@@ -93,6 +93,7 @@ keys:
                   - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.
                   - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.
                   - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
+                  - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.
                 Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
             queue_monitor_length_notify:
               type: bool

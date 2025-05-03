@@ -22,6 +22,10 @@ ethernet_interfaces:
   peer_type: server
   switchport:
     enabled: true
+hardware:
+  speed_groups:
+  - speed_group: '1'
+    serdes: 10g
 hostname: HARDWARE_FEATURES_720XP
 ip_igmp_snooping:
   globally_enabled: true

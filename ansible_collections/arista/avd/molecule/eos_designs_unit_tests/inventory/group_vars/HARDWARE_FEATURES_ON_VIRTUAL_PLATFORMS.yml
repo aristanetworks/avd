@@ -93,3 +93,26 @@ tenants:
               - HARDWARE_FEATURES_CLOUDEOS
               - HARDWARE_FEATURES_720XP
               - HARDWARE_FEATURES_7280R
+
+# Test hardware speed-group
+platform_speed_groups:
+  - platform: vEOS-lab
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+  - platform: cEOSLab
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+  - platform: cloudEOS
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
+  - platform: 720XP
+    speeds:
+      - speed: 10g
+        speed_groups:
+          - "1"
