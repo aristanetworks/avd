@@ -22,6 +22,10 @@ cv_devices: "{{ ansible_play_hosts }}"
 # If false, the deployment will fail if any devices are missing (excempting devices where 'is_deployed' is set to false).
 cv_skip_missing_devices: false
 
+# If false, only warn if two or more devices have the same `system_mac_address` and unique `serial_number` values.
+# If true - raise an exception.
+cv_strict_system_mac_address: false
+
 # Submit Workspace on deployment. Otherwise the Workspace will be left in "pending" mode.
 cv_submit_workspace: true
 

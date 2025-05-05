@@ -107,7 +107,7 @@ ethernet_interfaces:
 - name: Ethernet1
   description: L2_site3-leaf1_Ethernet1
   shutdown: false
-  mtu: 9214
+  mtu: 9194
   peer: site3-leaf1
   peer_interface: Ethernet1
   peer_type: l2leaf
@@ -257,6 +257,7 @@ management_security:
       file: STUN-DTLS.crt
       key: STUN-DTLS.key
 metadata:
+  platform: CloudEOS
   fabric_name: WAN
   cv_tags:
     device_tags:

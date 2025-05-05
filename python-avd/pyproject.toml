@@ -2,7 +2,7 @@
 name="pyavd"
 dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
-description="Arista Validated Designs"
+description="Arista AVD"
 readme = "README.md"
 license = { file = "pyavd/LICENSE" }
 classifiers = [
@@ -75,7 +75,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
-    "ruff==0.11.6",
+    "ruff==0.11.8",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
