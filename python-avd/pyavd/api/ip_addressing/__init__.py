@@ -442,9 +442,9 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         Return IP address for VTEP.
 
-        If "vtep_loopback_ipv4_address" is set, it is used.
-        Default pool is "vtep_loopback_ipv4_pool"
-        Default offset from pool is `id + loopback_ipv4_offset`
+        If "vtep_loopback_ipv6_address" is set, it is used.
+        Default pool is "vtep_loopback_ipv6_pool"
+        Default offset from pool is `id + loopback_ipv6_offset`
         """
         if self._vtep_loopback_ipv6_address:
             return self._vtep_loopback_ipv6_address
