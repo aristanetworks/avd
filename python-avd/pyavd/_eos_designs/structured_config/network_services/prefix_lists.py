@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from ipaddress import IPv4Network
+from ipaddress import IPv4Network, IPv6Network
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -75,6 +75,9 @@ class PrefixListsMixin(Protocol):
                     continue
 
                 # Convert mlag_ip_address to network prefix string and add to set.
-                mlag_prefixes.add(str(IPv4Network(mlag_ip_address, strict=False)))
+                if self.inputs.underlay_ipv6_numbered:
+                    mlag_prefixes.add(str(IPv6Network(mlag_ip_address, strict=False)))
+                else:
+                    mlag_prefixes.add(str(IPv4Network(mlag_ip_address, strict=False)))
 
         return natural_sort(mlag_prefixes)

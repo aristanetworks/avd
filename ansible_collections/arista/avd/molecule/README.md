@@ -43,6 +43,7 @@ Current molecule implementation provides the following scenarios:
 - example-isis-ldp-ipvpn
 - example-l2ls-fabric
 - example-single-dc-l3ls
+- example-single-dc-l3ls-ipv6-underlay
 
 ## How to use scenario
 

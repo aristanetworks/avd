@@ -20,6 +20,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.defaults.mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv6_pool</samp>](## "<node_type_keys.key>.defaults.mlag_peer_l3_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).<br>The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.defaults.mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.defaults.mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.defaults.mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_peer_l3_vlan` set to 4094). |
@@ -47,6 +48,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_l3_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).<br>The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_peer_l3_vlan` set to 4094). |
@@ -70,6 +72,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.node_groups.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv6_pool</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_l3_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).<br>The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.node_groups.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_peer_l3_vlan` set to 4094). |
@@ -95,6 +98,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_interfaces_speed</samp>](## "<node_type_keys.key>.nodes.[].mlag_interfaces_speed") | String |  |  |  | Set MLAG interface speed.<br>Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_vlan</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_vlan") | Integer |  | `4093` | Min: 0<br>Max: 4094 | Underlay L3 peering SVI interface id.<br>If set to 0 or the same vlan as mlag_peer_vlan, the mlag_peer_vlan will be used for L3 peering.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv4_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_l3_ipv6_pool</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_l3_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).<br>The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.<br>Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_vlan</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_vlan") | Integer |  | `4094` | Min: 1<br>Max: 4094 | MLAG Peer Link (control link) SVI interface id. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_link_allowed_vlans</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_link_allowed_vlans") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_peer_address_family</samp>](## "<node_type_keys.key>.nodes.[].mlag_peer_address_family") | String |  | `ipv4` | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | IP address family used to establish MLAG Peer Link (control link).<br>`ipv6` requires EOS version 4.31.1F or higher.<br>Note: `ipv6` is not supported in combination with a common MLAG peer link VLAN (ex. `mlag_peer_l3_vlan` set to 4094). |
@@ -162,6 +166,11 @@
         # The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
         # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
         mlag_peer_l3_ipv4_pool: <str>
+
+        # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+        # The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
+        # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
+        mlag_peer_l3_ipv6_pool: <str>
 
         # MLAG Peer Link (control link) SVI interface id.
         mlag_peer_vlan: <int; 1-4094; default=4094>
@@ -261,6 +270,11 @@
               # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
               mlag_peer_l3_ipv4_pool: <str>
 
+              # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+              # The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
+              # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
+              mlag_peer_l3_ipv6_pool: <str>
+
               # MLAG Peer Link (control link) SVI interface id.
               mlag_peer_vlan: <int; 1-4094; default=4094>
               mlag_peer_link_allowed_vlans: <str>
@@ -345,6 +359,11 @@
           # The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
           # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
           mlag_peer_l3_ipv4_pool: <str>
+
+          # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+          # The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
+          # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
+          mlag_peer_l3_ipv6_pool: <str>
 
           # MLAG Peer Link (control link) SVI interface id.
           mlag_peer_vlan: <int; 1-4094; default=4094>
@@ -436,6 +455,11 @@
           # The IPv4 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
           # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
           mlag_peer_l3_ipv4_pool: <str>
+
+          # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+          # The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
+          # Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
+          mlag_peer_l3_ipv6_pool: <str>
 
           # MLAG Peer Link (control link) SVI interface id.
           mlag_peer_vlan: <int; 1-4094; default=4094>

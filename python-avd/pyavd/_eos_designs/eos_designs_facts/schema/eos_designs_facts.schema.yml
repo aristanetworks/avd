@@ -34,7 +34,11 @@ keys:
     type: bool
   loopback_ipv4_pool:
     type: str
+  loopback_ipv6_pool:
+    type: str
   uplink_ipv4_pool:
+    type: str
+  uplink_ipv6_pool:
     type: str
   downlink_pools:
     type: list
@@ -147,6 +151,8 @@ keys:
         type: bool
         required: true
   vtep_ip:
+    type: str
+  vtep_ipv6:
     type: str
   max_parallel_uplinks:
     type: int

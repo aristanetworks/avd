@@ -234,6 +234,27 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      ipv6_underlay_peers:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: IPv6-UNDERLAY-PEERS
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: false
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_vrfs_peer:
         type: dict
         description: 'Set this peer group name to use a different peer-group for MLAG
@@ -272,6 +293,27 @@ keys:
           name:
             type: str
             default: MLAG-IPv4-UNDERLAY-PEER
+            description: Name of peer group.
+          password:
+            type: str
+            description: Type 7 encrypted password.
+          bfd:
+            type: bool
+            default: false
+          structured_config:
+            type: dict
+            relaxed_validation: true
+            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
+              for eos_cli_config_gen.
+            documentation_options:
+              hide_keys: true
+            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
+      mlag_ipv6_underlay_peer:
+        type: dict
+        keys:
+          name:
+            type: str
+            default: MLAG-IPv6-UNDERLAY-PEER
             description: Name of peer group.
           password:
             type: str
@@ -1528,6 +1570,20 @@ keys:
   fabric_ip_addressing:
     type: dict
     keys:
+      loopback:
+        type: dict
+        keys:
+          ipv6_prefix_length:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: IPv6 prefix length used for loopbacks
+            type: int
+            default: 128
+            valid_values:
+            - 64
+            - 128
+            convert_types:
+            - str
       mlag:
         type: dict
         keys:
@@ -1579,6 +1635,14 @@ keys:
             convert_types:
             - str
             description: IPv4 prefix length used for L3 point-to-point uplinks.
+          ipv6_prefix_length:
+            type: int
+            default: 64
+            min: 1
+            max: 127
+            convert_types:
+            - str
+            description: IPv6 prefix length used for L3 point-to-point uplinks.
       wan_ha:
         type: dict
         description: Allow to manipulate the IP addressing scheme for WAN HA direct
@@ -2730,7 +2794,6 @@ keys:
               description: Path to Custom J2 template.
             router_id_ipv6:
               type: str
-              description: Path to Custom J2 template.
             mlag_ip_primary:
               type: str
               description: Path to Custom J2 template.
@@ -2756,6 +2819,50 @@ keys:
               type: str
               description: Path to Custom J2 template.
             vtep_ip_mlag:
+              type: str
+              description: Path to Custom J2 template.
+            vtep_ip:
+              type: str
+              description: Path to Custom J2 template.
+        ipv6_addressing:
+          type: dict
+          description: Override ip_addressing templates.
+          keys:
+            python_module:
+              type: str
+              description: Custom Python Module to import for IP addressing.
+            python_class_name:
+              type: str
+              default: AvdIpAddressing
+              description: Name of Custom Python Class to import for IP addressing.
+            router_id_ipv6:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ip_primary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ip_secondary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_l3_ip_primary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_l3_ip_secondary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ibgp_peering_ip_primary:
+              type: str
+              description: Path to Custom J2 template.
+            mlag_ibgp_peering_ip_secondary:
+              type: str
+              description: Path to Custom J2 template.
+            p2p_uplinks_ip:
+              type: str
+              description: Path to Custom J2 template.
+            p2p_uplinks_peer_ip:
+              type: str
+              description: Path to Custom J2 template.
+            vtep_ipv6_mlag:
               type: str
               description: Path to Custom J2 template.
             vtep_ip:
@@ -4464,6 +4571,18 @@ keys:
       '
     type: bool
     default: false
+  underlay_ipv6_numbered:
+    documentation_options:
+      table: fabric-settings
+    description: 'This feature allows pure IPv6 underlay routing protocol with numbered
+      addresses.
+
+      Requires "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type
+      settings.
+
+      '
+    type: bool
+    default: false
   underlay_isis_authentication_key:
     documentation_options:
       table: isis-settings
@@ -6057,6 +6176,11 @@ $defs:
               description: Comma separated list of prefixes (IPv4 address/Mask) or
                 ranges (IPv4_address-IPv4_address).
               format: ipv4_pool
+            ipv6_pool:
+              type: str
+              description: Comma separated list of prefixes (IPv6 address/Mask) or
+                ranges (IPv6_address-IPv4_address).
+              format: ipv6_pool
             prefix_size:
               type: int
               convert_types:
@@ -6587,6 +6711,17 @@ $defs:
                   If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will
                   be used.'
                 format: ipv4_pool
+              mlag_ibgp_peering_ipv6_pool:
+                type: str
+                description: 'Comma separated list of prefixes (IPv6 address/Mask)
+                  or ranges (IPv6_address-IPv4_address).
+
+                  The subnet used for the iBGP peering in the VRF is derived from
+                  this pool based on the ID of the first MLAG switch.
+
+                  If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will
+                  be used.'
+                format: ipv6_pool
               ip_helpers:
                 type: list
                 primary_key: ip_helper
@@ -8315,6 +8450,18 @@ $defs:
               uplink interface index, ''max_uplink_switches'' and ''max_parallel_uplinks''.'
             type: str
             format: ipv4_pool
+          uplink_ipv6_pool:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: 'Comma separated list of prefixes (IPv6 address/Mask) or
+              ranges (IPv6_address-IPv6_address).
+
+              IPv6 subnets used to connect to uplink switches will be deviced from
+              this pool based on the node id,
+
+              uplink interface index, ''max_uplink_switches'' and ''max_parallel_uplinks''.'
+            type: str
+            format: ipv6_pool
           uplink_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -8648,6 +8795,12 @@ $defs:
               will be derived from this pool based on the node id and 'loopback_ipv4_offset'.
             type: str
             format: ipv4_pool
+          vtep_loopback_ipv6_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: IPv6 subnet for VTEP-Loopback allocation.
+            type: str
+            format: ipv6_pool
           vtep_loopback_ipv4_address:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -8659,6 +8812,17 @@ $defs:
               catch duplicates.'
             type: str
             format: ipv4
+          vtep_loopback_ipv6_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'IPv6 address without mask for VTEP-Loopback.
+
+              When set, it takes precedence over `vtep_loopback_ipv6_pool`.
+
+              Note: AVD does not check for validity of the IPv6 address and does not
+              catch duplicates.'
+            type: str
+            format: ipv6
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -8675,6 +8839,12 @@ $defs:
             convert_types:
             - str
             default: 0
+          router_id_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: IPv4 subnet for allocation router-id allocation.
+            type: str
+            format: ipv4_pool
           loopback_ipv6_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -9108,6 +9278,21 @@ $defs:
               '
             type: str
             format: ipv4_pool
+          mlag_peer_l3_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'Comma separated list of prefixes (IPv6 address/Mask) or
+              ranges (IPv6_address-IPv4_address).
+
+              The IPv6 subnet used for MLAG underlay L3 peering is derived from this
+              pool based on the node id of the first MLAG switch.
+
+              Required when MLAG leafs present in topology and they are using a separate
+              L3 peering VLAN.
+
+              '
+            type: str
+            format: ipv6_pool
           mlag_peer_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -9958,6 +10143,15 @@ $defs:
                     format: ipv4_pool
                     description: 'Comma separated list of prefixes (IPv4 address/Mask)
                       or ranges (IPv4_address-IPv4_address).
+
+                      IPv4 subnets used for links to downlink switches will be derived
+                      from this pool based on index the peer''s uplink interface''s
+                      index in ''downlink_interfaces''.'
+                  ipv6_pool:
+                    type: str
+                    format: ipv6_pool
+                    description: 'Comma separated list of prefixes (IPv6 address/Mask)
+                      or ranges (IPv6_address-IPv4_address).
 
                       IPv4 subnets used for links to downlink switches will be derived
                       from this pool based on index the peer''s uplink interface''s

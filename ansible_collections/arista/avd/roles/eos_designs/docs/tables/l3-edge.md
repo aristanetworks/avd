@@ -11,6 +11,7 @@
     | [<samp>&nbsp;&nbsp;p2p_links_ip_pools</samp>](## "l3_edge.p2p_links_ip_pools") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_edge.p2p_links_ip_pools.[].name") | String | Required, Unique |  |  | P2P pool name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "l3_edge.p2p_links_ip_pools.[].ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_size</samp>](## "l3_edge.p2p_links_ip_pools.[].prefix_size") | Integer |  | `31` | Min: 8<br>Max: 31 | Subnet mask size. |
     | [<samp>&nbsp;&nbsp;p2p_links_profiles</samp>](## "l3_edge.p2p_links_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "l3_edge.p2p_links_profiles.[].name") | String | Required, Unique |  |  | P2P profile name. Any variable supported under `p2p_links` can be inherited from a profile. |
@@ -130,6 +131,9 @@
 
           # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
           ipv4_pool: <str>
+
+          # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+          ipv6_pool: <str>
 
           # Subnet mask size.
           prefix_size: <int; 8-31; default=31>

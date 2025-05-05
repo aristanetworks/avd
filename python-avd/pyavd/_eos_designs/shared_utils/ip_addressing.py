@@ -23,7 +23,7 @@ class IpAddressingMixin(Protocol):
     """
 
     @cached_property
-    def loopback_ipv6_pool(self: SharedUtilsProtocol) -> str:
+    def loopback_ipv6_pool(self: SharedUtilsProtocol) -> str | None:
         if not self.node_config.loopback_ipv6_pool:
             msg = "loopback_ipv6_pool"
             raise AristaAvdMissingVariableError(msg)
@@ -31,7 +31,7 @@ class IpAddressingMixin(Protocol):
         return self.node_config.loopback_ipv6_pool
 
     @cached_property
-    def loopback_ipv4_pool(self: SharedUtilsProtocol) -> str:
+    def loopback_ipv4_pool(self: SharedUtilsProtocol) -> str | None:
         if not self.node_config.loopback_ipv4_pool:
             msg = "loopback_ipv4_pool"
             raise AristaAvdMissingVariableError(msg)
@@ -39,7 +39,26 @@ class IpAddressingMixin(Protocol):
         return self.node_config.loopback_ipv4_pool
 
     @cached_property
-    def vtep_loopback_ipv4_pool(self: SharedUtilsProtocol) -> str:
+    def vtep_loopback_ipv6_pool(self: SharedUtilsProtocol) -> str:
+        if not self.node_config.vtep_loopback_ipv6_pool:
+            msg = "vtep_loopback_ipv6_pool"
+            raise AristaAvdMissingVariableError(msg)
+
+        return self.node_config.vtep_loopback_ipv6_pool
+
+    @cached_property
+    def router_id_pool(self: SharedUtilsProtocol) -> str:
+        if not self.node_config.router_id_pool:
+            msg = "router_id_pool"
+            raise AristaAvdMissingVariableError(msg)
+
+        return self.node_config.router_id_pool
+
+    @cached_property
+    def vtep_loopback_ipv4_pool(self: SharedUtilsProtocol) -> str | None:
+        if self.inputs.underlay_ipv6_numbered:
+            return None
+
         if not self.node_config.vtep_loopback_ipv4_pool:
             msg = "vtep_loopback_ipv4_pool"
             raise AristaAvdMissingVariableError(msg)
@@ -55,6 +74,14 @@ class IpAddressingMixin(Protocol):
         return self.ip_addressing.vtep_ip()
 
     @cached_property
+    def vtep_ipv6(self: SharedUtilsProtocol) -> str:
+        """Render ipv6 address for vtep_ip using dynamically loaded python module."""
+        if self.mlag is True:
+            return self.ipv6_addressing.vtep_ipv6_mlag()
+
+        return self.ipv6_addressing.vtep_ipv6()
+
+    @cached_property
     def ip_addressing(self: SharedUtilsProtocol) -> AvdIpAddressing:
         """
         Load the python_module defined in `templates.ip_addressing.python_module`.
@@ -68,6 +95,25 @@ class IpAddressingMixin(Protocol):
         cls: type[AvdIpAddressing] = load_python_class(
             module_path,
             self.node_type_key_data.ip_addressing.python_class_name,
+            AvdIpAddressing,
+        )
+
+        return cls(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
+
+    @cached_property
+    def ipv6_addressing(self: SharedUtilsProtocol) -> AvdIpAddressing:
+        """
+        Load the python_module defined in `templates.ipv6_addressing.python_module`.
+
+        Return an instance of the class defined by `templates.ipv6_addressing.python_class_name` as cached_property.
+        """
+        module_path = self.node_type_key_data.ipv6_addressing.python_module
+        if module_path is None:
+            return AvdIpAddressing(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
+
+        cls: type[AvdIpAddressing] = load_python_class(
+            module_path,
+            self.node_type_key_data.ipv6_addressing.python_class_name,
             AvdIpAddressing,
         )
 

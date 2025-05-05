@@ -125,8 +125,18 @@ class EosDesignsFactsGeneratorProtocol(
     @cached_property
     def loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_ipv6_numbered:
+            return None
         if self.shared_utils.underlay_router:
             return self.shared_utils.loopback_ipv4_pool
+        return None
+
+    @remove_cached_property_type
+    @cached_property
+    def loopback_ipv6_pool(self) -> str | None:
+        """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_router and self.shared_utils.underlay_ipv6_numbered:
+            return self.shared_utils.loopback_ipv6_pool
         return None
 
     @remove_cached_property_type
@@ -135,6 +145,14 @@ class EosDesignsFactsGeneratorProtocol(
         """Exposed in avd_switch_facts."""
         if self.shared_utils.underlay_router:
             return self.shared_utils.node_config.uplink_ipv4_pool
+        return None
+
+    @remove_cached_property_type
+    @cached_property
+    def uplink_ipv6_pool(self) -> str | None:
+        """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_router:
+            return self.shared_utils.node_config.uplink_ipv6_pool
         return None
 
     @remove_cached_property_type
@@ -163,6 +181,8 @@ class EosDesignsFactsGeneratorProtocol(
     @cached_property
     def vtep_loopback_ipv4_pool(self) -> str | None:
         """Exposed in avd_switch_facts."""
+        if self.shared_utils.underlay_ipv6_numbered:
+            return None
         if self.shared_utils.vtep is True:
             return self.shared_utils.vtep_loopback_ipv4_pool
         return None

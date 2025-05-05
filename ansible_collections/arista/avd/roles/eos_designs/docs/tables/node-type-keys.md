@@ -34,7 +34,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "custom_node_type_keys.[].ip_addressing.python_module") | String |  |  |  | Custom Python Module to import for IP addressing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "custom_node_type_keys.[].ip_addressing.python_class_name") | String |  | `AvdIpAddressing` |  | Name of Custom Python Class to import for IP addressing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "custom_node_type_keys.[].ip_addressing.router_id") | String |  |  |  | Path to Custom J2 template. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "custom_node_type_keys.[].ip_addressing.router_id_ipv6") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "custom_node_type_keys.[].ip_addressing.router_id_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_primary</samp>](## "custom_node_type_keys.[].ip_addressing.mlag_ip_primary") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_secondary</samp>](## "custom_node_type_keys.[].ip_addressing.mlag_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_primary</samp>](## "custom_node_type_keys.[].ip_addressing.mlag_l3_ip_primary") | String |  |  |  | Path to Custom J2 template. |
@@ -45,6 +45,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_peer_ip</samp>](## "custom_node_type_keys.[].ip_addressing.p2p_uplinks_peer_ip") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip_mlag</samp>](## "custom_node_type_keys.[].ip_addressing.vtep_ip_mlag") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "custom_node_type_keys.[].ip_addressing.vtep_ip") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addressing</samp>](## "custom_node_type_keys.[].ipv6_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "custom_node_type_keys.[].ipv6_addressing.python_module") | String |  |  |  | Custom Python Module to import for IP addressing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "custom_node_type_keys.[].ipv6_addressing.python_class_name") | String |  | `AvdIpAddressing` |  | Name of Custom Python Class to import for IP addressing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "custom_node_type_keys.[].ipv6_addressing.router_id_ipv6") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_primary</samp>](## "custom_node_type_keys.[].ipv6_addressing.mlag_ip_primary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_secondary</samp>](## "custom_node_type_keys.[].ipv6_addressing.mlag_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_primary</samp>](## "custom_node_type_keys.[].ipv6_addressing.mlag_l3_ip_primary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_secondary</samp>](## "custom_node_type_keys.[].ipv6_addressing.mlag_l3_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_primary</samp>](## "custom_node_type_keys.[].ipv6_addressing.mlag_ibgp_peering_ip_primary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_secondary</samp>](## "custom_node_type_keys.[].ipv6_addressing.mlag_ibgp_peering_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_ip</samp>](## "custom_node_type_keys.[].ipv6_addressing.p2p_uplinks_ip") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_peer_ip</samp>](## "custom_node_type_keys.[].ipv6_addressing.p2p_uplinks_peer_ip") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ipv6_mlag</samp>](## "custom_node_type_keys.[].ipv6_addressing.vtep_ipv6_mlag") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "custom_node_type_keys.[].ipv6_addressing.vtep_ip") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_descriptions</samp>](## "custom_node_type_keys.[].interface_descriptions") | Dictionary |  |  |  | Override interface_descriptions templates.<br>If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "custom_node_type_keys.[].interface_descriptions.python_module") | String |  |  |  | Custom Python Module to import for interface descriptions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "custom_node_type_keys.[].interface_descriptions.python_class_name") | String |  | `AvdInterfaceDescriptions` |  | Name of Custom Python Class to import for interface descriptions. |
@@ -84,7 +98,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].ip_addressing.python_module") | String |  |  |  | Custom Python Module to import for IP addressing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].ip_addressing.python_class_name") | String |  | `AvdIpAddressing` |  | Name of Custom Python Class to import for IP addressing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id</samp>](## "node_type_keys.[].ip_addressing.router_id") | String |  |  |  | Path to Custom J2 template. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "node_type_keys.[].ip_addressing.router_id_ipv6") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "node_type_keys.[].ip_addressing.router_id_ipv6") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_ip_primary") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_secondary</samp>](## "node_type_keys.[].ip_addressing.mlag_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_primary</samp>](## "node_type_keys.[].ip_addressing.mlag_l3_ip_primary") | String |  |  |  | Path to Custom J2 template. |
@@ -95,6 +109,20 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_peer_ip</samp>](## "node_type_keys.[].ip_addressing.p2p_uplinks_peer_ip") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip_mlag</samp>](## "node_type_keys.[].ip_addressing.vtep_ip_mlag") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "node_type_keys.[].ip_addressing.vtep_ip") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_addressing</samp>](## "node_type_keys.[].ipv6_addressing") | Dictionary |  |  |  | Override ip_addressing templates. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].ipv6_addressing.python_module") | String |  |  |  | Custom Python Module to import for IP addressing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].ipv6_addressing.python_class_name") | String |  | `AvdIpAddressing` |  | Name of Custom Python Class to import for IP addressing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;router_id_ipv6</samp>](## "node_type_keys.[].ipv6_addressing.router_id_ipv6") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_primary</samp>](## "node_type_keys.[].ipv6_addressing.mlag_ip_primary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ip_secondary</samp>](## "node_type_keys.[].ipv6_addressing.mlag_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_primary</samp>](## "node_type_keys.[].ipv6_addressing.mlag_l3_ip_primary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_l3_ip_secondary</samp>](## "node_type_keys.[].ipv6_addressing.mlag_l3_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_primary</samp>](## "node_type_keys.[].ipv6_addressing.mlag_ibgp_peering_ip_primary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ip_secondary</samp>](## "node_type_keys.[].ipv6_addressing.mlag_ibgp_peering_ip_secondary") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_ip</samp>](## "node_type_keys.[].ipv6_addressing.p2p_uplinks_ip") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_peer_ip</samp>](## "node_type_keys.[].ipv6_addressing.p2p_uplinks_peer_ip") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ipv6_mlag</samp>](## "node_type_keys.[].ipv6_addressing.vtep_ipv6_mlag") | String |  |  |  | Path to Custom J2 template. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_ip</samp>](## "node_type_keys.[].ipv6_addressing.vtep_ip") | String |  |  |  | Path to Custom J2 template. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interface_descriptions</samp>](## "node_type_keys.[].interface_descriptions") | Dictionary |  |  |  | Override interface_descriptions templates.<br>If description templates use Jinja2, they have to strip whitespaces using {%- -%} on any code blocks.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_module</samp>](## "node_type_keys.[].interface_descriptions.python_module") | String |  |  |  | Custom Python Module to import for interface descriptions. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python_class_name</samp>](## "node_type_keys.[].interface_descriptions.python_class_name") | String |  | `AvdInterfaceDescriptions` |  | Name of Custom Python Class to import for interface descriptions. |
@@ -212,6 +240,46 @@
 
           # Path to Custom J2 template.
           router_id: <str>
+          router_id_ipv6: <str>
+
+          # Path to Custom J2 template.
+          mlag_ip_primary: <str>
+
+          # Path to Custom J2 template.
+          mlag_ip_secondary: <str>
+
+          # Path to Custom J2 template.
+          mlag_l3_ip_primary: <str>
+
+          # Path to Custom J2 template.
+          mlag_l3_ip_secondary: <str>
+
+          # Path to Custom J2 template.
+          mlag_ibgp_peering_ip_primary: <str>
+
+          # Path to Custom J2 template.
+          mlag_ibgp_peering_ip_secondary: <str>
+
+          # Path to Custom J2 template.
+          p2p_uplinks_ip: <str>
+
+          # Path to Custom J2 template.
+          p2p_uplinks_peer_ip: <str>
+
+          # Path to Custom J2 template.
+          vtep_ip_mlag: <str>
+
+          # Path to Custom J2 template.
+          vtep_ip: <str>
+
+        # Override ip_addressing templates.
+        ipv6_addressing:
+
+          # Custom Python Module to import for IP addressing.
+          python_module: <str>
+
+          # Name of Custom Python Class to import for IP addressing.
+          python_class_name: <str; default="AvdIpAddressing">
 
           # Path to Custom J2 template.
           router_id_ipv6: <str>
@@ -241,7 +309,7 @@
           p2p_uplinks_peer_ip: <str>
 
           # Path to Custom J2 template.
-          vtep_ip_mlag: <str>
+          vtep_ipv6_mlag: <str>
 
           # Path to Custom J2 template.
           vtep_ip: <str>
@@ -390,6 +458,46 @@
 
           # Path to Custom J2 template.
           router_id: <str>
+          router_id_ipv6: <str>
+
+          # Path to Custom J2 template.
+          mlag_ip_primary: <str>
+
+          # Path to Custom J2 template.
+          mlag_ip_secondary: <str>
+
+          # Path to Custom J2 template.
+          mlag_l3_ip_primary: <str>
+
+          # Path to Custom J2 template.
+          mlag_l3_ip_secondary: <str>
+
+          # Path to Custom J2 template.
+          mlag_ibgp_peering_ip_primary: <str>
+
+          # Path to Custom J2 template.
+          mlag_ibgp_peering_ip_secondary: <str>
+
+          # Path to Custom J2 template.
+          p2p_uplinks_ip: <str>
+
+          # Path to Custom J2 template.
+          p2p_uplinks_peer_ip: <str>
+
+          # Path to Custom J2 template.
+          vtep_ip_mlag: <str>
+
+          # Path to Custom J2 template.
+          vtep_ip: <str>
+
+        # Override ip_addressing templates.
+        ipv6_addressing:
+
+          # Custom Python Module to import for IP addressing.
+          python_module: <str>
+
+          # Name of Custom Python Class to import for IP addressing.
+          python_class_name: <str; default="AvdIpAddressing">
 
           # Path to Custom J2 template.
           router_id_ipv6: <str>
@@ -419,7 +527,7 @@
           p2p_uplinks_peer_ip: <str>
 
           # Path to Custom J2 template.
-          vtep_ip_mlag: <str>
+          vtep_ipv6_mlag: <str>
 
           # Path to Custom J2 template.
           vtep_ip: <str>

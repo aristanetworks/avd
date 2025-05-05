@@ -68,6 +68,13 @@ class MlagMixin(Protocol):
         return self.node_config.mlag_peer_l3_ipv4_pool
 
     @cached_property
+    def mlag_peer_l3_ipv6_pool(self: SharedUtilsProtocol) -> str:
+        if not self.node_config.mlag_peer_l3_ipv6_pool:
+            msg = "mlag_peer_l3_ipv6_pool"
+            raise AristaAvdMissingVariableError(msg)
+        return self.node_config.mlag_peer_l3_ipv6_pool
+
+    @cached_property
     def mlag_role(self: SharedUtilsProtocol) -> Literal["primary", "secondary"] | None:
         if self.mlag and self.node_group_is_primary_and_peer_hostname is not None:
             return "primary" if self.node_group_is_primary_and_peer_hostname[0] else "secondary"
@@ -130,12 +137,16 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_l3_ip(self: SharedUtilsProtocol) -> str | None:
-        """Render ipv4 address for mlag_l3_ip using dynamically loaded python module."""
+        """Render ipv4 or ipv6 address for mlag_l3_ip using dynamically loaded python module."""
         if self.mlag_peer_l3_vlan is None:
             return None
         if self.mlag_role == "primary":
+            if self.underlay_ipv6_numbered:
+                return self.ipv6_addressing.mlag_l3_ipv6_primary()
             return self.ip_addressing.mlag_l3_ip_primary()
         if self.mlag_role == "secondary":
+            if self.underlay_ipv6_numbered:
+                return self.ipv6_addressing.mlag_l3_ipv6_secondary()
             return self.ip_addressing.mlag_l3_ip_secondary()
         return None
 
@@ -199,6 +210,8 @@ class MlagMixin(Protocol):
     def mlag_vrfs_peer_group_name(self: SharedUtilsProtocol) -> str:
         if self.use_separate_peer_group_for_mlag_vrfs:
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
+        if self.underlay_ipv6_numbered:
+            return self.inputs.bgp_peer_groups.mlag_ipv6_underlay_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
     def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
@@ -211,8 +224,15 @@ class MlagMixin(Protocol):
         In the case of another underlay routing protocol, it may be called from network_services instead in case there are VRFs with iBGP peerings.
         """
         # Only create the underlay peer group if the underlay is BGP or if we reuse the same peer-group from network services.
-        if self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
+        if not self.underlay_ipv6_numbered:
+            if self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
+                bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
+                router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
+                router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
+                if self.underlay_ipv6:
+                    router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
+        elif self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
+            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv6_underlay_peer
             router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
             router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
             if self.underlay_ipv6:

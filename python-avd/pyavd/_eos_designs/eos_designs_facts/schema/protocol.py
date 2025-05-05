@@ -26,10 +26,17 @@ class EosDesignsFactsProtocol(Protocol):
 
         DownlinkInterfaces._item_type = str
 
-        _fields: ClassVar[dict] = {"ipv4_pool": {"type": str}, "downlink_interfaces": {"type": DownlinkInterfaces}}
+        _fields: ClassVar[dict] = {"ipv4_pool": {"type": str}, "ipv6_pool": {"type": str}, "downlink_interfaces": {"type": DownlinkInterfaces}}
         ipv4_pool: str | None
         """
         Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+        IPv4
+        subnets used for links to downlink switches will be derived from this pool based on index the peer's
+        uplink interface's index in 'downlink_interfaces'.
+        """
+        ipv6_pool: str | None
+        """
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
         IPv4
         subnets used for links to downlink switches will be derived from this pool based on index the peer's
         uplink interface's index in 'downlink_interfaces'.
@@ -46,7 +53,11 @@ class EosDesignsFactsProtocol(Protocol):
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, ipv4_pool: str | None | UndefinedType = Undefined, downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined
+                self,
+                *,
+                ipv4_pool: str | None | UndefinedType = Undefined,
+                ipv6_pool: str | None | UndefinedType = Undefined,
+                downlink_interfaces: DownlinkInterfaces | UndefinedType = Undefined,
             ) -> None:
                 """
                 DownlinkPoolsItem.
@@ -57,6 +68,11 @@ class EosDesignsFactsProtocol(Protocol):
                 Args:
                     ipv4_pool:
                        Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                       IPv4
+                       subnets used for links to downlink switches will be derived from this pool based on index the peer's
+                       uplink interface's index in 'downlink_interfaces'.
+                    ipv6_pool:
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
                        IPv4
                        subnets used for links to downlink switches will be derived from this pool based on index the peer's
                        uplink interface's index in 'downlink_interfaces'.
@@ -910,7 +926,9 @@ class EosDesignsFactsProtocol(Protocol):
         "mpls_lsr": {"type": bool},
         "evpn_multicast": {"type": bool},
         "loopback_ipv4_pool": {"type": str},
+        "loopback_ipv6_pool": {"type": str},
         "uplink_ipv4_pool": {"type": str},
+        "uplink_ipv6_pool": {"type": str},
         "downlink_pools": {"type": DownlinkPools},
         "bgp_as": {"type": str},
         "underlay_routing_protocol": {"type": str},
@@ -941,6 +959,7 @@ class EosDesignsFactsProtocol(Protocol):
         "mpls_route_reflectors": {"type": MplsRouteReflectors},
         "overlay": {"type": Overlay},
         "vtep_ip": {"type": str},
+        "vtep_ipv6": {"type": str},
         "max_parallel_uplinks": {"type": int, "default": 1},
         "max_uplink_switches": {"type": int},
         "uplinks": {"type": Uplinks},
@@ -966,7 +985,9 @@ class EosDesignsFactsProtocol(Protocol):
     mpls_lsr: bool
     evpn_multicast: bool | None
     loopback_ipv4_pool: str | None
+    loopback_ipv6_pool: str | None
     uplink_ipv4_pool: str | None
+    uplink_ipv6_pool: str | None
     downlink_pools: DownlinkPools
     """
     IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
@@ -1041,6 +1062,7 @@ class EosDesignsFactsProtocol(Protocol):
     overlay: Overlay
     """Subclass of AvdModel."""
     vtep_ip: str | None
+    vtep_ipv6: str | None
     max_parallel_uplinks: int
     """
     Number of parallel links towards uplink switches.
@@ -1127,7 +1149,9 @@ class EosDesignsFactsProtocol(Protocol):
             mpls_lsr: bool | UndefinedType = Undefined,
             evpn_multicast: bool | None | UndefinedType = Undefined,
             loopback_ipv4_pool: str | None | UndefinedType = Undefined,
+            loopback_ipv6_pool: str | None | UndefinedType = Undefined,
             uplink_ipv4_pool: str | None | UndefinedType = Undefined,
+            uplink_ipv6_pool: str | None | UndefinedType = Undefined,
             downlink_pools: DownlinkPools | UndefinedType = Undefined,
             bgp_as: str | None | UndefinedType = Undefined,
             underlay_routing_protocol: str | UndefinedType = Undefined,
@@ -1158,6 +1182,7 @@ class EosDesignsFactsProtocol(Protocol):
             mpls_route_reflectors: MplsRouteReflectors | UndefinedType = Undefined,
             overlay: Overlay | UndefinedType = Undefined,
             vtep_ip: str | None | UndefinedType = Undefined,
+            vtep_ipv6: str | None | UndefinedType = Undefined,
             max_parallel_uplinks: int | UndefinedType = Undefined,
             max_uplink_switches: int | UndefinedType = Undefined,
             uplinks: Uplinks | UndefinedType = Undefined,
@@ -1190,7 +1215,9 @@ class EosDesignsFactsProtocol(Protocol):
                 mpls_lsr: mpls_lsr
                 evpn_multicast: evpn_multicast
                 loopback_ipv4_pool: loopback_ipv4_pool
+                loopback_ipv6_pool: loopback_ipv6_pool
                 uplink_ipv4_pool: uplink_ipv4_pool
+                uplink_ipv6_pool: uplink_ipv6_pool
                 downlink_pools:
                    IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined
                    with `uplink_ipv4_pool` set on the downlink switch.
@@ -1248,6 +1275,7 @@ class EosDesignsFactsProtocol(Protocol):
                    Subclass of AvdList with `str` items.
                 overlay: Subclass of AvdModel.
                 vtep_ip: vtep_ip
+                vtep_ipv6: vtep_ipv6
                 max_parallel_uplinks:
                    Number of parallel links towards uplink switches.
                    Changing this value may change interface naming on

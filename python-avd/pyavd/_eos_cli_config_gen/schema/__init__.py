@@ -63606,386 +63606,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                class BfdVtepEvpn(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"interval": {"type": int}, "min_rx": {"type": int}, "multiplier": {"type": int}, "prefix_list": {"type": str}}
-                    interval: int | None
-                    min_rx: int | None
-                    multiplier: int | None
-                    prefix_list: str | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            interval: int | None | UndefinedType = Undefined,
-                            min_rx: int | None | UndefinedType = Undefined,
-                            multiplier: int | None | UndefinedType = Undefined,
-                            prefix_list: str | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            BfdVtepEvpn.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                interval: interval
-                                min_rx: min_rx
-                                multiplier: multiplier
-                                prefix_list: prefix_list
-
-                            """
-
-                class Qos(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "dscp_propagation_encapsulation": {"type": bool},
-                        "ecn_propagation": {"type": bool},
-                        "map_dscp_to_traffic_class_decapsulation": {"type": bool},
-                    }
-                    dscp_propagation_encapsulation: bool | None
-                    ecn_propagation: bool | None
-                    """Enable copying the ECN marking to/from encapsulated packets."""
-                    map_dscp_to_traffic_class_decapsulation: bool | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            dscp_propagation_encapsulation: bool | None | UndefinedType = Undefined,
-                            ecn_propagation: bool | None | UndefinedType = Undefined,
-                            map_dscp_to_traffic_class_decapsulation: bool | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Qos.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                dscp_propagation_encapsulation: dscp_propagation_encapsulation
-                                ecn_propagation: Enable copying the ECN marking to/from encapsulated packets.
-                                map_dscp_to_traffic_class_decapsulation: map_dscp_to_traffic_class_decapsulation
-
-                            """
-
-                class VlanRange(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"vlans": {"type": str}, "vnis": {"type": str}}
-                    vlans: str
-                    """e.g. "94,96,100-110"."""
-                    vnis: str
-                    """
-                    Set `vnis` in the correct sequence as `vlans`.
-                    e.g. "10094,10096,10100-10110".
-                    """
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, vlans: str | UndefinedType = Undefined, vnis: str | UndefinedType = Undefined) -> None:
-                            """
-                            VlanRange.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                vlans: e.g. "94,96,100-110".
-                                vnis:
-                                   Set `vnis` in the correct sequence as `vlans`.
-                                   e.g. "10094,10096,10100-10110".
-
-                            """
-
-                class VlansItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    class FloodVteps(AvdList[str]):
-                        """Subclass of AvdList with `str` items."""
-
-                    FloodVteps._item_type = str
-
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "vni": {"type": int}, "multicast_group": {"type": str}, "flood_vteps": {"type": FloodVteps}}
-                    id: int
-                    """VLAN ID."""
-                    vni: int | None
-                    multicast_group: str | None
-                    """IP Multicast Group Address."""
-                    flood_vteps: FloodVteps
-                    """Subclass of AvdList with `str` items."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            id: int | UndefinedType = Undefined,
-                            vni: int | None | UndefinedType = Undefined,
-                            multicast_group: str | None | UndefinedType = Undefined,
-                            flood_vteps: FloodVteps | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            VlansItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                id: VLAN ID.
-                                vni: vni
-                                multicast_group: IP Multicast Group Address.
-                                flood_vteps: Subclass of AvdList with `str` items.
-
-                            """
-
-                class Vlans(AvdIndexedList[int, VlansItem]):
-                    """Subclass of AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`)."""
-
-                    _primary_key: ClassVar[str] = "id"
-
-                Vlans._item_type = VlansItem
-
-                class VrfsItem(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
-                    name: str
-                    """VRF Name."""
-                    vni: int | None
-                    multicast_group: str | None
-                    """IP Multicast Group Address."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            name: str | UndefinedType = Undefined,
-                            vni: int | None | UndefinedType = Undefined,
-                            multicast_group: str | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            VrfsItem.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                name: VRF Name.
-                                vni: vni
-                                multicast_group: IP Multicast Group Address.
-
-                            """
-
-                class Vrfs(AvdIndexedList[str, VrfsItem]):
-                    """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-
-                    _primary_key: ClassVar[str] = "name"
-
-                Vrfs._item_type = VrfsItem
-
-                class FloodVteps(AvdList[str]):
-                    """Subclass of AvdList with `str` items."""
-
-                FloodVteps._item_type = str
-
-                _fields: ClassVar[dict] = {
-                    "source_interface": {"type": str},
-                    "multicast": {"type": Multicast},
-                    "controller_client": {"type": ControllerClient},
-                    "mlag_source_interface": {"type": str},
-                    "udp_port": {"type": int},
-                    "vtep_to_vtep_bridging": {"type": bool},
-                    "virtual_router_encapsulation_mac_address": {"type": str},
-                    "bfd_vtep_evpn": {"type": BfdVtepEvpn},
-                    "qos": {"type": Qos},
-                    "vlan_range": {"type": VlanRange},
-                    "vlans": {"type": Vlans},
-                    "vrfs": {"type": Vrfs},
-                    "flood_vteps": {"type": FloodVteps},
-                    "flood_vtep_learned_data_plane": {"type": bool},
-                }
-                source_interface: str | None
-                """Source Interface Name."""
-                multicast: Multicast
-                """Subclass of AvdModel."""
-                controller_client: ControllerClient
-                """
-                Client to CVX Controllers.
-
-                Subclass of AvdModel.
-                """
-                mlag_source_interface: str | None
-                udp_port: int | None
-                vtep_to_vtep_bridging: bool | None
-                """Enable bridging between different VTEPs in vxlan overlay."""
-                virtual_router_encapsulation_mac_address: str | None
-                """"mlag-system-id" or ethernet_address (H.H.H)."""
-                bfd_vtep_evpn: BfdVtepEvpn
-                """Subclass of AvdModel."""
-                qos: Qos
-                """
-                For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the
-                core ports must be in "DSCP Trust" mode.
-                !!!Warning, only few hardware types with software version
-                >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
-
-
-                Subclass of AvdModel.
-                """
-                vlan_range: VlanRange
-                """
-                Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
-                If a VNI is set for a VLAN
-                using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
-                Subclass of AvdModel.
-                """
-                vlans: Vlans
-                """
-                Set VNI/multicast group/remote vtep on a vlan.
-                If a VNI is set for a VLAN using `vlan_range`, VNI
-                setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
-
-                Subclass of
-                AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`).
-                """
-                vrfs: Vrfs
-                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
-                flood_vteps: FloodVteps
-                """Subclass of AvdList with `str` items."""
-                flood_vtep_learned_data_plane: bool | None
-
-                if TYPE_CHECKING:
-
-                    def __init__(
-                        self,
-                        *,
-                        source_interface: str | None | UndefinedType = Undefined,
-                        multicast: Multicast | UndefinedType = Undefined,
-                        controller_client: ControllerClient | UndefinedType = Undefined,
-                        mlag_source_interface: str | None | UndefinedType = Undefined,
-                        udp_port: int | None | UndefinedType = Undefined,
-                        vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
-                        virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
-                        bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
-                        qos: Qos | UndefinedType = Undefined,
-                        vlan_range: VlanRange | UndefinedType = Undefined,
-                        vlans: Vlans | UndefinedType = Undefined,
-                        vrfs: Vrfs | UndefinedType = Undefined,
-                        flood_vteps: FloodVteps | UndefinedType = Undefined,
-                        flood_vtep_learned_data_plane: bool | None | UndefinedType = Undefined,
-                    ) -> None:
-                        """
-                        Vxlan.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            source_interface: Source Interface Name.
-                            multicast: Subclass of AvdModel.
-                            controller_client:
-                               Client to CVX Controllers.
-
-                               Subclass of AvdModel.
-                            mlag_source_interface: mlag_source_interface
-                            udp_port: udp_port
-                            vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
-                            virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
-                            bfd_vtep_evpn: Subclass of AvdModel.
-                            qos:
-                               For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the
-                               core ports must be in "DSCP Trust" mode.
-                               !!!Warning, only few hardware types with software version
-                               >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
-
-
-                               Subclass of AvdModel.
-                            vlan_range:
-                               Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
-                               If a VNI is set for a VLAN
-                               using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
-                               Subclass of AvdModel.
-                            vlans:
-                               Set VNI/multicast group/remote vtep on a vlan.
-                               If a VNI is set for a VLAN using `vlan_range`, VNI
-                               setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
-
-                               Subclass of
-                               AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`).
-                            vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
-                            flood_vteps: Subclass of AvdList with `str` items.
-                            flood_vtep_learned_data_plane: flood_vtep_learned_data_plane
-
-                        """
-
-            _fields: ClassVar[dict] = {"description": {"type": str}, "vxlan": {"type": Vxlan}, "eos_cli": {"type": str}}
-            description: str | None
-            vxlan: Vxlan
-            """Subclass of AvdModel."""
-            eos_cli: str | None
-            """
-            Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS
-            configuration.
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    description: str | None | UndefinedType = Undefined,
-                    vxlan: Vxlan | UndefinedType = Undefined,
-                    eos_cli: str | None | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Vxlan1.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        description: description
-                        vxlan: Subclass of AvdModel.
-                        eos_cli:
-                           Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS
-                           configuration.
-
-                    """
-
-        class Vxlan1(AvdModel):
-            """Subclass of AvdModel."""
-
-            class Vxlan(AvdModel):
-                """Subclass of AvdModel."""
-
-                class Multicast(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"headend_replication": {"type": bool}}
-                    headend_replication: bool | None
-
-                    if TYPE_CHECKING:
-
-                        def __init__(self, *, headend_replication: bool | None | UndefinedType = Undefined) -> None:
-                            """
-                            Multicast.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                headend_replication: headend_replication
-
-                            """
-
-                class ControllerClient(AvdModel):
+                class Ipv6Underlay(AvdModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}}
@@ -63995,7 +63616,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
                             """
-                            ControllerClient.
+                            Ipv6Underlay.
 
 
                             Subclass of AvdModel.
@@ -64200,6 +63821,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
                     "udp_port": {"type": int},
+                    "ipv6_underlay": {"type": Ipv6Underlay},
                     "vtep_to_vtep_bridging": {"type": bool},
                     "virtual_router_encapsulation_mac_address": {"type": str},
                     "bfd_vtep_evpn": {"type": BfdVtepEvpn},
@@ -64222,6 +63844,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 mlag_source_interface: str | None
                 udp_port: int | None
+                ipv6_underlay: Ipv6Underlay
+                """
+                Enable bridging over EVPN IPv6 VXLAN underlay.
+
+                Subclass of AvdModel.
+                """
                 vtep_to_vtep_bridging: bool | None
                 """Enable bridging between different VTEPs in vxlan overlay."""
                 virtual_router_encapsulation_mac_address: str | None
@@ -64270,6 +63898,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
                         udp_port: int | None | UndefinedType = Undefined,
+                        ipv6_underlay: Ipv6Underlay | UndefinedType = Undefined,
                         vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
                         virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
                         bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
@@ -64295,6 +63924,441 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             mlag_source_interface: mlag_source_interface
                             udp_port: udp_port
+                            ipv6_underlay:
+                               Enable bridging over EVPN IPv6 VXLAN underlay.
+
+                               Subclass of AvdModel.
+                            vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
+                            virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
+                            bfd_vtep_evpn: Subclass of AvdModel.
+                            qos:
+                               For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the
+                               core ports must be in "DSCP Trust" mode.
+                               !!!Warning, only few hardware types with software version
+                               >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
+
+
+                               Subclass of AvdModel.
+                            vlan_range:
+                               Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
+                               If a VNI is set for a VLAN
+                               using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
+                               Subclass of AvdModel.
+                            vlans:
+                               Set VNI/multicast group/remote vtep on a vlan.
+                               If a VNI is set for a VLAN using `vlan_range`, VNI
+                               setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
+
+                               Subclass of
+                               AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`).
+                            vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                            flood_vteps: Subclass of AvdList with `str` items.
+                            flood_vtep_learned_data_plane: flood_vtep_learned_data_plane
+
+                        """
+
+            _fields: ClassVar[dict] = {"description": {"type": str}, "vxlan": {"type": Vxlan}, "eos_cli": {"type": str}}
+            description: str | None
+            vxlan: Vxlan
+            """Subclass of AvdModel."""
+            eos_cli: str | None
+            """
+            Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS
+            configuration.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    description: str | None | UndefinedType = Undefined,
+                    vxlan: Vxlan | UndefinedType = Undefined,
+                    eos_cli: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Vxlan1.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        description: description
+                        vxlan: Subclass of AvdModel.
+                        eos_cli:
+                           Multiline String with EOS CLI rendered directly on the Vxlan interface in the final EOS
+                           configuration.
+
+                    """
+
+        class Vxlan1(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Vxlan(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Multicast(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"headend_replication": {"type": bool}}
+                    headend_replication: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, headend_replication: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Multicast.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                headend_replication: headend_replication
+
+                            """
+
+                class ControllerClient(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                    enabled: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            ControllerClient.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+
+                            """
+
+                class Ipv6Underlay(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}}
+                    enabled: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Ipv6Underlay.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: enabled
+
+                            """
+
+                class BfdVtepEvpn(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"interval": {"type": int}, "min_rx": {"type": int}, "multiplier": {"type": int}, "prefix_list": {"type": str}}
+                    interval: int | None
+                    min_rx: int | None
+                    multiplier: int | None
+                    prefix_list: str | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            interval: int | None | UndefinedType = Undefined,
+                            min_rx: int | None | UndefinedType = Undefined,
+                            multiplier: int | None | UndefinedType = Undefined,
+                            prefix_list: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            BfdVtepEvpn.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                interval: interval
+                                min_rx: min_rx
+                                multiplier: multiplier
+                                prefix_list: prefix_list
+
+                            """
+
+                class Qos(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "dscp_propagation_encapsulation": {"type": bool},
+                        "ecn_propagation": {"type": bool},
+                        "map_dscp_to_traffic_class_decapsulation": {"type": bool},
+                    }
+                    dscp_propagation_encapsulation: bool | None
+                    ecn_propagation: bool | None
+                    """Enable copying the ECN marking to/from encapsulated packets."""
+                    map_dscp_to_traffic_class_decapsulation: bool | None
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            dscp_propagation_encapsulation: bool | None | UndefinedType = Undefined,
+                            ecn_propagation: bool | None | UndefinedType = Undefined,
+                            map_dscp_to_traffic_class_decapsulation: bool | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Qos.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                dscp_propagation_encapsulation: dscp_propagation_encapsulation
+                                ecn_propagation: Enable copying the ECN marking to/from encapsulated packets.
+                                map_dscp_to_traffic_class_decapsulation: map_dscp_to_traffic_class_decapsulation
+
+                            """
+
+                class VlanRange(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"vlans": {"type": str}, "vnis": {"type": str}}
+                    vlans: str
+                    """e.g. "94,96,100-110"."""
+                    vnis: str
+                    """
+                    Set `vnis` in the correct sequence as `vlans`.
+                    e.g. "10094,10096,10100-10110".
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, vlans: str | UndefinedType = Undefined, vnis: str | UndefinedType = Undefined) -> None:
+                            """
+                            VlanRange.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                vlans: e.g. "94,96,100-110".
+                                vnis:
+                                   Set `vnis` in the correct sequence as `vlans`.
+                                   e.g. "10094,10096,10100-10110".
+
+                            """
+
+                class VlansItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class FloodVteps(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    FloodVteps._item_type = str
+
+                    _fields: ClassVar[dict] = {"id": {"type": int}, "vni": {"type": int}, "multicast_group": {"type": str}, "flood_vteps": {"type": FloodVteps}}
+                    id: int
+                    """VLAN ID."""
+                    vni: int | None
+                    multicast_group: str | None
+                    """IP Multicast Group Address."""
+                    flood_vteps: FloodVteps
+                    """Subclass of AvdList with `str` items."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            id: int | UndefinedType = Undefined,
+                            vni: int | None | UndefinedType = Undefined,
+                            multicast_group: str | None | UndefinedType = Undefined,
+                            flood_vteps: FloodVteps | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            VlansItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                id: VLAN ID.
+                                vni: vni
+                                multicast_group: IP Multicast Group Address.
+                                flood_vteps: Subclass of AvdList with `str` items.
+
+                            """
+
+                class Vlans(AvdIndexedList[int, VlansItem]):
+                    """Subclass of AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`)."""
+
+                    _primary_key: ClassVar[str] = "id"
+
+                Vlans._item_type = VlansItem
+
+                class VrfsItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"name": {"type": str}, "vni": {"type": int}, "multicast_group": {"type": str}}
+                    name: str
+                    """VRF Name."""
+                    vni: int | None
+                    multicast_group: str | None
+                    """IP Multicast Group Address."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            name: str | UndefinedType = Undefined,
+                            vni: int | None | UndefinedType = Undefined,
+                            multicast_group: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            VrfsItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: VRF Name.
+                                vni: vni
+                                multicast_group: IP Multicast Group Address.
+
+                            """
+
+                class Vrfs(AvdIndexedList[str, VrfsItem]):
+                    """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Vrfs._item_type = VrfsItem
+
+                class FloodVteps(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                FloodVteps._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "source_interface": {"type": str},
+                    "multicast": {"type": Multicast},
+                    "controller_client": {"type": ControllerClient},
+                    "mlag_source_interface": {"type": str},
+                    "udp_port": {"type": int},
+                    "ipv6_underlay": {"type": Ipv6Underlay},
+                    "vtep_to_vtep_bridging": {"type": bool},
+                    "virtual_router_encapsulation_mac_address": {"type": str},
+                    "bfd_vtep_evpn": {"type": BfdVtepEvpn},
+                    "qos": {"type": Qos},
+                    "vlan_range": {"type": VlanRange},
+                    "vlans": {"type": Vlans},
+                    "vrfs": {"type": Vrfs},
+                    "flood_vteps": {"type": FloodVteps},
+                    "flood_vtep_learned_data_plane": {"type": bool},
+                }
+                source_interface: str | None
+                """Source Interface Name."""
+                multicast: Multicast
+                """Subclass of AvdModel."""
+                controller_client: ControllerClient
+                """
+                Client to CVX Controllers.
+
+                Subclass of AvdModel.
+                """
+                mlag_source_interface: str | None
+                udp_port: int | None
+                ipv6_underlay: Ipv6Underlay
+                """
+                Enable bridging over EVPN IPv6 VXLAN underlay.
+
+                Subclass of AvdModel.
+                """
+                vtep_to_vtep_bridging: bool | None
+                """Enable bridging between different VTEPs in vxlan overlay."""
+                virtual_router_encapsulation_mac_address: str | None
+                """"mlag-system-id" or ethernet_address (H.H.H)."""
+                bfd_vtep_evpn: BfdVtepEvpn
+                """Subclass of AvdModel."""
+                qos: Qos
+                """
+                For the Traffic Class to be derived based on the outer DSCP field of the incoming VxLan packet, the
+                core ports must be in "DSCP Trust" mode.
+                !!!Warning, only few hardware types with software version
+                >= 4.26.0 support the below knobs to configure Vxlan DSCP mapping.
+
+
+                Subclass of AvdModel.
+                """
+                vlan_range: VlanRange
+                """
+                Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
+                If a VNI is set for a VLAN
+                using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
+                Subclass of AvdModel.
+                """
+                vlans: Vlans
+                """
+                Set VNI/multicast group/remote vtep on a vlan.
+                If a VNI is set for a VLAN using `vlan_range`, VNI
+                setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
+
+                Subclass of
+                AvdIndexedList with `VlansItem` items. Primary key is `id` (`int`).
+                """
+                vrfs: Vrfs
+                """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+                flood_vteps: FloodVteps
+                """Subclass of AvdList with `str` items."""
+                flood_vtep_learned_data_plane: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        source_interface: str | None | UndefinedType = Undefined,
+                        multicast: Multicast | UndefinedType = Undefined,
+                        controller_client: ControllerClient | UndefinedType = Undefined,
+                        mlag_source_interface: str | None | UndefinedType = Undefined,
+                        udp_port: int | None | UndefinedType = Undefined,
+                        ipv6_underlay: Ipv6Underlay | UndefinedType = Undefined,
+                        vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
+                        virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
+                        bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
+                        qos: Qos | UndefinedType = Undefined,
+                        vlan_range: VlanRange | UndefinedType = Undefined,
+                        vlans: Vlans | UndefinedType = Undefined,
+                        vrfs: Vrfs | UndefinedType = Undefined,
+                        flood_vteps: FloodVteps | UndefinedType = Undefined,
+                        flood_vtep_learned_data_plane: bool | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Vxlan.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            source_interface: Source Interface Name.
+                            multicast: Subclass of AvdModel.
+                            controller_client:
+                               Client to CVX Controllers.
+
+                               Subclass of AvdModel.
+                            mlag_source_interface: mlag_source_interface
+                            udp_port: udp_port
+                            ipv6_underlay:
+                               Enable bridging over EVPN IPv6 VXLAN underlay.
+
+                               Subclass of AvdModel.
                             vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
                             virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
                             bfd_vtep_evpn: Subclass of AvdModel.

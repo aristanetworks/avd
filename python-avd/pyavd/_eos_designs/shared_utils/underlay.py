@@ -58,6 +58,10 @@ class UnderlayMixin(Protocol):
         return self.inputs.underlay_ipv6 and self.underlay_router
 
     @cached_property
+    def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
+        return self.inputs.underlay_ipv6_numbered
+
+    @cached_property
     def underlay_multicast(self: SharedUtilsProtocol) -> bool:
         return self.inputs.underlay_multicast and self.underlay_router
 
