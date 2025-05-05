@@ -65,29 +65,29 @@ tenant_d:
                     source_interface: lo102
                     source_vrf: TEST
         static_routes:
-          - destination_address_prefix: 0.0.0.0/0
-            gateway: "10.3.11.4"
+          - prefix: 0.0.0.0/0
+            next_hop: "10.3.11.4"
             nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
-          - destination_address_prefix: 1.1.1.0/24
-            gateway: "10.3.11.4"
+          - prefix: 1.1.1.0/24
+            next_hop: "10.3.11.4"
             nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
             track_bfd: true
             name: Track-bfd-network-services
         ipv6_static_routes:
-          - destination_address_prefix: ::/0
-            gateway: 2001:db8:311::4
+          - prefix: ::/0
+            next_hop: 2001:db8:311::4
             name: IPv6-test-2
             nodes: [ DC1-LEAF2A, DC1-LEAF2B ]
-          - destination_address_prefix: 2001:db8::/32
-            gateway: 2001:db8:310::1
+          - prefix: 2001:db8::/32
+            next_hop: 2001:db8:310::1
             name: IPv6-test
             nodes: [ DC1-LEAF1A ]
-          - destination_address_prefix: 2001:db9::/32
-            gateway: 2001:db8:310::1
+          - prefix: 2001:db9::/32
+            next_hop: 2001:db8:310::1
             name: IPv6-test-1
             nodes: [ DC1-LEAF1A ]
-          - destination_address_prefix: 2001:dba::/32
-            gateway: 2001:db8:310::1
+          - prefix: 2001:dba::/32
+            next_hop: 2001:db8:310::1
             name: Track-bfd-network-services
             track_bfd: true
             nodes: [ DC1-LEAF2A ]

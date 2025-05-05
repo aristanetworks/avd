@@ -135,6 +135,8 @@ l3leaf:
           rack: "rackC"
           mgmt_ip: 192.168.200.106/24
           mac_address: '0c:1d:c0:1d:62:01'
+          ptp:
+            enabled: false
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet2, Ethernet2, Ethernet2, Ethernet2 ]
         - name: DC1-LEAF2B
@@ -323,6 +325,8 @@ l2leaf:
           mac_address: '0c:1d:c0:1d:62:01'
           uplink_switch_interfaces: [ Ethernet7, Ethernet7 ]
           uplink_mtu: 1498
+          ptp:
+            enabled: true
         - name: DC1-L2LEAF1B
           id: 11
           mgmt_ip: 192.168.200.115/24
