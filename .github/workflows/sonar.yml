@@ -8,7 +8,7 @@ name: Analysis with Sonarlint and publish to SonarCloud
 jobs:
   sonarcloud:
     name: Run Sonarlint analysis and upload to SonarCloud.
-    if: github.repository == 'aristanetworks/avd'
+    if: github.repository == 'aristanetworks/avd' && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
