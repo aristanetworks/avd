@@ -103,7 +103,7 @@ router_bgp:
   peer_groups:
   - name: IPv6-UNDERLAY-PEERS
     type: ipv6
-    password: 7x4B4rnJhZB438m9+BrBfQ==
+    password: F0bdF6JLcJtagc6PCN8W0Q==
     send_community: all
     maximum_routes: 12000
   - name: EVPN-OVERLAY-PEERS

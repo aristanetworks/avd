@@ -25,9 +25,9 @@ bgp_peer_groups:
   evpn_overlay_peers:
     password: Q4fqtbqcZ7oQuKfuWtNGRQ==
   ipv6_underlay_peers:
-    password: 7x4B4rnJhZB438m9+BrBfQ==
+    password: F0bdF6JLcJtagc6PCN8W0Q==
   mlag_ipv6_underlay_peer:
-    password: 4b21pAdCvWeAqpcKDFMdWw==
+    password: GNtuK+/vTwZwSZiwj1FK/Q==
 
 # P2P interfaces MTU, includes VLANs 4093 and 4094 that are over peer-link
 # If you're running vEOS-lab or cEOS, you should use MTU of 1500 instead as shown in the following line
