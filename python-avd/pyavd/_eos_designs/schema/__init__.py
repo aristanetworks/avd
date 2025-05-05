@@ -1072,8 +1072,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -1099,8 +1099,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -1114,6 +1114,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -1139,6 +1141,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -1149,6 +1166,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         description: str | None | UndefinedType = Undefined,
                         mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -1178,6 +1197,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -1338,7 +1366,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -1463,7 +1492,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -1613,8 +1643,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -1640,8 +1670,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -1655,6 +1685,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -1680,6 +1712,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -1690,6 +1737,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         description: str | None | UndefinedType = Undefined,
                         mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -1719,6 +1768,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -1879,7 +1937,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -2004,7 +2063,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -3618,8 +3678,8 @@ class EosDesigns(EosDesignsRootModel):
             This can be an
             absolute path or a path relative to current working directory.
 
-            By default the path is
-            "<root_dir>/intended/data/<fabric_name>-ids.yml".
+            By default the path is:
+            `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
             Note: Since the pool manager will remove stale
             entries after every run, each fabric should be using its own file.
@@ -3650,8 +3710,8 @@ class EosDesigns(EosDesignsRootModel):
                            This can be an
                            absolute path or a path relative to current working directory.
 
-                           By default the path is
-                           "<root_dir>/intended/data/<fabric_name>-ids.yml".
+                           By default the path is:
+                           `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
                            Note: Since the pool manager will remove stale
                            entries after every run, each fabric should be using its own file.
@@ -4972,8 +5032,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -4999,8 +5059,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -5014,6 +5074,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -5039,6 +5101,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -5049,6 +5126,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         description: str | None | UndefinedType = Undefined,
                         mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -5078,6 +5157,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -5238,7 +5326,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5363,7 +5452,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -5513,8 +5603,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -5540,8 +5630,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -5555,6 +5645,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -5580,6 +5672,21 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -5590,6 +5697,8 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         description: str | None | UndefinedType = Undefined,
                         mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -5619,6 +5728,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -5779,7 +5897,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5904,7 +6023,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -40010,7 +40130,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
+                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
                             "tag": {"type": int},
@@ -40021,8 +40143,12 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         destination_address_prefix: str | None
                         """IPv4_address."""
+                        prefix: str | None
+                        """Destination prefix."""
                         gateway: str | None
                         """IPv4_address."""
+                        next_hop: str | None
+                        """Next-hop IPv4 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -40040,7 +40166,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
                                 tag: int | None | UndefinedType = Undefined,
@@ -40057,7 +40185,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv4_address.
+                                    prefix: Destination prefix.
                                     gateway: IPv4_address.
+                                    next_hop: Next-hop IPv4 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
@@ -40083,7 +40213,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
+                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
                             "tag": {"type": int},
@@ -40094,7 +40226,11 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         destination_address_prefix: str | None
                         """IPv6_address."""
+                        prefix: str | None
+                        """Destination prefix."""
                         gateway: str | None
+                        next_hop: str | None
+                        """Next-hop IPv6 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -40112,7 +40248,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
                                 tag: int | None | UndefinedType = Undefined,
@@ -40129,7 +40267,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv6_address.
+                                    prefix: Destination prefix.
                                     gateway: gateway
+                                    next_hop: Next-hop IPv6 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
