@@ -20,6 +20,7 @@
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
 | MPLS_CORE | pe | SITE1-LER1 | 192.168.200.105/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | pe | SITE1-LER2 | 192.168.200.106/24 | 7280SR3 | Provisioned | - |
+| MPLS_CORE | pe | SITE1-LER3 | 192.168.200.112/24 | 7280SR3 | Provisioned | - |
 | MPLS_CORE | p | SITE1-LSR1 | 192.168.200.101/24 | 7280SR | Provisioned | - |
 | MPLS_CORE | p | SITE1-LSR2 | 192.168.200.102/24 | 7280SR | Provisioned | - |
 | MPLS_CORE | rr | SITE1-RR1 | 10.30.30.108/24 | 7280SR3 | Provisioned | - |
@@ -77,7 +78,7 @@
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
-| 100.70.0.0/24 | 256 | 10 | 3.91 % |
+| 100.70.0.0/24 | 256 | 11 | 4.3 % |
 
 ### Loopback0 Interfaces Node Allocation
 
@@ -85,6 +86,7 @@
 | --- | ---- | --------- |
 | MPLS_CORE | SITE1-LER1 | 100.70.0.5/32 |
 | MPLS_CORE | SITE1-LER2 | 100.70.0.6/32 |
+| MPLS_CORE | SITE1-LER3 | 100.70.0.11/32 |
 | MPLS_CORE | SITE1-LSR1 | 100.70.0.1/32 |
 | MPLS_CORE | SITE1-LSR2 | 100.70.0.2/32 |
 | MPLS_CORE | SITE1-RR1 | 100.70.0.8/32 |
@@ -100,6 +102,7 @@
 | --- | ---- | ------------ |
 | MPLS_CORE | SITE1-LER1 | 49.0001.1000.7000.0005.00 |
 | MPLS_CORE | SITE1-LER2 | 49.0001.1000.7000.0006.00 |
+| MPLS_CORE | SITE1-LER3 | 49.0001.1000.7000.0011.00 |
 | MPLS_CORE | SITE1-LSR1 | 49.0001.1000.7000.0001.00 |
 | MPLS_CORE | SITE1-LSR2 | 49.0001.1000.7000.0002.00 |
 | MPLS_CORE | SITE1-RR1 | 49.0001.1000.7000.0008.00 |

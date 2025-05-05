@@ -103,6 +103,10 @@ pe:
           overlay_address_families: []
           # Hostvars for this node has bgp_mesh_pes: true so this device will setup BGP peerings to all other PEs as well as the RRs.
           # Should always be set fabric-wide but in this case we just need to test if it works.
+        - name: SITE1-LER3
+          id: 11
+          mgmt_ip: 192.168.200.112/24
+          overlay_address_families: [ evpn ]
     - group: SITE2-LER1
       filter:
         tenants: [ all ]

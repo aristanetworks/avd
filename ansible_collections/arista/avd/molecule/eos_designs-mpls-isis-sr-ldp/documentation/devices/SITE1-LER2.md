@@ -628,6 +628,7 @@ ASN Notation: asplain
 | 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.11 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP VPN-IPv4 Address Family
@@ -669,6 +670,8 @@ router bgp 65000
    neighbor 100.70.0.8 description SITE1-RR1_Loopback0
    neighbor 100.70.0.9 peer group MPLS-OVERLAY-PEERS
    neighbor 100.70.0.9 description SITE2-RR1_Loopback0
+   neighbor 100.70.0.11 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.11 description SITE1-LER3_Loopback0
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate

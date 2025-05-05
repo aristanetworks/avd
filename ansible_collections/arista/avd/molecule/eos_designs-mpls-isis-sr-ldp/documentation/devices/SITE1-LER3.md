@@ -1,4 +1,4 @@
-# SITE1-RR1
+# SITE1-LER3
 
 ## Table of Contents
 
@@ -13,11 +13,15 @@
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
+- [VLANs](#vlans)
+  - [VLANs Summary](#vlans-summary)
+  - [VLANs Device Configuration](#vlans-device-configuration)
 - [Interfaces](#interfaces)
-  - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
+  - [VLAN Interfaces](#vlan-interfaces)
 - [Routing](#routing)
   - [Service Routing Protocols Model](#service-routing-protocols-model)
+  - [Virtual Router MAC Address](#virtual-router-mac-address)
   - [IP Routing](#ip-routing)
   - [IPv6 Routing](#ipv6-routing)
   - [Static Routes](#static-routes)
@@ -29,6 +33,8 @@
   - [MPLS and LDP](#mpls-and-ldp)
   - [MPLS Interfaces](#mpls-interfaces)
   - [MPLS Device Configuration](#mpls-device-configuration)
+- [Multicast](#multicast)
+  - [IP IGMP Snooping](#ip-igmp-snooping)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
   - [VRF Instances Device Configuration](#vrf-instances-device-configuration)
@@ -44,7 +50,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 10.30.30.108/24 | 192.168.200.5 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 192.168.200.112/24 | 192.168.200.5 |
 
 ##### IPv6
 
@@ -60,7 +66,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 10.30.30.108/24
+   ip address 192.168.200.112/24
 ```
 
 ### Management API HTTP
@@ -99,13 +105,20 @@ Enable password has been disabled
 
 ### Spanning Tree Summary
 
-STP mode: **none**
+STP mode: **mstp**
+
+#### MSTP Instance and Priority
+
+| Instance(s) | Priority |
+| -------- | -------- |
+| 0 | 4096 |
 
 ### Spanning Tree Device Configuration
 
 ```eos
 !
-spanning-tree mode none
+spanning-tree mode mstp
+spanning-tree mst 0 priority 4096
 ```
 
 ## Internal VLAN Allocation Policy
@@ -123,62 +136,31 @@ spanning-tree mode none
 vlan internal order ascending range 1006 1199
 ```
 
-## Interfaces
+## VLANs
 
-### Ethernet Interfaces
+### VLANs Summary
 
-#### Ethernet Interfaces Summary
+| VLAN ID | Name | Trunk Groups |
+| ------- | ---- | ------------ |
+| 10 | TENANT_A_L2_SERVICE | - |
+| 20 | TENANT_A_L2_SERVICE | - |
+| 2020 | TENANT_B_INSIDE_FW | - |
 
-##### L2
-
-| Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
-| --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-
-*Inherited from Port-Channel Interface
-
-##### IPv4
-
-| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet4 | P2P_SITE1-LSR1_Ethernet4 | - | 100.64.48.7/31 | default | 9178 | False | - | - |
-
-##### IPv6
-
-| Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
-| --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet4 | P2P_SITE1-LSR1_Ethernet4 | - | - | default | 9178 | False | - | - | - | - |
-
-##### ISIS
-
-| Interface | Channel Group | ISIS Instance | ISIS BFD | ISIS Metric | Mode | ISIS Circuit Type | Hello Padding | ISIS Authentication Mode |
-| --------- | ------------- | ------------- | -------- | ----------- | ---- | ----------------- | ------------- | ------------------------ |
-| Ethernet4 | - | CORE | - | 60 | point-to-point | level-2 | False | md5 |
-
-#### Ethernet Interfaces Device Configuration
+### VLANs Device Configuration
 
 ```eos
 !
-interface Ethernet4
-   description P2P_SITE1-LSR1_Ethernet4
-   no shutdown
-   mtu 9178
-   speed forced 40gfull
-   no switchport
-   ip address 100.64.48.7/31
-   ipv6 enable
-   mpls ldp igp sync
-   mpls ldp interface
-   mpls ip
-   isis enable CORE
-   isis circuit-type level-2
-   isis metric 60
-   no isis hello padding
-   isis network point-to-point
-   isis authentication mode md5
-   isis authentication key 7 <removed>
-   link-debounce time 1000
-
+vlan 10
+   name TENANT_A_L2_SERVICE
+!
+vlan 20
+   name TENANT_A_L2_SERVICE
+!
+vlan 2020
+   name TENANT_B_INSIDE_FW
 ```
+
+## Interfaces
 
 ### Loopback Interfaces
 
@@ -188,13 +170,13 @@ interface Ethernet4
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 100.70.0.8/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.11/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::8/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::b/128 |
 
 ##### ISIS
 
@@ -209,13 +191,37 @@ interface Ethernet4
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 100.70.0.8/32
-   ipv6 address 2000:1234:ffff:ffff::8/128
+   ip address 100.70.0.11/32
+   ipv6 address 2000:1234:ffff:ffff::b/128
    mpls ldp interface
-   node-segment ipv4 index 108
-   node-segment ipv6 index 108
+   node-segment ipv4 index 211
+   node-segment ipv6 index 211
    isis enable CORE
    isis passive
+```
+
+### VLAN Interfaces
+
+#### VLAN Interfaces Summary
+
+| Interface | Description | VRF |  MTU | Shutdown |
+| --------- | ----------- | --- | ---- | -------- |
+| Vlan2020 | TENANT_B_INSIDE_FW | TENANT_B_INTRA | - | False |
+
+##### IPv4
+
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan2020 |  TENANT_B_INTRA  |  -  |  -  |  -  |  -  |  -  |
+
+#### VLAN Interfaces Device Configuration
+
+```eos
+!
+interface Vlan2020
+   description TENANT_B_INSIDE_FW
+   no shutdown
+   vrf TENANT_B_INTRA
 ```
 
 ## Routing
@@ -229,6 +235,19 @@ Multi agent routing protocol model enabled
 service routing protocols model multi-agent
 ```
 
+### Virtual Router MAC Address
+
+#### Virtual Router MAC Address Summary
+
+Virtual Router MAC Address: 00:1c:73:00:dc:00
+
+#### Virtual Router MAC Address Device Configuration
+
+```eos
+!
+ip virtual-router mac-address 00:1c:73:00:dc:00
+```
+
 ### IP Routing
 
 #### IP Routing Summary
@@ -237,6 +256,7 @@ service routing protocols model multi-agent
 | --- | --------------- |
 | default | True |
 | MGMT | False |
+| TENANT_B_INTRA | True |
 
 #### IP Routing Device Configuration
 
@@ -244,6 +264,7 @@ service routing protocols model multi-agent
 !
 ip routing
 no ip routing vrf MGMT
+ip routing vrf TENANT_B_INTRA
 ```
 
 ### IPv6 Routing
@@ -254,6 +275,7 @@ no ip routing vrf MGMT
 | --- | --------------- |
 | default | True |
 | MGMT | false |
+| TENANT_B_INTRA | false |
 
 #### IPv6 Routing Device Configuration
 
@@ -284,9 +306,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.1000.7000.0008.00 |
+| Net-ID | 49.0001.1000.7000.0011.00 |
 | Type | level-1-2 |
-| Router-ID | 100.70.0.8 |
+| Router-ID | 100.70.0.11 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
 | Advertise Passive-only | True |
@@ -302,14 +324,13 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Interface | ISIS Instance | ISIS Metric | Interface Mode |
 | --------- | ------------- | ----------- | -------------- |
-| Ethernet4 | CORE | 60 | point-to-point |
 | Loopback0 | CORE | - | passive |
 
 #### ISIS Segment-routing Node-SID
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 108 | 108 |
+| Loopback0 | 211 | 211 |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -332,8 +353,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis CORE
-   net 49.0001.1000.7000.0008.00
-   router-id ipv4 100.70.0.8
+   net 49.0001.1000.7000.0011.00
+   router-id ipv4 100.70.0.11
    is-type level-1-2
    log-adjacency-changes
    mpls ldp sync default
@@ -360,54 +381,27 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000 | 100.70.0.8 |
-
-| BGP AS | Cluster ID |
-| ------ | --------- |
-| 65000 | 1.1.1.1 |
+| 65000 | 100.70.0.11 |
 
 | BGP Tuning |
 | ---------- |
 | distance bgp 20 200 200 |
-| bgp route-reflector preserve-attributes always |
 | update wait-install |
 | no bgp default ipv4-unicast |
 | maximum-paths 4 ecmp 4 |
 
 #### Router BGP Peer Groups
 
-##### MPLS-OVERLAY-PEERS
+##### EVPN-OVERLAY-PEERS
 
 | Settings | Value |
 | -------- | ----- |
-| Address Family | mpls |
-| Remote AS | 65000 |
-| Route Reflector Client | Yes |
-| Source | Loopback0 |
-| BFD | True |
-| Send community | all |
-| Maximum routes | 0 (no limit) |
-
-##### RR-OVERLAY-PEERS
-
-| Settings | Value |
-| -------- | ----- |
-| Address Family | mpls |
+| Address Family | evpn |
 | Remote AS | 65000 |
 | Source | Loopback0 |
 | BFD | True |
 | Send community | all |
 | Maximum routes | 0 (no limit) |
-
-#### BGP Neighbors
-
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
-| 100.70.0.5 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
-| 100.70.0.6 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
-| 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
-| 100.70.0.9 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
-| 100.70.0.11 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -415,87 +409,69 @@ ASN Notation: asplain
 
 | Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
 | ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| MPLS-OVERLAY-PEERS | True |  - | - | default | - |
-| RR-OVERLAY-PEERS | True |  - | - | default | - |
+| EVPN-OVERLAY-PEERS | True |  - | - | default | - |
 
-##### EVPN Neighbor Default Encapsulation
+#### Router BGP VLANs
 
-| Neighbor Default Encapsulation | Next-hop-self Source Interface |
-| ------------------------------ | ------------------------------ |
-| mpls | - |
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 10 | 100.70.0.11:10010 | 65000:10010 | - | - | learned |
+| 20 | 100.70.0.11:123456 | 65000:123456 | - | - | learned |
+| 2020 | 100.70.0.11:22020 | 65000:22020 | - | - | learned |
 
-#### Router BGP VPN-IPv4 Address Family
+#### Router BGP VRFs
 
-##### VPN-IPv4 Peer Groups
-
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
-| RR-OVERLAY-PEERS | True | - | - | - | - |
-
-#### Router BGP VPN-IPv6 Address Family
-
-##### VPN-IPv6 Peer Groups
-
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
-| RR-OVERLAY-PEERS | True | - | - | - | - |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| TENANT_B_INTRA | 100.70.0.11:19 | connected | - |
 
 #### Router BGP Device Configuration
 
 ```eos
 !
 router bgp 65000
-   router-id 100.70.0.8
+   router-id 100.70.0.11
    update wait-install
    no bgp default ipv4-unicast
-   bgp cluster-id 1.1.1.1
    maximum-paths 4 ecmp 4
    distance bgp 20 200 200
-   bgp route-reflector preserve-attributes always
-   neighbor MPLS-OVERLAY-PEERS peer group
-   neighbor MPLS-OVERLAY-PEERS remote-as 65000
-   neighbor MPLS-OVERLAY-PEERS update-source Loopback0
-   neighbor MPLS-OVERLAY-PEERS bfd
-   neighbor MPLS-OVERLAY-PEERS route-reflector-client
-   neighbor MPLS-OVERLAY-PEERS password 7 <removed>
-   neighbor MPLS-OVERLAY-PEERS send-community
-   neighbor MPLS-OVERLAY-PEERS maximum-routes 0
-   neighbor RR-OVERLAY-PEERS peer group
-   neighbor RR-OVERLAY-PEERS remote-as 65000
-   neighbor RR-OVERLAY-PEERS update-source Loopback0
-   neighbor RR-OVERLAY-PEERS bfd
-   neighbor RR-OVERLAY-PEERS password 7 <removed>
-   neighbor RR-OVERLAY-PEERS send-community
-   neighbor RR-OVERLAY-PEERS maximum-routes 0
-   neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.5 description SITE1-LER1_Loopback0
-   neighbor 100.70.0.6 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.6 description SITE1-LER2_Loopback0
-   neighbor 100.70.0.7 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.7 description SITE2-LER1_Loopback0
-   neighbor 100.70.0.9 peer group RR-OVERLAY-PEERS
-   neighbor 100.70.0.9 description SITE2-RR1_Loopback0
-   neighbor 100.70.0.11 peer group MPLS-OVERLAY-PEERS
-   neighbor 100.70.0.11 description SITE1-LER3_Loopback0
+   neighbor EVPN-OVERLAY-PEERS peer group
+   neighbor EVPN-OVERLAY-PEERS remote-as 65000
+   neighbor EVPN-OVERLAY-PEERS update-source Loopback0
+   neighbor EVPN-OVERLAY-PEERS bfd
+   neighbor EVPN-OVERLAY-PEERS send-community
+   neighbor EVPN-OVERLAY-PEERS maximum-routes 0
+   !
+   vlan 10
+      rd 100.70.0.11:10010
+      route-target both 65000:10010
+      redistribute learned
+   !
+   vlan 20
+      rd 100.70.0.11:123456
+      route-target both 65000:123456
+      redistribute learned
+   !
+   vlan 2020
+      rd 100.70.0.11:22020
+      route-target both 65000:22020
+      redistribute learned
    !
    address-family evpn
-      neighbor default encapsulation mpls
-      neighbor MPLS-OVERLAY-PEERS activate
-      neighbor RR-OVERLAY-PEERS activate
+      neighbor EVPN-OVERLAY-PEERS activate
    !
    address-family ipv4
-      no neighbor MPLS-OVERLAY-PEERS activate
-      no neighbor RR-OVERLAY-PEERS activate
+      no neighbor EVPN-OVERLAY-PEERS activate
    !
-   address-family vpn-ipv4
-      neighbor MPLS-OVERLAY-PEERS activate
-      neighbor RR-OVERLAY-PEERS activate
+   address-family rt-membership
+      neighbor EVPN-OVERLAY-PEERS activate
    !
-   address-family vpn-ipv6
-      neighbor MPLS-OVERLAY-PEERS activate
-      neighbor RR-OVERLAY-PEERS activate
+   vrf TENANT_B_INTRA
+      rd 100.70.0.11:19
+      route-target import evpn 65000:19
+      route-target export evpn 65000:19
+      router-id 100.70.0.11
+      redistribute connected
 ```
 
 ## BFD
@@ -526,7 +502,7 @@ router bfd
 | -------- | ---- |
 | MPLS IP Enabled | True |
 | LDP Enabled | True |
-| LDP Router ID | 100.70.0.8 |
+| LDP Router ID | 100.70.0.11 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
@@ -534,7 +510,6 @@ router bfd
 
 | Interface | MPLS IP Enabled | LDP Enabled | IGP Sync |
 | --------- | --------------- | ----------- | -------- |
-| Ethernet4 | True | True | True |
 | Loopback0 | - | True | - |
 
 ### MPLS Device Configuration
@@ -544,10 +519,25 @@ router bfd
 mpls ip
 !
 mpls ldp
-   router-id 100.70.0.8
+   router-id 100.70.0.11
    transport-address interface Loopback0
    interface disabled default
    no shutdown
+```
+
+## Multicast
+
+### IP IGMP Snooping
+
+#### IP IGMP Snooping Summary
+
+| IGMP Snooping | Fast Leave | Interface Restart Query | Proxy | Restart Query Interval | Robustness Variable |
+| ------------- | ---------- | ----------------------- | ----- | ---------------------- | ------------------- |
+| Enabled | - | - | - | - | - |
+
+#### IP IGMP Snooping Device Configuration
+
+```eos
 ```
 
 ## VRF Instances
@@ -557,12 +547,15 @@ mpls ldp
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
+| TENANT_B_INTRA | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
+!
+vrf instance TENANT_B_INTRA
 ```
 
 ## EOS CLI Device Configuration
