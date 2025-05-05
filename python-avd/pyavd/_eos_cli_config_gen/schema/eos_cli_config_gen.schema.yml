@@ -15278,6 +15278,19 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                next_hop:
+                  type: dict
+                  keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                          description: Enables advertising the Extended Next Hop Encoding
+                            capability.
+                        originate:
+                          type: bool
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
