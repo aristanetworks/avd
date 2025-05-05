@@ -206,6 +206,6 @@ class NodeTypeKeysMixin(Protocol):
             if node_type_key.type == self.type:
                 return node_type_key
 
-        # This should never happen, as it should be caught during validation
+        # This can happen when the "avd_data_validation_mode" is set to "warning" or when running with pyavd.
         msg = f"Could not find the given type '{self.type}' in node_type_keys or custom_node_type_keys."
         raise AristaAvdInvalidInputsError(msg)
