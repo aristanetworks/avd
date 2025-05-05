@@ -584,8 +584,8 @@ tenants:
         vrf_id: 1
         # Checking static route on VRF default is redistributed in a route-map
         static_routes:
-          - destination_address_prefix: 66.66.66.0/24
-            gateway: 172.17.0.0
+          - prefix: 66.66.66.0/24
+            next_hop: 172.17.0.0
             nodes: [cv-pathfinder-edge]
       - name: PROD
         # Showing that wan_vni and vrf_id can be different. `vrf_id` influences the subinterface id.
