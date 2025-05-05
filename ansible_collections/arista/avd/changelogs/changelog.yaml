@@ -3112,3 +3112,61 @@ releases:
       name: anta_workflow
       namespace: ''
     release_date: '2025-04-11'
+  5.4.0:
+    changes:
+      bugfixes:
+      - 'Fix(eos_cli_config_gen): Fix reordering of name-server group between vrf
+        host and root in monitor connectivity by @laxmikantchintakindi in https://github.com/aristanetworks/avd/pull/5134'
+      - 'Fix(eos_designs): Fix descriptions not taking precedence for l3_edge and
+        core_interfaces by @gmuloc in https://github.com/aristanetworks/avd/pull/5305'
+      - 'Fix(eos_designs): queue monitor length with missing notifying by @ankudinov
+        in https://github.com/aristanetworks/avd/pull/5343'
+      minor_changes:
+      - 'Bump(requirements): Bump the prod group across 2 directories with 1 update
+        by @dependabot in https://github.com/aristanetworks/avd/pull/5314'
+      - 'Doc(eos_designs): Add table for fabric numbering by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5353'
+      - 'Doc: Arista AVD re-branding by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5361'
+      - 'Doc: Set platform in CV Pathfinder example by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5228'
+      - 'Doc: Update AAP doc page to reflect AAP as not TAC supported by @carlbuchmann
+        in https://github.com/aristanetworks/avd/pull/5342'
+      - 'Doc: Update the contribution guide `authoring_eos_cli_config_gen.md` by @Shivani-gslab
+        in https://github.com/aristanetworks/avd/pull/5294'
+      - 'Doc: underlay ethernet interfaces context update for custom templates by
+        @philippebureau in https://github.com/aristanetworks/avd/pull/5291'
+      - 'Doc: update contribution guide by @emmanuel-ferdman in https://github.com/aristanetworks/avd/pull/5292'
+      - 'Feat(anta_runner): Add strict mode to fail the Ansible task if a test failed
+        or errored by @carl-baillargeon in https://github.com/aristanetworks/avd/pull/5303'
+      - 'Feat(cv_deploy): Add verification of the duplicated devices by @alexeygorbunov
+        in https://github.com/aristanetworks/avd/pull/4889'
+      - 'Feat(cv_deploy): Handle WorkspaceStreamResponse with ResponseStatus.UNSPECIFIED
+        by @alexeygorbunov in https://github.com/aristanetworks/avd/pull/5333'
+      - 'Feat(eos_cli_config_gen): Add support for set-nexthop-peer under BGP by @thompsno
+        in https://github.com/aristanetworks/avd/pull/5165'
+      - 'Feat(eos_cli_config_gen): Added the support for list of ip domain in ip name
+        server groups by @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5282'
+      - 'Feat(eos_designs): Add CloudEOS platform type by @carlbuchmann in https://github.com/aristanetworks/avd/pull/5259'
+      - 'Feat(eos_designs): Add core/l3 edge channel id generation options by @emilarista
+        in https://github.com/aristanetworks/avd/pull/5197'
+      - 'Feat(eos_designs): Allow knob for kernel software forwarding of ecmp routes
+        with or without agent restart. by @ashenoy-arista in https://github.com/aristanetworks/avd/pull/5270'
+      - 'Feat(eos_designs): all_active_multihoming_evpn_gateway by @ernestoherrerab
+        in https://github.com/aristanetworks/avd/pull/5056'
+      - 'Refactor(eos_cli_config_gen, eos_designs): Rename keys `destination_address_prefix`
+        and `gateway` under `static_routes` and `ipv6_static_routes` by @laxmikantchintakindi
+        in https://github.com/aristanetworks/avd/pull/5283'
+      - 'Refactor(eos_designs): Improve connected_endpoints/monitor_sessions by @Vibhu-gslab
+        in https://github.com/aristanetworks/avd/pull/5311'
+      - 'Refactor(eos_designs): Improve network_services/router_adaptive_virtual_topology.py
+        and improve pytest coverage by @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5272'
+      - 'Refactor(eos_designs): Improve pytest coverage for overlay/ip_security  by
+        @Shivani-gslab in https://github.com/aristanetworks/avd/pull/5312'
+      - 'Refactor(eos_designs): Improved pytest coverage for metadata/cv_tags.py by
+        @MaheshGSLAB in https://github.com/aristanetworks/avd/pull/5332'
+      - 'Refactor: Address ansible-sanity failure from ansible devel by @gmuloc in
+        https://github.com/aristanetworks/avd/pull/5298'
+      release_summary: 'Release 5.4.0 - See documentation on avd.arista.com for details.
+
+        '
+    fragments:
+    - v5.4.0.yml
+    release_date: '2025-05-02'
