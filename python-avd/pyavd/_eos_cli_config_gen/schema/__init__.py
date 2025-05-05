@@ -39155,6 +39155,50 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class NextHop(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class AddressFamilyIpv6(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "originate": {"type": bool}}
+                        enabled: bool
+                        """Enables advertising the Extended Next Hop Encoding capability."""
+                        originate: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                AddressFamilyIpv6.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Enables advertising the Extended Next Hop Encoding capability.
+                                    originate: originate
+
+                                """
+
+                    _fields: ClassVar[dict] = {"address_family_ipv6": {"type": AddressFamilyIpv6}}
+                    address_family_ipv6: AddressFamilyIpv6
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined) -> None:
+                            """
+                            NextHop.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address_family_ipv6: Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "ip_address": {"type": str},
                     "activate": {"type": bool},
@@ -39166,6 +39210,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_out": {"type": str},
                     "default_originate": {"type": DefaultOriginate},
                     "additional_paths": {"type": AdditionalPaths},
+                    "next_hop": {"type": NextHop},
                 }
                 ip_address: str
                 activate: bool | None
@@ -39191,6 +39236,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
+                next_hop: NextHop
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -39207,6 +39254,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        next_hop: NextHop | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -39229,6 +39277,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Prefix-list name.
                             default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
+                            next_hop: Subclass of AvdModel.
 
                         """
 
