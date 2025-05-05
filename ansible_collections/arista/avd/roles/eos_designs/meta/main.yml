@@ -1,3 +1,3 @@
 galaxy_info:
-  description: Opinionated Data model to aid with the deployment of Arista Validated Designs.
+  description: eos_designs is a role that provides an abstracted data model to deploy various network designs and use cases.
   standalone: false
