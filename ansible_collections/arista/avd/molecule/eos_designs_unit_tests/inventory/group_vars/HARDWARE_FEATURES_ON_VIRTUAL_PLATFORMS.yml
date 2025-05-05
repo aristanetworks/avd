@@ -33,9 +33,9 @@ queue_monitor_length:
 queue_monitor_streaming:
   enable: true
 
-# Test `PoE`
+# Test `PoE` and `L2 MTU/MRU` Ethernet and Port-channel interfaces
 servers:
-  - name: TEST_POE_SERVER
+  - name: TEST_POE
     adapters:
       - switch_ports:
           - Ethernet7
@@ -58,6 +58,55 @@ servers:
         poe:
           reboot:
             action: maintain
+        l2_mtu: 10010
+        l2_mru: 10020
+  - name: TEST_MTU_MRU
+    adapters:
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_VEOS_LAB
+        l2_mtu: 20010
+        l2_mru: 20020
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_NO_MTU_NO_MRU
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_CEOS_LAB
+        l2_mtu: 20010
+        l2_mru: 20020
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_NO_MTU_NO_MRU
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_CLOUDEOS
+        l2_mtu: 20010
+        l2_mru: 20020
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_MTU_NO_MRU
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_720XP
+        l2_mtu: 20010
+        l2_mru: 20020
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_MTU_MRU_1
+      - switch_ports:
+          - Ethernet8
+        switches:
+          - HARDWARE_FEATURES_7280R
+        l2_mtu: 20010
+        l2_mru: 20020
+        port_channel:
+          mode: active
+          endpoint_port_channel: PO_MTU_MRU_2
 
 # Test `BGP`
 tenants:

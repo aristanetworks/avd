@@ -3362,16 +3362,31 @@ keys:
               type: bool
               default: true
               description: "An abstracted feature indicating aggregated support for
-                the following common EOS capabilities that depend on hardware components:\n
-                \ - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`,
-                `queue_monitor_streaming`.\n  - `storm-control`. Included structured
-                configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.\n
-                \ - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.\n
-                \ - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`,
+                the following common EOS capabilities supported on hardware platforms
+                only:\n  - `queue-monitor`. Included structured configuration paths:
+                `queue_monitor_length`, `queue_monitor_streaming`.\n  - `storm-control`.
+                Included structured configuration paths: `ethernet_interfaces.[].storm_control`,
+                `port_channel_interfaces.[].storm_control`.\n  - `PoE`. Included structured
+                configuration paths: `ethernet_interfaces.[].poe`.\n  - `BGP wait-install`.
+                Included structured configuration paths: `router_bgp.updates.wait_install`,
                 `router_bgp.vrfs.[].updates.wait_install`.\n  - `hardware speed-group`.
-                Included structured configuration paths: `hardware.speed_groups`.\nFeature
+                Included structured configuration paths: `hardware.speed_groups`.\n
+                \ - `hardware counter feature` for all features except `acl`, `mpls
+                tunnel`, `nexthop`, `pbr`, `vni (decap|encap)`, `vtep (decap|encap)`.
+                Included structured configuration paths: `hardware_counters.features.[]`.\n
+                \ - `L2 MRU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mru`,
+                `port_channel_interfaces.[].l2_mru`.\nFeature should typically be
+                set to \"False\" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab)
+                and cloudEOS.\n"
+            hardware_and_cloudeos_features:
+              type: bool
+              default: true
+              description: "An abstracted feature indicating aggregated support for
+                the following common EOS capabilities supported on hardware platforms
+                and cloudEOS only:\n  - `L2 MTU`. Included structured configuration
+                paths: `ethernet_interfaces.[].l2_mtu`, `port_channel_interfaces.[].l2_mtu`.\nFeature
                 should typically be set to \"False\" for all virtual EOS platforms
-                (e.g., vEOS-lab, cEOSLab, cloudEOS).\n"
+                (e.g., vEOS-lab, cEOSLab).\n"
             queue_monitor_length_notify:
               type: bool
               default: true
@@ -3434,6 +3449,9 @@ keys:
               type: bool
               default: false
               description: Support for all-active EVPN gateway redundancy.
+            hardware_counter_feature:
+              type: bool
+              default: true
         management_interface:
           type: str
           default: Management1
@@ -3589,6 +3607,7 @@ keys:
       - vEOS-lab
       feature_support:
         hardware_features: false
+        hardware_and_cloudeos_features: false
         bgp_update_wait_for_convergence: false
         evpn_gateway_all_active_multihoming: true
       reload_delay:
@@ -3601,6 +3620,7 @@ keys:
       - cEOSLab
       feature_support:
         hardware_features: false
+        hardware_and_cloudeos_features: false
         bgp_update_wait_for_convergence: false
         evpn_gateway_all_active_multihoming: true
       management_interface: Management0
@@ -3613,6 +3633,7 @@ keys:
       - cloudEOS
       feature_support:
         hardware_features: false
+        hardware_counter_feature: false
       p2p_uplinks_mtu: 9194
     - platforms:
       - AWE-5310

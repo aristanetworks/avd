@@ -12,13 +12,23 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet7
-  description: SERVER_TEST_POE_SERVER_ETH5_NO_POE
+  description: SERVER_TEST_POE_ETH5_NO_POE
   shutdown: false
-  peer: TEST_POE_SERVER
+  l2_mtu: 10010
+  l2_mru: 10020
+  peer: TEST_POE
   peer_interface: ETH5_NO_POE
   peer_type: server
   switchport:
     enabled: true
+- name: Ethernet8
+  description: SERVER_TEST_MTU_MRU
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  peer: TEST_MTU_MRU
+  peer_type: server
 hardware_counters:
   features:
   - name: acl
@@ -67,6 +77,14 @@ platform:
   sand:
     lag:
       hardware_only: true
+port_channel_interfaces:
+- name: Port-Channel8
+  description: SERVER_TEST_MTU_MRU_PO_MTU_MRU_2
+  shutdown: false
+  l2_mtu: 20010
+  l2_mru: 20020
+  switchport:
+    enabled: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

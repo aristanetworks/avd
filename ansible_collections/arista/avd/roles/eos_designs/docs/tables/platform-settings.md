@@ -19,7 +19,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "custom_platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "custom_platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "custom_platform_settings.[].feature_support") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_features</samp>](## "custom_platform_settings.[].feature_support.hardware_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:<br>  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.<br>  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.<br>  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.<br>  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.<br>  - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_features</samp>](## "custom_platform_settings.[].feature_support.hardware_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms only:<br>  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.<br>  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.<br>  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.<br>  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.<br>  - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.<br>  - `hardware counter feature` for all features except `acl`, `mpls tunnel`, `nexthop`, `pbr`, `vni (decap|encap)`, `vtep (decap|encap)`. Included structured configuration paths: `hardware_counters.features.[]`.<br>  - `L2 MRU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mru`, `port_channel_interfaces.[].l2_mru`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab) and cloudEOS.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_and_cloudeos_features</samp>](## "custom_platform_settings.[].feature_support.hardware_and_cloudeos_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms and cloudEOS only:<br>  - `L2 MTU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mtu`, `port_channel_interfaces.[].l2_mtu`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
@@ -30,6 +31,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_feature</samp>](## "custom_platform_settings.[].feature_support.hardware_counter_feature") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -50,7 +52,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default_interface_mtu</samp>](## "platform_settings.[].default_interface_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Default interface MTU configured on EOS under "interface defaults".<br>Takes precedence over the root key "default_interface_mtu".<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;p2p_uplinks_mtu</samp>](## "platform_settings.[].p2p_uplinks_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | Set MTU on point to point uplink interfaces.<br>Takes precedence over the root key "p2p_uplinks_mtu".<br><node_type>.uplink_mtu -> platform_settings.p2p_uplinks_mtu -> p2p_uplinks_mtu -> 9214.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;feature_support</samp>](## "platform_settings.[].feature_support") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_features</samp>](## "platform_settings.[].feature_support.hardware_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:<br>  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.<br>  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.<br>  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.<br>  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.<br>  - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_features</samp>](## "platform_settings.[].feature_support.hardware_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms only:<br>  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.<br>  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.<br>  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.<br>  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.<br>  - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.<br>  - `hardware counter feature` for all features except `acl`, `mpls tunnel`, `nexthop`, `pbr`, `vni (decap|encap)`, `vtep (decap|encap)`. Included structured configuration paths: `hardware_counters.features.[]`.<br>  - `L2 MRU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mru`, `port_channel_interfaces.[].l2_mru`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab) and cloudEOS.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_and_cloudeos_features</samp>](## "platform_settings.[].feature_support.hardware_and_cloudeos_features") | Boolean |  | `True` |  | An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms and cloudEOS only:<br>  - `L2 MTU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mtu`, `port_channel_interfaces.[].l2_mtu`.<br>Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab).<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
@@ -61,6 +64,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.supported") | Boolean |  | `False` |  | Capability flag for generation of SFE interface profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counter_feature</samp>](## "platform_settings.[].feature_support.hardware_counter_feature") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware</samp>](## "platform_settings.[].security_entropy_sources.hardware") | Boolean |  |  |  | Use a hardware based source. |
@@ -106,14 +110,21 @@
         p2p_uplinks_mtu: <int; 68-65535>
         feature_support:
 
-          # An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:
+          # An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms only:
           #   - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.
           #   - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.
           #   - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.
           #   - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
           #   - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.
-          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+          #   - `hardware counter feature` for all features except `acl`, `mpls tunnel`, `nexthop`, `pbr`, `vni (decap|encap)`, `vtep (decap|encap)`. Included structured configuration paths: `hardware_counters.features.[]`.
+          #   - `L2 MRU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mru`, `port_channel_interfaces.[].l2_mru`.
+          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab) and cloudEOS.
           hardware_features: <bool; default=True>
+
+          # An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms and cloudEOS only:
+          #   - `L2 MTU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mtu`, `port_channel_interfaces.[].l2_mtu`.
+          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab).
+          hardware_and_cloudeos_features: <bool; default=True>
           queue_monitor_length_notify: <bool; default=True>
           interface_storm_control: <bool; default=True>
           poe: <bool; default=False>
@@ -143,6 +154,7 @@
 
           # Support for all-active EVPN gateway redundancy.
           evpn_gateway_all_active_multihoming: <bool; default=False>
+          hardware_counter_feature: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -193,14 +205,21 @@
         p2p_uplinks_mtu: <int; 68-65535>
         feature_support:
 
-          # An abstracted feature indicating aggregated support for the following common EOS capabilities that depend on hardware components:
+          # An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms only:
           #   - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.
           #   - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.
           #   - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.
           #   - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
           #   - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.
-          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab, cloudEOS).
+          #   - `hardware counter feature` for all features except `acl`, `mpls tunnel`, `nexthop`, `pbr`, `vni (decap|encap)`, `vtep (decap|encap)`. Included structured configuration paths: `hardware_counters.features.[]`.
+          #   - `L2 MRU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mru`, `port_channel_interfaces.[].l2_mru`.
+          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab) and cloudEOS.
           hardware_features: <bool; default=True>
+
+          # An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms and cloudEOS only:
+          #   - `L2 MTU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mtu`, `port_channel_interfaces.[].l2_mtu`.
+          # Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab).
+          hardware_and_cloudeos_features: <bool; default=True>
           queue_monitor_length_notify: <bool; default=True>
           interface_storm_control: <bool; default=True>
           poe: <bool; default=False>
@@ -230,6 +249,7 @@
 
           # Support for all-active EVPN gateway redundancy.
           evpn_gateway_all_active_multihoming: <bool; default=False>
+          hardware_counter_feature: <bool; default=True>
         management_interface: <str; default="Management1">
 
         # Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
@@ -385,6 +405,7 @@
         - feature_support:
             bgp_update_wait_for_convergence: false
             evpn_gateway_all_active_multihoming: true
+            hardware_and_cloudeos_features: false
             hardware_features: false
           platforms:
           - VEOS
@@ -397,6 +418,7 @@
         - feature_support:
             bgp_update_wait_for_convergence: false
             evpn_gateway_all_active_multihoming: true
+            hardware_and_cloudeos_features: false
             hardware_features: false
           management_interface: Management0
           platforms:
@@ -408,6 +430,7 @@
             mlag: 300
             non_mlag: 330
         - feature_support:
+            hardware_counter_feature: false
             hardware_features: false
           p2p_uplinks_mtu: 9194
           platforms:

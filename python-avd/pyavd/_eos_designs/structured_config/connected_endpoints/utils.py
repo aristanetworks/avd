@@ -292,3 +292,23 @@ class UtilsMixin(Protocol):
             raise AristaAvdError(msg)
 
         return output_type(trunk=adapter.phone_trunk_mode, vlan=adapter.phone_vlan)
+
+    def _get_adapter_l2_mtu(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> int | None | UndefinedType:
+        """Return l2_mtu for one adapter."""
+        if self.shared_utils.platform_settings.feature_support.hardware_and_cloudeos_features and adapter.l2_mtu:
+            return adapter.l2_mtu
+
+        return Undefined
+
+    def _get_adapter_l2_mru(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
+    ) -> int | None | UndefinedType:
+        """Return l2_mru for one adapter."""
+        if self.shared_utils.platform_settings.feature_support.hardware_features and adapter.l2_mru:
+            return adapter.l2_mru
+
+        return Undefined

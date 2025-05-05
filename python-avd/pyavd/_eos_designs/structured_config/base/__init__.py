@@ -170,10 +170,11 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         Set hardware_counters.
 
         Contributing data sources:
-          - hardware_counters.features variable.
+          - hardware_counters.features variable
+          - platform_settings.feature_support.hardware_counter_feature fact
           - platform_settings.feature_support.hardware_features fact.
         """
-        if not self.inputs.hardware_counters:
+        if not (self.inputs.hardware_counters and self.shared_utils.platform_settings.feature_support.hardware_counter_feature):
             return
         hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
         if not self.shared_utils.platform_settings.feature_support.hardware_features:

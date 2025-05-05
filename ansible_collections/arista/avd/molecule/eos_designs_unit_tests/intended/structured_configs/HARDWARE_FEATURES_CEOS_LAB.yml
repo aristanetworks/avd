@@ -12,13 +12,21 @@ ethernet_interfaces:
   switchport:
     enabled: false
 - name: Ethernet7
-  description: SERVER_TEST_POE_SERVER_ETH2_NO_POE
+  description: SERVER_TEST_POE_ETH2_NO_POE
   shutdown: false
-  peer: TEST_POE_SERVER
+  peer: TEST_POE
   peer_interface: ETH2_NO_POE
   peer_type: server
   switchport:
     enabled: true
+- name: Ethernet8
+  description: SERVER_TEST_MTU_MRU
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  peer: TEST_MTU_MRU
+  peer_type: server
 hardware_counters:
   features:
   - name: acl
@@ -56,6 +64,12 @@ management_api_http:
 metadata:
   platform: cEOSLab
   fabric_name: EOS_DESIGNS_UNIT_TESTS
+port_channel_interfaces:
+- name: Port-Channel8
+  description: SERVER_TEST_MTU_MRU_PO_NO_MTU_NO_MRU
+  shutdown: false
+  switchport:
+    enabled: true
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
