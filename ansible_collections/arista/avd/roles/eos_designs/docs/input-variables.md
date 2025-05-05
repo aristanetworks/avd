@@ -134,6 +134,10 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-ip-addressin
 
 Fabric Numbering controls how various numbers are derived across the fabric.
 
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/fabric-numbering.md
+--8<--
+
 ### Node ID Algorithm
 
 IDs will be automatically assigned according to the configured algorithm.
@@ -149,10 +153,6 @@ IDs will be automatically assigned according to the configured algorithm.
 
     The pool manager will not change IDs if they are already set under the node settings,
     so it is possible to enable the pool manager on an existing inventory without changes.
-
---8<--
-roles/eos_designs/docs/tables/fabric-numbering.md
---8<--
 
 #### Details on `pool_manager` for Node IDs
 

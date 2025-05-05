@@ -4,9 +4,9 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Arista Validated Designs Development
+# Arista AVD Development
 
-**Arista Validated Designs (AVD)** is maintained as a [GitHub project](https://github.com/aristanetworks/avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.
+**Arista AVD** is maintained as a [GitHub project](https://github.com/aristanetworks/avd) under the Apache 2 license. Users are encouraged to submit GitHub issues for feature requests and bug reports.
 
 ## Governance
 
