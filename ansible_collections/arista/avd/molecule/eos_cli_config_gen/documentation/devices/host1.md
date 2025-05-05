@@ -3047,6 +3047,36 @@ Name-server Group: mynameserver1
 ```eos
 !
 monitor connectivity
+   name-server group mynameserver1
+   interval 5
+   no shutdown
+   interface set GLOBAL_SET Ethernet1-4
+   interface set HOST_SET Loopback2-4, Loopback10-12
+   local-interfaces GLOBAL_SET address-only default
+   !
+   host server1
+      description
+      server1_connectivity_monitor
+      local-interfaces HOST_SET address-only
+      ip 10.10.10.1
+      url https://server1.local.com
+   !
+   host server2
+      description
+      server2_connectivity_monitor
+      local-interfaces HOST_SET address-only
+      ip 10.10.10.2
+      url https://server2.local.com
+   !
+   host server3
+      description
+      server3_connectivity_monitor
+      local-interfaces HOST_SET
+      ip 10.10.10.3
+      icmp echo size 1200
+   !
+   host server4
+   !
    vrf blue
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
       local-interfaces VRF_GLOBAL_SET default
@@ -3083,35 +3113,6 @@ monitor connectivity
          url https://server2.local.com
    !
    vrf yellow
-   name-server group mynameserver1
-   interval 5
-   no shutdown
-   interface set GLOBAL_SET Ethernet1-4
-   interface set HOST_SET Loopback2-4, Loopback10-12
-   local-interfaces GLOBAL_SET address-only default
-   !
-   host server1
-      description
-      server1_connectivity_monitor
-      local-interfaces HOST_SET address-only
-      ip 10.10.10.1
-      url https://server1.local.com
-   !
-   host server2
-      description
-      server2_connectivity_monitor
-      local-interfaces HOST_SET address-only
-      ip 10.10.10.2
-      url https://server2.local.com
-   !
-   host server3
-      description
-      server3_connectivity_monitor
-      local-interfaces HOST_SET
-      ip 10.10.10.3
-      icmp echo size 1200
-   !
-   host server4
 ```
 
 ## Monitor Layer 1 Logging
@@ -8831,15 +8832,18 @@ router bgp 65101
       neighbor WELCOME_ROUTERS additional-paths send any
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
+      no neighbor 10.2.3.8 next-hop address-family ipv6
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 10.2.3.9 default-originate route-map Address_Family_IPV4 always
       neighbor 10.2.3.9 additional-paths send ecmp limit 4
+      neighbor 10.2.3.9 next-hop address-family ipv6
       neighbor 192.0.2.1 additional-paths receive
       neighbor 192.0.2.1 route-map Address_Family_IPV4_In in
       neighbor 192.0.2.1 route-map Address_Family_IPV4_Out out
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       neighbor 192.0.2.1 additional-paths send limit 20 prefix-list PL1
+      neighbor 192.0.2.1 next-hop address-family ipv6 originate
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
       network 10.0.0.0/8

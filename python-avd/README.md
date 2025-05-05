@@ -6,7 +6,7 @@
 
 # PyAVD
 
-Generate Arista Validated Designs (AVD) with Python.
+Generate Arista AVD with Python.
 
 See [avd.arista.com](https://avd.arista.com/stable/docs/pyavd.html) for details.
 
