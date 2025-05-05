@@ -2,7 +2,7 @@
 name="pyavd"
 dynamic = ["version"]
 authors=[{ name = "Arista Networks", email = "ansible@arista.com"}]
-description="Arista Validated Designs"
+description="Arista AVD"
 readme = "README.md"
 license = { file = "pyavd/LICENSE" }
 classifiers = [
