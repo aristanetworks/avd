@@ -8,7 +8,6 @@ isis_default_circuit_type: level-2
 isis_system_id_format: "node_id"
 
 type: "pe"
-avd_eos_designs_enforce_duplication_checks_across_all_models: true
 
 pe:
   defaults:
@@ -21,5 +20,3 @@ pe:
   nodes:
     - name: "isis-system-id-format-using-node-id"
       id: 99
-      raw_eos_cli: |
-        ! TEST RAW_EOS_CLI
