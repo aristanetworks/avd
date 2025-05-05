@@ -30,7 +30,14 @@ def init_store() -> None:
 def test_validate_json() -> None:
     res = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1"}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
     result: dict[Literal["violations", "coercions"], list[dict]] = json.loads(res)
-    assert result["coercions"] == []
+    assert result["coercions"] == [
+        {"issue": "DefaultValueInserted", "path": ["avd_data_validation_mode"]},
+        {"issue": "DefaultValueInserted", "path": ["config_end"]},
+        {"issue": "DefaultValueInserted", "path": ["generate_default_config"]},
+        {"issue": "DefaultValueInserted", "path": ["generate_device_documentation"]},
+        {"issue": "DefaultValueInserted", "path": ["is_deployed"]},
+        {"issue": "DefaultValueInserted", "path": ["transceiver_qsfp_default_mode_4x10"]},
+    ]
     assert result["violations"] == [
         {
             "path": ["ethernet_interfaces", "2"],
