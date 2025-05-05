@@ -26,14 +26,14 @@ l3leaf:
       # Supports queue-monitor length notifying
       platform: 7280R
 
-# Test queue-monitor
+# Test `queue-monitor`
 queue_monitor_length:
   enabled: true
   notifying: true
 queue_monitor_streaming:
   enable: true
 
-# Test PoE
+# Test `PoE`
 servers:
   - name: TEST_POE_SERVER
     adapters:
@@ -59,7 +59,7 @@ servers:
           reboot:
             action: maintain
 
-# Test BGP
+# Test `BGP`
 tenants:
   - name: TENANT1
     vrfs:
@@ -94,7 +94,7 @@ tenants:
               - HARDWARE_FEATURES_720XP
               - HARDWARE_FEATURES_7280R
 
-# Test hardware speed-group
+# Test `hardware speed-group`
 platform_speed_groups:
   - platform: vEOS-lab
     speeds:
@@ -116,3 +116,31 @@ platform_speed_groups:
       - speed: 10g
         speed_groups:
           - "1"
+
+# Test `hardware counter feature`
+hardware_counters:
+  features:
+    - name: acl
+      direction: out
+      address_type: mac
+    # Expected to be filtered out for virtual platforms
+    - name: gre tunnel interface
+      direction: out
+    # Expected to be filtered out for virtual platforms
+    - name: mpls lfib
+      units_packets: true
+      direction: out
+    - name: mpls lfib
+      units_packets: false
+      direction: in
+    - name: mpls tunnel
+    - name: nexthop
+    - name: pbr
+      direction: in
+    - name: vni decap
+    - name: vni encap
+    - name: vtep decap
+    - name: vtep encap
+    # Expected to be filtered out for virtual platforms
+    - name: segment-security
+      direction: in

@@ -12,7 +12,7 @@ from pyavd._eos_designs.structured_config.structured_config_generator import (
     structured_config_contributor,
 )
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import default
+from pyavd._utils import default, get_v2
 from pyavd.j2filters import natural_sort
 
 from .ntp import NtpMixin
@@ -166,8 +166,31 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
     @structured_config_contributor
     def hardware_counters(self) -> None:
-        """hardware_counters set based on hardware_counters.features variable."""
-        self.structured_config.hardware_counters = self.inputs.hardware_counters
+        """
+        Set hardware_counters.
+
+        Contributing data sources:
+          - hardware_counters.features variable.
+          - platform_settings.feature_support.hardware_features fact.
+        """
+        if not self.inputs.hardware_counters:
+            return
+        hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
+        if not self.shared_utils.platform_settings.feature_support.hardware_features:
+            supported_features = {
+                "acl",
+                "mpls tunnel",
+                "nexthop",
+                "pbr",
+                "vni decap",
+                "vni encap",
+                "vtep decap",
+                "vtep encap",
+            }
+            hardware_counters.features = hardware_counters.features._filtered(
+                lambda x: x.name in supported_features or (x.name == "mpls lfib" and not get_v2(x, "units_packets"))
+            )
+        self.structured_config.hardware_counters = hardware_counters
 
     @structured_config_contributor
     def hardware(self) -> None:

@@ -19,6 +19,22 @@ ethernet_interfaces:
   peer_type: server
   switchport:
     enabled: true
+hardware_counters:
+  features:
+  - name: acl
+    direction: out
+    address_type: mac
+  - name: mpls lfib
+    direction: in
+    units_packets: false
+  - name: mpls tunnel
+  - name: nexthop
+  - name: pbr
+    direction: in
+  - name: vni decap
+  - name: vni encap
+  - name: vtep decap
+  - name: vtep encap
 hostname: HARDWARE_FEATURES_CEOS_LAB
 ip_igmp_snooping:
   globally_enabled: true

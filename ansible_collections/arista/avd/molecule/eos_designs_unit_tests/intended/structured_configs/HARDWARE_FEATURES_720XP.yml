@@ -26,6 +26,29 @@ hardware:
   speed_groups:
   - speed_group: '1'
     serdes: 10g
+hardware_counters:
+  features:
+  - name: acl
+    direction: out
+    address_type: mac
+  - name: gre tunnel interface
+    direction: out
+  - name: mpls lfib
+    direction: out
+    units_packets: true
+  - name: mpls lfib
+    direction: in
+    units_packets: false
+  - name: mpls tunnel
+  - name: nexthop
+  - name: pbr
+    direction: in
+  - name: vni decap
+  - name: vni encap
+  - name: vtep decap
+  - name: vtep encap
+  - name: segment-security
+    direction: in
 hostname: HARDWARE_FEATURES_720XP
 ip_igmp_snooping:
   globally_enabled: true
