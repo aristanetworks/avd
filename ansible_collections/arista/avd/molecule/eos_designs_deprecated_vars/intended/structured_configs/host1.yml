@@ -4,6 +4,12 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet47
+  shutdown: false
+  ip_address: 10.10.1.1/30
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet1
   description: SERVER_OLD_SW-1/2_Endpoint_port1
   shutdown: false
@@ -26,6 +32,11 @@ hostname: host1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
+ipv6_static_routes:
+- vrf: default
+  prefix: ::/0
+  next_hop: 2001:db8:311::4
+  name: IPv6-test-2
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
@@ -110,6 +121,8 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+    static:
+      enabled: true
   address_family_evpn:
     peer_groups:
     - name: EVPN-OVERLAY-PEERS
@@ -121,6 +134,10 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: default
+  prefix: 0.0.0.0
+  next_hop: 10.10.1.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
