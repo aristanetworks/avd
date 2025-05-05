@@ -56,9 +56,8 @@ class SnmpServerMixin(Protocol):
             ipv6_acls=snmp_settings.ipv6_acls._cast_as(EosCliConfigGen.SnmpServer.Ipv6Acls),
             views=snmp_settings.views._cast_as(EosCliConfigGen.SnmpServer.Views),
             groups=snmp_settings.groups._cast_as(EosCliConfigGen.SnmpServer.Groups),
+            traps=snmp_settings.traps,
         )
-        if snmp_settings.traps.enable:
-            self.structured_config.snmp_server._update(traps=snmp_settings.traps)
 
     def _snmp_engine_ids(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """Set dict of engine ids if "snmp_settings.compute_local_engineid" is True."""
@@ -191,9 +190,13 @@ class SnmpServerMixin(Protocol):
         if not source_interfaces_inputs:
             # Empty dict or None
             return
-        local_interfaces = self._build_source_interfaces(source_interfaces_inputs.mgmt_interface, source_interfaces_inputs.inband_mgmt_interface, "SNMP")
-        for local_interface in local_interfaces:
-            self.structured_config.snmp_server.local_interfaces.append(EosCliConfigGen.SnmpServer.LocalInterfacesItem(**local_interface))
+        local_interfaces = self._build_source_interfaces(
+            source_interfaces_inputs.mgmt_interface,
+            source_interfaces_inputs.inband_mgmt_interface,
+            error_context="SNMP",
+            output_type=EosCliConfigGen.SnmpServer.LocalInterfaces,
+        )
+        self.structured_config.snmp_server.local_interfaces = local_interfaces
 
     def _snmp_vrfs(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """

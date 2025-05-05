@@ -6,10 +6,10 @@ from __future__ import annotations
 from functools import cached_property
 from itertools import chain
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator
+from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
-from pyavd._utils import strip_null_from_data
 from pyavd.j2filters import natural_sort
 
 
@@ -25,8 +25,8 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
     ignore_avd_eos_designs_enforce_duplication_checks_across_all_models = True
 
-    @cached_property
-    def sflow(self) -> dict | None:
+    @structured_config_contributor
+    def sflow(self) -> None:
         """
         Structured config for sFlow.
 
@@ -37,7 +37,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         - source-interfaces based on source_interfaces.sflow
         """
         if not self._enable_sflow:
-            return None
+            return
 
         if not (destinations := self.inputs.sflow_settings.destinations):
             msg = "`sflow_settings.destinations` is required to configure `sflow`."
@@ -47,73 +47,58 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
 
         # At this point we have at least one interface with sFlow enabled
         # and at least one destination.
-        sflow = {"run": True, "polling_interval": self.inputs.sflow_settings.polling_interval, "sample": self.inputs.sflow_settings.sample.rate}
-
-        # Using a temporary dict for VRFs
-        sflow_vrfs = {}
+        self.structured_config.sflow._update(
+            run=True, polling_interval=self.inputs.sflow_settings.polling_interval, sample=self.inputs.sflow_settings.sample.rate
+        )
 
         for destination in natural_sort(destinations, "destination"):
             destination: EosDesigns.SflowSettings.DestinationsItem
-            vrf = destination.vrf
-            if vrf is None:
-                vrf = self.shared_utils.default_mgmt_protocol_vrf
+            vrf_name = destination.vrf
+            if vrf_name is None:
+                vrf_name = self.shared_utils.default_mgmt_protocol_vrf
                 source_interface = self.shared_utils.default_mgmt_protocol_interface
 
-            elif vrf == "use_mgmt_interface_vrf":
+            elif vrf_name == "use_mgmt_interface_vrf":
                 if (self.shared_utils.node_config.mgmt_ip is None) and (self.shared_utils.node_config.ipv6_mgmt_ip is None):
                     msg = "Unable to configure sFlow source-interface with 'use_mgmt_interface_vrf' since 'mgmt_ip' or 'ipv6_mgmt_ip' are not set."
                     raise AristaAvdInvalidInputsError(msg)
 
-                vrf = self.inputs.mgmt_interface_vrf
-                if vrf in sflow_settings_vrfs and sflow_settings_vrfs[vrf].source_interface:
-                    source_interface = sflow_settings_vrfs[vrf].source_interface
+                vrf_name = self.inputs.mgmt_interface_vrf
+                if vrf_name in sflow_settings_vrfs and sflow_settings_vrfs[vrf_name].source_interface:
+                    source_interface = sflow_settings_vrfs[vrf_name].source_interface
                 else:
                     source_interface = self.shared_utils.mgmt_interface
 
-            elif vrf == "use_inband_mgmt_vrf":
+            elif vrf_name == "use_inband_mgmt_vrf":
                 # Check for missing interface
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = "Unable to configure sFlow source-interface with 'use_inband_mgmt_vrf' since 'inband_mgmt_interface' is not set."
                     raise AristaAvdInvalidInputsError(msg)
 
                 # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
-                vrf = self.shared_utils.inband_mgmt_vrf or "default"
-                if vrf in sflow_settings_vrfs and sflow_settings_vrfs[vrf].source_interface:
-                    source_interface = sflow_settings_vrfs[vrf].source_interface
+                vrf_name = self.shared_utils.inband_mgmt_vrf or "default"
+                if vrf_name in sflow_settings_vrfs and sflow_settings_vrfs[vrf_name].source_interface:
+                    source_interface = sflow_settings_vrfs[vrf_name].source_interface
                 else:
                     source_interface = self.shared_utils.inband_mgmt_interface
 
             # Default is none, meaning we will not configure a source interface for this VRF.
-            elif vrf in sflow_settings_vrfs and sflow_settings_vrfs[vrf].source_interface:
-                source_interface = sflow_settings_vrfs[vrf].source_interface
+            elif vrf_name in sflow_settings_vrfs and sflow_settings_vrfs[vrf_name].source_interface:
+                source_interface = sflow_settings_vrfs[vrf_name].source_interface
             else:
                 source_interface = None
 
-            if vrf in [None, "default"]:
+            if vrf_name in [None, "default"]:
                 # Add destination without VRF field
-                sflow.setdefault("destinations", []).append(
-                    {
-                        "destination": destination.destination,
-                        "port": destination.port,
-                    },
-                )
-                sflow["source_interface"] = source_interface
+                self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
+                self.structured_config.sflow.source_interface = source_interface
 
             else:
                 # Add destination with VRF field.
-                sflow_vrfs.setdefault(vrf, {}).setdefault("destinations", []).append(
-                    {
-                        "destination": destination.destination,
-                        "port": destination.port,
-                    },
-                )
-                sflow_vrfs[vrf]["source_interface"] = source_interface
-
-        # convert sflow_vrfs dict into list and insert into sflow
-        if sflow_vrfs:
-            sflow["vrfs"] = [{"name": vrf_name, **vrf} for vrf_name, vrf in sflow_vrfs.items()]
-
-        return strip_null_from_data(sflow)
+                vrf_item = self.structured_config.sflow.vrfs.obtain(vrf_name)
+                vrf_item.destinations.append_new(destination=destination.destination, port=destination.port)
+                vrf_item.source_interface = source_interface
+                self.structured_config.sflow.vrfs.append(vrf_item)
 
     @cached_property
     def _enable_sflow(self) -> bool:
@@ -124,70 +109,96 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
         """
         return any(interface.sflow.enable for interface in chain(self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces))
 
-    def resolve_flow_tracker_by_type(self, tracker_settings: EosDesigns.FlowTrackingSettings.TrackersItem) -> dict:
-        tracker = {
-            "name": tracker_settings.name,
-            "record_export": tracker_settings.record_export._as_dict(),
-            "exporters": tracker_settings.exporters._as_list(),
-        }
-        if self.shared_utils.flow_tracking_type == "sampled":
-            if (table_size := tracker_settings.sampled.table_size) is not None:
-                tracker["table_size"] = table_size
-            if (mpls := tracker_settings.sampled.record_export.mpls) is not None:
-                tracker["record_export"]["mpls"] = mpls
-
-        return tracker
-
-    @cached_property
-    def flow_tracking(self) -> dict | None:
-        """Return structured config for flow_tracking."""
-        configured_trackers = self._get_enabled_flow_trackers()
-        if not configured_trackers:
-            return None
-
-        flow_tracking = {}
-
-        tracker_type = self.shared_utils.flow_tracking_type
-        global_settings = self.inputs.flow_tracking_settings.hardware if tracker_type == "hardware" else self.inputs.flow_tracking_settings.sampled
-        flow_tracking[tracker_type] = global_settings._as_dict()
-        if tracker_type == "sampled":
-            # asdict does not contain default values so we need to insert the default sample.
-            # TODO: consider if asdict should include defaults.
-            flow_tracking[tracker_type]["sample"] = global_settings.sample
-
-        filtered_trackers = []
-        for tracker_name in natural_sort(configured_trackers):
-            """
-            We allow overriding the default flow tracker name, so if user has configured a tracker
-            with the default tracker name, then we just use that, if not, we create a default config
-            """
-            default_tracker = next(iter(EosDesigns.FlowTrackingSettings().trackers))
-            if tracker_name not in self.inputs.flow_tracking_settings.trackers:
-                if tracker_name == default_tracker.name:
-                    tracker = default_tracker
-                else:
-                    msg = f"{tracker_name} is being used for one of the interfaces, but is not configured in flow_tracking_settings"
-                    raise AristaAvdInvalidInputsError(msg)
-            else:
-                tracker = self.inputs.flow_tracking_settings.trackers[tracker_name]
-
-            filtered_trackers.append(self.resolve_flow_tracker_by_type(tracker))
-
-        flow_tracking[tracker_type]["trackers"] = filtered_trackers
-        flow_tracking[tracker_type]["shutdown"] = False
-
-        return flow_tracking
-
-    def _get_enabled_flow_trackers(self) -> set[str]:
+    @structured_config_contributor
+    def flow_tracking(self) -> None:
         """
-        Enable flow-tracking if any interface is enabled for flow-tracking.
+        Set the structured config for flow_tracking if any interface is enabled for flow-tracking.
 
         This relies on flow-tracking being rendered after all other eos_designs modules (except structured config).
         """
+        if self.shared_utils.flow_tracking_type == "hardware":
+            self._set_hardware_flow_tracking()
+        elif self.shared_utils.flow_tracking_type == "sampled":
+            self._set_sampled_flow_tracking()
+
+    def _set_hardware_flow_tracking(self) -> None:
+        """Set the structured configuration for hardware flow tracking if any interface is configured."""
         all_interfaces = chain(
             self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces, self.structured_config.dps_interfaces
         )
-        if self.shared_utils.flow_tracking_type == "hardware":
-            return {interface.flow_tracker.hardware for interface in all_interfaces if interface.flow_tracker.hardware}
 
-        return {interface.flow_tracker.sampled for interface in all_interfaces if interface.flow_tracker.sampled}
+        trackers: set[str] = {interface.flow_tracker.hardware for interface in all_interfaces if interface.flow_tracker.hardware}
+        if not trackers:
+            return
+
+        self.structured_config.flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters = (
+            self.inputs.flow_tracking_settings.hardware.record.format_ipfix_standard_timestamps_counters
+        )
+        self.structured_config.flow_tracking.hardware.shutdown = False
+
+        # Validate and configure trackers
+        for tracker_name in natural_sort(trackers):
+            config = self._get_tracker_input_config(tracker_name)
+            self.structured_config.flow_tracking.hardware.trackers.append_new(
+                name=config.name,
+                record_export=config.record_export._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.RecordExport),
+                exporters=config.exporters._cast_as(EosCliConfigGen.FlowTracking.Hardware.TrackersItem.Exporters),
+            )
+
+    def _set_sampled_flow_tracking(self) -> None:
+        """Set the structured configuration for sampled flow tracking if any interface is configured."""
+        all_interfaces = chain(
+            self.structured_config.ethernet_interfaces, self.structured_config.port_channel_interfaces, self.structured_config.dps_interfaces
+        )
+
+        trackers: set[str] = {interface.flow_tracker.sampled for interface in all_interfaces if interface.flow_tracker.sampled}
+        if not trackers:
+            return
+
+        self.structured_config.flow_tracking.sampled._update(
+            sample=self.inputs.flow_tracking_settings.sampled.sample,
+            shutdown=False,
+            encapsulation=EosCliConfigGen.FlowTracking.Sampled.Encapsulation(
+                ipv4_ipv6=self.inputs.flow_tracking_settings.sampled.encapsulation.ipv4_ipv6,
+                mpls=self.inputs.flow_tracking_settings.sampled.encapsulation.mpls,
+            ),
+            hardware_offload=EosCliConfigGen.FlowTracking.Sampled.HardwareOffload(
+                ipv4=self.inputs.flow_tracking_settings.sampled.hardware_offload.ipv4,
+                ipv6=self.inputs.flow_tracking_settings.sampled.hardware_offload.ipv6,
+                threshold_minimum=self.inputs.flow_tracking_settings.sampled.hardware_offload.threshold_minimum,
+            ),
+        )
+
+        # Validate and configure trackers
+        for tracker_name in natural_sort(trackers):
+            config = self._get_tracker_input_config(tracker_name)
+
+            # Need to handle mpls specifically
+            record_export = config.record_export._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.RecordExport)
+            record_export.mpls = config.sampled.record_export.mpls
+
+            self.structured_config.flow_tracking.sampled.trackers.append_new(
+                name=config.name,
+                record_export=record_export,
+                exporters=config.exporters._cast_as(EosCliConfigGen.FlowTracking.Sampled.TrackersItem.Exporters),
+                table_size=config.sampled.table_size,
+            )
+
+    def _get_tracker_input_config(self, tracker_name: str) -> EosDesigns.FlowTrackingSettings.TrackersItem:
+        """
+        Retrieves inputs for the given tracker_name.
+
+        If the name matches the default tracker_name, return the default tracker.
+
+        We allow overriding the default flow tracker name, so if user has configured a tracker
+        with the default tracker name, then we just use that, if not, we create a default config
+        """
+        if tracker_name in self.inputs.flow_tracking_settings.trackers:
+            return self.inputs.flow_tracking_settings.trackers[tracker_name]
+
+        default_tracker = next(iter(EosDesigns.FlowTrackingSettings().trackers))
+        if tracker_name == default_tracker.name:
+            return default_tracker
+
+        msg = f"The flow tracker '{tracker_name}' is being used for at least one interface, but is not configured in 'self.inputs.flow_tracking_settings'."
+        raise AristaAvdInvalidInputsError(msg)

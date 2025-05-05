@@ -8,6 +8,9 @@
 {%     if aaa_authentication.login.default is arista.avd.defined %}
 aaa authentication login default {{ aaa_authentication.login.default }}
 {%     endif %}
+{%     if aaa_authentication.login.command_api is arista.avd.defined %}
+aaa authentication login command-api {{ aaa_authentication.login.command_api }}
+{%     endif %}
 {%     if aaa_authentication.login.console is arista.avd.defined %}
 aaa authentication login console {{ aaa_authentication.login.console }}
 {%     endif %}

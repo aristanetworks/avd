@@ -7,6 +7,8 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>ipsec_settings</samp>](## "ipsec_settings") | Dictionary |  |  |  | Settings applicable to all IPsec connections. |
+    | [<samp>&nbsp;&nbsp;bind_connection_to_interface</samp>](## "ipsec_settings.bind_connection_to_interface") | Boolean |  | `False` |  | Allow IPsec connections to be bound to the source interface.<br>Enabling this prevents IPsec connections from using ECMP paths. |
     | [<samp>wan_encapsulation</samp>](## "wan_encapsulation") | String |  | `path-selection` | Valid Values:<br>- <code>path-selection</code><br>- <code>vxlan</code> | Select the encapsulation to use for EVPN peerings for WAN BGP peers. |
     | [<samp>wan_ha</samp>](## "wan_ha") | Dictionary |  |  |  | PREVIEW: The `wan_ha` key is currently not supported. |
     | [<samp>&nbsp;&nbsp;lan_ha_path_group_name</samp>](## "wan_ha.lan_ha_path_group_name") | String |  | `LAN_HA` |  | When WAN HA is enabled for a site if `wan_mode: cv-pathfinder`, a default path-group is injected to form DPS tunnels over LAN.<br>This key allows to overwrite the default LAN HA path-group name. |
@@ -24,11 +26,19 @@
     | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder or AutoVPN only. |
     | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | WAN STUN connections are authenticated and secured with DTLS by default.<br>For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
     | [<samp>wan_stun_dtls_profile_name</samp>](## "wan_stun_dtls_profile_name") | String |  | `STUN-DTLS` |  | Name of the SSL profile used for DTLS on WAN STUN connections.<br>When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers. |
+    | [<samp>wan_use_agent_env_var_for_kernel_software_forwarding_ecmp</samp>](## "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp") | Boolean |  | `True` |  | For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.<br><br>- `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.<br>- `false`: For newer EOS versions (starting 4.33.2) use the proper CLI. |
     | [<samp>wan_use_evpn_node_settings_for_lan</samp>](## "wan_use_evpn_node_settings_for_lan") | Boolean |  | `False` |  | PREVIEW: This key is currently not supported and may produce invalid configuration.<br>When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`<br>node settings for LAN side on WAN devices. Otherwise these will be ignored for WAN.<br>This will be the default in AVD version 6.0.0 and this option will be removed. |
 
 === "YAML"
 
     ```yaml
+    # Settings applicable to all IPsec connections.
+    ipsec_settings:
+
+      # Allow IPsec connections to be bound to the source interface.
+      # Enabling this prevents IPsec connections from using ECMP paths.
+      bind_connection_to_interface: <bool; default=False>
+
     # Select the encapsulation to use for EVPN peerings for WAN BGP peers.
     wan_encapsulation: <str; "path-selection" | "vxlan"; default="path-selection">
 
@@ -86,6 +96,12 @@
     # Name of the SSL profile used for DTLS on WAN STUN connections.
     # When using automatic ceritficate deployment via CloudVision this name must be the same on all WAN routers.
     wan_stun_dtls_profile_name: <str; default="STUN-DTLS">
+
+    # For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the EOS version.
+    #
+    # - `true`: For older EOS versions use an agent environment variable. Changing this requires a restart of the KernelFib agent.
+    # - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.
+    wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: <bool; default=True>
 
     # PREVIEW: This key is currently not supported and may produce invalid configuration.
     # When true, `eos_designs` will use `overlay_routing_protocol`, `evpn_role` and `vtep`

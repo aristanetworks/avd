@@ -9,7 +9,7 @@ from re import fullmatch as re_fullmatch
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import default, get, get_ip_from_ip_prefix
+from pyavd._utils import default, get_ip_from_ip_prefix
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -27,7 +27,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _local_endpoint_trunk_groups(self: AvdStructuredConfigNetworkServicesProtocol) -> set:
-        return set(get(self._hostvars, "switch.local_endpoint_trunk_groups", default=[]))
+        return set(self.facts.local_endpoint_trunk_groups)
 
     @cached_property
     def _vrf_default_evpn(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
@@ -97,7 +97,7 @@ class UtilsMixin(Protocol):
                 continue
 
             for static_route in static_routes:
-                vrf_default_ipv4_static_routes.add(static_route.destination_address_prefix)
+                vrf_default_ipv4_static_routes.add(static_route.prefix or static_route.destination_address_prefix)
 
             vrf_default_redistribute_static = default(tenant.vrfs["default"].redistribute_static, vrf_default_redistribute_static)
 

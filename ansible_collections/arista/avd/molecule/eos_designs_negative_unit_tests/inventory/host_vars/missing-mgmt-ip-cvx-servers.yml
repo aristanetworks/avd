@@ -1,0 +1,19 @@
+---
+type: cvxserver
+
+overlay_routing_protocol: CVX
+overlay_cvx_servers: [missing-mgmt-ip-cvx-servers, missing-peer-ip-l3-interface]
+
+node_type_keys:
+  - key: cvxserver
+    type: cvxserver
+    underlay_router: false
+
+cvxserver:
+  nodes:
+    - name: missing-mgmt-ip-cvx-servers
+      id: 1
+      mgmt_ip: 192.168.201.116/24
+
+expected_error_message: >-
+  'mgmt_ip' for CVX Server missing-peer-ip-l3-interface is required.

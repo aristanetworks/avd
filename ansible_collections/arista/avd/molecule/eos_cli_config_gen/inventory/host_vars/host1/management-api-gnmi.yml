@@ -12,6 +12,14 @@ management_api_gnmi:
         notification_timestamp: "send-time"
         ip_access_group: acl1
         port: "6032"
+      - name: arTrue
+        notification_timestamp: "send-time"
+        ip_access_group: acl1
+        authorization_requests: true
+      - name: arFalse
+        notification_timestamp: "send-time"
+        ip_access_group: acl1
+        authorization_requests: false
     grpc_tunnels:
       - name: onetarget
         shutdown: true

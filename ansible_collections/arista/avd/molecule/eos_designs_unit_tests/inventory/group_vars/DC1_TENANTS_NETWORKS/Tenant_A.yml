@@ -139,6 +139,7 @@ tenant_a:
           max_lsa: 15000
           redistribute_bgp:
             enabled: true
+            route_map: Tenant_ospf_redistribute_bgp_route_map
           redistribute_connected:
             enabled: true
             route_map: RM_TEST
@@ -170,8 +171,8 @@ tenant_a:
             enabled: true
             description: "test"
         static_routes:
-          - destination_address_prefix: 10.3.4.0/24
-            gateway: 1.2.3.4
+          - prefix: 10.3.4.0/24
+            next_hop: 1.2.3.4
             nodes: [DC1-BL1A, DC1-BL1B]
         bgp_peers:
           - ip_address: 123.1.1.10
@@ -294,6 +295,10 @@ tenant_a:
         ospf:
           enabled: true
           router_id: diagnostic_loopback
+          redistribute_connected:
+            enabled: true
+          redistribute_bgp:
+            enabled: false
         l3_interfaces:
           - interfaces:
               - Ethernet22
@@ -316,6 +321,7 @@ tenant_a:
             node: DC1-LEAF2A
             description: Test-Loopback
             enabled: true
+            hardware_forwarding: true
             ospf:
               enabled: true
               area: 1
@@ -330,6 +336,7 @@ tenant_a:
         vtep_diagnostic:
           loopback: 101
           loopback_ip_range: 10.255.11.0/24
+          hardware_forwarding: true
     l2vlans:
       # L2 vlan as string
       - id: '160'

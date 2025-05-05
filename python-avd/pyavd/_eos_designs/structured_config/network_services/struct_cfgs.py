@@ -3,8 +3,9 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
+
+from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -17,13 +18,11 @@ class StructCfgsMixin(Protocol):
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
 
-    @cached_property
+    @structured_config_contributor
     def struct_cfgs(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
-        """Return the combined structured config from VRFs."""
+        """Set the combined structured config from VRFs."""
         if not self.shared_utils.network_services_l3:
-            return None
+            return
 
         for tenant in self.shared_utils.filtered_tenants:
             self.custom_structured_configs.root.extend(vrf.structured_config for vrf in tenant.vrfs if vrf.structured_config)
-
-        return None

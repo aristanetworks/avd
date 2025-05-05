@@ -22,6 +22,7 @@ loopback_interfaces:
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS
     vrf: TENANT_A_PROJECT02
     ip_address: 10.1.255.3/32
+    hardware_forwarding_id: true
 
   - name: Loopback99
     description: TENANT_A_PROJECT02_VTEP_DIAGNOSTICS

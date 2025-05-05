@@ -13,7 +13,7 @@ __pycache__/
 /python-avd/vendor/
 /python-avd/pyavd.egg-info/
 /python-avd/.tox/
-/python-avd/.coverage
+**/.coverage
 /python-avd/.mypy_cache/
 # Ignore cloned cloudvision-python repo created during generation of _cv/api
 /python-avd/pyavd/_cv/cloudvision-apis/

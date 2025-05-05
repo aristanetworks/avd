@@ -656,11 +656,11 @@ ASN Notation: asplain
 
 #### Router BGP VRFs
 
-| VRF | Route-Distinguisher | Redistribute |
-| --- | ------------------- | ------------ |
-| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected<br>static |
-| Tenant_B_WAN_Zone | 192.168.255.10:21 | connected |
-| Tenant_C_WAN_Zone | 192.168.255.10:31 | connected |
+| VRF | Route-Distinguisher | Redistribute | Graceful Restart |
+| --- | ------------------- | ------------ | ---------------- |
+| Tenant_A_WAN_Zone | 192.168.255.10:14 | connected<br>static | - |
+| Tenant_B_WAN_Zone | 192.168.255.10:21 | connected | - |
+| Tenant_C_WAN_Zone | 192.168.255.10:31 | connected | - |
 
 #### Router BGP Device Configuration
 
@@ -732,6 +732,7 @@ router bgp 65104
       no neighbor EVPN-OVERLAY-PEERS activate
       neighbor UNDERLAY_PEERS activate
       neighbor UNDERLAY_PEERS next-hop address-family ipv6 originate
+      no neighbor 10.23.23.2 next-hop address-family ipv6
    !
    vrf Tenant_A_WAN_Zone
       rd 192.168.255.10:14

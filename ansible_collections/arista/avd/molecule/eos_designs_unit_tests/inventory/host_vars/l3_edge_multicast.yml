@@ -1,5 +1,6 @@
 underlay_routing_protocol: ospf
 underlay_multicast: true
+underlay_ospf_graceful_restart: true
 
 type: spine
 spine:

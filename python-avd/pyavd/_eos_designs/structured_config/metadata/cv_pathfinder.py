@@ -49,7 +49,7 @@ class CvPathfinderMixin(Protocol):
             self._metadata_regions()
             self._metadata_vrfs()
         else:
-            self.structured_config.metadata.cv_pathfinder.zone = self.shared_utils.wan_zone["name"] if region_name else None
+            self.structured_config.metadata.cv_pathfinder.zone = self.shared_utils.wan_zone.name if region_name else None
             self._metadata_interfaces()
             self._metadata_pathfinder_vtep_ips()
 

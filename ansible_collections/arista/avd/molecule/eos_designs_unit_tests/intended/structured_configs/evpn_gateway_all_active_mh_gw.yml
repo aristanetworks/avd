@@ -1,0 +1,342 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: evpn_gateway_all_active_mh_gw
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+ip_virtual_router_mac_address: 00:1c:73:00:00:99
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 169.254.102.1/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 169.253.103.1/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.0.204/24
+  type: oob
+metadata:
+  platform: vEOS
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 169.254.102.0/24 eq 32
+  - sequence: 20
+    action: permit 169.253.103.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65233'
+  router_id: 169.254.102.1
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+    bestpath:
+      d_path: true
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  - name: EVPN-OVERLAY-CORE
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 15
+    send_community: all
+    maximum_routes: 0
+  neighbors:
+  - ip_address: 192.168.100.10
+    peer_group: EVPN-OVERLAY-CORE
+    remote_as: '65002'
+    peer: DCI_TEST
+    description: DCI_TEST
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  vlans:
+  - id: 11
+    tenant: TENANT1
+    rd: 169.254.102.1:10011
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:10011
+    route_targets:
+      both:
+      - 10011:10011
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10011:10011
+    redistribute_routes:
+    - learned
+  - id: 12
+    tenant: TENANT1
+    rd: 169.254.102.1:10012
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:10012
+    route_targets:
+      both:
+      - 10012:10012
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    tenant: TENANT1
+    rd: 169.254.102.1:10021
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:10021
+    route_targets:
+      both:
+      - 10021:10021
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    tenant: TENANT1
+    rd: 169.254.102.1:10022
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:10022
+    route_targets:
+      both:
+      - 10022:10022
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 300
+    tenant: TENANT1
+    rd: 169.254.102.1:10300
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:10300
+    route_targets:
+      both:
+      - 10300:10300
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 10300:10300
+    redistribute_routes:
+    - learned
+  - id: 3401
+    tenant: TENANT1
+    rd: 169.254.102.1:13401
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:13401
+    route_targets:
+      both:
+      - 13401:13401
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 13401:13401
+    redistribute_routes:
+    - learned
+  - id: 3402
+    tenant: TENANT1
+    rd: 169.254.102.1:13402
+    rd_evpn_domain:
+      domain: remote
+      rd: 169.254.102.1:13402
+    route_targets:
+      both:
+      - 13402:13402
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: 13402:13402
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    domain_identifier: '65200:2'
+    domain_identifier_remote: '65100:1'
+    neighbor_default:
+      next_hop_self_received_evpn_routes:
+        enable: true
+        inter_domain: true
+    peer_groups:
+    - name: EVPN-OVERLAY-CORE
+      activate: true
+      domain_remote: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+    evpn_ethernet_segment:
+    - domain: all
+      identifier: 0000:0001:0001:0000:0509
+      route_target_import: 00:00:00:00:07:09
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+    - name: EVPN-OVERLAY-CORE
+      activate: false
+  vrfs:
+  - name: VRF10
+    rd: 169.254.102.1:10
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '10:10'
+    router_id: 169.254.102.1
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF11
+    rd: 169.254.102.1:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 169.254.102.1
+    redistribute:
+      connected:
+        enabled: true
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan11
+  description: VRF10_VLAN11
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.11.1/24
+  tenant: TENANT1
+- name: Vlan12
+  description: VRF10_VLAN12
+  shutdown: false
+  vrf: VRF10
+  ip_address_virtual: 10.10.12.1/24
+  tenant: TENANT1
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.21.1/24
+  tenant: TENANT1
+- name: Vlan22
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.22.1/24
+  tenant: TENANT1
+- name: Vlan300
+  description: VRF11_VLAN300
+  shutdown: false
+  vrf: VRF11
+  tenant: TENANT1
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 11
+  name: VRF10_VLAN11
+  tenant: TENANT1
+- id: 12
+  name: VRF10_VLAN12
+  tenant: TENANT1
+- id: 21
+  name: VRF11_VLAN21
+  tenant: TENANT1
+- id: 22
+  name: VRF11_VLAN22
+  tenant: TENANT1
+- id: 300
+  name: VRF11_VLAN300
+  tenant: TENANT1
+- id: 3401
+  name: L2_VLAN3401
+  tenant: TENANT1
+- id: 3402
+  name: L2_VLAN3402
+  tenant: TENANT1
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: VRF10
+  ip_routing: true
+  tenant: TENANT1
+- name: VRF11
+  ip_routing: true
+  tenant: TENANT1
+vxlan_interface:
+  vxlan1:
+    description: evpn_gateway_all_active_mh_gw_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 11
+        vni: 10011
+      - id: 12
+        vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 300
+        vni: 10300
+      - id: 3401
+        vni: 13401
+      - id: 3402
+        vni: 13402
+      vrfs:
+      - name: VRF10
+        vni: 10
+      - name: VRF11
+        vni: 11

@@ -16,12 +16,12 @@ application_traffic_recognition:
     - name: APP-CONTROL-PLANE
       src_prefix_set_name: PFX-LOCAL-VTEP-IP
   application_profiles:
-  - name: IT
-  - name: VOICE
-  - name: VIDEO
   - name: APP-PROFILE-CONTROL-PLANE
     applications:
     - name: APP-CONTROL-PLANE
+  - name: IT
+  - name: VOICE
+  - name: VIDEO
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -278,8 +278,8 @@ service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 static_routes:
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 10.8.8.9
+- prefix: 0.0.0.0/0
+  next_hop: 10.8.8.9
 stun:
   server:
     local_interfaces:

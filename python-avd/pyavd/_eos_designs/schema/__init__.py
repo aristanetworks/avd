@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 
 
 class EosDesigns(EosDesignsRootModel):
-    """Subclass of AvdModel."""
+    """Subclass of EosDesignsRootModel."""
 
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
@@ -1034,8 +1034,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -1061,8 +1061,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -1076,6 +1076,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -1099,8 +1101,23 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: str
+                mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -1110,7 +1127,9 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: str | UndefinedType = Undefined,
+                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -1140,6 +1159,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -1300,7 +1328,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -1425,7 +1454,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -1575,8 +1605,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -1602,8 +1632,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -1617,6 +1647,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -1640,8 +1672,23 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: str
+                mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -1651,7 +1698,9 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: str | UndefinedType = Undefined,
+                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -1681,6 +1730,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -1841,7 +1899,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -1966,7 +2025,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -3580,8 +3640,8 @@ class EosDesigns(EosDesignsRootModel):
             This can be an
             absolute path or a path relative to current working directory.
 
-            By default the path is
-            "<root_dir>/intended/data/<fabric_name>-ids.yml".
+            By default the path is:
+            `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
             Note: Since the pool manager will remove stale
             entries after every run, each fabric should be using its own file.
@@ -3612,8 +3672,8 @@ class EosDesigns(EosDesignsRootModel):
                            This can be an
                            absolute path or a path relative to current working directory.
 
-                           By default the path is
-                           "<root_dir>/intended/data/<fabric_name>-ids.yml".
+                           By default the path is:
+                           `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
                            Note: Since the pool manager will remove stale
                            entries after every run, each fabric should be using its own file.
@@ -4344,6 +4404,36 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class IpsecSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"bind_connection_to_interface": {"type": bool, "default": False}}
+        bind_connection_to_interface: bool
+        """
+        Allow IPsec connections to be bound to the source interface.
+        Enabling this prevents IPsec
+        connections from using ECMP paths.
+
+        Default value: `False`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, bind_connection_to_interface: bool | UndefinedType = Undefined) -> None:
+                """
+                IpsecSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    bind_connection_to_interface:
+                       Allow IPsec connections to be bound to the source interface.
+                       Enabling this prevents IPsec
+                       connections from using ECMP paths.
+
+                """
+
     class Ipv4AclsItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -4904,8 +4994,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -4931,8 +5021,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -4946,6 +5036,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -4969,8 +5061,23 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: str
+                mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -4980,7 +5087,9 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: str | UndefinedType = Undefined,
+                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -5010,6 +5119,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -5170,7 +5288,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5295,7 +5414,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -5445,8 +5565,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     channel_id: int | None
                     """
-                    Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                    port channel.
+                    Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                    `channel_id_algorithm`.
                     """
 
                     if TYPE_CHECKING:
@@ -5472,8 +5592,8 @@ class EosDesigns(EosDesignsRootModel):
                                    Subclass of AvdList with
                                    `str` items.
                                 channel_id:
-                                   Port-Channel ID. If no channel_id is specified, an id is generated from the first switch port in the
-                                   port channel.
+                                   Port-Channel ID. If no `channel_id` is specified, an id is generated using the
+                                   `channel_id_algorithm`.
 
                             """
 
@@ -5487,6 +5607,8 @@ class EosDesigns(EosDesignsRootModel):
                 _fields: ClassVar[dict] = {
                     "description": {"type": str},
                     "mode": {"type": str, "default": "active"},
+                    "channel_id_algorithm": {"type": str, "default": "first_port"},
+                    "channel_id_offset": {"type": int},
                     "nodes_child_interfaces": {"type": NodesChildInterfaces},
                 }
                 description: str | None
@@ -5510,8 +5632,23 @@ class EosDesigns(EosDesignsRootModel):
                 By default the description is templated from the
                 name and port_channel interface of the peer.
                 """
-                mode: str
+                mode: Literal["on", "active", "passive"]
                 """Default value: `"active"`"""
+                channel_id_algorithm: Literal["first_port", "p2p_link_id"]
+                """
+                Configures how to derive the Port-Channel ID when not set.
+                By default the ID is derived from the
+                first switch port in node_child_interfaces[].interfaces.
+                The `p2p_link_id` setting will use the `id`
+                for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+
+                Default value: `"first_port"`
+                """
+                channel_id_offset: int | None
+                """
+                Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                `channel_id` is not set.
+                """
                 nodes_child_interfaces: NodesChildInterfaces
                 """Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`)."""
 
@@ -5521,7 +5658,9 @@ class EosDesigns(EosDesignsRootModel):
                         self,
                         *,
                         description: str | None | UndefinedType = Undefined,
-                        mode: str | UndefinedType = Undefined,
+                        mode: Literal["on", "active", "passive"] | UndefinedType = Undefined,
+                        channel_id_algorithm: Literal["first_port", "p2p_link_id"] | UndefinedType = Undefined,
+                        channel_id_offset: int | None | UndefinedType = Undefined,
                         nodes_child_interfaces: NodesChildInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -5551,6 +5690,15 @@ class EosDesigns(EosDesignsRootModel):
                                By default the description is templated from the
                                name and port_channel interface of the peer.
                             mode: mode
+                            channel_id_algorithm:
+                               Configures how to derive the Port-Channel ID when not set.
+                               By default the ID is derived from the
+                               first switch port in node_child_interfaces[].interfaces.
+                               The `p2p_link_id` setting will use the `id`
+                               for each link plus the `channel_id_offset` to derive the Port-Channel ID.
+                            channel_id_offset:
+                               Offset added to the ID of the p2p_link when `channel_id_algorithm` is set to `p2p_link_id` and
+                               `channel_id` is not set.
                             nodes_child_interfaces: Subclass of AvdIndexedList with `NodesChildInterfacesItem` items. Primary key is `node` (`str`).
 
                         """
@@ -5711,7 +5859,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5836,7 +5985,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -6034,6 +6184,53 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class RxQueue(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Workers(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Workers._item_type = str
+
+            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+            count: int | None
+            """
+            Number of receive queues.
+            The maximum value is determined by
+            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+            `platform` set on this device.
+            """
+            workers: Workers
+            """Subclass of AvdList with `str` items."""
+            mode: Literal["shared", "exclusive"] | None
+            """Mode applicable to the workers."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    count: int | None | UndefinedType = Undefined,
+                    workers: Workers | UndefinedType = Undefined,
+                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    RxQueue.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        count:
+                           Number of receive queues.
+                           The maximum value is determined by
+                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                           `platform` set on this device.
+                        workers: Subclass of AvdList with `str` items.
+                        mode: Mode applicable to the workers.
+
+                    """
+
         class FlowTracking(AvdModel):
             """Subclass of AvdModel."""
 
@@ -6082,6 +6279,7 @@ class EosDesigns(EosDesignsRootModel):
             "wan_circuit_id": {"type": str},
             "connected_to_pathfinder": {"type": bool, "default": True},
             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+            "rx_queue": {"type": RxQueue},
             "raw_eos_cli": {"type": str},
             "flow_tracking": {"type": FlowTracking},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -6230,6 +6428,15 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
+        rx_queue: RxQueue
+        """
+        Receive queue parameters for platform SFE interface profile.
+        This setting is ignored unless the
+        `platform_sfe_interface_profile.supported` is set as `true` under
+        `platform_settings.feature_support` for the `platform` set on this device.
+
+        Subclass of AvdModel.
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the interface in the final EOS configuration."""
         flow_tracking: FlowTracking
@@ -6269,6 +6476,7 @@ class EosDesigns(EosDesignsRootModel):
                 wan_circuit_id: str | None | UndefinedType = Undefined,
                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                rx_queue: RxQueue | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -6371,6 +6579,13 @@ class EosDesigns(EosDesignsRootModel):
                        PREVIEW: This key is in preview mode
 
                        Subclass of AvdModel.
+                    rx_queue:
+                       Receive queue parameters for platform SFE interface profile.
+                       This setting is ignored unless the
+                       `platform_sfe_interface_profile.supported` is set as `true` under
+                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                       Subclass of AvdModel.
                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                     flow_tracking:
                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -6386,36 +6601,21 @@ class EosDesigns(EosDesignsRootModel):
 
     L3InterfaceProfiles._item_type = L3InterfaceProfilesItem
 
-    class MacAddressTable(AvdModel):
-        """Subclass of AvdModel."""
-
-        _fields: ClassVar[dict] = {"aging_time": {"type": int}}
-        aging_time: int | None
-        """
-        Aging time in seconds 10-1000000.
-        Enter 0 to disable aging.
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, aging_time: int | None | UndefinedType = Undefined) -> None:
-                """
-                MacAddressTable.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    aging_time:
-                       Aging time in seconds 10-1000000.
-                       Enter 0 to disable aging.
-
-                """
-
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
-        _fields: ClassVar[dict] = {"enable_http": {"type": bool}, "enable_https": {"type": bool, "default": True}, "default_services": {"type": bool}}
+        _fields: ClassVar[dict] = {
+            "enabled": {"type": bool, "default": True},
+            "enable_http": {"type": bool},
+            "enable_https": {"type": bool, "default": True},
+            "default_services": {"type": bool},
+        }
+        enabled: bool
+        """
+        Enable/Disable api http-commands.
+
+        Default value: `True`
+        """
         enable_http: bool | None
         enable_https: bool
         """Default value: `True`"""
@@ -6426,6 +6626,7 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                enabled: bool | UndefinedType = Undefined,
                 enable_http: bool | None | UndefinedType = Undefined,
                 enable_https: bool | UndefinedType = Undefined,
                 default_services: bool | None | UndefinedType = Undefined,
@@ -6437,6 +6638,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    enabled: Enable/Disable api http-commands.
                     enable_http: enable_http
                     enable_https: enable_https
                     default_services: default_services
@@ -7258,6 +7460,8 @@ class EosDesigns(EosDesignsRootModel):
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
                 number: int | None
                 """Subinterface number."""
@@ -7279,6 +7483,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                """
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
 
                 if TYPE_CHECKING:
 
@@ -7289,6 +7500,8 @@ class EosDesigns(EosDesignsRootModel):
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SubinterfacesItem.
@@ -7310,6 +7523,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
 
                         """
 
@@ -7993,7 +8210,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"l1": {"type": bool, "default": False}, "l2": {"type": bool, "default": False}, "l3": {"type": bool, "default": False}}
             l1: bool
             """
-            ??
+            Point-to-point services
 
             Default value: `False`
             """
@@ -8021,7 +8238,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        l1: ??
+                        l1: Point-to-point services
                         l2: Vlans
                         l3:
                            VRFs, SVIs (if l2 is true).
@@ -8517,7 +8734,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"l1": {"type": bool, "default": False}, "l2": {"type": bool, "default": False}, "l3": {"type": bool, "default": False}}
             l1: bool
             """
-            ??
+            Point-to-point services
 
             Default value: `False`
             """
@@ -8545,7 +8762,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        l1: ??
+                        l1: Point-to-point services
                         l2: Vlans
                         l3:
                            VRFs, SVIs (if l2 is true).
@@ -9494,6 +9711,38 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class PlatformSfeInterfaceProfile(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": False}, "max_rx_queues": {"type": int, "default": 6}}
+                supported: bool
+                """
+                Capability flag for generation of SFE interface profile.
+
+                Default value: `False`
+                """
+                max_rx_queues: int
+                """
+                Maximum rx_queue count supported on any interface.
+
+                Default value: `6`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, supported: bool | UndefinedType = Undefined, max_rx_queues: int | UndefinedType = Undefined) -> None:
+                        """
+                        PlatformSfeInterfaceProfile.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported: Capability flag for generation of SFE interface profile.
+                            max_rx_queues: Maximum rx_queue count supported on any interface.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -9501,6 +9750,8 @@ class EosDesigns(EosDesignsRootModel):
                 "per_interface_mtu": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
+                "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
+                "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
             }
             queue_monitor_length_notify: bool
             """Default value: `True`"""
@@ -9537,6 +9788,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            platform_sfe_interface_profile: PlatformSfeInterfaceProfile
+            """
+            Support for Platform SFE Interface Profiles.
+
+            Subclass of AvdModel.
+            """
+            evpn_gateway_all_active_multihoming: bool
+            """
+            Support for all-active EVPN gateway redundancy.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -9549,6 +9812,8 @@ class EosDesigns(EosDesignsRootModel):
                     per_interface_mtu: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
+                    platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
+                    evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -9577,6 +9842,11 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
+                        platform_sfe_interface_profile:
+                           Support for Platform SFE Interface Profiles.
+
+                           Subclass of AvdModel.
+                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
 
                     """
 
@@ -9758,6 +10028,38 @@ class EosDesigns(EosDesignsRootModel):
         class FeatureSupport(AvdModel):
             """Subclass of AvdModel."""
 
+            class PlatformSfeInterfaceProfile(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": False}, "max_rx_queues": {"type": int, "default": 6}}
+                supported: bool
+                """
+                Capability flag for generation of SFE interface profile.
+
+                Default value: `False`
+                """
+                max_rx_queues: int
+                """
+                Maximum rx_queue count supported on any interface.
+
+                Default value: `6`
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, supported: bool | UndefinedType = Undefined, max_rx_queues: int | UndefinedType = Undefined) -> None:
+                        """
+                        PlatformSfeInterfaceProfile.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            supported: Capability flag for generation of SFE interface profile.
+                            max_rx_queues: Maximum rx_queue count supported on any interface.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
@@ -9765,6 +10067,8 @@ class EosDesigns(EosDesignsRootModel):
                 "per_interface_mtu": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
+                "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
+                "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
             }
             queue_monitor_length_notify: bool
             """Default value: `True`"""
@@ -9801,6 +10105,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            platform_sfe_interface_profile: PlatformSfeInterfaceProfile
+            """
+            Support for Platform SFE Interface Profiles.
+
+            Subclass of AvdModel.
+            """
+            evpn_gateway_all_active_multihoming: bool
+            """
+            Support for all-active EVPN gateway redundancy.
+
+            Default value: `False`
+            """
 
             if TYPE_CHECKING:
 
@@ -9813,6 +10129,8 @@ class EosDesigns(EosDesignsRootModel):
                     per_interface_mtu: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
+                    platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
+                    evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -9841,6 +10159,11 @@ class EosDesigns(EosDesignsRootModel):
                            that may not yet be installed into the forwarding plane.
                            Can be overridden by setting
                            "bgp_update_wait_for_convergence" host/group_vars.
+                        platform_sfe_interface_profile:
+                           Support for Platform SFE Interface Profiles.
+
+                           Subclass of AvdModel.
+                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
 
                     """
 
@@ -10821,6 +11144,8 @@ class EosDesigns(EosDesignsRootModel):
                     "short_esi": {"type": str},
                     "vlan_id": {"type": int},
                     "encapsulation_vlan": {"type": EncapsulationVlan},
+                    "raw_eos_cli": {"type": str},
+                    "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                 }
                 number: int | None
                 """Subinterface number."""
@@ -10842,6 +11167,13 @@ class EosDesigns(EosDesignsRootModel):
 
                 Subclass of AvdModel.
                 """
+                raw_eos_cli: str | None
+                """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                """
+                Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                eos_cli_config_gen.
+                """
 
                 if TYPE_CHECKING:
 
@@ -10852,6 +11184,8 @@ class EosDesigns(EosDesignsRootModel):
                         short_esi: str | None | UndefinedType = Undefined,
                         vlan_id: int | None | UndefinedType = Undefined,
                         encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                        raw_eos_cli: str | None | UndefinedType = Undefined,
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                     ) -> None:
                         """
                         SubinterfacesItem.
@@ -10873,6 +11207,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
+                            raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                            structured_config:
+                               Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                               eos_cli_config_gen.
 
                         """
 
@@ -15366,7 +15704,7 @@ class EosDesigns(EosDesignsRootModel):
                 "application_profile": {"type": str, "default": "APP-PROFILE-CONTROL-PLANE"},
                 "traffic_class": {"type": int},
                 "dscp": {"type": int},
-                "lowest_hop_count": {"type": bool, "default": False},
+                "lowest_hop_count": {"type": bool},
                 "constraints": {"type": Constraints},
                 "path_groups": {"type": PathGroups},
                 "internet_exit": {"type": InternetExit},
@@ -15392,12 +15730,10 @@ class EosDesigns(EosDesignsRootModel):
             """Set traffic-class for matched traffic."""
             dscp: int | None
             """Set DSCP for matched traffic."""
-            lowest_hop_count: bool
+            lowest_hop_count: bool | None
             """
             Prefer paths with lowest hop-count.
             Only applicable for `wan_mode: "cv-pathfinder"`.
-
-            Default value: `False`
             """
             constraints: Constraints
             """Subclass of AvdModel."""
@@ -15415,7 +15751,7 @@ class EosDesigns(EosDesignsRootModel):
                     application_profile: str | UndefinedType = Undefined,
                     traffic_class: int | None | UndefinedType = Undefined,
                     dscp: int | None | UndefinedType = Undefined,
-                    lowest_hop_count: bool | UndefinedType = Undefined,
+                    lowest_hop_count: bool | None | UndefinedType = Undefined,
                     constraints: Constraints | UndefinedType = Undefined,
                     path_groups: PathGroups | UndefinedType = Undefined,
                     internet_exit: InternetExit | UndefinedType = Undefined,
@@ -15588,7 +15924,7 @@ class EosDesigns(EosDesignsRootModel):
                     "id": {"type": int},
                     "traffic_class": {"type": int},
                     "dscp": {"type": int},
-                    "lowest_hop_count": {"type": bool, "default": False},
+                    "lowest_hop_count": {"type": bool},
                     "constraints": {"type": Constraints},
                     "path_groups": {"type": PathGroups},
                     "internet_exit": {"type": InternetExit},
@@ -15612,12 +15948,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Set traffic-class for matched traffic."""
                 dscp: int | None
                 """Set DSCP for matched traffic."""
-                lowest_hop_count: bool
+                lowest_hop_count: bool | None
                 """
                 Prefer paths with lowest hop-count.
                 Only applicable for `wan_mode: "cv-pathfinder"`.
-
-                Default value: `False`
                 """
                 constraints: Constraints
                 """Subclass of AvdModel."""
@@ -15636,7 +15970,7 @@ class EosDesigns(EosDesignsRootModel):
                         id: int | None | UndefinedType = Undefined,
                         traffic_class: int | None | UndefinedType = Undefined,
                         dscp: int | None | UndefinedType = Undefined,
-                        lowest_hop_count: bool | UndefinedType = Undefined,
+                        lowest_hop_count: bool | None | UndefinedType = Undefined,
                         constraints: Constraints | UndefinedType = Undefined,
                         path_groups: PathGroups | UndefinedType = Undefined,
                         internet_exit: InternetExit | UndefinedType = Undefined,
@@ -15813,7 +16147,7 @@ class EosDesigns(EosDesignsRootModel):
                     "drop_unmatched": {"type": bool, "default": False},
                     "traffic_class": {"type": int},
                     "dscp": {"type": int},
-                    "lowest_hop_count": {"type": bool, "default": False},
+                    "lowest_hop_count": {"type": bool},
                     "constraints": {"type": Constraints},
                     "path_groups": {"type": PathGroups},
                     "internet_exit": {"type": InternetExit},
@@ -15830,12 +16164,10 @@ class EosDesigns(EosDesignsRootModel):
                 """Set traffic-class for matched traffic."""
                 dscp: int | None
                 """Set DSCP for matched traffic."""
-                lowest_hop_count: bool
+                lowest_hop_count: bool | None
                 """
                 Prefer paths with lowest hop-count.
                 Only applicable for `wan_mode: "cv-pathfinder"`.
-
-                Default value: `False`
                 """
                 constraints: Constraints
                 """Subclass of AvdModel."""
@@ -15853,7 +16185,7 @@ class EosDesigns(EosDesignsRootModel):
                         drop_unmatched: bool | UndefinedType = Undefined,
                         traffic_class: int | None | UndefinedType = Undefined,
                         dscp: int | None | UndefinedType = Undefined,
-                        lowest_hop_count: bool | UndefinedType = Undefined,
+                        lowest_hop_count: bool | None | UndefinedType = Undefined,
                         constraints: Constraints | UndefinedType = Undefined,
                         path_groups: PathGroups | UndefinedType = Undefined,
                         internet_exit: InternetExit | UndefinedType = Undefined,
@@ -17150,6 +17482,8 @@ class EosDesigns(EosDesignsRootModel):
                                 "short_esi": {"type": str},
                                 "vlan_id": {"type": int},
                                 "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
                             }
                             number: int | None
                             """Subinterface number."""
@@ -17171,6 +17505,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                            eos_cli_config_gen.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -17181,6 +17522,8 @@ class EosDesigns(EosDesignsRootModel):
                                     short_esi: str | None | UndefinedType = Undefined,
                                     vlan_id: int | None | UndefinedType = Undefined,
                                     encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     SubinterfacesItem.
@@ -17202,6 +17545,10 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                            Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                           eos_cli_config_gen.
 
                                     """
 
@@ -18357,7 +18704,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                        class AllActiveMultihoming(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EvpnEthernetSegment(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                identifier: str
+                                """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                rt_import: str
+                                """Low-order 6 bytes of ES-Import Route Target."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        EvpnEthernetSegment.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                            rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "enable_d_path": {"type": bool, "default": True},
+                                "evpn_domain_id_local": {"type": str},
+                                "evpn_domain_id_remote": {"type": str},
+                                "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                            }
+                            enabled: bool
+                            """Enable Active Active Multihoming resiliency model."""
+                            enable_d_path: bool
+                            """
+                            Enable D-path for use with BGP bestpath selection algorithm.
+
+                            Default value: `True`
+                            """
+                            evpn_domain_id_local: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_domain_id_remote: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_ethernet_segment: EvpnEthernetSegment
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    enable_d_path: bool | UndefinedType = Undefined,
+                                    evpn_domain_id_local: str | UndefinedType = Undefined,
+                                    evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                    evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AllActiveMultihoming.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable Active Active Multihoming resiliency model.
+                                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                        evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_ethernet_segment: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "remote_peers": {"type": RemotePeers},
+                            "evpn_l2": {"type": EvpnL2},
+                            "evpn_l3": {"type": EvpnL3},
+                            "all_active_multihoming": {"type": AllActiveMultihoming},
+                        }
                         remote_peers: RemotePeers
                         """
                         Define remote peers of the EVPN VXLAN Gateway.
@@ -18382,6 +18809,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        all_active_multihoming: AllActiveMultihoming
+                        """
+                        Enable Active Active Multihoming architecture for EVPN Gateways.
+                        Not supported with MLAG or IPVPN
+                        Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -18391,6 +18826,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_peers: RemotePeers | UndefinedType = Undefined,
                                 evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                 evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 EvpnGateway.
@@ -18415,6 +18851,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     evpn_l3:
                                        Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                       Subclass of AvdModel.
+                                    all_active_multihoming:
+                                       Enable Active Active Multihoming architecture for EVPN Gateways.
+                                       Not supported with MLAG or IPVPN
+                                       Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -19285,6 +19727,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RxQueue(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Workers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Workers._item_type = str
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                            count: int | None
+                            """
+                            Number of receive queues.
+                            The maximum value is determined by
+                            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                            `platform` set on this device.
+                            """
+                            workers: Workers
+                            """Subclass of AvdList with `str` items."""
+                            mode: Literal["shared", "exclusive"] | None
+                            """Mode applicable to the workers."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    count: int | None | UndefinedType = Undefined,
+                                    workers: Workers | UndefinedType = Undefined,
+                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RxQueue.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Number of receive queues.
+                                           The maximum value is determined by
+                                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                           `platform` set on this device.
+                                        workers: Subclass of AvdList with `str` items.
+                                        mode: Mode applicable to the workers.
+
+                                    """
+
                         class FlowTracking(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -19333,6 +19822,7 @@ class EosDesigns(EosDesignsRootModel):
                             "wan_circuit_id": {"type": str},
                             "connected_to_pathfinder": {"type": bool, "default": True},
                             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                            "rx_queue": {"type": RxQueue},
                             "raw_eos_cli": {"type": str},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -19478,6 +19968,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        rx_queue: RxQueue
+                        """
+                        Receive queue parameters for platform SFE interface profile.
+                        This setting is ignored unless the
+                        `platform_sfe_interface_profile.supported` is set as `true` under
+                        `platform_settings.feature_support` for the `platform` set on this device.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the interface in the final EOS configuration."""
                         flow_tracking: FlowTracking
@@ -19517,6 +20016,7 @@ class EosDesigns(EosDesignsRootModel):
                                 wan_circuit_id: str | None | UndefinedType = Undefined,
                                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                rx_queue: RxQueue | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -19617,6 +20117,13 @@ class EosDesigns(EosDesignsRootModel):
                                        PREVIEW: This key is in preview mode
 
                                        Subclass of AvdModel.
+                                    rx_queue:
+                                       Receive queue parameters for platform SFE interface profile.
+                                       This setting is ignored unless the
+                                       `platform_sfe_interface_profile.supported` is set as `true` under
+                                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -19638,12 +20145,60 @@ class EosDesigns(EosDesignsRootModel):
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "speed": {"type": str},
+                                "rx_queue": {"type": RxQueue},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
                             name: str
@@ -19670,6 +20225,15 @@ class EosDesigns(EosDesignsRootModel):
                             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                             <interface_speed>`.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -19683,6 +20247,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     speed: str | None | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -19707,6 +20272,13 @@ class EosDesigns(EosDesignsRootModel):
                                         speed:
                                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                            <interface_speed>`.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -20205,6 +20777,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -20746,6 +21319,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -21103,6 +21678,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -21487,6 +22063,7 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -22197,7 +22774,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                            class AllActiveMultihoming(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class EvpnEthernetSegment(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                    identifier: str
+                                    """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                    rt_import: str
+                                    """Low-order 6 bytes of ES-Import Route Target."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                            """
+                                            EvpnEthernetSegment.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                                rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "enable_d_path": {"type": bool, "default": True},
+                                    "evpn_domain_id_local": {"type": str},
+                                    "evpn_domain_id_remote": {"type": str},
+                                    "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                                }
+                                enabled: bool
+                                """Enable Active Active Multihoming resiliency model."""
+                                enable_d_path: bool
+                                """
+                                Enable D-path for use with BGP bestpath selection algorithm.
+
+                                Default value: `True`
+                                """
+                                evpn_domain_id_local: str
+                                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                                evpn_domain_id_remote: str
+                                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                                evpn_ethernet_segment: EvpnEthernetSegment
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        enable_d_path: bool | UndefinedType = Undefined,
+                                        evpn_domain_id_local: str | UndefinedType = Undefined,
+                                        evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                        evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        AllActiveMultihoming.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Enable Active Active Multihoming resiliency model.
+                                            enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                            evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                            evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                            evpn_ethernet_segment: Subclass of AvdModel.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "remote_peers": {"type": RemotePeers},
+                                "evpn_l2": {"type": EvpnL2},
+                                "evpn_l3": {"type": EvpnL3},
+                                "all_active_multihoming": {"type": AllActiveMultihoming},
+                            }
                             remote_peers: RemotePeers
                             """
                             Define remote peers of the EVPN VXLAN Gateway.
@@ -22222,6 +22879,14 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            all_active_multihoming: AllActiveMultihoming
+                            """
+                            Enable Active Active Multihoming architecture for EVPN Gateways.
+                            Not supported with MLAG or IPVPN
+                            Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                            Subclass of AvdModel.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -22231,6 +22896,7 @@ class EosDesigns(EosDesignsRootModel):
                                     remote_peers: RemotePeers | UndefinedType = Undefined,
                                     evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                     evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                    all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     EvpnGateway.
@@ -22255,6 +22921,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         evpn_l3:
                                            Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                           Subclass of AvdModel.
+                                        all_active_multihoming:
+                                           Enable Active Active Multihoming architecture for EVPN Gateways.
+                                           Not supported with MLAG or IPVPN
+                                           Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                            Subclass of AvdModel.
 
@@ -23134,6 +23806,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             class FlowTracking(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -23184,6 +23903,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "wan_circuit_id": {"type": str},
                                 "connected_to_pathfinder": {"type": bool, "default": True},
                                 "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                                "rx_queue": {"type": RxQueue},
                                 "raw_eos_cli": {"type": str},
                                 "flow_tracking": {"type": FlowTracking},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -23329,6 +24049,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the interface in the final EOS configuration."""
                             flow_tracking: FlowTracking
@@ -23368,6 +24097,7 @@ class EosDesigns(EosDesignsRootModel):
                                     wan_circuit_id: str | None | UndefinedType = Undefined,
                                     connected_to_pathfinder: bool | UndefinedType = Undefined,
                                     cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     raw_eos_cli: str | None | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -23468,6 +24198,13 @@ class EosDesigns(EosDesignsRootModel):
                                            PREVIEW: This key is in preview mode
 
                                            Subclass of AvdModel.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                         flow_tracking:
                                            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -23489,12 +24226,60 @@ class EosDesigns(EosDesignsRootModel):
                             class MemberInterfacesItem(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                class RxQueue(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class Workers(AvdList[str]):
+                                        """Subclass of AvdList with `str` items."""
+
+                                    Workers._item_type = str
+
+                                    _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                    count: int | None
+                                    """
+                                    Number of receive queues.
+                                    The maximum value is determined by
+                                    `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                    `platform` set on this device.
+                                    """
+                                    workers: Workers
+                                    """Subclass of AvdList with `str` items."""
+                                    mode: Literal["shared", "exclusive"] | None
+                                    """Mode applicable to the workers."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            count: int | None | UndefinedType = Undefined,
+                                            workers: Workers | UndefinedType = Undefined,
+                                            mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            RxQueue.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                count:
+                                                   Number of receive queues.
+                                                   The maximum value is determined by
+                                                   `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                                   `platform` set on this device.
+                                                workers: Subclass of AvdList with `str` items.
+                                                mode: Mode applicable to the workers.
+
+                                            """
+
                                 _fields: ClassVar[dict] = {
                                     "name": {"type": str},
                                     "description": {"type": str},
                                     "peer": {"type": str},
                                     "peer_interface": {"type": str},
                                     "speed": {"type": str},
+                                    "rx_queue": {"type": RxQueue},
                                     "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                                 }
                                 name: str
@@ -23521,6 +24306,15 @@ class EosDesigns(EosDesignsRootModel):
                                 Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                 <interface_speed>`.
                                 """
+                                rx_queue: RxQueue
+                                """
+                                Receive queue parameters for platform SFE interface profile.
+                                This setting is ignored unless the
+                                `platform_sfe_interface_profile.supported` is set as `true` under
+                                `platform_settings.feature_support` for the `platform` set on this device.
+
+                                Subclass of AvdModel.
+                                """
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem
                                 """Custom structured config for the member ethernet interface."""
 
@@ -23534,6 +24328,7 @@ class EosDesigns(EosDesignsRootModel):
                                         peer: str | None | UndefinedType = Undefined,
                                         peer_interface: str | None | UndefinedType = Undefined,
                                         speed: str | None | UndefinedType = Undefined,
+                                        rx_queue: RxQueue | UndefinedType = Undefined,
                                         structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -23558,6 +24353,13 @@ class EosDesigns(EosDesignsRootModel):
                                             speed:
                                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                                <interface_speed>`.
+                                            rx_queue:
+                                               Receive queue parameters for platform SFE interface profile.
+                                               This setting is ignored unless the
+                                               `platform_sfe_interface_profile.supported` is set as `true` under
+                                               `platform_settings.feature_support` for the `platform` set on this device.
+
+                                               Subclass of AvdModel.
                                             structured_config: Custom structured config for the member ethernet interface.
 
                                         """
@@ -24064,6 +24866,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_mode": {"type": str},
                             "spanning_tree_priority": {"type": int, "default": 32768},
                             "spanning_tree_root_super": {"type": bool, "default": False},
+                            "spanning_tree_mst_pvst_boundary": {"type": bool},
                             "virtual_router_mac_address": {"type": str},
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -24615,6 +25418,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         spanning_tree_root_super: bool
                         """Default value: `False`"""
+                        spanning_tree_mst_pvst_boundary: bool | None
+                        """Enable MST PVST border ports."""
                         virtual_router_mac_address: str | None
                         """Virtual router mac address for anycast gateway."""
                         inband_mgmt_interface: str | None
@@ -24974,6 +25779,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
+                                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -25365,6 +26171,7 @@ class EosDesigns(EosDesignsRootModel):
                                        For `rapid-pvst` the priority can also be
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
+                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
                                        Pointer to interface used for inband management.
@@ -26017,7 +26824,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                        class AllActiveMultihoming(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EvpnEthernetSegment(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                identifier: str
+                                """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                rt_import: str
+                                """Low-order 6 bytes of ES-Import Route Target."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        EvpnEthernetSegment.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                            rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "enable_d_path": {"type": bool, "default": True},
+                                "evpn_domain_id_local": {"type": str},
+                                "evpn_domain_id_remote": {"type": str},
+                                "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                            }
+                            enabled: bool
+                            """Enable Active Active Multihoming resiliency model."""
+                            enable_d_path: bool
+                            """
+                            Enable D-path for use with BGP bestpath selection algorithm.
+
+                            Default value: `True`
+                            """
+                            evpn_domain_id_local: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_domain_id_remote: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_ethernet_segment: EvpnEthernetSegment
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    enable_d_path: bool | UndefinedType = Undefined,
+                                    evpn_domain_id_local: str | UndefinedType = Undefined,
+                                    evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                    evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AllActiveMultihoming.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable Active Active Multihoming resiliency model.
+                                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                        evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_ethernet_segment: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "remote_peers": {"type": RemotePeers},
+                            "evpn_l2": {"type": EvpnL2},
+                            "evpn_l3": {"type": EvpnL3},
+                            "all_active_multihoming": {"type": AllActiveMultihoming},
+                        }
                         remote_peers: RemotePeers
                         """
                         Define remote peers of the EVPN VXLAN Gateway.
@@ -26042,6 +26929,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        all_active_multihoming: AllActiveMultihoming
+                        """
+                        Enable Active Active Multihoming architecture for EVPN Gateways.
+                        Not supported with MLAG or IPVPN
+                        Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -26051,6 +26946,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_peers: RemotePeers | UndefinedType = Undefined,
                                 evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                 evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 EvpnGateway.
@@ -26075,6 +26971,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     evpn_l3:
                                        Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                       Subclass of AvdModel.
+                                    all_active_multihoming:
+                                       Enable Active Active Multihoming architecture for EVPN Gateways.
+                                       Not supported with MLAG or IPVPN
+                                       Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -26945,6 +27847,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RxQueue(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Workers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Workers._item_type = str
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                            count: int | None
+                            """
+                            Number of receive queues.
+                            The maximum value is determined by
+                            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                            `platform` set on this device.
+                            """
+                            workers: Workers
+                            """Subclass of AvdList with `str` items."""
+                            mode: Literal["shared", "exclusive"] | None
+                            """Mode applicable to the workers."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    count: int | None | UndefinedType = Undefined,
+                                    workers: Workers | UndefinedType = Undefined,
+                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RxQueue.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Number of receive queues.
+                                           The maximum value is determined by
+                                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                           `platform` set on this device.
+                                        workers: Subclass of AvdList with `str` items.
+                                        mode: Mode applicable to the workers.
+
+                                    """
+
                         class FlowTracking(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -26993,6 +27942,7 @@ class EosDesigns(EosDesignsRootModel):
                             "wan_circuit_id": {"type": str},
                             "connected_to_pathfinder": {"type": bool, "default": True},
                             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                            "rx_queue": {"type": RxQueue},
                             "raw_eos_cli": {"type": str},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -27138,6 +28088,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        rx_queue: RxQueue
+                        """
+                        Receive queue parameters for platform SFE interface profile.
+                        This setting is ignored unless the
+                        `platform_sfe_interface_profile.supported` is set as `true` under
+                        `platform_settings.feature_support` for the `platform` set on this device.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the interface in the final EOS configuration."""
                         flow_tracking: FlowTracking
@@ -27177,6 +28136,7 @@ class EosDesigns(EosDesignsRootModel):
                                 wan_circuit_id: str | None | UndefinedType = Undefined,
                                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                rx_queue: RxQueue | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -27277,6 +28237,13 @@ class EosDesigns(EosDesignsRootModel):
                                        PREVIEW: This key is in preview mode
 
                                        Subclass of AvdModel.
+                                    rx_queue:
+                                       Receive queue parameters for platform SFE interface profile.
+                                       This setting is ignored unless the
+                                       `platform_sfe_interface_profile.supported` is set as `true` under
+                                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -27298,12 +28265,60 @@ class EosDesigns(EosDesignsRootModel):
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "speed": {"type": str},
+                                "rx_queue": {"type": RxQueue},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
                             name: str
@@ -27330,6 +28345,15 @@ class EosDesigns(EosDesignsRootModel):
                             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                             <interface_speed>`.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -27343,6 +28367,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     speed: str | None | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -27367,6 +28392,13 @@ class EosDesigns(EosDesignsRootModel):
                                         speed:
                                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                            <interface_speed>`.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -27867,6 +28899,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -28421,6 +29454,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -28780,6 +29815,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -29173,6 +30209,7 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -29884,7 +30921,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                        class AllActiveMultihoming(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EvpnEthernetSegment(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                identifier: str
+                                """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                rt_import: str
+                                """Low-order 6 bytes of ES-Import Route Target."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        EvpnEthernetSegment.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                            rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "enable_d_path": {"type": bool, "default": True},
+                                "evpn_domain_id_local": {"type": str},
+                                "evpn_domain_id_remote": {"type": str},
+                                "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                            }
+                            enabled: bool
+                            """Enable Active Active Multihoming resiliency model."""
+                            enable_d_path: bool
+                            """
+                            Enable D-path for use with BGP bestpath selection algorithm.
+
+                            Default value: `True`
+                            """
+                            evpn_domain_id_local: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_domain_id_remote: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_ethernet_segment: EvpnEthernetSegment
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    enable_d_path: bool | UndefinedType = Undefined,
+                                    evpn_domain_id_local: str | UndefinedType = Undefined,
+                                    evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                    evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AllActiveMultihoming.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable Active Active Multihoming resiliency model.
+                                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                        evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_ethernet_segment: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "remote_peers": {"type": RemotePeers},
+                            "evpn_l2": {"type": EvpnL2},
+                            "evpn_l3": {"type": EvpnL3},
+                            "all_active_multihoming": {"type": AllActiveMultihoming},
+                        }
                         remote_peers: RemotePeers
                         """
                         Define remote peers of the EVPN VXLAN Gateway.
@@ -29909,6 +31026,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        all_active_multihoming: AllActiveMultihoming
+                        """
+                        Enable Active Active Multihoming architecture for EVPN Gateways.
+                        Not supported with MLAG or IPVPN
+                        Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -29918,6 +31043,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_peers: RemotePeers | UndefinedType = Undefined,
                                 evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                 evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 EvpnGateway.
@@ -29942,6 +31068,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     evpn_l3:
                                        Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                       Subclass of AvdModel.
+                                    all_active_multihoming:
+                                       Enable Active Active Multihoming architecture for EVPN Gateways.
+                                       Not supported with MLAG or IPVPN
+                                       Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -30812,6 +31944,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RxQueue(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Workers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Workers._item_type = str
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                            count: int | None
+                            """
+                            Number of receive queues.
+                            The maximum value is determined by
+                            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                            `platform` set on this device.
+                            """
+                            workers: Workers
+                            """Subclass of AvdList with `str` items."""
+                            mode: Literal["shared", "exclusive"] | None
+                            """Mode applicable to the workers."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    count: int | None | UndefinedType = Undefined,
+                                    workers: Workers | UndefinedType = Undefined,
+                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RxQueue.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Number of receive queues.
+                                           The maximum value is determined by
+                                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                           `platform` set on this device.
+                                        workers: Subclass of AvdList with `str` items.
+                                        mode: Mode applicable to the workers.
+
+                                    """
+
                         class FlowTracking(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -30860,6 +32039,7 @@ class EosDesigns(EosDesignsRootModel):
                             "wan_circuit_id": {"type": str},
                             "connected_to_pathfinder": {"type": bool, "default": True},
                             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                            "rx_queue": {"type": RxQueue},
                             "raw_eos_cli": {"type": str},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -31005,6 +32185,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        rx_queue: RxQueue
+                        """
+                        Receive queue parameters for platform SFE interface profile.
+                        This setting is ignored unless the
+                        `platform_sfe_interface_profile.supported` is set as `true` under
+                        `platform_settings.feature_support` for the `platform` set on this device.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the interface in the final EOS configuration."""
                         flow_tracking: FlowTracking
@@ -31044,6 +32233,7 @@ class EosDesigns(EosDesignsRootModel):
                                 wan_circuit_id: str | None | UndefinedType = Undefined,
                                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                rx_queue: RxQueue | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -31144,6 +32334,13 @@ class EosDesigns(EosDesignsRootModel):
                                        PREVIEW: This key is in preview mode
 
                                        Subclass of AvdModel.
+                                    rx_queue:
+                                       Receive queue parameters for platform SFE interface profile.
+                                       This setting is ignored unless the
+                                       `platform_sfe_interface_profile.supported` is set as `true` under
+                                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -31165,12 +32362,60 @@ class EosDesigns(EosDesignsRootModel):
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "speed": {"type": str},
+                                "rx_queue": {"type": RxQueue},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
                             name: str
@@ -31197,6 +32442,15 @@ class EosDesigns(EosDesignsRootModel):
                             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                             <interface_speed>`.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -31210,6 +32464,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     speed: str | None | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -31234,6 +32489,13 @@ class EosDesigns(EosDesignsRootModel):
                                         speed:
                                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                            <interface_speed>`.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -31734,6 +32996,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -32285,6 +33548,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -32644,6 +33909,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -33035,6 +34301,7 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -33865,6 +35132,7 @@ class EosDesigns(EosDesignsRootModel):
                         "bfd": {"type": bool},
                         "bfd_timers": {"type": BfdTimers},
                         "ebgp_multihop": {"type": int},
+                        "next_hop_peer": {"type": bool},
                         "next_hop_self": {"type": bool},
                         "password": {"type": str},
                         "passive": {"type": bool},
@@ -33947,6 +35215,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     ebgp_multihop: int | None
                     """Time-to-live in range of hops."""
+                    next_hop_peer: bool | None
                     next_hop_self: bool | None
                     password: str | None
                     passive: bool | None
@@ -34011,6 +35280,7 @@ class EosDesigns(EosDesignsRootModel):
                             bfd: bool | None | UndefinedType = Undefined,
                             bfd_timers: BfdTimers | UndefinedType = Undefined,
                             ebgp_multihop: int | None | UndefinedType = Undefined,
+                            next_hop_peer: bool | None | UndefinedType = Undefined,
                             next_hop_self: bool | None | UndefinedType = Undefined,
                             password: str | None | UndefinedType = Undefined,
                             passive: bool | None | UndefinedType = Undefined,
@@ -34080,6 +35350,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 ebgp_multihop: Time-to-live in range of hops.
+                                next_hop_peer: next_hop_peer
                                 next_hop_self: next_hop_self
                                 password: password
                                 passive: passive
@@ -34493,6 +35764,7 @@ class EosDesigns(EosDesignsRootModel):
                             "loopback_ip_range": {"type": str},
                             "loopback_ipv6_range": {"type": str},
                             "loopback_ip_pools": {"type": LoopbackIpPools},
+                            "hardware_forwarding": {"type": bool},
                         }
                         loopback: int | None
                         """Loopback interface number, required when vtep_diagnotics defined."""
@@ -34539,6 +35811,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
                         """
+                        hardware_forwarding: bool | None
+                        """
+                        Enable hardware forwarding for diagnostic loopbacks. This is required for correct forwarding in VRFs
+                        without physical interfaces.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -34550,6 +35827,7 @@ class EosDesigns(EosDesignsRootModel):
                                 loopback_ip_range: str | None | UndefinedType = Undefined,
                                 loopback_ipv6_range: str | None | UndefinedType = Undefined,
                                 loopback_ip_pools: LoopbackIpPools | UndefinedType = Undefined,
+                                hardware_forwarding: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 VtepDiagnostic.
@@ -34594,6 +35872,9 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                        Subclass of AvdIndexedList with `LoopbackIpPoolsItem` items. Primary key is `pod` (`str`).
+                                    hardware_forwarding:
+                                       Enable hardware forwarding for diagnostic loopbacks. This is required for correct forwarding in VRFs
+                                       without physical interfaces.
 
                                 """
 
@@ -34662,6 +35943,7 @@ class EosDesigns(EosDesignsRootModel):
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
                             "nodes": {"type": Nodes},
+                            "structured_config": {"type": EosCliConfigGen.RouterOspf.ProcessIdsItem},
                         }
                         enabled: bool | None
                         process_id: int | None
@@ -34689,6 +35971,11 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
+                        structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
+                        """
+                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
+                        eos_cli_config_gen.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -34703,6 +35990,7 @@ class EosDesigns(EosDesignsRootModel):
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ospf.
@@ -34728,6 +36016,9 @@ class EosDesigns(EosDesignsRootModel):
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
                                     nodes: Subclass of AvdList with `str` items.
+                                    structured_config:
+                                       Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
+                                       eos_cli_config_gen.
 
                                 """
 
@@ -36729,6 +38020,382 @@ class EosDesigns(EosDesignsRootModel):
 
                     L3Interfaces._item_type = L3InterfacesItem
 
+                    class L3PortChannelsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class MemberInterfacesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "name": {"type": str},
+                                "description": {"type": str},
+                                "peer": {"type": str},
+                                "peer_interface": {"type": str},
+                                "speed": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            }
+                            name: str
+                            """
+                            Ethernet interface name like 'Ethernet2'.
+                            Member interface cannot be subinterface.
+                            """
+                            description: str | None
+                            """
+                            Interface description for this member.
+                            If not set, a default description will be configured with
+                            '[<peer>[ <peer_interface>]]'.
+                            """
+                            peer: str | None
+                            """
+                            The peer device name. Used for description and documentation.
+                            If not set, this inherits the peer
+                            setting on the port-channel interface.
+                            """
+                            peer_interface: str | None
+                            """The peer device interface. Used for description and documentation."""
+                            speed: str | None
+                            """
+                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
+                            <interface_speed>`.
+                            """
+                            structured_config: EosCliConfigGen.EthernetInterfacesItem
+                            """Custom structured config for the member ethernet interface."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    name: str | UndefinedType = Undefined,
+                                    description: str | None | UndefinedType = Undefined,
+                                    peer: str | None | UndefinedType = Undefined,
+                                    peer_interface: str | None | UndefinedType = Undefined,
+                                    speed: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MemberInterfacesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        name:
+                                           Ethernet interface name like 'Ethernet2'.
+                                           Member interface cannot be subinterface.
+                                        description:
+                                           Interface description for this member.
+                                           If not set, a default description will be configured with
+                                           '[<peer>[ <peer_interface>]]'.
+                                        peer:
+                                           The peer device name. Used for description and documentation.
+                                           If not set, this inherits the peer
+                                           setting on the port-channel interface.
+                                        peer_interface: The peer device interface. Used for description and documentation.
+                                        speed:
+                                           Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
+                                           <interface_speed>`.
+                                        structured_config: Custom structured config for the member ethernet interface.
+
+                                    """
+
+                        class MemberInterfaces(AvdIndexedList[str, MemberInterfacesItem]):
+                            """Subclass of AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
+
+                        MemberInterfaces._item_type = MemberInterfacesItem
+
+                        class Ospf(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class MessageDigestKeysItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                id: int | None
+                                hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                                """Default value: `"sha512"`"""
+                                key: str | None
+                                """Key password."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        id: int | None | UndefinedType = Undefined,
+                                        hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                        key: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        MessageDigestKeysItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            id: id
+                                            hash_algorithm: hash_algorithm
+                                            key: Key password.
+
+                                        """
+
+                            class MessageDigestKeys(AvdList[MessageDigestKeysItem]):
+                                """Subclass of AvdList with `MessageDigestKeysItem` items."""
+
+                            MessageDigestKeys._item_type = MessageDigestKeysItem
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "point_to_point": {"type": bool, "default": False},
+                                "area": {"type": str, "default": "0.0.0.0"},
+                                "cost": {"type": int},
+                                "authentication": {"type": str},
+                                "simple_auth_key": {"type": str},
+                                "message_digest_keys": {"type": MessageDigestKeys},
+                            }
+                            enabled: bool | None
+                            point_to_point: bool
+                            """Default value: `False`"""
+                            area: str
+                            """
+                            OSPF area ID.
+
+                            Default value: `"0.0.0.0"`
+                            """
+                            cost: int | None
+                            """OSPF link cost."""
+                            authentication: Literal["simple", "message-digest"] | None
+                            simple_auth_key: str | None
+                            """Password used with simple authentication."""
+                            message_digest_keys: MessageDigestKeys
+                            """Subclass of AvdList with `MessageDigestKeysItem` items."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | None | UndefinedType = Undefined,
+                                    point_to_point: bool | UndefinedType = Undefined,
+                                    area: str | UndefinedType = Undefined,
+                                    cost: int | None | UndefinedType = Undefined,
+                                    authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                    simple_auth_key: str | None | UndefinedType = Undefined,
+                                    message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    Ospf.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        point_to_point: point_to_point
+                                        area: OSPF area ID.
+                                        cost: OSPF link cost.
+                                        authentication: authentication
+                                        simple_auth_key: Password used with simple authentication.
+                                        message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
+
+                                    """
+
+                        class FlowTracking(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                            enabled: bool | None
+                            name: str | None
+                            """Flow tracker name as defined in flow_tracking_settings."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    FlowTracking.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        name: Flow tracker name as defined in flow_tracking_settings.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "name": {"type": str},
+                            "node": {"type": str},
+                            "description": {"type": str},
+                            "mode": {"type": str, "default": "active"},
+                            "member_interfaces": {"type": MemberInterfaces},
+                            "ip_address": {"type": str},
+                            "encapsulation_dot1q_vlan": {"type": int},
+                            "enabled": {"type": bool, "default": True},
+                            "peer": {"type": str},
+                            "peer_port_channel": {"type": str},
+                            "mtu": {"type": int},
+                            "ipv4_acl_in": {"type": str},
+                            "ipv4_acl_out": {"type": str},
+                            "ospf": {"type": Ospf},
+                            "flow_tracking": {"type": FlowTracking},
+                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            "raw_eos_cli": {"type": str},
+                        }
+                        name: str
+                        """
+                        Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
+                        For a
+                        Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+                        """
+                        node: str
+                        """Node."""
+                        description: str | None
+                        """
+                        Interface description.
+                        If not set, a default description will be configured with '[<peer>[
+                        <peer_port_channel>]]'.
+                        """
+                        mode: Literal["active", "passive", "on"]
+                        """
+                        Port-Channel mode.
+                        Should not be set on Port-Channel subinterfaces.
+
+                        Default value: `"active"`
+                        """
+                        member_interfaces: MemberInterfaces
+                        """
+                        Port-Channel member interfaces.
+                        Should not be set on Port-Channel subinterfaces.
+
+                        Subclass of
+                        AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
+                        """
+                        ip_address: str | None
+                        """IPv4 address/Mask."""
+                        encapsulation_dot1q_vlan: int | None
+                        """
+                        For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+                        specified.
+                        """
+                        enabled: bool
+                        """
+                        Enable or Shutdown the interface.
+
+                        Default value: `True`
+                        """
+                        peer: str | None
+                        """The peer device name. Used for description and documentation."""
+                        peer_port_channel: str | None
+                        """The peer device port-channel interface. Used for description and documentation."""
+                        mtu: int | None
+                        """MTU can only be set on the parent Port-Channel."""
+                        ipv4_acl_in: str | None
+                        """Name of the IPv4 access-list to be assigned in the ingress direction."""
+                        ipv4_acl_out: str | None
+                        """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                        ospf: Ospf
+                        """
+                        OSPF interface configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        flow_tracking: FlowTracking
+                        """
+                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels`
+                        setting.
+
+                        Subclass of AvdModel.
+                        """
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                        eos_cli_config_gen.
+                        """
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                name: str | UndefinedType = Undefined,
+                                node: str | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                mode: Literal["active", "passive", "on"] | UndefinedType = Undefined,
+                                member_interfaces: MemberInterfaces | UndefinedType = Undefined,
+                                ip_address: str | None | UndefinedType = Undefined,
+                                encapsulation_dot1q_vlan: int | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType = Undefined,
+                                peer: str | None | UndefinedType = Undefined,
+                                peer_port_channel: str | None | UndefinedType = Undefined,
+                                mtu: int | None | UndefinedType = Undefined,
+                                ipv4_acl_in: str | None | UndefinedType = Undefined,
+                                ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                ospf: Ospf | UndefinedType = Undefined,
+                                flow_tracking: FlowTracking | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                L3PortChannelsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    name:
+                                       Port-Channel interface name like 'Port-Channel2' or subinterface name like 'Port-Channel2.42'.
+                                       For a
+                                       Port-Channel subinterface, the parent Port-Channel interface must be defined as well.
+                                    node: Node.
+                                    description:
+                                       Interface description.
+                                       If not set, a default description will be configured with '[<peer>[
+                                       <peer_port_channel>]]'.
+                                    mode:
+                                       Port-Channel mode.
+                                       Should not be set on Port-Channel subinterfaces.
+                                    member_interfaces:
+                                       Port-Channel member interfaces.
+                                       Should not be set on Port-Channel subinterfaces.
+
+                                       Subclass of
+                                       AvdIndexedList with `MemberInterfacesItem` items. Primary key is `name` (`str`).
+                                    ip_address: IPv4 address/Mask.
+                                    encapsulation_dot1q_vlan:
+                                       For subinterfaces the dot1q vlan is derived from the interface name by default, but can also be
+                                       specified.
+                                    enabled: Enable or Shutdown the interface.
+                                    peer: The peer device name. Used for description and documentation.
+                                    peer_port_channel: The peer device port-channel interface. Used for description and documentation.
+                                    mtu: MTU can only be set on the parent Port-Channel.
+                                    ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
+                                    ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                                    ospf:
+                                       OSPF interface configuration.
+
+                                       Subclass of AvdModel.
+                                    flow_tracking:
+                                       Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels`
+                                       setting.
+
+                                       Subclass of AvdModel.
+                                    structured_config:
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                                       eos_cli_config_gen.
+                                    raw_eos_cli: EOS CLI rendered directly on the Port-Channel interface in the final EOS configuration.
+
+                                """
+
+                    class L3PortChannels(AvdList[L3PortChannelsItem]):
+                        """Subclass of AvdList with `L3PortChannelsItem` items."""
+
+                    L3PortChannels._item_type = L3PortChannelsItem
+
                     class LoopbacksItem(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -36767,6 +38434,7 @@ class EosDesigns(EosDesignsRootModel):
                             "description": {"type": str},
                             "enabled": {"type": bool, "default": True},
                             "ospf": {"type": Ospf},
+                            "hardware_forwarding": {"type": bool},
                             "raw_eos_cli": {"type": str},
                         }
                         node: str
@@ -36780,6 +38448,11 @@ class EosDesigns(EosDesignsRootModel):
                         OSPF interface configuration.
 
                         Subclass of AvdModel.
+                        """
+                        hardware_forwarding: bool | None
+                        """
+                        Enable hardware forwarding for this loopback. This is required for correct forwarding in VRFs
+                        without physical interfaces.
                         """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the Loopback interface in the final EOS configuration."""
@@ -36795,6 +38468,7 @@ class EosDesigns(EosDesignsRootModel):
                                 description: str | None | UndefinedType = Undefined,
                                 enabled: bool | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
+                                hardware_forwarding: bool | None | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -36813,6 +38487,9 @@ class EosDesigns(EosDesignsRootModel):
                                        OSPF interface configuration.
 
                                        Subclass of AvdModel.
+                                    hardware_forwarding:
+                                       Enable hardware forwarding for this loopback. This is required for correct forwarding in VRFs
+                                       without physical interfaces.
                                     raw_eos_cli: EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
 
                                 """
@@ -36832,7 +38509,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
+                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
                             "tag": {"type": int},
@@ -36843,8 +38522,12 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         destination_address_prefix: str | None
                         """IPv4_address."""
+                        prefix: str | None
+                        """Destination prefix."""
                         gateway: str | None
                         """IPv4_address."""
+                        next_hop: str | None
+                        """Next-hop IPv4 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -36862,7 +38545,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
                                 tag: int | None | UndefinedType = Undefined,
@@ -36879,7 +38564,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv4_address.
+                                    prefix: Destination prefix.
                                     gateway: IPv4_address.
+                                    next_hop: Next-hop IPv4 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
@@ -36905,7 +38592,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
+                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
                             "tag": {"type": int},
@@ -36916,7 +38605,11 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         destination_address_prefix: str | None
                         """IPv6_address."""
+                        prefix: str | None
+                        """Destination prefix."""
                         gateway: str | None
+                        next_hop: str | None
+                        """Next-hop IPv6 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -36934,7 +38627,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
                                 tag: int | None | UndefinedType = Undefined,
@@ -36951,7 +38646,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv6_address.
+                                    prefix: Destination prefix.
                                     gateway: gateway
+                                    next_hop: Next-hop IPv6 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
@@ -37805,6 +39502,7 @@ class EosDesigns(EosDesignsRootModel):
                             "bfd": {"type": bool},
                             "bfd_timers": {"type": BfdTimers},
                             "ebgp_multihop": {"type": int},
+                            "next_hop_peer": {"type": bool},
                             "next_hop_self": {"type": bool},
                             "password": {"type": str},
                             "passive": {"type": bool},
@@ -37887,6 +39585,7 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ebgp_multihop: int | None
                         """Time-to-live in range of hops."""
+                        next_hop_peer: bool | None
                         next_hop_self: bool | None
                         password: str | None
                         passive: bool | None
@@ -37951,6 +39650,7 @@ class EosDesigns(EosDesignsRootModel):
                                 bfd: bool | None | UndefinedType = Undefined,
                                 bfd_timers: BfdTimers | UndefinedType = Undefined,
                                 ebgp_multihop: int | None | UndefinedType = Undefined,
+                                next_hop_peer: bool | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
                                 password: str | None | UndefinedType = Undefined,
                                 passive: bool | None | UndefinedType = Undefined,
@@ -38020,6 +39720,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdModel.
                                     ebgp_multihop: Time-to-live in range of hops.
+                                    next_hop_peer: next_hop_peer
                                     next_hop_self: next_hop_self
                                     password: password
                                     passive: passive
@@ -38130,6 +39831,7 @@ class EosDesigns(EosDesignsRootModel):
                         "evpn_l2_multi_domain": {"type": bool},
                         "svis": {"type": Svis},
                         "l3_interfaces": {"type": L3Interfaces},
+                        "l3_port_channels": {"type": L3PortChannels},
                         "loopbacks": {"type": Loopbacks},
                         "static_routes": {"type": StaticRoutes},
                         "ipv6_static_routes": {"type": Ipv6StaticRoutes},
@@ -38303,6 +40005,15 @@ class EosDesigns(EosDesignsRootModel):
 
                     Subclass of AvdList with `L3InterfacesItem` items.
                     """
+                    l3_port_channels: L3PortChannels
+                    """
+                    List of L3 Port-Channels.
+                    This will create IP routed Port-Channels inside the VRF.
+
+
+                    Subclass of
+                    AvdList with `L3PortChannelsItem` items.
+                    """
                     loopbacks: Loopbacks
                     """
                     List of Loopback interfaces.
@@ -38404,6 +40115,7 @@ class EosDesigns(EosDesignsRootModel):
                             evpn_l2_multi_domain: bool | None | UndefinedType = Undefined,
                             svis: Svis | UndefinedType = Undefined,
                             l3_interfaces: L3Interfaces | UndefinedType = Undefined,
+                            l3_port_channels: L3PortChannels | UndefinedType = Undefined,
                             loopbacks: Loopbacks | UndefinedType = Undefined,
                             static_routes: StaticRoutes | UndefinedType = Undefined,
                             ipv6_static_routes: Ipv6StaticRoutes | UndefinedType = Undefined,
@@ -38541,6 +40253,13 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                    Subclass of AvdList with `L3InterfacesItem` items.
+                                l3_port_channels:
+                                   List of L3 Port-Channels.
+                                   This will create IP routed Port-Channels inside the VRF.
+
+
+                                   Subclass of
+                                   AvdList with `L3PortChannelsItem` items.
                                 loopbacks:
                                    List of Loopback interfaces.
                                    This will create Loopback interfaces inside the VRF.
@@ -39336,16 +41055,14 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 vrfs: Vrfs
                 """
-                VRFs will only be configured on a node if any of the underlying objects like `svis` or
-                `l3_interfaces` apply to the node.
+                VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces`
+                or `l3_port_channels` apply to the node.
 
-                It is recommended to only define a VRF in one Tenant. If the
-                same VRF name is used across multiple tenants and those tenants
-                are accepted by `filter.tenants` on
-                the node, any object set under the duplicate VRFs must either be unique or be an exact match.
-
-                VRF
-                "default" is partially supported under network-services. Currently the supported options for
+                It is recommended to only define a VRF in one Tenant. If
+                the same VRF name is used across multiple tenants and those tenants
+                are accepted by `filter.tenants`
+                on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+                VRF "default" is partially supported under network-services. Currently the supported options for
                 "default" vrf are route-target,
                 route-distinguisher settings, structured_config, raw_eos_cli in bgp
                 and SVIs are the only supported interface type.
@@ -39524,16 +41241,14 @@ class EosDesigns(EosDesignsRootModel):
                                Subclass of AvdModel.
                             evpn_l2_multi_domain: Explicitly extend all VLANs/VLAN-Aware Bundles inside the tenant to remote EVPN domains.
                             vrfs:
-                               VRFs will only be configured on a node if any of the underlying objects like `svis` or
-                               `l3_interfaces` apply to the node.
+                               VRFs will only be configured on a node if any of the underlying objects like `svis`, `l3_interfaces`
+                               or `l3_port_channels` apply to the node.
 
-                               It is recommended to only define a VRF in one Tenant. If the
-                               same VRF name is used across multiple tenants and those tenants
-                               are accepted by `filter.tenants` on
-                               the node, any object set under the duplicate VRFs must either be unique or be an exact match.
-
-                               VRF
-                               "default" is partially supported under network-services. Currently the supported options for
+                               It is recommended to only define a VRF in one Tenant. If
+                               the same VRF name is used across multiple tenants and those tenants
+                               are accepted by `filter.tenants`
+                               on the node, any object set under the duplicate VRFs must either be unique or be an exact match.
+                               VRF "default" is partially supported under network-services. Currently the supported options for
                                "default" vrf are route-target,
                                route-distinguisher settings, structured_config, raw_eos_cli in bgp
                                and SVIs are the only supported interface type.
@@ -40040,7 +41755,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                        class AllActiveMultihoming(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EvpnEthernetSegment(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                identifier: str
+                                """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                rt_import: str
+                                """Low-order 6 bytes of ES-Import Route Target."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        EvpnEthernetSegment.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                            rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "enable_d_path": {"type": bool, "default": True},
+                                "evpn_domain_id_local": {"type": str},
+                                "evpn_domain_id_remote": {"type": str},
+                                "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                            }
+                            enabled: bool
+                            """Enable Active Active Multihoming resiliency model."""
+                            enable_d_path: bool
+                            """
+                            Enable D-path for use with BGP bestpath selection algorithm.
+
+                            Default value: `True`
+                            """
+                            evpn_domain_id_local: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_domain_id_remote: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_ethernet_segment: EvpnEthernetSegment
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    enable_d_path: bool | UndefinedType = Undefined,
+                                    evpn_domain_id_local: str | UndefinedType = Undefined,
+                                    evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                    evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AllActiveMultihoming.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable Active Active Multihoming resiliency model.
+                                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                        evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_ethernet_segment: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "remote_peers": {"type": RemotePeers},
+                            "evpn_l2": {"type": EvpnL2},
+                            "evpn_l3": {"type": EvpnL3},
+                            "all_active_multihoming": {"type": AllActiveMultihoming},
+                        }
                         remote_peers: RemotePeers
                         """
                         Define remote peers of the EVPN VXLAN Gateway.
@@ -40065,6 +41860,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        all_active_multihoming: AllActiveMultihoming
+                        """
+                        Enable Active Active Multihoming architecture for EVPN Gateways.
+                        Not supported with MLAG or IPVPN
+                        Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -40074,6 +41877,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_peers: RemotePeers | UndefinedType = Undefined,
                                 evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                 evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 EvpnGateway.
@@ -40098,6 +41902,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     evpn_l3:
                                        Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                       Subclass of AvdModel.
+                                    all_active_multihoming:
+                                       Enable Active Active Multihoming architecture for EVPN Gateways.
+                                       Not supported with MLAG or IPVPN
+                                       Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -40968,6 +42778,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RxQueue(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Workers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Workers._item_type = str
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                            count: int | None
+                            """
+                            Number of receive queues.
+                            The maximum value is determined by
+                            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                            `platform` set on this device.
+                            """
+                            workers: Workers
+                            """Subclass of AvdList with `str` items."""
+                            mode: Literal["shared", "exclusive"] | None
+                            """Mode applicable to the workers."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    count: int | None | UndefinedType = Undefined,
+                                    workers: Workers | UndefinedType = Undefined,
+                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RxQueue.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Number of receive queues.
+                                           The maximum value is determined by
+                                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                           `platform` set on this device.
+                                        workers: Subclass of AvdList with `str` items.
+                                        mode: Mode applicable to the workers.
+
+                                    """
+
                         class FlowTracking(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -41016,6 +42873,7 @@ class EosDesigns(EosDesignsRootModel):
                             "wan_circuit_id": {"type": str},
                             "connected_to_pathfinder": {"type": bool, "default": True},
                             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                            "rx_queue": {"type": RxQueue},
                             "raw_eos_cli": {"type": str},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -41161,6 +43019,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        rx_queue: RxQueue
+                        """
+                        Receive queue parameters for platform SFE interface profile.
+                        This setting is ignored unless the
+                        `platform_sfe_interface_profile.supported` is set as `true` under
+                        `platform_settings.feature_support` for the `platform` set on this device.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the interface in the final EOS configuration."""
                         flow_tracking: FlowTracking
@@ -41200,6 +43067,7 @@ class EosDesigns(EosDesignsRootModel):
                                 wan_circuit_id: str | None | UndefinedType = Undefined,
                                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                rx_queue: RxQueue | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -41300,6 +43168,13 @@ class EosDesigns(EosDesignsRootModel):
                                        PREVIEW: This key is in preview mode
 
                                        Subclass of AvdModel.
+                                    rx_queue:
+                                       Receive queue parameters for platform SFE interface profile.
+                                       This setting is ignored unless the
+                                       `platform_sfe_interface_profile.supported` is set as `true` under
+                                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -41321,12 +43196,60 @@ class EosDesigns(EosDesignsRootModel):
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "speed": {"type": str},
+                                "rx_queue": {"type": RxQueue},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
                             name: str
@@ -41353,6 +43276,15 @@ class EosDesigns(EosDesignsRootModel):
                             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                             <interface_speed>`.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -41366,6 +43298,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     speed: str | None | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -41390,6 +43323,13 @@ class EosDesigns(EosDesignsRootModel):
                                         speed:
                                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                            <interface_speed>`.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -41888,6 +43828,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -42429,6 +44370,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -42786,6 +44729,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -43170,6 +45114,7 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -43880,7 +45825,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                            class AllActiveMultihoming(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class EvpnEthernetSegment(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                    identifier: str
+                                    """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                    rt_import: str
+                                    """Low-order 6 bytes of ES-Import Route Target."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                            """
+                                            EvpnEthernetSegment.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                                rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                            """
+
+                                _fields: ClassVar[dict] = {
+                                    "enabled": {"type": bool},
+                                    "enable_d_path": {"type": bool, "default": True},
+                                    "evpn_domain_id_local": {"type": str},
+                                    "evpn_domain_id_remote": {"type": str},
+                                    "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                                }
+                                enabled: bool
+                                """Enable Active Active Multihoming resiliency model."""
+                                enable_d_path: bool
+                                """
+                                Enable D-path for use with BGP bestpath selection algorithm.
+
+                                Default value: `True`
+                                """
+                                evpn_domain_id_local: str
+                                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                                evpn_domain_id_remote: str
+                                """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                                evpn_ethernet_segment: EvpnEthernetSegment
+                                """Subclass of AvdModel."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        enabled: bool | UndefinedType = Undefined,
+                                        enable_d_path: bool | UndefinedType = Undefined,
+                                        evpn_domain_id_local: str | UndefinedType = Undefined,
+                                        evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                        evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        AllActiveMultihoming.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: Enable Active Active Multihoming resiliency model.
+                                            enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                            evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                            evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                            evpn_ethernet_segment: Subclass of AvdModel.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "remote_peers": {"type": RemotePeers},
+                                "evpn_l2": {"type": EvpnL2},
+                                "evpn_l3": {"type": EvpnL3},
+                                "all_active_multihoming": {"type": AllActiveMultihoming},
+                            }
                             remote_peers: RemotePeers
                             """
                             Define remote peers of the EVPN VXLAN Gateway.
@@ -43905,6 +45930,14 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            all_active_multihoming: AllActiveMultihoming
+                            """
+                            Enable Active Active Multihoming architecture for EVPN Gateways.
+                            Not supported with MLAG or IPVPN
+                            Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                            Subclass of AvdModel.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -43914,6 +45947,7 @@ class EosDesigns(EosDesignsRootModel):
                                     remote_peers: RemotePeers | UndefinedType = Undefined,
                                     evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                     evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                    all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     EvpnGateway.
@@ -43938,6 +45972,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdModel.
                                         evpn_l3:
                                            Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                           Subclass of AvdModel.
+                                        all_active_multihoming:
+                                           Enable Active Active Multihoming architecture for EVPN Gateways.
+                                           Not supported with MLAG or IPVPN
+                                           Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                            Subclass of AvdModel.
 
@@ -44817,6 +46857,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             class FlowTracking(AvdModel):
                                 """Subclass of AvdModel."""
 
@@ -44867,6 +46954,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "wan_circuit_id": {"type": str},
                                 "connected_to_pathfinder": {"type": bool, "default": True},
                                 "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                                "rx_queue": {"type": RxQueue},
                                 "raw_eos_cli": {"type": str},
                                 "flow_tracking": {"type": FlowTracking},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -45012,6 +47100,15 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdModel.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             raw_eos_cli: str | None
                             """EOS CLI rendered directly on the interface in the final EOS configuration."""
                             flow_tracking: FlowTracking
@@ -45051,6 +47148,7 @@ class EosDesigns(EosDesignsRootModel):
                                     wan_circuit_id: str | None | UndefinedType = Undefined,
                                     connected_to_pathfinder: bool | UndefinedType = Undefined,
                                     cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     raw_eos_cli: str | None | UndefinedType = Undefined,
                                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -45151,6 +47249,13 @@ class EosDesigns(EosDesignsRootModel):
                                            PREVIEW: This key is in preview mode
 
                                            Subclass of AvdModel.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                         flow_tracking:
                                            Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -45172,12 +47277,60 @@ class EosDesigns(EosDesignsRootModel):
                             class MemberInterfacesItem(AvdModel):
                                 """Subclass of AvdModel."""
 
+                                class RxQueue(AvdModel):
+                                    """Subclass of AvdModel."""
+
+                                    class Workers(AvdList[str]):
+                                        """Subclass of AvdList with `str` items."""
+
+                                    Workers._item_type = str
+
+                                    _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                    count: int | None
+                                    """
+                                    Number of receive queues.
+                                    The maximum value is determined by
+                                    `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                    `platform` set on this device.
+                                    """
+                                    workers: Workers
+                                    """Subclass of AvdList with `str` items."""
+                                    mode: Literal["shared", "exclusive"] | None
+                                    """Mode applicable to the workers."""
+
+                                    if TYPE_CHECKING:
+
+                                        def __init__(
+                                            self,
+                                            *,
+                                            count: int | None | UndefinedType = Undefined,
+                                            workers: Workers | UndefinedType = Undefined,
+                                            mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                        ) -> None:
+                                            """
+                                            RxQueue.
+
+
+                                            Subclass of AvdModel.
+
+                                            Args:
+                                                count:
+                                                   Number of receive queues.
+                                                   The maximum value is determined by
+                                                   `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                                   `platform` set on this device.
+                                                workers: Subclass of AvdList with `str` items.
+                                                mode: Mode applicable to the workers.
+
+                                            """
+
                                 _fields: ClassVar[dict] = {
                                     "name": {"type": str},
                                     "description": {"type": str},
                                     "peer": {"type": str},
                                     "peer_interface": {"type": str},
                                     "speed": {"type": str},
+                                    "rx_queue": {"type": RxQueue},
                                     "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                                 }
                                 name: str
@@ -45204,6 +47357,15 @@ class EosDesigns(EosDesignsRootModel):
                                 Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                 <interface_speed>`.
                                 """
+                                rx_queue: RxQueue
+                                """
+                                Receive queue parameters for platform SFE interface profile.
+                                This setting is ignored unless the
+                                `platform_sfe_interface_profile.supported` is set as `true` under
+                                `platform_settings.feature_support` for the `platform` set on this device.
+
+                                Subclass of AvdModel.
+                                """
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem
                                 """Custom structured config for the member ethernet interface."""
 
@@ -45217,6 +47379,7 @@ class EosDesigns(EosDesignsRootModel):
                                         peer: str | None | UndefinedType = Undefined,
                                         peer_interface: str | None | UndefinedType = Undefined,
                                         speed: str | None | UndefinedType = Undefined,
+                                        rx_queue: RxQueue | UndefinedType = Undefined,
                                         structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -45241,6 +47404,13 @@ class EosDesigns(EosDesignsRootModel):
                                             speed:
                                                Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                                <interface_speed>`.
+                                            rx_queue:
+                                               Receive queue parameters for platform SFE interface profile.
+                                               This setting is ignored unless the
+                                               `platform_sfe_interface_profile.supported` is set as `true` under
+                                               `platform_settings.feature_support` for the `platform` set on this device.
+
+                                               Subclass of AvdModel.
                                             structured_config: Custom structured config for the member ethernet interface.
 
                                         """
@@ -45747,6 +47917,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_mode": {"type": str},
                             "spanning_tree_priority": {"type": int, "default": 32768},
                             "spanning_tree_root_super": {"type": bool, "default": False},
+                            "spanning_tree_mst_pvst_boundary": {"type": bool},
                             "virtual_router_mac_address": {"type": str},
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -46298,6 +48469,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         spanning_tree_root_super: bool
                         """Default value: `False`"""
+                        spanning_tree_mst_pvst_boundary: bool | None
+                        """Enable MST PVST border ports."""
                         virtual_router_mac_address: str | None
                         """Virtual router mac address for anycast gateway."""
                         inband_mgmt_interface: str | None
@@ -46657,6 +48830,7 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
+                                spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -47048,6 +49222,7 @@ class EosDesigns(EosDesignsRootModel):
                                        For `rapid-pvst` the priority can also be
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
+                                    spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
                                        Pointer to interface used for inband management.
@@ -47700,7 +49875,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                        class AllActiveMultihoming(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EvpnEthernetSegment(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                identifier: str
+                                """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                rt_import: str
+                                """Low-order 6 bytes of ES-Import Route Target."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        EvpnEthernetSegment.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                            rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "enable_d_path": {"type": bool, "default": True},
+                                "evpn_domain_id_local": {"type": str},
+                                "evpn_domain_id_remote": {"type": str},
+                                "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                            }
+                            enabled: bool
+                            """Enable Active Active Multihoming resiliency model."""
+                            enable_d_path: bool
+                            """
+                            Enable D-path for use with BGP bestpath selection algorithm.
+
+                            Default value: `True`
+                            """
+                            evpn_domain_id_local: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_domain_id_remote: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_ethernet_segment: EvpnEthernetSegment
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    enable_d_path: bool | UndefinedType = Undefined,
+                                    evpn_domain_id_local: str | UndefinedType = Undefined,
+                                    evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                    evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AllActiveMultihoming.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable Active Active Multihoming resiliency model.
+                                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                        evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_ethernet_segment: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "remote_peers": {"type": RemotePeers},
+                            "evpn_l2": {"type": EvpnL2},
+                            "evpn_l3": {"type": EvpnL3},
+                            "all_active_multihoming": {"type": AllActiveMultihoming},
+                        }
                         remote_peers: RemotePeers
                         """
                         Define remote peers of the EVPN VXLAN Gateway.
@@ -47725,6 +49980,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        all_active_multihoming: AllActiveMultihoming
+                        """
+                        Enable Active Active Multihoming architecture for EVPN Gateways.
+                        Not supported with MLAG or IPVPN
+                        Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -47734,6 +49997,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_peers: RemotePeers | UndefinedType = Undefined,
                                 evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                 evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 EvpnGateway.
@@ -47758,6 +50022,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     evpn_l3:
                                        Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                       Subclass of AvdModel.
+                                    all_active_multihoming:
+                                       Enable Active Active Multihoming architecture for EVPN Gateways.
+                                       Not supported with MLAG or IPVPN
+                                       Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -48628,6 +50898,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RxQueue(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Workers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Workers._item_type = str
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                            count: int | None
+                            """
+                            Number of receive queues.
+                            The maximum value is determined by
+                            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                            `platform` set on this device.
+                            """
+                            workers: Workers
+                            """Subclass of AvdList with `str` items."""
+                            mode: Literal["shared", "exclusive"] | None
+                            """Mode applicable to the workers."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    count: int | None | UndefinedType = Undefined,
+                                    workers: Workers | UndefinedType = Undefined,
+                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RxQueue.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Number of receive queues.
+                                           The maximum value is determined by
+                                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                           `platform` set on this device.
+                                        workers: Subclass of AvdList with `str` items.
+                                        mode: Mode applicable to the workers.
+
+                                    """
+
                         class FlowTracking(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -48676,6 +50993,7 @@ class EosDesigns(EosDesignsRootModel):
                             "wan_circuit_id": {"type": str},
                             "connected_to_pathfinder": {"type": bool, "default": True},
                             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                            "rx_queue": {"type": RxQueue},
                             "raw_eos_cli": {"type": str},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -48821,6 +51139,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        rx_queue: RxQueue
+                        """
+                        Receive queue parameters for platform SFE interface profile.
+                        This setting is ignored unless the
+                        `platform_sfe_interface_profile.supported` is set as `true` under
+                        `platform_settings.feature_support` for the `platform` set on this device.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the interface in the final EOS configuration."""
                         flow_tracking: FlowTracking
@@ -48860,6 +51187,7 @@ class EosDesigns(EosDesignsRootModel):
                                 wan_circuit_id: str | None | UndefinedType = Undefined,
                                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                rx_queue: RxQueue | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -48960,6 +51288,13 @@ class EosDesigns(EosDesignsRootModel):
                                        PREVIEW: This key is in preview mode
 
                                        Subclass of AvdModel.
+                                    rx_queue:
+                                       Receive queue parameters for platform SFE interface profile.
+                                       This setting is ignored unless the
+                                       `platform_sfe_interface_profile.supported` is set as `true` under
+                                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -48981,12 +51316,60 @@ class EosDesigns(EosDesignsRootModel):
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "speed": {"type": str},
+                                "rx_queue": {"type": RxQueue},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
                             name: str
@@ -49013,6 +51396,15 @@ class EosDesigns(EosDesignsRootModel):
                             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                             <interface_speed>`.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -49026,6 +51418,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     speed: str | None | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -49050,6 +51443,13 @@ class EosDesigns(EosDesignsRootModel):
                                         speed:
                                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                            <interface_speed>`.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -49550,6 +51950,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -50104,6 +52505,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -50463,6 +52866,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -50856,6 +53260,7 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -51567,7 +53972,87 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"remote_peers": {"type": RemotePeers}, "evpn_l2": {"type": EvpnL2}, "evpn_l3": {"type": EvpnL3}}
+                        class AllActiveMultihoming(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EvpnEthernetSegment(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"identifier": {"type": str}, "rt_import": {"type": str}}
+                                identifier: str
+                                """EVPN Ethernet Segment Identifier (Type 1 format)"""
+                                rt_import: str
+                                """Low-order 6 bytes of ES-Import Route Target."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, identifier: str | UndefinedType = Undefined, rt_import: str | UndefinedType = Undefined) -> None:
+                                        """
+                                        EvpnEthernetSegment.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            identifier: EVPN Ethernet Segment Identifier (Type 1 format)
+                                            rt_import: Low-order 6 bytes of ES-Import Route Target.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "enabled": {"type": bool},
+                                "enable_d_path": {"type": bool, "default": True},
+                                "evpn_domain_id_local": {"type": str},
+                                "evpn_domain_id_remote": {"type": str},
+                                "evpn_ethernet_segment": {"type": EvpnEthernetSegment},
+                            }
+                            enabled: bool
+                            """Enable Active Active Multihoming resiliency model."""
+                            enable_d_path: bool
+                            """
+                            Enable D-path for use with BGP bestpath selection algorithm.
+
+                            Default value: `True`
+                            """
+                            evpn_domain_id_local: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_domain_id_remote: str
+                            """ASN(asplain):local_admin or ASN(asdot):local_admin notation"""
+                            evpn_ethernet_segment: EvpnEthernetSegment
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    enable_d_path: bool | UndefinedType = Undefined,
+                                    evpn_domain_id_local: str | UndefinedType = Undefined,
+                                    evpn_domain_id_remote: str | UndefinedType = Undefined,
+                                    evpn_ethernet_segment: EvpnEthernetSegment | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    AllActiveMultihoming.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: Enable Active Active Multihoming resiliency model.
+                                        enable_d_path: Enable D-path for use with BGP bestpath selection algorithm.
+                                        evpn_domain_id_local: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_domain_id_remote: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                                        evpn_ethernet_segment: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "remote_peers": {"type": RemotePeers},
+                            "evpn_l2": {"type": EvpnL2},
+                            "evpn_l3": {"type": EvpnL3},
+                            "all_active_multihoming": {"type": AllActiveMultihoming},
+                        }
                         remote_peers: RemotePeers
                         """
                         Define remote peers of the EVPN VXLAN Gateway.
@@ -51592,6 +54077,14 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        all_active_multihoming: AllActiveMultihoming
+                        """
+                        Enable Active Active Multihoming architecture for EVPN Gateways.
+                        Not supported with MLAG or IPVPN
+                        Gateway. Requires EVPN L3 inter-domain to be enabled.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -51601,6 +54094,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_peers: RemotePeers | UndefinedType = Undefined,
                                 evpn_l2: EvpnL2 | UndefinedType = Undefined,
                                 evpn_l3: EvpnL3 | UndefinedType = Undefined,
+                                all_active_multihoming: AllActiveMultihoming | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 EvpnGateway.
@@ -51625,6 +54119,12 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass of AvdModel.
                                     evpn_l3:
                                        Enable EVPN Gateway functionality for route-type 5 (IP-PREFIX).
+
+                                       Subclass of AvdModel.
+                                    all_active_multihoming:
+                                       Enable Active Active Multihoming architecture for EVPN Gateways.
+                                       Not supported with MLAG or IPVPN
+                                       Gateway. Requires EVPN L3 inter-domain to be enabled.
 
                                        Subclass of AvdModel.
 
@@ -52495,6 +54995,53 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class RxQueue(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Workers(AvdList[str]):
+                                """Subclass of AvdList with `str` items."""
+
+                            Workers._item_type = str
+
+                            _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                            count: int | None
+                            """
+                            Number of receive queues.
+                            The maximum value is determined by
+                            `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                            `platform` set on this device.
+                            """
+                            workers: Workers
+                            """Subclass of AvdList with `str` items."""
+                            mode: Literal["shared", "exclusive"] | None
+                            """Mode applicable to the workers."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    count: int | None | UndefinedType = Undefined,
+                                    workers: Workers | UndefinedType = Undefined,
+                                    mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    RxQueue.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        count:
+                                           Number of receive queues.
+                                           The maximum value is determined by
+                                           `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                           `platform` set on this device.
+                                        workers: Subclass of AvdList with `str` items.
+                                        mode: Mode applicable to the workers.
+
+                                    """
+
                         class FlowTracking(AvdModel):
                             """Subclass of AvdModel."""
 
@@ -52543,6 +55090,7 @@ class EosDesigns(EosDesignsRootModel):
                             "wan_circuit_id": {"type": str},
                             "connected_to_pathfinder": {"type": bool, "default": True},
                             "cv_pathfinder_internet_exit": {"type": CvPathfinderInternetExit},
+                            "rx_queue": {"type": RxQueue},
                             "raw_eos_cli": {"type": str},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
@@ -52688,6 +55236,15 @@ class EosDesigns(EosDesignsRootModel):
 
                         Subclass of AvdModel.
                         """
+                        rx_queue: RxQueue
+                        """
+                        Receive queue parameters for platform SFE interface profile.
+                        This setting is ignored unless the
+                        `platform_sfe_interface_profile.supported` is set as `true` under
+                        `platform_settings.feature_support` for the `platform` set on this device.
+
+                        Subclass of AvdModel.
+                        """
                         raw_eos_cli: str | None
                         """EOS CLI rendered directly on the interface in the final EOS configuration."""
                         flow_tracking: FlowTracking
@@ -52727,6 +55284,7 @@ class EosDesigns(EosDesignsRootModel):
                                 wan_circuit_id: str | None | UndefinedType = Undefined,
                                 connected_to_pathfinder: bool | UndefinedType = Undefined,
                                 cv_pathfinder_internet_exit: CvPathfinderInternetExit | UndefinedType = Undefined,
+                                rx_queue: RxQueue | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
@@ -52827,6 +55385,13 @@ class EosDesigns(EosDesignsRootModel):
                                        PREVIEW: This key is in preview mode
 
                                        Subclass of AvdModel.
+                                    rx_queue:
+                                       Receive queue parameters for platform SFE interface profile.
+                                       This setting is ignored unless the
+                                       `platform_sfe_interface_profile.supported` is set as `true` under
+                                       `platform_settings.feature_support` for the `platform` set on this device.
+
+                                       Subclass of AvdModel.
                                     raw_eos_cli: EOS CLI rendered directly on the interface in the final EOS configuration.
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
@@ -52848,12 +55413,60 @@ class EosDesigns(EosDesignsRootModel):
                         class MemberInterfacesItem(AvdModel):
                             """Subclass of AvdModel."""
 
+                            class RxQueue(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                class Workers(AvdList[str]):
+                                    """Subclass of AvdList with `str` items."""
+
+                                Workers._item_type = str
+
+                                _fields: ClassVar[dict] = {"count": {"type": int}, "workers": {"type": Workers}, "mode": {"type": str}}
+                                count: int | None
+                                """
+                                Number of receive queues.
+                                The maximum value is determined by
+                                `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                `platform` set on this device.
+                                """
+                                workers: Workers
+                                """Subclass of AvdList with `str` items."""
+                                mode: Literal["shared", "exclusive"] | None
+                                """Mode applicable to the workers."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        count: int | None | UndefinedType = Undefined,
+                                        workers: Workers | UndefinedType = Undefined,
+                                        mode: Literal["shared", "exclusive"] | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        RxQueue.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            count:
+                                               Number of receive queues.
+                                               The maximum value is determined by
+                                               `platform_sfe_interface_profile.max_rx_queues` under `platform_settings.feature_support` for the
+                                               `platform` set on this device.
+                                            workers: Subclass of AvdList with `str` items.
+                                            mode: Mode applicable to the workers.
+
+                                        """
+
                             _fields: ClassVar[dict] = {
                                 "name": {"type": str},
                                 "description": {"type": str},
                                 "peer": {"type": str},
                                 "peer_interface": {"type": str},
                                 "speed": {"type": str},
+                                "rx_queue": {"type": RxQueue},
                                 "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             }
                             name: str
@@ -52880,6 +55493,15 @@ class EosDesigns(EosDesignsRootModel):
                             Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                             <interface_speed>`.
                             """
+                            rx_queue: RxQueue
+                            """
+                            Receive queue parameters for platform SFE interface profile.
+                            This setting is ignored unless the
+                            `platform_sfe_interface_profile.supported` is set as `true` under
+                            `platform_settings.feature_support` for the `platform` set on this device.
+
+                            Subclass of AvdModel.
+                            """
                             structured_config: EosCliConfigGen.EthernetInterfacesItem
                             """Custom structured config for the member ethernet interface."""
 
@@ -52893,6 +55515,7 @@ class EosDesigns(EosDesignsRootModel):
                                     peer: str | None | UndefinedType = Undefined,
                                     peer_interface: str | None | UndefinedType = Undefined,
                                     speed: str | None | UndefinedType = Undefined,
+                                    rx_queue: RxQueue | UndefinedType = Undefined,
                                     structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -52917,6 +55540,13 @@ class EosDesigns(EosDesignsRootModel):
                                         speed:
                                            Speed should be set in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                            <interface_speed>`.
+                                        rx_queue:
+                                           Receive queue parameters for platform SFE interface profile.
+                                           This setting is ignored unless the
+                                           `platform_sfe_interface_profile.supported` is set as `true` under
+                                           `platform_settings.feature_support` for the `platform` set on this device.
+
+                                           Subclass of AvdModel.
                                         structured_config: Custom structured config for the member ethernet interface.
 
                                     """
@@ -53417,6 +56047,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_mode": {"type": str},
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
+                        "spanning_tree_mst_pvst_boundary": {"type": bool},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -53968,6 +56599,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     spanning_tree_root_super: bool
                     """Default value: `False`"""
+                    spanning_tree_mst_pvst_boundary: bool | None
+                    """Enable MST PVST border ports."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -54327,6 +56960,7 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_mode: Literal["mstp", "rstp", "rapid-pvst", "none"] | None | UndefinedType = Undefined,
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
+                            spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -54718,6 +57352,7 @@ class EosDesigns(EosDesignsRootModel):
                                    For `rapid-pvst` the priority can also be
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
+                                spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -55153,6 +57788,7 @@ class EosDesigns(EosDesignsRootModel):
             "type": InternalVlanOrder,
             "default": lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls),
         },
+        "ipsec_settings": {"type": IpsecSettings},
         "ipv4_acls": {"type": Ipv4Acls},
         "ipv4_prefix_list_catalog": {"type": Ipv4PrefixListCatalog},
         "ipv6_mgmt_destination_networks": {"type": Ipv6MgmtDestinationNetworks},
@@ -55170,7 +57806,7 @@ class EosDesigns(EosDesignsRootModel):
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
         "local_users": {"type": EosCliConfigGen.LocalUsers},
-        "mac_address_table": {"type": MacAddressTable},
+        "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
         "mgmt_gateway": {"type": str},
@@ -55249,7 +57885,12 @@ class EosDesigns(EosDesignsRootModel):
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                     },
-                    {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"},
+                    {
+                        "platforms": ["7280R3"],
+                        "reload_delay": {"mlag": 900, "non_mlag": 1020},
+                        "tcam_profile": "vxlan-routing",
+                        "feature_support": {"evpn_gateway_all_active_multihoming": True},
+                    },
                     {
                         "platforms": ["7500R", "7500R2"],
                         "lag_hardware_only": True,
@@ -55262,6 +57903,7 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
+                        "feature_support": {"evpn_gateway_all_active_multihoming": True},
                     },
                     {
                         "platforms": ["7358X4"],
@@ -55288,6 +57930,7 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "evpn_gateway_all_active_multihoming": True,
                         },
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                     },
@@ -55298,17 +57941,36 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "evpn_gateway_all_active_multihoming": True,
                         },
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                     },
                     {
-                        "platforms": ["AWE-5310", "AWE-5510", "AWE-7250R", "AWE-7230R"],
+                        "platforms": ["CloudEOS"],
+                        "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False},
+                        "p2p_uplinks_mtu": 9194,
+                    },
+                    {
+                        "platforms": ["AWE-5310", "AWE-7230R"],
                         "feature_support": {
                             "bgp_update_wait_for_convergence": True,
                             "bgp_update_wait_install": False,
                             "interface_storm_control": False,
                             "queue_monitor_length_notify": False,
+                            "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6},
+                        },
+                        "management_interface": "Management1/1",
+                        "p2p_uplinks_mtu": 9194,
+                    },
+                    {
+                        "platforms": ["AWE-5510", "AWE-7250R"],
+                        "feature_support": {
+                            "bgp_update_wait_for_convergence": True,
+                            "bgp_update_wait_install": False,
+                            "interface_storm_control": False,
+                            "queue_monitor_length_notify": False,
+                            "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16},
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
@@ -55390,6 +58052,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
         "underlay_ospf_authentication": {"type": UnderlayOspfAuthentication},
         "underlay_ospf_bfd_enable": {"type": bool, "default": False},
+        "underlay_ospf_graceful_restart": {"type": bool, "default": False},
         "underlay_ospf_max_lsa": {"type": int, "default": 12000},
         "underlay_ospf_process_id": {"type": int, "default": 100},
         "underlay_rfc5549": {"type": bool, "default": False},
@@ -55409,6 +58072,7 @@ class EosDesigns(EosDesignsRootModel):
         "wan_route_servers": {"type": WanRouteServers},
         "wan_stun_dtls_disable": {"type": bool, "default": False},
         "wan_stun_dtls_profile_name": {"type": str, "default": "STUN-DTLS"},
+        "wan_use_agent_env_var_for_kernel_software_forwarding_ecmp": {"type": bool, "default": True},
         "wan_use_evpn_node_settings_for_lan": {"type": bool, "default": False},
         "wan_virtual_topologies": {"type": WanVirtualTopologies},
         "zscaler_endpoints": {"type": ZscalerEndpoints},
@@ -56135,6 +58799,12 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `lambda cls: coerce_type({"allocation": "ascending", "range": {"beginning": 1006, "ending": 1199}}, target_type=cls)`
     """
+    ipsec_settings: IpsecSettings
+    """
+    Settings applicable to all IPsec connections.
+
+    Subclass of AvdModel.
+    """
     ipv4_acls: Ipv4Acls
     """
     IPv4 extended access-lists supporting substitution on certain fields.
@@ -56234,14 +58904,7 @@ class EosDesigns(EosDesignsRootModel):
     """
     load_interval: EosCliConfigGen.LoadInterval
     local_users: EosCliConfigGen.LocalUsers
-    mac_address_table: MacAddressTable
-    """
-    MAC address-table aging time.
-    Use to change the EOS default of 300.
-
-
-    Subclass of AvdModel.
-    """
+    mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
     """
     Default is HTTPS management eAPI enabled.
@@ -56713,7 +59376,7 @@ class EosDesigns(EosDesignsRootModel):
     `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["AWE-5310", "AWE-5510", "AWE-7250R", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing"}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072"}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -57038,6 +59701,12 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     underlay_ospf_bfd_enable: bool
     """Default value: `False`"""
+    underlay_ospf_graceful_restart: bool
+    """
+    Enable graceful restart for OSPF underlay.
+
+    Default value: `False`
+    """
     underlay_ospf_max_lsa: int
     """Default value: `12000`"""
     underlay_ospf_process_id: int
@@ -57172,6 +59841,18 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `"STUN-DTLS"`
     """
+    wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool
+    """
+    For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
+    EOS version.
+
+    - `true`: For older EOS versions use an agent environment variable. Changing this
+    requires a restart of the KernelFib agent.
+    - `false`: For newer EOS versions (starting 4.33.2) use
+    the proper CLI.
+
+    Default value: `True`
+    """
     wan_use_evpn_node_settings_for_lan: bool
     """
     PREVIEW: This key is currently not supported and may produce invalid configuration.
@@ -57287,6 +59968,7 @@ class EosDesigns(EosDesignsRootModel):
             hardware_counters: EosCliConfigGen.HardwareCounters | UndefinedType = Undefined,
             inband_ztp_bootstrap_file: str | None | UndefinedType = Undefined,
             internal_vlan_order: InternalVlanOrder | UndefinedType = Undefined,
+            ipsec_settings: IpsecSettings | UndefinedType = Undefined,
             ipv4_acls: Ipv4Acls | UndefinedType = Undefined,
             ipv4_prefix_list_catalog: Ipv4PrefixListCatalog | UndefinedType = Undefined,
             ipv6_mgmt_destination_networks: Ipv6MgmtDestinationNetworks | UndefinedType = Undefined,
@@ -57304,7 +59986,7 @@ class EosDesigns(EosDesignsRootModel):
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
             local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
-            mac_address_table: MacAddressTable | UndefinedType = Undefined,
+            mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
             mgmt_gateway: str | None | UndefinedType = Undefined,
@@ -57384,6 +60066,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_ospf_area: str | UndefinedType = Undefined,
             underlay_ospf_authentication: UnderlayOspfAuthentication | UndefinedType = Undefined,
             underlay_ospf_bfd_enable: bool | UndefinedType = Undefined,
+            underlay_ospf_graceful_restart: bool | UndefinedType = Undefined,
             underlay_ospf_max_lsa: int | UndefinedType = Undefined,
             underlay_ospf_process_id: int | UndefinedType = Undefined,
             underlay_rfc5549: bool | UndefinedType = Undefined,
@@ -57405,6 +60088,7 @@ class EosDesigns(EosDesignsRootModel):
             wan_route_servers: WanRouteServers | UndefinedType = Undefined,
             wan_stun_dtls_disable: bool | UndefinedType = Undefined,
             wan_stun_dtls_profile_name: str | UndefinedType = Undefined,
+            wan_use_agent_env_var_for_kernel_software_forwarding_ecmp: bool | UndefinedType = Undefined,
             wan_use_evpn_node_settings_for_lan: bool | UndefinedType = Undefined,
             wan_virtual_topologies: WanVirtualTopologies | UndefinedType = Undefined,
             zscaler_endpoints: ZscalerEndpoints | UndefinedType = Undefined,
@@ -57415,7 +60099,7 @@ class EosDesigns(EosDesignsRootModel):
             EosDesigns.
 
 
-            Subclass of AvdModel.
+            Subclass of EosDesignsRootModel.
 
             Args:
                 application_classification: Application traffic recognition configuration.
@@ -57940,6 +60624,10 @@ class EosDesigns(EosDesignsRootModel):
                    Internal vlan allocation order and range.
 
                    Subclass of AvdModel.
+                ipsec_settings:
+                   Settings applicable to all IPsec connections.
+
+                   Subclass of AvdModel.
                 ipv4_acls:
                    IPv4 extended access-lists supporting substitution on certain fields.
                    These access-lists can be
@@ -58003,12 +60691,7 @@ class EosDesigns(EosDesignsRootModel):
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
                 local_users: local_users
-                mac_address_table:
-                   MAC address-table aging time.
-                   Use to change the EOS default of 300.
-
-
-                   Subclass of AvdModel.
+                mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
                    The VRF is set to < mgmt_interface_vrf >.
@@ -58585,6 +61268,7 @@ class EosDesigns(EosDesignsRootModel):
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable
+                underlay_ospf_graceful_restart: Enable graceful restart for OSPF underlay.
                 underlay_ospf_max_lsa: underlay_ospf_max_lsa
                 underlay_ospf_process_id: underlay_ospf_process_id
                 underlay_rfc5549:
@@ -58667,6 +61351,14 @@ class EosDesigns(EosDesignsRootModel):
                    Name of the SSL profile used for DTLS on WAN STUN connections.
                    When using automatic ceritficate
                    deployment via CloudVision this name must be the same on all WAN routers.
+                wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
+                   For EOS kernel forwarding, ECMP programming can be enabled in two different ways depending on the
+                   EOS version.
+
+                   - `true`: For older EOS versions use an agent environment variable. Changing this
+                   requires a restart of the KernelFib agent.
+                   - `false`: For newer EOS versions (starting 4.33.2) use
+                   the proper CLI.
                 wan_use_evpn_node_settings_for_lan:
                    PREVIEW: This key is currently not supported and may produce invalid configuration.
                    When true,

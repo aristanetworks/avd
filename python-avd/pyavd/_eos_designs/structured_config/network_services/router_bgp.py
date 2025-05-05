@@ -220,10 +220,10 @@ class RouterBgpMixin(Protocol):
 
                 if vrf.name == "default":
                     # VRF default is added directly under router_bgp
-                    bgp_vrf = cast(EosCliConfigGen.RouterBgp, bgp_vrf)
+                    bgp_vrf = cast("EosCliConfigGen.RouterBgp", bgp_vrf)
                     self.structured_config.router_bgp._deepmerge(bgp_vrf)
                 else:
-                    bgp_vrf = cast(EosCliConfigGen.RouterBgp.VrfsItem, bgp_vrf)
+                    bgp_vrf = cast("EosCliConfigGen.RouterBgp.VrfsItem", bgp_vrf)
                     bgp_vrf.name = vrf.name
                     self.structured_config.router_bgp.vrfs.append(bgp_vrf)
 

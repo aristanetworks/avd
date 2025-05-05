@@ -18,6 +18,7 @@ port_channel_interfaces:
       trunk:
         allowed_vlan: 110,201
     mlag: 5
+    ntp_serve: true
     storm_control:
       broadcast:
         level: 1
@@ -87,6 +88,7 @@ port_channel_interfaces:
         allowed_vlan: 110,201
         private_vlan_secondary: false
     mlag: 15
+    ntp_serve: false
     spanning_tree_guard: loop
     # Test isis authentication both md5 rx
     isis_authentication:

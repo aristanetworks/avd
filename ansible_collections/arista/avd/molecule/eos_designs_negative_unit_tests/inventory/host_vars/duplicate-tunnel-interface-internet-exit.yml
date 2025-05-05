@@ -99,13 +99,13 @@ wan_virtual_topologies:
       application_virtual_topologies:
         - application_profile: TEST
           path_groups:
-            - names: [ INET ]
+            - names: [INET]
           internet_exit:
             policy: ZSCALER-EXIT-POLICY-1
           id: 42
         - application_profile: TEST2
           path_groups:
-            - names: [ INET ]
+            - names: [INET]
           internet_exit:
             policy: ZSCALER-EXIT-POLICY-2
           id: 43

@@ -8,11 +8,9 @@ name: Analysis with Sonarlint and publish to SonarCloud
 jobs:
   sonarcloud:
     name: Run Sonarlint analysis and upload to SonarCloud.
-    if: github.repository == 'aristanetworks/avd'
+    if: github.repository == 'aristanetworks/avd' && github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          echo '${{ toJson(github.event.workflow_run) }}'
       - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
@@ -63,7 +61,7 @@ jobs:
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
           merge-multiple: true
 
-      - name: 'Get PR context'
+      - name: Get PR context
         # Source: https://github.com/orgs/community/discussions/25220#discussioncomment-11316244
         id: pr-context
         if: github.event.workflow_run.event == 'pull_request'
@@ -87,7 +85,7 @@ jobs:
           echo "pr_branch=${PR_BRANCH}" >> "${GITHUB_OUTPUT}"
 
       - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v5.0.0
+        uses: SonarSource/sonarqube-scan-action@v5.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}

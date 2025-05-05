@@ -1197,7 +1197,7 @@
     "categories": [
       "services"
     ],
-    "description": "Verifies the errdisable recovery reason, status, and interval."
+    "description": "Verifies the error disable recovery functionality."
   },
   {
     "name": "dc2-leaf2b",

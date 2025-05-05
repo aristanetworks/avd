@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
@@ -16,7 +16,7 @@ from pyavd.j2filters import range_expand
 if TYPE_CHECKING:
     from typing import Literal
 
-    from pyavd._eos_designs.eos_designs_facts import EosDesignsFacts
+    from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
     from pyavd._eos_designs.schema import EosDesigns
     from pyavd._eos_designs.structured_config.structured_config_generator import StructCfgs
 
@@ -96,28 +96,25 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer_ip(self: SharedUtilsProtocol) -> str:
-        return self.get_mlag_peer_fact("mlag_ip")
+        return self.mlag_peer_facts.mlag_ip
 
     @cached_property
     def mlag_peer_l3_ip(self: SharedUtilsProtocol) -> str | None:
         if self.mlag_peer_l3_vlan is not None:
-            return self.get_mlag_peer_fact("mlag_l3_ip")
+            return self.mlag_peer_facts.mlag_l3_ip
         return None
 
     @cached_property
     def mlag_peer_id(self: SharedUtilsProtocol) -> int:
-        return self.get_mlag_peer_fact("id")
-
-    def get_mlag_peer_fact(self: SharedUtilsProtocol, key: str, required: bool = True) -> Any:
-        return get(self.mlag_peer_facts, key, required=required, org_key=f"avd_switch_facts.({self.mlag_peer}).switch.{key}")
+        return self.mlag_peer_facts.id
 
     @cached_property
-    def mlag_peer_facts(self: SharedUtilsProtocol) -> EosDesignsFacts | dict:
-        return self.get_peer_facts(self.mlag_peer, required=True)
+    def mlag_peer_facts(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol:
+        return self.get_peer_facts(self.mlag_peer)
 
     @cached_property
     def mlag_peer_mgmt_ip(self: SharedUtilsProtocol) -> str | None:
-        if (mlag_peer_mgmt_ip := self.get_mlag_peer_fact("mgmt_ip", required=False)) is None:
+        if (mlag_peer_mgmt_ip := self.mlag_peer_facts.mgmt_ip) is None:
             return None
 
         return get_ip_from_ip_prefix(mlag_peer_mgmt_ip)
@@ -171,11 +168,11 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer_port_channel_id(self: SharedUtilsProtocol) -> int:
-        return get(self.mlag_peer_facts, "mlag_port_channel_id", default=self.mlag_port_channel_id)
+        return self.mlag_peer_facts.mlag_port_channel_id or self.mlag_port_channel_id
 
     @cached_property
     def mlag_peer_interfaces(self: SharedUtilsProtocol) -> list:
-        return get(self.mlag_peer_facts, "mlag_interfaces", default=self.mlag_interfaces)
+        return list(self.mlag_peer_facts.mlag_interfaces) or self.mlag_interfaces
 
     @cached_property
     def mlag_ibgp_ip(self: SharedUtilsProtocol) -> str:

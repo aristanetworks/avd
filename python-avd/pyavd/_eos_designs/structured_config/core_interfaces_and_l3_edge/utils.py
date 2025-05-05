@@ -7,18 +7,19 @@ import re
 from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
-from typing import TYPE_CHECKING, Protocol, TypeVar
+from typing import TYPE_CHECKING, Literal, Protocol, TypeVar
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import default, get_ip_from_pool
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils import Undefined, default, get_ip_from_pool
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
 
 T_P2pLinksItem = TypeVar("T_P2pLinksItem", EosDesigns.CoreInterfaces.P2pLinksItem, EosDesigns.L3Edge.P2pLinksItem)
 T_P2pLinksProfiles = TypeVar("T_P2pLinksProfiles", EosDesigns.CoreInterfaces.P2pLinksProfiles, EosDesigns.L3Edge.P2pLinksProfiles)
+T_Ptp = TypeVar("T_Ptp", EosCliConfigGen.EthernetInterfacesItem.Ptp, EosCliConfigGen.PortChannelInterfacesItem.Ptp)
 
 
 class UtilsMixin(Protocol):
@@ -27,10 +28,6 @@ class UtilsMixin(Protocol):
 
     Class should only be used as Mixin to a AvdStructuredConfig class.
     """
-
-    @cached_property
-    def _p2p_links_sflow(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol) -> bool | None:
-        return self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge
 
     @cached_property
     def _filtered_p2p_links(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol) -> list[tuple[T_P2pLinksItem, dict]]:
@@ -113,23 +110,31 @@ class UtilsMixin(Protocol):
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
-        peer_type = "other" if peer_facts is None else peer_facts.get("type", "other")
+        peer_type = "other" if peer_facts is None else peer_facts.type
 
         # Set ip or fallback to list with None values
-        ip = p2p_link.ip or [None, None]
+        ips = p2p_link.ip or [None, None]
         # Set bgp_as or fallback to list with None values
         bgp_as = p2p_link.field_as or [None, None]
         # Set descriptions or fallback to list with None values
         descriptions = p2p_link.descriptions or [None, None]
 
+        try:
+            ip = ips[index]
+            peer_ip = ips[peer_index]
+            description = descriptions[index]
+        except IndexError as exc:
+            msg = "p2p_links model is intended to work for only two devices per entry."
+            raise AristaAvdError(msg) from exc
+
         data = {
             "peer": peer,
             "peer_type": peer_type,
-            "ip": ip[index],
-            "peer_ip": ip[peer_index],
+            "ip": ip,
+            "peer_ip": peer_ip,
             "bgp_as": str(bgp_as[index]) if index < len(bgp_as) and bgp_as[index] else None,
             "peer_bgp_as": str(bgp_as[peer_index]) if peer_index < len(bgp_as) and bgp_as[peer_index] else None,
-            "description": descriptions[index],
+            "description": description,
         }
 
         if (
@@ -138,8 +143,7 @@ class UtilsMixin(Protocol):
         ):
             node_data = p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.hostname]
             # Port-channel
-            default_channel_id = int("".join(re.findall(r"\d", node_data.interfaces[0])))
-            portchannel_id = node_data.channel_id or default_channel_id
+            portchannel_id = self._get_channel_id(p2p_link, node_data)
 
             if peer not in p2p_link.port_channel.nodes_child_interfaces:
                 msg = f"{peer} under {self.data_model}.p2p_links.[].port_channel.nodes_child_interfaces"
@@ -184,25 +188,66 @@ class UtilsMixin(Protocol):
         msg = f"{self.data_model}.p2p_links must have either 'interfaces' or 'port_channel' with correct members set."
         raise AristaAvdInvalidInputsError(msg)
 
-    def _get_common_interface_cfg(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, p2p_link_data: dict) -> dict:
+    def _get_ptp_config_interface(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, output_type: type[T_Ptp]) -> T_Ptp:
         """
-        Return partial structured_config for one p2p_link.
+        Return ptp config for one p2p_link.
 
         Covers common config that is applicable to both port-channels and ethernet interfaces.
         This config will only be used on the main interface - so not port-channel members.
         """
-        index = p2p_link.nodes.index(self.shared_utils.hostname)
-        interface_cfg = {
-            "name": p2p_link_data["interface"],
-            "peer": p2p_link_data["peer"],
-            "peer_interface": p2p_link_data["peer_interface"],
-            "peer_type": p2p_link_data["peer_type"],
-            "switchport": {"enabled": False},
-            "shutdown": False,
-            "mtu": p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
-            "service_profile": p2p_link._get("qos_profile", self.inputs.p2p_uplinks_qos_profile),
-            "eos_cli": p2p_link.raw_eos_cli,
-        }
+        ptp_config = output_type()
+
+        # Early return if PTP is not enabled
+        if not p2p_link.ptp.enabled:
+            return ptp_config
+
+        if self.shared_utils.ptp_enabled:
+            # Apply PTP profile config from node settings when profile is not defined on p2p_link
+            if not p2p_link.ptp.profile:
+                ptp_config = self.shared_utils.ptp_profile._cast_as(output_type, ignore_extra_keys=True)
+
+            # Apply PTP profile defined for the p2p_link
+            elif p2p_link.ptp.profile not in self.inputs.ptp_profiles:
+                msg = f"PTP Profile '{p2p_link.ptp.profile}' referenced under {self.data_model}.p2p_links does not exist in `ptp_profiles`."
+                raise AristaAvdInvalidInputsError(msg)
+
+            else:
+                ptp_profile_config = self.inputs.ptp_profiles[p2p_link.ptp.profile]
+                if hasattr(ptp_profile_config, "profile"):
+                    delattr(ptp_profile_config, "profile")
+                ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
+
+        node_index = p2p_link.nodes._as_list().index(self.shared_utils.hostname)  # TODO: Implement .index() method on AvdList and AvdIndexedList class.
+        if len(p2p_link.ptp.roles) > node_index and p2p_link.ptp.roles[node_index] == "master":
+            ptp_config.role = "master"
+
+        ptp_config.enable = True
+
+        return ptp_config
+
+    def _update_common_interface_cfg(
+        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
+        p2p_link: T_P2pLinksItem,
+        p2p_link_data: dict,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem,
+    ) -> None:
+        """
+        Update the partial structured_config for one p2p_link under ethernet or port-channel interface.
+
+        Covers common config that is applicable to both port-channels and ethernet interfaces.
+        This config will only be used on the main interface - so not port-channel members.
+        """
+        interface._update(
+            name=p2p_link_data["interface"],
+            peer=p2p_link_data["peer"],
+            peer_interface=p2p_link_data["peer_interface"],
+            peer_type=p2p_link_data["peer_type"],
+            shutdown=False,
+            mtu=p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+            service_profile=p2p_link._get("qos_profile", self.inputs.p2p_uplinks_qos_profile),
+            eos_cli=p2p_link.raw_eos_cli,
+        )
+        interface.switchport.enabled = False
 
         if p2p_link.structured_config:
             if str(interface_name := p2p_link_data["interface"]).lower().startswith("p"):
@@ -218,112 +263,62 @@ class UtilsMixin(Protocol):
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
 
-        if p2p_link.ip:
-            interface_cfg["ip_address"] = p2p_link.ip[index]
-
-        if p2p_link.ptp.enabled:
-            ptp_config = {}
-
-            if self.shared_utils.ptp_enabled:
-                # Apply PTP profile config from node settings when profile is not defined on p2p_link
-                if not p2p_link.ptp.profile:
-                    ptp_config.update(self.shared_utils.ptp_profile._as_dict(include_default_values=True))
-
-                # Apply PTP profile defined for the p2p_link
-                elif p2p_link.ptp.profile not in self.inputs.ptp_profiles:
-                    msg = f"PTP Profile '{p2p_link.ptp.profile}' referenced under {self.data_model}.p2p_links does not exist in `ptp_profiles`."
-                    raise AristaAvdInvalidInputsError(msg)
-
-                else:
-                    ptp_config.update(self.inputs.ptp_profiles[p2p_link.ptp.profile]._as_dict(include_default_values=True))
-
-            node_index = p2p_link.nodes._as_list().index(self.shared_utils.hostname)  # TODO: Implement .index() method on AvdList and AvdIndexedList class.
-            if len(p2p_link.ptp.roles) > node_index and p2p_link.ptp.roles[node_index] == "master":
-                ptp_config["role"] = "master"
-
-            ptp_config["enable"] = True
-            ptp_config.pop("profile", None)
-
-            interface_cfg["ptp"] = ptp_config
+        if p2p_link_data["ip"]:
+            interface.ip_address = p2p_link_data["ip"]
 
         if p2p_link.include_in_underlay_protocol:
             if p2p_link.underlay_multicast and self.shared_utils.underlay_multicast:
-                interface_cfg["pim"] = {"ipv4": {"sparse_mode": True}}
+                interface.pim.ipv4.sparse_mode = True
 
             if (self.inputs.underlay_rfc5549 and p2p_link.routing_protocol != "ebgp") or p2p_link.ipv6_enable is True:
-                interface_cfg["ipv6_enable"] = True
+                interface.ipv6_enable = True
 
             if self.shared_utils.underlay_ospf:
-                interface_cfg.update(
-                    {
-                        "ospf_network_point_to_point": True,
-                        "ospf_area": self.inputs.underlay_ospf_area,
-                    },
-                )
+                interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
 
             if self.shared_utils.underlay_isis:
-                interface_cfg.update(
-                    {
-                        "isis_enable": self.shared_utils.isis_instance_name,
-                        "isis_bfd": self.inputs.underlay_isis_bfd or None,
-                        "isis_metric": default(p2p_link.isis_metric, self.inputs.isis_default_metric),
-                        "isis_network_point_to_point": p2p_link.isis_network_type == "point-to-point",
-                        "isis_hello_padding": p2p_link.isis_hello_padding,
-                        "isis_circuit_type": default(p2p_link.isis_circuit_type, self.inputs.isis_default_circuit_type),
-                    },
+                interface._update(
+                    isis_enable=self.shared_utils.isis_instance_name,
+                    isis_bfd=self.inputs.underlay_isis_bfd or None,
+                    isis_metric=default(p2p_link.isis_metric, self.inputs.isis_default_metric),
+                    isis_network_point_to_point=p2p_link.isis_network_type == "point-to-point",
+                    isis_hello_padding=p2p_link.isis_hello_padding,
                 )
-                if isis_authentication_mode := default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode):
-                    interface_cfg.setdefault("isis_authentication", {}).setdefault("both", {})["mode"] = isis_authentication_mode
+                isis_circuit_type: Literal["level-1", "level-2", "level-1-2"] = default(p2p_link.isis_circuit_type, self.inputs.isis_default_circuit_type)
+                interface.isis_circuit_type = isis_circuit_type
 
-                if (isis_authentication_key := default(p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key)) is not None:
-                    interface_cfg.setdefault("isis_authentication", {}).setdefault("both", {}).update(
-                        {
-                            "key": isis_authentication_key,
-                            "key_type": "7",
-                        }
-                    )
+                mode: Literal["md5", "text"] | None = default(p2p_link.isis_authentication_mode, self.inputs.underlay_isis_authentication_mode)
+                interface.isis_authentication.both.mode = mode
+
+                if isis_authentication_key := default(p2p_link.isis_authentication_key, self.inputs.underlay_isis_authentication_key):
+                    interface.isis_authentication.both._update(key=isis_authentication_key, key_type="7")
 
         if p2p_link.macsec_profile:
-            interface_cfg["mac_security"] = {"profile": p2p_link.macsec_profile}
+            interface.mac_security.profile = p2p_link.macsec_profile
 
-        if (p2p_link_sflow := default(p2p_link.sflow, self._p2p_links_sflow)) is not None:
-            interface_cfg["sflow"] = {"enable": p2p_link_sflow}
+        if p2p_link.sflow is not None:
+            interface.sflow.enable = p2p_link.sflow
+        elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
+            interface.sflow.enable = p2p_link_sflow
 
-        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link.flow_tracking)) is not None:
-            interface_cfg["flow_tracker"] = p2p_link_flow_tracking
+        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
+            interface.flow_tracker = p2p_link_flow_tracking
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003
-            interface_cfg["mpls"] = {"ip": True}
+            interface.mpls.ip = True
             if p2p_link.include_in_underlay_protocol is True and self.shared_utils.underlay_ldp and default(p2p_link.mpls_ldp, True):  # noqa: FBT003
-                interface_cfg["mpls"]["ldp"] = {"interface": True, "igp_sync": True}
+                interface.mpls.ldp.interface = True
+                interface.mpls.ldp.igp_sync = True
 
-        return interface_cfg
+    def _get_channel_id(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, node_data: dict) -> int:
+        """Returns a channel ID for one p2p_link."""
+        if node_data.channel_id:
+            return node_data.channel_id
+        if p2p_link.port_channel.channel_id_algorithm == "p2p_link_id":
+            if not p2p_link.id:
+                msg = f"'id' is not set for p2p link on {self.shared_utils.hostname} but the selected 'channel_id_algorithm' is 'p2p_link_id'."
+                raise AristaAvdInvalidInputsError(msg)
+            return p2p_link.id + p2p_link.port_channel._get("channel_id_offset", 0)
 
-    def _get_ethernet_cfg(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem) -> dict:
-        """
-        Return partial structured_config for one p2p_link.
-
-        Covers config that is only applicable to ethernet interfaces.
-        This config will only be used on both main interfaces and port-channel members.
-        """
-        return {"speed": p2p_link.speed}
-
-    def _get_port_channel_member_cfg(
-        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, p2p_link_data: dict, member: dict
-    ) -> dict:
-        """
-        Return partial structured_config for one p2p_link.
-
-        Covers config for ethernet interfaces that are port-channel members.
-        """
-        return {
-            "name": member["interface"],
-            "peer": p2p_link_data["peer"],
-            "peer_interface": member["peer_interface"],
-            "peer_type": p2p_link_data["peer_type"],
-            "shutdown": False,
-            "channel_group": {
-                "id": p2p_link_data["port_channel_id"],
-                "mode": p2p_link.port_channel.mode,
-            },
-        }
+        # channel_id_algorithm "first_port"
+        return int("".join(re.findall(r"\d", node_data.interfaces[0])))

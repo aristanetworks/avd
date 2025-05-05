@@ -38,6 +38,9 @@ interface {{ loopback_interface.name }}
 {%     elif loopback_interface.mpls.ldp.interface is arista.avd.defined(false) %}
    no mpls ldp interface
 {%     endif %}
+{%     if loopback_interface.hardware_forwarding_id is arista.avd.defined(true) %}
+   hardware forwarding id
+{%     endif %}
 {%     if loopback_interface.ospf_area is arista.avd.defined %}
    ip ospf area {{ loopback_interface.ospf_area }}
 {%     endif %}

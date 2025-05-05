@@ -7,3 +7,4 @@ switchport_default:
     cos: 0
     trunk: tagged
     vlan: 69
+    access_list_bypass: true

@@ -60,6 +60,13 @@ router_bgp:
       peer_filter: my-peer-filter
       remote_as: 65444
   peer_groups:
+    - name: NHP
+      next_hop_peer: true
+      bfd: true
+      bfd_timers:
+        interval: 500
+        min_rx: 500
+        multiplier: 3
     - name: SR-TE-PG-1
       remote_as: 65000
     - name: SR-TE-PG-2
@@ -479,6 +486,8 @@ router_bgp:
       - name: TEST_RCF
         rcf_in: Address_Family_IPV4_In()
         rcf_out: Address_Family_IPV4_Out()
+      - name: NHP
+        activate: true
       - name: EVPN-OVERLAY-PEERS
         activate: false
       - name: IPv4-UNDERLAY-PEERS
@@ -534,10 +543,17 @@ router_bgp:
           send: limit
           send_limit: 20
           prefix_list: PL1
+        next_hop:
+          address_family_ipv6:
+            enabled: true
+            originate: true
       - ip_address: 10.2.3.8
         rcf_in: Address_Family_IPV4_In()
         additional_paths:
           send: disabled
+        next_hop:
+          address_family_ipv6:
+            enabled: false
       - ip_address: 10.2.3.9
         rcf_out: Address_Family_IPV4_Out()
         additional_paths:
@@ -546,6 +562,9 @@ router_bgp:
         default_originate:
           always: true
           route_map: Address_Family_IPV4
+        next_hop:
+          address_family_ipv6:
+            enabled: true
       - ip_address: 192.168.66.21
         activate: false
         additional_paths:
@@ -1218,6 +1237,7 @@ router_bgp:
       remote_as: 1
       shutdown: false
       description: TEST
+      next_hop_peer: true
     - ip_address: 192.168.251.1
       shutdown: true
     - ip_address: 192.168.251.2
@@ -1381,7 +1401,6 @@ router_bgp:
     - name: ST2
       recovery_delay: 42
   vlan_aware_bundles:
-## Tenant_A ##
     - name: TENANT_A_PROJECT01
       rd: "192.168.255.3:11"
       description: TENANT_A_PROJECT01
@@ -1414,7 +1433,6 @@ router_bgp:
       redistribute_routes:
         - learned
       vlan: 112
-## Tenant_B ##
     - name: B-ELAN-201
       tenant: Tenant_B
       rd: "192.168.255.3:20201"
@@ -1861,6 +1879,14 @@ router_bgp:
         dynamic:
           enabled: true
           rcf: VRF_RCF_DYNAMIC()
+    - name: NHP-PEER
+      neighbors:
+        - ip_address: 10.10.10.0
+          peer_group: NHP
+    - name: NHP-PEER1
+      neighbors:
+        - ip_address: 11.11.11.0
+          next_hop_peer: true
     - name: BLUE-C1
       rd: 1.0.1.1:101
       bgp:
@@ -1977,7 +2003,6 @@ router_bgp:
           peer_group: OBS_WAN
           remove_private_as_ingress:
             enabled: false
-## Tenant_A ##
     - name: Tenant_A
       rd: "10.50.64.15:30001"
       route_targets:
@@ -2131,6 +2156,10 @@ router_bgp:
     - name: TENANT_A_PROJECT02
       router_id: 192.168.255.3
       timers: 5 15
+      graceful_restart:
+        enabled: true
+        restart_time: 120
+        stalepath_time: 120
       rd: "192.168.255.3:12"
       route_targets:
         import:

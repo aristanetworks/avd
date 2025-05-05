@@ -431,11 +431,11 @@
 {%                     set description = ethernet_interface.description | arista.avd.default("-") %}
 {%                     set channel_group = ethernet_interface.channel_group.id | arista.avd.default("-") %}
 {%                     set ip_address = port_channel_interface.ip_address | arista.avd.default("-") %}
-{%                     set vrf = port_channel_interface.vrf | arista.avd.default("*default") %}
-{%                     set mtu = port_channel_interface.mtu | arista.avd.default("*-") %}
-{%                     set shutdown = port_channel_interface.shutdown | arista.avd.default("*-") %}
-{%                     set acl_in = port_channel_interface.access_group_in | arista.avd.default("*-") %}
-{%                     set acl_out = port_channel_interface.access_group_out | arista.avd.default("*-") %}
+{%                     set vrf = port_channel_interface.vrf | arista.avd.default("default") %}
+{%                     set mtu = port_channel_interface.mtu | arista.avd.default("-") %}
+{%                     set shutdown = port_channel_interface.shutdown | arista.avd.default("-") %}
+{%                     set acl_in = port_channel_interface.access_group_in | arista.avd.default("-") %}
+{%                     set acl_out = port_channel_interface.access_group_out | arista.avd.default("-") %}
 | {{ ethernet_interface.name }} | {{ description }} | {{ channel_group }} | *{{ ip_address }} | *{{ vrf }} | *{{ mtu }} | *{{ shutdown }} | *{{ acl_in }} | *{{ acl_out }} |
 {%                 endif %}
 {%             else %}

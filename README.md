@@ -4,18 +4,23 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# Arista Validated Designs
+# Arista AVD - Architect, Validate, Deploy
 
 ![Arista AVD](https://img.shields.io/badge/Arista-AVD%20Automation-blue) ![collection version](https://img.shields.io/github/v/release/aristanetworks/avd) ![License](https://img.shields.io/github/license/aristanetworks/avd)
 
-<center><img src="ansible_collections/arista/avd/media/avd-logo.png" alt="Arista AVD Overview" width="800"/></center>
+<img src="docs/_media/avd-logo.png" alt="Arista AVD" width="150"/>
 
-Arista Validated Designs (AVD) is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
+Arista AVD is an extensible data model that defines Arista's Unified Cloud Network architecture as "code".
 
 AVD Documentation:
 
 - [Stable version](https://avd.arista.com/stable/)
 - [Development version](https://avd.arista.com/devel/)
+
+## Support
+
+- AVD is an open-source project maintained by a dedicated Arista engineering team. Customers can purchase TAC support for AVD through the [A-Care Service contract](./docs/support/support_overview.md). TAC support for AVD must be purchased separately.
+- Without a support contract AVD code can be used as-is, without any warranty and with best-effort problem resolution via [GitHub discussions board](https://github.com/aristanetworks/avd/discussions).
 
 ## Features
 
@@ -34,7 +39,7 @@ AVD Documentation:
 ### Examples
 
 - [Getting started](https://avd.arista.com/stable/docs/getting-started/intro-to-ansible-and-avd.html)
-- [Examples](https://avd.arista.com/stable/examples/single-dc-l3ls/index.html)
+- [Examples](https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls/index.html)
 
 ## Additional resources
 
@@ -43,14 +48,9 @@ AVD Documentation:
 - [CloudVision Portal](https://www.arista.com/en/products/eos/eos-cloudvision)
 - [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides)
 
-## Support
-
-- AVD version 4.x releases with full support from Arista TAC. If your organization has the [A-Care subscription](https://www.arista.com/assets/data/pdf/AVD-A-Care-TAC-Support-Overview.pdf) please don't hesitate to contact TAC with any questions or issues.
-- Community support is provided via [Github discussions board](https://github.com/aristanetworks/avd/discussions).
-
 ## Contributing
 
-Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](ansible_collections/arista/avd/docs/contribution/overview.md) for additional details.
+Contributing pull requests are gladly welcomed for this repository. If you are planning a big change, please start a discussion first to make sure we'll be able to merge it. Please see the [contribution guide](docs/contribution/overview.md) for additional details.
 
 You can also open an [issue](https://github.com/aristanetworks/avd/issues) to report any problems or submit enhancements.
 

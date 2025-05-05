@@ -77,8 +77,8 @@ class Pool(Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
 
     def _next_available(self) -> T_ValueType:
         if self.collection.value_type is int:
-            collection = cast(PoolCollection[T_PoolKeyType, T_AssignmentKeyType, int], self.collection)
-            assignments = cast(dict[T_AssignmentKeyType, PoolAssignment[T_AssignmentKeyType, int]], self.assignments)
+            collection = cast("PoolCollection[T_PoolKeyType, T_AssignmentKeyType, int]", self.collection)
+            assignments = cast("dict[T_AssignmentKeyType, PoolAssignment[T_AssignmentKeyType, int]]", self.assignments)
             existing_ids = {assignment.value for assignment in assignments.values()}
             # Create a filterfalse generator from a range starting from the min_value, excluding the values that are already assigned.
             # Nothing will be iterated at this point, but the next(iter()) below will ask the generator for the first item.
@@ -90,7 +90,7 @@ class Pool(Generic[T_PoolKeyType, T_AssignmentKeyType, T_ValueType]):
                     f"and range {collection.min_value}-{collection.max_value}."
                 )
                 raise ValueError(msg)
-            return cast(T_ValueType, next_available)
+            return cast("T_ValueType", next_available)
 
         msg = f"Currently we only support pools of Integers. Got {self.collection.value_type}."
         raise NotImplementedError(msg)

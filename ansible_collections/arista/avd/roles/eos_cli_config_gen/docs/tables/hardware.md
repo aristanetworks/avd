@@ -10,6 +10,7 @@
     | [<samp>hardware</samp>](## "hardware") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;access_list</samp>](## "hardware.access_list") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mechanism</samp>](## "hardware.access_list.mechanism") | String |  |  | Valid Values:<br>- <code>algomatch</code><br>- <code>none</code><br>- <code>tcam</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;update_default_result_permit</samp>](## "hardware.access_list.update_default_result_permit") | Boolean |  |  |  | Accept the packets when access-list is being updated. |
     | [<samp>&nbsp;&nbsp;speed_groups</samp>](## "hardware.speed_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;speed_group</samp>](## "hardware.speed_groups.[].speed_group") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;serdes</samp>](## "hardware.speed_groups.[].serdes") | String |  |  |  | Serdes speed like "10g" or "25g". |
@@ -23,6 +24,9 @@
     hardware:
       access_list:
         mechanism: <str; "algomatch" | "none" | "tcam">
+
+        # Accept the packets when access-list is being updated.
+        update_default_result_permit: <bool>
       speed_groups:
         - speed_group: <str; required; unique>
 

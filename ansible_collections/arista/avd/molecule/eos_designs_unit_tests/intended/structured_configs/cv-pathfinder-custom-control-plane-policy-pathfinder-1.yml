@@ -22,17 +22,19 @@ application_traffic_recognition:
       - '666'
       - '777'
     ipv4_prefixes:
+    - name: PFX-LOCAL-VTEP-IP
+      prefix_values:
+      - 192.168.144.1/32
     - name: CUSTOM-SRC-PREFIX-1
       prefix_values:
       - 42.42.42.0/24
     - name: CUSTOM-DEST-PREFIX-1
       prefix_values:
       - 6.6.6.0/24
-    - name: PFX-LOCAL-VTEP-IP
-      prefix_values:
-      - 192.168.144.1/32
   applications:
     ipv4_applications:
+    - name: APP-CONTROL-PLANE
+      src_prefix_set_name: PFX-LOCAL-VTEP-IP
     - name: CUSTOM-APPLICATION-1
       src_prefix_set_name: CUSTOM-SRC-PREFIX-1
       dest_prefix_set_name: CUSTOM-DEST-PREFIX-1
@@ -49,9 +51,10 @@ application_traffic_recognition:
       - 12-14
       - cs6
       - '42'
-    - name: APP-CONTROL-PLANE
-      src_prefix_set_name: PFX-LOCAL-VTEP-IP
   application_profiles:
+  - name: APP-PROFILE-CONTROL-PLANE
+    applications:
+    - name: APP-CONTROL-PLANE
   - name: VIDEO
     applications:
     - name: CUSTOM-APPLICATION-1
@@ -60,9 +63,6 @@ application_traffic_recognition:
     - rtp
     categories:
     - name: VIDEO1
-  - name: APP-PROFILE-CONTROL-PLANE
-    applications:
-    - name: APP-CONTROL-PLANE
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -189,6 +189,12 @@ metadata:
         value: Another-ISP
       - name: Circuit
         value: '999'
+    - interface: Port-Channel5
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Another-ISP
   cv_pathfinder:
     role: pathfinder
     vtep_ip: 192.168.144.1
@@ -209,6 +215,10 @@ metadata:
       circuit_id: '999'
       pathgroup: INET
       public_ip: 10.9.9.9
+    - name: Port-Channel5
+      carrier: Another-ISP
+      pathgroup: INET
+      public_ip: 10.7.7.5
     pathgroups:
     - name: MPLS
       carriers:
@@ -355,6 +365,9 @@ metadata:
           preference: preferred
     applications:
       profiles:
+      - name: APP-PROFILE-CONTROL-PLANE
+        user_defined_applications:
+        - name: APP-CONTROL-PLANE
       - name: VIDEO
         builtin_applications:
         - name: skype
@@ -364,9 +377,6 @@ metadata:
         - category: VIDEO1
         transport_protocols:
         - rtp
-      - name: APP-PROFILE-CONTROL-PLANE
-        user_defined_applications:
-        - name: APP-CONTROL-PLANE
       categories:
         builtin_applications:
         - name: microsoft-teams
@@ -379,6 +389,16 @@ metadata:
 platform:
   sfe:
     data_plane_cpu_allocation_max: 1
+port_channel_interfaces:
+- name: Port-Channel5
+  description: Another-ISP_peer2_Port-Channel16
+  shutdown: false
+  ip_address: 10.7.7.5/31
+  peer: peer2
+  peer_interface: Port-Channel16
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -592,6 +612,7 @@ router_path_selection:
     local_interfaces:
     - name: Ethernet1
     - name: Ethernet3
+    - name: Port-Channel5
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
@@ -637,14 +658,15 @@ service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 static_routes:
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 10.7.7.6
+- prefix: 0.0.0.0/0
+  next_hop: 10.7.7.6
 stun:
   server:
     local_interfaces:
     - Ethernet1
     - Ethernet2
     - Ethernet3
+    - Port-Channel5
     ssl_profile: profileA
 transceiver_qsfp_default_mode_4x10: false
 vrfs:

@@ -16,6 +16,7 @@ from .get_item import get_item
 from .groupby import groupby, groupby_obj
 from .load_python_class import load_python_class
 from .merge import merge
+from .remove_cached_property_type import remove_cached_property_type
 from .replace_or_append_item import replace_or_append_item
 from .short_esi_to_route_target import short_esi_to_route_target
 from .strip_empties import strip_empties_from_dict, strip_empties_from_list, strip_null_from_data
@@ -48,6 +49,7 @@ __all__ = [
     "groupby_obj",
     "load_python_class",
     "merge",
+    "remove_cached_property_type",
     "replace_or_append_item",
     "short_esi_to_route_target",
     "strip_empties_from_dict",

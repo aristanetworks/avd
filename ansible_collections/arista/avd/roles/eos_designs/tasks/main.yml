@@ -27,7 +27,6 @@
 
 - name: Set eos_designs facts
   arista.avd.eos_designs_facts:
-    avd_switch_facts: true
     # cprofile_file: "eos_designs_facts.prof"
     template_output: true
     validation_mode: "{{ avd_data_validation_mode }}"
@@ -74,7 +73,5 @@
   when: avd_eos_designs_unset_facts | arista.avd.default(true)
   arista.avd.set_vars:
     avd_switch_facts: null
-    avd_overlay_peers: null
-    avd_topology_peers: null
   run_once: true
   check_mode: false

@@ -1,0 +1,23 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    platform: AWE-5510
+  nodes:
+    - bgp_as: 65000
+      name: sfe-interface-profile-worker-id-exceed-max
+      id: 1
+      loopback_ipv4_pool: 192.168.0.0/24
+      vtep_loopback_ipv4_pool: 192.168.1.0/24
+      l3_port_channels:
+        - name: Port-Channel5
+          ip_address: 172.16.0.2/30
+          member_interfaces:
+            - name: Ethernet1/19
+              rx_queue:
+                workers:
+                  - 2
+                  - 14-17
+
+expected_error_message: >-
+  Worker id '17' specified under 'rx_queue.workers' for interface 'Ethernet1/19' equals or exceeds maximum supported '16' for this platform.

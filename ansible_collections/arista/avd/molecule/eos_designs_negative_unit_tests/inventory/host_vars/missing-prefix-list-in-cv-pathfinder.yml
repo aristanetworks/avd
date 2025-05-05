@@ -84,4 +84,4 @@ wan_carriers:
     path_group: INET
     trusted: true
 
-expected_error_message: "BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for l3_interfaces[Ethernet1]"
+expected_error_message: "BGP is enabled but 'bgp.ipv4_prefix_list_in' is not configured for 'l3_interfaces[Ethernet1]'."

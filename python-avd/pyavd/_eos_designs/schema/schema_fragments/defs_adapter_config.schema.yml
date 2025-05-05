@@ -480,6 +480,16 @@ $defs:
                         - str
                       min: 1
                       max: 4094
+                raw_eos_cli:
+                  type: str
+                  description: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                structured_config:
+                  type: dict
+                  relaxed_validation: true
+                  description: Custom structured config added under port_channel_interfaces.[name=<subinterface>] for eos_cli_config_gen.
+                  documentation_options:
+                    hide_keys: true
+                  $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
           raw_eos_cli:
             type: str
             description: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.

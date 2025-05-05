@@ -17,6 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notification_timestamp</samp>](## "management_api_gnmi.transport.grpc.[].notification_timestamp") | String |  |  | Valid Values:<br>- <code>send-time</code><br>- <code>last-change-time</code> | Per the gNMI specification, the default timestamp field of a notification message is set to be<br>the time at which the value of the underlying data source changes or when the reported event takes place.<br>In order to facilitate integration in legacy environments oriented around polling style operations,<br>an option to support overriding the timestamp field to the send-time is available from EOS 4.27.0F.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_access_group</samp>](## "management_api_gnmi.transport.grpc.[].ip_access_group") | String |  |  |  | ACL name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "management_api_gnmi.transport.grpc.[].port") | Integer |  |  |  | GNMI port.<br>Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authorization_requests</samp>](## "management_api_gnmi.transport.grpc.[].authorization_requests") | Boolean |  |  |  | Use per-RPC authorization. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;grpc_tunnels</samp>](## "management_api_gnmi.transport.grpc_tunnels") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].name") | String | Required, Unique |  |  | Transport name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "management_api_gnmi.transport.grpc_tunnels.[].shutdown") | Boolean |  |  |  | Operational status of the gRPC tunnel. |
@@ -65,6 +66,9 @@
             # GNMI port.
             # Make sure to update the control-plane ACL accordingly in order for the service to be reachable by external applications.
             port: <int>
+
+            # Use per-RPC authorization.
+            authorization_requests: <bool>
         grpc_tunnels:
 
             # Transport name.
