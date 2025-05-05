@@ -3636,8 +3636,8 @@ class EosDesigns(EosDesignsRootModel):
             This can be an
             absolute path or a path relative to current working directory.
 
-            By default the path is
-            "<root_dir>/intended/data/<fabric_name>-ids.yml".
+            By default the path is:
+            `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
             Note: Since the pool manager will remove stale
             entries after every run, each fabric should be using its own file.
@@ -3668,8 +3668,8 @@ class EosDesigns(EosDesignsRootModel):
                            This can be an
                            absolute path or a path relative to current working directory.
 
-                           By default the path is
-                           "<root_dir>/intended/data/<fabric_name>-ids.yml".
+                           By default the path is:
+                           `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
                            Note: Since the pool manager will remove stale
                            entries after every run, each fabric should be using its own file.
