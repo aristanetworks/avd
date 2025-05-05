@@ -606,14 +606,9 @@ class RouterBgpMixin(Protocol):
             peer_facts = self.shared_utils.get_peer_facts(route_reflector_client)
             if not self._is_peer_mpls_client(peer_facts):
                 continue
-            # TODO: Below ip_address can be none only when underlay_router is false, but when underlay_router is false the condition in line 607 gets true \
-            # and it does not reach line 610
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the MPLS Route Reflector client '{route_reflector_client}'."
-                raise AristaAvdInvalidInputsError(msg)
 
             neighbor = self._create_neighbor(
-                ip_address,
+                peer_facts.overlay.peering_address,
                 route_reflector_client,
                 self.inputs.bgp_peer_groups.mpls_overlay_peers.name,
                 overlay_peering_interface="Loopback0",
@@ -634,13 +629,9 @@ class RouterBgpMixin(Protocol):
             peer_facts = self.shared_utils.get_peer_facts(fabric_switch)
             if not self._is_peer_mpls_client(peer_facts):
                 continue
-            # TODO: Below ip_address can be none only when underlay_router is false, but when underlay_router is false the condition in line 635 gets true \
-            # and it does not reach line 639
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the MPLS PE '{fabric_switch}'."
-                raise AristaAvdInvalidInputsError(msg)
+
             neighbor = self._create_neighbor(
-                ip_address,
+                peer_facts.overlay.peering_address,
                 fabric_switch,
                 self.inputs.bgp_peer_groups.mpls_overlay_peers.name,
                 overlay_peering_interface="Loopback0",
@@ -658,14 +649,9 @@ class RouterBgpMixin(Protocol):
             peer_facts = self.shared_utils.get_peer_facts(route_reflector)
             if not self._is_peer_mpls_server(peer_facts):
                 continue
-            # TODO: Below ip_address can be none only when underlay_router is false, but when underlay_router is false the condition in line 659 gets true \
-            # and it does not reach line 663
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the peer MPLS Route Reflector '{route_reflector}'."
-                raise AristaAvdInvalidInputsError(msg)
 
             neighbor = self._create_neighbor(
-                ip_address,
+                peer_facts.overlay.peering_address,
                 route_reflector,
                 self.inputs.bgp_peer_groups.rr_overlay_peers.name,
                 overlay_peering_interface="Loopback0",
@@ -680,14 +666,8 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
-            # TODO: Below ip_address can be none only when underlay_router is false, but when underlay_router is false the condition in line 680 gets true \
-            # and it does not reach line 685
-            if not (ip_address := peer_facts.overlay.peering_address):
-                msg = f"Unable to determine the remote IP address to use for the peer MPLS Route Reflector '{route_reflector_client}'."
-                raise AristaAvdInvalidInputsError(msg)
-
             neighbor = self._create_neighbor(
-                ip_address,
+                peer_facts.overlay.peering_address,
                 route_reflector_client,
                 self.inputs.bgp_peer_groups.rr_overlay_peers.name,
                 overlay_peering_interface="Loopback0",

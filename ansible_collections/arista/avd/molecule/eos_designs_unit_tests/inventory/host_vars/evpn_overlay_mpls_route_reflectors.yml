@@ -10,8 +10,9 @@ l3leaf:
     vtep_loopback_ipv4_pool: 169.253.103.0/24
     virtual_router_mac_address: 00:1c:73:00:00:99
     bgp_as: 65233
+    mpls_route_reflectors: [evpn_role_server_overlay_vxlan_ibgp]
   nodes:
-    - name: evpn_role_server_overlay_mpls_ibgp
+    - name: evpn_overlay_mpls_route_reflectors
       id: 1
       platform: vEOS
       mlag: false
