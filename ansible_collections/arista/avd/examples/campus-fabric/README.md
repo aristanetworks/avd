@@ -12,7 +12,7 @@ link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/camp
 
 ## Introduction
 
-This example describes and includes all the AVD files used to build a Campus Fabric by building upon the previous [L2LS Fabric](../../examples/campus-fabric/README.md) example. The spine nodes provide L3 routing of SVIs, and the L2 leaf nodes support 802.1x Network Access Control (NAC) with port ranges.
+This example describes and includes all the AVD files used to build a Campus Fabric by building upon the previous [L2LS Fabric](../../examples/l2ls-fabric/README.md) example. The spine nodes provide L3 routing of SVIs, and the L2 leaf nodes support 802.1x Network Access Control (NAC) with port ranges.
 
 ## Installation & Requirements
 
@@ -247,7 +247,7 @@ The above sample port configuration is easily produced with `port_profiles` and 
 
 ## WAN/Core Edge
 
-Lastly, we need to provide a way for traffic to exit the Campus Fabric via the WAN/Core Edge. This is easily accomplished using `underlay_routing_protocol` and `core_interfaces` to create point-to-point IP links to the WAN/Core and enable a routing protocol such as OSPF. This simple data model below is located at the bottom of the **group_vars/ACME_FABRIC.yml** file.
+Lastly, we need to provide a way for traffic to exit the Campus Fabric via the WAN/Core Edge. This is easily accomplished using `underlay_routing_protocol` and `core_interfaces` to create point-to-point IP links to the WAN/Core and enable a routing protocol such as OSPF.
 
 ``` yaml
 --8<--
