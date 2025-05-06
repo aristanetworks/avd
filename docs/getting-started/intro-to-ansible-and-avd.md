@@ -4,7 +4,7 @@
   ~ that can be found in the LICENSE file.
   -->
 
-# AVD and Ansible Overview
+# Arista AVD and Ansible Overview
 
 ## Day 1 Operation
 
@@ -14,7 +14,7 @@ Imagine being asked to configure a **Layer 3 leaf spine (L3LS)** network from sc
 
 Traditionally, one would configure the switches manually using a laptop, console cable, and USB key to load the correct EOS software image and configuration. Of course, the configuration would be manually generated, using snippets from the relevant Arista design guides, or copying/pasting from existing devices. Configurations would have to be manually adapted to each and every device, which is time consuming and prone to errors. Consider what would happen if a new pair of leaf switches or new VRFs/VLANs are added to the network - changes would need to be made to most of the devices.
 
-Using Arista Validated Designs (AVD), this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment, but for all subsequent network changes.
+Using Arista AVD, this task is automated, greatly simplified, and made considerably faster. All the basic network configuration is guaranteed to be identical across the entire fabric from day one. No longer do you have to manually inspect each device for errors or differences. AVD will ensure the consistency and accuracy of your configuration not only for initial deployment, but for all subsequent network changes.
 
 AVD is also based on best practice from [Arista Design and Deployment Guides](https://www.arista.com/en/solutions/design-guides), meaning you get the full benefit of Arista's experience in deploying large scale leaf-spine fabrics. AVD fully integrates with Arista CloudVision, which adds a change control workflow, continuous compliance check, and network topology overview as well as real-time streaming telemetry including flow-based data and more.
 
@@ -50,7 +50,7 @@ Ansible can run on almost anything, but in production scenarios, Ansible is typi
 
 ## What is the arista.avd collection?
 
-[Arista.avd](https://galaxy.ansible.com/arista/avd) is an Ansible collection for Arista Validated Designs. It's maintained by
+[Arista.avd](https://galaxy.ansible.com/arista/avd) is an Ansible collection for Arista AVD. It's maintained by
 Arista and accepts third-party contributions on GitHub at [aristanetworks/avd](https://github.com/aristanetworks/avd).
 
 While Ansible is the core automation engine, AVD is an Ansible Collection described above. It provides roles, modules, and plugins

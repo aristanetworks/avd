@@ -1,0 +1,23 @@
+[{
+    "value": {
+        "key": {
+            "deviceId": "DCC816CEAC4BBD6319385043AD318362"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-spine1",
+        "hostname": "avd-ci-spine1",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:d7:ee:0b",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Mlag": false,
+                "Danz": false
+            }
+        }
+    },
+    "time": "2025-02-14T06:54:36.195233770",
+    "type": "INITIAL"
+}]
