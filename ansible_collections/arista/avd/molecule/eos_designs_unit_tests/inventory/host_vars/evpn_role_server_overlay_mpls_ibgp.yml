@@ -16,5 +16,5 @@ l3leaf:
       platform: vEOS
       mlag: false
       mgmt_ip: 192.168.0.205/24
-      evpn_role: server  
+      evpn_role: server
       overlay_address_families: [evpn]
