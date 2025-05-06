@@ -13,7 +13,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 169.254.102.1/32
+  ip_address: 169.254.105.1/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
@@ -36,7 +36,7 @@ prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
   - sequence: 10
-    action: permit 169.254.102.0/24 eq 32
+    action: permit 169.254.105.0/24 eq 32
   - sequence: 20
     action: permit 169.253.103.0/24 eq 32
 route_maps:
@@ -53,11 +53,11 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65233'
-  router_id: 169.254.102.1
+  router_id: 169.254.105.1
   maximum_paths:
     paths: 4
     ecmp: 4
-  bgp_cluster_id: 169.254.102.1
+  bgp_cluster_id: 169.254.105.1
   bgp:
     default:
       ipv4_unicast: false

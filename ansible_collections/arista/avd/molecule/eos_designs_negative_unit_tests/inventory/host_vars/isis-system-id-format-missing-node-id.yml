@@ -16,9 +16,12 @@ pe:
     is_type: level-2
     loopback_ipv4_pool: 172.28.4.0/22
     overlay_address_families: [ "evpn" ]
+    mpls_route_reflectors: [duplicate-neighbors-evpn-ovelray-mpls]
   nodes:
     - name: "isis-system-id-format-missing-node-id"
       id: 1
+      evpn_role: server
+      mpls_overlay_role: server
 
 expected_error_message: >-
   'isis_system_id_prefix' is required when 'isis_system_id_format' is set to 'node_id'.
