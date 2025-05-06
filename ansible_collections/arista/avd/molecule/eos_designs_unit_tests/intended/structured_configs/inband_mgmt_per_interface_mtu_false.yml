@@ -13,7 +13,7 @@ daemon_terminattr:
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
-hostname: inband_mgmt_per_interface_mtu_false
+hostname: inband-mgmt-per-interface-mtu-false
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:

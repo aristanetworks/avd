@@ -12,7 +12,7 @@ l2leaf:
       # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
       only_vlans_in_use: true
   nodes:
-    - name: inband_mgmt_per_interface_mtu_false
+    - name: inband-mgmt-per-interface-mtu-false
       inband_mgmt_vlan: 108
       inband_mgmt_ip: 192.168.103.22/24
       uplink_type: port-channel
