@@ -81,6 +81,7 @@ class RouteMapsMixin(Protocol):
         self._redistribute_static_to_bgp_route_map()
 
     def _route_maps_vrf_default_check(self: AvdStructuredConfigNetworkServicesProtocol) -> bool:
+        """This should only be called when self._vrf_default_evpn is true."""
         if any((self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"], self.shared_utils.is_wan_router)):
             return True
 
@@ -132,6 +133,9 @@ class RouteMapsMixin(Protocol):
         * Static routes subnets in VRF default.
 
         * for WAN routers, all the routes matching the SOO (which includes the two above)
+
+        This should only be called when any one of self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
+        self.shared_utils.is_wan_router is true.
         """
         sequence_numbers = EosCliConfigGen.RouteMapsItem.SequenceNumbers()
         if self.shared_utils.is_wan_router:
@@ -164,6 +168,9 @@ class RouteMapsMixin(Protocol):
 
         For WAN routers the underlay towards LAN side also permits the tenant routes for VRF default,
         so routes should not be filtered.
+
+        This should only be called when any one of self._vrf_default_ipv4_subnets, self._vrf_default_ipv4_static_routes["static_routes"],
+        self.shared_utils.is_wan_router is true.
         """
         if self.shared_utils.is_wan_router:
             return
