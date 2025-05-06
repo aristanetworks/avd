@@ -3,10 +3,11 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol, cast
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigUnderlayProtocol
@@ -46,8 +47,10 @@ class RouterPimSparseModeMixin(Protocol):
             other_anycast_rp_addresses = EosCliConfigGen.RouterPimSparseMode.Ipv4.AnycastRpsItem.OtherAnycastRpAddresses()
             for node in rp_entry.nodes:
                 peer_facts = self.shared_utils.get_peer_facts(node.name)
-                router_id = cast("str", peer_facts.router_id)
-                other_anycast_rp_addresses.append_new(address=router_id)
+                if not peer_facts.router_id:
+                    msg = f"'router_id' is required but was not found for {node.name}."
+                    raise AristaAvdInvalidInputsError(msg)
+                other_anycast_rp_addresses.append_new(address=peer_facts.router_id)
             self.structured_config.router_pim_sparse_mode.ipv4.anycast_rps.append_new(
                 address=rp_entry.rp, other_anycast_rp_addresses=other_anycast_rp_addresses
             )
