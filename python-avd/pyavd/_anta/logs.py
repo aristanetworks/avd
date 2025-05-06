@@ -30,7 +30,7 @@ class TestLoggerAdapter(LoggerAdapter):
     ```
 
     When logging a message, the logger will format the `LogMessage` Enum message using the kwargs passed to the logger,
-    and prepend the message with the device and test names, and optionally the context: `[device]: <test> <context> <message>`.
+    and prepend the message with the device and test names, and optionally the context: `<device> test context message`.
     """
 
     def process(self, msg: LogMessage, kwargs: dict) -> tuple[str, dict]:
@@ -43,7 +43,7 @@ class TestLoggerAdapter(LoggerAdapter):
         test = self.extra.get("test", "-")
         context = self.extra.get("context")
 
-        prefix = f"[{device}]: {test}"
+        prefix = f"<{device}> {test}"
         if context:
             prefix += f" {context}"
 

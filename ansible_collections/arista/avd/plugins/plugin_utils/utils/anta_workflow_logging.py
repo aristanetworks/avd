@@ -2,25 +2,20 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
-from collections import defaultdict
 
 from ansible.utils.display import Display
-
-ANTA_LIBRARIES = ("anta", "asyncio", "asyncssh", "httpcore", "httpx")
-"""Define ANTA-related library names for filtering."""
 
 
 class AntaWorkflowFilter(logging.Filter):
     """
     ANTA workflow logging filter.
 
-    Injects a unique ID into log records and filters ANTA library logs
-    below WARNING level (for console output).
+    Injects a unique ID into log records for context tracking.
     """
 
     def __init__(self, unique_id: str) -> None:
         """
-        Initialize the filter with a specific ID.
+        Initialize the filter.
 
         Args:
           unique_id: Identifier for the current context (e.g., 'anta-workflow'
@@ -31,55 +26,45 @@ class AntaWorkflowFilter(logging.Filter):
 
     def filter(self, record: logging.LogRecord) -> bool:
         """
-        Add `unique_id` to the record and filter logs.
-
-        Filtering logic:
-            - Allow all logs from non-ANTA libraries.
-            - Allow logs from ANTA libraries ONLY if they are WARNING level or higher.
+        Add `unique_id` to the record.
 
         Args:
-          record: The log record to be filtered.
+          record: The log record to be processed.
 
         Returns:
-          bool: True if the record should be processed, False otherwise.
+          bool: Always True.
         """
-        # Always inject the unique ID for context tracking
         record.unique_id = self.unique_id
-
-        # Check if the log record originated from one of the defined ANTA libraries
-        is_anta_library = any(record.name.startswith(name) for name in ANTA_LIBRARIES)
-
-        return bool(not is_anta_library or (is_anta_library and record.levelno >= logging.WARNING))
+        return True
 
 
 class AntaWorkflowHandler(logging.Handler):
     """
     ANTA workflow logging handler.
 
-    Route log records to Ansible Display based on level and track error/warning counts
-    in a shared statistics dictionary.
+    Route log records to Ansible Display based on level and track errors in a
+    boolean list.
     """
 
-    def __init__(self, log_stats: defaultdict[str, dict[str, int]], display: Display | None = None) -> None:
+    def __init__(self, has_errors_ref: list[bool], display: Display | None = None) -> None:
         """
         Initialize the handler.
 
         Args:
-          log_stats: Dictionary shared with the main plugin to store
-                     {'error_count': int, 'warning_count': int} per unique_id.
+          has_errors_ref: Mutable boolean list to track errors.
           display: Optional Ansible Display instance. Retrieves singleton if None.
         """
         super().__init__()
         self.display = display or Display()
-        self.log_stats = log_stats
+        self.has_errors_ref = has_errors_ref
 
     def emit(self, record: logging.LogRecord) -> None:
         """
         Process a log record.
 
-        Formats the message (including unique_id), sends it to the appropriate
-        Ansible Display method and increments error/warning counts in the log_stats
-        dictionary.
+        Formats the message (including unique_id) and sends it to the appropriate
+        Ansible Display method. Also update the error boolean list when handling error
+        logs and above.
 
         Args:
           record: The log record to be processed.
@@ -92,10 +77,9 @@ class AntaWorkflowHandler(logging.Handler):
         final_message = f"[{unique_id}] {base_message}"
 
         if record.levelno >= logging.ERROR:
-            self.log_stats[unique_id]["error_count"] += 1
             self.display.error(final_message, wrap_text=False)
+            self.has_errors_ref[0] = True
         elif record.levelno == logging.WARNING:
-            self.log_stats[unique_id]["warning_count"] += 1
             self.display.warning(final_message)
         elif record.levelno == logging.INFO:
             self.display.v(final_message)

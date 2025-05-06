@@ -5,10 +5,10 @@ from __future__ import annotations
 
 import json
 import logging
+import os
+import sys
 from asyncio import run
-from collections import defaultdict
 from concurrent.futures import ProcessPoolExecutor
-from datetime import datetime, timezone
 from logging.handlers import QueueHandler, QueueListener
 from multiprocessing import Queue, get_context
 from pathlib import Path
@@ -90,7 +90,6 @@ ARGUMENT_SPEC = {
             "batch_size": {"type": "int", "default": 5},
             "tags": {"type": "list", "elements": "str"},
             "dry_run": {"type": "bool", "default": False},
-            "logs_dir": {"type": "str"},
         },
     },
     "report": {
@@ -111,7 +110,6 @@ ARGUMENT_SPEC = {
             },
         },
     },
-    "strict_mode": {"type": "bool", "default": False},
 }
 
 # Global variables to share data between processes. Since the plugin is forked, these variables are inherited by child processes.
@@ -122,7 +120,6 @@ PLUGIN_ARGS: dict[str, Any] | None = None
 ANSIBLE_VARS: dict[str, dict[str, Any]] | None = None
 USER_CATALOG: AntaCatalog | None = None
 LOG_QUEUE: Queue = Queue()
-TIMESTAMP: str = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
 
 class ActionModule(ActionBase):
@@ -142,8 +139,8 @@ class ActionModule(ActionBase):
             raise AnsibleActionFail(msg)
 
         # Setup the module logging using a logging queue with a listener
-        log_stats = defaultdict(lambda: {"error_count": 0, "warning_count": 0})
-        listener = setup_queue_listener(LOG_QUEUE, log_stats)
+        has_errors_ref = [False]
+        listener = setup_queue_listener(LOG_QUEUE, has_errors_ref)
         setup_parent_process_logging(LOG_QUEUE, display.verbosity)
 
         ansible_forks = task_vars.get("ansible_forks", 5)
@@ -201,9 +198,9 @@ class ActionModule(ActionBase):
                 batch_results = executor.map(run_anta, batches)
 
             # Build the ANTA reports and summary
-            summary = build_reports(batch_results, log_stats, report_settings=get(PLUGIN_ARGS, "report"))
+            test_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"))
 
-            result = update_ansible_result(result, summary, strict_mode=get(PLUGIN_ARGS, "strict_mode"))
+            result = update_ansible_result(result, test_summary, has_errors_ref)
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
@@ -216,17 +213,8 @@ class ActionModule(ActionBase):
         return result
 
 
-def run_anta(devices: list[str]) -> tuple[str, list[str], ResultManager]:
-    """
-    Run ANTA for the provided list of devices.
-
-    Args:
-      devices: The targeted devices for this run.
-
-    Returns:
-      tuple: A tuple with the unique ID, the list of devices and the ResultManager
-             containing test results of this run.
-    """
+def run_anta(devices: list[str]) -> ResultManager:
+    """Run ANTA."""
     # Generate a unique ID for this child process run
     unique_id = f"anta-run-{str(uuid4())[:8]}"
 
@@ -245,14 +233,11 @@ def run_anta(devices: list[str]) -> tuple[str, list[str], ResultManager]:
     run(anta_runner(result_manager, inventory, catalog, tags=tags, dry_run=dry_run))
 
     LOGGER.info("ANTA %s completed for devices: %s", run_mode, joined_devices)
-    return unique_id, devices, result_manager
+    return result_manager
 
 
-def build_reports(
-    batch_results: Iterator[tuple[str, list[str], ResultManager]], log_stats: defaultdict[str, dict[str, int]], report_settings: dict[str, Any]
-) -> dict[str, Any]:
-    """Build the ANTA reports from the batch results and return a summary dictionary containing overall statistics."""
-    summary = {"runs": {}, "test_stats": {}}
+def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
+    """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
     hide_statuses = get(report_settings, "filters.hide_statuses")
     csv_output_path = get(report_settings, "csv_output")
     md_output_path = get(report_settings, "md_output")
@@ -260,8 +245,7 @@ def build_reports(
 
     # Merge all results and update the summary with devices per run
     result_manager = ResultManager()
-    for run_id, devices, manager in batch_results:
-        summary["runs"][run_id] = {"devices": devices}
+    for manager in batch_results:
         for res in manager.results:
             result_manager.add(res)
 
@@ -291,8 +275,8 @@ def build_reports(
         with path.open("w", encoding="UTF-8") as file:
             file.write(result_manager.json)
 
-    # Update the summary with ANTA test stats
-    test_stats = {
+    # Build a summary with ANTA test stats
+    test_summary = {
         "total_tests": result_manager.get_total_results(),
         "tests_passed": result_manager.get_total_results({"success"}),
         "tests_failed": result_manager.get_total_results({"failure"}),
@@ -304,101 +288,63 @@ def build_reports(
     }
     for device, stat in result_manager.device_stats.items():
         if stat.tests_failure_count:
-            test_stats["devices_with_test_failures"].append(device)
+            test_summary["devices_with_test_failures"].append(device)
         if stat.tests_error_count:
-            test_stats["devices_with_test_errors"].append(device)
-    summary["test_stats"] = test_stats
+            test_summary["devices_with_test_errors"].append(device)
 
-    # Update the summary with log_stats if any were found
-    if log_stats:
-        for run_id, data in log_stats.items():
-            summary["runs"].setdefault(run_id, {}).update(data)
-
-    return summary
+    return test_summary
 
 
-def update_ansible_result(result: dict[str, Any], summary: dict[str, Any], *, strict_mode: bool = False) -> dict[str, Any]:
+def update_ansible_result(result: dict[str, Any], test_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
     """
-    Update the Ansible result dictionary from aggregated ANTA test results and workflow log statistics.
+    Update the Ansible result dictionary from aggregated ANTA test results and workflow log errors.
 
     Ansible task is set to `failed` if any of the following occurs:
         - No tests ran (outside of a dry run)
         - Errors were logged by the plugin, PyAVD or ANTA
-        - Any test failed or errored if `strict_mode=True`
-
-    Ansible task is set to `changed` when:
-        - Any test failed or errored if `strict_mode=False` (default)
+        - Any test failed or errored
 
     Args:
         result: The Ansible result dictionary to update.
-        summary: The summary dictionary created from `build_reports` containing aggregated test statistics and run/device mapping.
-        strict_mode: If True, task fails on any test failure/error. If False, task changes.
-                     Logged workflow errors always cause failure.
+        test_summary: The dictionary created from `build_reports` containing aggregated test statistics.
+        has_errors_ref: The boolean list passed to the AntaWorkflowHandler to keep track of error logs.
 
     Returns:
         dict: The updated Ansible result dictionary.
     """
-    # Process workflow log statistics first
-    total_log_errors = 0
-    total_log_warnings = 0
-
-    for run_data in summary["runs"].values():
-        total_log_errors += run_data.get("error_count", 0)
-        total_log_warnings += run_data.get("warning_count", 0)
-
-    log_message_parts = []
-    if total_log_errors > 0:
-        log_message_parts.append(f"{total_log_errors} workflow errors")
-    if total_log_warnings > 0:
-        log_message_parts.append(f"{total_log_warnings} workflow warnings")
-
     workflow_log_msg = ""
-    if log_message_parts:
-        workflow_log_msg = " and ".join(log_message_parts) + " detected via logging"
+    test_result_msg = ""
 
-    # Initial failure state based only on log errors
-    failed_by_logs = total_log_errors > 0
-    result["failed"] = failed_by_logs
+    # Process workflow errors first
+    failed_by_logs = has_errors_ref[0]
+    if failed_by_logs:
+        result["failed"] = True
+        workflow_log_msg = "Errors detected during ANTA workflow execution."
 
     # Intermediate flags for test outcomes
-    test_stats = summary["test_stats"]
-    has_test_issues = test_stats["tests_failed"] > 0 or test_stats["tests_error"] > 0
-    no_tests_run = test_stats["total_tests"] == 0
+    has_test_issues = test_summary["tests_failed"] > 0 or test_summary["tests_error"] > 0
+    no_tests_run = test_summary["total_tests"] == 0
 
-    # Determine final status and test result message based on tests and strict_mode
-    test_result_msg = ""
+    # Fail the task if no tests were run
     if no_tests_run:
         test_result_msg = "No ANTA tests were run."
         result["failed"] = True
-
+    # Fail the task if tests have issues
     elif has_test_issues:
-        if strict_mode:
-            # Fail the task if tests have issues and strict_mode is on
-            if not failed_by_logs:
-                test_result_msg = f"Task failed due to ANTA test failures/errors (strict_mode={strict_mode})."
-            else:
-                test_result_msg = "ANTA tests also reported failures/errors."
-            result["failed"] = True
-        # Mark as changed if tests have issues, strict_mode is off, AND not already failed by logs
-        elif not failed_by_logs:
-            result["changed"] = True
-            test_result_msg = f"Task changed due to ANTA test failures/errors (strict_mode={strict_mode})."
-        else:
-            # Already failed by logs, just note test issues
-            test_result_msg = "ANTA tests also reported failures/errors."
+        test_result_msg = "Task failed due to ANTA test failures/errors." if not failed_by_logs else "ANTA tests reported failures/errors."
+        result["failed"] = True
 
+    # Tests ran, no issues found, and no log errors
     elif not failed_by_logs:
-        # Tests ran, no issues found, and no log errors
         test_result_msg = "ANTA tests completed without reported failures/errors."
 
     # Combine messages
-    final_msg = ". ".join(filter(None, [workflow_log_msg, test_result_msg]))
+    final_msg = " ".join(filter(None, [workflow_log_msg, test_result_msg]))
     if final_msg:
         result["msg"] = final_msg
 
     # Populate final result dictionary directly from summary
-    result["anta_summary"] = summary["runs"]
-    result["anta_test_summary"] = summary["test_stats"]
+    result["anta_test_summary"] = test_summary
 
     return result
 
@@ -413,7 +359,7 @@ def get_ansible_vars(device_list: list[str], action_plugin_vars: ActionPluginVar
         # Since we can run ANTA without any structured configs, i.e., only using user-defined catalogs,
         # we honor the `is_deployed` flag in the hostvars to skip devices that are not deployed.
         if get(device_vars, "is_deployed", default=True) is False:
-            LOGGER.info("[%s]: Device marked as not deployed - Skipping all tests", device)
+            LOGGER.info("<%s> Device marked as not deployed - Skipping all tests", device)
             continue
 
         # Adding the Ansible connection variables following the HTTPAPI connection plugin settings
@@ -481,12 +427,12 @@ def get_device_catalog_filters(device: str, avd_catalogs_filters: list[dict[str,
             # Override previous filters if new ones are specified
             if run_tests is not None:
                 if final_filters["run_tests"]:
-                    LOGGER.debug("[%s]: run_tests overridden from %s to %s", device, final_filters["run_tests"], run_tests)
+                    LOGGER.debug("<%s> run_tests overridden from %s to %s", device, final_filters["run_tests"], run_tests)
                 final_filters["run_tests"] = list(set(run_tests))
 
             if skip_tests is not None:
                 if final_filters["skip_tests"]:
-                    LOGGER.debug("[%s]: skip_tests overridden from %s to %s", device, final_filters["skip_tests"], skip_tests)
+                    LOGGER.debug("<%s> skip_tests overridden from %s to %s", device, final_filters["skip_tests"], skip_tests)
                 final_filters["skip_tests"] = list(set(skip_tests))
 
     return final_filters
@@ -574,7 +520,7 @@ def load_one_structured_config(device: str, structured_config_dir: str, structur
         return json.load(stream)
 
 
-def setup_queue_listener(log_queue: Queue, log_stats: defaultdict[str, dict[str, int]]) -> QueueListener:
+def setup_queue_listener(log_queue: Queue, has_errors_ref: list[bool]) -> QueueListener:
     """
     Set up and start the queue listener for centralized log handling.
 
@@ -583,12 +529,12 @@ def setup_queue_listener(log_queue: Queue, log_stats: defaultdict[str, dict[str,
 
     Args:
       log_queue: Shared queue used by the QueueListener to receive logs from everyone.
-      log_stats: Shared dictionary to store counters for error/warning logs.
+      has_errors_ref: Mutable boolean list to track error logs and above.
 
     Returns:
       QueueListener: The started QueueListener instance.
     """
-    log_handler = AntaWorkflowHandler(log_stats, display)
+    log_handler = AntaWorkflowHandler(has_errors_ref, display)
 
     listener = QueueListener(log_queue, log_handler)
     listener.start()
@@ -614,6 +560,9 @@ def setup_parent_process_logging(log_queue: Queue, verbosity: int) -> None:
     # Logs from the plugin itself will be prepended with 'anta-workflow'
     setup_root_logger(unique_id="anta-workflow", log_queue=log_queue, verbosity=verbosity)
 
+    # Configure ANTA debug mode based on Ansible verbosity
+    setup_anta_debug_mode(verbosity=verbosity)
+
 
 def setup_child_process_logging(log_queue: Queue, verbosity: int, unique_id: str) -> None:
     """
@@ -633,46 +582,90 @@ def setup_child_process_logging(log_queue: Queue, verbosity: int, unique_id: str
 
     setup_root_logger(unique_id=unique_id, log_queue=log_queue, verbosity=verbosity)
 
-    # If logs_dir is provided, set up a per-child process log file that captures ALL logs at the verbosity level
-    logs_dir = get(PLUGIN_ARGS, "runner.logs_dir")
-    if logs_dir:
-        # Prepend the global timestamp to help retrieve run files from the same plugin execution
-        log_filename = f"{logs_dir}/{TIMESTAMP}_{unique_id}.log"
-        file_handler = logging.FileHandler(log_filename, delay=True)
-        file_formatter = logging.Formatter(f"%(asctime)s [%(levelname)s] [PID:%(process)d] [{unique_id}] %(name)s: %(message)s")
-        file_handler.setFormatter(file_formatter)
-        root_logger.addHandler(file_handler)
-
 
 def setup_root_logger(unique_id: str, log_queue: Queue, verbosity: int) -> None:
     """
     Set up the root logger for parent (plugin) and child processes.
 
-    A filter is used to allow logs from ANTA libraries ONLY if they are WARNING level
-    or higher into the queue. Logs from non-ANTA libraries are all allowed.
-
     Args:
       unique_id: Identifier for the current context that will be prepended to all logs.
       log_queue: Shared queue used to send logs from all processes to the listener thread.
-      verbosity: Ansible verbosity level used to set the appropriate log level.
+      verbosity: Ansible verbosity level used to set the appropriate log level to different loggers.
     """
     root_logger = logging.getLogger()
 
-    # Set the level based on Ansible verbosity
-    if verbosity >= 3:
+    # All loggers (pyavd, anta, ansible_collections.arista.avd) including low-level libraries (asyncio, httpcore, httpx) will be at DEBUG
+    if verbosity >= 5:
         root_logger.setLevel(logging.DEBUG)
-    elif verbosity > 0:
+    # All loggers except low-level libraries will be at DEBUG
+    elif verbosity == 4:
+        root_logger.setLevel(logging.DEBUG)
+        for logger_name in ("asyncio", "httpcore", "httpx"):
+            logging.getLogger(logger_name).setLevel(logging.INFO)
+    # All loggers except anta and low-level libraries will be at DEBUG
+    elif verbosity == 3:
+        root_logger.setLevel(logging.DEBUG)
+        for logger_name in ("anta", "asyncio", "httpcore", "httpx"):
+            logging.getLogger(logger_name).setLevel(logging.INFO)
+    # All loggers will be at INFO
+    elif verbosity == 2:
         root_logger.setLevel(logging.INFO)
+    # All loggers except httpx will be at INFO
+    elif verbosity == 1:
+        root_logger.setLevel(logging.INFO)
+        # HTTPX is really chatty at INFO
+        logging.getLogger("httpx").setLevel(logging.WARNING)
+    # All loggers will be at WARNING
     else:
         root_logger.setLevel(logging.WARNING)
 
-    # Create and configure the QueueHandler to send logs to the listener thread
+    # Create and configure the QueueHandler to send all logs to the listener thread
     queue_handler = QueueHandler(log_queue)
     queue_handler.set_name(f"QueueHandler_{unique_id}")
 
-    # Create the filter that prepends the unique_id and filters ANTA logs
+    # Create the filter that prepends the unique_id
     log_filter = AntaWorkflowFilter(unique_id=unique_id)
     queue_handler.addFilter(log_filter)
 
     # Add the configured QueueHandler to the root logger
     root_logger.addHandler(queue_handler)
+
+
+def setup_anta_debug_mode(verbosity: int) -> None:
+    """
+    Aligns ANTA debug mode with Ansible verbosity level.
+
+    Overrides `ANTA_DEBUG` to False if it's True and Ansible verbosity < 3 (-vvv).
+    Also clears `PYTHONASYNCIODEBUG` if set by ANTA in this scenario.
+    ANTA tracebacks require verbosity >= 3, following Ansible behavior.
+
+    Args:
+      verbosity: Ansible verbosity level.
+    """
+    anta_logger_module = sys.modules.get("anta.logger")
+
+    # This should never happen because of the HAS_PYAVD check at the beginning of the plugin
+    if anta_logger_module is None or not hasattr(anta_logger_module, "__DEBUG__"):
+        msg = (
+            "Cannot find the '__DEBUG__' attribute of the 'anta.logger' module, even though PyAVD dependencies were expected to be loaded. "
+            "This indicates a severe issue with the Python environment or ANTA installation."
+        )
+        raise AnsibleActionFail(msg)
+
+    current_anta_debug_flag = anta_logger_module.__DEBUG__
+    LOGGER.debug("Initial ANTA_DEBUG value: %s", current_anta_debug_flag)
+
+    if current_anta_debug_flag is True and verbosity < 3:
+        LOGGER.debug("ANTA_DEBUG is True and Ansible verbosity (%d) < 3. Overriding ANTA_DEBUG to False for this plugin run", verbosity)
+        anta_logger_module.__DEBUG__ = False
+
+        if os.environ.get("PYTHONASYNCIODEBUG") == "1":
+            LOGGER.debug(
+                "ANTA_DEBUG was True (causing PYTHONASYNCIODEBUG=1). "
+                "Since ANTA_DEBUG is now overridden to False by the plugin, deleting PYTHONASYNCIODEBUG environment variable"
+            )
+            del os.environ["PYTHONASYNCIODEBUG"]
+    elif current_anta_debug_flag is True and verbosity >= 3:
+        LOGGER.debug("ANTA_DEBUG is True and Ansible verbosity (%d) >= 3. ANTA debug mode will remain active as per the environment variable", verbosity)
+    else:
+        LOGGER.debug("ANTA_DEBUG is False. Plugin will not change ANTA debug settings")

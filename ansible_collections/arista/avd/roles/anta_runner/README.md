@@ -314,11 +314,6 @@ user_catalogs_dir: "{{ anta_dir }}/{{ user_catalogs_dir_name }}"
 avd_catalogs_dir_name: "avd_catalogs"
 avd_catalogs_dir: "{{ anta_dir }}/{{ avd_catalogs_dir_name }}"
 
-# Directory for the ANTA debug's logs. When running the role with `-vvv`,
-# all ANTA logs will be stored here by batch.
-anta_runner_logs_dir_name: "logs"
-anta_runner_logs_dir: "{{ anta_dir }}/{{ anta_runner_logs_dir_name }}"
-
 # Directory for ANTA reports.
 anta_reports_dir_name: "reports"
 anta_reports_dir: "{{ anta_dir }}/{{ anta_reports_dir_name }}"
