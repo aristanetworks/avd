@@ -4,7 +4,6 @@
 """Fixtures for testing the utils modules."""
 
 import logging
-from collections import defaultdict
 from pathlib import Path
 from unittest.mock import Mock
 
@@ -16,8 +15,6 @@ from ansible.playbook.block import Block
 from ansible.playbook.play import Play
 from ansible.playbook.task import Task
 from ansible.vars.manager import VariableManager
-
-from ansible_collections.arista.avd.plugins.plugin_utils.utils import AntaWorkflowFilter, AntaWorkflowHandler
 
 TESTS_PATH = Path(__file__).parents[4]
 DEFAULT_INVENTORY_PATH = TESTS_PATH / "inventory/inventory.yml"
@@ -68,7 +65,7 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
     return Task.load(task_data, block, variable_manager=variable_manager, loader=loader)
 
 
-def create_log_record(name: str, level: int, msg: str, unique_id: str | None = None) -> logging.LogRecord:
+def create_log_record(name: str, level: int, msg: str, unique_id: str | None = None, args: tuple = ()) -> logging.LogRecord:
     """Helper function to create a LogRecord, optionally adding unique_id."""
     record = logging.LogRecord(
         name=name,
@@ -76,7 +73,7 @@ def create_log_record(name: str, level: int, msg: str, unique_id: str | None = N
         pathname="dummy_path",
         lineno=123,
         msg=msg,
-        args=(),
+        args=args,
         exc_info=None,
         func="dummy_func",
     )
@@ -87,34 +84,6 @@ def create_log_record(name: str, level: int, msg: str, unique_id: str | None = N
 
 
 @pytest.fixture
-def unique_id() -> str:
-    """Provides a sample unique ID."""
-    return "anta-run-abc123"
-
-
-@pytest.fixture
-def anta_workflow_filter(unique_id: str) -> AntaWorkflowFilter:
-    """Fixture for creating an AntaWorkflowFilter instance."""
-    return AntaWorkflowFilter(unique_id=unique_id)
-
-
-@pytest.fixture
-def log_stats() -> defaultdict[str, dict[str, int]]:
-    """Fixture for creating the log statistics dictionary."""
-    return defaultdict(lambda: {"error_count": 0, "warning_count": 0})
-
-
-@pytest.fixture
 def mock_display() -> Mock:
     """Fixture for creating a mock Ansible Display object."""
     return Mock(spec=Display)
-
-
-@pytest.fixture
-def anta_workflow_handler(log_stats: defaultdict[str, dict[str, int]], mock_display: Mock) -> AntaWorkflowHandler:
-    """Fixture for creating an AntaWorkflowHandler instance."""
-    handler = AntaWorkflowHandler(log_stats=log_stats, display=mock_display)
-    # Set a basic formatter for predictable output
-    formatter = logging.Formatter("%(message)s")
-    handler.setFormatter(formatter)
-    return handler

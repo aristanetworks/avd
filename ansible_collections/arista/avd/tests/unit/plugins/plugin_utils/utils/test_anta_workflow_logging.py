@@ -4,145 +4,146 @@
 """Unit tests for the anta_logging_filter module."""
 
 import logging
-from collections import defaultdict
 from unittest.mock import Mock
 
 import pytest
+from ansible.cli import Display
 
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import AntaWorkflowFilter, AntaWorkflowHandler
-from ansible_collections.arista.avd.plugins.plugin_utils.utils.anta_workflow_logging import ANTA_LIBRARIES
 
 from .conftest import create_log_record
 
 
 class TestAntaWorkflowFilter:
-    """Tests for the AntaWorkflowFilter class."""
+    """Test suite for the AntaWorkflowFilter class."""
 
-    def test_injects_unique_id(
-        self,
-        anta_workflow_filter: AntaWorkflowFilter,
-        unique_id: str,
-    ) -> None:
-        """Test that unique_id is injected into both ANTA and non-ANTA records."""
-        record_anta = create_log_record(name="anta.runner", level=logging.INFO, msg="ANTA message")
-        record_non_anta = create_log_record(name="pyavd", level=logging.INFO, msg="Non-ANTA message")
+    def test_anta_workflow_filter_init(self) -> None:
+        """Test AntaWorkflowFilter initialization."""
+        test_id = "test-filter-id-123"
+        custom_filter = AntaWorkflowFilter(unique_id=test_id)
+        assert custom_filter.unique_id == test_id
 
-        anta_workflow_filter.filter(record_anta)
-        anta_workflow_filter.filter(record_non_anta)
+    def test_anta_workflow_filter_adds_unique_id(self) -> None:
+        """Test AntaWorkflowFilter adds unique_id to the record."""
+        test_id = "filter-id-for-record"
+        custom_filter = AntaWorkflowFilter(unique_id=test_id)
+        record = create_log_record("test.logger", logging.INFO, "A test message")
 
-        assert getattr(record_anta, "unique_id", None) == unique_id
-        assert getattr(record_non_anta, "unique_id", None) == unique_id
+        # Ensure unique_id is not present before filtering
+        assert not hasattr(record, "unique_id")
 
-    def test_filters_anta_below_warning(
-        self,
-        anta_workflow_filter: AntaWorkflowFilter,
-    ) -> None:
-        """Test ANTA records below WARNING are filtered out (return False)."""
-        info_anta_record = create_log_record(name="anta.runner", level=logging.INFO, msg="anta info")
-        debug_anta_record = create_log_record(name="anta.models", level=logging.DEBUG, msg="anta debug")
+        result = custom_filter.filter(record)
 
-        assert anta_workflow_filter.filter(info_anta_record) is False
-        assert anta_workflow_filter.filter(debug_anta_record) is False
-
-    def test_allows_non_anta(
-        self,
-        anta_workflow_filter: AntaWorkflowFilter,
-    ) -> None:
-        """Test non-ANTA records are allowed regardless of level (return True)."""
-        info_non_anta_record = create_log_record(name="pyavd", level=logging.INFO, msg="non-anta info")
-        debug_non_anta = create_log_record(name="otherlib", level=logging.DEBUG, msg="other debug")
-        warn_non_anta = create_log_record(name="another.lib", level=logging.WARNING, msg="other warn")
-
-        assert anta_workflow_filter.filter(info_non_anta_record) is True
-        assert anta_workflow_filter.filter(debug_non_anta) is True
-        assert anta_workflow_filter.filter(warn_non_anta) is True
-
-    def test_allows_anta_warning_or_higher(
-        self,
-        anta_workflow_filter: AntaWorkflowFilter,
-    ) -> None:
-        """Test ANTA records at WARNING or higher levels are allowed (return True)."""
-        warn_anta_record = create_log_record(name="anta.runner", level=logging.WARNING, msg="anta warning")
-        error_anta_record = create_log_record(name="anta.inventory", level=logging.ERROR, msg="anta error")
-        critical_anta_record = create_log_record(name="anta.reporter", level=logging.CRITICAL, msg="anta critical")
-
-        assert anta_workflow_filter.filter(warn_anta_record) is True
-        assert anta_workflow_filter.filter(error_anta_record) is True
-        assert anta_workflow_filter.filter(critical_anta_record) is True
-
-    @pytest.mark.parametrize("anta_lib_name", [pytest.param(lib_name, id=lib_name) for lib_name in ANTA_LIBRARIES])
-    def test_filter_various_anta_libs(self, anta_workflow_filter: AntaWorkflowFilter, anta_lib_name: str) -> None:
-        """Test filtering logic against various ANTA library names."""
-        info_record = create_log_record(name=f"{anta_lib_name}.sub", level=logging.INFO, msg="Info")
-        warn_record = create_log_record(name=anta_lib_name, level=logging.WARNING, msg="Warn")
-
-        assert anta_workflow_filter.filter(info_record) is False
-        assert anta_workflow_filter.filter(warn_record) is True
+        assert result is True
+        assert hasattr(record, "unique_id")
+        assert record.unique_id == test_id
 
 
 class TestAntaWorkflowHandler:
-    """Tests for the AntaWorkflowHandler class."""
+    """Test suite for the AntaWorkflowHandler class."""
+
+    def test_anta_workflow_handler_init_with_display(self, mock_display: Mock) -> None:
+        """Test AntaWorkflowHandler initialization with a provided display."""
+        errors_list = [False]
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        assert handler.display == mock_display
+        assert handler.has_errors_ref == errors_list
+
+    def test_anta_workflow_handler_init_without_display(self) -> None:
+        """Test AntaWorkflowHandler initialization without a display (it should create one)."""
+        errors_list = [False]
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list)
+        assert handler.display is not None
+        assert isinstance(handler.display, Display)
+        assert handler.has_errors_ref == errors_list
 
     @pytest.mark.parametrize(
-        ("level", "expected_display_method", "expected_error_count", "expected_warning_count"),
+        ("level", "msg", "expected_display_method_name", "set_error_true"),
         [
-            pytest.param(logging.DEBUG, "vvv", 0, 0, id="DEBUG"),
-            pytest.param(logging.INFO, "v", 0, 0, id="INFO"),
-            pytest.param(logging.WARNING, "warning", 0, 1, id="WARNING"),
-            pytest.param(logging.ERROR, "error", 1, 0, id="ERROR"),
-            pytest.param(logging.CRITICAL, "error", 1, 0, id="CRITICAL"),
+            pytest.param(logging.DEBUG, "Debug message", "vvv", False, id="debug_level"),
+            pytest.param(logging.INFO, "Info message", "v", False, id="info_level"),
+            pytest.param(logging.WARNING, "Warning message", "warning", False, id="warning_level"),
+            pytest.param(logging.ERROR, "Error message", "error", True, id="error_level"),
+            pytest.param(logging.CRITICAL, "Critical message", "error", True, id="critical_level"),
         ],
     )
-    def test_emit_routing_and_stats(
-        self,
-        anta_workflow_handler: AntaWorkflowHandler,
-        mock_display: Mock,
-        log_stats: defaultdict[str, dict[str, int]],
-        unique_id: str,
-        level: int,
-        expected_display_method: str,
-        expected_error_count: int,
-        expected_warning_count: int,
-    ) -> None:
-        """Test log routing to correct Display method and stats tracking."""
-        message = f"Message level {level}"
-        # Use helper to create record *with* unique_id already set
-        record = create_log_record(name="test.logger", level=level, msg=message, unique_id=unique_id)
-        expected_formatted_message = f"[{unique_id}] {message}"
+    def test_anta_workflow_handler_emit_levels(self, mock_display: Mock, level: int, msg: str, expected_display_method_name: str, set_error_true: bool) -> None:
+        """Test AntaWorkflowHandler emit calls the correct display method and updates errors."""
+        unique_context_id = "ctx-123"
+        errors_list = [False]
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        # Set a basic formatter to ensure record.getMessage() works as expected
+        handler.setFormatter(logging.Formatter("%(message)s"))
 
-        anta_workflow_handler.emit(record)
+        record = create_log_record("test.emit", level, msg, unique_id=unique_context_id)
+        handler.emit(record)
 
-        display_method = getattr(mock_display, expected_display_method)
+        expected_message = f"[{unique_context_id}] {msg}"
 
-        if level >= logging.ERROR:
-            display_method.assert_called_once_with(expected_formatted_message, wrap_text=False)
+        # Get the mock method from the display mock
+        display_method_mock = getattr(mock_display, expected_display_method_name)
+
+        if expected_display_method_name == "error":
+            display_method_mock.assert_called_once_with(expected_message, wrap_text=False)
         else:
-            display_method.assert_called_once_with(expected_formatted_message)
+            display_method_mock.assert_called_once_with(expected_message)
 
-        # Assert other display methods were not called
-        all_methods = {"error", "warning", "v", "vvv"}
-        called_method_set = {expected_display_method}
-        for method_name in all_methods - called_method_set:
-            getattr(mock_display, method_name).assert_not_called()
+        # Verify other display methods were NOT called
+        all_display_methods = {"v", "vvv", "warning", "error"}
+        for method_name in all_display_methods:
+            if method_name != expected_display_method_name:
+                method_to_check = getattr(mock_display, method_name)
+                method_to_check.assert_not_called()
 
-        assert log_stats[unique_id]["error_count"] == expected_error_count
-        assert log_stats[unique_id]["warning_count"] == expected_warning_count
+        assert errors_list[0] is set_error_true
 
-    def test_emit_with_unknown_unique_id(
-        self,
-        anta_workflow_handler: AntaWorkflowHandler,
-        mock_display: Mock,
-        log_stats: defaultdict[str, dict[str, int]],
-    ) -> None:
-        """Test handling when unique_id is missing from the record (uses 'unknown')."""
-        message = "Error without ID"
-        # Create record *without* unique_id (level ERROR)
-        record = create_log_record(name="test.logger", level=logging.ERROR, msg=message)
-        # The handler should format using 'unknown' when unique_id is missing
-        expected_formatted_message = f"[unknown] {message}"
+    def test_anta_workflow_handler_emit_unknown_unique_id(self, mock_display: Mock) -> None:
+        """Test AntaWorkflowHandler emit with a record that has no unique_id attribute."""
+        errors_list = [False]
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        handler.setFormatter(logging.Formatter("%(message)s"))
 
-        anta_workflow_handler.emit(record)
+        log_message = "Info message without explicit unique_id"
+        # Create a record without unique_id (it won't be added by the helper in this case)
+        record = logging.LogRecord(
+            name="test.unknown_id",
+            level=logging.INFO,
+            pathname="dummy_path",
+            lineno=123,
+            msg=log_message,
+            args=(),
+            exc_info=None,
+            func="dummy_func",
+        )
+        # Sanity check: ensure unique_id is not on the record
+        assert not hasattr(record, "unique_id")
 
-        mock_display.error.assert_called_once_with(expected_formatted_message, wrap_text=False)
-        assert log_stats["unknown"]["error_count"] == 1
-        assert log_stats["unknown"]["warning_count"] == 0  # Ensure warning count is not affected
+        handler.emit(record)
+
+        expected_message = f"[unknown] {log_message}"
+        mock_display.v.assert_called_once_with(expected_message)
+        assert errors_list[0] is False
+
+    def test_anta_workflow_handler_emit_message_formatting_with_args(self, mock_display: Mock) -> None:
+        """Test that emit correctly formats messages with arguments."""
+        unique_context_id = "ctx-format"
+        errors_list = [False]
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        # Using a formatter that includes the message part
+        formatter = logging.Formatter("%(message)s")
+        handler.setFormatter(formatter)
+
+        msg_template = "User %s logged in from %s"
+        msg_args = ("testuser", "192.168.1.100")
+        # The LogRecord will store the template and args separately
+        # record.getMessage() or handler.format(record) will combine them
+        record = create_log_record("test.format", logging.INFO, msg_template, unique_id=unique_context_id, args=msg_args)
+
+        handler.emit(record)
+
+        # The formatter will produce "User testuser logged in from 192.168.1.100"
+        formatted_base_message = msg_template % msg_args
+        expected_final_message = f"[{unique_context_id}] {formatted_base_message}"
+
+        mock_display.v.assert_called_once_with(expected_final_message)
+        assert not errors_list[0]

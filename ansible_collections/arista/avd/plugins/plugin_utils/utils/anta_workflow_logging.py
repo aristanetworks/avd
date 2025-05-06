@@ -52,6 +52,7 @@ class AntaWorkflowHandler(logging.Handler):
 
         Args:
           has_errors_ref: Mutable boolean list to track errors.
+                          It's expected to be a list with one boolean element.
           display: Optional Ansible Display instance. Retrieves singleton if None.
         """
         super().__init__()
