@@ -58736,27 +58736,27 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         RapidPvstInstances._item_type = RapidPvstInstancesItem
 
-        class SpanningTreePortIdAllocationPortChannelRange(AvdModel):
+        class PortIdAllocationPortChannelRange(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"minimum_range": {"type": int}, "maximum_range": {"type": int}}
-            minimum_range: int
+            _fields: ClassVar[dict] = {"minimum": {"type": int}, "maximum": {"type": int}}
+            minimum: int
             """Specify minimum value for reserved range."""
-            maximum_range: int
+            maximum: int
             """Specify maximum value for reserved range."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, minimum_range: int | UndefinedType = Undefined, maximum_range: int | UndefinedType = Undefined) -> None:
+                def __init__(self, *, minimum: int | UndefinedType = Undefined, maximum: int | UndefinedType = Undefined) -> None:
                     """
-                    SpanningTreePortIdAllocationPortChannelRange.
+                    PortIdAllocationPortChannelRange.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        minimum_range: Specify minimum value for reserved range.
-                        maximum_range: Specify maximum value for reserved range.
+                        minimum: Specify minimum value for reserved range.
+                        maximum: Specify maximum value for reserved range.
 
                     """
 
@@ -58770,7 +58770,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mst_instances": {"type": MstInstances},
             "no_spanning_tree_vlan": {"type": str},
             "rapid_pvst_instances": {"type": RapidPvstInstances},
-            "spanning_tree_port_id_allocation_port_channel_range": {"type": SpanningTreePortIdAllocationPortChannelRange},
+            "port_id_allocation_port_channel_range": {"type": PortIdAllocationPortChannelRange},
         }
         root_super: bool | None
         edge_port: EdgePort
@@ -58790,7 +58790,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         rapid_pvst_instances: RapidPvstInstances
         """Subclass of AvdIndexedList with `RapidPvstInstancesItem` items. Primary key is `id` (`str`)."""
-        spanning_tree_port_id_allocation_port_channel_range: SpanningTreePortIdAllocationPortChannelRange
+        port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange
         """
         Specify range of port-ids to reserve for port-channels.
 
@@ -58811,7 +58811,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mst_instances: MstInstances | UndefinedType = Undefined,
                 no_spanning_tree_vlan: str | None | UndefinedType = Undefined,
                 rapid_pvst_instances: RapidPvstInstances | UndefinedType = Undefined,
-                spanning_tree_port_id_allocation_port_channel_range: SpanningTreePortIdAllocationPortChannelRange | UndefinedType = Undefined,
+                port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTree.
@@ -58831,7 +58831,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        "< vlan_id >, < vlan_id >-< vlan_id >"
                        Example: 105,202,505-506
                     rapid_pvst_instances: Subclass of AvdIndexedList with `RapidPvstInstancesItem` items. Primary key is `id` (`str`).
-                    spanning_tree_port_id_allocation_port_channel_range:
+                    port_id_allocation_port_channel_range:
                        Specify range of port-ids to reserve for port-channels.
 
                        Subclass of AvdModel.
