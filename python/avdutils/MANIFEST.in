@@ -1,0 +1,2 @@
+include ../../rust/*/Cargo.toml
+recursive-include ../../rust/ *.rs
