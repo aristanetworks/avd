@@ -112,14 +112,18 @@ class RouterBgpMixin(Protocol):
                     )
 
         # Neighbors and VRF Neighbors
-        elif not self.shared_utils.underlay_ipv6_numbered:
+        else:
+            if self.shared_utils.underlay_ipv6_numbered:
+                peer_group = self.inputs.bgp_peer_groups.ipv6_underlay_peers.name
+            else:
+                peer_group = self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
             for link in self._underlay_links:
                 if link.type != "underlay_p2p":
                     continue
 
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
                     ip_address=link.peer_ip_address,
-                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                    peer_group=peer_group,
                     remote_as=link.peer_bgp_as,
                     peer=link.peer,
                     description=f"{link.peer}_{link.peer_interface}",
@@ -142,43 +146,7 @@ class RouterBgpMixin(Protocol):
 
                     self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
                         ip_address=subinterface.peer_ip_address,
-                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                        remote_as=link.peer_bgp_as,
-                        description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
-                        bfd=link.bfd,
-                    )
-
-        elif self.shared_utils.underlay_ipv6_numbered:
-            for link in self._underlay_links:
-                if link.type != "underlay_p2p":
-                    continue
-
-                neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
-                    ip_address=link.peer_ip_address,
-                    peer_group=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name,
-                    remote_as=link.peer_bgp_as,
-                    peer=link.peer,
-                    description=f"{link.peer}_{link.peer_interface}",
-                    bfd=link.bfd,
-                )
-
-                if self.inputs.shutdown_bgp_towards_undeployed_peers and not link.peer_is_deployed:
-                    neighbor.shutdown = True
-
-                if self.inputs.underlay_filter_peer_as:
-                    neighbor.route_map_out = f"RM-BGP-AS{link.peer_bgp_as}-OUT"
-
-                self.structured_config.router_bgp.neighbors.append(neighbor)
-
-                for subinterface in link.subinterfaces:
-                    subinterface_vrf = subinterface.vrf
-                    # We need to add basic BGP VRF config in case the device is not covered by network_services. (Like a spine)
-                    if subinterface_vrf not in self.structured_config.router_bgp.vrfs:
-                        self.structured_config.router_bgp.vrfs.append_new(name=subinterface_vrf, router_id=self.shared_utils.router_id)
-
-                    self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
-                        ip_address=subinterface.peer_ip_address,
-                        peer_group=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name,
+                        peer_group=peer_group,
                         remote_as=link.peer_bgp_as,
                         description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                         bfd=link.bfd,
