@@ -398,6 +398,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      static:
+        enabled: true
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.109:11
     route_targets:

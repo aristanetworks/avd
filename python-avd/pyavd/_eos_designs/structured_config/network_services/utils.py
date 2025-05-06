@@ -99,6 +99,10 @@ class UtilsMixin(Protocol):
             for static_route in static_routes:
                 vrf_default_ipv4_static_routes.add(static_route.prefix or static_route.destination_address_prefix)
 
+            for svi in tenant.vrfs["default"].svis:
+                for static_route in svi.static_routes:
+                    vrf_default_ipv4_static_routes.add(static_route.prefix)
+
             vrf_default_redistribute_static = default(tenant.vrfs["default"].redistribute_static, vrf_default_redistribute_static)
 
         if (self.shared_utils.overlay_evpn and self.shared_utils.overlay_vtep) or self.shared_utils.is_wan_router:

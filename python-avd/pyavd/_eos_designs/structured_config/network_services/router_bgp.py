@@ -158,7 +158,11 @@ class RouterBgpMixin(Protocol):
                         bgp_vrf.redistribute.connected.enabled = True
                     # Redistribution of static routes for VRF default are handled elsewhere
                     # since there is a choice between redistributing to underlay or overlay.
-                    if vrf.redistribute_static or (vrf.static_routes and vrf.redistribute_static is None):
+                    vrf_svi_static_routes = False
+                    if any(len(svi.static_routes) > 0 for svi in vrf.svis):
+                        vrf_svi_static_routes = True
+
+                    if vrf.redistribute_static or ((vrf.static_routes or vrf_svi_static_routes) and vrf.redistribute_static is None):
                         bgp_vrf.redistribute.static.enabled = True
 
                     if self.shared_utils.inband_mgmt_vrf == vrf.name and self.shared_utils.inband_management_parent_vlans:

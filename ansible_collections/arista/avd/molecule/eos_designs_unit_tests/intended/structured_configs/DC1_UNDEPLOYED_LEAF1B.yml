@@ -530,6 +530,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      static:
+        enabled: true
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.22:11
     route_targets:
