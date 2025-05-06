@@ -136,7 +136,7 @@ rr:
     node_sid_base: 100
     isis_system_id_prefix: '0000.0002'
     overlay_address_families: [ evpn, vpn-ipv4, vpn-ipv6 ]
-    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1 ]
+    mpls_route_reflectors: [ SITE1-RR1, SITE2-RR1]
     bgp_defaults:
       - distance bgp 20 200 200
       - bgp route-reflector preserve-attributes always
@@ -153,6 +153,9 @@ rr:
         - name: SITE2-RR1
           id: 9
           mgmt_ip: 10.30.30.109/24
+        - name: SITE3-RR1
+          id: 10
+          mgmt_ip: 10.30.30.120/24
 
 # Core underlay interfaces
 core_interfaces:
