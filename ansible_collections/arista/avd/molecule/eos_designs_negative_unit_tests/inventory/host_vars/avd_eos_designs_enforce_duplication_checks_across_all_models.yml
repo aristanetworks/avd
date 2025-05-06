@@ -7,8 +7,6 @@ l3spine:
     - name: avd_eos_designs_enforce_duplication_checks_across_all_models
       id: 1
       loopback_ipv4_pool: 192.168.100.0/24
-      raw_eos_cli: |
-        ! RAW_EOS_CLI
 
 l3_edge:
   p2p_links:
