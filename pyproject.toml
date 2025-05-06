@@ -98,7 +98,10 @@ convention = "google"
   "S101",  # Accept 'assert' in pytest.
   "INP001",  # implicit namespace package. Add an `__init__.py` - Tests are not in packages
 ]
-
+"python/**/tests/**/*" = [
+  "S101",  # Accept 'assert' in pytest.
+  "INP001",  # implicit namespace package. Add an `__init__.py` - Tests are not in packages
+]
 "python-avd/pyavd/_anta/index.py" = [
   "F403",  # Allow wildcard imports to avoid cluttering the index
   "F405",  # Allow names defined in via a wildcard import
@@ -111,7 +114,7 @@ max-returns = 10
 max-statements = 148
 
 [tool.ruff.lint.isort]
-known-first-party = ["pyavd", "schema_tools"]
+known-first-party = ["avdutils", "pyavd", "schema_tools"]
 
 [tool.ruff.format]
 docstring-code-format = true
