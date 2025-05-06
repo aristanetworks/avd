@@ -1328,7 +1328,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -1453,7 +1454,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -1897,7 +1899,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -2022,7 +2025,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -5284,7 +5288,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5409,7 +5414,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -5853,7 +5859,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Enables deviation of the routing protocol used on this link from the fabric underlay default.
             -
-            ebgp: Enforce plain IPv4 BGP peering
+            ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+            configured.
             """
             structured_config: dict
             """
@@ -5978,7 +5985,8 @@ class EosDesigns(EosDesignsRootModel):
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
                            -
-                           ebgp: Enforce plain IPv4 BGP peering
+                           ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the RFC5549 underlay if
+                           configured.
                         structured_config:
                            Custom structured config for interfaces.
                            Note! The content of this dictionary is _not_ validated by
@@ -38501,7 +38509,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
+                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
                             "tag": {"type": int},
@@ -38512,8 +38522,12 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         destination_address_prefix: str | None
                         """IPv4_address."""
+                        prefix: str | None
+                        """Destination prefix."""
                         gateway: str | None
                         """IPv4_address."""
+                        next_hop: str | None
+                        """Next-hop IPv4 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -38531,7 +38545,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
                                 tag: int | None | UndefinedType = Undefined,
@@ -38548,7 +38564,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv4_address.
+                                    prefix: Destination prefix.
                                     gateway: IPv4_address.
+                                    next_hop: Next-hop IPv4 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
@@ -38574,7 +38592,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
+                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
                             "tag": {"type": int},
@@ -38585,7 +38605,11 @@ class EosDesigns(EosDesignsRootModel):
                         }
                         destination_address_prefix: str | None
                         """IPv6_address."""
+                        prefix: str | None
+                        """Destination prefix."""
                         gateway: str | None
+                        next_hop: str | None
+                        """Next-hop IPv6 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -38603,7 +38627,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
                                 tag: int | None | UndefinedType = Undefined,
@@ -38620,7 +38646,9 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv6_address.
+                                    prefix: Destination prefix.
                                     gateway: gateway
+                                    next_hop: Next-hop IPv6 address.
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag

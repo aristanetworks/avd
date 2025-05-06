@@ -313,6 +313,11 @@ router_bgp:
           originate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+    neighbors:
+    - ip_address: 10.23.23.2
+      next_hop:
+        address_family_ipv6:
+          enabled: false
   vrfs:
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.10:14

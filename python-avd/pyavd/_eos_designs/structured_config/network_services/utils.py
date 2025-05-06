@@ -97,7 +97,7 @@ class UtilsMixin(Protocol):
                 continue
 
             for static_route in static_routes:
-                vrf_default_ipv4_static_routes.add(static_route.destination_address_prefix)
+                vrf_default_ipv4_static_routes.add(static_route.prefix or static_route.destination_address_prefix)
 
             vrf_default_redistribute_static = default(tenant.vrfs["default"].redistribute_static, vrf_default_redistribute_static)
 

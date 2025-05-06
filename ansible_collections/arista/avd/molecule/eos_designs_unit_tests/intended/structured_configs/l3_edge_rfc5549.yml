@@ -1,0 +1,135 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: ethernet1
+  description: P2P_peer_without_underlay_ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.0/31
+  peer: peer_without_underlay
+  peer_interface: ethernet1
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet2
+  description: P2P_peer_with_underlay_ethernet2
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.2/31
+  ipv6_enable: true
+  peer: peer_with_underlay
+  peer_interface: ethernet2
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet3
+  description: P2P_peer_without_underlay_with_ebgp_ethernet3
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.4/31
+  peer: peer_without_underlay_with_ebgp
+  peer_interface: ethernet3
+  peer_type: other
+  switchport:
+    enabled: false
+- name: ethernet4
+  description: P2P_peer_with_underlay_with_ebgp_ethernet4
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.0.6/31
+  peer: peer_with_underlay_with_ebgp
+  peer_interface: ethernet4
+  peer_type: other
+  switchport:
+    enabled: false
+hostname: l3_edge_rfc5549
+ip_routing_ipv6_interfaces: true
+ipv6_unicast_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 1.2.3.1/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 1.2.3.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bgp:
+  as: '65000'
+  router_id: 1.2.3.1
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  neighbors:
+  - ip_address: 192.168.0.5
+    remote_as: '65003'
+    peer: peer_without_underlay_with_ebgp
+    description: peer_without_underlay_with_ebgp
+  - ip_address: 192.168.0.7
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65004'
+    peer: peer_with_underlay_with_ebgp
+    description: peer_with_underlay_with_ebgp
+  neighbor_interfaces:
+  - name: ethernet2
+    remote_as: '65002'
+    peer: peer_with_underlay
+    peer_group: IPv4-UNDERLAY-PEERS
+    description: peer_with_underlay
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+    neighbors:
+    - ip_address: 192.168.0.7
+      next_hop:
+        address_family_ipv6:
+          enabled: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false
