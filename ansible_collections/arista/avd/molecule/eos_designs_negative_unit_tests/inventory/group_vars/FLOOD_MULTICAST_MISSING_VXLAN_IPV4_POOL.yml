@@ -11,7 +11,7 @@ l3leaf:
   node_groups:
     - group: flood_multicast_missing
       nodes:
-        - name: flood_multicast_missing_1a
+        - name: flood-multicast-missing-1a
           bgp_as: 42
           id: 42
 

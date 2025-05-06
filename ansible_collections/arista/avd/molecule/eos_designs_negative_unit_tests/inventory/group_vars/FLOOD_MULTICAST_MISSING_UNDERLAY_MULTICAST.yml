@@ -9,7 +9,7 @@ l3leaf:
   node_groups:
     - group: flood_multicast_missing
       nodes:
-        - name: flood_multicast_missing_underlay_multicast_1a
+        - name: flood-multicast-missing-underlay-multicast-1a
           bgp_as: 42
           id: 42
 
@@ -20,7 +20,7 @@ tenants:
     mac_vrf_vni_base: 10000
     l2vlans:
       - id: 256
-        name: "flood_multicast_missing_underlay_multicast_1a"
+        name: "flood-multicast-missing-underlay-multicast-1a"
         tags: ['test_l2']
         vxlan_flood_multicast:
           enabled: true
