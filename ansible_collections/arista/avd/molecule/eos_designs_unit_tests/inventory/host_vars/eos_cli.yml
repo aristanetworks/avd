@@ -1,4 +1,5 @@
 ---
+# Testing the rendering of `eos_cli` when this knob is true
 avd_eos_designs_enforce_duplication_checks_across_all_models: true
 
 type: l3spine
