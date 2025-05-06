@@ -86,8 +86,8 @@ tenants:
             nodes:
               - SITE2-LER1
         static_routes:
-          - destination_address_prefix: 123.0.10.0/24
-            gateway: 123.1.1.3
+          - prefix: 123.0.10.0/24
+            next_hop: 123.1.1.3
             name: TENANT_B_SITE_5_SUBNET
             interface: Ethernet6.10
             nodes:
