@@ -259,7 +259,7 @@ metadata:
       pathgroup: INET
 port_channel_interfaces:
 - name: Port-Channel2
-  description: Cybercast_101_peer1_Port-Channel10
+  description: Port-Channel with 3 member ports.
   shutdown: false
   ip_address: 192.168.1.102/31
   service_profile: TEST-QOS-PROFILE1
