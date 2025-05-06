@@ -2,6 +2,13 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
+  skip:
+    # pre-commit.ci doesn't have Rust installed
+    - fmt
+    - cargo-check
+    - cargo-deny
+    - clippy
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
@@ -31,7 +38,7 @@ repos:
       - id: insert-license
         name: Check and insert license on Python files.
         exclude: ansible_collections/arista/avd/(plugins/module_utils|tests/unit(/module_utils|/modules|))/__init__.py
-        files: .*\.py$
+        files: .*\.pyi?$
         args:
           - --license-filepath
           - development/license-short.txt
@@ -77,6 +84,39 @@ repos:
           - --fuzzy-match-generates-todo
           - --comment-style
           - '<!--|  ~|  -->'
+
+      - name: Check and insert license on Rust files
+        id: insert-license
+        files: .*\.rs$
+        args:
+          - --license-filepath
+          - development/license-short.txt
+          - --use-current-year
+          - --allow-past-years
+          - --fuzzy-match-generates-todo
+          - --comment-style
+          - "//"
+
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: fmt
+        name: Lint Rust files using fmt
+        files: ^rust/
+      - id: cargo-check
+        name: Lint Rust files using cargo check
+        files: ^rust/
+      - id: clippy
+        name: Lint Rust files using clippy
+        args: ["--all-targets", "--all-features"]
+        files: ^rust/
+
+  - repo: https://github.com/EmbarkStudios/cargo-deny
+    rev: 0.18.1
+    hooks:
+      # Check licenses of Rust dependencies
+      - id: cargo-deny
+        files: ^rust/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
@@ -137,7 +177,6 @@ repos:
             .*\.svg|  # Exclude all .svg files
             .*\.excalidraw|  # Exclude all .excalidraw files
             .*\.rst|  # Exclude all .rst files
-            python-avd/pyavd/vendor/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/CHANGELOG.rst| # Exclude auto generated CHANGELOG.rst file
             ansible_collections/arista/avd/changelogs/.*|  # Exclude all files in this directory
             ansible_collections/arista/avd/roles/.*/docs/tables/.*\.md| # Exclude all .md files in tables

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools", "setuptools-rust"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "avdutils"
+version = "0.0.1"
+
+[dependency-groups]
+pytest = ["pytest"]
+coverage = ["coverage[toml]"]
+
+[tool.distutils.bdist_wheel]
+py-limited-api = "cp310"
+
+[tool.setuptools.packages.find]
+include = ["src"]
+
+[[tool.setuptools-rust.ext-modules]]
+target = "avdutils.validation"
+path = "../../rust/validation/Cargo.toml"
+binding = "PyO3"
+features = ["python_bindings"]
+
+[tool.pytest.ini_options]
+testpaths = "tests"
