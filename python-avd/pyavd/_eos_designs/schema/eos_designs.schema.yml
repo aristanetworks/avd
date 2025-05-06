@@ -7415,9 +7415,23 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
+                    prefix:
+                      type: str
+                      description: Destination prefix.
                     gateway:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
+                    next_hop:
+                      type: str
+                      description: Next-hop IPv4 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.
@@ -7456,8 +7470,22 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv6_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
+                    prefix:
+                      type: str
+                      description: Destination prefix.
                     gateway:
                       type: str
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
+                    next_hop:
+                      type: str
+                      description: Next-hop IPv6 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.

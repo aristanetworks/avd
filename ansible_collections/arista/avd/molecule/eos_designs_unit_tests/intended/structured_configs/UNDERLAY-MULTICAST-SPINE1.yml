@@ -188,8 +188,6 @@ router_pim_sparse_mode:
       access_lists:
       - RP_ACL_2
     - address: 192.168.200.3
-      access_lists:
-      - RP_ACL_3
     - address: 192.168.200.4
       access_lists:
       - RP_ACL_4
@@ -204,10 +202,6 @@ standard_access_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 239.255.2.0/24
-- name: RP_ACL_3
-  sequence_numbers:
-  - sequence: 10
-    action: permit 239.255.3.0/24
 - name: RP_ACL_4
   sequence_numbers:
   - sequence: 10
