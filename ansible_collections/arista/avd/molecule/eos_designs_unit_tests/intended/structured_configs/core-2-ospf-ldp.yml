@@ -165,7 +165,7 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 1000full
   channel_group:
-    id: 14
+    id: 9
     mode: active
   peer: core-1-isis-sr-ldp
   peer_interface: Ethernet14
@@ -175,7 +175,7 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 1000full
   channel_group:
-    id: 14
+    id: 9
     mode: active
   peer: core-1-isis-sr-ldp
   peer_interface: Ethernet15
@@ -185,7 +185,7 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 1000full
   channel_group:
-    id: 16
+    id: 109
     mode: active
   peer: core-1-isis-sr-ldp
   peer_interface: Ethernet16
@@ -195,10 +195,30 @@ ethernet_interfaces:
   shutdown: false
   speed: forced 1000full
   channel_group:
-    id: 16
+    id: 109
     mode: active
   peer: core-1-isis-sr-ldp
   peer_interface: Ethernet17
+  peer_type: core_router
+- name: Ethernet18
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet18
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 18
+    mode: active
+  peer: core-1-isis-sr-ldp
+  peer_interface: Ethernet18
+  peer_type: core_router
+- name: Ethernet19
+  description: P2P_LINK_TO_CORE-1-ISIS-SR-LDP_Ethernet19
+  shutdown: false
+  speed: forced 1000full
+  channel_group:
+    id: 18
+    mode: active
+  peer: core-1-isis-sr-ldp
+  peer_interface: Ethernet19
   peer_type: core_router
 hostname: core-2-ospf-ldp
 ip_routing: true
@@ -245,8 +265,8 @@ port_channel_interfaces:
   peer_type: core_router
   switchport:
     enabled: false
-- name: Port-Channel14
-  description: CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_14
+- name: Port-Channel9
+  description: CUSTOM_DESCRIPTION_ON_P2P_PORT_CHANNEL_9
   shutdown: false
   mtu: 1500
   mpls:
@@ -263,7 +283,7 @@ port_channel_interfaces:
   peer_type: core_router
   switchport:
     enabled: false
-- name: Port-Channel16
+- name: Port-Channel109
   description: CUSTOM_DESCRIPTION_ON_P2P_LINK_B
   shutdown: false
   mtu: 1500
@@ -287,6 +307,24 @@ port_channel_interfaces:
   ospf_area: 0.0.0.0
   peer: core-1-isis-sr-ldp
   peer_interface: Port-Channel16
+  peer_type: core_router
+  switchport:
+    enabled: false
+- name: Port-Channel18
+  description: P2P_LINK_TO_core-1-isis-sr-ldp_Port-Channel12345
+  shutdown: false
+  mtu: 1500
+  mpls:
+    ip: true
+    ldp:
+      interface: true
+      igp_sync: true
+  ip_address: 100.64.48.25/31
+  ipv6_enable: true
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  peer: core-1-isis-sr-ldp
+  peer_interface: Port-Channel12345
   peer_type: core_router
   switchport:
     enabled: false
@@ -326,8 +364,9 @@ router_ospf:
     - Ethernet6
     - Ethernet10
     - Port-Channel12
-    - Port-Channel14
-    - Port-Channel16
+    - Port-Channel9
+    - Port-Channel109
+    - Port-Channel18
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 spanning_tree:
