@@ -11,8 +11,6 @@ underlay_multicast_rps:
       - 239.255.2.0/24
     access_list_name: RP_ACL_2
   - rp: 192.168.200.3
-    groups:
-      - 239.255.3.0/24
     access_list_name: RP_ACL_3
     nodes:
       - name: UNDERLAY-MULTICAST-L3LEAF1A

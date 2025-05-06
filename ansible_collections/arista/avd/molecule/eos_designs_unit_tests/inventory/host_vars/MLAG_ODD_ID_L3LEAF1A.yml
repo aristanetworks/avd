@@ -1,0 +1,16 @@
+---
+platform_settings:
+  - platforms: ['default']
+    feature_support:
+      queue_monitor_length_notify: true
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+
+queue_monitor_length:
+  enabled: true
+  default_thresholds:
+    low: 10
+    high: 100
+  log: 100
+  notifying: true
