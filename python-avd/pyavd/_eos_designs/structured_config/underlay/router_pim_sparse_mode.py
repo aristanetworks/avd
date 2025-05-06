@@ -50,6 +50,7 @@ class RouterPimSparseModeMixin(Protocol):
                 if not peer_facts.router_id:
                     msg = f"'router_id' is required but was not found for {node.name}."
                     raise AristaAvdInvalidInputsError(msg)
+
                 other_anycast_rp_addresses.append_new(address=peer_facts.router_id)
             self.structured_config.router_pim_sparse_mode.ipv4.anycast_rps.append_new(
                 address=rp_entry.rp, other_anycast_rp_addresses=other_anycast_rp_addresses
