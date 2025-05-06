@@ -2,7 +2,7 @@ fabric_name: FABRIC_INBAND_MANAGEMENT_IPV6
 
 default_node_types:
   - match_hostnames:
-      - inband_mgmt_missing_id_with_ipv6_subnet
+      - inband-mgmt-missing-id-with-ipv6-subnet
     node_type: l2leaf
 
 default_interfaces:
@@ -25,11 +25,11 @@ l2leaf:
     filter:
       only_vlans_in_use: true
   nodes:
-    - name: inband_mgmt_missing_id_with_ipv6_subnet
+    - name: inband-mgmt-missing-id-with-ipv6-subnet
       inband_mgmt_vlan: 109
       inband_mgmt_ipv6_subnet: 2a00:104::/64
       # uplink_type: port-channel
 
 expected_error_message: >-
-  'id' is not set on 'inband_mgmt_missing_id_with_ipv6_subnet' and is required to set inband_mgmt_ipv6_address from
-  inband_mgmt_ipv6_subnet for host 'inband_mgmt_missing_id_with_ipv6_subnet'.
+  'id' is not set on 'inband-mgmt-missing-id-with-ipv6-subnet' and is required to set inband_mgmt_ipv6_address from
+  inband_mgmt_ipv6_subnet for host 'inband-mgmt-missing-id-with-ipv6-subnet'.
