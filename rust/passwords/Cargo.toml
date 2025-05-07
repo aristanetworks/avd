@@ -13,4 +13,3 @@ pyo3 = { version = "0.24.2", "features" = ["extension-module", "abi3"] }
 
 [lib]
 crate-type = ["cdylib", "lib"]
-
