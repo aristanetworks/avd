@@ -105,6 +105,7 @@ jobs:
               - '.github/**/*'
               - 'rust/**/*'
               - 'python/avdutils/**/*'
+              - 'Cargo.toml'
 
   # -------------------------------------- #
   # Build PyAVD wheel and upload artifact
