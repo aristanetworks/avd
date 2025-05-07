@@ -702,12 +702,26 @@ jobs:
   # ----------------------------------- #
   cargo_build_and_test:
     name: Cargo build, test and linting
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     needs: [file-changes]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-13 covers x64 and macos-latest covers arm
+        os:
+          [
+            ubuntu-latest,
+            ubuntu-24.04-arm,
+            windows-latest,
+            macos-13,
+            macos-latest,
+          ]
     steps:
       - uses: actions/checkout@v4
-      - run: rustup update
+        # This is needed for arm machines since they don't ship with 2024 edition.
+      - name: Upgrade rust and cargo
+        run: rustup update stable
       - run: cargo fmt --verbose
       - run: cargo clippy --all-targets --all-features
       - run: cargo build --all-targets --all-features
