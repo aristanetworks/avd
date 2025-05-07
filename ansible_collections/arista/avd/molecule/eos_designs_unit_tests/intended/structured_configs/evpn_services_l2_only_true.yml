@@ -128,6 +128,8 @@ router_bgp:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+    static:
+      enabled: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
     rd: 192.168.255.109:12

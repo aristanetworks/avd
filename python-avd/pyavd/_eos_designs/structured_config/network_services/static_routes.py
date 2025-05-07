@@ -50,21 +50,6 @@ class StaticRoutesMixin(Protocol):
                     self.structured_config.static_routes.append_unique(static_route_item)
 
                 for svi in vrf.svis:
-                    for static_route in svi.static_routes:
-                        static_route_item = EosCliConfigGen.StaticRoutesItem()
-                        static_route_item._update(
-                            prefix=static_route.prefix,
-                            next_hop=static_route.next_hop,
-                            vrf=vrf.name,
-                            interface=static_route.interface,
-                            track_bfd=static_route.track_bfd,
-                            distance=static_route.distance,
-                            name=static_route.name,
-                            metric=static_route.metric,
-                            tag=static_route.tag,
-                        )
-                        self.structured_config.static_routes.append_unique(static_route_item)
-
                     if not svi.ip_virtual_router_addresses or not svi.ip_address:
                         # Skip svi if VARP is not set or if there is no unique ip_address
                         continue
