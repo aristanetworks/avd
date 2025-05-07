@@ -1,24 +1,5 @@
 type: wan_router
 
-# fabric_evpn_encapsulation: vxlan
-# overlay_routing_protocol: ebgp
-# evpn_overlay_bgp_rtc: true
-
-# l3leaf:
-#   defaults:
-#     loopback_ipv4_pool: 169.254.112.0/24
-#     vtep_loopback_ipv4_pool: 169.253.103.0/24
-#     virtual_router_mac_address: 00:1c:73:00:00:99
-#     bgp_as: 65233
-#   nodes:
-#     - name: overlay_evpn_ebgp
-#       id: 11
-#       platform: vEOS
-#       mlag: false
-#       mgmt_ip: 192.168.0.205/24
-#       evpn_role: none
-#       overlay_address_families: [ evpn ]
-
 # enabling EVPN on LAN
 overlay_routing_protocol: ebgp
 wan_use_evpn_node_settings_for_lan: true

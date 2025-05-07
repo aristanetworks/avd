@@ -35,32 +35,3 @@ tenants:
             name: VRF10_VLAN11
             enabled: true
             ip_address_virtual: 10.10.11.1/24
-          - id: 12
-            name: VRF10_VLAN12
-            enabled: true
-            ip_address_virtual: 10.10.12.1/24
-      - name: VRF11
-        vrf_vni: 11
-        svis:
-          - id: 21
-            name: VRF11_VLAN21
-            enabled: true
-            ip_address_virtual: 10.10.21.1/24
-          - id: 22
-            name: VRF11_VLAN22
-            enabled: true
-            ip_address_virtual: 10.10.22.1/24
-          - id: 300
-            name: VRF11_VLAN300
-            enabled: true
-            ip_virtual_router_addresses:
-              - 10.100.100.1
-    l2vlans:
-      - id: 3401
-        name: L2_VLAN3401
-        tags:
-          - ALL_LEAFS
-      - id: 3402
-        name: L2_VLAN3402
-        tags:
-          - ALL_LEAFS
