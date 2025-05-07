@@ -24,15 +24,12 @@ mod validation {
     use log::info;
     use std::path::PathBuf;
 
-    use avdschema::{Dump as _, LoadFromFragments, Store, any::AnySchema, resolve_schema};
+    use avdschema::{LoadFromFragments, Store, any::AnySchema, resolve_schema};
 
     use pyo3::{Bound, PyResult, exceptions::PyRuntimeError, pyfunction, types::PyModule};
     use serde_json::Value;
 
-    use crate::{
-        StoreValidate as _, coercion::Coercion, context::Context, validation::Validation,
-        validation_result::ValidationResult,
-    };
+    use crate::{StoreValidate as _, coercion::Coercion, context::Context, validation::Validation};
 
     use super::{STORE, get_store};
 
@@ -41,6 +38,9 @@ mod validation {
         pyo3_log::init();
         Ok(())
     }
+
+    #[pymodule_export]
+    use crate::feedback::{CoercionNote, Feedback, Issue, Type, Violation, ViolationValidValues};
 
     #[pyfunction]
     pub fn init_store_from_fragments(
@@ -82,23 +82,18 @@ mod validation {
     }
 
     #[pyfunction]
-    pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<String> {
+    pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<Vec<Feedback>> {
         get_store()
             .validate_json(data_as_json, schema_name)
-            .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?
-            .to_json()
-            .map_err(|err| {
-                PyRuntimeError::new_err(format!(
-                    "Error occurred during dumping of validation results to JSON: {err}"
-                ))
-            })
+            .map(|res| res.violations)
+            .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))
     }
 
     #[pyfunction]
     pub fn validate_json_with_adhoc_schema(
         data_as_json: &str,
         schema_as_json: &str,
-    ) -> PyResult<String> {
+    ) -> PyResult<Vec<Feedback>> {
         // Parse schema JSON
         let schema: AnySchema = serde_json::from_str(schema_as_json).map_err(|err| {
             PyRuntimeError::new_err(format!("Invalid JSON in adhoc schema: {err}"))
@@ -111,15 +106,6 @@ mod validation {
         schema.coerce(&mut data, &mut ctx);
         schema.validate_value(&data, &mut ctx);
 
-        ValidationResult {
-            violations: ctx.violations,
-            coercions: ctx.coercions,
-        }
-        .to_json()
-        .map_err(|err| {
-            PyRuntimeError::new_err(format!(
-                "Error occurred during dumping of validation results to JSON: {err}"
-            ))
-        })
+        Ok(ctx.violations)
     }
 }
