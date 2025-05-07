@@ -41,6 +41,7 @@ wan_router:
             - # Port-Channel with 3 member ports
               name: Port-Channel2
               mode: active
+              description: Port-Channel with 3 member ports.
               member_interfaces:
                 - name: Ethernet1
                   peer: peerDevice1

@@ -1,0 +1,23 @@
+---
+tenants:
+  - name: TEST
+    vrfs:
+      - name: default
+        vrf_id: 100
+        address_families: []
+        static_routes:
+          - destination_address_prefix: 0.0.0.0
+            gateway: 10.10.1.1
+            nodes: [host1]
+        l3_interfaces:
+          - interfaces:
+              - Ethernet47
+            ip_addresses:
+              - 10.10.1.1/30
+            nodes:
+              - host1
+        ipv6_static_routes:
+          - destination_address_prefix: ::/0
+            gateway: 2001:db8:311::4
+            name: IPv6-test-2
+            nodes: [ host1 ]

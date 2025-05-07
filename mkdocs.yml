@@ -1,7 +1,7 @@
 # Project information
-site_name: Arista AVD
-site_author: Arista Ansible Team
-site_description: Arista Validated Designs documentation
+site_name: AVD
+site_author: Arista AVD Team
+site_description: Arista AVD documentation
 copyright: Copyright &copy; 2019 - 2025 Arista Networks
 strict: true
 exclude_docs: |
@@ -15,6 +15,7 @@ repo_url: https://github.com/aristanetworks/avd
 use_directory_urls: false
 edit_uri: edit/devel/
 theme:
+  logo: docs/_media/arista-logo.png
   name: material
   features:
     - content.code.annotate
@@ -51,13 +52,6 @@ theme:
         name: Switch to light mode
 
 extra:
-  social:
-    - icon: fontawesome/brands/github-alt
-      link: https://github.com/aristanetworks/avd
-    - icon: fontawesome/brands/twitter
-      link: https://twitter.com/AristaNetworks
-    - icon: fontawesome/solid/globe
-      link: https://www.arista.com
   version:
     provider: mike
     default: stable

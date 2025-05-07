@@ -294,7 +294,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
         # Remove notifying key if not supported by the platform settings.
         queue_monitor_length = self.inputs.queue_monitor_length._cast_as(EosCliConfigGen.QueueMonitorLength)
-        if not self.shared_utils.platform_settings.feature_support.queue_monitor_length_notify:
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor_length_notify and hasattr(queue_monitor_length, "notifying"):
             del queue_monitor_length.notifying
         self.structured_config.queue_monitor_length = queue_monitor_length
 

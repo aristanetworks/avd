@@ -89,8 +89,8 @@ jobs:
               - 'ansible_collections/arista/avd/README.md'
               - 'ansible_collections/arista/avd/**/*.schema.yml'
             pyavd:
-              - 'python_avd/*'
-              - 'python_avd/**/*'
+              - 'python-avd/*'
+              - 'python-avd/**/*'
             anta_runner:
               - 'ansible_collections/arista/avd/roles/anta_runner/*'
               - 'ansible_collections/arista/avd/roles/anta_runner/**/*'
@@ -100,13 +100,41 @@ jobs:
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
 
+  # -------------------------------------- #
+  # Build PyAVD wheel and upload artifact
+  # -------------------------------------- #
+  build_pyavd:
+    name: Build pyavd
+    runs-on: ubuntu-latest
+    outputs:
+      wheel_file: ${{ steps.build_step.outputs.wheel_file }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: |
+            3.12
+      - name: Create pyavd wheel and output wheel path
+        id: build_step
+        working-directory: ./python-avd
+        run: |
+          pip install build
+          python -m build --wheel
+          WHEEL_FILE=$(find ./dist/*.whl -print0 -type f | xargs -0 -n 1 basename)
+          echo "wheel_file=/tmp/pyavd/$WHEEL_FILE" >> "$GITHUB_OUTPUT"
+      - name: Upload pyavd artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: pyavd
+          path: ./python-avd/dist/*.whl
+
   # ----------------------------------- #
   # Test Requirements
   # ----------------------------------- #
   python_requirements:
     name: Test Python requirements installation
     runs-on: ubuntu-latest
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.requirements == 'true'
     strategy:
       fail-fast: true
@@ -122,9 +150,14 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python_version }}
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
       - name: "Install Python requirements"
         run: |
-          pip install -r .github/requirements-ci-dev.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
 
   # ----------------------------------- #
   # EOS CLI CONFIG GEN MOLECULE
@@ -132,6 +165,7 @@ jobs:
   molecule_eos_cli_config_gen:
     name: Validate eos_cli_config_gen
     runs-on: ubuntu-latest
+    needs: [build_pyavd, file-changes]
     strategy:
       fail-fast: true
       matrix:
@@ -145,14 +179,20 @@ jobs:
         include:
           - avd_scenario: "eos_cli_config_gen"
             ansible_version: "ansible-core==2.16.0"
-    needs: [file-changes]
     if: needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule test
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
-          cd ansible_collections/arista/avd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+      - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
+        run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -173,14 +213,21 @@ jobs:
       matrix:
         avd_scenario: ["dhcp_configuration", "dhcp_provisioning"]
         ansible_version: ["ansible-core<2.19.0"]
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.dhcp == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule test
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
-          cd ansible_collections/arista/avd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+      - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
+        run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -220,41 +267,65 @@ jobs:
         ansible_version:
           # Testing all scenario with 2.16.x, due to bug with in 2.17.0 with and the way we test eos_designs_negative_unit_tests https://github.com/ansible/ansible/issues/83292
           - "ansible-core>=2.16.0,<2.17.0"
-        pip_requirements:
-          - ".github/requirements-ci-dev.txt"
-        # Also test minimum ansible version for one scenario.
         include:
           - avd_scenario: "eos_designs_unit_tests"
-            ansible_version: "ansible-core==2.16.0"
-            pip_requirements: ".github/requirements-ci-dev.txt"
-          - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.18.0"
-            pip_requirements: ".github/requirements-ci-dev.txt"
           - avd_scenario: "eos_designs_unit_tests"
             ansible_version: "ansible-core<2.19.0"
-            pip_requirements: ".github/requirements-ci-dev.txt"
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Build minimum requirements
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install uv
-          uv pip compile .github/requirements-ci-dev.txt --resolution=lowest-direct > ${{ matrix.pip_requirements }}
-          cat ${{ matrix.pip_requirements }}
-        if: matrix.pip_requirements == 'tmp-requirements-minimum.txt'
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
       - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
-          cd ansible_collections/arista/avd
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
           sh .github/check-git-status.sh
-      # - uses: actions/upload-artifact@v4
-      #   with:
-      #     name: molecule-${{ matrix.avd_scenario }}-artifacts
-      #     path: ${PWD}/ansible_collections/arista/avd/molecule/${{ matrix.avd_scenario }}
+
+  molecule_eos_designs_minimum_requirements:
+    name: Validate eos_designs with minimum requirements
+    runs-on: ubuntu-latest
+    needs: [build_pyavd, file-changes]
+    if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Use Python 3.10 for minimum requirements
+        uses: actions/setup-python@v5
+        with:
+          python-version: |
+            3.10
+      - name: Install pyavd and Ansible minimum requirements
+        # Installing molecule and requirements in different pip command because of jsonschema>=3.2.0 in AVD is incompatible
+        # with jsonschema>=4.9.1 in molecule when using pip compile with lowest
+        # Need to delete min_requirements afterwards otherwise git status is sad
+        run: |
+          pip install uv
+          uv pip compile python-avd/pyproject.toml --extra ansible-collection --resolution=lowest-direct > /tmp/pyavd/min_requirements.txt
+          cat /tmp/pyavd/min_requirements.txt
+          python -m pip install -r .github/requirements-ci-molecule.txt
+          python -m pip install "ansible-core==2.16.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r /tmp/pyavd/min_requirements.txt
+      - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
+        run: |
+          molecule test --scenario-name eos_designs_unit_tests
+      - name: Check GIT status
+        run: |
+          sh .github/check-git-status.sh
   # ----------------------------------- #
   # Cloudvision MOLECULE
   # ----------------------------------- #
@@ -271,15 +342,22 @@ jobs:
         include:
           - avd_scenario: "eos_config_deploy_cvp"
             ansible_version: "ansible-core==2.16.0"
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.cloudvision == 'true' || needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.config_gen == 'true'
 
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule test
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
-          cd ansible_collections/arista/avd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+      - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
+        run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -299,20 +377,27 @@ jobs:
       fail-fast: true
       matrix:
         avd_scenario:
-          - 'anta_runner'
+          - "anta_runner"
         ansible_version:
-          - 'ansible-core<2.19.0'
+          - "ansible-core<2.19.0"
         include:
-          - avd_scenario: 'anta_runner'
-            ansible_version: 'ansible-core==2.16.0'
-    needs: [ file-changes ]
+          - avd_scenario: "anta_runner"
+            ansible_version: "ansible-core==2.16.0"
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.anta_runner == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule test
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
-          cd ansible_collections/arista/avd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+      - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
+        run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -334,14 +419,21 @@ jobs:
         include:
           - avd_scenario: "eos_validate_state"
             ansible_version: "ansible-core==2.16.0"
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     if: needs.file-changes.outputs.eos_design == 'true' || needs.file-changes.outputs.validate_state == 'true'
     steps:
       - uses: actions/checkout@v4
-      - name: Run molecule test
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install "${{ matrix.ansible_version}}" -r .github/requirements-ci-dev.txt
-          cd ansible_collections/arista/avd
+          python -m pip install "${{ matrix.ansible_version}}" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r .github/requirements-ci-molecule.txt
+      - name: Run molecule test
+        working-directory: ansible_collections/arista/avd
+        run: |
           molecule test --scenario-name ${{ matrix.avd_scenario }}
       - name: Check GIT status
         run: |
@@ -353,7 +445,7 @@ jobs:
   ansible_test_sanity:
     name: Run ansible-test sanity validation
     runs-on: ubuntu-latest
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     strategy:
       fail-fast: true
       matrix:
@@ -374,19 +466,24 @@ jobs:
             3.11
             3.12
             3.13
-      - name: "Install Python requirements"
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and Ansible requirements
         run: |
-          pip install ${{ matrix.pip_installation }} -r .github/requirements-ci-dev.txt --upgrade
-      - name: "Run ansible-test sanity"
+          pip install  ${{ matrix.pip_installation }} "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+      - name: Run ansible-test sanity
+        working-directory: ansible_collections/arista/avd
         # Skip ansible-doc due to testing with ansible-core @ devel and raising error on supported Ansible version
         run: |
-          cd ansible_collections/arista/avd/
           ansible-test sanity --color yes -v ${{ matrix.skip_test }}
 
   ansible_test_units:
     name: Run ansible-test units test cases
     runs-on: ubuntu-latest
-    needs: [file-changes]
+    needs: [build_pyavd, file-changes]
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python 3
@@ -394,12 +491,17 @@ jobs:
         with:
           python-version: |
             3.12
-      - name: "Install Python requirements"
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install pyavd and ansible requirements
         run: |
-          pip install pyyaml "ansible-core<2.19.0" -r .github/requirements-ci-dev.txt --upgrade
-      - name: "Run ansible-test units test cases"
+          pip install "ansible-core<2.19.0" "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]"
+      - name: Run ansible-test units
+        working-directory: ansible_collections/arista/avd
         run: |
-          cd ansible_collections/arista/avd/
           ansible-test units --coverage --requirements -vv
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml ./units-coverage.xml
@@ -421,12 +523,12 @@ jobs:
           python-version: |
             3.12
             3.13
-      - name: "Install Python requirements"
+      - name: Install Python requirements
         run: |
           pip install "ansible-core<2.19.0" -r .github/requirements-ci-dev.txt --upgrade
-      - name: "Run ansible-test integration test cases"
+      - name: Run ansible-test integration test cases
+        working-directory: ansible_collections/arista/avd
         run: |
-          cd ansible_collections/arista/avd/
           ansible-test integration --coverage --requirements -vv
           ansible-test coverage xml
           mv tests/output/reports/coverage.xml ./integration-coverage.xml
@@ -448,11 +550,11 @@ jobs:
           python-version: |
             3.12
       - uses: actions/checkout@v4
-      - name: "Install Python & Ansible requirements"
+      - name: Install Python & Ansible requirements
         run: |
           # distlib is required when using manifest
           pip install "ansible-core<2.19.0" distlib --upgrade
-      - name: "Build Ansible collection"
+      - name: Build Ansible collection
         run: |
           ansible-galaxy collection build -vvv --force ansible_collections/arista/avd
       - name: Upload collection
@@ -474,7 +576,7 @@ jobs:
           python-version: |
             3.11
       - uses: actions/checkout@v4
-      - name: "Install Python & Ansible requirements"
+      - name: Install Python & Ansible requirements
         run: |
           pip install "ansible-core==2.16.0"
       - name: Download collection
@@ -487,7 +589,7 @@ jobs:
         # so we let the galaxy-importer version resolve remaining requirements.
         run: |
           pip install "galaxy-importer==0.4.29"
-      - name: "Run galaxy-importer checks"
+      - name: Run galaxy-importer checks
         run: python -m galaxy_importer.main *.tar.gz
       - uses: actions/upload-artifact@v4
         with:
@@ -501,7 +603,7 @@ jobs:
   ansible_lint:
     name: Run ansible-lint test case
     runs-on: ubuntu-latest
-    needs: [build_collection]
+    needs: [build_pyavd, build_collection]
     env:
       ANSIBLE_COLLECTIONS_PATH: /home/runner/work/avd/avd
     steps:
@@ -514,18 +616,23 @@ jobs:
             3.11
             3.12
             3.13
-      - name: "Install Python & Ansible requirements"
+      - name: Download pyavd Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: pyavd
+          path: /tmp/pyavd/
+      - name: Install Python & Ansible requirements
         run: |
-          pip install -r .github/requirements-ci-dev.txt -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
+          pip install "${{ needs.build_pyavd.outputs.wheel_file }}[ansible-collection]" -r ansible_collections/arista/avd/requirements-dev.txt --upgrade
       - name: Download collection
         uses: actions/download-artifact@v4
         with:
           name: avd-collection
-      - name: "Extract collection"
+      - name: Extract collection
         run: |
           mkdir collections
           tar xvzf arista-avd-*.tar.gz -C collections
-      - name: "Run ansible-lint"
+      - name: Run ansible-lint
         working-directory: collections
         run: |
           ansible-lint --force-color --strict -v
@@ -550,10 +657,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python }}
-      - name: "Install tox"
+      - name: Install tox
         run: |
           pip install tox tox-gh-actions --upgrade
-      - name: "Run pytest via tox for ${{ matrix.python }}"
+      - name: Run pytest via tox for ${{ matrix.python }}
         working-directory: python-avd
         run: |
           tox
