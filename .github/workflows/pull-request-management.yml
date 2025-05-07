@@ -719,7 +719,7 @@ jobs:
   # ----------------------------------- #
   # Python integration build and test
   # ----------------------------------- #
-  python_build_and_test:
+  python_rust_bindings_build_and_test:
     name: Python ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
@@ -737,11 +737,6 @@ jobs:
             macos-latest,
           ]
         python: ["3.10", "3.11", "3.12", "3.13"]
-        include:
-          - os: "ubuntu-latest"
-            python: "3.11"
-            tox-arg: "-e coverage,report"
-            coverage: true
     steps:
       - uses: actions/checkout@v4
         # This is needed for arm machines since they don't ship with 2024 edition.
@@ -757,12 +752,30 @@ jobs:
         working-directory: python/avdutils
         # Running tox  which will build the package (including rust).
         # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
-        # For coverage we specify for the coverage environment.
         run: |
-          tox ${{ matrix.tox-arg }}
+          tox
+
+  # We always need the coverage report
+  # Coverage only runs for ubuntu x64 on python 3.11.
+  python_rust_bindings_coverage:
+    name: Python 3.11 on ubuntu x64
+    runs-on: ubuntu-latest
+    needs: [file-changes]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upgrade rust and cargo
+        run: rustup update stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install tox
+        run: |
+          pip install tox tox-gh-actions --upgrade
+      - name: Run pytest via tox
+        working-directory: python/avdutils
+        run: |
+          tox -e coverage,report
       - name: Upload coverage from pytest
-        # Coverage only runs for ubuntu x64 on python 3.11.
-        if: matrix.coverage
         uses: actions/upload-artifact@v4
         with:
           name: pytest-avdutils-coverage
