@@ -701,7 +701,7 @@ jobs:
   # Cargo build, test and linting
   # ----------------------------------- #
   cargo_build_and_test:
-    name: Cargo build, test and linting
+    name: Cargo build, test and linting on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
     if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
@@ -723,12 +723,18 @@ jobs:
       - name: Upgrade rust and cargo
         run: rustup update stable
       - run: cargo fmt --verbose
+        if: |
+          matrix.os == 'ubuntu-latest'
       - run: cargo clippy --all-targets --all-features
+        if: |
+          matrix.os == 'ubuntu-latest'
       - run: cargo build --all-targets --all-features
       - run: cargo test --all-targets --all-features
       - run: |
           cargo install cargo-deny
           cargo deny check
+        if: |
+          matrix.os == 'ubuntu-latest'
 
   # ----------------------------------- #
   # Python integration build and test
