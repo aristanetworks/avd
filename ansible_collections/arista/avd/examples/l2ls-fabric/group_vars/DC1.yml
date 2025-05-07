@@ -9,7 +9,7 @@ aaa_authentication:
 # local users
 local_users:
   # Username with no password configured
-  - name: arista
+  - name: ansible
     privilege: 15
     role: network-admin
     no_password: true
