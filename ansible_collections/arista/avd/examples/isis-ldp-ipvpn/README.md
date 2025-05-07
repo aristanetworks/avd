@@ -261,8 +261,8 @@ The first section defines how the Ansible host connects to the devices:
 ```yaml title="FABRIC.yml"
 ansible_connection: ansible.netcommon.httpapi # (1)!
 ansible_network_os: arista.eos.eos # (2)!
-ansible_user: ansible # (3)!
-ansible_password: ansible
+ansible_user: arista # (3)!
+ansible_password: arista
 ansible_become: true
 ansible_become_method: enable # (4)!
 ansible_httpapi_use_ssl: true # (5)!
