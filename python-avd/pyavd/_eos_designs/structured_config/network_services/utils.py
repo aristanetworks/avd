@@ -93,7 +93,7 @@ class UtilsMixin(Protocol):
             if "default" not in tenant.vrfs:
                 continue
 
-            if not (static_routes := tenant.vrfs["default"].static_routes):
+            if not (static_routes := tenant.vrfs["default"].static_routes) and not self._vrf_svi_static_routes(tenant.vrfs["default"]):
                 continue
 
             for static_route in static_routes:
@@ -119,6 +119,15 @@ class UtilsMixin(Protocol):
             "redistribute_in_underlay": redistribute_in_underlay,
             "redistribute_in_overlay": redistribute_in_overlay,
         }
+
+    def _vrf_svi_static_routes(
+        self: AvdStructuredConfigNetworkServicesProtocol,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> bool:
+        """Returns 'True' if any of the SVIs within the VRF has static_routes defined."""
+        if any(len(svi.static_routes) > 0 for svi in vrf.svis):
+            return True
+        return False
 
     def _mlag_ibgp_peering_enabled(
         self: AvdStructuredConfigNetworkServicesProtocol,
