@@ -551,6 +551,9 @@ static_routes:
   prefix: 10.3.5.0/24
   next_hop: 1.2.3.4
   name: SVI_static_route
+- vrf: default
+  prefix: 10.10.10.0/24
+  next_hop: 10.10.10.1
 - vrf: Tenant_D_OP_Zone
   prefix: 10.3.11.0/24
   interface: Vlan411

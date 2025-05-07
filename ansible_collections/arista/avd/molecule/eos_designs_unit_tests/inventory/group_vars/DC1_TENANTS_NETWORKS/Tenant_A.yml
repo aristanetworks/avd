@@ -110,6 +110,9 @@ tenant_a:
             nodes:
               - node: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
+                static_routes:
+                  - prefix: 10.10.10.0/24
+                    next_hop: 10.10.10.1
             ip_virtual_router_addresses:
               - 10.1.32.254
               - 10.2.32.254/24

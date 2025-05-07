@@ -679,10 +679,6 @@ $defs:
                         convert_types:
                           - int
                         description: Tag value.
-                    static_routes:
-                      type: list
-                      $ref: "eos_designs#/$defs/static_routes"
-                      description: Static routes to be configured on every device where the SVI is configured.
                     evpn_vlan_bundle:
                       type: str
                       description: |
