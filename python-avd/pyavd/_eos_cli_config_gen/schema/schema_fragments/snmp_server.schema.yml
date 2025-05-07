@@ -231,7 +231,6 @@ keys:
         keys:
           enable:
             type: bool
-            default: false
             description: |
               Enable or disable all snmp-traps.
           snmp_traps:
@@ -248,7 +247,7 @@ keys:
                     - "bgp established"
                 enabled:
                   type: bool
-                  default: true
+                  description: The trap is enabled unless this is set to false.
       vrfs:
         type: list
         primary_key: name

@@ -58400,7 +58400,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SnmpTrapsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool, "default": True}}
+                _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}}
                 name: str | None
                 """
                 Enable or disable specific snmp-traps and their sub_traps.
@@ -58408,12 +58408,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 - "bgp"
                 - "bgp established"
                 """
-                enabled: bool
-                """Default value: `True`"""
+                enabled: bool | None
+                """The trap is enabled unless this is set to false."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | None | UndefinedType = Undefined, enabled: bool | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined, enabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         SnmpTrapsItem.
 
@@ -58426,7 +58426,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Examples:  # fmt: skip
                                - "bgp"
                                - "bgp established"
-                            enabled: enabled
+                            enabled: The trap is enabled unless this is set to false.
 
                         """
 
@@ -58435,19 +58435,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             SnmpTraps._item_type = SnmpTrapsItem
 
-            _fields: ClassVar[dict] = {"enable": {"type": bool, "default": False}, "snmp_traps": {"type": SnmpTraps}}
-            enable: bool
-            """
-            Enable or disable all snmp-traps.
-
-            Default value: `False`
-            """
+            _fields: ClassVar[dict] = {"enable": {"type": bool}, "snmp_traps": {"type": SnmpTraps}}
+            enable: bool | None
+            """Enable or disable all snmp-traps."""
             snmp_traps: SnmpTraps
             """Subclass of AvdList with `SnmpTrapsItem` items."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType = Undefined, snmp_traps: SnmpTraps | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enable: bool | None | UndefinedType = Undefined, snmp_traps: SnmpTraps | UndefinedType = Undefined) -> None:
                     """
                     Traps.
 

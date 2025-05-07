@@ -96,8 +96,8 @@ tenants:
       - name: Tenant_A_WAN_Zone
         vrf_vni: 14
         static_routes:
-          - destination_address_prefix: 10.3.4.0/24
-            gateway: 1.2.3.4
+          - prefix: 10.3.4.0/24
+            next_hop: 1.2.3.4
             nodes: [DC1-BL1A, DC1-BL1B]
         bgp_peers:
           - ip_address: 123.1.1.10
