@@ -66,6 +66,7 @@ class PortChannelInterfacesMixin(Protocol):
 
             if link.trunk_groups:
                 port_channel_interface.switchport.trunk.groups.extend(link.trunk_groups)
+            # link.vlans is never None as it is string of vlan(s) or 'none'.
             elif link.vlans is not None:
                 port_channel_interface.switchport.trunk.allowed_vlan = link.vlans
 

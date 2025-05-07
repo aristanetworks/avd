@@ -25,5 +25,5 @@ tenants: # dynamic_key: network_services
             name: svi_with_default_vrf
             tags: [fabric]
         static_routes:
-          - destination_address_prefix: 10.0.0.0/8
-            gateway: 10.2.10.100
+          - prefix: 10.0.0.0/8
+            next_hop: 10.2.10.100
