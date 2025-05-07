@@ -4,9 +4,6 @@
 # cv-pathfinder is default
 wan_mode: cv-pathfinder
 
-# Enable usage of EVPN settings to configure LAN. This is required to enable EVPN Gateway on Site4.
-wan_use_evpn_node_settings_for_lan: true
-
 # WAN hierarchy
 cv_pathfinder_regions: # (1)!
   - name: REGION1

@@ -75,8 +75,6 @@ wan_router:
     uplink_switch_interfaces: [Ethernet3]
     uplink_ipv4_pool: 10.0.2.0/24
     bgp_as: 65000
-    # Disabling EVPN role. This won't be necessary in AVD 6.0.
-    evpn_role: none
   node_groups:
     - group: SITE2
       cv_pathfinder_region: REGION2

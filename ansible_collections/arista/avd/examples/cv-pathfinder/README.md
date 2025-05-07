@@ -31,6 +31,9 @@ This example will go over the following:
 - Build the intended configurations and documentation
 - Deploy the configuration via CloudVision as a Service (CVaaS)
 
+!!! warning
+    - Site4 is using EVPN GW which is under preview.
+
 ## Installation
 
 --8<--
@@ -495,6 +498,9 @@ ansible_collections/arista/avd/examples/cv-pathfinder/group_vars/SITE3.yml
 ```
 
 ### Site 4
+
+!!! warning
+    - Site4 is using EVPN GW which is under preview.
 
 The following diagrams describe the Site4 physical and LAN connectivity.
 

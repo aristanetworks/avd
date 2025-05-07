@@ -8,8 +8,6 @@ wan_rr:
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     bgp_as: 65000
-    # Disabling EVPN role for the pathfinders. This won't be necessary in AVD 6.0.
-    evpn_role: none
   nodes:
     - name: pf1
       id: 1
