@@ -34,6 +34,7 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
+      rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -101,7 +102,7 @@ jobs:
               - 'python-avd/pyavd/api/_anta/*'
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
-            rust-src-or-ci-changed:
+            rust_src_or_ci_changed:
               - '.github/**/*'
               - 'rust/**/*'
               - 'python/avdutils/**/*'
@@ -703,7 +704,7 @@ jobs:
     name: Cargo build, test and linting
     runs-on: ubuntu-latest
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust-src-or-ci-changed == 'true'
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
     steps:
       - uses: actions/checkout@v4
       - run: rustup update
@@ -722,7 +723,7 @@ jobs:
     name: Python ${{ matrix.python }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     needs: [file-changes]
-    if: needs.file-changes.outputs.rust-src-or-ci-changed == 'true'
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
     strategy:
       fail-fast: false
       matrix:
