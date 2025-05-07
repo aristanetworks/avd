@@ -91,14 +91,6 @@ router_bgp:
     peer_group: RR-OVERLAY-PEERS
     peer: SITE2-RR1
     description: SITE2-RR1_Loopback0
-  address_family_evpn:
-    neighbor_default:
-      encapsulation: mpls
-    peer_groups:
-    - name: RR-OVERLAY-PEERS
-      activate: true
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
@@ -106,12 +98,6 @@ router_bgp:
     - name: RR-OVERLAY-PEERS
       activate: false
   address_family_vpn_ipv4:
-    peer_groups:
-    - name: MPLS-OVERLAY-PEERS
-      activate: true
-    - name: RR-OVERLAY-PEERS
-      activate: true
-  address_family_vpn_ipv6:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
       activate: true

@@ -349,33 +349,9 @@ ASN Notation: asplain
 | 100.70.0.8 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.9 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
 
-#### Router BGP EVPN Address Family
-
-##### EVPN Peer Groups
-
-| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
-| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
-| MPLS-OVERLAY-PEERS | True |  - | - | default | - |
-| RR-OVERLAY-PEERS | True |  - | - | default | - |
-
-##### EVPN Neighbor Default Encapsulation
-
-| Neighbor Default Encapsulation | Next-hop-self Source Interface |
-| ------------------------------ | ------------------------------ |
-| mpls | - |
-
 #### Router BGP VPN-IPv4 Address Family
 
 ##### VPN-IPv4 Peer Groups
-
-| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
-| ---------- | -------- | ------------ | ------------- | ------ | ------- |
-| MPLS-OVERLAY-PEERS | True | - | - | - | - |
-| RR-OVERLAY-PEERS | True | - | - | - | - |
-
-#### Router BGP VPN-IPv6 Address Family
-
-##### VPN-IPv6 Peer Groups
 
 | Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
@@ -414,20 +390,11 @@ router bgp 65000
    neighbor 100.70.0.9 peer group RR-OVERLAY-PEERS
    neighbor 100.70.0.9 description SITE2-RR1_Loopback0
    !
-   address-family evpn
-      neighbor default encapsulation mpls
-      neighbor MPLS-OVERLAY-PEERS activate
-      neighbor RR-OVERLAY-PEERS activate
-   !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
       no neighbor RR-OVERLAY-PEERS activate
    !
    address-family vpn-ipv4
-      neighbor MPLS-OVERLAY-PEERS activate
-      neighbor RR-OVERLAY-PEERS activate
-   !
-   address-family vpn-ipv6
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor RR-OVERLAY-PEERS activate
 ```

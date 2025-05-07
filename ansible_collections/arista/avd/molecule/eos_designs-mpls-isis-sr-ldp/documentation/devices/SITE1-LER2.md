@@ -306,6 +306,10 @@ interface Ethernet8
 | Interface | Ethernet Segment Identifier | Multihoming Redundancy Mode | Route Target |
 | --------- | --------------------------- | --------------------------- | ------------ |
 | Port-Channel3 | 0000:0000:0102:0000:0034 | all-active | 01:02:00:00:00:34 |
+| Port-Channel8 | 0000:0000:0303:0202:0101 | all-active | 03:03:02:02:01:01 |
+| Port-Channel8.111 | 0000:0000:0303:0202:0111 | all-active | 03:03:02:02:01:11 |
+| Port-Channel8.222 | 0000:0000:0303:0202:0222 | all-active | 03:03:02:02:02:22 |
+| Port-Channel8.333 | 0000:0000:0303:0202:0333 | all-active | 03:03:02:02:03:33 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -354,24 +358,41 @@ interface Port-Channel8
    description CPE_CPE_TENANT_A_SITE1_EVPN-A-A-PortChannel
    no shutdown
    no switchport
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0101
+      route-target import 03:03:02:02:01:01
+   lacp system-id 0303.0202.0101
 !
 interface Port-Channel8.111
    vlan id 111
    !
    encapsulation vlan
       client dot1q 111 network client
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0111
+      route-target import 03:03:02:02:01:11
 !
 interface Port-Channel8.222
    vlan id 222
    !
    encapsulation vlan
       client dot1q 222 network client
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0222
+      route-target import 03:03:02:02:02:22
 !
 interface Port-Channel8.333
    vlan id 434
    !
    encapsulation vlan
       client dot1q 333 network client
+   !
+   evpn ethernet-segment
+      identifier 0000:0000:0303:0202:0333
+      route-target import 03:03:02:02:03:33
 ```
 
 ### Loopback Interfaces
@@ -631,6 +652,20 @@ ASN Notation: asplain
 | 100.70.0.11 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - | - | - |
 
+#### Router BGP EVPN Address Family
+
+##### EVPN Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out | Encapsulation | Next-hop-self Source Interface |
+| ---------- | -------- | ------------ | ------------- | ------------- | ------------------------------ |
+| MPLS-OVERLAY-PEERS | True |  - | - | default | - |
+
+##### EVPN Neighbor Default Encapsulation
+
+| Neighbor Default Encapsulation | Next-hop-self Source Interface |
+| ------------------------------ | ------------------------------ |
+| mpls | Loopback0 |
+
 #### Router BGP VPN-IPv4 Address Family
 
 ##### VPN-IPv4 Peer Groups
@@ -639,10 +674,37 @@ ASN Notation: asplain
 | ---------- | -------- | ------------ | ------------- | ------ | ------- |
 | MPLS-OVERLAY-PEERS | True | - | - | - | - |
 
+#### Router BGP VPN-IPv6 Address Family
+
+##### VPN-IPv6 Peer Groups
+
+| Peer Group | Activate | Route-map In | Route-map Out | RCF In | RCF Out |
+| ---------- | -------- | ------------ | ------------- | ------ | ------- |
+| MPLS-OVERLAY-PEERS | True | - | - | - | - |
+
+#### Router BGP VLANs
+
+| VLAN | Route-Distinguisher | Both Route-Target | Import Route Target | Export Route-Target | Redistribute |
+| ---- | ------------------- | ----------------- | ------------------- | ------------------- | ------------ |
+| 10 | 100.70.0.6:10010 | 65000:10010 | - | - | learned |
+| 20 | 100.70.0.6:123456 | 65000:123456 | - | - | learned |
+| 2020 | 100.70.0.6:22020 | 65000:22020 | - | - | learned |
+
+#### Router BGP VPWS Instances
+
+| Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
+| -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
+| TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 31000 | 51000 |
+| TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 31001 | 51001 |
+| TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 31002 | 51002 |
+| TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1003 | 31003 | 51003 |
+| TENANT_B | 100.70.0.6:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1004 | 31004 | 51004 |
+
 #### Router BGP VRFs
 
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart |
 | --- | ------------------- | ------------ | ---------------- |
+| TENANT_B_INTRA | 100.70.0.6:19 | connected | - |
 | TENANT_B_WAN | 100.70.0.6:20 | connected | - |
 
 #### Router BGP Device Configuration
@@ -673,6 +735,44 @@ router bgp 65000
    neighbor 100.70.0.11 peer group MPLS-OVERLAY-PEERS
    neighbor 100.70.0.11 description SITE1-LER3_Loopback0
    !
+   vlan 10
+      rd 100.70.0.6:10010
+      route-target both 65000:10010
+      redistribute learned
+   !
+   vlan 20
+      rd 100.70.0.6:123456
+      route-target both 65000:123456
+      redistribute learned
+   !
+   vlan 2020
+      rd 100.70.0.6:22020
+      route-target both 65000:22020
+      redistribute learned
+   !
+   vpws TENANT_B
+      rd 100.70.0.6:2000
+      route-target import export evpn 65000:2000
+      !
+      pseudowire TEN_B_site3_site5_eline_vlan_based_1000
+         evpn vpws id local 31000 remote 51000
+      !
+      pseudowire TEN_B_site3_site5_eline_vlan_based_1001
+         evpn vpws id local 31001 remote 51001
+      !
+      pseudowire TEN_B_site3_site5_eline_vlan_based_1002
+         evpn vpws id local 31002 remote 51002
+      !
+      pseudowire TEN_B_site3_site5_eline_vlan_based_1003
+         evpn vpws id local 31003 remote 51003
+      !
+      pseudowire TEN_B_site3_site5_eline_vlan_based_1004
+         evpn vpws id local 31004 remote 51004
+   !
+   address-family evpn
+      neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+      neighbor MPLS-OVERLAY-PEERS activate
+   !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate
    !
@@ -683,10 +783,23 @@ router bgp 65000
       neighbor MPLS-OVERLAY-PEERS activate
       neighbor default encapsulation mpls next-hop-self source-interface Loopback0
    !
+   address-family vpn-ipv6
+      neighbor MPLS-OVERLAY-PEERS activate
+      neighbor default encapsulation mpls next-hop-self source-interface Loopback0
+   !
+   vrf TENANT_B_INTRA
+      rd 100.70.0.6:19
+      route-target import evpn 65000:19
+      route-target export evpn 65000:19
+      router-id 100.70.0.6
+      redistribute connected
+   !
    vrf TENANT_B_WAN
       rd 100.70.0.6:20
       route-target import vpn-ipv4 65000:20
+      route-target import vpn-ipv6 65000:20
       route-target export vpn-ipv4 65000:20
+      route-target export vpn-ipv6 65000:20
       router-id 100.70.0.6
       update wait-install
       neighbor 192.168.48.1 remote-as 65201
