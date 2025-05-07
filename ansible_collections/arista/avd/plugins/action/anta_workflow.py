@@ -243,11 +243,11 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     md_output_path = get(report_settings, "md_output")
     json_output_path = get(report_settings, "json_output")
 
-    # Merge all results and update the summary with devices per run
+    # Merge all results
     result_manager = ResultManager()
     for manager in batch_results:
-        for res in manager.results:
-            result_manager.add(res)
+        for result in manager.results:
+            result_manager.add(result)
 
     # Filter the results based on the hide_statuses if provided
     if hide_statuses:
@@ -318,8 +318,8 @@ def update_ansible_result(result: dict[str, Any], test_summary: dict[str, Any], 
     # Process workflow errors first
     failed_by_logs = has_errors_ref[0]
     if failed_by_logs:
-        result["failed"] = True
         workflow_log_msg = "Errors detected during ANTA workflow execution."
+        result["failed"] = True
 
     # Intermediate flags for test outcomes
     has_test_issues = test_summary["tests_failed"] > 0 or test_summary["tests_error"] > 0
@@ -525,7 +525,7 @@ def setup_queue_listener(log_queue: Queue, has_errors_ref: list[bool]) -> QueueL
     Set up and start the queue listener for centralized log handling.
 
     The listener handler formats logs with a unique ID for context, displays them in the
-    Ansible console respecting verbosity, and increments error/warning counts in log_stats.
+    Ansible console respecting verbosity, and track log errors via the has_errors_ref list.
 
     Args:
       log_queue: Shared queue used by the QueueListener to receive logs from everyone.
