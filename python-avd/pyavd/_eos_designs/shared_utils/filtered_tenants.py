@@ -241,7 +241,9 @@ class FilteredTenantsMixin(Protocol):
 
             for svi in vrf.svis:
                 if svi.static_routes:
-                    vrf.static_routes.extend(svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes))
+                    vrf.static_routes.extend(
+                        svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                    )
 
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
