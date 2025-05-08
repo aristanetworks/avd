@@ -70,7 +70,11 @@ class CVWorkspaceSubmitFailed(CVClientException):
 
 
 class CVWorkspaceSubmitFailedInactiveDevices(CVClientException):
-    """Failed to submit CloudVision Workspace due to the presence of inactive devices. Use force to override."""
+    """
+    Failed to submit CloudVision Workspace due to the presence of inactive devices.
+
+    Use `cv_submit_workspace_force: true` (if using role `cv_deploy`) or `workspace['force']: true` (if using action plugin `cv_workflow`) to override.
+    """
 
 
 class CVWorkspaceStateTimeout(CVClientException):
@@ -92,7 +96,3 @@ class CVMessageSizeExceeded(CVClientException):
 
 class CVDuplicatedDevices(CVClientException):
     """Device inputs contain duplicated serial_number or system_mac_address."""
-
-
-class CVInactiveDevices(CVClientException):
-    """Inactive devices present."""

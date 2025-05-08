@@ -302,17 +302,21 @@ class DataUnderTest:
                 workspace_requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
                 workspace_build_request_id=MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
                 workspace_submit_request_id=MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
-                expected_result_warnings_qty=0,
-                expected_result_warnings_patterns=[],
+                expected_result_warnings_qty=1,
+                expected_result_warnings_patterns=[
+                    "Inactive devices present: \\["
+                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
+                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                ],
                 expected_result_errors_qty=0,
                 expected_result_errors_patterns=[],
                 expected_logs_patterns=[
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices. Use force to override. Inactive devices: "
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
                     "\\[CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
                     "_exists_on_cv=True, _streaming=False\\)\\]"
                 ],
                 expected_exception_patterns=[
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices. Use force to override. Inactive devices: "
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
                     "\\[CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
                     "_exists_on_cv=True, _streaming=False\\)\\]"
                 ],
@@ -374,12 +378,20 @@ class DataUnderTest:
                 workspace_requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
                 workspace_build_request_id=MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
                 workspace_submit_request_id=MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
-                expected_result_warnings_qty=0,
-                expected_result_warnings_patterns=[],
+                expected_result_warnings_qty=1,
+                expected_result_warnings_patterns=[
+                    "Inactive devices present: \\["
+                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
+                    "_exists_on_cv=True, _streaming=False\\), "
+                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
+                    "_exists_on_cv=True, _streaming=False\\), "
+                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
+                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                ],
                 expected_result_errors_qty=0,
                 expected_result_errors_patterns=[],
                 expected_logs_patterns=[
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices. Use force to override. Inactive devices: "
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
                     "\\["
                     "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
                     "_exists_on_cv=True, _streaming=False\\), "
@@ -390,7 +402,7 @@ class DataUnderTest:
                     "\\]"
                 ],
                 expected_exception_patterns=[
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices. Use force to override. Inactive devices: "
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices.*Inactive devices: "
                     "\\["
                     "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
                     "_exists_on_cv=True, _streaming=False\\), "
@@ -466,8 +478,7 @@ class DataUnderTest:
                 expected_result_errors_patterns=[],
                 expected_logs_patterns=[],
                 expected_exception_patterns=[
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices\\. "
-                    "Use force to override\\. Exact list of inactive devices is unknown\\."
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices\\..*Exact list of inactive devices is unknown\\."
                 ],
                 expected_exception=pytest.raises(CVWorkspaceSubmitFailedInactiveDevices),
                 expected_execution_failed=False,
@@ -491,13 +502,21 @@ class DataUnderTest:
                 workspace_requested_state=MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
                 workspace_build_request_id=MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS,
                 workspace_submit_request_id=MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_FAILURE_INACTIVE_DEVICES,
-                expected_result_warnings_qty=0,
-                expected_result_warnings_patterns=[],
+                expected_result_warnings_qty=1,
+                expected_result_warnings_patterns=[
+                    "Inactive devices present: \\["
+                    "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
+                    "_exists_on_cv=True, _streaming=False\\), "
+                    "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
+                    "_exists_on_cv=True, _streaming=False\\), "
+                    "CVDevice\\(hostname='avd-ci-spine1', serial_number='DCC816CEAC4BBD6319385043AD318362', system_mac_address='50:00:00:d7:ee:0b', "
+                    "_exists_on_cv=True, _streaming=False\\)\\]"
+                ],
                 expected_result_errors_qty=0,
                 expected_result_errors_patterns=[],
                 expected_logs_patterns=[],
                 expected_exception_patterns=[
-                    "Failed to submit CloudVision Workspace due to the presence of inactive devices\\. Use force to override. Inactive devices: \\["
+                    "Failed to submit CloudVision Workspace due to the presence of inactive devices\\..*Inactive devices: \\["
                     "CVDevice\\(hostname='avd-ci-core1', serial_number='20C292B489214DF32F9506C242A722FF', system_mac_address='50:00:00:a1:33:1a', "
                     "_exists_on_cv=True, _streaming=False\\), "
                     "CVDevice\\(hostname='avd-ci-leaf1', serial_number='13C20F1EDCCED2D85F6DB2FB9E3AC5B6', system_mac_address='50:00:00:72:8b:31', "
@@ -694,13 +713,13 @@ async def test_deploy_to_cv_inactive_devices(
         assert len(result.warnings) == test_case_data.expected_result_warnings_qty
         # Assert that updated warnings match expected warning patterns
         for expected_pattern in test_case_data.expected_result_warnings_patterns:
-            assert any(re.search(re.compile(expected_pattern), str(warning_item.args)) for warning_item in result.warnings)
+            assert any(re.search(re.compile(expected_pattern), str(warning_item)) for warning_item in result.warnings)
 
         # Assert number of returned errors
         assert len(result.errors) == test_case_data.expected_result_errors_qty
         # Assert that updated errors match expected error patterns
         for expected_pattern in test_case_data.expected_result_errors_patterns:
-            assert any(re.search(re.compile(expected_pattern), str(error_item.args)) for error_item in result.errors)
+            assert any(re.search(re.compile(expected_pattern), str(error_item)) for error_item in result.errors)
 
         # Assert returned workspace object
         assert result.workspace.name == test_case_data.workspace_name
