@@ -19,6 +19,10 @@ local_users:
     privilege: 15
     role: network-admin
     sha512_password: "$6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/."
+  - name: arista
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$8OFgOTnr2RnFBu7w$ZCp//phfwcbdinBMxEFxZWNLxh0VwUVyvvKKXG5quq4D.bvs5CMbdaNjQ9bABjAVARr0LuE0G32Zrr0pGmDy00"
 
 # OOB Management network default gateway
 mgmt_gateway: 172.16.100.1
