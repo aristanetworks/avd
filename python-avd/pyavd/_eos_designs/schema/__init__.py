@@ -20767,6 +20767,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
+                        "mlag_peer_l3_ipv6_pool": {"type": str},
                         "mlag_peer_vlan": {"type": int, "default": 4094},
                         "mlag_peer_link_allowed_vlans": {"type": str},
                         "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -21266,6 +21267,15 @@ class EosDesigns(EosDesignsRootModel):
                     Required when MLAG leafs present in topology and they are using a separate L3 peering
                     VLAN.
                     """
+                    mlag_peer_l3_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The IPv6
+                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                    MLAG switch.
+                    Required when MLAG leafs present in topology and they are using a separate L3 peering
+                    VLAN.
+                    """
                     mlag_peer_vlan: int
                     """
                     MLAG Peer Link (control link) SVI interface id.
@@ -21297,7 +21307,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -21668,6 +21678,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                             mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -22031,6 +22042,13 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    Required when MLAG leafs present in topology and they are using a separate L3 peering
                                    VLAN.
+                                mlag_peer_l3_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The IPv6
+                                   subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                   MLAG switch.
+                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                   VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
@@ -22050,7 +22068,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -24856,6 +24874,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_interfaces_speed": {"type": str},
                             "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                             "mlag_peer_l3_ipv4_pool": {"type": str},
+                            "mlag_peer_l3_ipv6_pool": {"type": str},
                             "mlag_peer_vlan": {"type": int, "default": 4094},
                             "mlag_peer_link_allowed_vlans": {"type": str},
                             "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -25365,6 +25384,15 @@ class EosDesigns(EosDesignsRootModel):
                         Required when MLAG leafs present in topology and they are using a separate L3 peering
                         VLAN.
                         """
+                        mlag_peer_l3_ipv6_pool: str | None
+                        """
+                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                        The IPv6
+                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                        MLAG switch.
+                        Required when MLAG leafs present in topology and they are using a separate L3 peering
+                        VLAN.
+                        """
                         mlag_peer_vlan: int
                         """
                         MLAG Peer Link (control link) SVI interface id.
@@ -25396,7 +25424,7 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                         first MLAG switch.
-                        Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                        Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                         """
                         mlag_port_channel_id: int | None
                         """
@@ -25769,6 +25797,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                                mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                                 mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -26139,6 +26168,13 @@ class EosDesigns(EosDesignsRootModel):
                                        MLAG switch.
                                        Required when MLAG leafs present in topology and they are using a separate L3 peering
                                        VLAN.
+                                    mlag_peer_l3_ipv6_pool:
+                                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                       The IPv6
+                                       subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                       MLAG switch.
+                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                       VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
@@ -26158,7 +26194,7 @@ class EosDesigns(EosDesignsRootModel):
                                        The IPv6
                                        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                        first MLAG switch.
-                                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                       Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                     mlag_port_channel_id:
                                        If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                        in 'mlag_interfaces'.
@@ -28889,6 +28925,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
+                        "mlag_peer_l3_ipv6_pool": {"type": str},
                         "mlag_peer_vlan": {"type": int, "default": 4094},
                         "mlag_peer_link_allowed_vlans": {"type": str},
                         "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -29401,6 +29438,15 @@ class EosDesigns(EosDesignsRootModel):
                     Required when MLAG leafs present in topology and they are using a separate L3 peering
                     VLAN.
                     """
+                    mlag_peer_l3_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The IPv6
+                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                    MLAG switch.
+                    Required when MLAG leafs present in topology and they are using a separate L3 peering
+                    VLAN.
+                    """
                     mlag_peer_vlan: int
                     """
                     MLAG Peer Link (control link) SVI interface id.
@@ -29432,7 +29478,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -29805,6 +29851,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                             mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -30177,6 +30224,13 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    Required when MLAG leafs present in topology and they are using a separate L3 peering
                                    VLAN.
+                                mlag_peer_l3_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The IPv6
+                                   subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                   MLAG switch.
+                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                   VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
@@ -30196,7 +30250,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -32986,6 +33040,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
+                        "mlag_peer_l3_ipv6_pool": {"type": str},
                         "mlag_peer_vlan": {"type": int, "default": 4094},
                         "mlag_peer_link_allowed_vlans": {"type": str},
                         "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -33495,6 +33550,15 @@ class EosDesigns(EosDesignsRootModel):
                     Required when MLAG leafs present in topology and they are using a separate L3 peering
                     VLAN.
                     """
+                    mlag_peer_l3_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The IPv6
+                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                    MLAG switch.
+                    Required when MLAG leafs present in topology and they are using a separate L3 peering
+                    VLAN.
+                    """
                     mlag_peer_vlan: int
                     """
                     MLAG Peer Link (control link) SVI interface id.
@@ -33526,7 +33590,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -33899,6 +33963,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                             mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -34269,6 +34334,13 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    Required when MLAG leafs present in topology and they are using a separate L3 peering
                                    VLAN.
+                                mlag_peer_l3_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The IPv6
+                                   subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                   MLAG switch.
+                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                   VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
@@ -34288,7 +34360,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -39819,6 +39891,7 @@ class EosDesigns(EosDesignsRootModel):
                         "rd_override": {"type": str},
                         "rt_override": {"type": str},
                         "mlag_ibgp_peering_ipv4_pool": {"type": str},
+                        "mlag_ibgp_peering_ipv6_pool": {"type": str},
                         "ip_helpers": {"type": IpHelpers},
                         "enable_mlag_ibgp_peering_vrfs": {"type": bool},
                         "redistribute_mlag_ibgp_peering_vrfs": {"type": bool},
@@ -39906,6 +39979,14 @@ class EosDesigns(EosDesignsRootModel):
                     subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
                     MLAG switch.
                     If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
+                    """
+                    mlag_ibgp_peering_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The
+                    subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
+                    MLAG switch.
+                    If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
                     """
                     ip_helpers: IpHelpers
                     """
@@ -40103,6 +40184,7 @@ class EosDesigns(EosDesignsRootModel):
                             rd_override: str | None | UndefinedType = Undefined,
                             rt_override: str | None | UndefinedType = Undefined,
                             mlag_ibgp_peering_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_ibgp_peering_ipv6_pool: str | None | UndefinedType = Undefined,
                             ip_helpers: IpHelpers | UndefinedType = Undefined,
                             enable_mlag_ibgp_peering_vrfs: bool | None | UndefinedType = Undefined,
                             redistribute_mlag_ibgp_peering_vrfs: bool | None | UndefinedType = Undefined,
@@ -40182,6 +40264,12 @@ class EosDesigns(EosDesignsRootModel):
                                    subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
                                    MLAG switch.
                                    If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
+                                mlag_ibgp_peering_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The
+                                   subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
+                                   MLAG switch.
+                                   If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
                                 ip_helpers:
                                    IP helper for DHCP relay.
 
@@ -43818,6 +43906,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
+                        "mlag_peer_l3_ipv6_pool": {"type": str},
                         "mlag_peer_vlan": {"type": int, "default": 4094},
                         "mlag_peer_link_allowed_vlans": {"type": str},
                         "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -44317,6 +44406,15 @@ class EosDesigns(EosDesignsRootModel):
                     Required when MLAG leafs present in topology and they are using a separate L3 peering
                     VLAN.
                     """
+                    mlag_peer_l3_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The IPv6
+                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                    MLAG switch.
+                    Required when MLAG leafs present in topology and they are using a separate L3 peering
+                    VLAN.
+                    """
                     mlag_peer_vlan: int
                     """
                     MLAG Peer Link (control link) SVI interface id.
@@ -44348,7 +44446,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -44719,6 +44817,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                             mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -45082,6 +45181,13 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    Required when MLAG leafs present in topology and they are using a separate L3 peering
                                    VLAN.
+                                mlag_peer_l3_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The IPv6
+                                   subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                   MLAG switch.
+                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                   VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
@@ -45101,7 +45207,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -47907,6 +48013,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mlag_interfaces_speed": {"type": str},
                             "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                             "mlag_peer_l3_ipv4_pool": {"type": str},
+                            "mlag_peer_l3_ipv6_pool": {"type": str},
                             "mlag_peer_vlan": {"type": int, "default": 4094},
                             "mlag_peer_link_allowed_vlans": {"type": str},
                             "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -48416,6 +48523,15 @@ class EosDesigns(EosDesignsRootModel):
                         Required when MLAG leafs present in topology and they are using a separate L3 peering
                         VLAN.
                         """
+                        mlag_peer_l3_ipv6_pool: str | None
+                        """
+                        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                        The IPv6
+                        subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                        MLAG switch.
+                        Required when MLAG leafs present in topology and they are using a separate L3 peering
+                        VLAN.
+                        """
                         mlag_peer_vlan: int
                         """
                         MLAG Peer Link (control link) SVI interface id.
@@ -48447,7 +48563,7 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                         first MLAG switch.
-                        Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                        Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                         """
                         mlag_port_channel_id: int | None
                         """
@@ -48820,6 +48936,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                                 mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                                mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                                 mlag_peer_vlan: int | UndefinedType = Undefined,
                                 mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                                 mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -49190,6 +49307,13 @@ class EosDesigns(EosDesignsRootModel):
                                        MLAG switch.
                                        Required when MLAG leafs present in topology and they are using a separate L3 peering
                                        VLAN.
+                                    mlag_peer_l3_ipv6_pool:
+                                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                       The IPv6
+                                       subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                       MLAG switch.
+                                       Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                       VLAN.
                                     mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                     mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                     mlag_peer_address_family:
@@ -49209,7 +49333,7 @@ class EosDesigns(EosDesignsRootModel):
                                        The IPv6
                                        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                        first MLAG switch.
-                                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                       Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                     mlag_port_channel_id:
                                        If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                        in 'mlag_interfaces'.
@@ -51940,6 +52064,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
+                        "mlag_peer_l3_ipv6_pool": {"type": str},
                         "mlag_peer_vlan": {"type": int, "default": 4094},
                         "mlag_peer_link_allowed_vlans": {"type": str},
                         "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -52452,6 +52577,15 @@ class EosDesigns(EosDesignsRootModel):
                     Required when MLAG leafs present in topology and they are using a separate L3 peering
                     VLAN.
                     """
+                    mlag_peer_l3_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The IPv6
+                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                    MLAG switch.
+                    Required when MLAG leafs present in topology and they are using a separate L3 peering
+                    VLAN.
+                    """
                     mlag_peer_vlan: int
                     """
                     MLAG Peer Link (control link) SVI interface id.
@@ -52483,7 +52617,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -52856,6 +52990,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                             mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -53228,6 +53363,13 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    Required when MLAG leafs present in topology and they are using a separate L3 peering
                                    VLAN.
+                                mlag_peer_l3_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The IPv6
+                                   subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                   MLAG switch.
+                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                   VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
@@ -53247,7 +53389,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -56037,6 +56179,7 @@ class EosDesigns(EosDesignsRootModel):
                         "mlag_interfaces_speed": {"type": str},
                         "mlag_peer_l3_vlan": {"type": int, "default": 4093},
                         "mlag_peer_l3_ipv4_pool": {"type": str},
+                        "mlag_peer_l3_ipv6_pool": {"type": str},
                         "mlag_peer_vlan": {"type": int, "default": 4094},
                         "mlag_peer_link_allowed_vlans": {"type": str},
                         "mlag_peer_address_family": {"type": str, "default": "ipv4"},
@@ -56546,6 +56689,15 @@ class EosDesigns(EosDesignsRootModel):
                     Required when MLAG leafs present in topology and they are using a separate L3 peering
                     VLAN.
                     """
+                    mlag_peer_l3_ipv6_pool: str | None
+                    """
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                    The IPv6
+                    subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                    MLAG switch.
+                    Required when MLAG leafs present in topology and they are using a separate L3 peering
+                    VLAN.
+                    """
                     mlag_peer_vlan: int
                     """
                     MLAG Peer Link (control link) SVI interface id.
@@ -56577,7 +56729,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -56950,6 +57102,7 @@ class EosDesigns(EosDesignsRootModel):
                             mlag_interfaces_speed: str | None | UndefinedType = Undefined,
                             mlag_peer_l3_vlan: int | UndefinedType = Undefined,
                             mlag_peer_l3_ipv4_pool: str | None | UndefinedType = Undefined,
+                            mlag_peer_l3_ipv6_pool: str | None | UndefinedType = Undefined,
                             mlag_peer_vlan: int | UndefinedType = Undefined,
                             mlag_peer_link_allowed_vlans: str | None | UndefinedType = Undefined,
                             mlag_peer_address_family: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
@@ -57320,6 +57473,13 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    Required when MLAG leafs present in topology and they are using a separate L3 peering
                                    VLAN.
+                                mlag_peer_l3_ipv6_pool:
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                                   The IPv6
+                                   subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first
+                                   MLAG switch.
+                                   Required when MLAG leafs present in topology and they are using a separate L3 peering
+                                   VLAN.
                                 mlag_peer_vlan: MLAG Peer Link (control link) SVI interface id.
                                 mlag_peer_link_allowed_vlans: mlag_peer_link_allowed_vlans
                                 mlag_peer_address_family:
@@ -57339,7 +57499,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.

@@ -21,6 +21,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rd_override</samp>](## "<network_services_keys.name>.[].vrfs.[].rd_override") | String |  |  |  | By default, the VRF RD will be derived from the pattern defined in `overlay_rd_type`.<br>The rd_override allows us to override this value and statically define it.<br><br>rd_override supports two formats:<br>  - A single number will be used in the RD assigned number subfield (second part of the RD).<br>  - A full RD string with colon separator which will override the full RD.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rt_override</samp>](## "<network_services_keys.name>.[].vrfs.[].rt_override") | String |  |  |  | By default, the VRF RT will be derived from the pattern defined in `overlay_rt_type`.<br>The rt_override allows us to override this value and statically define it.<br><br>rt_override supports two formats:<br>  - A single number will be used in the RT assigned number subfield (second part of the RT).<br>  - A full RT string with colon separator which will override the full RT.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ipv4_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].mlag_ibgp_peering_ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.<br>If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag_ibgp_peering_ipv6_pool</samp>](## "<network_services_keys.name>.[].vrfs.[].mlag_ibgp_peering_ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.<br>If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_helpers</samp>](## "<network_services_keys.name>.[].vrfs.[].ip_helpers") | List, items: Dictionary |  |  |  | IP helper for DHCP relay. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;ip_helper</samp>](## "<network_services_keys.name>.[].vrfs.[].ip_helpers.[].ip_helper") | String | Required, Unique |  |  | IPv4 DHCP server IP. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "<network_services_keys.name>.[].vrfs.[].ip_helpers.[].source_interface") | String |  |  |  | Interface name. |
@@ -154,6 +155,11 @@
             # The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
             # If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
             mlag_ibgp_peering_ipv4_pool: <str>
+
+            # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+            # The subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first MLAG switch.
+            # If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will be used.
+            mlag_ibgp_peering_ipv6_pool: <str>
 
             # IP helper for DHCP relay.
             ip_helpers:
