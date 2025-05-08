@@ -128,20 +128,20 @@ class UtilsMixin(Protocol):
         adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
         return adapter_or_network_port_settings
 
-    def get_merged_connected_endpoints_keys(
+    def get_merged_connected_endpoints(
         self: SharedUtilsProtocol,
     ) -> (EosDesigns._DynamicKeys.DynamicCustomConnectedEndpoints, EosDesigns.CustomConnectedEndpointsKeys):
         """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
-        dynamic_connected_endpoints = self.inputs._dynamic_keys.custom_connected_endpoints
+        connected_endpoints = self.inputs._dynamic_keys.custom_connected_endpoints
 
         for connected_endpoint in self.inputs._dynamic_keys.connected_endpoints:
-            if connected_endpoint.key not in dynamic_connected_endpoints:
-                dynamic_connected_endpoints.append(connected_endpoint)
+            if connected_endpoint.key not in connected_endpoints:
+                connected_endpoints.append(connected_endpoint)
 
-        connected_endpoints_inputs = self.inputs.custom_connected_endpoints_keys
+        connected_endpoints_keys = self.inputs.custom_connected_endpoints_keys
 
         for connected_endpoint in self.inputs.connected_endpoints_keys:
-            if connected_endpoint.key not in connected_endpoints_inputs:
-                connected_endpoints_inputs.append(connected_endpoint)
+            if connected_endpoint.key not in connected_endpoints_keys:
+                connected_endpoints_keys.append(connected_endpoint)
 
-        return dynamic_connected_endpoints, connected_endpoints_inputs
+        return connected_endpoints, connected_endpoints_keys
