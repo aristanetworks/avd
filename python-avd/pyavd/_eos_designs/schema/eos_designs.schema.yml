@@ -9156,7 +9156,7 @@ $defs:
               The IPv6 subnet used for MLAG underlay L3 peering is derived from this
               pool based on the node id of the first MLAG switch.
 
-              Optional IPv6 Peering for MLAG leafs present in topology and they are using a separate
+              Required when MLAG leafs present in topology and they are using a separate
               L3 peering VLAN.
 
               '
@@ -9212,7 +9212,8 @@ $defs:
               The IPv6 address used for MLAG Peer Link (control link) is derived from
               this pool based on the node id of the first MLAG switch.
 
-              Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.'
+              Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family`
+              is `ipv6`.'
             type: str
             format: ipv6_pool
           mlag_port_channel_id:
