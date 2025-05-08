@@ -7,7 +7,7 @@ from typing import cast
 
 import pytest
 
-from avdutils.validation import Issue, Violation, init_store_from_fragments, validate_json
+from avdutils.validation import Issue, Value, Violation, init_store_from_fragments, validate_json
 
 
 @pytest.fixture
@@ -27,42 +27,48 @@ def init_store() -> None:
 
 @pytest.mark.usefixtures("init_store")
 def test_validate_json() -> None:
-    feedback_list = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1"}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
-    feedback_iter = iter(feedback_list)
-    feedback = next(feedback_iter)
+    validation_result = validate_json('{"ethernet_interfaces": [{"name": "Ethernet1", "speed": 100}, {"name": "Ethernet1"}, {}]}', "eos_cli_config_gen")
+
+    violations = iter(validation_result.violations)
+    feedback = next(violations)
     assert feedback.path == ["ethernet_interfaces", "2"]
     assert isinstance(feedback.issue, Issue.Validation)
     assert isinstance(feedback.issue._0, Violation.MissingRequiredKey)
     assert feedback.issue._0.key == "name"
-    feedback = next(feedback_iter)
+    feedback = next(violations)
     assert feedback.path == ["ethernet_interfaces", "0", "name"]
     assert isinstance(feedback.issue, Issue.Validation)
     assert isinstance(feedback.issue._0, Violation.ValueNotUnique)
     assert feedback.issue._0.other_path == ["ethernet_interfaces", "1", "name"]
-    feedback = next(feedback_iter)
+    feedback = next(violations)
     assert feedback.path == ["ethernet_interfaces", "1", "name"]
     assert isinstance(feedback.issue, Issue.Validation)
     assert isinstance(feedback.issue._0, Violation.ValueNotUnique)
     assert feedback.issue._0.other_path == ["ethernet_interfaces", "0", "name"]
 
-    """
-    Preparing for updated code where we emit default value inserted.
-    # feedback = next(feedback_iter)
-    # assert feedback.path == ["avd_data_validation_mode"]
-    # assert isinstance(feedback.issue, Issue.DefaultValueInserted)
-    # feedback = next(feedback_iter)
-    # assert feedback.path == ["config_end"]
-    # assert isinstance(feedback.issue, Issue.DefaultValueInserted)
-    # feedback = next(feedback_iter)
-    # assert feedback.path == ["generate_default_config"]
-    # assert isinstance(feedback.issue, Issue.DefaultValueInserted)
-    # feedback = next(feedback_iter)
-    # assert feedback.path == ["generate_device_documentation"]
-    # assert isinstance(feedback.issue, Issue.DefaultValueInserted)
-    # feedback = next(feedback_iter)
-    # assert feedback.path == ["is_deployed"]
-    # assert isinstance(feedback.issue, Issue.DefaultValueInserted)
-    # feedback = next(feedback_iter)
-    # assert feedback.path == ["transceiver_qsfp_default_mode_4x10"]
-    # assert isinstance(feedback.issue, Issue.DefaultValueInserted)
-    """
+    coercions = iter(validation_result.coercions)
+    feedback = next(coercions)
+    assert feedback.path == ["avd_data_validation_mode"]
+    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
+    feedback = next(coercions)
+    assert feedback.path == ["config_end"]
+    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
+    feedback = next(coercions)
+    assert feedback.path == ["ethernet_interfaces", "0", "speed"]
+    assert isinstance(feedback.issue, Issue.Coercion)
+    assert isinstance(feedback.issue._0.found, Value.Int)
+    assert feedback.issue._0.found._0 == 100
+    assert isinstance(feedback.issue._0.made, Value.Str)
+    assert feedback.issue._0.made._0 == "100"
+    feedback = next(coercions)
+    assert feedback.path == ["generate_default_config"]
+    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
+    feedback = next(coercions)
+    assert feedback.path == ["generate_device_documentation"]
+    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
+    feedback = next(coercions)
+    assert feedback.path == ["is_deployed"]
+    assert isinstance(feedback.issue, Issue.DefaultValueInserted)
+    feedback = next(coercions)
+    assert feedback.path == ["transceiver_qsfp_default_mode_4x10"]
+    assert isinstance(feedback.issue, Issue.DefaultValueInserted)

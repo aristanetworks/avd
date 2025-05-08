@@ -129,7 +129,7 @@ impl Coercion<String> for Str {
             Value::String(string) => Some(string.to_string()),
             Value::Number(number) => {
                 ctx.add_coercion(CoercionNote {
-                    found: number.clone().into(),
+                    found: Value::Number(number.clone()).into(),
                     made: number.to_string().into(),
                 });
                 Some(number.to_string())

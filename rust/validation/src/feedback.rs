@@ -2,23 +2,95 @@
 // Use of this source code is governed by the Apache License 2.0
 // that can be found in the LICENSE file.
 
+use std::collections::HashMap;
+
 use serde::Serialize;
 
-/// Wrapper of serde_json::Value to allow us to apply conversion traits on these.
+/// Value Wrapper of serde_json::Value to allow us to apply conversion traits on these.
 #[cfg_attr(
     feature = "python_bindings",
     pyo3::pyclass(frozen, module = "validation")
 )]
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
-pub struct Value(serde_json::Value);
-impl<T> From<T> for Value
-where
-    T: Into<serde_json::Value>,
-{
-    fn from(value: T) -> Self {
-        Self(value.into())
+#[derive(Clone, Debug, PartialEq, Serialize, derive_more::From)]
+pub enum Value {
+    Null(),
+    Bool(bool),
+    Dict(HashMap<String, Value>),
+    Float(f64),
+    Int(i64),
+    List(Vec<Value>),
+    Str(String),
+}
+impl From<serde_json::Value> for Value {
+    fn from(value: serde_json::Value) -> Self {
+        match value {
+            serde_json::Value::Array(value) => {
+                Self::List(value.into_iter().map(Value::from).collect::<Vec<_>>())
+            }
+            serde_json::Value::Null => Self::Null(),
+            serde_json::Value::Bool(value) => Self::Bool(value),
+            serde_json::Value::Number(number) => {
+                if let Some(value) = number.as_i64() {
+                    Self::Int(value)
+                } else if let Some(value) = number.as_f64() {
+                    Self::Float(value)
+                } else {
+                    // Falling back to str
+                    Self::Str(number.as_str().to_string())
+                }
+            }
+            serde_json::Value::Object(value) => Self::Dict(
+                // By using hashmap we accept that keys may be reordered here.
+                value
+                    .into_iter()
+                    .map(|(k, v)| (k, Value::from(v)))
+                    .collect::<std::collections::HashMap<_, _>>(),
+            ),
+            serde_json::Value::String(value) => Self::Str(value),
+        }
     }
 }
+impl From<&str> for Value {
+    fn from(value: &str) -> Self {
+        Self::Str(value.to_string())
+    }
+}
+// #[cfg(feature="python_bindings")]
+// impl<'py> pyo3::IntoPyObject<'py> for Value {
+//     type Target = pyo3::PyAny;
+//     type Output = pyo3::Bound<'py, Self::Target>;
+
+//     type Error = pyo3::PyErr;
+
+//     fn into_pyobject(self, py: pyo3::Python<'py>) -> Result<Self::Output, Self::Error> {
+//         match self.0 {
+//             serde_json::Value::Array(value) => pyo3::IntoPyObjectExt::into_bound_py_any(value
+//                 .into_iter()
+//                 .map(|item| Value::from(item))
+//                 .collect::<Vec<_>>(), py),
+//             serde_json::Value::Null => pyo3::IntoPyObjectExt::into_bound_py_any((), py),
+//             serde_json::Value::Bool(value) => pyo3::IntoPyObjectExt::into_bound_py_any(value, py),
+//             serde_json::Value::Number(number) => {
+//                 if let Some(value) = number.as_i64() {
+//                     pyo3::IntoPyObjectExt::into_bound_py_any(value, py)
+//                 } else if let Some(value) = number.as_f64() {
+//                     pyo3::IntoPyObjectExt::into_bound_py_any(value, py)
+//                 } else {
+//                     // Falling back to str
+//                     pyo3::IntoPyObjectExt::into_bound_py_any(number.as_str(), py)
+//                 }
+//             }
+//             serde_json::Value::Object(value) => {
+//                 // Limitation to avoid adding extra dependencies we accept that keys may be reordered here.
+//                 pyo3::IntoPyObjectExt::into_bound_py_any(value
+//                     .into_iter()
+//                     .map(|(k, v)| (k, Value::from(v)))
+//                     .collect::<std::collections::HashMap<_, _>>(), py)
+//             }
+//             serde_json::Value::String(value) => pyo3::IntoPyObjectExt::into_bound_py_any(value, py),
+//         }
+//     }
+// }
 
 /// Feedback item carried in the Context under either `coercions` or `violations`
 #[cfg_attr(
@@ -54,7 +126,7 @@ pub enum Issue {
     feature = "python_bindings",
     pyo3::pyclass(frozen, get_all, module = "validation")
 )]
-#[derive(Clone, Debug, PartialEq, Eq, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize)]
 pub struct CoercionNote {
     pub found: Value,
     pub made: Value,

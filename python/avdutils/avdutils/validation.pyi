@@ -4,7 +4,7 @@
 # Including docstrings since that is why we want this. Also allowing bad name style to match pyo3 output.
 # ruff: noqa: PYI021, N801
 from pathlib import Path
-from typing import Any, Literal
+from typing import Literal
 
 class Feedback:
     """Feedback item carried in the Context under either `coercions` or `violations`."""
@@ -14,11 +14,42 @@ class Feedback:
 
     issue: Issue_Validation | Issue_Coercion | Issue_DefaultValueInserted | Issue_InternalError
 
+class Value_Bool(Value):
+    _0: bool
+
+class Value_Dict(Value):
+    _0: dict[str, Value_Bool | Value_Dict | Value_Float | Value_Int | Value_List | Value_None | Value_Str]
+
+class Value_Float(Value):
+    _0: float
+
+class Value_Int(Value):
+    _0: int
+
+class Value_List(Value):
+    _0: list[Value_Bool | Value_Dict | Value_Float | Value_Int | Value_List | Value_None | Value_Str]
+
+class Value_None(Value): ...
+
+class Value_Str(Value):
+    _0: str
+
+class Value:
+    """Data value reported in coercion or violation."""
+
+    Bool = Value_Bool
+    Dict = Value_Dict
+    Float = Value_Float
+    Int = Value_Int
+    List = Value_List
+    None_ = Value_None
+    Str = Value_Str
+
 class CoercionNote:
     """One coercion performed during recursive coercion."""
 
-    found: Any
-    made: Any
+    found: Value_Bool | Value_Dict | Value_Float | Value_Int | Value_List | Value_None | Value_Str
+    made: Value_Bool | Value_Dict | Value_Float | Value_Int | Value_List | Value_None | Value_Str
 
 class Type_Null(Type): ...
 class Type_Bool(Type): ...
@@ -85,7 +116,7 @@ class Violation_InvalidValue(Violation):
     """The value is not among the valid values."""
 
     expected: ViolationValidValues_Bool | ViolationValidValues_Int | ViolationValidValues_Str
-    found: Any
+    found: Value_Bool | Value_Dict | Value_Float | Value_Int | Value_List | Value_None | Value_Str
 
 class Violation_NotMatchingPattern(Violation):
     """The value is not matching the allowed pattern."""
@@ -161,6 +192,14 @@ class Issue:
 
     Validation = Issue_Validation
     Coercion = Issue_Coercion
+    DefaultValueInserted = Issue_DefaultValueInserted
+    InternalError = Issue_InternalError
+
+class ValidationResult:
+    """Result of data validation."""
+
+    violations: list[Feedback]
+    coercions: list[Feedback]
 
 def init_store_from_fragments(eos_cli_config_gen: Path, eos_designs: Path) -> None:
     """
@@ -177,7 +216,7 @@ def init_store_from_fragments(eos_cli_config_gen: Path, eos_designs: Path) -> No
         RuntimeError: For any issue hit during loading, deserializing, combining and resolving schemas.
     """
 
-def validate_json(data_as_json: str, schema_name: Literal["eos_cli_config_gen", "eos_designs"]) -> list[Feedback]:
+def validate_json(data_as_json: str, schema_name: Literal["eos_cli_config_gen", "eos_designs"]) -> ValidationResult:
     """
     Validate data against a schema specified by name.
 
@@ -186,10 +225,10 @@ def validate_json(data_as_json: str, schema_name: Literal["eos_cli_config_gen", 
         schema_name: The name of the schema to validate against.
 
     Returns:
-        A JSON string containing the validation results.
+        ValidationResult holding lists of violations and coercions as Feedback objects.
     """
 
-def validate_json_with_adhoc_schema(data_as_json: str, schema_as_json: str) -> list[Feedback]:
+def validate_json_with_adhoc_schema(data_as_json: str, schema_as_json: str) -> ValidationResult:
     """
     Validate data against the given schema.
 
@@ -198,5 +237,5 @@ def validate_json_with_adhoc_schema(data_as_json: str, schema_as_json: str) -> l
         schema_as_json: A fully resolved schema dumped as JSON.
 
     Returns:
-        A JSON string containing the validation results.
+        ValidationResult holding lists of violations and coercions as Feedback objects.
     """
