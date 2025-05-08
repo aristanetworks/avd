@@ -1,0 +1,95 @@
+[workspace]
+members = [
+    "rust/avdschema",
+    "rust/included_store",
+    "rust/avdschema_macros",
+    "rust/validation",
+    ]
+resolver = "2"
+
+[profile.release-lto]
+inherits = "release"
+lto = true
+
+[workspace.lints.clippy]
+# Pedantic group
+pedantic = { level = "warn", priority = -1 }
+must_use_candidate = "allow"
+missing_errors_doc = "allow"
+missing_docs_in_private_items = "allow"
+
+# Restriction group
+allow_attributes_without_reason = "warn"
+as_conversions = "warn"
+create_dir = "deny"
+dbg_macro = "deny"
+empty_drop = "deny"
+empty_enum_variants_with_brackets = "deny"
+empty_structs_with_brackets = "deny"
+error_impl_error = "deny"
+exit = "deny"
+expect_used = "warn"
+field_scoped_visibility_modifiers = "deny"
+filetype_is_file = "deny"
+float_cmp_const = "deny"
+fn_to_numeric_cast_any = "deny"
+format_push_string = "deny"
+get_unwrap = "deny"
+if_then_some_else_none = "deny"
+impl_trait_in_params = "deny"
+indexing_slicing = "deny"
+infinite_loop = "deny"
+integer_division_remainder_used = "warn"
+integer_division = "warn"
+iter_over_hash_type = "warn"
+lossy_float_literal = "deny"
+map_err_ignore = "deny"
+map_with_unused_argument_over_ranges = "deny"
+mem_forget = "deny"
+min_ident_chars = "deny"
+mixed_read_write_in_expression = "deny"
+module_name_repetitions = "deny"
+multiple_inherent_impl = "deny"
+multiple_unsafe_ops_per_block = "deny"
+needless_raw_strings = "deny"
+panic = "warn"
+panic_in_result_fn = "deny"
+partial_pub_fields = "deny"
+pathbuf_init_then_push = "deny"
+print_stderr = "deny"
+print_stdout = "warn"
+pub_without_shorthand = "deny"
+redundant_type_annotations = "warn"
+ref_patterns = "allow"                       # TODO: discuss
+renamed_function_params = "deny"
+rest_pat_in_fully_bound_structs = "deny"
+same_name_method = "deny"
+self_named_module_files = "deny"
+semicolon_inside_block = "allow"             # TODO: discuss
+semicolon_outside_block = "allow"            # TODO: discuss
+separated_literal_suffix = "allow"            # TODO: discuss
+shadow_reuse = "warn"
+shadow_unrelated = "deny"
+str_to_string = "deny"
+string_add = "allow"            # TODO: discuss
+string_lit_chars_any = "warn"
+string_slice = "warn"
+string_to_string = "deny"
+suspicious_xor_used_as_pow = "warn"
+tests_outside_test_module = "deny"
+todo = "deny"
+try_err = "deny"
+undocumented_unsafe_blocks = "deny"
+unimplemented = "warn"
+unnecessary_safety_comment = "deny"
+unnecessary_safety_doc = "deny"
+unnecessary_self_imports = "deny"
+unneeded_field_pattern = "warn"
+unreachable = "deny"
+unseparated_literal_suffix = "allow"           # TODO: discuss
+unused_result_ok = "deny"
+unused_trait_names = "deny"
+unwrap_in_result = "warn"
+unwrap_used = "allow"                          # TODO: discuss
+use_debug = "warn"
+verbose_file_reads = "deny"
