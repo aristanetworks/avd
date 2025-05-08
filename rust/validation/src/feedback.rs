@@ -55,42 +55,6 @@ impl From<&str> for Value {
         Self::Str(value.to_string())
     }
 }
-// #[cfg(feature="python_bindings")]
-// impl<'py> pyo3::IntoPyObject<'py> for Value {
-//     type Target = pyo3::PyAny;
-//     type Output = pyo3::Bound<'py, Self::Target>;
-
-//     type Error = pyo3::PyErr;
-
-//     fn into_pyobject(self, py: pyo3::Python<'py>) -> Result<Self::Output, Self::Error> {
-//         match self.0 {
-//             serde_json::Value::Array(value) => pyo3::IntoPyObjectExt::into_bound_py_any(value
-//                 .into_iter()
-//                 .map(|item| Value::from(item))
-//                 .collect::<Vec<_>>(), py),
-//             serde_json::Value::Null => pyo3::IntoPyObjectExt::into_bound_py_any((), py),
-//             serde_json::Value::Bool(value) => pyo3::IntoPyObjectExt::into_bound_py_any(value, py),
-//             serde_json::Value::Number(number) => {
-//                 if let Some(value) = number.as_i64() {
-//                     pyo3::IntoPyObjectExt::into_bound_py_any(value, py)
-//                 } else if let Some(value) = number.as_f64() {
-//                     pyo3::IntoPyObjectExt::into_bound_py_any(value, py)
-//                 } else {
-//                     // Falling back to str
-//                     pyo3::IntoPyObjectExt::into_bound_py_any(number.as_str(), py)
-//                 }
-//             }
-//             serde_json::Value::Object(value) => {
-//                 // Limitation to avoid adding extra dependencies we accept that keys may be reordered here.
-//                 pyo3::IntoPyObjectExt::into_bound_py_any(value
-//                     .into_iter()
-//                     .map(|(k, v)| (k, Value::from(v)))
-//                     .collect::<std::collections::HashMap<_, _>>(), py)
-//             }
-//             serde_json::Value::String(value) => pyo3::IntoPyObjectExt::into_bound_py_any(value, py),
-//         }
-//     }
-// }
 
 /// Feedback item carried in the Context under either `coercions` or `violations`
 #[cfg_attr(
