@@ -1,0 +1,331 @@
+[{
+    "value": {
+        "key": {
+            "deviceId": "13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-leaf1",
+        "hostname": "avd-ci-leaf1",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:72:8b:31",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:45:25.834614264",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "20C292B489214DF32F9506C242A722FF"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-core1",
+        "hostname": "avd-ci-core1",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:a1:33:1a",
+        "streamingStatus": "INACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Mlag": false,
+                "Danz": false
+            }
+        }
+    },
+    "time": "2025-02-05T04:08:18.129257632",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "30160234DEF2DF9D5776425366F3E21C"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-leaf1b",
+        "hostname": "dc1-leaf1b",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:af:d3:f6",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.432019439",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "32136C2A866EA92C5A2CB60C0E1723F9"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-spine1",
+        "hostname": "dc1-spine1",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:f6:ad:37",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Mlag": false,
+                "Danz": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:03:27.187816281",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "3A8AAFA3F67854C25030F3CF481A2BF3"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-leaf1c",
+        "hostname": "dc1-leaf1c",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:88:fe:27",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Mlag": false,
+                "Danz": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:45:26.791242828",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "9404C07527327D8767F0E4BD25A14312"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-leaf1a",
+        "hostname": "dc1-leaf1a",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:6b:2e:70",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.400453077",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "A35041DA2FAE8F7159BE42AB792E60CE"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-leaf2b",
+        "hostname": "dc1-leaf2b",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:ae:f7:03",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:50.265578281",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "A7D46613D44DE45D68D5B5C5CBA06B0D"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-spine2",
+        "hostname": "avd-ci-spine2",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:cb:38:c2",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Mlag": false,
+                "Danz": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:50.260890886",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "B51AA89B6E51E89E1422107EDE3A9438"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-leaf2",
+        "hostname": "avd-ci-leaf2",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:d5:5d:c0",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.288970713",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "C7B26167EFD6EBD42E01D55187B3C7B3"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-leaf3",
+        "hostname": "avd-ci-leaf3",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:03:37:66",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.313283116",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "D1B05116007D08BF0F09B472BC9DF5E3"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-leaf2c",
+        "hostname": "dc1-leaf2c",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:2f:d8:fe",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:03:26.943115546",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "DCBFFD6C843A1F912D20EDA4950C46A7"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-leaf2a",
+        "hostname": "dc1-leaf2a",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:45:ab:df",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.491221333",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "DCC816CEAC4BBD6319385043AD318362"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-spine1",
+        "hostname": "avd-ci-spine1",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:d7:ee:0b",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Mlag": false,
+                "Danz": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.247447683",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "E556E19FFB81EE6D9592658E0539A4DA"
+        },
+        "softwareVersion": "4.33.0F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "dc1-spine2",
+        "hostname": "dc1-spine2",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:1b:5e:8d",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:45:23.485580422",
+    "type": "INITIAL"
+}, {
+    "value": {
+        "key": {
+            "deviceId": "8A5B1A53C0AD190F6D48FE7208FD9E41"
+        },
+        "softwareVersion": "4.32.1F",
+        "modelName": "vEOS-lab",
+        "hardwareRevision": "",
+        "fqdn": "avd-ci-leaf4",
+        "hostname": "avd-ci-leaf4",
+        "domainName": "",
+        "systemMacAddress": "50:00:00:15:f4:e8",
+        "streamingStatus": "ACTIVE",
+        "extendedAttributes": {
+            "featureEnabled": {
+                "Danz": false,
+                "Mlag": false
+            }
+        }
+    },
+    "time": "2025-03-03T18:05:48.313313086",
+    "type": "INITIAL"
+}]
