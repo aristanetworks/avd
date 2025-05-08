@@ -1,0 +1,28 @@
+[package]
+name = "validation"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[dependencies]
+avdschema = { path = "../avdschema" }
+derive_more = { version = "2.0.1", features = ["display", "from"] }
+included_store = { path = "../included_store", optional = true }
+log = { version = "0.4.26", optional = true }
+ordermap = { version = "0.5.4", features = ["serde"] }
+pyo3 = { version = "0.24.1", features = ["abi3", "extension-module"], optional = true }
+pyo3-log = { version = "0.12.1", optional = true }
+regex = { version = "1.11.1" }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { version = "1.0.135", features = [
+    "arbitrary_precision", # To support very big numbers
+    "preserve_order",
+] }
+serde_yaml = { version = "0.9.33" }
+
+[features]
+python_bindings = ["dep:pyo3", "dep:pyo3-log", "dep:log", "dep:included_store", "avdschema/dump_load_files"]
+relaxed_validation_on_root_dicts = []
+
+[lib]
+crate-type = ["cdylib", "lib"]

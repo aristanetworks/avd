@@ -15,6 +15,7 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+
       - name: Download coverage from ansible-test units
         continue-on-error: true
         uses: actions/download-artifact@v4
@@ -24,6 +25,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           path: ansible_collections/arista/avd/
           merge-multiple: true
+
       - name: Download coverage from ansible-test integration
         continue-on-error: true
         uses: actions/download-artifact@v4
@@ -33,6 +35,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           path: ansible_collections/arista/avd/
           merge-multiple: true
+
       - name: Download coverage from pytest
         continue-on-error: true
         uses: actions/download-artifact@v4
@@ -42,6 +45,17 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           path: python-avd/
           merge-multiple: true
+
+      - name: Download coverage from pytest avdutils (bindings for rust)
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: pytest-avdutils-coverage
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          path: python/avdutils/
+          merge-multiple: true
+
       - name: Download eos_designs compiled templates from pytest
         continue-on-error: true
         uses: actions/download-artifact@v4
@@ -51,6 +65,7 @@ jobs:
           run-id: ${{ github.event.workflow_run.id }}
           path: python-avd/pyavd/_eos_designs/j2templates/compiled_templates/
           merge-multiple: true
+
       - name: Download eos_cli_config_gen compiled templates from pytest
         continue-on-error: true
         uses: actions/download-artifact@v4

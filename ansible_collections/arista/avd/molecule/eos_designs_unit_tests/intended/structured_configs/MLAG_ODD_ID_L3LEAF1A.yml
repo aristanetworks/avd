@@ -84,6 +84,13 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+queue_monitor_length:
+  enabled: true
+  default_thresholds:
+    high: 100
+    low: 10
+  log: 100
+  notifying: true
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:

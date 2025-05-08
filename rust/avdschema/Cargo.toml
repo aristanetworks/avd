@@ -1,0 +1,24 @@
+[package]
+name = "avdschema"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[dependencies]
+derive_more = { version = "2.0.1", features = [
+    "constructor",
+    "display",
+    "from",
+] }
+flate2 = { version = "1.1.0" }
+ordermap = { version = "0.5.4", features = ["serde"] }
+regex = { version = "1.11.1" }
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = { version = "1.0.135", features = ["preserve_order"] }
+serde_with = { version = "3.12.0" }
+serde_yaml = { version = "0.9.33" }
+walkdir = { version = "2.5.0", optional = true }
+xz2 = { version = "0.1.7", optional = true }
+
+[features]
+dump_load_files = ["walkdir", "xz2"]
