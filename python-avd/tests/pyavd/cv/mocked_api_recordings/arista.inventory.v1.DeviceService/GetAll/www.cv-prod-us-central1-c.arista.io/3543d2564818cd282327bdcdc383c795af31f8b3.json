@@ -1,0 +1,96 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "deviceId": "A7D46613D44DE45D68D5B5C5CBA06B0D"
+                },
+                "softwareVersion": "4.32.1F",
+                "modelName": "vEOS-lab",
+                "hardwareRevision": "",
+                "fqdn": "avd-ci-spine2",
+                "hostname": "avd-ci-spine2",
+                "domainName": "",
+                "systemMacAddress": "50:00:00:cb:38:c2",
+                "streamingStatus": "ACTIVE",
+                "extendedAttributes": {
+                    "featureEnabled": {
+                        "Mlag": false,
+                        "Danz": false
+                    }
+                }
+            },
+            "time": "2025-03-03T18:05:50.260890886",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "deviceId": "B51AA89B6E51E89E1422107EDE3A9438"
+                },
+                "softwareVersion": "4.32.1F",
+                "modelName": "vEOS-lab",
+                "hardwareRevision": "",
+                "fqdn": "avd-ci-leaf2",
+                "hostname": "avd-ci-leaf2",
+                "domainName": "",
+                "systemMacAddress": "50:00:00:d5:5d:c0",
+                "streamingStatus": "ACTIVE",
+                "extendedAttributes": {
+                    "featureEnabled": {
+                        "Danz": false,
+                        "Mlag": false
+                    }
+                }
+            },
+            "time": "2025-03-03T18:05:48.288970713",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "deviceId": "C7B26167EFD6EBD42E01D55187B3C7B3"
+                },
+                "softwareVersion": "4.32.1F",
+                "modelName": "vEOS-lab",
+                "hardwareRevision": "",
+                "fqdn": "avd-ci-leaf3",
+                "hostname": "avd-ci-leaf3",
+                "domainName": "",
+                "systemMacAddress": "50:00:00:03:37:66",
+                "streamingStatus": "ACTIVE",
+                "extendedAttributes": {
+                    "featureEnabled": {
+                        "Danz": false,
+                        "Mlag": false
+                    }
+                }
+            },
+            "time": "2025-03-03T18:05:48.313283116",
+            "type": "INITIAL"
+        },
+        {
+            "value": {
+                "key": {
+                    "deviceId": "8A5B1A53C0AD190F6D48FE7208FD9E41"
+                },
+                "softwareVersion": "4.32.1F",
+                "modelName": "vEOS-lab",
+                "hardwareRevision": "",
+                "fqdn": "avd-ci-leaf4",
+                "hostname": "avd-ci-leaf4",
+                "domainName": "",
+                "systemMacAddress": "50:00:00:15:f4:e8",
+                "streamingStatus": "ACTIVE",
+                "extendedAttributes": {
+                    "featureEnabled": {
+                        "Danz": false,
+                        "Mlag": false
+                    }
+                }
+            },
+            "time": "2025-03-03T18:05:48.313313086",
+            "type": "INITIAL"
+        }
+    ]
+}

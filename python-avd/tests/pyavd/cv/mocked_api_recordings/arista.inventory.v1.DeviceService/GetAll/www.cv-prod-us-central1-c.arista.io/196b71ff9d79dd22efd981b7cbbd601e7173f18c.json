@@ -1,0 +1,27 @@
+{
+    "payload": [
+        {
+            "value": {
+                "key": {
+                    "deviceId": "13C20F1EDCCED2D85F6DB2FB9E3AC5B6"
+                },
+                "softwareVersion": "4.32.1F",
+                "modelName": "vEOS-lab",
+                "hardwareRevision": "",
+                "fqdn": "avd-ci-leaf1",
+                "hostname": "avd-ci-leaf1",
+                "domainName": "",
+                "systemMacAddress": "50:00:00:72:8b:31",
+                "streamingStatus": "INACTIVE",
+                "extendedAttributes": {
+                    "featureEnabled": {
+                        "Danz": false,
+                        "Mlag": false
+                    }
+                }
+            },
+            "time": "2025-03-03T18:45:25.834614264",
+            "type": "INITIAL"
+        }
+    ]
+}
