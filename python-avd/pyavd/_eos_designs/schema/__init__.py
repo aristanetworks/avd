@@ -21307,7 +21307,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -22068,7 +22068,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -25424,7 +25424,7 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                         first MLAG switch.
-                        Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                        Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                         """
                         mlag_port_channel_id: int | None
                         """
@@ -26194,7 +26194,7 @@ class EosDesigns(EosDesignsRootModel):
                                        The IPv6
                                        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                        first MLAG switch.
-                                       Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                     mlag_port_channel_id:
                                        If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                        in 'mlag_interfaces'.
@@ -29478,7 +29478,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -30250,7 +30250,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -33590,7 +33590,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -34360,7 +34360,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -44446,7 +44446,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -45207,7 +45207,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -48563,7 +48563,7 @@ class EosDesigns(EosDesignsRootModel):
                         The IPv6
                         address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                         first MLAG switch.
-                        Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                        Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                         """
                         mlag_port_channel_id: int | None
                         """
@@ -49333,7 +49333,7 @@ class EosDesigns(EosDesignsRootModel):
                                        The IPv6
                                        address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                        first MLAG switch.
-                                       Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                       Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                     mlag_port_channel_id:
                                        If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                        in 'mlag_interfaces'.
@@ -52617,7 +52617,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -53389,7 +53389,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
@@ -56729,7 +56729,7 @@ class EosDesigns(EosDesignsRootModel):
                     The IPv6
                     address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                     first MLAG switch.
-                    Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                    Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                     """
                     mlag_port_channel_id: int | None
                     """
@@ -57499,7 +57499,7 @@ class EosDesigns(EosDesignsRootModel):
                                    The IPv6
                                    address used for MLAG Peer Link (control link) is derived from this pool based on the node id of the
                                    first MLAG switch.
-                                   Optional IPv6 Peering for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
+                                   Required for MLAG leafs when `mlag_peer_address_family` is `ipv6`.
                                 mlag_port_channel_id:
                                    If not set, the mlag port-channel id is generated based on the digits of the first interface present
                                    in 'mlag_interfaces'.
