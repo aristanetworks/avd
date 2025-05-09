@@ -64,9 +64,6 @@ class FlowTrackingMixin(Protocol):
             case EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.FlowTracking():
                 enabled: bool = default(flow_tracking.enabled, self.inputs.fabric_flow_tracking.endpoints.enabled)
                 name: str = default(flow_tracking.name, self.inputs.fabric_flow_tracking.endpoints.name)
-            case EosDesigns._DynamicKeys.DynamicCustomConnectedEndpointsItem.CustomConnectedEndpointsItem.AdaptersItem.FlowTracking():
-                enabled: bool = default(flow_tracking.enabled, self.inputs.fabric_flow_tracking.endpoints.enabled)
-                name: str = default(flow_tracking.name, self.inputs.fabric_flow_tracking.endpoints.name)
             case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.FlowTracking():
                 enabled: bool = default(flow_tracking.enabled, self.inputs.fabric_flow_tracking.l3_interfaces.enabled)
                 name: str = default(flow_tracking.name, self.inputs.fabric_flow_tracking.l3_interfaces.name)
