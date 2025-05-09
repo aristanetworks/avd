@@ -81,7 +81,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         Also includes the inband_mgmt_vlan.
         """
-        if not (self.shared_utils.any_network_services and self.shared_utils.connected_endpoints):
+        if not (self.shared_utils.any_network_services and self.shared_utils.all_connected_endpoints):
             return set(), set()
 
         vlans = set()
@@ -89,7 +89,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         if self.shared_utils.configure_inband_mgmt:
             vlans.add(self.shared_utils.node_config.inband_mgmt_vlan)
-        connected_endpoints, _ = self.shared_utils.get_merged_connected_endpoints()
+        connected_endpoints = self.shared_utils.all_connected_endpoints
         for connected_endpoints_key in connected_endpoints:
             for connected_endpoint in connected_endpoints_key.value:
                 for index, adapter in enumerate(connected_endpoint.adapters):

@@ -52,7 +52,7 @@ class UtilsMixin(Protocol):
 
         Adapters are filtered to contain only the ones connected to this switch.
         """
-        connected_endpoints, connected_endpoints_keys = self.shared_utils.get_merged_connected_endpoints()
+        connected_endpoints = self.shared_utils.all_connected_endpoints
         filtered_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpoints()
         for connected_endpoints_key in connected_endpoints:
             for connected_endpoint in connected_endpoints_key.value:
@@ -80,7 +80,7 @@ class UtilsMixin(Protocol):
                 if filtered_adapters:
                     # The object was deepcopied inside "get_merged_adapter_settings" so we can modify it here.
                     connected_endpoint.adapters = filtered_adapters
-                    connected_endpoint._internal_data.type = connected_endpoints_keys.get(connected_endpoints_key.key).type
+                    connected_endpoint._internal_data.type = connected_endpoints.get(connected_endpoints_key.key).type
                     filtered_connected_endpoints.append(connected_endpoint)
 
         return filtered_connected_endpoints

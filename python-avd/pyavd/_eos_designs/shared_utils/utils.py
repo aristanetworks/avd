@@ -6,7 +6,6 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
-from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
 
@@ -14,6 +13,7 @@ if TYPE_CHECKING:
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import SharedUtilsProtocol
 
@@ -127,22 +127,3 @@ class UtilsMixin(Protocol):
         profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
         adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
         return adapter_or_network_port_settings
-
-    @cached_property
-    def all_connected_endpoints(
-        self: SharedUtilsProtocol,
-    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpoints:
-        """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
-        all_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpoints()
-        for connected_endpoint in self.inputs._dynamic_keys.custom_connected_endpoints:
-            connected_endpoint._internal_data.description = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].description
-            connected_endpoint._internal_data.type = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].type
-            all_connected_endpoints.append(connected_endpoint._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem))
-
-        for connected_endpoint in self.inputs._dynamic_keys.connected_endpoints:
-            if connected_endpoint.key not in all_connected_endpoints:
-                connected_endpoint._internal_data.description = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].description
-                connected_endpoint._internal_data.type = self.inputs.connected_endpoints_keys[connected_endpoint.key].type
-                all_connected_endpoints.append(connected_endpoint)
-
-        return all_connected_endpoints
