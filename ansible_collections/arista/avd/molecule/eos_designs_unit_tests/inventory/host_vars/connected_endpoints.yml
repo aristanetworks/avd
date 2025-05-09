@@ -8,6 +8,8 @@ l2leaf:
       platform: 720XP
       link_tracking:
         enabled: true
+      filter:
+        only_vlans_in_use: true
 
 servers:
   # port-channel provide physical and port-channel descriptions as templates with all fields
@@ -64,6 +66,22 @@ servers:
         port_channel:
           mode: "active"
           description: "PORT_CHANNEL_DESCRIPTION"
+  - name: OLD_SW-1/8
+    adapters:
+      - switches: [ connected_endpoints ]
+        switch_ports: [ Ethernet19 ]
+        endpoint_ports: [ Endpoint_port4 ]
+        mode: trunk
+  - name: OLD_SW-1/9
+    adapters:
+      - switches: [ connected_endpoints, connected_endpoints ]
+        switch_ports: [ Ethernet20, Ethernet21 ]
+        port_channel:
+          mode: active
+          subinterfaces:
+            - number: 100
+            - number: 200
+              vlan_id: 200
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:
