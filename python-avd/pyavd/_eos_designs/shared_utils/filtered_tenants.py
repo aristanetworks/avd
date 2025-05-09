@@ -193,15 +193,15 @@ class FilteredTenantsMixin(Protocol):
             if not self.is_accepted_vrf(vrf):
                 continue
 
-            vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.hostname in bgp_peer.nodes)._natural_sorted(sort_key="ip_address")
-            vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
-            vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
+            vrf.bgp_peers = vrf.bgp_peers._filtered(lambda bgp_peer: self.device_uid in bgp_peer.nodes)._natural_sorted(sort_key="ip_address")
+            vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.device_uid in route.nodes)
+            vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.device_uid in route.nodes)
             vrf.svis = self.filtered_svis(vrf)
             vrf.l3_interfaces = vrf.l3_interfaces._filtered(
-                lambda l3_interface: bool(self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces)
+                lambda l3_interface: bool(self.device_uid in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces)
             )
-            vrf.l3_port_channels = vrf.l3_port_channels._filtered(lambda l3_port_channel: bool(self.hostname == l3_port_channel.node))
-            vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
+            vrf.l3_port_channels = vrf.l3_port_channels._filtered(lambda l3_port_channel: bool(self.device_uid == l3_port_channel.node))
+            vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.device_uid)
 
             if self.vtep is True:
                 evpn_l3_multicast_enabled = default(vrf.evpn_l3_multicast.enabled, tenant.evpn_l3_multicast.enabled)
@@ -212,7 +212,7 @@ class FilteredTenantsMixin(Protocol):
 
                     rps = []
                     for rp_entry in vrf.pim_rp_addresses or tenant.pim_rp_addresses:
-                        if not rp_entry.nodes or self.hostname in rp_entry.nodes:
+                        if not rp_entry.nodes or self.device_uid in rp_entry.nodes:
                             if not rp_entry.rps:
                                 # TODO: Evaluate if schema should just have required for this key.
                                 msg = f"'pim_rp_addresses.rps' under VRF '{vrf.name}' in Tenant '{tenant.name}' is required."
@@ -231,12 +231,12 @@ class FilteredTenantsMixin(Protocol):
                         vrf._internal_data.pim_rp_addresses = rps
 
                         for evpn_peg in vrf.evpn_l3_multicast.evpn_peg or tenant.evpn_l3_multicast.evpn_peg:
-                            if not evpn_peg.nodes or self.hostname in evpn_peg.nodes:
+                            if not evpn_peg.nodes or self.device_uid in evpn_peg.nodes:
                                 vrf._internal_data.evpn_l3_multicast_evpn_peg_transit = evpn_peg.transit
                                 break
 
             vrf.additional_route_targets = vrf.additional_route_targets._filtered(
-                lambda rt: bool((not rt.nodes or self.hostname in rt.nodes) and rt.address_family and rt.route_target and rt.type in ["import", "export"])
+                lambda rt: bool((not rt.nodes or self.device_uid in rt.nodes) and rt.address_family and rt.route_target and rt.type in ["import", "export"])
             )
 
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
@@ -286,8 +286,8 @@ class FilteredTenantsMixin(Protocol):
             merged_svi = svi
 
         # Merge node specific SVI over the general SVI data.
-        if self.hostname in merged_svi.nodes:
-            node_specific_svi = merged_svi.nodes[self.hostname]._cast_as(
+        if self.device_uid in merged_svi.nodes:
+            node_specific_svi = merged_svi.nodes[self.device_uid]._cast_as(
                 EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem, ignore_extra_keys=True
             )
             merged_svi._deepmerge(node_specific_svi, list_merge="replace")

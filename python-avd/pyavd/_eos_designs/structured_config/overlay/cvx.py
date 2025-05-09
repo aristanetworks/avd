@@ -23,11 +23,11 @@ class CvxMixin(Protocol):
     @structured_config_contributor
     def cvx(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Detect if this is a CVX server for overlay and configure service & peer hosts accordingly."""
-        if not self.shared_utils.overlay_cvx or self.shared_utils.hostname not in self.inputs.overlay_cvx_servers:
+        if not self.shared_utils.overlay_cvx or self.shared_utils.device_uid not in self.inputs.overlay_cvx_servers:
             return
 
         for overlay_cvx_server in self.inputs.overlay_cvx_servers:
-            if overlay_cvx_server == self.shared_utils.hostname:
+            if overlay_cvx_server == self.shared_utils.device_uid:
                 continue
 
             peer_switch_facts = self.shared_utils.get_peer_facts(overlay_cvx_server)

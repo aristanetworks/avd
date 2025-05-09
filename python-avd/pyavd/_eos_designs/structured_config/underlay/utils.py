@@ -51,7 +51,7 @@ class UtilsMixin(Protocol):
         for peer in self._avd_peers:
             peer_facts = self.shared_utils.get_peer_facts(peer)
             for uplink in peer_facts.uplinks:
-                if uplink.peer != self.shared_utils.hostname:
+                if uplink.peer != self.shared_utils.device_uid:
                     continue
 
                 downlink = EosDesignsFacts.UplinksItem(
@@ -138,7 +138,7 @@ class UtilsMixin(Protocol):
 
         # TODO: catch if ip_address is not valid or not dhcp
         if not l3_generic_interface.ip_address:
-            msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].{schema_key}"
+            msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.device_uid}].{schema_key}"
             msg += f"[name={l3_generic_interface.name}].ip_address"
             raise AristaAvdMissingVariableError(msg)
 

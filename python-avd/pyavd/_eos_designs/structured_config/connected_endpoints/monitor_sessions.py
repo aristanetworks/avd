@@ -103,7 +103,7 @@ class MonitorSessionsMixin(Protocol):
 
                 # Monitor session on Ethernet interface
                 for node_index, node_name in enumerate(adapter.switches):
-                    if node_name != self.shared_utils.hostname:
+                    if node_name != self.shared_utils.device_uid:
                         continue
 
                     ethernet_interface_name = adapter.switch_ports[node_index]

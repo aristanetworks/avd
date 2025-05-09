@@ -25,7 +25,7 @@ TESTHOST4 = {"inventory_hostname": "testhost4", "fabric_name": "pool_manager_tes
 
 
 def get_assignment(hostvars: dict, node_id: int) -> dict:
-    return {"key": {"hostname": hostvars["inventory_hostname"]}, "value": node_id}
+    return {"key": {"device_uid": hostvars["inventory_hostname"]}, "value": node_id}
 
 
 def get_pool(hostvars: dict, assignments: list[dict] | None = None) -> dict:
@@ -237,7 +237,9 @@ def test_avdpoolmanager_pool(
             requested_id = requested_ids[index] if requested_ids else None
             _hostvars = hostvars.copy()
             hostname = _hostvars.pop("inventory_hostname")
-            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns(**_hostvars), templar=object(), peer_facts={})
+            shared_utils = SharedUtils(
+                device_uid=hostname, hostname=hostname, hostvars=_hostvars, inputs=EosDesigns(**_hostvars), templar=object(), peer_facts={}
+            )
             # Get the id of the host from hostvars. If not, a new data set will be created.
             assert pool_manager.get_assignment("node_id_pools", shared_utils, requested_id) == expected_ids[index]
 
@@ -337,7 +339,7 @@ class DummySharedUtils:
                 "node_id_pools": [
                     {
                         "pool_key": {"fabric_name": "fabric", "dc_name": "dc", "pod_name": "pod", "type": "mytype"},
-                        "assignments": [{"key": {"hostname": "myhost"}, "value": "foo"}],
+                        "assignments": [{"key": {"device_uid": "myhost"}, "value": "foo"}],
                     }
                 ]
             },

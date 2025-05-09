@@ -63,6 +63,7 @@ class SharedUtilsProtocol(
 ):
     """Protocol for the SharedUtils Class with commonly used methods / cached_properties to be shared between all the python modules loaded in eos_designs."""
 
+    device_uid: str
     hostname: str
     hostvars: Mapping
     inputs: EosDesigns
@@ -86,6 +87,7 @@ class SharedUtils(SharedUtilsProtocol):
 
     def __init__(
         self,
+        device_uid: str,
         hostname: str,
         hostvars: Mapping,
         inputs: EosDesigns,
@@ -93,6 +95,7 @@ class SharedUtils(SharedUtilsProtocol):
         peer_facts: Mapping[str, EosDesignsFactsProtocol],
         pool_manager: PoolManager | None = None,
     ) -> None:
+        self.device_uid = device_uid
         self.hostname = hostname
         self.hostvars = hostvars
         self.inputs = inputs

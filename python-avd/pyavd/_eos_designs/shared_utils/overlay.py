@@ -73,7 +73,7 @@ class OverlayMixin(Protocol):
 
         if admin_subfield == "switch_id":
             if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'"
+                msg = f"'id' is not set on '{self.device_uid}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'"
                 raise AristaAvdInvalidInputsError(msg)
             return self.id + admin_subfield_offset
 

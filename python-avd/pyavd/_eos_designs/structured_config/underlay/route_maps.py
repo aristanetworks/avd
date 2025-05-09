@@ -70,7 +70,7 @@ class RouteMapsMixin(Protocol):
                 peer_facts = self.shared_utils.get_peer_facts(peer)
                 for uplink in peer_facts.uplinks:
                     if (
-                        uplink.peer == self.shared_utils.hostname
+                        uplink.peer == self.shared_utils.device_uid
                         and uplink.type == "underlay_p2p"
                         and uplink.ip_address
                         and "unnumbered" not in uplink.ip_address.lower()

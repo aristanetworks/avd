@@ -98,7 +98,7 @@ class LoopbackInterfacesMixin(Protocol):
     @cached_property
     def _node_sid(self: AvdStructuredConfigUnderlayProtocol) -> int:
         if self.shared_utils.id is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set node SID"
+            msg = f"'id' is not set on '{self.shared_utils.device_uid}' and is required to set node SID"
             raise AristaAvdInvalidInputsError(msg)
 
         return self.shared_utils.id + self.shared_utils.node_config.node_sid_base

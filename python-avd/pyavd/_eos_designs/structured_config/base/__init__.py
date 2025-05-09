@@ -438,7 +438,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             return
 
         if (switch_id := self.shared_utils.id) is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}' to set LACP port ID ranges"
+            msg = f"'id' is not set on '{self.shared_utils.device_uid}' to set LACP port ID ranges"
             raise AristaAvdInvalidInputsError(msg)
 
         node_group_length = max(len(self.shared_utils.node_group_config.nodes), 1) if self.shared_utils.node_group_config is not None else 1
@@ -471,7 +471,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         priority2 = self.shared_utils.node_config.ptp.priority2
         if priority2 is None:
             if self.shared_utils.id is None:
-                msg = f"'id' must be set on '{self.shared_utils.hostname}' to set ptp priority2"
+                msg = f"'id' must be set on '{self.shared_utils.device_uid}' to set ptp priority2"
                 raise AristaAvdInvalidInputsError(msg)
 
             priority2 = self.shared_utils.id % 256

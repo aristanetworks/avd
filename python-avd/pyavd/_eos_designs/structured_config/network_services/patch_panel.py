@@ -32,10 +32,10 @@ class PatchPanelMixin(Protocol):
 
             for point_to_point_service in tenant.point_to_point_services._natural_sorted():
                 for endpoint in point_to_point_service.endpoints:
-                    if self.shared_utils.hostname not in endpoint.nodes:
+                    if self.shared_utils.device_uid not in endpoint.nodes:
                         continue
 
-                    node_index = endpoint.nodes.index(self.shared_utils.hostname)
+                    node_index = endpoint.nodes.index(self.shared_utils.device_uid)
                     interface = endpoint.interfaces[node_index]
                     if endpoint.port_channel.mode in ["active", "on"]:
                         channel_group_id = "".join(re.findall(r"\d", interface))

@@ -204,7 +204,7 @@ class ActionModule(ActionBase):
     def validate_task_vars(self, hostname: str, validation_mode: str, task_vars: dict, result: dict) -> None:
         # Load schema tools for input schema
         input_schema_tools = AvdSchemaTools(
-            hostname=hostname,
+            device_uid=hostname,
             ansible_display=display,
             schema_id="eos_cli_config_gen",
             validation_mode=validation_mode,

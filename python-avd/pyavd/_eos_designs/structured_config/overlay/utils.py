@@ -36,7 +36,7 @@ class UtilsMixin(Protocol):
         for avd_peer in self.facts.evpn_route_server_clients:
             peer_facts = self.shared_utils.get_peer_facts(avd_peer)
             if (
-                self.shared_utils.hostname in peer_facts.evpn_route_servers
+                self.shared_utils.device_uid in peer_facts.evpn_route_servers
                 and peer_facts.evpn_role in ["server", "client"]
                 and avd_peer not in self._evpn_route_servers
             ):
@@ -79,7 +79,7 @@ class UtilsMixin(Protocol):
         mpls_route_reflectors = {}
 
         for route_reflector in natural_sort(self.facts.mpls_route_reflectors):
-            if route_reflector == self.shared_utils.hostname:
+            if route_reflector == self.shared_utils.device_uid:
                 continue
 
             peer_facts = self.shared_utils.get_peer_facts(route_reflector)
@@ -134,7 +134,11 @@ class UtilsMixin(Protocol):
             for path_group in wan_route_server.path_groups:
                 stun_server_profiles.setdefault(path_group.name, EosCliConfigGen.Stun.Client.ServerProfiles()).extend(
                     EosCliConfigGen.Stun.Client.ServerProfilesItem(
-                        name=self._stun_server_profile_name(wan_route_server.hostname, path_group.name, interface.name),
+                        name=self._stun_server_profile_name(
+                            wan_route_server.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
+                            path_group.name,
+                            interface.name,
+                        ),
                         ip_address=interface.public_ip,
                         ssl_profile=self.shared_utils.wan_stun_dtls_profile_name,
                     )

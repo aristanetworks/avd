@@ -35,32 +35,32 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def switch_facts(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol:
-        return self.get_peer_facts(self.hostname)
+        return self.get_peer_facts(self.device_uid)
 
     @overload
-    def get_peer_facts(self: SharedUtilsProtocol, peer_name: str, required: Literal[True] = True) -> EosDesignsFactsProtocol: ...
+    def get_peer_facts(self: SharedUtilsProtocol, device_uid: str, required: Literal[True] = True) -> EosDesignsFactsProtocol: ...
 
     @overload
-    def get_peer_facts(self: SharedUtilsProtocol, peer_name: str, required: Literal[False]) -> EosDesignsFactsProtocol | None: ...
+    def get_peer_facts(self: SharedUtilsProtocol, device_uid: str, required: Literal[False]) -> EosDesignsFactsProtocol | None: ...
 
-    def get_peer_facts(self: SharedUtilsProtocol, peer_name: str, required: bool = True) -> EosDesignsFactsProtocol | None:
+    def get_peer_facts(self: SharedUtilsProtocol, device_uid: str, required: bool = True) -> EosDesignsFactsProtocol | None:
         """
-        Util function to retrieve peer_facts for peer_name.
+        Util function to retrieve facts for device_uid.
 
-        returns avd_switch_facts.{peer_name}.switch
+        returns avd_switch_facts.{device_uid}
 
         by default required is True and so the function will raise is peer_facts cannot be found
         using the separator `..` to be able to handle hostnames with `.` inside
         """
-        if peer_name not in self.peer_facts:
+        if device_uid not in self.peer_facts:
             if not required:
                 return None
             msg = (
-                f"Facts not found for node '{peer_name}'. Something in the input vars is pointing to this node. "
-                f"Check that '{peer_name}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
+                f"Facts not found for node '{device_uid}'. Something in the input vars is pointing to this node. "
+                f"Check that '{device_uid}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
             )
             raise AristaAvdInvalidInputsError(msg)
-        return self.peer_facts[peer_name]
+        return self.peer_facts[device_uid]
 
     def template_var(self: SharedUtilsProtocol, template_file: str, template_vars: dict) -> str:
         """Run the simplified templater using the passed Ansible "templar" engine."""

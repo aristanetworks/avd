@@ -40,7 +40,7 @@ class RouterPimSparseModeMixin(Protocol):
 
             self.structured_config.router_pim_sparse_mode.ipv4.rp_addresses.append(rp_address)
 
-            if len(rp_entry.nodes) < 2 or self.shared_utils.hostname not in rp_entry.nodes or self.inputs.underlay_multicast_anycast_rp.mode != "pim":
+            if len(rp_entry.nodes) < 2 or self.shared_utils.device_uid not in rp_entry.nodes or self.inputs.underlay_multicast_anycast_rp.mode != "pim":
                 continue
 
             # Anycast-RP using PIM (default)

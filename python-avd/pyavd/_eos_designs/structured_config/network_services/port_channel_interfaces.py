@@ -90,7 +90,7 @@ class PortChannelInterfacesMixin(Protocol):
         """
         for vrf in tenant.vrfs:
             for l3_port_channel in vrf.l3_port_channels:
-                if l3_port_channel.node != self.shared_utils.hostname:
+                if l3_port_channel.node != self.shared_utils.device_uid:
                     continue
 
                 if not (is_subinterface := "." in l3_port_channel.name):
@@ -185,7 +185,7 @@ class PortChannelInterfacesMixin(Protocol):
                         l3_port_channel.encapsulation_dot1q_vlan, int(l3_port_channel.name.split(".", maxsplit=1)[-1])
                     )
                     if not l3_port_channel.ip_address:
-                        msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_port_channels"
+                        msg = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.device_uid}].l3_port_channels"
                         msg += f"[name={l3_port_channel.name}].ip_address"
                         raise AristaAvdMissingVariableError(msg)
 
@@ -205,10 +205,10 @@ class PortChannelInterfacesMixin(Protocol):
         """Set the structured_config port_channel_interfaces with the point-to-point interfaces defined under network_services."""
         for point_to_point_service in tenant.point_to_point_services._natural_sorted():
             for endpoint in point_to_point_service.endpoints:
-                if self.shared_utils.hostname not in endpoint.nodes:
+                if self.shared_utils.device_uid not in endpoint.nodes:
                     continue
 
-                node_index = endpoint.nodes.index(self.shared_utils.hostname)
+                node_index = endpoint.nodes.index(self.shared_utils.device_uid)
                 interface_name = endpoint.interfaces[node_index]
                 if (port_channel_mode := endpoint.port_channel.mode) not in ["active", "on"]:
                     continue

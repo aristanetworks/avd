@@ -509,7 +509,7 @@ class RouterBgpMixin(Protocol):
             for wan_route_server in self.shared_utils.filtered_wan_route_servers:
                 neighbor = self._create_neighbor(
                     wan_route_server.vtep_ip,
-                    wan_route_server.hostname,
+                    wan_route_server.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
                     self.inputs.bgp_peer_groups.wan_overlay_peers.name,
                     overlay_peering_interface=self.shared_utils.vtep_loopback,
                 )
@@ -533,7 +533,7 @@ class RouterBgpMixin(Protocol):
             for wan_route_server in self.shared_utils.filtered_wan_route_servers:
                 neighbor = self._create_neighbor(
                     wan_route_server.vtep_ip,
-                    wan_route_server.hostname,
+                    wan_route_server.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
                     self.inputs.bgp_peer_groups.wan_rr_overlay_peers.name,
                     overlay_peering_interface=self.shared_utils.vtep_loopback,
                 )
@@ -553,9 +553,11 @@ class RouterBgpMixin(Protocol):
             return
 
         for remote_peer in self.shared_utils.node_config.evpn_gateway.remote_peers._natural_sorted():
-            remote_peer_name = remote_peer.hostname
+            # TODO: The data model directly specifies hostname, but we use it for lookup in the facts.
+            # Since this could also be a foreign device we need to sort it out.
+            remote_peer_device_uid = remote_peer.hostname
 
-            peer_facts = self.shared_utils.get_peer_facts(remote_peer_name, required=False)
+            peer_facts = self.shared_utils.get_peer_facts(remote_peer_device_uid, required=False)
             if peer_facts is None:
                 # No matching host found in the inventory for this remote gateway
                 bgp_as = remote_peer.bgp_as
@@ -566,16 +568,22 @@ class RouterBgpMixin(Protocol):
                 # Apply potential override if present in the input variables
                 bgp_as = remote_peer.bgp_as or peer_facts.bgp_as
                 if not (ip_address := remote_peer.ip_address or peer_facts.overlay.peering_address):
-                    msg = f"Unable to determine the remote IP address to use for the EVPN Gateway peer '{remote_peer_name}'."
+                    msg = f"Unable to determine the remote IP address to use for the EVPN Gateway peer '{remote_peer_device_uid}'."
                     raise AristaAvdInvalidInputsError(msg)
                 overlay_peering_address = "Loopback0"
 
             # In both cases if any key is missing raise
             if bgp_as is None or ip_address is None:
-                msg = f"The EVPN Gateway remote peer '{remote_peer_name}' is missing either `bgp_as` or `ip_address`."
+                msg = f"The EVPN Gateway remote peer '{remote_peer_device_uid}' is missing either `bgp_as` or `ip_address`."
                 raise AristaAvdError(msg)
 
-            neighbor = self._create_neighbor(ip_address, remote_peer_name, self.inputs.bgp_peer_groups.evpn_overlay_core.name, bgp_as, overlay_peering_address)
+            neighbor = self._create_neighbor(
+                ip_address,
+                remote_peer_device_uid,  # TODO: the hostname here may be device_uid, so we need some indirection.
+                self.inputs.bgp_peer_groups.evpn_overlay_core.name,
+                bgp_as,
+                overlay_peering_address,
+            )
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
     def _set_ipvpn_gateway_remote_peers(self: AvdStructuredConfigOverlayProtocol) -> None:
@@ -586,7 +594,7 @@ class RouterBgpMixin(Protocol):
             # These remote gw are outside of the inventory
             neighbor = self._create_neighbor(
                 remote_peer.ip_address,
-                remote_peer.hostname,
+                remote_peer.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
                 self.inputs.bgp_peer_groups.ipvpn_gateway_peers.name,
                 remote_peer.bgp_as,
             )
@@ -627,7 +635,7 @@ class RouterBgpMixin(Protocol):
         for fabric_switch in natural_sort(self.shared_utils.all_fabric_devices):
             if fabric_switch in self._mpls_route_reflectors:
                 continue
-            if fabric_switch == self.shared_utils.hostname:
+            if fabric_switch == self.shared_utils.device_uid:
                 continue
 
             peer_facts = self.shared_utils.get_peer_facts(fabric_switch)
@@ -650,7 +658,7 @@ class RouterBgpMixin(Protocol):
             return
 
         for route_reflector in self.facts.mpls_route_reflectors:
-            if route_reflector == self.shared_utils.hostname:
+            if route_reflector == self.shared_utils.device_uid:
                 continue
 
             peer_facts = self.shared_utils.get_peer_facts(route_reflector)

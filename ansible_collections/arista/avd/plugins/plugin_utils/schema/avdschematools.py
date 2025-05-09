@@ -31,7 +31,7 @@ class AvdSchemaTools:
 
     def __init__(
         self,
-        hostname: str,
+        device_uid: str,
         ansible_display: Display,
         schema: dict | None = None,
         schema_id: str | None = None,
@@ -39,7 +39,7 @@ class AvdSchemaTools:
         plugin_name: str | None = None,
     ) -> None:
         self._set_schema(schema, schema_id)
-        self.hostname = hostname
+        self.device_uid = device_uid
         self.ansible_display = ansible_display
         self.plugin_name = plugin_name
         self._set_validation_mode(validation_mode)
@@ -145,7 +145,7 @@ class AvdSchemaTools:
             if not isinstance(exception, AristaAvdError):
                 continue
 
-            message = f"[{self.hostname}]: {exception}"
+            message = f"[{self.device_uid}]: {exception}"
             if isinstance(exception, AvdDeprecationWarning):
                 # Deprecation warnings are displayed using Ansible's deprecation notices.
                 if exception.removed:
@@ -176,16 +176,6 @@ class AvdSchemaTools:
                 # when mode == "error"
                 self.ansible_display.error(message, wrap_text=False)
         return counter
-
-    def validate_schema(self) -> int:
-        """
-        Validate the loaded schema according to the meta-schema.
-
-        Returns int with number of validation errors
-        """
-        # avd_schema.validate_schema returns a generator, which we iterate through in handle_exceptions to perform the actual validations.
-        exceptions = self.avdschema.validate_schema(self.avdschema._schema)
-        return self.handle_validation_exceptions(exceptions, "error")
 
     def build_result_message(self, validation_errors: int = 0, schema_validation_errors: int = 0) -> str | None:
         result_messages = []

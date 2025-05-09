@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 
 
-def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[str, EosDesignsFacts]) -> dict:
+def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[str, EosDesignsFacts], device_uid: str | None = None) -> dict:
     """
     Build and return the AVD structured configuration for one device.
 
@@ -19,6 +19,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
         inputs: Dictionary with inputs for "eos_designs".
             Variables should be converted and validated according to AVD `eos_designs` schema first using `pyavd.validate_inputs`.
         avd_facts: Dictionary of avd_facts as returned from `pyavd.get_avd_facts`.
+        device_uid: Unique ID of device. Use hostname if not set.
 
     Returns:
         Device Structured Configuration as a dictionary
@@ -30,11 +31,14 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
     from .constants import EOS_DESIGNS_SCHEMA_ID
 
     # pylint: enable=import-outside-toplevel
-    #
+
+    if not device_uid:
+        device_uid = hostname
+
     # Map in avd_facts without touching the hostvars
     mapped_hostvars = ChainMap(
         {
-            "switch": avd_facts[hostname]._as_dict(),
+            "switch": avd_facts[device_uid]._as_dict(),
         },
         inputs,
     )
@@ -44,6 +48,7 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
 
     # We do not validate input variables in this stage (done in "validate_inputs")
     structured_config = get_structured_config(
+        device_uid=device_uid,
         hostname=hostname,
         hostvars=mapped_hostvars,
         input_schema_tools=input_schema_tools,

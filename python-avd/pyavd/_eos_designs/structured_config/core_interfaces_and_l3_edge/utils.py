@@ -44,7 +44,7 @@ class UtilsMixin(Protocol):
         p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in p2p_links]
 
         # Filter to only include p2p_links with our hostname under "nodes"
-        p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.nodes]
+        p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.device_uid in p2p_link.nodes]
         if not p2p_links:
             return []
 
@@ -106,7 +106,7 @@ class UtilsMixin(Protocol):
             peer_bgp_as: <peer as if set | None>
         }
         """
-        index = p2p_link.nodes.index(self.shared_utils.hostname)
+        index = p2p_link.nodes.index(self.shared_utils.device_uid)
         peer_index = (index + 1) % 2
         peer = p2p_link.nodes[peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
@@ -138,10 +138,10 @@ class UtilsMixin(Protocol):
         }
 
         if (
-            self.shared_utils.hostname in p2p_link.port_channel.nodes_child_interfaces
-            and p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.hostname].interfaces
+            self.shared_utils.device_uid in p2p_link.port_channel.nodes_child_interfaces
+            and p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.device_uid].interfaces
         ):
-            node_data = p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.hostname]
+            node_data = p2p_link.port_channel.nodes_child_interfaces[self.shared_utils.device_uid]
             # Port-channel
             portchannel_id = self._get_channel_id(p2p_link, node_data)
 
@@ -217,7 +217,7 @@ class UtilsMixin(Protocol):
                     delattr(ptp_profile_config, "profile")
                 ptp_config = ptp_profile_config._cast_as(output_type, ignore_extra_keys=True)
 
-        node_index = p2p_link.nodes._as_list().index(self.shared_utils.hostname)  # TODO: Implement .index() method on AvdList and AvdIndexedList class.
+        node_index = p2p_link.nodes._as_list().index(self.shared_utils.device_uid)  # TODO: Implement .index() method on AvdList and AvdIndexedList class.
         if len(p2p_link.ptp.roles) > node_index and p2p_link.ptp.roles[node_index] == "master":
             ptp_config.role = "master"
 
@@ -316,7 +316,7 @@ class UtilsMixin(Protocol):
             return node_data.channel_id
         if p2p_link.port_channel.channel_id_algorithm == "p2p_link_id":
             if not p2p_link.id:
-                msg = f"'id' is not set for p2p link on {self.shared_utils.hostname} but the selected 'channel_id_algorithm' is 'p2p_link_id'."
+                msg = f"'id' is not set for p2p link on {self.shared_utils.device_uid} but the selected 'channel_id_algorithm' is 'p2p_link_id'."
                 raise AristaAvdInvalidInputsError(msg)
             return p2p_link.id + p2p_link.port_channel._get("channel_id_offset", 0)
 

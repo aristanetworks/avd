@@ -410,7 +410,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
             return EosDesignsFactsProtocol.UplinkSwitchInterfaces()
 
         if self.id is None:
-            msg = f"'id' is not set on '{self.shared_utils.hostname}'"
+            msg = f"'id' is not set on '{self.shared_utils.device_uid}'"
             raise AristaAvdInvalidInputsError(msg)
 
         uplink_switch_interfaces = EosDesignsFactsProtocol.UplinkSwitchInterfaces()
@@ -430,7 +430,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 uplink_switch_interfaces.append(uplink_switch_facts._default_downlink_interfaces[downlink_index])
             else:
                 msg = (
-                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.hostname}' and 'uplink_switch' '{uplink_switch}' "
+                    f"'uplink_switch_interfaces' is not set on '{self.shared_utils.device_uid}' and 'uplink_switch' '{uplink_switch}' "
                     f"does not have 'downlink_interfaces[{downlink_index}]' set under 'default_interfaces'"
                 )
                 raise AristaAvdError(msg)

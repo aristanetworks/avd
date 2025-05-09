@@ -89,7 +89,7 @@ class ActionModule(ActionBase):
 
         # Load schema tools for input schema
         input_schema_tools = AvdSchemaTools(
-            hostname=hostname,
+            device_uid=hostname,
             ansible_display=display,
             schema_id="eos_designs",
             validation_mode=validation_mode,
@@ -99,6 +99,7 @@ class ActionModule(ActionBase):
         # Get Structured Config from modules in PyAVD using internal api so we can supply our own templar
         try:
             structured_config = get_structured_config(
+                device_uid=hostname,
                 hostname=hostname,
                 all_facts=all_facts,
                 hostvars=dict(task_vars),
@@ -126,7 +127,7 @@ class ActionModule(ActionBase):
         if eos_designs_custom_templates:
             # Load schema tools for output schema
             output_schema_tools = AvdSchemaTools(
-                hostname=hostname,
+                device_uid=hostname,
                 ansible_display=display,
                 schema_id="eos_cli_config_gen",
                 validation_mode=validation_mode,

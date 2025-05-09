@@ -32,7 +32,7 @@ class StandardAccessListsMixin(Protocol):
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
                 for rp_entry in vrf.pim_rp_addresses or tenant.pim_rp_addresses:
-                    if (rp_entry.nodes and self.shared_utils.hostname not in rp_entry.nodes) or not rp_entry.groups or not rp_entry.access_list_name:
+                    if (rp_entry.nodes and self.shared_utils.device_uid not in rp_entry.nodes) or not rp_entry.groups or not rp_entry.access_list_name:
                         continue
 
                     standard_access_list = EosCliConfigGen.StandardAccessListsItem(name=rp_entry.access_list_name)

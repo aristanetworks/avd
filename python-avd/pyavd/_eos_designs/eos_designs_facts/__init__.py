@@ -37,6 +37,7 @@ class EosDesignsFactsGeneratorProtocol(
     """
 
     peer_generators: dict[str, EosDesignsFactsGenerator]
+    """EosDesignsFactsGenerator for each device. Keyed by device_uid."""
 
     # Placeholders that are filled out by the peers' generators.
     _downlink_switches: EosDesignsFactsProtocol.DownlinkSwitches
@@ -292,19 +293,19 @@ class EosDesignsFactsGeneratorProtocol(
 
     def _populate_downlink_switches_on_peers(self) -> None:
         """
-        Walk through uplink_peers on this device and update _their_ facts with the hostname of this device.
+        Walk through uplink_peers on this device and update _their_ facts with the device_uid of this device.
 
         This is used later in eos_designs_structured_config to quickly identify relevant peers, instead of walking through all devices.
 
         Invoked by the cross_polinate method.
         """
         for uplink_peer in self.uplink_peers:
-            peer_facts = self.get_peer_facts_generator(uplink_peer)
-            peer_facts._downlink_switches.append_unique(self.shared_utils.hostname)
+            peer_facts = self.get_peer_facts_generator(peer_device_uid=uplink_peer)
+            peer_facts._downlink_switches.append_unique(self.shared_utils.device_uid)
 
     def _populate_evpn_route_server_clients_on_peers(self) -> None:
         """
-        Walk through evpn_route_servers on this device and update _their_ facts with the hostname of this device.
+        Walk through evpn_route_servers on this device and update _their_ facts with the device_uid of this device.
 
         This is used later in eos_designs_structured_config to quickly identify relevant peers, instead of walking through all devices.
 
@@ -313,11 +314,11 @@ class EosDesignsFactsGeneratorProtocol(
         for uplink_peer in self.evpn_route_servers:
             peer_facts = self.get_peer_facts_generator(uplink_peer)
             if peer_facts.evpn_role == "server":
-                peer_facts._evpn_route_server_clients.append_unique(self.shared_utils.hostname)
+                peer_facts._evpn_route_server_clients.append_unique(self.shared_utils.device_uid)
 
     def _populate_mpls_route_reflector_clients_on_peers(self) -> None:
         """
-        Walk through mpls_route_reflectors on this device and update _their_ facts with the hostname of this device.
+        Walk through mpls_route_reflectors on this device and update _their_ facts with the device_uid of this device.
 
         This is used later in eos_designs_structured_config to quickly identify relevant peers, instead of walking through all devices.
 
@@ -326,7 +327,7 @@ class EosDesignsFactsGeneratorProtocol(
         for uplink_peer in self.mpls_route_reflectors:
             peer_facts = self.get_peer_facts_generator(uplink_peer)
             if peer_facts.mpls_overlay_role == "server":
-                peer_facts._mpls_route_reflector_clients.append_unique(self.shared_utils.hostname)
+                peer_facts._mpls_route_reflector_clients.append_unique(self.shared_utils.device_uid)
 
     @remove_cached_property_type
     @cached_property

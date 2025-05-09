@@ -61,6 +61,7 @@ The order is important, since later modules can overwrite or read config created
 
 def get_structured_config(
     *,
+    device_uid: str,
     hostname: str,
     hostvars: Mapping,
     input_schema_tools: AvdSchemaTools,
@@ -73,6 +74,8 @@ def get_structured_config(
     Generate structured_config for a device.
 
     Args:
+        device_uid:
+            Unique ID for the device.
         hostname:
             The hostname of the device
         hostvars:
@@ -102,7 +105,7 @@ def get_structured_config(
     inputs = EosDesigns._from_dict(hostvars)
 
     # Initialize SharedUtils class to be passed to each python_module below.
-    shared_utils = SharedUtils(hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar)
+    shared_utils = SharedUtils(device_uid=device_uid, hostname=hostname, hostvars=hostvars, inputs=inputs, peer_facts=all_facts, templar=templar)
 
     # Single structured config instance which will be in-place updated by each structured config generator.
     structured_config = EosCliConfigGen()
@@ -119,7 +122,7 @@ def get_structured_config(
         eos_designs_module = cls(
             hostvars=hostvars,
             inputs=inputs,
-            facts=all_facts[hostname],
+            facts=all_facts[device_uid],
             shared_utils=shared_utils,
             structured_config=structured_config,
             custom_structured_configs=custom_structured_configs,

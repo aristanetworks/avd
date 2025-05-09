@@ -36,11 +36,11 @@ class RouterMsdpMixin(Protocol):
 
         peers = set()
         for rp_entry in self.inputs.underlay_multicast_rps:
-            if len(rp_entry.nodes) < 2 or self.shared_utils.hostname not in rp_entry.nodes:
+            if len(rp_entry.nodes) < 2 or self.shared_utils.device_uid not in rp_entry.nodes:
                 continue
 
             # Anycast-RP using MSDP
-            peers.update(node.name for node in rp_entry.nodes if node.name != self.shared_utils.hostname)
+            peers.update(node.name for node in rp_entry.nodes if node.name != self.shared_utils.device_uid)
 
         if not peers:
             return

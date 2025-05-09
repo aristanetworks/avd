@@ -20,15 +20,15 @@ class UtilsMixin(EosDesignsFactsProtocol, Protocol):
     Using type-hint on self to get proper type-hints on attributes across all Mixins.
     """
 
-    def get_peer_facts_generator(self: EosDesignsFactsGeneratorProtocol, peer_name: str) -> EosDesignsFactsGenerator:
+    def get_peer_facts_generator(self: EosDesignsFactsGeneratorProtocol, peer_device_uid: str) -> EosDesignsFactsGenerator:
         """Returns EosDesignsFactsGenerator for the peer. Raise if not found."""
-        if peer_name not in self.peer_generators:
+        if peer_device_uid not in self.peer_generators:
             msg = (
-                f"Facts not found for node '{peer_name}'. Something in the input vars is pointing to this node. "
-                f"Check that '{peer_name}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
+                f"Facts not found for node '{peer_device_uid}'. Something in the input vars is pointing to this node. "
+                f"Check that '{peer_device_uid}' is in the inventory and is part of the group set by 'fabric_name'. Node is required."
             )
             raise AristaAvdInvalidInputsError(msg)
-        return self.peer_generators[peer_name]
+        return self.peer_generators[peer_device_uid]
 
     @cached_property
     def _mlag_peer_facts_generator(self: EosDesignsFactsGeneratorProtocol) -> EosDesignsFactsGenerator:

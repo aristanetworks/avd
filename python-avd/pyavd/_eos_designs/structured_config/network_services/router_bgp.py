@@ -76,7 +76,7 @@ class RouterBgpMixin(Protocol):
         peer_peergroups = set()
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
-                # bgp_peers is already filtered in filtered_tenants to only contain entries with our hostname
+                # bgp_peers is already filtered in filtered_tenants to only contain entries with our device_uid
                 if not (vrf.bgp_peers or vrf.bgp_peer_groups):
                     continue
 
@@ -85,13 +85,13 @@ class RouterBgpMixin(Protocol):
                     [
                         peer_group
                         for peer_group in vrf.bgp_peer_groups
-                        if self.shared_utils.hostname in peer_group.nodes or peer_group.name in vrf_peer_peergroups
+                        if self.shared_utils.device_uid in peer_group.nodes or peer_group.name in vrf_peer_peergroups
                     ],
                 )
                 peer_peergroups.update(vrf_peer_peergroups)
 
             peer_groups.extend(
-                [peer_group for peer_group in tenant.bgp_peer_groups if self.shared_utils.hostname in peer_group.nodes or peer_group.name in peer_peergroups],
+                [peer_group for peer_group in tenant.bgp_peer_groups if self.shared_utils.device_uid in peer_group.nodes or peer_group.name in peer_peergroups],
             )
 
         for peer_group in peer_groups:
@@ -208,7 +208,7 @@ class RouterBgpMixin(Protocol):
                     # TODO: Figure out how to fix type checking. It looses track of the bgp_peer_config even though it was derived from bgp_vrf.NeighborsItem.
                     bgp_vrf.neighbors.append(bgp_peer_config)
 
-                if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.hostname in vrf.ospf.nodes):
+                if vrf.ospf.enabled and vrf.redistribute_ospf and (not vrf.ospf.nodes or self.shared_utils.device_uid in vrf.ospf.nodes):
                     bgp_vrf.redistribute.ospf.enabled = True
 
                 if bgp_vrf.neighbors and self.inputs.bgp_update_wait_install and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install:
@@ -664,7 +664,7 @@ class RouterBgpMixin(Protocol):
             for point_to_point_service in tenant.point_to_point_services._natural_sorted():
                 endpoints = point_to_point_service.endpoints
                 for local_index, endpoint in enumerate(endpoints):
-                    if self.shared_utils.hostname not in endpoint.nodes or not endpoint.interfaces:
+                    if self.shared_utils.device_uid not in endpoint.nodes or not endpoint.interfaces:
                         continue
 
                     # Endpoints can only have two entries with index 0 and 1.

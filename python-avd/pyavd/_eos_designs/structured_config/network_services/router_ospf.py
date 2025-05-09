@@ -36,7 +36,7 @@ class RouterOspfMixin(Protocol):
 
         for tenant in self.shared_utils.filtered_tenants:
             for vrf in tenant.vrfs:
-                if not vrf.ospf.enabled or (vrf.ospf.nodes and self.shared_utils.hostname not in vrf.ospf.nodes):
+                if not vrf.ospf.enabled or (vrf.ospf.nodes and self.shared_utils.device_uid not in vrf.ospf.nodes):
                     continue
 
                 process_id = default(vrf.ospf.process_id, vrf.vrf_id)
@@ -107,7 +107,7 @@ class RouterOspfMixin(Protocol):
         for l3_interface in vrf.l3_interfaces:
             if l3_interface.ospf.enabled:
                 for node_index, node in enumerate(l3_interface.nodes):
-                    if node != self.shared_utils.hostname:
+                    if node != self.shared_utils.device_uid:
                         continue
                     process.no_passive_interfaces.append(l3_interface.interfaces[node_index])
 

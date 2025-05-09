@@ -119,7 +119,7 @@ class EthernetInterfacesMixin(Protocol):
                 raise AristaAvdError(msg)
 
             for node_index, node_name in enumerate(l3_interface.nodes):
-                if node_name != self.shared_utils.hostname:
+                if node_name != self.shared_utils.device_uid:
                     continue
 
                 interface_name = l3_interface.interfaces[node_index]
@@ -208,19 +208,19 @@ class EthernetInterfacesMixin(Protocol):
                         # Possibly the key was not set because `evpn_multicast` is not set to `true`.
                         if not self.shared_utils.evpn_multicast:
                             msg = (
-                                f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
+                                f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.device_uid}' requires "
                                 "'evpn_multicast: true' at the fabric level"
                             )
                         else:
                             msg = (
-                                f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires "
+                                f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.device_uid}' requires "
                                 f"'evpn_l3_multicast.enabled: true' under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                             )
                         raise AristaAvdError(msg)
 
                     if not getattr(vrf._internal_data, "pim_rp_addresses", None):
                         msg = (
-                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.hostname}' requires at least one RP"
+                            f"'pim: enabled' set on l3_interface '{interface_name}' on '{self.shared_utils.device_uid}' requires at least one RP"
                             f" defined in pim_rp_addresses under VRF '{vrf.name}' or Tenant '{tenant.name}'"
                         )
                         raise AristaAvdError(msg)
@@ -241,11 +241,11 @@ class EthernetInterfacesMixin(Protocol):
         for point_to_point_service in tenant.point_to_point_services._natural_sorted():
             for endpoint_index, endpoint in enumerate(point_to_point_service.endpoints):
                 # TODO: Filter port-to-point services in filtered_tenants
-                if self.shared_utils.hostname not in endpoint.nodes:
+                if self.shared_utils.device_uid not in endpoint.nodes:
                     continue
 
                 for node_index, interface_name in enumerate(endpoint.interfaces):
-                    if endpoint.nodes[node_index] != self.shared_utils.hostname:
+                    if endpoint.nodes[node_index] != self.shared_utils.device_uid:
                         continue
 
                     if interface_name in self.structured_config.ethernet_interfaces:
@@ -258,7 +258,7 @@ class EthernetInterfacesMixin(Protocol):
                         raise AristaAvdInvalidInputsError(msg)
 
                     if (port_channel_mode := endpoint.port_channel.mode) in ["active", "on"]:
-                        first_interface_index = endpoint.nodes.index(self.shared_utils.hostname)
+                        first_interface_index = endpoint.nodes.index(self.shared_utils.device_uid)
                         first_interface_name = endpoint.interfaces[first_interface_index]
                         channel_group_id = int("".join(re.findall(r"\d", first_interface_name)))
                         self.structured_config.ethernet_interfaces.append_new(

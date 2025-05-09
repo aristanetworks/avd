@@ -112,7 +112,7 @@ class RoutingMixin(Protocol):
                 return bgp_as_range_expanded[self.mlag_switch_ids["primary"] - 1]
 
             if self.id is None:
-                msg = f"'id' is not set on '{self.hostname}' and is required when expanding 'bgp_as'"
+                msg = f"'id' is not set on '{self.device_uid}' and is required when expanding 'bgp_as'"
                 raise AristaAvdInvalidInputsError(msg)
             return bgp_as_range_expanded[self.id - 1]
         except IndexError as exc:

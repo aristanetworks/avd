@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 
 @dataclass(frozen=True)
 class NodeIdAssignmentKey(AssignmentKey):
-    hostname: str
+    device_uid: str
 
 
 @dataclass(frozen=True)
@@ -56,4 +56,4 @@ class NodeIdPoolCollection(PoolCollection[NodeIdPoolKey, NodeIdAssignmentKey, in
     @staticmethod
     def _assignment_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> NodeIdAssignmentKey:
         """Returns the assignment key to use for this device."""
-        return NodeIdAssignmentKey(hostname=shared_utils.hostname)
+        return NodeIdAssignmentKey(device_uid=shared_utils.device_uid)

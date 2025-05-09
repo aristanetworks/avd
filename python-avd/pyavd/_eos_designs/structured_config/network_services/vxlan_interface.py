@@ -230,7 +230,7 @@ class VxlanInterfaceMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         for peer in self.shared_utils.all_fabric_devices:
-            if peer == self.shared_utils.hostname:
+            if peer == self.shared_utils.device_uid:
                 continue
 
             peer_facts = self.shared_utils.get_peer_facts(peer)

@@ -68,13 +68,13 @@ class UnderlayMixin(Protocol):
 
         underlay_multicast_rp_interfaces = []
         for rp_entry in self.inputs.underlay_multicast_rps:
-            if self.hostname not in rp_entry.nodes:
+            if self.device_uid not in rp_entry.nodes:
                 continue
 
             underlay_multicast_rp_interfaces.append(
                 EosCliConfigGen.LoopbackInterfacesItem(
-                    name=f"Loopback{rp_entry.nodes[self.hostname].loopback_number}",
-                    description=rp_entry.nodes[self.hostname].description,
+                    name=f"Loopback{rp_entry.nodes[self.device_uid].loopback_number}",
+                    description=rp_entry.nodes[self.device_uid].description,
                     ip_address=f"{rp_entry.rp}/32",
                 )
             )

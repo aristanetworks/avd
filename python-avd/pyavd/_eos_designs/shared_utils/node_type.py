@@ -30,7 +30,7 @@ class NodeTypeMixin(Protocol):
         if self.default_node_type:
             return self.default_node_type
 
-        msg = f"'type' for host {self.hostname}"
+        msg = f"'type' for host {self.device_uid}"
         raise AristaAvdInvalidInputsError(msg)
 
     @cached_property
@@ -38,6 +38,7 @@ class NodeTypeMixin(Protocol):
         """default_node_type set based on hostname, returning first node type matching a regex in default_node_types."""
         for default_node_type in self.inputs.default_node_types:
             for hostname_regex in default_node_type.match_hostnames:
+                # TODO: Still matching on hostname. Evaluate if we should match on device_uid instead.
                 if search(f"^{hostname_regex}$", self.hostname):
                     return default_node_type.node_type
 

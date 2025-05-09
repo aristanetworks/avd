@@ -88,7 +88,7 @@ class PortChannelInterfacesMixin(Protocol):
                     [ethernet_interface_name, ""]
                 )
                 network_port_as_adapter.switches = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.Switches(
-                    [self.shared_utils.hostname, ""]
+                    [self.shared_utils.device_uid, ""]
                 )
                 default_channel_group_id = int("".join(re.findall(r"\d", ethernet_interface_name)))
                 channel_group_id = network_port_as_adapter.port_channel.channel_id or default_channel_group_id
@@ -136,7 +136,7 @@ class PortChannelInterfacesMixin(Protocol):
         port_channel_description = adapter.port_channel.description
         port_channel_mode = adapter.port_channel.mode
         peer_interface = adapter.port_channel.endpoint_port_channel
-        node_index = adapter.switches.index(self.shared_utils.hostname)
+        node_index = adapter.switches.index(self.shared_utils.device_uid)
 
         # if 'descriptions' is set, it is preferred
         adapter_description = interface_descriptions[node_index] if (interface_descriptions := adapter.descriptions) else adapter.description

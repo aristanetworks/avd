@@ -59,7 +59,7 @@ class UtilsMixin(Protocol):
                 for adapter_index, adapter in enumerate(connected_endpoint.adapters):
                     adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
+                    if not adapter_settings.switches or self.shared_utils.device_uid not in adapter_settings.switches:
                         continue
 
                     # Verify that length of all lists are the same
@@ -94,6 +94,7 @@ class UtilsMixin(Protocol):
 
             if not network_port_settings.switches and not network_port_settings.platforms:
                 continue
+            # TODO: Still matching on hostname. Evaluate if we should match on device_uid instead.
             if network_port_settings.switches and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname):
                 continue
             if network_port_settings.platforms and (

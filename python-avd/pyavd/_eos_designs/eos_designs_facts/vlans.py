@@ -95,7 +95,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                 for index, adapter in enumerate(connected_endpoint.adapters):
                     adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{index}]"
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
-                    if self.shared_utils.hostname not in adapter_settings.switches:
+                    if self.shared_utils.device_uid not in adapter_settings.switches:
                         # This switch is not connected to this endpoint. Skipping.
                         continue
 
@@ -113,6 +113,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                 # The match test is built on Python re.match which tests from the beginning of the string #}
                 # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
                 raw_switch_regex = rf"^{switch_regex}$"
+                # TODO: Still matching on hostname. Evaluate if we should match on device_uid instead.
                 if not re.match(raw_switch_regex, self.shared_utils.hostname):
                     # Skip entry if no match
                     continue
@@ -144,7 +145,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         trunk_groups = set()
         for fabric_switch in self.shared_utils.all_fabric_devices:
             fabric_switch_facts = self.get_peer_facts_generator(fabric_switch)
-            if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.hostname in fabric_switch_facts.uplink_peers:
+            if fabric_switch_facts.shared_utils.uplink_type == "port-channel" and self.shared_utils.device_uid in fabric_switch_facts.uplink_peers:
                 fabric_switch_endpoint_vlans, fabric_switch_endpoint_trunk_groups = fabric_switch_facts._endpoint_vlans_and_trunk_groups
                 vlans.update(fabric_switch_endpoint_vlans)
                 trunk_groups.update(fabric_switch_endpoint_trunk_groups)

@@ -71,11 +71,11 @@ class UtilsZscalerMixin(Protocol):
                 cv_client=cv_client,
             )
             if not cv_inventory_devices:
-                msg = f"{context} but could not find '{self.shared_utils.hostname}' on the server '{cv_server}'."
+                msg = f"{context} but could not find '{self.shared_utils.device_uid}' on the server '{cv_server}'."
                 raise AristaAvdError(msg)
             if len(cv_inventory_devices) > 1:
                 msg = (
-                    f"{context} but found more than one device named '{self.shared_utils.hostname}' on the server '{cv_server}'. "
+                    f"{context} but found more than one device named '{self.shared_utils.device_uid}' on the server '{cv_server}'. "
                     "Set 'serial_number' for the device in AVD vars, to ensure a unique match."
                 )
                 raise AristaAvdError(msg)

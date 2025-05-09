@@ -115,7 +115,7 @@ class ActionModule(ActionBase):
         """
         # Load schema tools once with empty host.
         avdschematools = AvdSchemaTools(
-            hostname="",
+            device_uid="",
             ansible_display=display,
             schema_id="eos_designs",
             validation_mode=self._validation_mode,
@@ -130,7 +130,7 @@ class ActionModule(ActionBase):
             host_hostvars = dict(hostvars.get(host))
 
             # Set correct hostname in schema tools and perform conversion and validation
-            avdschematools.hostname = host
+            avdschematools.device_uid = host
             host_result = avdschematools.convert_and_validate_data(host_hostvars, return_counters=True)
 
             data_validation_errors += host_result["validation_errors"]

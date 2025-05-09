@@ -47,7 +47,7 @@ class NodeConfigMixin(Protocol):
         Used by MLAG and WAN HA logic to find out who our MLAG / WAN HA peer is.
         """
         for node_group in self.node_type_config.node_groups:
-            if self.hostname in node_group.nodes:
+            if self.device_uid in node_group.nodes:
                 return node_group
 
         return None
@@ -64,14 +64,14 @@ class NodeConfigMixin(Protocol):
                     <node_type_key>.nodes.[<node>]
         """
         node_config = (
-            self.node_type_config.nodes[self.hostname]
-            if self.hostname in self.node_type_config.nodes
+            self.node_type_config.nodes[self.device_uid]
+            if self.device_uid in self.node_type_config.nodes
             else EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem()
         )
 
         if self.node_group_config is not None:
             node_config._deepinherit(
-                self.node_group_config.nodes[self.hostname]._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
+                self.node_group_config.nodes[self.device_uid]._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True)
             )
             node_config._deepinherit(self.node_group_config._cast_as(EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem, ignore_extra_keys=True))
 
@@ -94,6 +94,6 @@ class NodeConfigMixin(Protocol):
             return None
 
         nodes = list(self.node_group_config.nodes.keys())
-        index = nodes.index(self.hostname)
+        index = nodes.index(self.device_uid)
         peer_index = not index  # (0->1 and 1>0)
         return index == 0, nodes[peer_index]

@@ -171,7 +171,7 @@ class RouterPathSelectionMixin(Protocol):
             interface_input = self.shared_utils.wan_interfaces[interface_name]
             if interface_input.receive_bandwidth or interface_input.transmit_bandwidth:
                 if "." in interface_name:
-                    schema_key = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.hostname}].l3_interfaces[name={interface_name}]"
+                    schema_key = f"{self.shared_utils.node_type_key_data.key}.nodes[name={self.shared_utils.device_uid}].l3_interfaces[name={interface_name}]"
                     msg = f"Fields 'receive_bandwidth' and 'transmit_bandwidth' configured on {schema_key} are not supported for subinterfaces."
                     raise AristaAvdError(msg)
                 self.structured_config.router_path_selection.interfaces.append_new(
@@ -210,6 +210,6 @@ class RouterPathSelectionMixin(Protocol):
 
             path_group.static_peers.append_new(
                 router_ip=wan_route_server.vtep_ip,
-                name=wan_route_server.hostname,
+                name=wan_route_server.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
                 ipv4_addresses=EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem.Ipv4Addresses(ipv4_addresses),
             )

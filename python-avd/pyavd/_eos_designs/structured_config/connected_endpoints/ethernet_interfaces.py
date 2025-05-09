@@ -38,7 +38,7 @@ class EthernetInterfacesMixin(Protocol):
         for connected_endpoint in self._filtered_connected_endpoints:
             for adapter in connected_endpoint.adapters:
                 for node_index, node_name in enumerate(adapter.switches):
-                    if node_name != self.shared_utils.hostname:
+                    if node_name != self.shared_utils.device_uid:
                         continue
 
                     ethernet_interface = self._get_ethernet_interface_cfg(adapter, node_index, connected_endpoint)
@@ -69,7 +69,7 @@ class EthernetInterfacesMixin(Protocol):
                     [ethernet_interface_name]
                 )
                 network_port_as_adapter.switches = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem.Switches(
-                    [self.shared_utils.hostname]
+                    [self.shared_utils.device_uid]
                 )
 
                 # Using __setitem__ to replace any previous network_port.

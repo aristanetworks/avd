@@ -215,8 +215,8 @@ class WanMixin(Protocol):
         If not found we look for the public_ip and then the ip_address under the interface.
         If there is no public_ip and if ip_address is "dhcp" we raise an error.
         """
-        if self.hostname in self.inputs.wan_route_servers:
-            for path_group in self.inputs.wan_route_servers[self.hostname].path_groups:
+        if self.device_uid in self.inputs.wan_route_servers:
+            for path_group in self.inputs.wan_route_servers[self.device_uid].path_groups:
                 if interface.name not in path_group.interfaces:
                     continue
 
@@ -229,7 +229,7 @@ class WanMixin(Protocol):
         if not interface.ip_address:
             if self.is_wan_server:
                 msg = (
-                    f"The IP address for WAN interface '{interface.name}' on Route Server '{self.hostname}' is not defined'. "
+                    f"The IP address for WAN interface '{interface.name}' on Route Server '{self.device_uid}' is not defined'. "
                     "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
                 )
                 raise AristaAvdError(msg)
@@ -239,7 +239,7 @@ class WanMixin(Protocol):
         if interface.ip_address == "dhcp":
             if self.is_wan_server:
                 msg = (
-                    f"The IP address for WAN interface '{interface.name}' on Route Server '{self.hostname}' is set to 'dhcp'. "
+                    f"The IP address for WAN interface '{interface.name}' on Route Server '{self.device_uid}' is set to 'dhcp'. "
                     "Clients need to peer with a static IP which must be set under the 'wan_route_servers.path_groups.interfaces' key."
                 )
                 raise AristaAvdError(msg)
@@ -327,7 +327,8 @@ class WanMixin(Protocol):
         filtered_wan_route_servers = EosDesigns.WanRouteServers()
 
         for org_wan_rs in self.inputs.wan_route_servers._natural_sorted():
-            if org_wan_rs.hostname == self.hostname:
+            # TODO: This model is directly specifying hostname, but since we use it to fetch facts, we need to rename and use device_uid.
+            if org_wan_rs.hostname == self.device_uid:
                 # Don't add yourself
                 continue
 
