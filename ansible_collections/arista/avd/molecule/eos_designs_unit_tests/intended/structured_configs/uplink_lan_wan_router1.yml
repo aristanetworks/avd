@@ -28,32 +28,12 @@ dps_interfaces:
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet2.100
-  description: My vlan 100
-  shutdown: false
-  vrf: VRF1
-  flow_tracker:
-    hardware: FLOW-TRACKER
-  encapsulation_dot1q:
-    vlan: 100
-  ip_address: 10.0.100.1/24
-  ipv6_enable: true
-  ipv6_address: cafe::cafe/64
-  peer: uplink_lan_l2leaf
-  peer_interface: Ethernet1 VLAN 100
-  peer_type: l2leaf
-  eos_cli: comment yo
-  _custom_key: custom_value
 - name: Ethernet2
   description: L2_uplink_lan_l2leaf_Ethernet1
   shutdown: false
   mtu: 9218
-  vrf: VRF1
-  flow_tracker:
-    hardware: FLOW-TRACKER
-  ip_address: 10.0.10.1/24
   peer: uplink_lan_l2leaf
-  peer_interface: Ethernet1 VLAN 10
+  peer_interface: Ethernet1
   peer_type: l2leaf
   switchport:
     enabled: false
@@ -140,10 +120,6 @@ metadata:
     - name: Site
       value: site1
     interface_tags:
-    - interface: Ethernet2.100
-      tags:
-      - name: Type
-        value: lan
     - interface: Ethernet2
       tags:
       - name: Type
@@ -173,10 +149,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 192.168.1.0/24 eq 32
-- name: PL-SVI-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.10.10.0/24
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -184,12 +156,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    set:
-    - extcommunity soo 192.168.1.1:1 additive
-  - sequence: 30
-    type: permit
-    match:
-    - ip address prefix-list PL-SVI-VRF-DEFAULT
     set:
     - extcommunity soo 192.168.1.1:1 additive
 - name: RM-EVPN-SOO-IN
@@ -224,15 +190,11 @@ router_adaptive_virtual_topology:
     name: site1
     id: 1
   profiles:
-  - name: DEFAULT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-CONTROL-PLANE
     load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
   policies:
-  - name: DEFAULT-POLICY
-    matches:
-    - application_profile: default
-      avt_profile: DEFAULT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-WITH-CP
     matches:
     - application_profile: APP-PROFILE-CONTROL-PLANE
@@ -240,11 +202,6 @@ router_adaptive_virtual_topology:
     - application_profile: default
       avt_profile: DEFAULT-POLICY-DEFAULT
   vrfs:
-  - name: VRF1
-    policy: DEFAULT-POLICY
-    profiles:
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
@@ -280,9 +237,6 @@ router_bgp:
     send_community: all
     maximum_routes: 0
     ttl_maximum_hops: 1
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   redistribute:
     connected:
       enabled: true
@@ -319,32 +273,17 @@ router_bgp:
       activate: true
   vrfs:
   - name: default
-    rd: 192.168.1.1:111
+    rd: 192.168.1.1:1
     route_targets:
       import:
       - address_family: evpn
         route_targets:
-        - 111:111
+        - '1:1'
       export:
       - address_family: evpn
         route_targets:
-        - 111:111
+        - '1:1'
         - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-  - name: VRF1
-    rd: 192.168.1.1:123
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - 123:123
-      export:
-      - address_family: evpn
-        route_targets:
-        - 123:123
-    router_id: 192.168.1.1
-    redistribute:
-      connected:
-        enabled: true
 router_path_selection:
   path_groups:
   - name: INET
@@ -354,10 +293,10 @@ router_path_selection:
     dynamic_peers:
       enabled: true
   load_balance_policies:
-  - name: LB-DEFAULT-POLICY-DEFAULT
+  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
-  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
+  - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
   tcp_mss_ceiling:
@@ -368,13 +307,13 @@ service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 transceiver_qsfp_default_mode_4x10: false
+vlans:
+- id: 10
+  name: NATIVE
+  state: suspend
 vrfs:
 - name: MGMT
   ip_routing: false
-- name: VRF1
-  ip_routing: true
-  ipv6_routing: true
-  tenant: TEST
 vxlan_interface:
   vxlan1:
     description: uplink_lan_wan_router1_VTEP
@@ -384,5 +323,3 @@ vxlan_interface:
       vrfs:
       - name: default
         vni: 1
-      - name: VRF1
-        vni: 123

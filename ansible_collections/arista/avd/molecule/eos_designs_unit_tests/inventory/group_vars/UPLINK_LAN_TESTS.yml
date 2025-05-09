@@ -37,6 +37,9 @@ wan_router: # dynamic_key: node_type
   nodes:
     - name: uplink_lan_wan_router1
       id: 1
+      filter:
+        tags:
+          - extcommunity
       uplink_switch_interfaces: [Ethernet1]
       uplink_native_vlan: 10
       cv_pathfinder_region: region1
@@ -61,13 +64,13 @@ tenants: # dynamic_key: network_services
   - name: TEST
     mac_vrf_vni_base: 10000
     vrfs:
-      - name: default
-        vrf_id: 111
-        svis:
-          - id: 111
-            name: svi_with_default_vrf
-            ip_address: 10.10.10.111/24
-            tags: [wan_router]
+      # - name: default
+      #   vrf_id: 111
+      #   svis:
+      #     - id: 111
+      #       name: svi_with_default_vrf
+      #       ip_address: 10.10.10.111/24
+      #       tags: [extcommunity]
       - name: VRF1
         vrf_id: 123
         svis:

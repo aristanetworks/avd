@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: tenant-default-vrf-with-loopbacks
+hostname: underlay-filter-redistribute-connected-vrf-default
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -14,28 +14,15 @@ loopback_interfaces:
   shutdown: false
   ip_address: 10.10.0.3/32
 - name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 192.168.1.1/32
+  ip_address: 10.11.0.3/32
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 10.10.0.0/24 eq 32
-  - sequence: 20
-    action: permit 10.11.0.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
 router_bfd:
   multihop:
     interval: 300
@@ -67,7 +54,6 @@ router_bgp:
   redistribute:
     connected:
       enabled: true
-      route_map: RM-CONN-2-BGP
   vlans:
   - id: 1008
     tenant: SIT
@@ -133,7 +119,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: tenant-default-vrf-with-loopbacks_VTEP
+    description: underlay-filter-redistribute-connected-vrf-default_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

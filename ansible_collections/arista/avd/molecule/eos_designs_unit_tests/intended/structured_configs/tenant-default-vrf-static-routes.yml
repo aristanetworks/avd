@@ -3,6 +3,20 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_add-subnets-to-redistribution-in-default-vrf-with-sequence30_Ethernet2
+  shutdown: false
+  spanning_tree_portfast: edge
+  peer: add-subnets-to-redistribution-in-default-vrf-with-sequence30
+  peer_interface: Ethernet2
+  peer_type: wan_router
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '111'
+      native_vlan: 10
 hostname: tenant-default-vrf-static-routes
 ip_igmp_snooping:
   globally_enabled: true
@@ -141,6 +155,9 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
+- id: 10
+  name: NATIVE
+  state: suspend
 - id: 111
   name: svi_with_default_vrf
   tenant: TEST

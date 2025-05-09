@@ -10,7 +10,7 @@ l3leaf:
     vtep_loopback: Loopback1
     evpn_services_l2_only: false
   nodes:
-    - name: underlay-filter-redistribute-connected-with-route-map
+    - name: underlay-filter-redistribute-connected-to-bgp-without-route-map
       id: 3
       bgp_as: 65101
       filter:

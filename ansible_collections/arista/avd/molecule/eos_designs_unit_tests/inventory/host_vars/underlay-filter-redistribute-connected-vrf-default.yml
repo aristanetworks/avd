@@ -1,6 +1,8 @@
 ---
 type: l3leaf
 
+underlay_filter_redistribute_connected: false
+
 l3leaf:
   defaults:
     loopback_ipv4_pool: 10.10.0.0/24
@@ -8,7 +10,7 @@ l3leaf:
     vtep_loopback: Loopback1
     evpn_services_l2_only: false
   nodes:
-    - name: tenant-default-vrf-with-loopbacks
+    - name: underlay-filter-redistribute-connected-vrf-default
       id: 3
       bgp_as: 65101
       filter:
@@ -23,7 +25,6 @@ tenants:
         name: storage_prod
         tags: ['storageProd']
     vrfs:
-      # Testing default vrf with loopbacks, this will not generate config for virtual_source_nat_vrfs
       - name: default
         vrf_vni: 789654
         loopbacks:
