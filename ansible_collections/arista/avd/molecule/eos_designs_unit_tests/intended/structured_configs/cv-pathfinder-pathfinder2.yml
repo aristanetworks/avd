@@ -201,8 +201,6 @@ metadata:
       carriers:
       - name: Colt
       - name: ATT-MPLS
-      imported_carriers:
-      - name: Comcast-5G
     - name: INET
       carriers:
       - name: Comcast

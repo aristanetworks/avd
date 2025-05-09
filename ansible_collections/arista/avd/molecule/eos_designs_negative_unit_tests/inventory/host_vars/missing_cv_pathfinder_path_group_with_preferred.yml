@@ -12,25 +12,6 @@ bgp_peer_groups:
       - 192.168.255.0/24
 
 cv_pathfinder_regions:
-  - name: AVD_Land_West
-    id: 42
-    description: AVD Region
-    sites:
-      - name: Site404
-        id: 404
-        location: Atlantis
-      - name: Site405
-        id: 405
-        location: El Dorado
-      - name: Site422
-        id: 422
-        location: Somewhere
-      - name: Site423
-        id: 423
-        location: Somewhere-warm
-      - name: Site12
-        id: 12
-        location: 12 Downing Street, London
   - name: AVD_Land_East
     id: 43
     description: AVD Region
@@ -45,11 +26,6 @@ wan_ipsec_profiles:
     sa_policy_name: AUTOVPN-SA
     profile_name: AUTOVPN
     shared_key: ABCDEF1234567890
-
-default_node_types:
-  - node_type: wan_router
-    match_hostnames:
-      - "autovpn-edge.*"
 
 wan_router:
   defaults:
@@ -84,19 +60,6 @@ wan_carriers:
   - name: Comcast
     path_group: INET
     trusted: true
-  - name: ATT
-    path_group: INET
-    trusted: true
-
-tenants:
-  - name: TenantA
-    vrfs:
-      - name: default
-        vrf_id: 1
-      - name: PROD
-        vrf_id: 42
-      - name: IT
-        vrf_id: 100
 
 wan_virtual_topologies:
   vrfs:

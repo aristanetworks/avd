@@ -94,7 +94,11 @@ class CvPathfinderMixin(Protocol):
             self.structured_config.metadata.cv_pathfinder.pathfinders.append_new(vtep_ip=cast("str", wan_route_server.vtep_ip))
 
     def _metadata_vrfs(self: AvdStructuredConfigMetadataProtocol) -> None:
-        """Set the metadata for VRFs by parsing the generated structured config and flatten it a bit (like hiding load-balance policies)."""
+        """
+        Set the metadata for VRFs by parsing the generated structured config and flatten it a bit (like hiding load-balance policies).
+
+        Should only be called for cv_pathfinder servers.
+        """
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         load_balance_policies = self.structured_config.router_path_selection.load_balance_policies
         avt_policies = self.structured_config.router_adaptive_virtual_topology.policies

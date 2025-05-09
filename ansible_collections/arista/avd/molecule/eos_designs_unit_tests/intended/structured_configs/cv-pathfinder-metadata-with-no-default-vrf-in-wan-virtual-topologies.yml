@@ -106,7 +106,7 @@ metadata:
     - name: Role
       value: pathfinder
     - name: Region
-      value: AVD_Land_West
+      value: AVD_Land_East
     - name: PathfinderSet
       value: PATHFINDERS
     interface_tags:
@@ -120,11 +120,11 @@ metadata:
         value: '666'
   cv_pathfinder:
     role: pathfinder
-    region: AVD_Land_West
-    site: Site12
+    region: AVD_Land_East
+    site: Site511
     vtep_ip: 192.168.255.1
     ssl_profile: STUN-DTLS
-    address: 12 Downing Street, London
+    address: Miami
     interfaces:
     - name: Ethernet1
       carrier: Comcast
@@ -132,39 +132,11 @@ metadata:
       pathgroup: INET
       public_ip: 10.7.7.7
     pathgroups:
-    - name: MPLS
     - name: INET
       carriers:
       - name: Comcast
       - name: ATT
-    - name: LTE
     regions:
-    - id: 42
-      name: AVD_Land_West
-      zones:
-      - id: 1
-        name: AVD_Land_West-ZONE
-        sites:
-        - id: 404
-          name: Site404
-          location:
-            address: Atlantis
-        - id: 405
-          name: Site405
-          location:
-            address: El Dorado
-        - id: 422
-          name: Site422
-          location:
-            address: Somewhere
-        - id: 423
-          name: Site423
-          location:
-            address: Somewhere-warm
-        - id: 12
-          name: Site12
-          location:
-            address: 12 Downing Street, London
     - id: 43
       name: AVD_Land_East
       zones:
@@ -184,10 +156,6 @@ metadata:
         pathgroups:
         - name: INET
           preference: preferred
-        - name: LTE
-          preference: preferred
-        - name: MPLS
-          preference: preferred
         - name: LAN_HA
           preference: preferred
     - name: IT
@@ -197,10 +165,6 @@ metadata:
         name: DEFAULT-POLICY-DEFAULT
         pathgroups:
         - name: INET
-          preference: preferred
-        - name: LTE
-          preference: preferred
-        - name: MPLS
           preference: preferred
         - name: LAN_HA
           preference: preferred
@@ -212,10 +176,6 @@ metadata:
         pathgroups:
         - name: INET
           preference: preferred
-        - name: LTE
-          preference: preferred
-        - name: MPLS
-          preference: preferred
         - name: LAN_HA
           preference: preferred
         application_profiles:
@@ -224,10 +184,6 @@ metadata:
         name: DEFAULT-POLICY-DEFAULT
         pathgroups:
         - name: INET
-          preference: preferred
-        - name: LTE
-          preference: preferred
-        - name: MPLS
           preference: preferred
         - name: LAN_HA
           preference: preferred
@@ -413,15 +369,11 @@ router_bgp:
 router_path_selection:
   peer_dynamic_source: stun
   path_groups:
-  - name: MPLS
-    id: 100
   - name: INET
     id: 101
     ipsec_profile: AUTOVPN
     local_interfaces:
     - name: Ethernet1
-  - name: LTE
-    id: 102
   - name: LAN_HA
     id: 65535
     flow_assignment: lan
@@ -429,14 +381,10 @@ router_path_selection:
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
-    - name: LTE
-    - name: MPLS
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE
     path_groups:
     - name: INET
-    - name: LTE
-    - name: MPLS
     - name: LAN_HA
   tcp_mss_ceiling:
     ipv4_segment_size: auto

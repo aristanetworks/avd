@@ -27,30 +27,7 @@ wan_ipsec_profiles:
     profile_name: AUTOVPN
     shared_key: ABCDEF1234567890
 
-default_node_types:
-  - node_type: wan_router
-    match_hostnames:
-      - "autovpn-edge.*"
 cv_pathfinder_regions:
-  - name: AVD_Land_West
-    id: 42
-    description: AVD Region
-    sites:
-      - name: Site404
-        id: 404
-        location: Atlantis
-      - name: Site405
-        id: 405
-        location: El Dorado
-      - name: Site422
-        id: 422
-        location: Somewhere
-      - name: Site423
-        id: 423
-        location: Somewhere-warm
-      - name: Site12
-        id: 12
-        location: 12 Downing Street, London
   - name: AVD_Land_East
     id: 43
     description: AVD Region
@@ -71,8 +48,8 @@ wan_router:
       id: 1
       wan_role: server
       data_plane_cpu_allocation_max: 1
-      cv_pathfinder_site: Site12
-      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site511
+      cv_pathfinder_region: AVD_Land_East
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: Comcast
@@ -81,15 +58,8 @@ wan_router:
           dhcp_accept_default_route: true
 
 wan_path_groups:
-  - name: MPLS
-    ipsec:
-      static_peers: false
-      dynamic_peers: false
-    id: 100
   - name: INET
     id: 101
-  - name: LTE
-    id: 102
 
 wan_carriers:
   - name: Comcast
