@@ -56,6 +56,8 @@ class WanMixin(Protocol):
     @cached_property
     def cv_pathfinder_transit_mode(self: SharedUtilsProtocol) -> Literal["region", "zone"] | None:
         """When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None."""
+        # TODO: For this node should be server as wan_role but and this method called in cv_pathfinder_role
+        # and under that if node is server it return the role as pathfinder so this condition never occur.
         if not self.is_cv_pathfinder_client:
             return None
 
@@ -307,6 +309,8 @@ class WanMixin(Protocol):
         Currently, only one default zone with ID 1 is supported.
         """
         # Injecting default zone with id 1.
+
+        # TODO: Unable to reach this condition
         if self.wan_region is None:
             # Should never happen but just in case.
             msg = "Could not find 'cv_pathfinder_region' so it is not possible to auto-generate the zone."
@@ -340,15 +344,15 @@ class WanMixin(Protocol):
 
                 # Only ibgp is supported for WAN so raise if peer from peer_facts BGP AS is different from ours.
                 if bgp_as != self.bgp_as:
-                    msg = f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs} is different from our own: {self.bgp_as}."
+                    msg = f"Only iBGP is supported for WAN, the BGP AS {bgp_as} on {wan_rs.hostname} is different from our own: {self.bgp_as}."
                     raise AristaAvdError(msg)
 
                 # Prefer values coming from the input variables over peer facts
                 if not wan_rs.vtep_ip:
                     if not (peer_vtep_ip := peer_facts.vtep_ip):
                         msg = (
-                            f"'vtep_ip' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers' or something is wrong with the peer"
-                            " facts."
+                            f"'vtep_ip' is missing for peering with {wan_rs.hostname}, either set it in under 'wan_route_servers' or something is wrong with"
+                            " the peer facts."
                         )
                         raise AristaAvdInvalidInputsError(msg)
                     wan_rs.vtep_ip = peer_vtep_ip
@@ -381,15 +385,15 @@ class WanMixin(Protocol):
                 # Retrieve the values from the dictionary, making them required if the peer_facts were not found
                 if not wan_rs.vtep_ip:
                     msg = (
-                        f"'vtep_ip' is missing for peering with {wan_rs} which was not found in the inventory. Either set it in under 'wan_route_servers'"
-                        " or check your inventory."
+                        f"'vtep_ip' is missing for peering with {wan_rs.hostname} which was not found in the inventory. Either set it in under"
+                        " 'wan_route_servers' or check your inventory."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
                 if not wan_rs.path_groups:
                     msg = (
-                        f"'path_groups' is missing for peering with {wan_rs} which was not found in the inventory, Either set it in under 'wan_route_servers'"
-                        " or check your inventory."
+                        f"'path_groups' is missing for peering with {wan_rs.hostname} which was not found in the inventory,"
+                        " Either set it in under 'wan_route_servers' or check your inventory."
                     )
                     raise AristaAvdInvalidInputsError(msg)
 
