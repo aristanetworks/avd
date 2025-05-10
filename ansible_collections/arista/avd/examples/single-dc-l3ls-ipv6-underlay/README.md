@@ -54,7 +54,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 The drawing below shows the physical topology used in this example. The interface assignment shown here are referenced across the entire example, so keep that in mind if this example must be adapted to a different topology. Finally, the Ansible host is connected to the dedicated out-of-band management port (Ethernet0 when using vEOS-lab):
 
-![Figure: Arista Leaf Spine physical topology](images/avd-single-dc-l3ls-ipv6-underlay-example.svg)
+![Figure: Arista Leaf Spine physical topology](images/avd-single-dc-l3ls-example.svg)
 
 ### IP ranges used
 
