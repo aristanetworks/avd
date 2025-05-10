@@ -11,4 +11,3 @@
       vars:
         cv_collection: v3 # (3)!
         fabric_name: FABRIC # (4)!
-        execute_tasks: true

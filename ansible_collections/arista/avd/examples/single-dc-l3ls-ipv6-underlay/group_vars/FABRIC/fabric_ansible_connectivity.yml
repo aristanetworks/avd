@@ -10,7 +10,5 @@ ansible_password: ansible
 # User escalation (to enter enable mode)
 ansible_become: true
 ansible_become_method: enable
-# Use SSL (HTTPS)
 ansible_httpapi_use_ssl: true
-# Do not try to validate certs
 ansible_httpapi_validate_certs: false

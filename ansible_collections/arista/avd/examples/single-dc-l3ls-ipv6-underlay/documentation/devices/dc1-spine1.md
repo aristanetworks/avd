@@ -1,4 +1,4 @@
-# spine2
+# dc1-spine1
 
 ## Table of Contents
 
@@ -46,7 +46,7 @@
 
 | Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.36/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.11/24 | 172.16.1.1 |
 
 ##### IPv6
 
@@ -62,7 +62,7 @@ interface Management1
    description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
-   ip address 172.16.1.36/24
+   ip address 172.16.1.11/24
 ```
 
 ### IP Name Servers
@@ -71,12 +71,12 @@ interface Management1
 
 | Name Server | VRF | Priority |
 | ----------- | --- | -------- |
-| 172.16.1.1 | MGMT | - |
+| 192.168.1.1 | MGMT | - |
 
 #### IP Name Servers Device Configuration
 
 ```eos
-ip name-server vrf MGMT 172.16.1.1
+ip name-server vrf MGMT 192.168.1.1
 ```
 
 ### NTP
@@ -93,14 +93,14 @@ ip name-server vrf MGMT 172.16.1.1
 
 | Server | VRF | Preferred | Burst | iBurst | Version | Min Poll | Max Poll | Local-interface | Key |
 | ------ | --- | --------- | ----- | ------ | ------- | -------- | -------- | --------------- | --- |
-| time.google.com | MGMT | True | - | - | - | - | - | - | - |
+| 0.pool.ntp.org | MGMT | True | - | - | - | - | - | - | - |
 
 #### NTP Device Configuration
 
 ```eos
 !
 ntp local-interface vrf MGMT Management1
-ntp server vrf MGMT time.google.com prefer
+ntp server vrf MGMT 0.pool.ntp.org prefer
 ```
 
 ### Management API HTTP
@@ -160,14 +160,14 @@ Enable password has been disabled
 
 | CV Compression | CloudVision Servers | VRF | Authentication | Smash Excludes | Ingest Exclude | Bypass AAA |
 | -------------- | ------------------- | --- | -------------- | -------------- | -------------- | ---------- |
-| gzip | 172.16.1.30:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
+| gzip | 192.168.1.12:9910 | MGMT | token,/tmp/token | ale,flexCounter,hardware,kni,pulse,strata | /Sysdb/cell/1/agent,/Sysdb/cell/2/agent | True |
 
 #### TerminAttr Daemon Device Configuration
 
 ```eos
 !
 daemon TerminAttr
-   exec /usr/bin/TerminAttr -cvaddr=172.16.1.30:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
+   exec /usr/bin/TerminAttr -cvaddr=192.168.1.12:9910 -cvauth=token,/tmp/token -cvvrf=MGMT -disableaaa -smashexcludes=ale,flexCounter,hardware,kni,pulse,strata -ingestexclude=/Sysdb/cell/1/agent,/Sysdb/cell/2/agent -taillogs
    no shutdown
 ```
 
@@ -216,42 +216,42 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | Channel Group | IPv6 Address | VRF | MTU | Shutdown | ND RA Disabled | Managed Config Flag | IPv6 ACL In | IPv6 ACL Out |
 | --------- | ----------- | --------------| ------------ | --- | --- | -------- | -------------- | -------------------| ----------- | ------------ |
-| Ethernet1 | P2P_leaf1_Ethernet2 | - | 2001:db8:2:1::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet2 | P2P_leaf2_Ethernet2 | - | 2001:db8:2:3::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet3 | P2P_leaf3_Ethernet2 | - | 2001:db8:2:5::1/64 | default | 1500 | False | - | - | - | - |
-| Ethernet4 | P2P_leaf4_Ethernet2 | - | 2001:db8:2:7::1/64 | default | 1500 | False | - | - | - | - |
+| Ethernet1 | P2P_dc1-leaf1a_Ethernet1 | - | 2001:db8:2::1/64 | default | 1500 | False | - | - | - | - |
+| Ethernet2 | P2P_dc1-leaf1b_Ethernet1 | - | 2001:db8:2:2::1/64 | default | 1500 | False | - | - | - | - |
+| Ethernet3 | P2P_dc1-leaf2a_Ethernet1 | - | 2001:db8:2:4::1/64 | default | 1500 | False | - | - | - | - |
+| Ethernet4 | P2P_dc1-leaf2b_Ethernet1 | - | 2001:db8:2:6::1/64 | default | 1500 | False | - | - | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_leaf1_Ethernet2
+   description P2P_dc1-leaf1a_Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ipv6 address 2001:db8:2:1::1/64
+   ipv6 address 2001:db8:2::1/64
 !
 interface Ethernet2
-   description P2P_leaf2_Ethernet2
+   description P2P_dc1-leaf1b_Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ipv6 address 2001:db8:2:3::1/64
+   ipv6 address 2001:db8:2:2::1/64
 !
 interface Ethernet3
-   description P2P_leaf3_Ethernet2
+   description P2P_dc1-leaf2a_Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ipv6 address 2001:db8:2:5::1/64
+   ipv6 address 2001:db8:2:4::1/64
 !
 interface Ethernet4
-   description P2P_leaf4_Ethernet2
+   description P2P_dc1-leaf2b_Ethernet1
    no shutdown
    mtu 1500
    no switchport
-   ipv6 address 2001:db8:2:7::1/64
+   ipv6 address 2001:db8:2:6::1/64
 ```
 
 ### Loopback Interfaces
@@ -268,7 +268,7 @@ interface Ethernet4
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | ROUTER_ID | default | 2001:db8:0:2::1/64 |
+| Loopback0 | ROUTER_ID | default | 2001:db8:0:1::1/64 |
 
 #### Loopback Interfaces Device Configuration
 
@@ -277,7 +277,7 @@ interface Ethernet4
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ipv6 address 2001:db8:0:2::1/64
+   ipv6 address 2001:db8:0:1::1/64
 ```
 
 ## Routing
@@ -347,7 +347,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100 | 10.255.0.2 |
+| 65100 | 10.255.0.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -384,10 +384,10 @@ ASN Notation: asplain
 | 2001:db8:1:2::1 | 65101 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 2001:db8:1:3::1 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
 | 2001:db8:1:4::1 | 65102 | default | - | Inherited from peer group EVPN-OVERLAY-PEERS | Inherited from peer group EVPN-OVERLAY-PEERS | - | Inherited from peer group EVPN-OVERLAY-PEERS | - | - | - | - |
-| 2001:db8:2:1::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:2:3::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:2:5::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
-| 2001:db8:2:7::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 2001:db8:2:2::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 2001:db8:2:4::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 2001:db8:2:6::2 | 65102 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 2001:db8:2::2 | 65101 | default | - | Inherited from peer group IPv6-UNDERLAY-PEERS | Inherited from peer group IPv6-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -402,7 +402,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65100
-   router-id 10.255.0.2
+   router-id 10.255.0.1
    no bgp default ipv4-unicast
    maximum-paths 4 ecmp 4
    neighbor EVPN-OVERLAY-PEERS peer group
@@ -419,28 +419,28 @@ router bgp 65100
    neighbor IPv6-UNDERLAY-PEERS maximum-routes 12000
    neighbor 2001:db8:1:1::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:1::1 remote-as 65101
-   neighbor 2001:db8:1:1::1 description leaf1_Loopback0
+   neighbor 2001:db8:1:1::1 description dc1-leaf1a_Loopback0
    neighbor 2001:db8:1:2::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:2::1 remote-as 65101
-   neighbor 2001:db8:1:2::1 description leaf2_Loopback0
+   neighbor 2001:db8:1:2::1 description dc1-leaf1b_Loopback0
    neighbor 2001:db8:1:3::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:3::1 remote-as 65102
-   neighbor 2001:db8:1:3::1 description leaf3_Loopback0
+   neighbor 2001:db8:1:3::1 description dc1-leaf2a_Loopback0
    neighbor 2001:db8:1:4::1 peer group EVPN-OVERLAY-PEERS
    neighbor 2001:db8:1:4::1 remote-as 65102
-   neighbor 2001:db8:1:4::1 description leaf4_Loopback0
-   neighbor 2001:db8:2:1::2 peer group IPv6-UNDERLAY-PEERS
-   neighbor 2001:db8:2:1::2 remote-as 65101
-   neighbor 2001:db8:2:1::2 description leaf1_Ethernet2
-   neighbor 2001:db8:2:3::2 peer group IPv6-UNDERLAY-PEERS
-   neighbor 2001:db8:2:3::2 remote-as 65101
-   neighbor 2001:db8:2:3::2 description leaf2_Ethernet2
-   neighbor 2001:db8:2:5::2 peer group IPv6-UNDERLAY-PEERS
-   neighbor 2001:db8:2:5::2 remote-as 65102
-   neighbor 2001:db8:2:5::2 description leaf3_Ethernet2
-   neighbor 2001:db8:2:7::2 peer group IPv6-UNDERLAY-PEERS
-   neighbor 2001:db8:2:7::2 remote-as 65102
-   neighbor 2001:db8:2:7::2 description leaf4_Ethernet2
+   neighbor 2001:db8:1:4::1 description dc1-leaf2b_Loopback0
+   neighbor 2001:db8:2:2::2 peer group IPv6-UNDERLAY-PEERS
+   neighbor 2001:db8:2:2::2 remote-as 65101
+   neighbor 2001:db8:2:2::2 description dc1-leaf1b_Ethernet1
+   neighbor 2001:db8:2:4::2 peer group IPv6-UNDERLAY-PEERS
+   neighbor 2001:db8:2:4::2 remote-as 65102
+   neighbor 2001:db8:2:4::2 description dc1-leaf2a_Ethernet1
+   neighbor 2001:db8:2:6::2 peer group IPv6-UNDERLAY-PEERS
+   neighbor 2001:db8:2:6::2 remote-as 65102
+   neighbor 2001:db8:2:6::2 description dc1-leaf2b_Ethernet1
+   neighbor 2001:db8:2::2 peer group IPv6-UNDERLAY-PEERS
+   neighbor 2001:db8:2::2 remote-as 65101
+   neighbor 2001:db8:2::2 description dc1-leaf1a_Ethernet1
    redistribute connected route-map RM-CONN-2-BGP
    !
    address-family evpn

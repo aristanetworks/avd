@@ -50,13 +50,13 @@ tenants:
           loopback_ip_range: 10.255.12.0/27
         svis:
           - id: 31
-            name: VRF11_VLAN21
+            name: VRF12_VLAN31
+            enabled: true
+            ipv6_address_virtuals: [2001:DB8:31::1/48]
+          - id: 32
+            name: VRF12_VLAN32
             enabled: true
             ipv6_address_virtuals: [2001:DB8:32::1/48]
-          - id: 32
-            name: VRF11_VLAN22
-            enabled: true
-            ipv6_address_virtuals: [2001:DB8:33::1/48]
 
     l2vlans:
       # These are pure L2 vlans. They do not have a SVI defined in the l3leafs and they will be bridged inside the VXLAN fabric

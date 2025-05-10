@@ -17,12 +17,14 @@
 
 | POD | Type | Node | Management IP | Platform | Provisioned in CloudVision | Serial Number |
 | --- | ---- | ---- | ------------- | -------- | -------------------------- | ------------- |
-| FABRIC | l3leaf | leaf1 | 172.16.1.31/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | leaf2 | 172.16.1.32/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | leaf3 | 172.16.1.33/24 | vEOS-lab | Provisioned | - |
-| FABRIC | l3leaf | leaf4 | 172.16.1.34/24 | vEOS-lab | Provisioned | - |
-| FABRIC | spine | spine1 | 172.16.1.35/24 | vEOS-lab | Provisioned | - |
-| FABRIC | spine | spine2 | 172.16.1.36/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf1a | 172.16.1.101/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf1b | 172.16.1.102/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l2leaf | dc1-leaf1c | 172.16.1.151/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf2a | 172.16.1.103/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l3leaf | dc1-leaf2b | 172.16.1.104/24 | vEOS-lab | Provisioned | - |
+| FABRIC | l2leaf | dc1-leaf2c | 172.16.1.152/24 | vEOS-lab | Provisioned | - |
+| FABRIC | spine | dc1-spine1 | 172.16.1.11/24 | vEOS-lab | Provisioned | - |
+| FABRIC | spine | dc1-spine2 | 172.16.1.12/24 | vEOS-lab | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -35,18 +37,22 @@
 
 | Type | Node | Node Interface | Peer Type | Peer Node | Peer Interface |
 | ---- | ---- | -------------- | --------- | ----------| -------------- |
-| l3leaf | leaf1 | Ethernet1 | spine | spine1 | Ethernet1 |
-| l3leaf | leaf1 | Ethernet2 | spine | spine2 | Ethernet1 |
-| l3leaf | leaf1 | Ethernet11 | mlag_peer | leaf2 | Ethernet11 |
-| l3leaf | leaf1 | Ethernet12 | mlag_peer | leaf2 | Ethernet12 |
-| l3leaf | leaf2 | Ethernet1 | spine | spine1 | Ethernet2 |
-| l3leaf | leaf2 | Ethernet2 | spine | spine2 | Ethernet2 |
-| l3leaf | leaf3 | Ethernet1 | spine | spine1 | Ethernet3 |
-| l3leaf | leaf3 | Ethernet2 | spine | spine2 | Ethernet3 |
-| l3leaf | leaf3 | Ethernet11 | mlag_peer | leaf4 | Ethernet11 |
-| l3leaf | leaf3 | Ethernet12 | mlag_peer | leaf4 | Ethernet12 |
-| l3leaf | leaf4 | Ethernet1 | spine | spine1 | Ethernet4 |
-| l3leaf | leaf4 | Ethernet2 | spine | spine2 | Ethernet4 |
+| l3leaf | dc1-leaf1a | Ethernet1 | spine | dc1-spine1 | Ethernet1 |
+| l3leaf | dc1-leaf1a | Ethernet2 | spine | dc1-spine2 | Ethernet1 |
+| l3leaf | dc1-leaf1a | Ethernet3 | mlag_peer | dc1-leaf1b | Ethernet3 |
+| l3leaf | dc1-leaf1a | Ethernet4 | mlag_peer | dc1-leaf1b | Ethernet4 |
+| l3leaf | dc1-leaf1a | Ethernet8 | l2leaf | dc1-leaf1c | Ethernet1 |
+| l3leaf | dc1-leaf1b | Ethernet1 | spine | dc1-spine1 | Ethernet2 |
+| l3leaf | dc1-leaf1b | Ethernet2 | spine | dc1-spine2 | Ethernet2 |
+| l3leaf | dc1-leaf1b | Ethernet8 | l2leaf | dc1-leaf1c | Ethernet2 |
+| l3leaf | dc1-leaf2a | Ethernet1 | spine | dc1-spine1 | Ethernet3 |
+| l3leaf | dc1-leaf2a | Ethernet2 | spine | dc1-spine2 | Ethernet3 |
+| l3leaf | dc1-leaf2a | Ethernet3 | mlag_peer | dc1-leaf2b | Ethernet3 |
+| l3leaf | dc1-leaf2a | Ethernet4 | mlag_peer | dc1-leaf2b | Ethernet4 |
+| l3leaf | dc1-leaf2a | Ethernet8 | l2leaf | dc1-leaf2c | Ethernet1 |
+| l3leaf | dc1-leaf2b | Ethernet1 | spine | dc1-spine1 | Ethernet4 |
+| l3leaf | dc1-leaf2b | Ethernet2 | spine | dc1-spine2 | Ethernet4 |
+| l3leaf | dc1-leaf2b | Ethernet8 | l2leaf | dc1-leaf2c | Ethernet2 |
 
 ## Fabric IP Allocation
 
