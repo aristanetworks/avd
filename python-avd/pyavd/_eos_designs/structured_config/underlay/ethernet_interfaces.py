@@ -130,21 +130,11 @@ class EthernetInterfacesMixin(Protocol):
                     if self.inputs.underlay_isis_authentication_key is not None:
                         ethernet_interface.isis_authentication.both._update(key=self.inputs.underlay_isis_authentication_key, key_type="7")
 
-                if link.underlay_multicast_settings.pim_sm.enabled:
-                    pim_sm_uplinks = link.underlay_multicast_settings.pim_sm.uplink_interfaces
-                    if pim_sm_uplinks:
-                        if ethernet_interface.name in pim_sm_uplinks:
-                            ethernet_interface.pim.ipv4.sparse_mode = True
-                    elif link.underlay_multicast_settings.pim_sm.uplinks:
-                        ethernet_interface.pim.ipv4.sparse_mode = True
+                if link.underlay_multicast_pim_sm:
+                    ethernet_interface.pim.ipv4.sparse_mode = True
 
-                if link.underlay_multicast_settings.static.enabled:
-                    static_uplinks = link.underlay_multicast_settings.static.uplink_interfaces
-                    if static_uplinks:
-                        if ethernet_interface.name in static_uplinks:
-                            ethernet_interface.pim.ipv4.sparse_mode = True
-                    elif link.underlay_multicast_settings.static.uplinks:
-                        ethernet_interface.multicast.ipv4.static = True
+                if link.underlay_multicast_static:
+                    ethernet_interface.multicast.ipv4.static = True
 
                 if link.underlay_multicast:
                     ethernet_interface.pim.ipv4.sparse_mode = True

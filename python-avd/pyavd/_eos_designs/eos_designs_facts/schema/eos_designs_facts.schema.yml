@@ -206,9 +206,10 @@ keys:
               required: true
         underlay_multicast:
           type: bool
-        underlay_multicast_settings:
-          type: dict
-          $ref: eos_designs#/$defs/node_type/keys/defaults/keys/underlay_multicast
+        underlay_multicast_pim_sm:
+          type: bool
+        underlay_multicast_static:
+          type: bool
         ipv6_enable:
           type: bool
         prefix_length:

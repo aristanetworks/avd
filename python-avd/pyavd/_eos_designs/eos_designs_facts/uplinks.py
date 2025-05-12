@@ -202,25 +202,25 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         if self.shared_utils.underlay_multicast is True and uplink_switch_facts.shared_utils.underlay_multicast is True:
             uplink.underlay_multicast = True
 
-        if self.shared_utils.underlay_multicast_pim_sm_enabled and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled:
-            uplink.underlay_multicast_settings.pim_sm.enabled = True
-            uplink.underlay_multicast_settings.pim_sm.uplinks = self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks
-            if uplink.underlay_multicast_settings.pim_sm.uplinks and self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces:
-                uplink.underlay_multicast_settings.pim_sm.uplink_interfaces = (
-                    self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces._cast_as(
-                        EosDesignsFactsProtocol.UplinksItem.UnderlayMulticastSettings.PimSm.UplinkInterfaces
-                    )
-                )
+        if (
+            self.shared_utils.underlay_multicast_pim_sm_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_pim_sm_enabled
+            and self.shared_utils.node_config.underlay_multicast.pim_sm.uplinks
+        ):
+            uplink.underlay_multicast_pim_sm = True
+            uplink_interfaces = self.shared_utils.node_config.underlay_multicast.pim_sm.uplink_interfaces
+            if uplink_interfaces and uplink_interface not in uplink_interfaces:
+                uplink.underlay_multicast_pim_sm = False
 
-        if self.shared_utils.underlay_multicast_static_enabled and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled:
-            uplink.underlay_multicast_settings.static.enabled = True
-            uplink.underlay_multicast_settings.static.uplinks = self.shared_utils.node_config.underlay_multicast.static.uplinks
-            if uplink.underlay_multicast_settings.static.uplinks and self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces:
-                uplink.underlay_multicast_settings.static.uplink_interfaces = (
-                    self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces._cast_as(
-                        EosDesignsFactsProtocol.UplinksItem.UnderlayMulticastSettings.Static.UplinkInterfaces
-                    )
-                )
+        if (
+            self.shared_utils.underlay_multicast_static_enabled
+            and uplink_switch_facts.shared_utils.underlay_multicast_static_enabled
+            and self.shared_utils.node_config.underlay_multicast.static.uplinks
+        ):
+            uplink.underlay_multicast_static = True
+            uplink_interfaces = self.shared_utils.node_config.underlay_multicast.static.uplink_interfaces
+            if uplink_interfaces and uplink_interface not in uplink_interfaces:
+                uplink.underlay_multicast_static = False
 
         if self.inputs.underlay_rfc5549:
             uplink.ipv6_enable = True

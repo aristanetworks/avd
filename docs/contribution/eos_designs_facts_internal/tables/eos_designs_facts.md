@@ -81,19 +81,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_security</samp>](## "uplinks.[].mac_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "uplinks.[].mac_security.profile") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "uplinks.[].underlay_multicast") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_settings</samp>](## "uplinks.[].underlay_multicast_settings") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "uplinks.[].underlay_multicast_settings.pim_sm") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "uplinks.[].underlay_multicast_settings.pim_sm.enabled") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "uplinks.[].underlay_multicast_settings.pim_sm.uplinks") | Boolean |  | `True` |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "uplinks.[].underlay_multicast_settings.pim_sm.uplink_interfaces") | List, items: String |  |  |  | Uplink Interface names to enable for Protocol Independent Multicast sparse mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplinks.[].underlay_multicast_settings.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "uplinks.[].underlay_multicast_settings.pim_sm.mlag") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static</samp>](## "uplinks.[].underlay_multicast_settings.static") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "uplinks.[].underlay_multicast_settings.static.enabled") | Boolean |  |  |  | Enable/Disable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "uplinks.[].underlay_multicast_settings.static.uplinks") | Boolean |  | `True` |  | Enable/Disable static Protocol Independent Multicast in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "uplinks.[].underlay_multicast_settings.static.uplink_interfaces") | List, items: String |  |  |  | Uplink Interface names to enable for static multicast. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplinks.[].underlay_multicast_settings.static.uplink_interfaces.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "uplinks.[].underlay_multicast_settings.static.mlag") | Boolean |  |  |  | Enable/Disable static Multicast in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_pim_sm</samp>](## "uplinks.[].underlay_multicast_pim_sm") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_static</samp>](## "uplinks.[].underlay_multicast_static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "uplinks.[].prefix_length") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "uplinks.[].ip_address") | String |  |  |  |  |
@@ -293,35 +282,8 @@
         mac_security:
           profile: <str; required>
         underlay_multicast: <bool>
-        underlay_multicast_settings:
-          pim_sm:
-
-            # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
-            enabled: <bool>
-
-            # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
-            uplinks: <bool; default=True>
-
-            # Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
-            uplink_interfaces:
-              - <str>
-
-            # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node.
-            mlag: <bool>
-          static:
-
-            # Enable/Disable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
-            enabled: <bool>
-
-            # Enable/Disable static Protocol Independent Multicast in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
-            uplinks: <bool; default=True>
-
-            # Uplink Interface names to enable for static multicast.
-            uplink_interfaces:
-              - <str>
-
-            # Enable/Disable static Multicast in the underlay on all mlag l3 peer interface and core interfaces for the specific node.
-            mlag: <bool>
+        underlay_multicast_pim_sm: <bool>
+        underlay_multicast_static: <bool>
         ipv6_enable: <bool>
         prefix_length: <int>
         ip_address: <str>
