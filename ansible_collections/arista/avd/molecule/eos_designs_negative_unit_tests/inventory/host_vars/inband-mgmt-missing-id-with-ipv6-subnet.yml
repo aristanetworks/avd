@@ -1,23 +1,5 @@
 fabric_name: FABRIC_INBAND_MANAGEMENT_IPV6
 
-default_node_types:
-  - match_hostnames:
-      - inband-mgmt-missing-id-with-ipv6-subnet
-    node_type: l2leaf
-
-default_interfaces:
-  - types: [ l3leaf, l2leaf ]
-    platforms: [ default ]
-
-default_mgmt_method: none
-
-cvp_instance_ips:
-  - apiserver.arista.io
-
-name_servers:
-  - 1.1.1.1
-  - 8.8.8.8
-
 type: l2leaf
 
 l2leaf:
