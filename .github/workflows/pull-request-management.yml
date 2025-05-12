@@ -19,6 +19,8 @@ env:
   AVD_NEVER_RUN_FROM_SOURCE: 1
   PY_COLORS: 1 # allows molecule colors to be passed to GitHub Actions
   ANSIBLE_FORCE_COLOR: 1 # allows ansible colors to be passed to GitHub Actions
+  # rust
+  CARGO_TERM_COLOR: always
 
 jobs:
   file-changes:
@@ -32,6 +34,7 @@ jobs:
       requirements: ${{ steps.filter.outputs.requirements }}
       docs: ${{ steps.filter.outputs.docs }}
       anta_runner: ${{ steps.filter.outputs.anta_runner }}
+      rust_src_or_ci_changed: ${{ steps.filter.outputs.rust_src_or_ci_changed }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
@@ -99,6 +102,11 @@ jobs:
               - 'python-avd/pyavd/api/_anta/*'
               - 'python-avd/pyavd/api/_anta/**/*'
               - 'python-avd/pyavd/get_device_anta_catalog.py'
+            rust_src_or_ci_changed:
+              - '.github/**/*'
+              - 'rust/**/*'
+              - 'python/avdutils/**/*'
+              - 'Cargo.toml'
 
   # -------------------------------------- #
   # Build PyAVD wheel and upload artifact
@@ -688,3 +696,107 @@ jobs:
         with:
           name: pytest-eos-cli-config-gen-compiled-templates
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
+
+  # ----------------------------------- #
+  # Cargo build, test and linting
+  # ----------------------------------- #
+  cargo_build_and_test:
+    name: Cargo build, test and linting on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-13 covers x64 and macos-latest covers arm
+        os:
+          [
+            ubuntu-latest,
+            ubuntu-24.04-arm,
+            windows-latest,
+            macos-13,
+            macos-latest,
+          ]
+    steps:
+      - uses: actions/checkout@v4
+        # This is needed for arm machines since they don't ship with 2024 edition.
+      - name: Upgrade rust and cargo
+        run: rustup update stable
+      - run: cargo fmt --verbose
+        if: |
+          matrix.os == 'ubuntu-latest'
+      - run: cargo clippy --all-targets --all-features
+        if: |
+          matrix.os == 'ubuntu-latest'
+      - run: cargo build --all-targets --all-features
+      - run: cargo test --all-targets --all-features
+      - run: |
+          cargo install cargo-deny
+          cargo deny check
+        if: |
+          matrix.os == 'ubuntu-latest'
+
+  # ----------------------------------- #
+  # Python integration build and test
+  # ----------------------------------- #
+  python_rust_bindings_build_and_test:
+    name: Python ${{ matrix.python }} on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    needs: [file-changes]
+    if: needs.file-changes.outputs.rust_src_or_ci_changed == 'true'
+    strategy:
+      fail-fast: false
+      matrix:
+        # macos-13 covers x64 and macos-latest covers arm
+        os:
+          [
+            ubuntu-latest,
+            ubuntu-24.04-arm,
+            windows-latest,
+            macos-13,
+            macos-latest,
+          ]
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+        # This is needed for arm machines since they don't ship with 2024 edition.
+      - name: Upgrade rust and cargo
+        run: rustup update stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install tox
+        run: |
+          pip install tox tox-gh-actions --upgrade
+      - name: Run pytest via tox
+        working-directory: python/avdutils
+        # Running tox  which will build the package (including rust).
+        # For most runs without an environment set here. The environment is mapped with the tox gh-action plugin.
+        run: |
+          tox
+
+  # We always need the coverage report
+  # Coverage only runs for ubuntu x64 on python 3.11.
+  python_rust_bindings_coverage:
+    name: Python 3.11 on ubuntu x64
+    runs-on: ubuntu-latest
+    needs: [file-changes]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upgrade rust and cargo
+        run: rustup update stable
+      - uses: actions/setup-python@v5
+        with:
+          python-version: 3.11
+      - name: Install tox
+        run: |
+          pip install tox tox-gh-actions --upgrade
+      - name: Run pytest via tox
+        working-directory: python/avdutils
+        run: |
+          tox -e coverage,report
+      - name: Upload coverage from pytest
+        uses: actions/upload-artifact@v4
+        with:
+          name: pytest-avdutils-coverage
+          path: python/avdutils/coverage.xml
