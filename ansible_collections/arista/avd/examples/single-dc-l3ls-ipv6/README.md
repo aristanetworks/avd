@@ -1,6 +1,6 @@
 ---
-title: Single Data Center - L3LS  # This title is used for search results
-link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/index.html
+title: Single Data Center - L3LS - IPv6 # This title is used for search results
+link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/index.html
 ---
 <!--
   ~ Copyright (c) 2025 Arista Networks, Inc.
@@ -8,7 +8,7 @@ link: https://avd.arista.com/stable/ansible_collections/arista/avd/examples/sing
   ~ that can be found in the LICENSE file.
   -->
 
-# Single Data Center - L3LS
+# Single Data Center - L3LS - IPv6
 
 ## Introduction
 
@@ -34,7 +34,7 @@ ansible_collections/arista/avd/examples/common/example-installation.md
 
 ```shell
 ansible-avd-examples/ (or wherever the playbook was run)
-  |── single-dc-l3ls-ipv6-underlay
+  |── single-dc-l3ls-ipv6
     ├── ansible.cfg
     ├── documentation
     ├── group_vars
@@ -111,12 +111,12 @@ Below is the basic configuration file for `dc1-leaf1a`:
 
 ```eos title="dc1-leaf1a-basic-configuration.txt"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/switch-basic-configurations/dc1-leaf1a-basic-configuration.txt
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/switch-basic-configurations/dc1-leaf1a-basic-configuration.txt
 --8<--
 ```
 
 !!! note
-    The folder `single-dc-l3ls-ipv6-underlay/switch-basic-configurations/` contains a file per device for the initial configurations.
+    The folder `single-dc-l3ls-ipv6/switch-basic-configurations/` contains a file per device for the initial configurations.
 
 ## Ansible inventory, group vars, and naming scheme
 
@@ -156,7 +156,7 @@ This naming convention makes it possible to extend anything easily, but as alway
 
 ### Content of the inventory.yml file
 
-This section describes the entire `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/inventory.yml` file used to represent the above topology.
+This section describes the entire `ansible-avd-examples/single-dc-l3ls-ipv6/inventory.yml` file used to represent the above topology.
 
 It is important that the hostnames specified in the inventory exist either in DNS or in the hosts file on your Ansible host to allow successful name lookup and be able to reach the switches directly. A successful ping from the Ansible host to each inventory host verifies name resolution(e.g., `ping dc1-spine1`).
 
@@ -164,7 +164,7 @@ Alternatively, if there is no DNS available, or if devices need to be reached us
 
 ```yaml title="inventory.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/inventory.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/inventory.yml
 --8<--
 ```
 
@@ -172,7 +172,7 @@ The above is what is included in this example, *purely* to make it as simple as 
 
 ```yaml title="inventory.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/inventory_without_ip.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/inventory_without_ip.yml
 --8<--
 ```
 
@@ -188,13 +188,13 @@ ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/inventory_w
 
 2. `NETWORK_SERVICES`
 
-    - Creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/NETWORK_SERVICES.yml`).
+    - Creates a group named `NETWORK_SERVICES`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/NETWORK_SERVICES.yml`).
 
     - The file's contents, which in this case are specifications of VRFs and VLANs, are then applied to the group's children. In this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
 3. `CONNECTED_ENDPOINTS`
 
-    - Creates a group named `CONNECTED_ENDPOINTS`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/CONNECTED_ENDPOINTS.yml`).
+    - Creates a group named `CONNECTED_ENDPOINTS`. Ansible variable resolution resolves this group name to the identically named group_vars file (`ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/CONNECTED_ENDPOINTS.yml`).
 
     - The file's contents, which in this case are specifications of connected endpoints (typically servers), are then applied to the children of the group, in this case, the two groups `DC1_L3_LEAVES` and `DC1_L2_LEAVES`.
 
@@ -206,7 +206,7 @@ Since this example covers building an L3LS network, AVD must know about the devi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_SPINES/spines.yml
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1_SPINES/spines.yml
     --8<--
     ```
 
@@ -214,7 +214,7 @@ Since this example covers building an L3LS network, AVD must know about the devi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_L3_LEAVES/l3_leaves.yml
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1_L3_LEAVES/l3_leaves.yml
     --8<--
     ```
 
@@ -222,7 +222,7 @@ Since this example covers building an L3LS network, AVD must know about the devi
 
     ```yaml
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_L2_LEAVES/l2_leaves.yml
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1_L2_LEAVES/l2_leaves.yml
     --8<--
     ```
 
@@ -230,13 +230,13 @@ For example, all switches that are children of the DC1_SPINES group defined in t
 
 ## Setting fabric-wide configuration parameters
 
-The `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/FABRIC` folder contain files that defines generic settings that apply to all children of the `FABRIC` group as specified in the inventory described earlier.
+The `ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/FABRIC` folder contain files that defines generic settings that apply to all children of the `FABRIC` group as specified in the inventory described earlier.
 
 The first file defines how the Ansible host connects to the devices:
 
 ```yaml title="fabric_ansible_connectivity.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/FABRIC/fabric_ansible_connectivity.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/FABRIC/fabric_ansible_connectivity.yml
 --8<--
 ```
 
@@ -244,33 +244,33 @@ The following section specifies variables that generate configuration to be appl
 
 ```yaml title="fabric_variables.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/FABRIC/fabric_variables.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/FABRIC/fabric_variables.yml
 --8<--
 ```
 
 ## Setting device specific configuration parameters
 
-The `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1/dc1.yml` file defines settings that apply to all children of the `DC1` group as specified in the inventory described earlier. However, this time the settings defined are no longer fabric-wide but are limited to DC1. This example is of limited benefit with only a single data center. Still, it allows us to scale the configuration to a scenario with multiple data centers in the future.
+The `ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/DC1/dc1.yml` file defines settings that apply to all children of the `DC1` group as specified in the inventory described earlier. However, this time the settings defined are no longer fabric-wide but are limited to DC1. This example is of limited benefit with only a single data center. Still, it allows us to scale the configuration to a scenario with multiple data centers in the future.
 
 ```yaml title="dc1.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1/dc1.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1/dc1.yml
 --8<--
 ```
 
-The `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_SPINES/spines.yml` covers the spine switches.
+The `ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/DC1_SPINES/spines.yml` covers the spine switches.
 
 ```yaml title="spines.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_SPINES/spines.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1_SPINES/spines.yml
 --8<--
 ```
 
-The `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_L3_LEAVES/l3_leaves.yml` covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches.
+The `ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/DC1_L3_LEAVES/l3_leaves.yml` covers the L3 leaf switches. Significantly more settings need to be set compared to the spine switches.
 
 ```yaml title="l3_leaves.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_L3_LEAVES/l3_leaves.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1_L3_LEAVES/l3_leaves.yml
 --8<--
 ```
 
@@ -278,7 +278,7 @@ Finally, more of the same, but this time for the L2 leaf switches:
 
 ```yaml title="l2_leaves.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/DC1_L2_LEAVES/l2_leaves.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/DC1_L2_LEAVES/l2_leaves.yml
 --8<--
 ```
 
@@ -286,11 +286,11 @@ An L2 leaf switch is simpler than an L3 switch. Hence there are fewer settings t
 
 ## Specifying network services (VRFs and VLANs) in the EVPN/VXLAN fabric
 
-The `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/NETWORK_SERVICES/network_services.yml` file defines All VRF and VLANs. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
+The `ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/NETWORK_SERVICES/network_services.yml` file defines All VRF and VLANs. This means that regardless of where a given VRF or VLAN must exist, its existence is defined in this file, but it does not indicate ***where*** in the fabric it exists. That was done at the bottom of the inventory file previously described in the [Inventory](#content-of-the-inventoryyml-file) section.
 
 ```yaml title="network_services.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/NETWORK_SERVICES/network_services.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/NETWORK_SERVICES/network_services.yml
 --8<--
 ```
 
@@ -298,11 +298,11 @@ AVD offers granular control of where Tenants and VLANs are configured using `tag
 
 ## Specifying endpoint connectivity in the EVPN/VXLAN fabric
 
-After the previous section, all VRFs and VLANs across the fabric are now defined. The `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/group_vars/CONNECTED_ENDPOINTS/connected_endpoints.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
+After the previous section, all VRFs and VLANs across the fabric are now defined. The `ansible-avd-examples/single-dc-l3ls-ipv6/group_vars/CONNECTED_ENDPOINTS/connected_endpoints.yml` file specifies the connectivity for all endpoints in the fabric (typically servers):
 
 ```yaml title="connected_endpoints.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/group_vars/CONNECTED_ENDPOINTS/connected_endpoints.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/group_vars/CONNECTED_ENDPOINTS/connected_endpoints.yml
 --8<--
 ```
 
@@ -319,19 +319,19 @@ The `build.yml` playbook looks like the following:
 
 ```yaml title="build.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/build.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/build.yml
 --8<--
 ```
 
 1. At the highest level, the name and scope of the playbook are set, which in this example is the entire fabric. For instance, `FABRIC` is a group name defined in the inventory. If the playbook should only apply to a subset of devices, it can be changed here.
-2. This task uses the role `arista.avd.eos_designs`, which generates structured configuration for each device. This structured configuration can be found in the `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/intended/structured_configs` folder.
-3. This task uses the role `arista.avd.eos_cli_config_gen`, which generates the Arista EOS CLI configurations found in the `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/intended/configs` folder, along with the device-specific and fabric wide documentation found in the `ansible-avd-examples/single-dc-l3ls-ipv6-underlay/documentation/` folder. In addition, it relies on the structured configuration generated by `arista.avd.eos_designs`.
+2. This task uses the role `arista.avd.eos_designs`, which generates structured configuration for each device. This structured configuration can be found in the `ansible-avd-examples/single-dc-l3ls-ipv6/intended/structured_configs` folder.
+3. This task uses the role `arista.avd.eos_cli_config_gen`, which generates the Arista EOS CLI configurations found in the `ansible-avd-examples/single-dc-l3ls-ipv6/intended/configs` folder, along with the device-specific and fabric wide documentation found in the `ansible-avd-examples/single-dc-l3ls-ipv6/documentation/` folder. In addition, it relies on the structured configuration generated by `arista.avd.eos_designs`.
 
 The `deploy.yml` playbook looks like the following:
 
 ```yaml title="deploy.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/deploy.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/deploy.yml
 --8<--
 ```
 
@@ -342,7 +342,7 @@ The `deploy-cvp.yml` playbook looks like the following:
 
 ```yaml title="deploy-cvp.yml"
 --8<--
-ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/deploy-cvp.yml
+ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/deploy-cvp.yml
 --8<--
 ```
 
@@ -401,7 +401,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-spine1.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-spine1.cfg
     --8<--
     ```
 
@@ -409,7 +409,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-spine2.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-spine2.cfg
     --8<--
     ```
 
@@ -417,7 +417,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-leaf1a.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-leaf1a.cfg
     --8<--
     ```
 
@@ -425,7 +425,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-leaf1b.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-leaf1b.cfg
     --8<--
     ```
 
@@ -433,7 +433,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-leaf1c.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-leaf1c.cfg
     --8<--
     ```
 
@@ -441,7 +441,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-leaf2a.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-leaf2a.cfg
     --8<--
     ```
 
@@ -449,7 +449,7 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-leaf2b.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-leaf2b.cfg
     --8<--
     ```
 
@@ -457,14 +457,14 @@ Your configuration files should be similar to these.
 
     ``` shell
     --8<--
-    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6-underlay/intended/configs/dc1-leaf2c.cfg
+    ansible_collections/arista/avd/examples/single-dc-l3ls-ipv6/intended/configs/dc1-leaf2c.cfg
     --8<--
     ```
 
 The execution of the playbook should produce the following output:
 
 ```shell
-user@ubuntu:~/ansible-avd-examples/single-dc-l3ls-ipv6-underlay$ ansible-playbook build.yml
+user@ubuntu:~/ansible-avd-examples/single-dc-l3ls-ipv6$ ansible-playbook build.yml
 
 PLAY [Run AVD] *****************************************************************************************************************************************************************************
 
@@ -472,8 +472,8 @@ TASK [arista.avd.eos_designs : Collection arista.avd version 4.0.0 loaded from /
 ok: [dc1-leaf1a]
 
 TASK [arista.avd.eos_designs : Create required output directories if not present] **********************************************************************************************************
-ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/single-dc-l3ls-ipv6-underlay/intended/structured_configs)
-ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/single-dc-l3ls-ipv6-underlay/documentation/fabric)
+ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/single-dc-l3ls-ipv6/intended/structured_configs)
+ok: [dc1-leaf1a -> localhost] => (item=/home/user/Documents/git_projects/ansible-avd-examples/single-dc-l3ls-ipv6/documentation/fabric)
 (...)
 ```
 
