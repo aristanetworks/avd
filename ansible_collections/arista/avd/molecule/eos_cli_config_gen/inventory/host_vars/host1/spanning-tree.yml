@@ -17,3 +17,6 @@ spanning_tree:
     - id: "100-500"
       priority: 16384
   no_spanning_tree_vlan: 105,202,505-506
+  port_id_allocation_port_channel_range:
+    minimum: 201
+    maximum: 2001
