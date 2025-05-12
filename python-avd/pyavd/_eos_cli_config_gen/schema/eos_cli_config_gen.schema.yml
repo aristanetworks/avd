@@ -22671,6 +22671,23 @@ keys:
                     log:
                       type: bool
                       description: Only supported when action is set to drop.
+  transceiver:
+    type: dict
+    keys:
+      dom_threshold:
+        type: dict
+        keys:
+          default:
+            type: bool
+            description: Set default Arista-standardized thresholds.
+          file:
+            type: str
+            description: 'Set Optics transceiver DOM thresholds with values from specified
+              file.
+
+              eg. `dom_threshold_file: flash:/Fossil/`
+
+              '
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
