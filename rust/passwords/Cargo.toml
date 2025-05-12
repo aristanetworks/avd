@@ -8,7 +8,7 @@ license = "Apache-2.0"
 pyo3-build-config = { version = "0.24.2"}
 
 [dependencies]
-sha-crypt = { version = "0.5.0", features = ["simple"] }
+sha-crypt = { version = "0.5.0", default-features = false }
 pyo3 = { version = "0.24.2", "features" = ["extension-module", "abi3"] }
 
 [lib]
