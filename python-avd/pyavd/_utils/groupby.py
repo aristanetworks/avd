@@ -18,11 +18,17 @@ def groupby(list_of_dictionaries: list, key: str) -> Iterator:
     return itergroupby(sorted_list, getkey)
 
 
-def groupby_obj(list_of_objects: list[T], attr: str) -> Iterator[tuple[Any, Iterator[T]]]:
+def groupby_obj(list_of_objects: list[T], attr: str, skip_singles: bool = False) -> Iterator[tuple[Any, Iterator[T]]]:
     """Group list of object by attribute."""
 
     def getkey(obj: object) -> Any:
         return getattr(obj, attr, None)
 
     sorted_list = sorted(list_of_objects, key=getkey)
-    return itergroupby(sorted_list, getkey)
+    if skip_singles:
+        for key, group in itergroupby(sorted_list, key=getkey):
+            group_list = list(group)
+            if len(group_list) > 1:
+                yield key, iter(group_list)
+    else:
+        yield from itergroupby(sorted_list, getkey)

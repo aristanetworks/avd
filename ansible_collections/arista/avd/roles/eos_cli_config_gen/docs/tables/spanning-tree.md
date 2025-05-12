@@ -32,6 +32,9 @@
     | [<samp>&nbsp;&nbsp;rapid_pvst_instances</samp>](## "spanning_tree.rapid_pvst_instances") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "spanning_tree.rapid_pvst_instances.[].id") | String | Required, Unique |  |  | "< vlan_id >, < vlan_id >-< vlan_id >"<br>Example: 105,202,505-506<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;priority</samp>](## "spanning_tree.rapid_pvst_instances.[].priority") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;port_id_allocation_port_channel_range</samp>](## "spanning_tree.port_id_allocation_port_channel_range") | Dictionary |  |  |  | Specify range of port-ids to reserve for port-channels. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;minimum</samp>](## "spanning_tree.port_id_allocation_port_channel_range.minimum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify minimum value for reserved range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;maximum</samp>](## "spanning_tree.port_id_allocation_port_channel_range.maximum") | Integer | Required |  | Min: 1<br>Max: 2048 | Specify maximum value for reserved range. |
 
 === "YAML"
 
@@ -78,4 +81,13 @@
           # Example: 105,202,505-506
         - id: <str; required; unique>
           priority: <int>
+
+      # Specify range of port-ids to reserve for port-channels.
+      port_id_allocation_port_channel_range:
+
+        # Specify minimum value for reserved range.
+        minimum: <int; 1-2048; required>
+
+        # Specify maximum value for reserved range.
+        maximum: <int; 1-2048; required>
     ```

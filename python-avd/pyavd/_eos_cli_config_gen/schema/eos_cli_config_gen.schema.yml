@@ -15278,6 +15278,19 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                next_hop:
+                  type: dict
+                  keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                          description: Enables advertising the Extended Next Hop Encoding
+                            capability.
+                        originate:
+                          type: bool
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -21829,7 +21842,6 @@ keys:
         keys:
           enable:
             type: bool
-            default: false
             description: 'Enable or disable all snmp-traps.
 
               '
@@ -21851,7 +21863,7 @@ keys:
                     '
                 enabled:
                   type: bool
-                  default: true
+                  description: The trap is enabled unless this is set to false.
       vrfs:
         type: list
         primary_key: name
@@ -21979,6 +21991,26 @@ keys:
               type: int
               convert_types:
               - str
+      port_id_allocation_port_channel_range:
+        description: Specify range of port-ids to reserve for port-channels.
+        type: dict
+        keys:
+          minimum:
+            description: Specify minimum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
+          maximum:
+            description: Specify maximum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
   standard_access_lists:
     type: list
     primary_key: name

@@ -36,6 +36,12 @@ $defs:
           loss_rate:
             type: str
             $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate"
+      outlier_elimination:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/outlier_elimination"
+      metric_order:
+        type: dict
+        $ref: "eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/metric_order"
       path_groups:
         type: list
         min_length: 1
