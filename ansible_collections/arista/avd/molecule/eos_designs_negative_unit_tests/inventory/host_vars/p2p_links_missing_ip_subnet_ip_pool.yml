@@ -1,0 +1,20 @@
+type: spine
+spine:
+  nodes:
+    - name: p2p_links_missing_ip_subnet_ip_pool
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links_profiles:
+    - name: profile1
+
+  p2p_links:
+    - nodes: [p2p_links_missing_ip_subnet_ip_pool, peer2]
+      interfaces: [ethernet2, ethernet2]
+      as: [65000, 65002]
+
+expected_error_message: >-
+  'l3_edge.p2p_links.[].ip, .subnet or .ip_pool' is required but was not found.
