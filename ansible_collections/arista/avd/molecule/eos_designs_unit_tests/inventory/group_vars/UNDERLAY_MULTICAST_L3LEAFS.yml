@@ -77,3 +77,38 @@ l3leaf:
             pim_sm:
               enabled: true
           uplink_switch_interfaces: [Ethernet4, Ethernet4]
+      # Test to get full coverage for underlay_multicast
+    - group: DC1_LEAF3
+      bgp_as: 65103
+      uplink_ipv4_pool: 172.31.254.0/24
+      loopback_ipv4_pool: 192.168.254.0/24
+      underlay_multicast:
+        static:
+          enabled: false
+      nodes:
+        - name: UNDERLAY-MULTICAST-L3LEAF3A
+          id: 1
+          mgmt_ip: 192.168.200.115/24
+          uplink_switch_interfaces: [Ethernet11, Ethernet11]
+          underlay_multicast:
+            pim_sm:
+              enabled: true
+              uplinks: true
+              uplink_interfaces:
+                - Ethernet11
+            static:
+              enabled: true
+              uplinks: true
+              uplink_interfaces:
+                - Ethernet11
+        - name: UNDERLAY-MULTICAST-L3LEAF3B
+          id: 2
+          mgmt_ip: 192.168.200.116/24
+          uplink_switch_interfaces: [Ethernet12, Ethernet12]
+          underlay_multicast:
+            pim_sm:
+              enabled: true
+              uplink_interfaces:
+                - Ethernet1
+                - Ethernet2
+              mlag: true

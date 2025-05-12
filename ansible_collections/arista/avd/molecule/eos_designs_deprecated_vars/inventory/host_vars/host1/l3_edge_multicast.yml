@@ -1,8 +1,8 @@
-underlay_routing_protocol: ospf
+underlay_routing_protocol: ebgp
 underlay_multicast: true
 
-type: spine
-spine:
+type: l3leaf
+l3leaf:
   nodes:
     - name: host1
       id: 1
@@ -10,21 +10,23 @@ spine:
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 65000
 
-l3_edge:
+core_interfaces:
   p2p_links_ip_pools:
     - name: pool1
       ipv4_pool: 192.168.0.0/24
 
   p2p_links:
       # P2P link with underlay multicast(pim-sparse) disabled.
-    - nodes: [host1, peer1]
-      interfaces: [ethernet1, ethernet1]
+    - nodes: [host1, host1]
+      interfaces: [Ethernet1, Ethernet2]
       ip: [192.168.0.4/31, 192.168.0.5/31]
       include_in_underlay_protocol: true
-      underlay_multicast: false
+      underlay_multicast: true
+      as: [101, 101]
       # P2P link with underlay multicast(pim-sparse) enabled.
-    - nodes: [host1, peer2]
-      interfaces: [ethernet2, ethernet2]
+    - nodes: [host1, host1]
+      interfaces: [Ethernet3, Ethernet4]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true
       underlay_multicast: true
+      as: [101, 101]

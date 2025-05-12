@@ -35,6 +35,9 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.8/31
+  multicast:
+    ipv4:
+      static: true
   pim:
     ipv4:
       sparse_mode: true
@@ -48,10 +51,36 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ip_address: 172.31.255.12/31
+  multicast:
+    ipv4:
+      static: true
   pim:
     ipv4:
       sparse_mode: true
   peer: UNDERLAY-MULTICAST-L3LEAF2B
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet11
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF3A_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.254.0/31
+  peer: UNDERLAY-MULTICAST-L3LEAF3A
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet12
+  description: P2P_UNDERLAY-MULTICAST-L3LEAF3B_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 172.31.254.4/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  peer: UNDERLAY-MULTICAST-L3LEAF3B
   peer_interface: Ethernet1
   peer_type: l3leaf
   switchport:
@@ -141,6 +170,16 @@ router_bgp:
     remote_as: '65102'
     peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B_Ethernet1
+  - ip_address: 172.31.254.1
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3A
+    description: UNDERLAY-MULTICAST-L3LEAF3A_Ethernet1
+  - ip_address: 172.31.254.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3B
+    description: UNDERLAY-MULTICAST-L3LEAF3B_Ethernet1
   - ip_address: 192.168.255.3
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65101'
@@ -161,6 +200,16 @@ router_bgp:
     remote_as: '65102'
     peer: UNDERLAY-MULTICAST-L3LEAF2B
     description: UNDERLAY-MULTICAST-L3LEAF2B_Loopback0
+  - ip_address: 192.168.254.3
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3A
+    description: UNDERLAY-MULTICAST-L3LEAF3A_Loopback0
+  - ip_address: 192.168.254.4
+    peer_group: EVPN-OVERLAY-PEERS
+    remote_as: '65103'
+    peer: UNDERLAY-MULTICAST-L3LEAF3B
+    description: UNDERLAY-MULTICAST-L3LEAF3B_Loopback0
   redistribute:
     connected:
       enabled: true

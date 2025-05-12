@@ -2,6 +2,7 @@
 
 # Test underlay_multicast_pim_sm and validate that multicast configuration on p2p links and router_multicast based on child configuration.
 underlay_multicast_pim_sm: true
+underlay_multicast_static: true
 
 type: spine
 
