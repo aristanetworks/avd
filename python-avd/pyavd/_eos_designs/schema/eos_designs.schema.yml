@@ -1636,7 +1636,7 @@ keys:
               This can be an absolute path or a path relative to current working directory.
 
 
-              By default the path is "<root_dir>/intended/data/<fabric_name>-ids.yml".
+              By default the path is: `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
 
               Note: Since the pool manager will remove stale entries after every run,
@@ -7415,9 +7415,23 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
+                    prefix:
+                      type: str
+                      description: Destination prefix.
                     gateway:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
+                    next_hop:
+                      type: str
+                      description: Next-hop IPv4 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.
@@ -7456,8 +7470,22 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv6_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
+                    prefix:
+                      type: str
+                      description: Destination prefix.
                     gateway:
                       type: str
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
+                    next_hop:
+                      type: str
+                      description: Next-hop IPv6 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.
@@ -10680,7 +10708,8 @@ $defs:
           description: 'Enables deviation of the routing protocol used on this link
             from the fabric underlay default.
 
-            - ebgp: Enforce plain IPv4 BGP peering'
+            - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
+            RFC5549 underlay if configured.'
         structured_config:
           type: dict
           relaxed_validation: true
@@ -11146,6 +11175,12 @@ $defs:
           loss_rate:
             type: str
             $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
+      outlier_elimination:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/outlier_elimination
+      metric_order:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/metric_order
       path_groups:
         type: list
         min_length: 1

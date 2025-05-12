@@ -1,0 +1,25 @@
+underlay_multicast: true
+underlay_multicast_rps:
+  - rp: 192.168.200.1
+    groups:
+      - 239.255.1.0/24
+    nodes:
+      - name: missing-peer-router-id-for-router-pim-sparse-mode
+        loopback_number: 4
+      - name: missing-mgmt-ip-cvx-servers
+        loopback_number: 4
+      - name: missing-inband-mgmt-interface
+        loopback_number: 4
+
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.0.0/24
+    vtep_loopback_ipv4_pool: 192.168.1.0/24
+  nodes:
+    - name: missing-peer-router-id-for-router-pim-sparse-mode
+      bgp_as: 65001
+      id: 1
+
+expected_error_message: >-
+  'router_id' is required but was not found for missing-mgmt-ip-cvx-servers.

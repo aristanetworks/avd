@@ -137,6 +137,15 @@ port_channel_interfaces:
   description: DC1_LEAF2_Po7
   shutdown: false
   mlag: 1
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
   switchport:
     enabled: true
     mode: trunk
@@ -151,6 +160,24 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 110-111,210-211
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:7f:00:08
+  priority1: 127
+  priority2: 8
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
 service_routing_protocols_model: multi-agent
 snmp_server:
   contact: example@example.com
