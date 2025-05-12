@@ -15,12 +15,10 @@ fn main() {
         let enabled_features: Vec<&str> = features_string_ref.split(',').collect();
 
         if enabled_features.contains(&"python_bindings") {
-            if let Ok(current_target_os) = env::var("CARGO_CFG_TARGET_OS") {
+            if env::var("CARGO_CFG_TARGET_OS") == Ok("macos") {
                 println!("cargo:warning=Compiling using feature 'python_bindings' on 'macos'");
-                if current_target_os == "macos" {
-                    // Needed for MacOS when using pyo3 extension-module
-                    pyo3_build_config::add_extension_module_link_args();
-                }
+                // Needed for MacOS when using pyo3 extension-module
+                pyo3_build_config::add_extension_module_link_args();
             }
         } else {
             println!("cargo:warning=INACTIVE");
