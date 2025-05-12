@@ -60581,44 +60581,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class Transceiver(AvdModel):
         """Subclass of AvdModel."""
 
-        class DomThreshold(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"default": {"type": bool}, "file": {"type": str}}
-            default: bool | None
-            """Set default Arista-standardized thresholds."""
-            file: str | None
-            """
-            Set Optics transceiver DOM thresholds with values from specified file.
-            eg. `dom_threshold_file:
-            flash:/Fossil/`
-            """
-
-            if TYPE_CHECKING:
-
-                def __init__(self, *, default: bool | None | UndefinedType = Undefined, file: str | None | UndefinedType = Undefined) -> None:
-                    """
-                    DomThreshold.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        default: Set default Arista-standardized thresholds.
-                        file:
-                           Set Optics transceiver DOM thresholds with values from specified file.
-                           eg. `dom_threshold_file:
-                           flash:/Fossil/`
-
-                    """
-
-        _fields: ClassVar[dict] = {"dom_threshold": {"type": DomThreshold}}
-        dom_threshold: DomThreshold
-        """Subclass of AvdModel."""
+        _fields: ClassVar[dict] = {"dom_threshold_file": {"type": str}}
+        dom_threshold_file: str | None
+        """
+        CSV file path for DOM threshold values.
+        eg. `dom_threshold_file: flash:/dom_threshold.csv`
+        Note: Set
+        `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+              eg.
+        `dom_threshold_file: default`
+        """
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, dom_threshold: DomThreshold | UndefinedType = Undefined) -> None:
+            def __init__(self, *, dom_threshold_file: str | None | UndefinedType = Undefined) -> None:
                 """
                 Transceiver.
 
@@ -60626,7 +60602,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    dom_threshold: Subclass of AvdModel.
+                    dom_threshold_file:
+                       CSV file path for DOM threshold values.
+                       eg. `dom_threshold_file: flash:/dom_threshold.csv`
+                       Note: Set
+                       `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+                             eg.
+                       `dom_threshold_file: default`
 
                 """
 

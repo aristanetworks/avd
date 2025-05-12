@@ -22674,20 +22674,12 @@ keys:
   transceiver:
     type: dict
     keys:
-      dom_threshold:
-        type: dict
-        keys:
-          default:
-            type: bool
-            description: Set default Arista-standardized thresholds.
-          file:
-            type: str
-            description: 'Set Optics transceiver DOM thresholds with values from specified
-              file.
-
-              eg. `dom_threshold_file: flash:/Fossil/`
-
-              '
+      dom_threshold_file:
+        type: str
+        description: "CSV file path for DOM threshold values.\neg. `dom_threshold_file:
+          flash:/dom_threshold.csv`\nNote: Set `dom_threshold_file` to `default` for
+          default Arista-standardized thresholds.\n      eg. `dom_threshold_file:
+          default`\n"
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true

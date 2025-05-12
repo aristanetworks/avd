@@ -8,20 +8,16 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>transceiver</samp>](## "transceiver") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;dom_threshold</samp>](## "transceiver.dom_threshold") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;default</samp>](## "transceiver.dom_threshold.default") | Boolean |  |  |  | Set default Arista-standardized thresholds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;file</samp>](## "transceiver.dom_threshold.file") | String |  |  |  | Set Optics transceiver DOM thresholds with values from specified file.<br>eg. `dom_threshold_file: flash:/Fossil/`<br> |
+    | [<samp>&nbsp;&nbsp;dom_threshold_file</samp>](## "transceiver.dom_threshold_file") | String |  |  |  | CSV file path for DOM threshold values.<br>eg. `dom_threshold_file: flash:/dom_threshold.csv`<br>Note: Set `dom_threshold_file` to `default` for default Arista-standardized thresholds.<br>      eg. `dom_threshold_file: default`<br> |
 
 === "YAML"
 
     ```yaml
     transceiver:
-      dom_threshold:
 
-        # Set default Arista-standardized thresholds.
-        default: <bool>
-
-        # Set Optics transceiver DOM thresholds with values from specified file.
-        # eg. `dom_threshold_file: flash:/Fossil/`
-        file: <str>
+      # CSV file path for DOM threshold values.
+      # eg. `dom_threshold_file: flash:/dom_threshold.csv`
+      # Note: Set `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+      #       eg. `dom_threshold_file: default`
+      dom_threshold_file: <str>
     ```
