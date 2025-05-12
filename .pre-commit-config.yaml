@@ -2,12 +2,6 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip:
-    # pre-commit.ci doesn't have Rust installed
-    - fmt
-    - cargo-check
-    - cargo-deny
-    - clippy
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -96,27 +90,6 @@ repos:
           - --fuzzy-match-generates-todo
           - --comment-style
           - "//"
-
-  - repo: https://github.com/doublify/pre-commit-rust
-    rev: v1.0
-    hooks:
-      - id: fmt
-        name: Lint Rust files using fmt
-        files: ^rust/
-      - id: cargo-check
-        name: Lint Rust files using cargo check
-        files: ^rust/
-      - id: clippy
-        name: Lint Rust files using clippy
-        args: ["--all-targets", "--all-features"]
-        files: ^rust/
-
-  - repo: https://github.com/EmbarkStudios/cargo-deny
-    rev: 0.18.1
-    hooks:
-      # Check licenses of Rust dependencies
-      - id: cargo-deny
-        files: ^rust/
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
