@@ -1,0 +1,31 @@
+---
+fabric_name: FABRIC_MISSING_ID_FOR_MLAG
+underlay_routing_protocol: isis
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: missing-id-for-mlag
+      nodes:
+        - name: missing-id-for-mlag1
+          mgmt_ip: 192.168.201.116/24
+          uplink_switch_interfaces: [Ethernet30]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: missing-id-for-mlag2
+          id: 5
+          mgmt_ip: 192.168.201.117/24
+          uplink_switch_interfaces: [Ethernet31]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+
+expected_error_message: >-
+  'id' is required to compute MLAG ids for host 'missing-id-for-mlag1'.
