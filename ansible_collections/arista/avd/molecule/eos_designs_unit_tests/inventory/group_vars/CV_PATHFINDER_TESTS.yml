@@ -748,11 +748,14 @@ application_classification:
       # Testing categories filtering
       categories:
         - name: VIDEO1
+        - name: VIDEO-WITH-SERVICE
+          service: audio-video
       applications:
         # Testing applications in application-profiles filtering
         - name: CUSTOM-APPLICATION-1
         # Builtin application that should not raise
         - name: skype
+          service: chat
       # application transport to also be covered by the profile
       application_transports:
         - rtp
@@ -774,6 +777,10 @@ application_classification:
         - name: CUSTOM-DSCP-APPLICATION
         # Builtin application that should not raise
         - name: microsoft-teams
+    - name: VIDEO-WITH-SERVICE
+      applications:
+        - name: microsoft
+          service: chat
   applications:
     ipv4_applications:
       # This should not be rendered in any device
