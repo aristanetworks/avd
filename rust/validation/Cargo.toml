@@ -4,6 +4,9 @@ version = "0.0.0"
 edition = "2024"
 license = "Apache-2.0"
 
+[build-dependencies]
+pyo3-build-config = { version = "0.24.2"}
+
 [dependencies]
 avdschema = { path = "../avdschema" }
 derive_more = { version = "2.0.1", features = ["display", "from"] }
