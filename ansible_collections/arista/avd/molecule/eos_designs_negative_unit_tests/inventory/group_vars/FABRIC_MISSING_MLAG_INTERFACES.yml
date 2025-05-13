@@ -1,0 +1,33 @@
+---
+fabric_name: FABRIC_MISSING_MLAG_INTERFACES
+underlay_routing_protocol: isis
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_vlan: 4094
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: missing-mlag-interfaces
+      nodes:
+        - name: missing-mlag-interfaces1
+          id: 4
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.116/24
+          uplink_switch_interfaces: [Ethernet30]
+        - name: missing-mlag-interfaces2
+          id: 5
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.117/24
+          uplink_switch_interfaces: [Ethernet31]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+
+expected_error_message: >-
+  'mlag_interfaces' not set for host 'missing-mlag-interfaces1'.
