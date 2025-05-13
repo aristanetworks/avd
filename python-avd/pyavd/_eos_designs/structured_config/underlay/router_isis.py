@@ -71,6 +71,10 @@ class RouterIsisMixin(Protocol):
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
+            # This condition is not covered by current tests but is retained for potential unexpected behavior.
+            if self.shared_utils.id is None:
+                msg = f"'id' is not set on '{self.shared_utils.hostname}' and is required to set ISIS NET address using the node ID"
+                raise AristaAvdInvalidInputsError(msg)
             system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
         else:
             system_id = self.ipv4_to_isis_system_id(self.shared_utils.router_id)
