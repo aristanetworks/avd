@@ -177,6 +177,8 @@ tenants:
             ip_address_virtual: 10.10.22.1/24
       - name: VRF12
         vrf_vni: 12
+        # Test to cover vrf.mlag_ibgp_peering_ipv6_pool
+        mlag_ibgp_peering_ipv6_pool: 2001:DB8:2::/31
         vtep_diagnostic:
           loopback: 12
           loopback_ip_range: 10.255.12.0/27

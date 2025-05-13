@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd.j2filters import natural_sort
+from pyavd.j2filters import default, natural_sort
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -70,7 +70,11 @@ class PrefixListsMixin(Protocol):
                     # By default the BGP peering is redistributed, so we only need the prefix-list for the false case.
                     continue
 
-                if (mlag_ip_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address")) is None:
+                if (
+                    mlag_ip_address := default(
+                        self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address"), self._get_vlan_ip_config_for_mlag_peering(vrf).get("ipv6_address")
+                    )
+                ) is None:
                     # No MLAG prefix for this VRF (could be RFC5549)
                     continue
 

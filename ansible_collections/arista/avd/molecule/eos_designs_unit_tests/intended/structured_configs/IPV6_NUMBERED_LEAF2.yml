@@ -138,6 +138,13 @@ port_channel_interfaces:
     trunk:
       groups:
       - MLAG
+prefix_lists:
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:4::/64
+  - sequence: 20
+    action: permit 2001:db8::/64
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -152,6 +159,14 @@ route_maps:
     type: permit
     match:
     - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
@@ -435,7 +450,7 @@ vlan_interfaces:
   description: MLAG_L3_VRF_VRF12
   shutdown: false
   vrf: VRF12
-  ipv6_address: 2001:db8:4::2/64
+  ipv6_address: 2001:db8::1/64
   mtu: 1500
   tenant: TENANT1
   type: underlay_peering
