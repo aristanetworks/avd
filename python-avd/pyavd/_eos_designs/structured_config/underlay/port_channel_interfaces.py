@@ -46,7 +46,7 @@ class PortChannelInterfacesMixin(Protocol):
                     shared_utils=self.shared_utils,
                     interface=port_channel_name,
                     link_type="underlay_l2",
-                    peer=link.peer,
+                    peer=link.peer_hostname,
                     peer_interface=f"Port-Channel{link.peer_channel_group_id}",
                     peer_channel_group_id=link.peer_channel_group_id,
                     port_channel_id=link.channel_group_id,
@@ -218,7 +218,7 @@ class PortChannelInterfacesMixin(Protocol):
             InterfaceDescriptionData(
                 shared_utils=self.shared_utils,
                 interface=port_channel_name,
-                peer=self.shared_utils.wan_ha_peer,
+                peer=self.shared_utils.wan_ha_peer_hostname,
                 peer_interface=port_channel_name,
             ),
         )

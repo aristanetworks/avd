@@ -176,6 +176,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplink = EosDesignsFactsProtocol.UplinksItem(
             interface=uplink_interface,
             peer=uplink_switch,
+            peer_hostname=uplink_switch_facts.hostname,
             peer_interface=uplink_switch_interface,
             peer_type=uplink_switch_facts.type,
             peer_is_deployed=uplink_switch_facts.is_deployed,
@@ -261,6 +262,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
         uplink = EosDesignsFactsProtocol.UplinksItem(
             interface=uplink_interface,
             peer=uplink_switch,
+            peer_hostname=uplink_switch_facts.hostname,
             peer_interface=uplink_switch_interface,
             peer_type=uplink_switch_facts.type,
             peer_is_deployed=uplink_switch_facts.is_deployed,

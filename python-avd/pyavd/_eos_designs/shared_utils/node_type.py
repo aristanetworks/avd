@@ -38,8 +38,10 @@ class NodeTypeMixin(Protocol):
         """default_node_type set based on hostname, returning first node type matching a regex in default_node_types."""
         for default_node_type in self.inputs.default_node_types:
             for hostname_regex in default_node_type.match_hostnames:
-                # TODO: Still matching on hostname. Evaluate if we should match on device_uid instead.
+                # TODO: Rename key and match on node name / device_uid or whatever.
                 if search(f"^{hostname_regex}$", self.hostname):
+                    return default_node_type.node_type
+                if search(f"^{hostname_regex}$", self.device_uid):
                     return default_node_type.node_type
 
         return None

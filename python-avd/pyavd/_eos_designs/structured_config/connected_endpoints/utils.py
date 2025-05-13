@@ -94,8 +94,12 @@ class UtilsMixin(Protocol):
 
             if not network_port_settings.switches and not network_port_settings.platforms:
                 continue
-            # TODO: Still matching on hostname. Evaluate if we should match on device_uid instead.
-            if network_port_settings.switches and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname):
+            # TODO: Matching on hostname AND device_uid. Evaluate how to proceed.
+            if (
+                network_port_settings.switches
+                and not self._match_regexes(network_port_settings.switches, self.shared_utils.hostname)
+                and not self._match_regexes(network_port_settings.switches, self.shared_utils.device_uid)
+            ):
                 continue
             if network_port_settings.platforms and (
                 not self.shared_utils.platform or not self._match_regexes(network_port_settings.platforms, self.shared_utils.platform)
@@ -133,9 +137,10 @@ class UtilsMixin(Protocol):
         endpoint_ports = adapter.endpoint_ports
         short_esi = str(short_esi)
         if short_esi.lower() == "auto":
+            switch_hostnames = [self.shared_utils.get_peer_facts(switch).hostname for switch in adapter.switches[:2]]
             esi_hash = sha256(
                 "".join(
-                    [hash_extra_value] + adapter.switches[:2] + adapter.switch_ports[:2] + endpoint_ports[:2] + [str(channel_group_id)],
+                    [hash_extra_value] + switch_hostnames + adapter.switch_ports[:2] + endpoint_ports[:2] + [str(channel_group_id)],
                 ).encode("UTF-8"),
             ).hexdigest()
             short_esi = re.sub(r"([0-9a-f]{4})", "\\1:", esi_hash)[:14]

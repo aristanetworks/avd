@@ -76,7 +76,7 @@ class RouterBgpMixin(Protocol):
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                     remote_as=link.peer_bgp_as,
                     peer=link.peer,
-                    description=f"{link.peer}_{link.peer_interface}",
+                    description=f"{link.peer_hostname}_{link.peer_interface}",
                 )
 
                 for subinterface in link.subinterfaces:
@@ -89,7 +89,7 @@ class RouterBgpMixin(Protocol):
                         peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                         remote_as=link.peer_bgp_as,
                         # TODO: - implement some centralized way to generate these descriptions
-                        description=f"{link.peer}_{subinterface.peer_interface}_vrf_{subinterface.vrf}",
+                        description=f"{link.peer_hostname}_{subinterface.peer_interface}_vrf_{subinterface.vrf}",
                     )
 
         # Neighbors and VRF Neighbors
@@ -103,7 +103,7 @@ class RouterBgpMixin(Protocol):
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                     remote_as=link.peer_bgp_as,
                     peer=link.peer,
-                    description=f"{link.peer}_{link.peer_interface}",
+                    description=f"{link.peer_hostname}_{link.peer_interface}",
                     bfd=link.bfd,
                 )
 
@@ -125,6 +125,6 @@ class RouterBgpMixin(Protocol):
                         ip_address=subinterface.peer_ip_address,
                         peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                         remote_as=link.peer_bgp_as,
-                        description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
+                        description=f"{f'{link.peer_hostname}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                         bfd=link.bfd,
                     )

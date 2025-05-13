@@ -46,6 +46,12 @@ class EosDesignsFactsGeneratorProtocol(
 
     @remove_cached_property_type
     @cached_property
+    def hostname(self) -> str:
+        """Exposed in avd_switch_facts."""
+        return self.shared_utils.hostname
+
+    @remove_cached_property_type
+    @cached_property
     def id(self) -> int | None:
         """Exposed in avd_switch_facts."""
         return self.shared_utils.id

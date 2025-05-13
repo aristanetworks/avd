@@ -110,6 +110,7 @@ class UtilsMixin(Protocol):
             "bgp_as": str(bgp_as) if bgp_as is not None else None,
             "ip_address": ip_address,
             "overlay_peering_interface": "Loopback0",
+            "hostname": peer_facts.hostname,
         }
 
     @cached_property
@@ -135,7 +136,9 @@ class UtilsMixin(Protocol):
                 stun_server_profiles.setdefault(path_group.name, EosCliConfigGen.Stun.Client.ServerProfiles()).extend(
                     EosCliConfigGen.Stun.Client.ServerProfilesItem(
                         name=self._stun_server_profile_name(
-                            wan_route_server.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
+                            facts.hostname
+                            if (facts := self.shared_utils.get_peer_facts(wan_route_server.hostname, required=False))
+                            else wan_route_server.hostname,
                             path_group.name,
                             interface.name,
                         ),

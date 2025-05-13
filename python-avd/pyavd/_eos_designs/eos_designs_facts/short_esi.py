@@ -36,7 +36,8 @@ class ShortEsiMixin(EosDesignsFactsProtocol, Protocol):
             return peer_short_esi
         short_esi = self.shared_utils.node_config.short_esi
         if short_esi == "auto":
-            esi_seed_1 = "".join(self.shared_utils.uplink_switches[:2])
+            switch_hostnames = [self.shared_utils.get_peer_facts(switch).hostname for switch in self.shared_utils.uplink_switches[:2]]
+            esi_seed_1 = "".join(switch_hostnames)
             esi_seed_2 = "".join(list(self.uplink_switch_interfaces)[:2])
             esi_seed_3 = "".join(self.shared_utils.uplink_interfaces[:2])
             esi_seed_4 = default(self.shared_utils.group, "")

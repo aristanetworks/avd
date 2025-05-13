@@ -22,6 +22,26 @@ flowchart TD
   end
 ```
 
+## Design guidelines
+
+Very much work-in-progress.
+
+### Separate Device UID from Device Hostname
+
+When running AVD from Ansible, the unique identifier for each device is also the hostname.
+This comes from Ansible's inventory and is intuitive when using Ansible.
+
+Since AVD can also run in other contexts, where the unique inventory ID may not correspond to the hostname of the device,
+it is important to keep the logic separate between `device_uid` and `hostname`.
+
+- All input models pointing to a specific peer device will find the device based on it's `device_uid`.
+- The `name` field under node settings is actually the `device_uid`.
+- The input models do not offer a way to set the hostname. It can only be set in the various PyAVD function calls.
+- Error messages will mention the `device_uid` when relating to a device.
+- Descriptions will use the `hostname`.
+- Models that support regex matching to relate to devices will match on either `hostname` or `device_uid`. TODO: Decide if this is what we want.
+- Currently `device_uid` is not available for custom description logic. Only the `hostname`.
+
 ## Ansible Action Plugins
 
 ### `arista.avd.eos_designs_facts`

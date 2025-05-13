@@ -109,12 +109,14 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                         return vlans, trunk_groups
 
         for index, network_port_item in enumerate(self.inputs.network_ports):
+            # TODO: This logic is broken. Missing platform checks. Also it will run for each regex match and add all the vlans again if it matches multiple.
+            # Try to create a util like 'is_relevant_network_ports_item()' in shared utils and reuse from both facts and structured config.
             for switch_regex in network_port_item.switches:
                 # The match test is built on Python re.match which tests from the beginning of the string #}
                 # Since the user would not expect "DC1-LEAF1" to also match "DC-LEAF11" we will force ^ and $ around the regex
                 raw_switch_regex = rf"^{switch_regex}$"
-                # TODO: Still matching on hostname. Evaluate if we should match on device_uid instead.
-                if not re.match(raw_switch_regex, self.shared_utils.hostname):
+                # TODO: Matching on both hostname and device_uid. Evaluate how we wan to proceed.
+                if not re.match(raw_switch_regex, self.shared_utils.hostname) and not re.match(raw_switch_regex, self.shared_utils.device_uid):
                     # Skip entry if no match
                     continue
 

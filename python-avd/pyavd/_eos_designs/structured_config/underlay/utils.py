@@ -57,6 +57,7 @@ class UtilsMixin(Protocol):
                 downlink = EosDesignsFacts.UplinksItem(
                     interface=uplink.peer_interface,
                     peer=peer,
+                    peer_hostname=peer_facts.hostname,
                     peer_interface=uplink.interface,
                     peer_type=peer_facts.type,
                     peer_is_deployed=peer_facts.is_deployed,

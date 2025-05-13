@@ -285,7 +285,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 remote_as=self.shared_utils.bgp_as,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
-                    mlag_peer=self.shared_utils.mlag_peer,
+                    mlag_peer=self.shared_utils.mlag_peer_hostname,
                     interface=interface_name,
                     peer_interface=interface_name,
                 ),
@@ -299,7 +299,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 peer=self.shared_utils.mlag_peer,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
-                    mlag_peer=self.shared_utils.mlag_peer,
+                    mlag_peer=self.shared_utils.mlag_peer_hostname,
                     interface=interface_name,
                     peer_interface=interface_name,
                 ),

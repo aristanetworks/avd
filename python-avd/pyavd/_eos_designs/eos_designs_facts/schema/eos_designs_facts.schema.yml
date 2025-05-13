@@ -11,6 +11,9 @@ allow_other_keys: false
 documentation_options:
   table: eos_designs_facts
 keys:
+  hostname:
+    type: str
+    required: true
   id:
     type: int
   type:
@@ -170,6 +173,9 @@ keys:
           type: str
           required: true
         peer:
+          type: str
+          required: true
+        peer_hostname:
           type: str
           required: true
         peer_interface:

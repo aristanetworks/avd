@@ -76,6 +76,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer(self: SharedUtilsProtocol) -> str:
+        # TODO: Rename peer_hostname to peer_device_uid
         if self.node_group_is_primary_and_peer_hostname is not None:
             return self.node_group_is_primary_and_peer_hostname[1]
         msg = "Unable to find MLAG peer within same node group"
@@ -93,6 +94,10 @@ class MlagMixin(Protocol):
             if mlag_peer_l3_vlan not in [None, False, mlag_peer_vlan]:
                 return mlag_peer_l3_vlan
         return None
+
+    @cached_property
+    def mlag_peer_hostname(self: SharedUtilsProtocol) -> str:
+        return self.mlag_peer_facts.hostname
 
     @cached_property
     def mlag_peer_ip(self: SharedUtilsProtocol) -> str:
@@ -235,7 +240,7 @@ class MlagMixin(Protocol):
             type="ipv4",
             remote_as=self.bgp_as,
             next_hop_self=True,
-            description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer),
+            description=AvdStringFormatter().format(self.inputs.mlag_bgp_peer_group_description, mlag_peer=self.mlag_peer_hostname),
             password=bgp_peer_group.password,
             bfd=bgp_peer_group.bfd or None,
             maximum_routes=12000,

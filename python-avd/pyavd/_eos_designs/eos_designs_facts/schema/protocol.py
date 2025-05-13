@@ -370,6 +370,7 @@ class EosDesignsFactsProtocol(Protocol):
         _fields: ClassVar[dict] = {
             "interface": {"type": str},
             "peer": {"type": str},
+            "peer_hostname": {"type": str},
             "peer_interface": {"type": str},
             "peer_type": {"type": str},
             "peer_is_deployed": {"type": bool},
@@ -410,6 +411,7 @@ class EosDesignsFactsProtocol(Protocol):
         }
         interface: str
         peer: str
+        peer_hostname: str
         peer_interface: str
         peer_type: str
         peer_is_deployed: bool
@@ -479,6 +481,7 @@ class EosDesignsFactsProtocol(Protocol):
                 *,
                 interface: str | UndefinedType = Undefined,
                 peer: str | UndefinedType = Undefined,
+                peer_hostname: str | UndefinedType = Undefined,
                 peer_interface: str | UndefinedType = Undefined,
                 peer_type: str | UndefinedType = Undefined,
                 peer_is_deployed: bool | UndefinedType = Undefined,
@@ -526,6 +529,7 @@ class EosDesignsFactsProtocol(Protocol):
                 Args:
                     interface: interface
                     peer: peer
+                    peer_hostname: peer_hostname
                     peer_interface: peer_interface
                     peer_type: peer_type
                     peer_is_deployed: peer_is_deployed
@@ -900,6 +904,7 @@ class EosDesignsFactsProtocol(Protocol):
     MplsRouteReflectorClients._item_type = str
 
     _fields: ClassVar[dict] = {
+        "hostname": {"type": str},
         "id": {"type": int},
         "type": {"type": str},
         "platform": {"type": str},
@@ -956,6 +961,7 @@ class EosDesignsFactsProtocol(Protocol):
         "evpn_route_server_clients": {"type": EvpnRouteServerClients},
         "mpls_route_reflector_clients": {"type": MplsRouteReflectorClients},
     }
+    hostname: str
     id: int | None
     type: str
     platform: str | None
@@ -1117,6 +1123,7 @@ class EosDesignsFactsProtocol(Protocol):
         def __init__(
             self,
             *,
+            hostname: str | UndefinedType = Undefined,
             id: int | None | UndefinedType = Undefined,
             type: str | UndefinedType = Undefined,
             platform: str | None | UndefinedType = Undefined,
@@ -1180,6 +1187,7 @@ class EosDesignsFactsProtocol(Protocol):
             Subclass of Protocol.
 
             Args:
+                hostname: hostname
                 id: id
                 type: type
                 platform: platform

@@ -15,6 +15,7 @@ if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
     from .base_classes import Pool, PoolCollection
+    from .node_id_pools import NodeIdAssignmentKey, NodeIdPoolKey
 
 PoolType = Literal["node_id_pools"]
 
@@ -49,7 +50,8 @@ class PoolManager:
             any_changes = any_changes or any(changes_for_this_pool_type)
         return any_changes
 
-    def get_pool(self, pool_type: PoolType, shared_utils: SharedUtilsProtocol) -> Pool:
+    # Once we add more pool types this should be updated to use @overload so each pool type can be properly typed.
+    def get_pool(self, pool_type: PoolType, shared_utils: SharedUtilsProtocol) -> Pool[NodeIdPoolKey, NodeIdAssignmentKey, int]:
         """Returns the pool of the given type for this device. Pool will be autocreated if missing."""
         if pool_type not in self._pool_collection_types:
             msg = f"Invalid pool type '{pool_type}'. Expected one of {', '.join(self._pool_collection_types.keys())}"

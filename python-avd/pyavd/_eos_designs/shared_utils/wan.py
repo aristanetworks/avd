@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
@@ -481,7 +481,7 @@ class WanMixin(Protocol):
 
     @cached_property
     def wan_ha_peer(self: SharedUtilsProtocol) -> str | None:
-        """Return the name of the WAN HA peer."""
+        """Return the device_uid of the WAN HA peer."""
         if not self.wan_ha:
             return None
 
@@ -490,6 +490,11 @@ class WanMixin(Protocol):
 
         msg = "Unable to find WAN HA peer within same node group"
         raise AristaAvdError(msg)
+
+    @cached_property
+    def wan_ha_peer_hostname(self: SharedUtilsProtocol) -> str:
+        """Return the hostname of the WAN HA peer. Should only be called when wan_ha is configured."""
+        return self.get_peer_facts(cast("str", self.wan_ha_peer)).hostname
 
     @cached_property
     def vrf_default_uplinks(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol.Uplinks:

@@ -12,21 +12,21 @@ type: l3leaf
 mgmt_interface: null # To get the coverage for get(self.cv_topology_config, "mgmt_interface")
 use_cv_topology: true
 cv_topology:
-  - hostname: CV-MLAG-OSPF-L3LEAF1A
+  - hostname: uid_CV-MLAG-OSPF-L3LEAF1A
     platform: vEOS-LAB
     interfaces:
       - name: Management1
       - name: Ethernet5
-        neighbor: MLAG-OSPF-L3LEAF1B
+        neighbor: uid_MLAG-OSPF-L3LEAF1B
         neighbor_interface: Ethernet5
       - name: Ethernet6
-        neighbor: MLAG_SAME_SUBNET_L3LEAF1B
+        neighbor: uid_MLAG_SAME_SUBNET_L3LEAF1B
         neighbor_interface: Ethernet6
-  - hostname: CV-TOPOLOGY-LEAF3A
+  - hostname: uid_CV-TOPOLOGY-LEAF3A
     platform: vEOS-LAB
     interfaces:
       - name: Ethernet16
-        neighbor: DC1-SPINE4
+        neighbor: uid_DC1-SPINE4
         neighbor_interface: Ethernet16
 
 # Providing select default interfaces to be used by `use_cv_topology`

@@ -93,6 +93,7 @@ class UtilsMixin(Protocol):
         Returns:
         {
             peer: <peer name>
+            peer_hostname: <peer_hostname>
             peer_type: <type of peer>
             interface: <interface on this node>
             peer_interface: <interface on peer>
@@ -111,6 +112,7 @@ class UtilsMixin(Protocol):
         peer = p2p_link.nodes[peer_index]
         peer_facts = self.shared_utils.get_peer_facts(peer, required=False)
         peer_type = "other" if peer_facts is None else peer_facts.type
+        peer_hostname = peer if peer_facts is None else peer_facts.hostname
 
         # Set ip or fallback to list with None values
         ips = p2p_link.ip or [None, None]
@@ -129,6 +131,7 @@ class UtilsMixin(Protocol):
 
         data = {
             "peer": peer,
+            "peer_hostname": peer_hostname,
             "peer_type": peer_type,
             "ip": ip,
             "peer_ip": peer_ip,

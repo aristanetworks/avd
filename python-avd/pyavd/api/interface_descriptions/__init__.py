@@ -602,7 +602,7 @@ class InterfaceDescriptionData:
 
     @property
     def mlag_peer(self) -> str:
-        return self._shared_utils.mlag_peer
+        return self._shared_utils.mlag_peer_hostname
 
     @property
     def mlag_port_channel_id(self) -> int:

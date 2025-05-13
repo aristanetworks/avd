@@ -45,7 +45,7 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_id=p2p_link_data["port_channel_id"],
                 peer_channel_group_id=p2p_link_data["peer_port_channel_id"],
                 link_type=self.data_model,
-                peer=p2p_link_data["peer"],
+                peer=p2p_link_data["peer_hostname"],
                 peer_interface=p2p_link_data["peer_interface"],
             ),
         )

@@ -34,7 +34,7 @@ class EthernetInterfacesMixin(Protocol):
                     shared_utils=self.shared_utils,
                     interface=link.interface,
                     link_type=link.type,
-                    peer=link.peer,
+                    peer=link.peer_hostname,
                     peer_interface=link.peer_interface,
                 ),
             )
@@ -187,7 +187,7 @@ class EthernetInterfacesMixin(Protocol):
                             shared_utils=self.shared_utils,
                             interface=subinterface.interface,
                             link_type=link.type,
-                            peer=link.peer,
+                            peer=link.peer_hostname,
                             peer_interface=subinterface.peer_interface,
                             vrf=subinterface.vrf,
                         ),
@@ -362,7 +362,7 @@ class EthernetInterfacesMixin(Protocol):
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
                     interface=interface,
-                    peer=self.shared_utils.wan_ha_peer,
+                    peer=self.shared_utils.wan_ha_peer_hostname,
                     peer_interface=interface,
                 ),
             )

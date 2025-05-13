@@ -55,6 +55,6 @@ class RouterMsdpMixin(Protocol):
             self.structured_config.router_msdp.peers.append_new(
                 ipv4_address=peer_facts.router_id,
                 local_interface="Loopback0",
-                description=peer,
+                description=peer_facts.hostname,
                 mesh_groups=EosCliConfigGen.RouterMsdp.PeersItem.MeshGroups([EosCliConfigGen.RouterMsdp.PeersItem.MeshGroupsItem(name="ANYCAST-RP")]),
             )

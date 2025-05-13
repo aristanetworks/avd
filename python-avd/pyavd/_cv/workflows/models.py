@@ -36,7 +36,7 @@ class CVChangeControl:
     state: Literal["pending approval", "approved", "running", "completed", "deleted", "failed"] | None = None
 
 
-@dataclass
+@dataclass()
 class CVChangeControlTemplate:
     name: str
     id: str | None = None

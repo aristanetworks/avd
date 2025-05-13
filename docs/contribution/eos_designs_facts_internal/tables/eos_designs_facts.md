@@ -7,6 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
+    | [<samp>hostname</samp>](## "hostname") | String | Required |  |  |  |
     | [<samp>id</samp>](## "id") | Integer |  |  |  |  |
     | [<samp>type</samp>](## "type") | String | Required |  |  |  |
     | [<samp>platform</samp>](## "platform") | String |  |  |  |  |
@@ -68,6 +69,7 @@
     | [<samp>uplinks</samp>](## "uplinks") | List, items: Dictionary | Required |  |  | List of uplinks with all parameters<br>These facts are leveraged by templates for this device when rendering uplinks<br>and by templates for peer devices when rendering downlinks |
     | [<samp>&nbsp;&nbsp;-&nbsp;interface</samp>](## "uplinks.[].interface") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer</samp>](## "uplinks.[].peer") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_hostname</samp>](## "uplinks.[].peer_hostname") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_interface</samp>](## "uplinks.[].peer_interface") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_type</samp>](## "uplinks.[].peer_type") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;peer_is_deployed</samp>](## "uplinks.[].peer_is_deployed") | Boolean | Required |  |  |  |
@@ -164,6 +166,7 @@
 === "YAML"
 
     ```yaml
+    hostname: <str; required>
     id: <int>
     type: <str; required>
     platform: <str>
@@ -265,6 +268,7 @@
     uplinks: # required
       - interface: <str; required>
         peer: <str; required>
+        peer_hostname: <str; required>
         peer_interface: <str; required>
         peer_type: <str; required>
         peer_is_deployed: <bool; required>

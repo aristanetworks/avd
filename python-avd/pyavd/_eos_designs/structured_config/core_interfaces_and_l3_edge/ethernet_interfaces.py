@@ -55,7 +55,7 @@ class EthernetInterfacesMixin(Protocol):
                 description=p2p_link_data.get("description"),
                 interface=p2p_link_data["interface"],
                 link_type=self.data_model,
-                peer=p2p_link_data["peer"],
+                peer=p2p_link_data["peer_hostname"],
                 peer_interface=p2p_link_data["peer_interface"],
             ),
         )
@@ -67,7 +67,7 @@ class EthernetInterfacesMixin(Protocol):
                 description=p2p_link_data.get("description"),
                 interface=member["interface"],
                 link_type=self.data_model,
-                peer=p2p_link_data["peer"],
+                peer=p2p_link_data["peer_hostname"],
                 peer_interface=member["peer_interface"],
             ),
         )

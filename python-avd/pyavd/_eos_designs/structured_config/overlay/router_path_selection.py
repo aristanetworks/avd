@@ -109,7 +109,7 @@ class RouterPathSelectionMixin(Protocol):
         # not a pathfinder device
         path_group.static_peers.append_new(
             router_ip=self._wan_ha_peer_vtep_ip(),
-            name=self.shared_utils.wan_ha_peer,
+            name=self.shared_utils.wan_ha_peer_hostname,
             ipv4_addresses=EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem.Ipv4Addresses(
                 [get_ip_from_ip_prefix(ip_address) for ip_address in self.shared_utils.wan_ha_peer_ip_addresses]
             ),
@@ -210,6 +210,6 @@ class RouterPathSelectionMixin(Protocol):
 
             path_group.static_peers.append_new(
                 router_ip=wan_route_server.vtep_ip,
-                name=wan_route_server.hostname,  # TODO: the hostname here may be device_uid, so we need some indirection.
+                name=facts.hostname if (facts := self.shared_utils.get_peer_facts(wan_route_server.hostname, required=False)) else wan_route_server.hostname,
                 ipv4_addresses=EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem.Ipv4Addresses(ipv4_addresses),
             )
