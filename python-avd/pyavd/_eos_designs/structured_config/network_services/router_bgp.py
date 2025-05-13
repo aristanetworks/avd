@@ -158,7 +158,6 @@ class RouterBgpMixin(Protocol):
                         bgp_vrf.redistribute.connected.enabled = True
                     # Redistribution of static routes for VRF default are handled elsewhere
                     # since there is a choice between redistributing to underlay or overlay.
-
                     if vrf.redistribute_static or (vrf.static_routes and vrf.redistribute_static is None):
                         bgp_vrf.redistribute.static.enabled = True
 

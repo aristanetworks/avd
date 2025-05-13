@@ -239,12 +239,6 @@ class FilteredTenantsMixin(Protocol):
                 lambda rt: bool((not rt.nodes or self.hostname in rt.nodes) and rt.address_family and rt.route_target and rt.type in ["import", "export"])
             )
 
-            for svi in vrf.svis:
-                if svi.static_routes:
-                    vrf.static_routes.extend(
-                        svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
-                    )
-
             if vrf.svis or vrf.l3_interfaces or vrf.loopbacks or vrf.l3_port_channels or self.is_forced_vrf(vrf, tenant.name):
                 filtered_vrfs.append(vrf)
 
@@ -308,19 +302,25 @@ class FilteredTenantsMixin(Protocol):
 
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
+        Filter static_routes set under svis.
         """
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
 
         svis = vrf.svis._filtered(self.is_accepted_vlan)
 
-        # Handle svi_profile inheritance
-        svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis([self.get_merged_svi_config(svi) for svi in svis])
-
         # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
         svis = svis._filtered(lambda svi: "all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags)))
+        all_svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
+        for svi in svis:
+            # Handle svi_profile inheritance
+            all_svis.append(self.get_merged_svi_config(svi))
+            if svi.static_routes:
+                vrf.static_routes.extend(
+                    svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
 
-        return svis._natural_sorted(sort_key="id")
+        return all_svis._natural_sorted(sort_key="id")
 
     @cached_property
     def endpoint_vlans(self: SharedUtilsProtocol) -> list:
