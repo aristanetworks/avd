@@ -37,8 +37,7 @@ config:
     indent: 2
 
   # line length
-  MD013:
-    false
+  MD013: false
     # a lot of debate whether to wrap or not wrap
 
   # multiple headings with the same content
