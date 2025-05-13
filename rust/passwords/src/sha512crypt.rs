@@ -12,12 +12,7 @@ pub fn sha512_crypt(password: String, salt: String) -> Result<String, CryptError
     let hashed_password = sha512_crypt_b64(password.as_bytes(), salt.as_bytes(), &params)
         .expect("Failed to compute sha512 password.");
 
-    let mut result = String::new();
-    // Pushing the prefix, then the salt, then the password.
-    result.push_str("$6$");
-    result.push_str(&salt);
-    result.push('$');
-    result.push_str(&hashed_password);
+    let mut result = format!("$6${salt}${hashed_password}");
     Ok(result)
 }
 
