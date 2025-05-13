@@ -293,6 +293,16 @@ router_adaptive_virtual_topology:
   - name: DEFAULT-POLICY-TEST
     load_balance_policy: LB-DEFAULT-POLICY-TEST
     internet_exit_policy: ZSCALER-EXIT-POLICY-1
+    metric_order:
+      preferred_metric: latency
+    outlier_elimination:
+      threshold:
+        latency: 54
+  - name: DEFAULT-POLICY-DEFAULT
+    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
+    outlier_elimination:
+      threshold:
+        loss_rate: '11.5'
   - name: DEFAULT-POLICY-CONTROL-PLANE
     load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
   policies:
@@ -300,18 +310,24 @@ router_adaptive_virtual_topology:
     matches:
     - application_profile: TEST
       avt_profile: DEFAULT-POLICY-TEST
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
   - name: DEFAULT-POLICY-WITH-CP
     matches:
     - application_profile: APP-PROFILE-CONTROL-PLANE
       avt_profile: DEFAULT-POLICY-CONTROL-PLANE
     - application_profile: TEST
       avt_profile: DEFAULT-POLICY-TEST
+    - application_profile: default
+      avt_profile: DEFAULT-POLICY-DEFAULT
   vrfs:
   - name: PROD
     policy: DEFAULT-POLICY
     profiles:
     - name: DEFAULT-POLICY-TEST
       id: 42
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
   - name: default
     policy: DEFAULT-POLICY-WITH-CP
     profiles:
@@ -319,6 +335,8 @@ router_adaptive_virtual_topology:
       id: 254
     - name: DEFAULT-POLICY-TEST
       id: 42
+    - name: DEFAULT-POLICY-DEFAULT
+      id: 1
 router_bfd:
   multihop:
     interval: 300
@@ -448,6 +466,9 @@ router_path_selection:
       - 192.168.55.55
   load_balance_policies:
   - name: LB-DEFAULT-POLICY-TEST
+    path_groups:
+    - name: INET
+  - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: INET
   - name: LB-DEFAULT-POLICY-CONTROL-PLANE

@@ -15856,6 +15856,8 @@ class EosDesigns(EosDesignsRootModel):
                 "dscp": {"type": int},
                 "lowest_hop_count": {"type": bool},
                 "constraints": {"type": Constraints},
+                "outlier_elimination": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination},
+                "metric_order": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder},
                 "path_groups": {"type": PathGroups},
                 "internet_exit": {"type": InternetExit},
             }
@@ -15887,6 +15889,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             constraints: Constraints
             """Subclass of AvdModel."""
+            outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination
+            """AVT path outlier elimination."""
+            metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder
+            """Metric order to be used for path comparison."""
             path_groups: PathGroups
             """Subclass of AvdList with `PathGroupsItem` items."""
             internet_exit: InternetExit
@@ -15903,6 +15909,8 @@ class EosDesigns(EosDesignsRootModel):
                     dscp: int | None | UndefinedType = Undefined,
                     lowest_hop_count: bool | None | UndefinedType = Undefined,
                     constraints: Constraints | UndefinedType = Undefined,
+                    outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination | UndefinedType = Undefined,
+                    metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder | UndefinedType = Undefined,
                     path_groups: PathGroups | UndefinedType = Undefined,
                     internet_exit: InternetExit | UndefinedType = Undefined,
                 ) -> None:
@@ -15931,6 +15939,8 @@ class EosDesigns(EosDesignsRootModel):
                            Prefer paths with lowest hop-count.
                            Only applicable for `wan_mode: "cv-pathfinder"`.
                         constraints: Subclass of AvdModel.
+                        outlier_elimination: AVT path outlier elimination.
+                        metric_order: Metric order to be used for path comparison.
                         path_groups: Subclass of AvdList with `PathGroupsItem` items.
                         internet_exit: Subclass of AvdModel.
 
@@ -16076,6 +16086,8 @@ class EosDesigns(EosDesignsRootModel):
                     "dscp": {"type": int},
                     "lowest_hop_count": {"type": bool},
                     "constraints": {"type": Constraints},
+                    "outlier_elimination": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination},
+                    "metric_order": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder},
                     "path_groups": {"type": PathGroups},
                     "internet_exit": {"type": InternetExit},
                 }
@@ -16105,6 +16117,10 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 constraints: Constraints
                 """Subclass of AvdModel."""
+                outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination
+                """AVT path outlier elimination."""
+                metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder
+                """Metric order to be used for path comparison."""
                 path_groups: PathGroups
                 """Subclass of AvdList with `PathGroupsItem` items."""
                 internet_exit: InternetExit
@@ -16122,6 +16138,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: int | None | UndefinedType = Undefined,
                         lowest_hop_count: bool | None | UndefinedType = Undefined,
                         constraints: Constraints | UndefinedType = Undefined,
+                        outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination | UndefinedType = Undefined,
+                        metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder | UndefinedType = Undefined,
                         path_groups: PathGroups | UndefinedType = Undefined,
                         internet_exit: InternetExit | UndefinedType = Undefined,
                     ) -> None:
@@ -16148,6 +16166,8 @@ class EosDesigns(EosDesignsRootModel):
                                Prefer paths with lowest hop-count.
                                Only applicable for `wan_mode: "cv-pathfinder"`.
                             constraints: Subclass of AvdModel.
+                            outlier_elimination: AVT path outlier elimination.
+                            metric_order: Metric order to be used for path comparison.
                             path_groups: Subclass of AvdList with `PathGroupsItem` items.
                             internet_exit: Subclass of AvdModel.
 
@@ -16299,6 +16319,8 @@ class EosDesigns(EosDesignsRootModel):
                     "dscp": {"type": int},
                     "lowest_hop_count": {"type": bool},
                     "constraints": {"type": Constraints},
+                    "outlier_elimination": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination},
+                    "metric_order": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder},
                     "path_groups": {"type": PathGroups},
                     "internet_exit": {"type": InternetExit},
                 }
@@ -16321,6 +16343,10 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 constraints: Constraints
                 """Subclass of AvdModel."""
+                outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination
+                """AVT path outlier elimination."""
+                metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder
+                """Metric order to be used for path comparison."""
                 path_groups: PathGroups
                 """Subclass of AvdList with `PathGroupsItem` items."""
                 internet_exit: InternetExit
@@ -16337,6 +16363,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: int | None | UndefinedType = Undefined,
                         lowest_hop_count: bool | None | UndefinedType = Undefined,
                         constraints: Constraints | UndefinedType = Undefined,
+                        outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination | UndefinedType = Undefined,
+                        metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder | UndefinedType = Undefined,
                         path_groups: PathGroups | UndefinedType = Undefined,
                         internet_exit: InternetExit | UndefinedType = Undefined,
                     ) -> None:
@@ -16355,6 +16383,8 @@ class EosDesigns(EosDesignsRootModel):
                                Prefer paths with lowest hop-count.
                                Only applicable for `wan_mode: "cv-pathfinder"`.
                             constraints: Subclass of AvdModel.
+                            outlier_elimination: AVT path outlier elimination.
+                            metric_order: Metric order to be used for path comparison.
                             path_groups: Subclass of AvdList with `PathGroupsItem` items.
                             internet_exit: Subclass of AvdModel.
 
