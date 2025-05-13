@@ -1,6 +1,6 @@
 ---
 
-# Test the underlay_filter_redistribute_connected: false for _route_maps_vrf_default_check in network services route_maps
+# Test the scenario where underlay_filter_redistribute_connected is false within the _route_maps_vrf_default_check function in network_services/route_maps.py
 type: l3leaf
 
 underlay_filter_redistribute_connected: false
