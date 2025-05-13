@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: underlay-filter-redistribute-connected-vrf-default
+hostname: underlay-filter-redistribute-connected-false-svi
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -119,7 +119,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: underlay-filter-redistribute-connected-vrf-default_VTEP
+    description: underlay-filter-redistribute-connected-false-svi_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

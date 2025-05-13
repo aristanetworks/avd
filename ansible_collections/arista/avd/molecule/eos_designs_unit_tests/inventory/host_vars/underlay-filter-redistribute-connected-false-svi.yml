@@ -1,4 +1,6 @@
 ---
+
+# Test the underlay_filter_redistribute_connected: false for _route_maps_vrf_default_check in network services route_maps
 type: l3leaf
 
 underlay_filter_redistribute_connected: false
@@ -10,7 +12,7 @@ l3leaf:
     vtep_loopback: Loopback1
     evpn_services_l2_only: false
   nodes:
-    - name: underlay-filter-redistribute-connected-vrf-default
+    - name: underlay-filter-redistribute-connected-false-svi
       id: 3
       bgp_as: 65101
       filter:
@@ -27,10 +29,6 @@ tenants:
     vrfs:
       - name: default
         vrf_vni: 789654
-        loopbacks:
-          - loopback: 1
-            node: tenant-default-vrf-with-loopbacks
-            ip_address: 192.168.1.1/32
         svis:
           - id: 1008
             name: SVI_1
