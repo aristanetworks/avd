@@ -21,8 +21,7 @@ config:
   # being expressed.
 
   # default state for all rules
-  default:
-    true
+  default: true
 
   # heading style
   MD003:
@@ -38,7 +37,8 @@ config:
     indent: 2
 
   # line length
-  MD013: false
+  MD013:
+    false
     # a lot of debate whether to wrap or not wrap
 
   # multiple headings with the same content
@@ -102,3 +102,7 @@ config:
   MD050:
     # Strong style should be consistent
     style: "asterisk"
+
+  # MD059/descriptive-link-text
+  # Link text should be descriptive - by default this rule flags when a link text is "here"
+  MD059: false
