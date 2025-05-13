@@ -16,7 +16,6 @@ coverage.xml
 /python/**/dist/
 /python/**/*.egg-info/
 /python/**/.tox/
-/python/**/*.so
 
 # pyavd ignores
 /python-avd/build/
