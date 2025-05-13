@@ -81,7 +81,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         Also includes the inband_mgmt_vlan.
         """
-        if not (self.shared_utils.any_network_services and self.shared_utils.all_connected_endpoints):
+        if not (self.shared_utils.any_network_services and self.shared_utils.connected_endpoints):
             return set(), set()
 
         vlans = set()
@@ -98,6 +98,7 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
                     if self.shared_utils.hostname not in adapter_settings.switches:
                         # This switch is not connected to this endpoint. Skipping.
                         continue
+
                     adapter_vlans, adapter_trunk_groups = self._parse_adapter_settings(adapter_settings)
                     vlans.update(adapter_vlans)
                     trunk_groups.update(adapter_trunk_groups)
