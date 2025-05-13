@@ -117,7 +117,7 @@ l3leaf:
       bgp_as: 65101
       nodes:
         # Definition of hostnames under the node_group
-        - name: IPV6_NUMBERED_LEAF1
+        - name: IPV6_NUMBERED_LEAF1a
           id: 1
           mgmt_ip: 172.16.1.31/24
           # Definition of the port to be used in the uplink device facing this device.
@@ -125,12 +125,25 @@ l3leaf:
           uplink_switch_interfaces:
             - Ethernet1
             - Ethernet1
-        - name: IPV6_NUMBERED_LEAF2
+        - name: IPV6_NUMBERED_LEAF1b
           id: 2
           mgmt_ip: 172.16.1.32/24
           uplink_switch_interfaces:
             - Ethernet2
             - Ethernet2
+    - group: DC1_L3_LEAF2
+      # ASN to be used by BGP for the group. Both devices in the MLAG pair will use the same BGP ASN
+      bgp_as: 65101
+      nodes:
+        # Definition of hostnames under the node_group
+        - name: IPV6_NUMBERED_LEAF2a
+          id: 1
+          mgmt_ip: 172.16.1.33/24
+          # Definition of the port to be used in the uplink device facing this device.
+          # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
+          uplink_switch_interfaces:
+            - Ethernet3
+            - Ethernet3
 tenants:
   # Definition of tenants. Additional level of abstraction to VRFs
   - name: TENANT1

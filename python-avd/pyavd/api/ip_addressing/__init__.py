@@ -449,11 +449,11 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         if self._vtep_loopback_ipv6_address:
             return self._vtep_loopback_ipv6_address
 
-        if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ipv6:
+        if template_path := self.shared_utils.node_type_key_data.ip_addressing.vtep_ip:
             return self._template(
                 template_path,
                 switch_id=self._id,
-                switch_vtep_loopback_ipv4_pool=self._vtep_loopback_ipv4_pool,
+                switch_vtep_loopback_ipv6_pool=self._vtep_loopback_ipv6_pool,
                 loopback_ipv6_offset=self._loopback_ipv6_offset,
             )
 
