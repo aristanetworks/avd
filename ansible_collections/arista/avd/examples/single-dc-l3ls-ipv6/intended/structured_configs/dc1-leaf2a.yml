@@ -177,6 +177,11 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 11-12,21-22
       native_vlan: 4092
+prefix_lists:
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 2001:db8:4:2::/64
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -191,6 +196,14 @@ route_maps:
     type: permit
     match:
     - ipv6 address prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 300
