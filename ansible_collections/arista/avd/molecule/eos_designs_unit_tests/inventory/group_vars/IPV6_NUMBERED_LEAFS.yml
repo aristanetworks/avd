@@ -137,7 +137,7 @@ l3leaf:
       nodes:
         # Definition of hostnames under the node_group
         - name: IPV6_NUMBERED_LEAF2a
-          id: 1
+          id: 3
           mgmt_ip: 172.16.1.33/24
           # Definition of the port to be used in the uplink device facing this device.
           # Note that the number of elements in this list must match the length of 'uplink_switches' as well as 'uplink_interfaces'
