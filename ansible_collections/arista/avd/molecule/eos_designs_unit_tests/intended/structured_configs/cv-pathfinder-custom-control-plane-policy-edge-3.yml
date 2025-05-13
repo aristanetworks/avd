@@ -316,6 +316,8 @@ router_adaptive_virtual_topology:
   - name: CUSTOM-CP-POLICY
     load_balance_policy: LB-CUSTOM-CP-POLICY
     internet_exit_policy: ZSCALER-EXIT-POLICY-1
+    outlier_elimination:
+      disabled: true
   - name: DEFAULT-POLICY-VIDEO
     load_balance_policy: LB-DEFAULT-POLICY-VIDEO
   - name: DEFAULT-POLICY-DEFAULT

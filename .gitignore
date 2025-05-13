@@ -8,6 +8,8 @@ __pycache__/
 *.pickle
 .mypy_cache/
 .coverage
+coverage.xml
+*.so
 
 # Python source
 /python/**/build/

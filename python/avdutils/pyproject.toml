@@ -14,7 +14,10 @@ coverage = ["coverage[toml]"]
 py-limited-api = "cp310"
 
 [tool.setuptools.packages.find]
-include = ["src"]
+include = ["avdutils"]
+
+[tool.setuptools.package-data]
+"avdutils" = ["*.pyi"]
 
 [[tool.setuptools-rust.ext-modules]]
 target = "avdutils.validation"
