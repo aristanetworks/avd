@@ -3,13 +3,13 @@
 node_id_pools:
 - assignments:
   - key:
-      hostname: DC1-POD1-L2LEAF1A
+      device_uid: DC1-POD1-L2LEAF1A
     value: 1
   - key:
-      hostname: DC1-POD1-L2LEAF2A
+      device_uid: DC1-POD1-L2LEAF2A
     value: 2
   - key:
-      hostname: DC1-POD1-L2LEAF2B
+      device_uid: DC1-POD1-L2LEAF2B
     value: 3
   pool_key:
     dc_name: DC1
@@ -18,13 +18,13 @@ node_id_pools:
     type: l2leaf
 - assignments:
   - key:
-      hostname: DC1-POD1-LEAF1A
+      device_uid: DC1-POD1-LEAF1A
     value: 1
   - key:
-      hostname: DC1.POD1.LEAF2A
+      device_uid: DC1.POD1.LEAF2A
     value: 2
   - key:
-      hostname: DC1-POD1-LEAF2B
+      device_uid: DC1-POD1-LEAF2B
     value: 3
   pool_key:
     dc_name: DC1
@@ -33,10 +33,10 @@ node_id_pools:
     type: l3leaf
 - assignments:
   - key:
-      hostname: DC1-POD1-SPINE1
+      device_uid: DC1-POD1-SPINE1
     value: 1
   - key:
-      hostname: DC1-POD1-SPINE2
+      device_uid: DC1-POD1-SPINE2
     value: 2
   pool_key:
     dc_name: DC1
@@ -45,7 +45,7 @@ node_id_pools:
     type: spine
 - assignments:
   - key:
-      hostname: DC1-POD2-LEAF1A
+      device_uid: DC1-POD2-LEAF1A
     value: 1
   pool_key:
     dc_name: DC1
@@ -54,10 +54,10 @@ node_id_pools:
     type: l3leaf
 - assignments:
   - key:
-      hostname: DC1-POD2-SPINE1
+      device_uid: DC1-POD2-SPINE1
     value: 1
   - key:
-      hostname: DC1-POD2-SPINE2
+      device_uid: DC1-POD2-SPINE2
     value: 2
   pool_key:
     dc_name: DC1
@@ -66,10 +66,10 @@ node_id_pools:
     type: spine
 - assignments:
   - key:
-      hostname: DC1-RS1
+      device_uid: DC1-RS1
     value: 1
   - key:
-      hostname: DC1-RS2
+      device_uid: DC1-RS2
     value: 2
   pool_key:
     dc_name: DC1
@@ -78,10 +78,10 @@ node_id_pools:
     type: overlay-controller
 - assignments:
   - key:
-      hostname: DC1-SUPER-SPINE1
+      device_uid: DC1-SUPER-SPINE1
     value: 1
   - key:
-      hostname: DC1-SUPER-SPINE2
+      device_uid: DC1-SUPER-SPINE2
     value: 2
   pool_key:
     dc_name: DC1
@@ -90,10 +90,10 @@ node_id_pools:
     type: super-spine
 - assignments:
   - key:
-      hostname: DC2-POD1-L2LEAF1A
+      device_uid: DC2-POD1-L2LEAF1A
     value: 1
   - key:
-      hostname: DC2-POD1-L2LEAF2A
+      device_uid: DC2-POD1-L2LEAF2A
     value: 2
   pool_key:
     dc_name: DC2
@@ -102,10 +102,10 @@ node_id_pools:
     type: l2leaf
 - assignments:
   - key:
-      hostname: DC2-POD1-LEAF1A
+      device_uid: DC2-POD1-LEAF1A
     value: 1
   - key:
-      hostname: DC2-POD1-LEAF2A
+      device_uid: DC2-POD1-LEAF2A
     value: 2
   pool_key:
     dc_name: DC2
@@ -114,10 +114,10 @@ node_id_pools:
     type: l3leaf
 - assignments:
   - key:
-      hostname: DC2-POD1-SPINE1
+      device_uid: DC2-POD1-SPINE1
     value: 1
   - key:
-      hostname: DC2-POD1-SPINE2
+      device_uid: DC2-POD1-SPINE2
     value: 2
   pool_key:
     dc_name: DC2
@@ -126,10 +126,10 @@ node_id_pools:
     type: spine
 - assignments:
   - key:
-      hostname: DC2-RS1
+      device_uid: DC2-RS1
     value: 1
   - key:
-      hostname: DC2-RS2
+      device_uid: DC2-RS2
     value: 2
   pool_key:
     dc_name: DC2
@@ -138,10 +138,10 @@ node_id_pools:
     type: overlay-controller
 - assignments:
   - key:
-      hostname: DC2-SUPER-SPINE1
+      device_uid: DC2-SUPER-SPINE1
     value: 1
   - key:
-      hostname: DC2-SUPER-SPINE2
+      device_uid: DC2-SUPER-SPINE2
     value: 2
   pool_key:
     dc_name: DC2
