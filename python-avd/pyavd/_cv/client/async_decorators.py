@@ -4,14 +4,18 @@
 from __future__ import annotations
 
 from asyncio import sleep as asyncio_sleep
+from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from functools import wraps
-from inspect import signature
+from inspect import Signature, signature
 from logging import getLogger
+from re import compile as re_compile
+from re import fullmatch
 from typing import TYPE_CHECKING, Any, ClassVar, get_origin
 
 from grpclib import Status
 from grpclib.exceptions import GRPCError
 
+from pyavd._cv.client.exceptions import CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -24,63 +28,7 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 
-def grpc_msg_size_handler(list_field: str) -> Callable:
-    def decorator_grpc_msg_size_handler(func: Callable) -> Callable:
-        func_signature = signature(func)
-        # Sometimes the return_annotation is a proper type, and sometimes - when using forward references - it is a string. Here we normalize to type.
-        return_annotation = (
-            list if type(func_signature.return_annotation) is str and func_signature.return_annotation.startswith("list") else func_signature.return_annotation
-        )
-        if return_annotation is not list and get_origin(return_annotation) is not list:
-            msg = (
-                f"grpc_msg_size_handler decorator is unable to bind to the function '{func.__name__}'. "
-                f"Expected a return type of 'list'. Got '{return_annotation}'."
-            )
-            raise TypeError(msg)
-
-        @wraps(func)
-        async def wrapper_grpc_msg_size_handler(*args: Any, **kwargs: Any) -> list:
-            bound_arguments = func_signature.bind(*args, **kwargs)
-            arguments = bound_arguments.arguments
-            if list_field not in arguments:
-                msg = f"grpc_msg_size_handler decorator is unable to find the list_field '{list_field}' in the given arguments to '{func.__name__}'."
-                raise KeyError(msg)
-
-            list_value: list = arguments[list_field]
-            if not isinstance(list_value, list):
-                msg = f"grpc_msg_size_handler decorator expected the value of the list_field '{list_field}' to be a list. Got '{type(list_value)}'"
-                raise TypeError(msg)
-
-            LOGGER.info("wrapper_grpc_msg_size_handler: Called '%s' with '%s' items", func.__name__, len(list_value))
-
-            if len(list_value) < 2:
-                # No need to try/except if we cannot split the list.
-                return await func(*args, **kwargs)
-
-            try:
-                return await func(*args, **kwargs)
-            except CVMessageSizeExceeded as e:
-                # At minimum try to split in two.
-                # The double negatives make // round up instead of down.
-                ratio = max(2, -(-e.size // e.max_size))
-                chunk_size = len(list_value) // ratio
-                LOGGER.info(
-                    "wrapper_grpc_msg_size_handler: Message size %s exceeded the max of %s. Splitting into %s smaller calls with up to %s items each.",
-                    e.size,
-                    e.max_size,
-                    ratio,
-                    chunk_size,
-                )
-                # For every chunk we call ourselves recursively, so we can catch any further needs of splitting.
-                result = []
-                for chunk in batch(list_value, chunk_size):
-                    arguments[list_field] = chunk
-                    result.extend(await wrapper_grpc_msg_size_handler(*bound_arguments.args, **bound_arguments.kwargs))
-                return result
-
-        return wrapper_grpc_msg_size_handler
-
-    return decorator_grpc_msg_size_handler
+MSG_SIZE_EXCEEDED_REGEX = re_compile(r"grpc: received message larger than max \((?P<size>\d+) vs\. (?P<max>\d+)\)")
 
 
 class LimitCvVersion:
@@ -156,50 +104,203 @@ class LimitCvVersion:
         return wrapper_cv_version
 
 
-def grpc_unavailable_handler(max_retries: int = 5, initial_delay: int = 1, factor: int = 2) -> Callable:
+class GRPCRequestHandler:
     """
-    Decorator to retry an async function upon getting gRPC Status.UNAVAILABLE (14).
+    Decorator used to handle execution of the async gRPC calls towards CloudVision.
 
-    Uses exponential backoff mechanism.
+    Retries an async method upon getting gRPC Status.UNAVAILABLE (14) using exponential backoff mechanism and max retry limit.
+    Converts GRPCError or AsyncioTimeoutError instances to an instance of the relevant subclass of CVClientException.
+    Splits gRPC messages into smaller chunks (based on reported maximum supported size) if Status.RESOURCE_EXHAUSTED is received.
 
     Args:
-        max_retries (int): Maximum number of retry attempts. Total attempts = 1 + max_retries.
+        max_retries (int): Maximum number of retry attempts for Status.UNAVAILABLE. Total attempts = 1 + max_retries.
         initial_delay (int): Initial delay in seconds before the first retry.
         factor (int): Multiplier for the delay in subsequent retries.
+        list_field (str): Name of the parameter to be split if Status.RESOURCE_EXHAUSTED is received.
+        min_items_for_splitting_attempt (int): Minimum length of the item that we'll still try to split.
     """
 
-    def decorator(func: Callable) -> Callable:
+    def __init__(
+        self,
+        max_retries: int = 5,
+        initial_delay: int = 1,
+        factor: int = 2,
+        list_field: str | None = None,
+        min_items_for_splitting_attempt: int = 2,
+    ) -> None:
+        self.max_retries: int = max_retries
+        self.initial_delay: int = initial_delay
+        self.factor: int = factor
+        self.list_field: str | None = list_field
+        self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
+        self.func: Callable
+        self.func_signature: Signature
+
+    def __call__(self, func: Callable) -> Callable:
+        self.func = func
+        self.func_signature = signature(func)
+
+        if self.list_field:
+            return_annotation = (
+                list
+                if type(self.func_signature.return_annotation) is str and self.func_signature.return_annotation.startswith("list")
+                else self.func_signature.return_annotation
+            )
+            if return_annotation is not list and get_origin(return_annotation) is not list:
+                msg = (
+                    f"GRPCRequestHandler decorator is unable to bind to the function '{func.__name__}'. "
+                    f"Expected a return type of 'list'. Got '{return_annotation}'."
+                )
+                raise TypeError(msg)
+
         @wraps(func)
-        async def wrapper(*args: Any, **kwargs: Any) -> Any:
-            if max_retries < 1:
-                return await func(*args, **kwargs)
-            for attempt in range(1, max_retries + 2):
-                try:
-                    return await func(*args, **kwargs)
-                except GRPCError as e:  # noqa: PERF203
-                    if e.status == Status.UNAVAILABLE:
-                        if attempt < max_retries + 1:
-                            delay = initial_delay * (factor ** (attempt - 1))
+        async def wrapper(*args: Any, **kwargs: Any) -> Callable:
+            return await self._execute_with_splitting(args, kwargs)
+
+        return wrapper
+
+    async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> Any:
+        """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
+        func_name = self.func.__name__
+
+        for attempt in range(1, self.max_retries + 2):
+            try:
+                return await self.func(*call_args, **call_kwargs)
+            except Exception as e:  # noqa: PERF203
+                if isinstance(e, GRPCError):
+                    status = e.status
+
+                    if status == Status.NOT_FOUND:
+                        raise CVResourceNotFound(*e.args)
+
+                    if status == Status.CANCELLED:
+                        raise CVTimeoutError(*e.args)
+
+                    if status == Status.UNAVAILABLE:
+                        if attempt <= self.max_retries:
+                            delay = self.initial_delay * (self.factor ** (attempt - 1))
                             LOGGER.warning(
-                                "async_grpc_unavailable_retry: Attempt %s/%s to execute call '%s' returned '%s'. Retrying after '%s' second(s)..",
+                                "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
+                                self.__class__.__name__,
                                 attempt,
-                                max_retries + 1,
-                                func.__name__,
+                                self.max_retries + 1,
+                                func_name,
                                 e,
                                 delay,
                             )
                             await asyncio_sleep(delay)
+                        # Use case where all retries for this specific call failed
                         else:
-                            LOGGER.warning(
-                                "async_grpc_unavailable_retry: Attempt %s/%s to execute call '%s' returned '%s'.", attempt, max_retries + 1, func.__name__, e
+                            LOGGER.exception(
+                                "%s: Attempt %s/%s to execute call '%s' failed.", self.__class__.__name__, attempt, self.max_retries + 1, func_name
                             )
-                            raise CVGRPCStatusUnavailable(e)
+                            raise CVGRPCStatusUnavailable(*e.args)
+
+                    elif status == Status.RESOURCE_EXHAUSTED and (matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message)):
+                        new_exception = CVMessageSizeExceeded(*e.args)
+                        new_exception.max_size = int(matches.group("max"))
+                        new_exception.size = int(matches.group("size"))
+                        raise new_exception
+
                     else:
                         raise
-                except Exception:
+
+                elif isinstance(e, AsyncioTimeoutError):
+                    raise CVTimeoutError(*e.args)
+
+                else:
                     raise
-            raise CVGRPCStatusUnavailable
+        # Required by ruff
+        return None
 
-        return wrapper
+    async def _execute_with_splitting(self, original_call_args: tuple, original_call_kwargs: dict) -> Any:
+        func_name = self.func.__name__
 
-    return decorator
+        if not (self.list_field and self.func_signature):
+            # No list_field configured for splitting, execute the call directly (with retries)
+            return await self._execute_single_call_with_retries(original_call_args, original_call_kwargs)
+
+        bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
+        current_arguments_dict = bound_arguments.arguments
+
+        if self.list_field not in current_arguments_dict:
+            msg = (
+                f"{self.__class__.__name__} decorator is unable to find the list_field '{self.list_field}' "
+                f"in the given arguments to '{func_name}'. Found: '{list(current_arguments_dict.keys())}'."
+            )
+            raise KeyError(msg)
+
+        list_value: list = current_arguments_dict[self.list_field]
+        if not isinstance(list_value, list):
+            msg = (
+                f"{self.__class__.__name__} decorator expected the value of the list_field '{self.list_field}' for function '{func_name}' "
+                f"to be a list. Got '{type(list_value)}'."
+            )
+            raise TypeError(msg)
+
+        LOGGER.info("%s: Preparing call for '%s' for list_field '%s' with %s item(s).", self.__class__.__name__, func_name, self.list_field, len(list_value))
+
+        if len(list_value) < self.min_items_for_splitting_attempt:
+            # No need to try/except if we cannot split the list.
+            return await self._execute_single_call_with_retries(original_call_args, original_call_kwargs)
+
+        try:
+            # Initial attempt with the full list
+            return await self._execute_single_call_with_retries(original_call_args, original_call_kwargs)
+        except CVMessageSizeExceeded as e:
+            # At minimum try to split in two.
+            # The double negatives make // round up instead of down.
+            ratio = max(2, -(-e.size // e.max_size))
+            chunk_size = len(list_value) // ratio
+            LOGGER.info(
+                "%s: Message size %s exceeded the max of %s for '%s' on list_field '%s'. Attempting to split %s items.",
+                self.__class__.__name__,
+                e.size,
+                e.max_size,
+                func_name,
+                self.list_field,
+                len(list_value),
+            )
+            # Use case where ratio is too high leading to the chuck_size being calculated as zero
+            if chunk_size == 0 and len(list_value) > 0:
+                chunk_size = 1
+
+            planned_attempts_qty = int((len(list_value) / chunk_size) + (1 if len(list_value) % chunk_size else 0))
+
+            if chunk_size >= len(list_value) and len(list_value) > 0:
+                LOGGER.exception(
+                    "%s: Cannot split list_field '%s' for '%s' any further. Item count %s, calculated chunk_size %s.",
+                    self.__class__.__name__,
+                    self.list_field,
+                    func_name,
+                    len(list_value),
+                    chunk_size,
+                )
+                raise
+
+            LOGGER.info(
+                "%s: Splitting list_field '%s' for '%s' into %s calls with up to %s items each.",
+                self.__class__.__name__,
+                self.list_field,
+                func_name,
+                planned_attempts_qty,
+                chunk_size,
+            )
+
+            # For every chunk we call ourselves recursively, so we can catch any further needs of splitting.
+            aggregated_results = []
+            for chunk_id, chunk in enumerate(batch(list_value, chunk_size)):
+                LOGGER.info(
+                    "%s: Processing chunk %s/%s for '%s' with %s item(s) from list_field '%s'.",
+                    self.__class__.__name__,
+                    chunk_id + 1,
+                    planned_attempts_qty,
+                    func_name,
+                    len(chunk),
+                    self.list_field,
+                )
+                current_arguments_dict[self.list_field] = chunk
+
+                aggregated_results.extend(await self._execute_with_splitting(bound_arguments.args, bound_arguments.kwargs))
+
+        return aggregated_results

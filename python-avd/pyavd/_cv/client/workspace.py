@@ -23,9 +23,9 @@ from pyavd._cv.api.arista.workspace.v1 import (
     WorkspaceStreamRequest,
 )
 
-from .async_decorators import grpc_unavailable_handler
+from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import get_cv_client_exception
+from .exceptions import CVResourceNotFound
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -50,7 +50,7 @@ class WorkspaceMixin(Protocol):
 
     workspace_api_version: Literal["v1"] = "v1"
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def get_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -76,14 +76,11 @@ class WorkspaceMixin(Protocol):
         )
         client = WorkspaceServiceStub(self._channel)
 
-        try:
-            response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}'") or e
+        response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
 
         return response.value
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def create_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -114,7 +111,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def abandon_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -143,7 +140,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def build_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -172,7 +169,7 @@ class WorkspaceMixin(Protocol):
         response = await client.set(request, metadata=self._metadata, timeout=timeout)
         return response.value
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def delete_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -193,7 +190,7 @@ class WorkspaceMixin(Protocol):
         response = await client.delete(request, metadata=self._metadata, timeout=timeout)
         return response.key
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def submit_workspace(
         self: CVClientProtocol,
         workspace_id: str,
@@ -223,7 +220,7 @@ class WorkspaceMixin(Protocol):
         LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
         return response.value
 
-    @grpc_unavailable_handler()
+    @GRPCRequestHandler()
     async def wait_for_workspace_response(
         self: CVClientProtocol,
         workspace_id: str,
@@ -252,19 +249,20 @@ class WorkspaceMixin(Protocol):
             ],
         )
         client = WorkspaceServiceStub(self._channel)
-        try:
-            responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                if request_id in response.value.responses.values:
-                    LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
-                    if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
-                        return response.value.responses.values[request_id], response.value
-                else:
-                    LOGGER.debug(
-                        "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
-                        request_id,
-                        response.value.state,
-                        response.value.responses.values,
-                    )
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Request ID '{request_id}") or e
+        responses = client.subscribe(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            if request_id in response.value.responses.values:
+                LOGGER.info("wait_for_workspace_response: Got response for request '%s': %s", request_id, response.value.responses.values[request_id])
+                if response.value.responses.values[request_id].status != ResponseStatus.UNSPECIFIED:
+                    return response.value.responses.values[request_id], response.value
+            else:
+                LOGGER.debug(
+                    "wait_for_workspace_response: Got workspace update but not for request_id '%s'. Workspace State: %s. Received responses: %s",
+                    request_id,
+                    response.value.state,
+                    response.value.responses.values,
+                )
+
+        # Use case where stream completed without getting a response for the expected request_id
+        msg = f"Failed to get a response for request '{request_id}' of the Workspace '{workspace_id}'."
+        raise CVResourceNotFound(msg)
