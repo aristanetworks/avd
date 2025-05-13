@@ -81,6 +81,11 @@ STP Root Super: **{{ spanning_tree.root_super }}**
 {%             endif %}
 {%         endif %}
 {%     endif %}
+{%     if spanning_tree.port_id_allocation_port_channel_range is arista.avd.defined %}
+{%         set min_range = spanning_tree.port_id_allocation_port_channel_range.minimum %}
+{%         set max_range = spanning_tree.port_id_allocation_port_channel_range.maximum %}
+{%         do global_settings.append("- Range of port-ids reserved for port-channels: " ~ min_range ~ "-" ~ max_range ~ ".") %}
+{%     endif %}
 {%     if global_settings | length > 0 %}
 
 #### Global Spanning-Tree Settings
