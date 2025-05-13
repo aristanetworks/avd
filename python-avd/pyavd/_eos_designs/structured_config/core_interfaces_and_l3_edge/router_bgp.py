@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import Undefined, get_ip_from_ip_prefix
 
 if TYPE_CHECKING:
@@ -49,7 +49,7 @@ class RouterBgpMixin(Protocol):
             # Regular BGP Neighbors
             if p2p_link_data["ip"] is None or p2p_link_data["peer_ip"] is None:
                 msg = f"{self.data_model}.p2p_links.[].ip, .subnet or .ip_pool"
-                raise AristaAvdInvalidInputsError(msg)
+                raise AristaAvdMissingVariableError(msg)
 
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=get_ip_from_ip_prefix(p2p_link_data["peer_ip"]),
