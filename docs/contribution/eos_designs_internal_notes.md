@@ -34,7 +34,7 @@ This comes from Ansible's inventory and is intuitive when using Ansible.
 Since AVD can also run in other contexts, where the unique inventory ID may not correspond to the hostname of the device,
 it is important to keep the logic separate between `device_uid` and `hostname`.
 
-- All input models pointing to a specific peer device will find the device based on it's `device_uid`.
+- All input models pointing to a specific peer device will find the device based on its `device_uid`.
 - The `name` field under node settings is actually the `device_uid`.
 - The input models do not offer a way to set the hostname. It can only be set in the various PyAVD function calls.
 - Error messages will mention the `device_uid` when relating to a device.
