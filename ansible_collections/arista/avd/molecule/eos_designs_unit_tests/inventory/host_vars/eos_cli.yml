@@ -1,0 +1,12 @@
+---
+# Testing the rendering of `eos_cli` when this knob is true
+avd_eos_designs_enforce_duplication_checks_across_all_models: true
+
+type: l3spine
+l3spine:
+  nodes:
+    - name: eos_cli
+      id: 1
+      loopback_ipv4_pool: 192.168.100.0/24
+      raw_eos_cli: |
+        ! TEST_RAW_EOS_CLI
