@@ -82,15 +82,13 @@ servers:
             - number: 100
             - number: 200
               vlan_id: 200
-  - name: OLD_SW-1/10
+  - name: OLD_SW-1/11
     adapters:
-      - switches: [ connected_endpoints, connected_endpoints ]
-        switch_ports: [ Ethernet22, Ethernet23 ]
-        port_channel:
-          mode: active
-          subinterfaces:
-            - number: 200
-            - number: 100
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet24]
+        endpoint_ports: [Endpoint_port5]
+        mode: trunk
+        vlans: 1-4096
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:

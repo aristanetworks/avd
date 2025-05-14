@@ -111,22 +111,17 @@ ethernet_interfaces:
     mode: active
   peer: OLD_SW-1/9
   peer_type: server
-- name: Ethernet22
-  description: SERVER_OLD_SW-1/10
+- name: Ethernet24
+  description: SERVER_OLD_SW-1/11_Endpoint_port5
   shutdown: false
-  channel_group:
-    id: 22
-    mode: active
-  peer: OLD_SW-1/10
+  peer: OLD_SW-1/11
+  peer_interface: Endpoint_port5
   peer_type: server
-- name: Ethernet23
-  description: SERVER_OLD_SW-1/10
-  shutdown: false
-  channel_group:
-    id: 22
-    mode: active
-  peer: OLD_SW-1/10
-  peer_type: server
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4096
 - name: Ethernet12
   description: SERVER_INDIVIDUAL_1
   shutdown: false
@@ -348,27 +343,6 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 200
-- name: Port-Channel22
-  description: SERVER_OLD_SW-1/10
-  shutdown: false
-  switchport:
-    enabled: false
-- name: Port-Channel22.200
-  encapsulation_vlan:
-    client:
-      encapsulation: dot1q
-      vlan: 200
-    network:
-      encapsulation: client
-  vlan_id: 200
-- name: Port-Channel22.100
-  encapsulation_vlan:
-    client:
-      encapsulation: dot1q
-      vlan: 100
-    network:
-      encapsulation: client
-  vlan_id: 100
 - name: Port-Channel12
   description: SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false
