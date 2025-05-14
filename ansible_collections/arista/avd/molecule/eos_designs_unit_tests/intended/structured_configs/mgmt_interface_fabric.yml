@@ -1,5 +1,8 @@
 aaa_root:
   disabled: true
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f
 config_end: true
 daemon_terminattr:
   cvaddrs:
