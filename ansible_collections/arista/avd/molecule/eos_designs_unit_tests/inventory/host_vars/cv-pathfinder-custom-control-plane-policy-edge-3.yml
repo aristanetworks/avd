@@ -25,6 +25,8 @@ wan_virtual_topologies:
     lowest_hop_count: true
     constraints:
       jitter: 5
+    outlier_elimination:
+      disabled: true
     application_profile: CUSTOM-CP-APP-PROFILE
   policies:
     # Name of the DEFAULT-POLICY being overwritten

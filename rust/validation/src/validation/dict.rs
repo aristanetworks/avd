@@ -67,7 +67,7 @@ fn validate_allowed_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Co
                 .filter(|key| !keys.contains_key(key.as_str()))
                 .for_each(|key| {
                     ctx.path.push(key.to_owned());
-                    ctx.add_violation(Violation::UnexpectedKey);
+                    ctx.add_violation(Violation::UnexpectedKey());
                     ctx.path.pop();
                 });
         }
@@ -390,7 +390,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec!["my_dynamic_keys".into()],
-                issue: Issue::DefaultValueInserted
+                issue: Issue::DefaultValueInserted()
             }]
         );
     }
@@ -430,7 +430,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec!["my_dynamic_keys".into()],
-                issue: Issue::DefaultValueInserted
+                issue: Issue::DefaultValueInserted()
             }]
         );
         assert_eq!(
@@ -485,7 +485,7 @@ mod tests {
             ctx.violations,
             vec![Feedback {
                 path: vec!["foo1".into()],
-                issue: Violation::UnexpectedKey.into()
+                issue: Violation::UnexpectedKey().into()
             }]
         )
     }
