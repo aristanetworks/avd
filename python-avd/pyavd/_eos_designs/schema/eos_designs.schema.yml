@@ -6179,7 +6179,7 @@ $defs:
             ipv6_pool:
               type: str
               description: Comma separated list of prefixes (IPv6 address/Mask) or
-                ranges (IPv6_address-IPv4_address).
+                ranges (IPv6_address-IPv6_address).
               format: ipv6_pool
             prefix_size:
               type: int

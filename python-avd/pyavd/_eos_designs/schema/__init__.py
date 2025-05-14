@@ -971,7 +971,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_pool: str | None
             """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
             ipv6_pool: str | None
-            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address)."""
+            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
             prefix_size: int
             """
             Subnet mask size.
@@ -998,7 +998,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                         prefix_size: Subnet mask size.
 
                     """
@@ -4980,7 +4980,7 @@ class EosDesigns(EosDesignsRootModel):
             ipv4_pool: str | None
             """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
             ipv6_pool: str | None
-            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address)."""
+            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
             prefix_size: int
             """
             Subnet mask size.
@@ -5007,7 +5007,7 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                         prefix_size: Subnet mask size.
 
                     """
