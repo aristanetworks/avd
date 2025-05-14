@@ -27,4 +27,15 @@ mod tests {
             "$6$1234567890ABCDEF$Em9R7hgj77mOWT2JjGxPzUQEXpe0HmEpcxlhR5W.cMjg48.AJ1L3qFxTKuvXdmsiisbVh04tvKKH1ab.15PaD1"
         );
     }
+    #[test]
+    fn custom_salt_bad() {
+        let salt = "🦀$;";
+        let password = "LittleDropBobbyTable";
+
+        let hash = sha512_crypt(password.to_string(), salt.to_string()).unwrap();
+        assert_eq!(
+            hash,
+            "$6$1234567890ABCDEF$Em9R7hgj77mOWT2JjGxPzUQEXpe0HmEpcxlhR5W.cMjg48.AJ1L3qFxTKuvXdmsiisbVh04tvKKH1ab.15PaD1"
+        );
+    }
 }
