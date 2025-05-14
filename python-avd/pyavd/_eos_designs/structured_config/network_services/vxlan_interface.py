@@ -136,8 +136,8 @@ class VxlanInterfaceMixin(Protocol):
 
             vni = self._filtered_wan_vrfs[vrf_name].wan_vni if is_wan_vrf else default(vrf.vrf_vni, vrf.vrf_id)
 
-            # This condition will never reach, as "wan_vni" is a required key and \
-            # the methods "get_vrf_id" and "get_vrf_id" raises before this if "vrf.vrf_vni" and "vrf.vrf_id" are not defined.
+            # This condition will never be reached, as "wan_vni" is a required key, and the methods 
+            # "get_vrf_vni" and "get_vrf_id" will raise an error beforehand if "vrf.vrf_vni" or "vrf.vrf_id" are not defined.
             if vni is None:
                 # Silently ignore if we cannot set a VNI
                 # This is legacy behavior so we will leave stricter enforcement to the schema
@@ -152,11 +152,6 @@ class VxlanInterfaceMixin(Protocol):
                 if vrf_multicast_group := getattr(vrf._internal_data, "evpn_l3_multicast_group_ip", None):
                     vxlan_vrf.multicast_group = vrf_multicast_group
                 else:
-                    # this should never happen as it should be caught during validation
-                    if not tenant.evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool:
-                        msg = f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant.name} is required."
-                        raise AristaAvdInvalidInputsError(msg)
-
                     vxlan_vrf.multicast_group = self.shared_utils.ip_addressing.evpn_underlay_l3_multicast_group(
                         tenant.evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool,
                         vni,
