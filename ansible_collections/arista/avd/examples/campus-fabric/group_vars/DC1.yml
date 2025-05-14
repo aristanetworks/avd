@@ -9,7 +9,7 @@ local_users:
     sha512_password: "$6$8OFgOTnr2RnFBu7w$ZCp//phfwcbdinBMxEFxZWNLxh0VwUVyvvKKXG5quq4D.bvs5CMbdaNjQ9bABjAVARr0LuE0G32Zrr0pGmDy00"
 
 # AAA Authorization
-aaa_authorization:
+custom_structured_configuration_aaa_authorization:
   exec:
     default: local
 

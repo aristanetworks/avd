@@ -259,7 +259,7 @@ metadata:
       pathgroup: INET
 port_channel_interfaces:
 - name: Port-Channel2
-  description: Cybercast_101_peer1_Port-Channel10
+  description: Port-Channel with 3 member ports.
   shutdown: false
   ip_address: 192.168.1.102/31
   service_profile: TEST-QOS-PROFILE1
@@ -504,8 +504,8 @@ service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 static_routes:
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 192.168.1.103
+- prefix: 0.0.0.0/0
+  next_hop: 192.168.1.103
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
 - name: MGMT

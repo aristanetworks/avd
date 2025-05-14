@@ -17031,8 +17031,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
             "destination_address_prefix": {"type": str},
+            "prefix": {"type": str},
             "interface": {"type": str},
             "gateway": {"type": str},
+            "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
             "tag": {"type": int},
@@ -17042,8 +17044,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         vrf: str | None
         destination_address_prefix: str | None
         """IPv6 Network/Mask."""
+        prefix: str | None
+        """IPv6 Network/Mask."""
         interface: str | None
         gateway: str | None
+        """IPv6 Address."""
+        next_hop: str | None
         """IPv6 Address."""
         track_bfd: bool | None
         """Track next-hop using BFD."""
@@ -17060,8 +17066,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 vrf: str | None | UndefinedType = Undefined,
                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                prefix: str | None | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
                 tag: int | None | UndefinedType = Undefined,
@@ -17077,8 +17085,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     vrf: vrf
                     destination_address_prefix: IPv6 Network/Mask.
+                    prefix: IPv6 Network/Mask.
                     interface: interface
                     gateway: IPv6 Address.
+                    next_hop: IPv6 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
                     tag: tag
@@ -39145,6 +39155,50 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class NextHop(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class AddressFamilyIpv6(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "originate": {"type": bool}}
+                        enabled: bool
+                        """Enables advertising the Extended Next Hop Encoding capability."""
+                        originate: bool | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | UndefinedType = Undefined, originate: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                AddressFamilyIpv6.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: Enables advertising the Extended Next Hop Encoding capability.
+                                    originate: originate
+
+                                """
+
+                    _fields: ClassVar[dict] = {"address_family_ipv6": {"type": AddressFamilyIpv6}}
+                    address_family_ipv6: AddressFamilyIpv6
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined) -> None:
+                            """
+                            NextHop.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                address_family_ipv6: Subclass of AvdModel.
+
+                            """
+
                 _fields: ClassVar[dict] = {
                     "ip_address": {"type": str},
                     "activate": {"type": bool},
@@ -39156,6 +39210,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "prefix_list_out": {"type": str},
                     "default_originate": {"type": DefaultOriginate},
                     "additional_paths": {"type": AdditionalPaths},
+                    "next_hop": {"type": NextHop},
                 }
                 ip_address: str
                 activate: bool | None
@@ -39181,6 +39236,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """Subclass of AvdModel."""
                 additional_paths: AdditionalPaths
                 """Subclass of AvdModel."""
+                next_hop: NextHop
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
@@ -39197,6 +39254,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         prefix_list_out: str | None | UndefinedType = Undefined,
                         default_originate: DefaultOriginate | UndefinedType = Undefined,
                         additional_paths: AdditionalPaths | UndefinedType = Undefined,
+                        next_hop: NextHop | UndefinedType = Undefined,
                     ) -> None:
                         """
                         NeighborsItem.
@@ -39219,6 +39277,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             prefix_list_out: Prefix-list name.
                             default_originate: Subclass of AvdModel.
                             additional_paths: Subclass of AvdModel.
+                            next_hop: Subclass of AvdModel.
 
                         """
 
@@ -58341,7 +58400,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class SnmpTrapsItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool, "default": True}}
+                _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}}
                 name: str | None
                 """
                 Enable or disable specific snmp-traps and their sub_traps.
@@ -58349,12 +58408,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 - "bgp"
                 - "bgp established"
                 """
-                enabled: bool
-                """Default value: `True`"""
+                enabled: bool | None
+                """The trap is enabled unless this is set to false."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, name: str | None | UndefinedType = Undefined, enabled: bool | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined, enabled: bool | None | UndefinedType = Undefined) -> None:
                         """
                         SnmpTrapsItem.
 
@@ -58367,7 +58426,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Examples:  # fmt: skip
                                - "bgp"
                                - "bgp established"
-                            enabled: enabled
+                            enabled: The trap is enabled unless this is set to false.
 
                         """
 
@@ -58376,19 +58435,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             SnmpTraps._item_type = SnmpTrapsItem
 
-            _fields: ClassVar[dict] = {"enable": {"type": bool, "default": False}, "snmp_traps": {"type": SnmpTraps}}
-            enable: bool
-            """
-            Enable or disable all snmp-traps.
-
-            Default value: `False`
-            """
+            _fields: ClassVar[dict] = {"enable": {"type": bool}, "snmp_traps": {"type": SnmpTraps}}
+            enable: bool | None
+            """Enable or disable all snmp-traps."""
             snmp_traps: SnmpTraps
             """Subclass of AvdList with `SnmpTrapsItem` items."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enable: bool | UndefinedType = Undefined, snmp_traps: SnmpTraps | UndefinedType = Undefined) -> None:
+                def __init__(self, *, enable: bool | None | UndefinedType = Undefined, snmp_traps: SnmpTraps | UndefinedType = Undefined) -> None:
                     """
                     Traps.
 
@@ -58726,6 +58781,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         RapidPvstInstances._item_type = RapidPvstInstancesItem
 
+        class PortIdAllocationPortChannelRange(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"minimum": {"type": int}, "maximum": {"type": int}}
+            minimum: int
+            """Specify minimum value for reserved range."""
+            maximum: int
+            """Specify maximum value for reserved range."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, minimum: int | UndefinedType = Undefined, maximum: int | UndefinedType = Undefined) -> None:
+                    """
+                    PortIdAllocationPortChannelRange.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        minimum: Specify minimum value for reserved range.
+                        maximum: Specify maximum value for reserved range.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "root_super": {"type": bool},
             "edge_port": {"type": EdgePort},
@@ -58736,6 +58815,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mst_instances": {"type": MstInstances},
             "no_spanning_tree_vlan": {"type": str},
             "rapid_pvst_instances": {"type": RapidPvstInstances},
+            "port_id_allocation_port_channel_range": {"type": PortIdAllocationPortChannelRange},
         }
         root_super: bool | None
         edge_port: EdgePort
@@ -58755,6 +58835,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         rapid_pvst_instances: RapidPvstInstances
         """Subclass of AvdIndexedList with `RapidPvstInstancesItem` items. Primary key is `id` (`str`)."""
+        port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange
+        """
+        Specify range of port-ids to reserve for port-channels.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -58770,6 +58856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mst_instances: MstInstances | UndefinedType = Undefined,
                 no_spanning_tree_vlan: str | None | UndefinedType = Undefined,
                 rapid_pvst_instances: RapidPvstInstances | UndefinedType = Undefined,
+                port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTree.
@@ -58789,6 +58876,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        "< vlan_id >, < vlan_id >-< vlan_id >"
                        Example: 105,202,505-506
                     rapid_pvst_instances: Subclass of AvdIndexedList with `RapidPvstInstancesItem` items. Primary key is `id` (`str`).
+                    port_id_allocation_port_channel_range:
+                       Specify range of port-ids to reserve for port-channels.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -58873,8 +58964,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "vrf": {"type": str},
             "destination_address_prefix": {"type": str},
+            "prefix": {"type": str},
             "interface": {"type": str},
             "gateway": {"type": str},
+            "next_hop": {"type": str},
             "track_bfd": {"type": bool},
             "distance": {"type": int},
             "tag": {"type": int},
@@ -58885,8 +58978,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """VRF Name."""
         destination_address_prefix: str | None
         """IPv4_network/Mask."""
+        prefix: str | None
+        """IPv4_network/Mask."""
         interface: str | None
         gateway: str | None
+        """IPv4 Address."""
+        next_hop: str | None
         """IPv4 Address."""
         track_bfd: bool | None
         """Track next-hop using BFD."""
@@ -58903,8 +59000,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 vrf: str | None | UndefinedType = Undefined,
                 destination_address_prefix: str | None | UndefinedType = Undefined,
+                prefix: str | None | UndefinedType = Undefined,
                 interface: str | None | UndefinedType = Undefined,
                 gateway: str | None | UndefinedType = Undefined,
+                next_hop: str | None | UndefinedType = Undefined,
                 track_bfd: bool | None | UndefinedType = Undefined,
                 distance: int | None | UndefinedType = Undefined,
                 tag: int | None | UndefinedType = Undefined,
@@ -58920,8 +59019,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     vrf: VRF Name.
                     destination_address_prefix: IPv4_network/Mask.
+                    prefix: IPv4_network/Mask.
                     interface: interface
                     gateway: IPv4 Address.
+                    next_hop: IPv4 Address.
                     track_bfd: Track next-hop using BFD.
                     distance: distance
                     tag: tag
