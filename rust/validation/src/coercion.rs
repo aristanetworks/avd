@@ -45,7 +45,7 @@ impl Coercion<Map<String, Value>> for Dict {
                             if let Some(default_value) = key_schema.default_value() {
                                 dict.insert(key.to_owned(), default_value);
                                 ctx.path.push(key.to_owned());
-                                ctx.add_coercion(Issue::DefaultValueInserted);
+                                ctx.add_coercion(Issue::DefaultValueInserted());
                                 ctx.path.pop();
                             }
                         }
@@ -129,7 +129,7 @@ impl Coercion<String> for Str {
             Value::String(string) => Some(string.to_string()),
             Value::Number(number) => {
                 ctx.add_coercion(CoercionNote {
-                    found: number.clone().into(),
+                    found: Value::Number(number.clone()).into(),
                     made: number.to_string().into(),
                 });
                 Some(number.to_string())
@@ -223,7 +223,7 @@ mod tests {
             ctx.coercions,
             vec![Feedback {
                 path: vec!["my_dynamic_keys".into()],
-                issue: Issue::DefaultValueInserted
+                issue: Issue::DefaultValueInserted()
             }]
         );
         assert_eq!(input, json!({"my_dynamic_keys": ["dynkey1", "dynkey2"]}));
