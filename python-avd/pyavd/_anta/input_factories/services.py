@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from anta.input_models.services import DnsServer
-from anta.tests.services import VerifyDNSLookup, VerifyDNSServers
+from anta.tests.services import VerifyDNSServers
 
 from pyavd.j2filters import natural_sort
 
@@ -21,12 +21,3 @@ class VerifyDNSServersInputFactory(AntaTestInputFactory):
             for dns_server in self.structured_config.ip_name_servers
         ]
         return [VerifyDNSServers.Input(dns_servers=natural_sort(dns_servers, sort_key="server_address"))] if dns_servers else None
-
-
-class VerifyDNSLookupInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyDNSLookup` test."""
-
-    def create(self) -> list[VerifyDNSLookup.Input] | None:
-        """Create a list of inputs for the `VerifyDNSLookup` test."""
-        # TODO: Fetch domain_names from the structured config?
-        return [VerifyDNSLookup.Input(domain_names=["www.arista.io"])]
