@@ -189,7 +189,7 @@ mod tests {
                 path: vec![],
                 issue: Violation::InvalidValue {
                     expected: vec![123].into(),
-                    found: input
+                    found: input.into()
                 }
                 .into()
             }]
