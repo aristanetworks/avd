@@ -26,6 +26,7 @@ tenants:
       - id: 10
         name: storage_prod
         tags: ['storageProd']
+        vxlan: false
       - id: 20
         name: storage_prod
         tags: ['storageProd']

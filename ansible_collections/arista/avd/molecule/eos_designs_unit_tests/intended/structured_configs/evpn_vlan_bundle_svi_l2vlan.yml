@@ -87,14 +87,6 @@ router_bgp:
       - 21010:21010
     redistribute_routes:
     - learned
-  - id: 10
-    tenant: SIT
-    rd: 10.10.0.3:20010
-    route_targets:
-      both:
-      - 20010:20010
-    redistribute_routes:
-    - learned
   - id: 20
     tenant: SIT
     rd: 10.10.0.3:20020
@@ -199,8 +191,6 @@ vxlan_interface:
         vni: 21009
       - id: 1010
         vni: 21010
-      - id: 10
-        vni: 20010
       - id: 20
         vni: 20020
       - id: 90

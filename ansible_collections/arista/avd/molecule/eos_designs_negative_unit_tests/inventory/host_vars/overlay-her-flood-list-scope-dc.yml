@@ -1,0 +1,36 @@
+type: l3leaf
+
+overlay_routing_protocol: HER
+# This will create per-vni flood-lists. Set to true for leaf 1-2 and to false (in hostvars) for leaf3.
+overlay_her_flood_list_per_vni: true
+# Expectation is to see per-vni flood-lists on leaf 1-2 and a single flood-list on leaf3
+# (the single flood list will contain all the vteps under unit_tests since they use a single fabric name)
+overlay_her_flood_list_scope: dc
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.254.0/24
+    vtep_loopback_ipv4_pool: 192.168.253.0/24
+    bgp_as: 65001
+  nodes:
+    - name: overlay-her-flood-list-scope-dc
+      id: 1
+      filter:
+        tags: ["leaf1"]
+
+tenants:
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: TEST
+        vrf_id: 1
+        svis:
+          - id: 3900
+            name: SVI_ON_ALL_LEAFS
+            tags: ["leaf1"]
+    l2vlans:
+      - id: 2900
+        name: L2VLAN_ON_ALL_LEAFS
+        tags: ["leaf1"]
+
+expected_error_message: "'dc_name' is required with 'overlay_her_flood_list_scope: dc'"
