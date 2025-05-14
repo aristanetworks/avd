@@ -88,10 +88,9 @@ class RouteMapsMixin(Protocol):
                 )
 
             if self.shared_utils.evpn_wan_gateway:
-                sequence_80 = EosCliConfigGen.RouteMapsItem.SequenceNumbersItem(
+                sequence_numbers.append_new(
                     sequence=80, type="permit", match=EosCliConfigGen.RouteMapsItem.SequenceNumbersItem.Match(["ip address prefix-list PL-DPS-WAN-OVERLAY"])
                 )
-                sequence_numbers.append(sequence_80)
 
             self.structured_config.route_maps.append_new(name="RM-CONN-2-BGP", sequence_numbers=sequence_numbers)
 
