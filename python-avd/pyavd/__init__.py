@@ -11,7 +11,7 @@ from .validate_inputs import validate_inputs
 from .validate_structured_config import validate_structured_config
 from .validation_result import ValidationResult
 
-""" Library for running Arista Validated Designs (AVD) in Python
+""" Library for running Arista AVD in Python
 """
 
 PYAVD_PRERELEASE = ""  # Set this to aN or bN for alpha and beta releases of pyavd itself. Empty string when pyavd is released.
@@ -19,7 +19,7 @@ PYAVD_PRERELEASE = ""  # Set this to aN or bN for alpha and beta releases of pya
 __author__ = "Arista Networks"
 __copyright__ = "Copyright 2023-2024 Arista Networks"
 __license__ = "Apache 2.0"
-__version__ = "5.3.0.dev4"
+__version__ = "5.5.0.dev0"
 
 __all__ = [
     "ValidationResult",

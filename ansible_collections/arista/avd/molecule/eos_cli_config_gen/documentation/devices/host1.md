@@ -455,6 +455,15 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 ##### mynameserver0
 
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| atd.lab.com |
+| avd.lab.com |
+
+###### Name Server
+
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
 | 1.1.1.1 | default | 0 |
@@ -465,7 +474,13 @@ ip name-server vrf TEST 2001:db8::2 priority 3
 
 DNS Domain: arista.avd.com
 
-IP Domain List: domain-list1
+###### IP Domain List
+
+| IP Domain |
+| --------- |
+| domain-list1 |
+
+###### Name Server
 
 | IP Address | VRF | Priority |
 | ---------- | --- | -------- |
@@ -489,6 +504,8 @@ ip name-server group mynameserver0
    name-server vrf default 1.1.1.1 priority 0
    name-server vrf default 8.8.8.8
    name-server vrf default 2.2.2.2 priority 1
+   ip domain-list atd.lab.com
+   ip domain-list avd.lab.com
 !
 ip name-server group mynameserver1
    name-server vrf default 1.1.1.1
@@ -2528,6 +2545,8 @@ hardware access-list mechanism tcam
 hardware speed-group 1 serdes 10g
 hardware speed-group 2 serdes 25g
 hardware speed-group 3/1 serdes 25g
+!
+hardware access-list update default-result permit
 ```
 
 ### VM Tracer Sessions
@@ -3028,6 +3047,36 @@ Name-server Group: mynameserver1
 ```eos
 !
 monitor connectivity
+   name-server group mynameserver1
+   interval 5
+   no shutdown
+   interface set GLOBAL_SET Ethernet1-4
+   interface set HOST_SET Loopback2-4, Loopback10-12
+   local-interfaces GLOBAL_SET address-only default
+   !
+   host server1
+      description
+      server1_connectivity_monitor
+      local-interfaces HOST_SET address-only
+      ip 10.10.10.1
+      url https://server1.local.com
+   !
+   host server2
+      description
+      server2_connectivity_monitor
+      local-interfaces HOST_SET address-only
+      ip 10.10.10.2
+      url https://server2.local.com
+   !
+   host server3
+      description
+      server3_connectivity_monitor
+      local-interfaces HOST_SET
+      ip 10.10.10.3
+      icmp echo size 1200
+   !
+   host server4
+   !
    vrf blue
       interface set VRF_GLOBAL_SET Vlan21-24, Vlan29-32
       local-interfaces VRF_GLOBAL_SET default
@@ -3064,35 +3113,6 @@ monitor connectivity
          url https://server2.local.com
    !
    vrf yellow
-   name-server group mynameserver1
-   interval 5
-   no shutdown
-   interface set GLOBAL_SET Ethernet1-4
-   interface set HOST_SET Loopback2-4, Loopback10-12
-   local-interfaces GLOBAL_SET address-only default
-   !
-   host server1
-      description
-      server1_connectivity_monitor
-      local-interfaces HOST_SET address-only
-      ip 10.10.10.1
-      url https://server1.local.com
-   !
-   host server2
-      description
-      server2_connectivity_monitor
-      local-interfaces HOST_SET address-only
-      ip 10.10.10.2
-      url https://server2.local.com
-   !
-   host server3
-      description
-      server3_connectivity_monitor
-      local-interfaces HOST_SET
-      ip 10.10.10.3
-      icmp echo size 1200
-   !
-   host server4
 ```
 
 ## Monitor Layer 1 Logging
@@ -3337,6 +3357,7 @@ STP mode: **rapid-pvst**
 - Spanning Tree disabled for VLANs: **105,202,505-506**
 - Global BPDU Guard for Edge ports is disabled.
 - Global BPDU Filter for Edge ports is disabled.
+- Range of port-ids reserved for port-channels: 201-2001.
 
 ### Spanning Tree Device Configuration
 
@@ -3348,6 +3369,7 @@ no spanning-tree edge-port bpduguard default
 no spanning-tree edge-port bpdufilter default
 spanning-tree bpduguard rate-limit default
 spanning-tree bpduguard rate-limit count 100
+spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
@@ -7835,6 +7857,14 @@ ASN Notation: asdot
 | Address Family | ipv4 |
 | Send community | standard large |
 
+##### NHP
+
+| Settings | Value |
+| -------- | ----- |
+| Next-hop peer | True |
+| BFD | True |
+| BFD Timers | interval: 500, min_rx: 500, multiplier: 3 |
+
 ##### NO-COMMUNITY
 
 | Settings | Value |
@@ -8031,6 +8061,8 @@ ASN Notation: asdot
 | 101.0.3.6 | Inherited from peer group WELCOME_ROUTERS | BLUE-C1 | - | - | - | - | True(interval: 2500, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 101.0.3.7 | - | BLUE-C1 | - | - | - | - | True | - | - | - | - |
 | 101.0.3.8 | - | BLUE-C1 | - | - | - | - | False | - | - | - | - |
+| 10.10.10.0 | - | NHP-PEER | - | - | - | - | Inherited from peer group NHP(interval: 500, min_rx: 500, multiplier: 3) | - | - | - | - |
+| 11.11.11.0 | - | NHP-PEER1 | - | - | - | - | - | - | - | - | - |
 | 10.1.1.0 | Inherited from peer group OBS_WAN | RED-C1 | - | - | - | - | Inherited from peer group OBS_WAN(interval: 2000, min_rx: 2000, multiplier: 3) | - | - | - | - |
 | 10.255.251.1 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | TENANT_A_PROJECT01 | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 | 10.2.3.4 | 1234 | TENANT_A_PROJECT01 | - | all | 0 (no limit) (warning-limit 100, warning-only) | - | - | - | - | - | - |
@@ -8301,6 +8333,8 @@ ASN Notation: asdot
 | VRF | Route-Distinguisher | Redistribute | Graceful Restart | EVPN Multicast |
 | --- | ------------------- | ------------ | ---------------- | -------------- |
 | BLUE-C1 | 1.0.1.1:101 | static<br>ospf | - | IPv4: False<br>Transit: False |
+| NHP-PEER | - | - | - | IPv4: False<br>Transit: False |
+| NHP-PEER1 | - | - | - | IPv4: False<br>Transit: False |
 | RED-C1 | 1.0.1.1:102 | - | - | IPv4: False<br>Transit: False |
 | Tenant_A | 10.50.64.15:30001 | ospf<br>ospfv3<br>connected | - | IPv4: False<br>Transit: False |
 | TENANT_A_PROJECT01 | 192.168.255.3:11 | connected<br>static | - | IPv4: False<br>Transit: False |
@@ -8415,6 +8449,10 @@ router bgp 65101
    neighbor MPLS-IBGP-PEERS maximum-routes 0
    neighbor MULTIPLE-COMMUNITY peer group
    neighbor MULTIPLE-COMMUNITY send-community standard large
+   neighbor NHP peer group
+   neighbor NHP next-hop-peer
+   neighbor NHP bfd
+   neighbor NHP bfd interval 500 min-rx 500 multiplier 3
    neighbor NO-COMMUNITY peer group
    neighbor OBS_WAN peer group
    neighbor OBS_WAN remote-as 65000
@@ -8472,6 +8510,7 @@ router bgp 65101
    neighbor WELCOME_ROUTERS remote-as 65001
    neighbor WELCOME_ROUTERS description BGP Connection to WELCOME ROUTER 02
    neighbor 1.1.1.1 remote-as 1
+   neighbor 1.1.1.1 next-hop-peer
    neighbor 1.1.1.1 description TEST
    neighbor 1b11:3a00:22b0:0088::1 peer group IPV6-UNDERLAY
    neighbor 1b11:3a00:22b0:0088::3 peer group IPV6-UNDERLAY
@@ -8780,6 +8819,7 @@ router bgp 65101
       no neighbor IPV4-UNDERLAY additional-paths send
       neighbor IPv4-UNDERLAY-PEERS activate
       neighbor MLAG-IPv4-UNDERLAY-PEER activate
+      neighbor NHP activate
       neighbor OBS_WAN activate
       neighbor OBS_WAN additional-paths send limit 8
       neighbor SEDI activate
@@ -8794,15 +8834,18 @@ router bgp 65101
       neighbor WELCOME_ROUTERS additional-paths send any
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
+      no neighbor 10.2.3.8 next-hop address-family ipv6
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 10.2.3.9 default-originate route-map Address_Family_IPV4 always
       neighbor 10.2.3.9 additional-paths send ecmp limit 4
+      neighbor 10.2.3.9 next-hop address-family ipv6
       neighbor 192.0.2.1 additional-paths receive
       neighbor 192.0.2.1 route-map Address_Family_IPV4_In in
       neighbor 192.0.2.1 route-map Address_Family_IPV4_Out out
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       neighbor 192.0.2.1 additional-paths send limit 20 prefix-list PL1
+      neighbor 192.0.2.1 next-hop address-family ipv6 originate
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
       network 10.0.0.0/8
@@ -9125,6 +9168,12 @@ router bgp 65101
       Comment created from eos_cli under router_bgp.vrfs.BLUE-C1
       EOF
 
+   !
+   vrf NHP-PEER
+      neighbor 10.10.10.0 peer group NHP
+   !
+   vrf NHP-PEER1
+      neighbor 11.11.11.0 next-hop-peer
    !
    vrf RED-C1
       rd 1.0.1.1:102

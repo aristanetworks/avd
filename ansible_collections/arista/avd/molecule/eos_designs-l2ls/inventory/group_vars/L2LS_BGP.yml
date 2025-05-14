@@ -26,8 +26,8 @@ tenants:
             ip_address_virtual: 10.1.220.1/24
             enabled: true
         static_routes: # Testing creation of static route in default VRF including redistribute static under the underlay protocol
-          - destination_address_prefix: 10.0.0.0/8
-            gateway: 10.1.100.100
+          - prefix: 10.0.0.0/8
+            next_hop: 10.1.100.100
             nodes: [ BGP-SPINE2 ]
 
 network_ports:

@@ -5098,6 +5098,9 @@ keys:
             - algomatch
             - none
             - tcam
+          update_default_result_permit:
+            type: bool
+            description: Accept the packets when access-list is being updated.
       speed_groups:
         type: list
         primary_key: speed_group
@@ -5836,6 +5839,15 @@ keys:
         ip_domain_list:
           type: str
           description: Set domain names to complete unqualified host names.
+          deprecation:
+            warning: true
+            new_key: ip_domain_lists
+            remove_in_version: 6.0.0
+        ip_domain_lists:
+          type: list
+          description: Set domain names to complete unqualified host names.
+          items:
+            type: str
   ip_name_servers:
     type: list
     items:
@@ -6692,9 +6704,23 @@ keys:
         destination_address_prefix:
           type: str
           description: IPv6 Network/Mask.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        prefix:
+          type: str
+          description: IPv6 Network/Mask.
         interface:
           type: str
         gateway:
+          type: str
+          description: IPv6 Address.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: next_hop
+        next_hop:
           type: str
           description: IPv6 Address.
         track_bfd:
@@ -13800,6 +13826,8 @@ keys:
               description: Time-to-live in range of hops.
               convert_types:
               - str
+            next_hop_peer:
+              type: bool
             next_hop_self:
               type: bool
             password:
@@ -14177,6 +14205,8 @@ keys:
               description: Time-to-live in range of hops.
               convert_types:
               - str
+            next_hop_peer:
+              type: bool
             next_hop_self:
               type: bool
             link_bandwidth:
@@ -15248,6 +15278,19 @@ keys:
                       type: str
                       description: Apply the configurations only to the routes matching
                         the prefix list.
+                next_hop:
+                  type: dict
+                  keys:
+                    address_family_ipv6:
+                      type: dict
+                      keys:
+                        enabled:
+                          type: bool
+                          required: true
+                          description: Enables advertising the Extended Next Hop Encoding
+                            capability.
+                        originate:
+                          type: bool
           redistribute:
             type: dict
             description: Redistribute routes in to BGP.
@@ -17587,6 +17630,8 @@ keys:
                     min: 1
                     max: 255
                     description: Time-to-live in range of hops.
+                  next_hop_peer:
+                    type: bool
                   next_hop_self:
                     type: bool
                   shutdown:
@@ -21797,7 +21842,6 @@ keys:
         keys:
           enable:
             type: bool
-            default: false
             description: 'Enable or disable all snmp-traps.
 
               '
@@ -21819,7 +21863,7 @@ keys:
                     '
                 enabled:
                   type: bool
-                  default: true
+                  description: The trap is enabled unless this is set to false.
       vrfs:
         type: list
         primary_key: name
@@ -21947,6 +21991,26 @@ keys:
               type: int
               convert_types:
               - str
+      port_id_allocation_port_channel_range:
+        description: Specify range of port-ids to reserve for port-channels.
+        type: dict
+        keys:
+          minimum:
+            description: Specify minimum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
+          maximum:
+            description: Specify maximum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
   standard_access_lists:
     type: list
     primary_key: name
@@ -21993,9 +22057,23 @@ keys:
         destination_address_prefix:
           type: str
           description: IPv4_network/Mask.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: prefix
+        prefix:
+          type: str
+          description: IPv4_network/Mask.
         interface:
           type: str
         gateway:
+          type: str
+          description: IPv4 Address.
+          deprecation:
+            warning: true
+            remove_in_version: 6.0.0
+            new_key: next_hop
+        next_hop:
           type: str
           description: IPv4 Address.
         track_bfd:

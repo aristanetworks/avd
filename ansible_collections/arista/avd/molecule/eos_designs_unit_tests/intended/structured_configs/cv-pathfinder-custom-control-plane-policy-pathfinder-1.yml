@@ -12,6 +12,10 @@ application_traffic_recognition:
     - name: CUSTOM-APPLICATION-2
     - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
+  - name: VIDEO-WITH-SERVICE
+    applications:
+    - name: microsoft
+      service: chat
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -59,10 +63,13 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+      service: chat
     application_transports:
     - rtp
     categories:
     - name: VIDEO1
+    - name: VIDEO-WITH-SERVICE
+      service: audio-video
 config_end: true
 dps_interfaces:
 - name: Dps1
@@ -189,6 +196,12 @@ metadata:
         value: Another-ISP
       - name: Circuit
         value: '999'
+    - interface: Port-Channel5
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Another-ISP
   cv_pathfinder:
     role: pathfinder
     vtep_ip: 192.168.144.1
@@ -209,6 +222,10 @@ metadata:
       circuit_id: '999'
       pathgroup: INET
       public_ip: 10.9.9.9
+    - name: Port-Channel5
+      carrier: Another-ISP
+      pathgroup: INET
+      public_ip: 10.7.7.5
     pathgroups:
     - name: MPLS
       carriers:
@@ -361,16 +378,25 @@ metadata:
       - name: VIDEO
         builtin_applications:
         - name: skype
+          services:
+          - chat
         user_defined_applications:
         - name: CUSTOM-APPLICATION-1
         categories:
         - category: VIDEO1
+        - category: VIDEO-WITH-SERVICE
+          services:
+          - audio-video
         transport_protocols:
         - rtp
       categories:
         builtin_applications:
         - name: microsoft-teams
           category: VIDEO1
+        - name: microsoft
+          category: VIDEO-WITH-SERVICE
+          services:
+          - chat
         user_defined_applications:
         - name: CUSTOM-APPLICATION-2
           category: VIDEO1
@@ -379,6 +405,16 @@ metadata:
 platform:
   sfe:
     data_plane_cpu_allocation_max: 1
+port_channel_interfaces:
+- name: Port-Channel5
+  description: Another-ISP_peer2_Port-Channel16
+  shutdown: false
+  ip_address: 10.7.7.5/31
+  peer: peer2
+  peer_interface: Port-Channel16
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -592,6 +628,7 @@ router_path_selection:
     local_interfaces:
     - name: Ethernet1
     - name: Ethernet3
+    - name: Port-Channel5
     static_peers:
     - router_ip: 192.168.144.1
       name: cv-pathfinder-pathfinder
@@ -637,14 +674,15 @@ service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 static_routes:
-- destination_address_prefix: 0.0.0.0/0
-  gateway: 10.7.7.6
+- prefix: 0.0.0.0/0
+  next_hop: 10.7.7.6
 stun:
   server:
     local_interfaces:
     - Ethernet1
     - Ethernet2
     - Ethernet3
+    - Port-Channel5
     ssl_profile: profileA
 transceiver_qsfp_default_mode_4x10: false
 vrfs:

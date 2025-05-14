@@ -63,10 +63,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;write</samp>](## "snmp_settings.groups.[].write") | String |  |  |  | Write view. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;notify</samp>](## "snmp_settings.groups.[].notify") | String |  |  |  | Notify view. |
     | [<samp>&nbsp;&nbsp;traps</samp>](## "snmp_settings.traps") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "snmp_settings.traps.enable") | Boolean |  | `False` |  | Enable or disable all snmp-traps.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "snmp_settings.traps.enable") | Boolean |  |  |  | Enable or disable all snmp-traps.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;snmp_traps</samp>](## "snmp_settings.traps.snmp_traps") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "snmp_settings.traps.snmp_traps.[].name") | String |  |  |  | Enable or disable specific snmp-traps and their sub_traps.<br>Examples:<br>- "bgp"<br>- "bgp established"<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "snmp_settings.traps.snmp_traps.[].enabled") | Boolean |  | `True` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "snmp_settings.traps.snmp_traps.[].enabled") | Boolean |  |  |  | The trap is enabled unless this is set to false. |
 
 === "YAML"
 
@@ -204,7 +204,7 @@
       traps:
 
         # Enable or disable all snmp-traps.
-        enable: <bool; default=False>
+        enable: <bool>
         snmp_traps:
 
             # Enable or disable specific snmp-traps and their sub_traps.
@@ -212,5 +212,7 @@
             # - "bgp"
             # - "bgp established"
           - name: <str>
-            enabled: <bool; default=True>
+
+            # The trap is enabled unless this is set to false.
+            enabled: <bool>
     ```

@@ -14,20 +14,30 @@
 | --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
 {%     for static_route in ipv6_static_routes %}
 {%         set vrf = static_route.vrf | arista.avd.default('default') %}
-{%         if static_route.gateway is arista.avd.defined %}
-{%             set gateway = static_route.gateway %}
+{%         if static_route.next_hop is arista.avd.defined %}
+{%             set next_hop = static_route.next_hop %}
 {%             if static_route.track_bfd is arista.avd.defined(true) %}
-{%                 set gateway = gateway ~ " (tracked with BFD)" %}
+{%                 set next_hop = next_hop ~ " (tracked with BFD)" %}
+{%             endif %}
+{%         elif static_route.gateway is arista.avd.defined %}
+{%             set next_hop = static_route.gateway %}
+{%             if static_route.track_bfd is arista.avd.defined(true) %}
+{%                 set next_hop = next_hop ~ " (tracked with BFD)" %}
 {%             endif %}
 {%         else %}
-{%             set gateway = "-" %}
+{%             set next_hop = "-" %}
 {%         endif %}
 {%         set interface = static_route.interface | arista.avd.default('-') %}
 {%         set distance = static_route.distance | arista.avd.default('1') %}
 {%         set tag = static_route.tag | arista.avd.default('-') %}
 {%         set name = static_route.name | arista.avd.default('-') %}
 {%         set metric = static_route.metric | arista.avd.default('-') %}
-| {{ vrf }} | {{ static_route.destination_address_prefix }} | {{ gateway }} | {{ interface }} | {{ distance }} | {{ tag }} | {{ name }} | {{ metric }} |
+{%         if static_route.prefix is arista.avd.defined %}
+{%             set prefix = static_route.prefix %}
+{%         elif static_route.destination_address_prefix is arista.avd.defined %}
+{%             set prefix = static_route.destination_address_prefix %}
+{%         endif %}
+| {{ vrf }} | {{ prefix }} | {{ next_hop }} | {{ interface }} | {{ distance }} | {{ tag }} | {{ name }} | {{ metric }} |
 {%     endfor %}
 
 #### Static Routes Device Configuration

@@ -1,0 +1,18 @@
+fabric_name: FABRIC_MISSING_LOOPBACK_IPV4_POOL
+
+node_type_keys:
+  - key: core_router
+    type: core_router
+
+bgp_as: 65000
+
+# Nodes
+type: core_router
+core_router:
+  defaults:
+    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
+  nodes:
+    - name: missing-loopback-ipv4-pool
+      id: 1
+
+expected_error_message: "'loopback_ipv4_pool' is required but was not found for host 'missing-loopback-ipv4-pool'."
