@@ -93,11 +93,11 @@ The drawing below shows the physical topology used in this example. The interfac
 
 === "Underlay"
 
-![Figure: Arista Underlay BGP Design](images/bgp-underlay.svg)
+![Figure: Arista Underlay BGP Design](images/bgp-underlay-ipv6.svg)
 
 === "Overlay"
 
-![Figure: Arista Underlay BGP Design](images/bgp-overlay.svg)
+![Figure: Arista Underlay BGP Design](images/bgp-overlay-ipv6.svg)
 
 ### Basic EOS config
 
