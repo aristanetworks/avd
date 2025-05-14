@@ -15,7 +15,7 @@ from typing import TYPE_CHECKING, Any, ClassVar, get_origin
 from grpclib import Status
 from grpclib.exceptions import GRPCError
 
-from pyavd._cv.client.exceptions import CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import CVClientException, CVResourceNotFound, CVTimeoutError
 from pyavd._utils import batch
 
 from .constants import CVAAS_VERSION_STRING
@@ -143,7 +143,7 @@ class GRPCRequestHandler:
         if self.list_field:
             return_annotation = (
                 list
-                if type(self.func_signature.return_annotation) is str and self.func_signature.return_annotation.startswith("list")
+                if isinstance(self.func_signature.return_annotation, str) and self.func_signature.return_annotation.startswith("list")
                 else self.func_signature.return_annotation
             )
             if return_annotation is not list and get_origin(return_annotation) is not list:
@@ -167,49 +167,50 @@ class GRPCRequestHandler:
             try:
                 return await self.func(*call_args, **call_kwargs)
             except Exception as e:  # noqa: PERF203
-                if isinstance(e, GRPCError):
-                    status = e.status
+                match e:
+                    case AsyncioTimeoutError():
+                        raise CVTimeoutError(*e.args, call_args, call_kwargs)
 
-                    if status == Status.NOT_FOUND:
-                        raise CVResourceNotFound(*e.args)
+                    case GRPCError():
+                        match e.status:
+                            case Status.NOT_FOUND:
+                                raise CVResourceNotFound(*e.args, call_args, call_kwargs)
 
-                    if status == Status.CANCELLED:
-                        raise CVTimeoutError(*e.args)
+                            case Status.CANCELLED:
+                                raise CVTimeoutError(*e.args, call_args, call_kwargs)
 
-                    if status == Status.UNAVAILABLE:
-                        if attempt <= self.max_retries:
-                            delay = self.initial_delay * (self.factor ** (attempt - 1))
-                            LOGGER.warning(
-                                "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
-                                self.__class__.__name__,
-                                attempt,
-                                self.max_retries + 1,
-                                func_name,
-                                e,
-                                delay,
-                            )
-                            await asyncio_sleep(delay)
-                        # Use case where all retries for this specific call failed
-                        else:
-                            LOGGER.exception(
-                                "%s: Attempt %s/%s to execute call '%s' failed.", self.__class__.__name__, attempt, self.max_retries + 1, func_name
-                            )
-                            raise CVGRPCStatusUnavailable(*e.args)
+                            case Status.UNAVAILABLE:
+                                if attempt <= self.max_retries:
+                                    delay = self.initial_delay * (self.factor ** (attempt - 1))
+                                    LOGGER.warning(
+                                        "%s: Attempt %s/%s to execute call '%s' returned '%s'. Retrying in %ss...",
+                                        self.__class__.__name__,
+                                        attempt,
+                                        self.max_retries + 1,
+                                        func_name,
+                                        e,
+                                        delay,
+                                    )
+                                    await asyncio_sleep(delay)
+                                # Use case where all retries for this specific call failed
+                                else:
+                                    LOGGER.exception(
+                                        "%s: Attempt %s/%s to execute call '%s' failed.", self.__class__.__name__, attempt, self.max_retries + 1, func_name
+                                    )
+                                    raise CVGRPCStatusUnavailable(*e.args, call_args, call_kwargs)
 
-                    elif status == Status.RESOURCE_EXHAUSTED and (matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message)):
-                        new_exception = CVMessageSizeExceeded(*e.args)
-                        new_exception.max_size = int(matches.group("max"))
-                        new_exception.size = int(matches.group("size"))
-                        raise new_exception
+                            case Status.RESOURCE_EXHAUSTED:
+                                if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message):
+                                    new_exception = CVMessageSizeExceeded(*e.args)
+                                    new_exception.max_size = int(matches.group("max"))
+                                    new_exception.size = int(matches.group("size"))
+                                    raise new_exception
 
-                    else:
-                        raise
+                            case _:
+                                raise CVClientException(*e.args, call_args, call_kwargs)
 
-                elif isinstance(e, AsyncioTimeoutError):
-                    raise CVTimeoutError(*e.args)
-
-                else:
-                    raise
+                    case _:
+                        raise CVClientException(*e.args, call_args, call_kwargs)
         # Required by ruff
         return None
 

@@ -3,6 +3,8 @@
 # that can be found in the LICENSE file.
 import logging
 import re
+from asyncio.exceptions import InvalidStateError as AsyncioInvalidStateError
+from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from collections import defaultdict
 from contextlib import nullcontext as does_not_raise
 from hashlib import sha256
@@ -16,7 +18,7 @@ from grpclib import Status
 from grpclib.exceptions import GRPCError
 
 from pyavd._cv.client.async_decorators import GRPCRequestHandler, LimitCvVersion
-from pyavd._cv.client.exceptions import CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import CVClientException, CVGRPCStatusUnavailable, CVResourceNotFound, CVTimeoutError
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 
 LOGGER = logging.getLogger(__name__)
@@ -76,10 +78,7 @@ class CvClass:
     async def msgsize_limited_method(self, field: list, max_accepted_len: int) -> list[bool]:
         # Check if the number of entries is higher than the max accepted length and raise.
         if len(field) > max_accepted_len:
-            e = CVMessageSizeExceeded("Too long")
-            e.max_size = max_accepted_len
-            e.size = len(field)
-            raise e
+            raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({len(field)} vs. {max_accepted_len})")
 
         # return list with len of fields for this execution.
         return [len(field)]
@@ -87,20 +86,22 @@ class CvClass:
     @GRPCRequestHandler()
     async def msgsize_unlimited_grpc_method(
         self,
-        failures: int,
-        inner_exception: Exception | None,
+        failures: int = 0,
+        inner_exception: Exception | None = None,
     ) -> Exception | str:
         self._grpc_call_count["general"] += 1
-        if self._grpc_call_count["general"] > failures >= 0:
+        if self._grpc_call_count["general"] > failures > 0:
             return "gRPC call succeeded"
         if inner_exception:
             raise inner_exception
         return "gRPC call succeeded"
 
     @GRPCRequestHandler(list_field="field")
-    async def msgsize_limited_grpc_method(self, failures: int, inner_exception: Exception | None, field: list[int], max_accepted_size: int) -> list:
+    async def msgsize_limited_grpc_method(
+        self, failures: int = 0, inner_exception: Exception | None = None, field: list[int] | None = None, max_accepted_size: int = 0
+    ) -> list:
         self._grpc_call_count[self._calculate_list_hash(field)] += 1
-        if self._grpc_call_count[self._calculate_list_hash(field)] > failures >= 0:
+        if (self._grpc_call_count[self._calculate_list_hash(field)] > failures > 0) or not inner_exception:
             if (field_sum := sum(field)) > max_accepted_size:
                 raise GRPCError(status=Status.RESOURCE_EXHAUSTED, message=f"grpc: received message larger than max ({field_sum} vs. {max_accepted_size})")
 
@@ -157,23 +158,17 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
 @pytest.mark.parametrize(
     (
         "failures",
-        "function_calls",
+        "async_sleep_calls",
         "logs_qty",
         "log_patterns",
         "inner_exception",
         "outer_exception",
         "outer_exception_patterns",
-        "expected_response",
-        "data",
-        "max_len",
     ),
     [
-        pytest.param(0, 1, 0, [], None, does_not_raise(), [], "gRPC call succeeded", None, None, id="NO_GRPC_FAILURES"),
-        pytest.param(10, 1, 0, [], GRPCError(Status.NOT_FOUND), pytest.raises(CVResourceNotFound), [], [1, 1], [1, 1], 2, id="GRPC_CVRESOURCENOTFOUND"),
-        pytest.param(10, 1, 0, [], GRPCError(Status.CANCELLED), pytest.raises(CVTimeoutError), [], [1, 1], [1, 1], 2, id="GRPC_CVTIMEOUTERROR"),
         pytest.param(
             1,
-            2,
+            1,
             1,
             [
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s",
@@ -181,14 +176,11 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
             GRPCError(Status.UNAVAILABLE),
             does_not_raise(),
             [],
-            "gRPC call succeeded",
-            None,
-            None,
             id="ONE_GRPC_STATUS_UNAVAILABLE_FAILURE",
         ),
         pytest.param(
             3,
-            4,
+            3,
             3,
             [
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
@@ -198,14 +190,11 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
             GRPCError(Status.UNAVAILABLE),
             does_not_raise(),
             [],
-            "gRPC call succeeded",
-            None,
-            None,
             id="THREE_GRPC_STATUS_UNAVAILABLE_FAILURES",
         ),
         pytest.param(
             6,
-            6,
+            5,
             6,
             [
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
@@ -218,14 +207,11 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
             GRPCError(Status.UNAVAILABLE),
             pytest.raises(CVGRPCStatusUnavailable),
             ["Status\\.UNAVAILABLE: 14"],
-            None,
-            None,
-            None,
             id="SIX_GRPC_STATUS_UNAVAILABLE_FAILURES",
         ),
         pytest.param(
             7,
-            6,
+            5,
             6,
             [
                 "Attempt 1/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
@@ -238,28 +224,73 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
             GRPCError(Status.UNAVAILABLE),
             pytest.raises(CVGRPCStatusUnavailable),
             ["Status\\.UNAVAILABLE: 14"],
-            None,
-            None,
-            None,
             id="SEVEN_GRPC_STATUS_UNAVAILABLE_FAILURES",
         ),
-        pytest.param(
-            1,
-            1,
-            0,
-            [],
-            GRPCError(Status.INVALID_ARGUMENT),
-            pytest.raises(GRPCError),
-            ["Status\\.INVALID_ARGUMENT: 3"],
-            None,
-            None,
-            None,
-            id="ONE_GRPC_STATUS_INVALID_ARGUMENT_FAILURE",
-        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("grpc_method", "extra_args"),
+    [
+        pytest.param("msgsize_unlimited_grpc_method", {}, id="UNLIMITED_SIZE_GRPC_METHOD"),
+        pytest.param("msgsize_limited_grpc_method", {"field": [0]}, id="LIMITED_SIZE_GRPC_METHOD"),
+    ],
+)
+async def test_grpc_request_handler_unavailable(
+    caplog: pytest.LogCaptureFixture,
+    failures: int,
+    async_sleep_calls: int,
+    logs_qty: int,
+    log_patterns: list[str],
+    inner_exception: GRPCError | None,
+    outer_exception: RaisesContext | does_not_raise,
+    outer_exception_patterns: list[str],
+    grpc_method: str,
+    extra_args: dict[str, list[int]],
+) -> None:
+    with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
+        mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+        with caplog.at_level(logging.WARNING), outer_exception as exc_info:
+            _ = await getattr(mocked_cv_client, grpc_method)(failures, inner_exception, **extra_args)
+
+        # Assert number of log messages
+        assert len(caplog.records) == logs_qty
+
+        # Assert that log messages match expected log patterns
+        for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
+            assert re.search(re.compile(current_pattern), current_record.message)
+
+        # Assert that exception value contains all expected exception patterns
+        for expected_pattern in outer_exception_patterns:
+            assert re.search(re.compile(expected_pattern), str(exc_info.value))
+
+        # Assert calls to unlimited function
+        assert sleep_mock.call_count == async_sleep_calls
+
+        # Assert usage of exponential backoff mechanism
+        delay_pattern = re.compile(r"Retrying in (?P<delay>\d+)s")
+        current_call_delays = [int(delay_match.group("delay")) for record in caplog.records if (delay_match := delay_pattern.search(record.message))]
+        assert all((y / x == 2) for x, y in pairwise(current_call_delays))
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    (
+        "failures",
+        "function_calls",
+        "async_sleep_calls",
+        "logs_qty",
+        "log_patterns",
+        "inner_exception",
+        "expected_response",
+        "data",
+        "max_len",
+    ),
+    [
         pytest.param(
             0,
             8,
             0,
+            19,
             [
                 "Preparing call for '.*' for list_field '.*' with 10 item.*",
                 "Message size 55 exceeded the max of 15 for '.*' on list_field '.*'\\. Attempting to split 10 items.*",
@@ -282,16 +313,15 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
                 "Preparing call for '.*' for list_field '.*' with 1 item.*",
             ],
             None,
-            does_not_raise(),
-            [],
             [2, 2, 2, 2, 1, 1],
             [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
             15,
-            id="GRPC_MSG_LIMIT_EXSEEDED",
+            id="GRPC_MSG_LIMIT_EXCEEDED",
         ),
         pytest.param(
             3,
             44,
+            33,
             60,
             [
                 "Preparing call for '.*' for list_field '.*' with 11 item.*",
@@ -356,90 +386,126 @@ async def test_msg_size_handler_invalid_fuction_list_field() -> None:
                 "Attempt 3/6 to execute call '.*' returned '.*'\\. Retrying in [0-9]+s.*",
             ],
             GRPCError(Status.UNAVAILABLE),
-            does_not_raise(),
-            [],
             [2, 2, 1, 1, 2, 1, 1, 1],
             [1, 2, 3, 4, 5, 15, 6, 7, 8, 9, 10],
             15,
-            id="THREE_GRPC_STATUS_UNAVAILABLE_FAILURES_GRPC_MSG_LIMIT_EXSEEDED",
+            id="THREE_GRPC_STATUS_UNAVAILABLE_FAILURES_GRPC_MSG_LIMIT_EXCEEDED",
         ),
     ],
 )
-async def test_grpc_request_handler(
+async def test_grpc_request_handler_limited(
     caplog: pytest.LogCaptureFixture,
     failures: int,
     function_calls: int,
+    async_sleep_calls: int,
     logs_qty: int,
     log_patterns: list[str],
     inner_exception: GRPCError | None,
-    outer_exception: RaisesContext | does_not_raise,
-    outer_exception_patterns: list[str],
     expected_response: Any,
     data: list | None,
     max_len: int | None,
 ) -> None:
     with patch("pyavd._cv.client.async_decorators.asyncio_sleep", new_callable=AsyncMock) as sleep_mock:
         mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
-        with caplog.at_level(logging.DEBUG), outer_exception as exc_info:
-            # Engage FUT
-            if data and max_len and expected_response:
-                resp = await mocked_cv_client.msgsize_limited_grpc_method(failures, inner_exception, data, max_len)
-            else:
-                resp = await mocked_cv_client.msgsize_unlimited_grpc_method(failures, inner_exception)
+        with caplog.at_level(logging.INFO):
+            resp = await mocked_cv_client.msgsize_limited_grpc_method(failures, inner_exception, data, max_len)
 
-        if not inner_exception or inner_exception.status in [Status.UNAVAILABLE, Status.RESOURCE_EXHAUSTED]:
-            # Assert number of log messages
-            if logs_qty > 0:
-                assert len(caplog.records) == logs_qty
+        # Assert number of method calls
+        assert sum(mocked_cv_client._grpc_call_count.values()) == function_calls
 
-            # Assert that log messages match expected log patterns
-            for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
-                assert re.search(re.compile(current_pattern), current_record.message)
+        # Assert number of times when delay was involved due to the received UNAVAILABLE exception
+        assert sleep_mock.call_count == async_sleep_calls
 
-            # If exception is raised, assert that exception value contains all expected exception patterns
-            if exc_info and (exception_string := str(exc_info.value)):
-                for expected_pattern in outer_exception_patterns:
-                    assert re.search(re.compile(expected_pattern), exception_string)
+        # Assert number of log messages
+        assert len(caplog.records) == logs_qty
 
-            # Assert that method's return matches expected return
-            if expected_response:
-                assert resp == expected_response
+        # Assert that log messages match expected log patterns
+        for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
+            assert re.search(re.compile(current_pattern), current_record.message)
 
-            # Assert number of method calls to unlimited function
-            if "general" in mocked_cv_client._grpc_call_count:
-                assert mocked_cv_client._grpc_call_count["general"] == function_calls
+        # Assert that method's return matches expected return
+        assert resp == expected_response
 
-            # Assert number of method calls to limited function
-            elif isinstance(expected_response, list) and len(expected_response) > 1 and isinstance(data, list) and isinstance(max_len, int):
-                # Assert total number of method calls
-                assert sum(mocked_cv_client._grpc_call_count.values()) == function_calls
-
-            # Assert number of times when delay was involved due to the received UNAVAILABLE exception
-            if not data:
-                # Assert calls to unlimited function
-                assert sleep_mock.call_count == min(
-                    failures if isinstance(inner_exception, GRPCError) and inner_exception.status == Status.UNAVAILABLE else 0, 5
-                )
-            elif isinstance(expected_response, list):
-                # Assert calls to limited function
-                # initial_call + number_of_succeeded_chunk_calls + number_of_splits (when size exceeded the max of_size)
-                splitting_multiplier = 1 + len(expected_response) + sum(1 for x, y in pairwise(expected_response) if x > y)
-
-                assert sleep_mock.call_count == min(
-                    failures * splitting_multiplier if isinstance(inner_exception, GRPCError) and inner_exception.status == Status.UNAVAILABLE else 0,
-                    5 * splitting_multiplier,
-                )
-
-            # Assert that for each data payload we used exponential backoff mechanism
-            delay_pattern = re.compile(r"Retrying in (?P<delay>\d+)s")
-            delay_separator_pattern = re.compile(r"Processing chunk \d+/\d+ for")
-            current_call_delays = []
-            for record in caplog.records:
-                if delay_match := delay_pattern.search(record.message):
-                    current_call_delays.append(int(delay_match.group("delay")))
-                elif delay_separator_pattern.search(record.message):
-                    # Assert that backoff mechanism used exponential delay
-                    assert all((y / x == 2) for x, y in pairwise(current_call_delays))
-                    current_call_delays = []
-            if current_call_delays:
+        # Assert that for each data payload we used exponential backoff mechanism
+        delay_pattern = re.compile(r"Retrying in (?P<delay>\d+)s")
+        delay_separator_pattern = re.compile(r"Processing chunk \d+/\d+ for")
+        current_call_delays = []
+        for record in caplog.records:
+            if delay_match := delay_pattern.search(record.message):
+                current_call_delays.append(int(delay_match.group("delay")))
+            elif delay_separator_pattern.search(record.message):
+                # Assert that backoff mechanism used exponential delay
                 assert all((y / x == 2) for x, y in pairwise(current_call_delays))
+                current_call_delays = []
+        if current_call_delays:
+            assert all((y / x == 2) for x, y in pairwise(current_call_delays))
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize(
+    (
+        "log_patterns",
+        "inner_exception",
+        "outer_exception",
+        "outer_exception_patterns",
+    ),
+    [
+        pytest.param(["Preparing call.*with 1 item"], None, does_not_raise(), [], id="NO_EXCEPTIONS"),
+        pytest.param(["Preparing call.*with 1 item"], AsyncioTimeoutError, pytest.raises(CVTimeoutError), [], id="ASYNCIO_TIMEOUTERROR_CVTIMEOUTERROR"),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            AsyncioInvalidStateError,
+            pytest.raises(CVClientException),
+            [],
+            id="ASYNCIO_INVALIDSTATEERROR_ASYNCIOINVALIDSTATEERROR",
+        ),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            GRPCError(Status.NOT_FOUND),
+            pytest.raises(CVResourceNotFound),
+            [r"Status\.NOT_FOUND: 5"],
+            id="GRPC_NOT_FOUND_CVRESOURCENOTFOUND",
+        ),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            GRPCError(Status.CANCELLED),
+            pytest.raises(CVTimeoutError),
+            [r"Status\.CANCELLED: 1"],
+            id="GRPC_CANCELLED_CVTIMEOUTERROR",
+        ),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            GRPCError(Status.DEADLINE_EXCEEDED),
+            pytest.raises(CVClientException),
+            [r"Status\.DEADLINE_EXCEEDED: 4"],
+            id="GRPC_DEADLINE_EXCEEDED_DEADLINE_EXCEEDED",
+        ),
+    ],
+)
+@pytest.mark.parametrize(
+    ("grpc_method", "extra_args"),
+    [
+        pytest.param("msgsize_unlimited_grpc_method", {}, id="UNLIMITED_SIZE_GRPC_METHOD"),
+        pytest.param("msgsize_limited_grpc_method", {"field": [0]}, id="LIMITED_SIZE_GRPC_METHOD"),
+    ],
+)
+async def test_grpc_request_handler_other_cases(
+    caplog: pytest.LogCaptureFixture,
+    log_patterns: list[str],
+    inner_exception: Exception | None,
+    outer_exception: RaisesContext | does_not_raise,
+    outer_exception_patterns: list[str],
+    grpc_method: str,
+    extra_args: dict[str, list[int]],
+) -> None:
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+    with caplog.at_level(logging.DEBUG), outer_exception as exc_info:
+        _ = await getattr(mocked_cv_client, grpc_method)(inner_exception=inner_exception, **extra_args)
+
+    # Assert that log messages match expected log patterns
+    for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
+        assert re.search(re.compile(current_pattern), current_record.message)
+
+    # Assert that exception value contains all expected exception patterns
+    for expected_pattern in outer_exception_patterns:
+        assert re.search(re.compile(expected_pattern), str(exc_info.value))
