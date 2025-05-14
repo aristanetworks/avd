@@ -67,24 +67,6 @@ wan_router:
               ip_address: dhcp
               peer_ip: 172.31.0.1
               dhcp_ip: 10.0.0.145
-              # cv_pathfinder_internet_exit:
-              #   policies:
-              #     - name: ZSCALER-EXIT-POLICY-1
-              #       tunnel_interface_numbers: 100-102
-              #     - name: ZSCALER-EXIT-POLICY-2
-              #       tunnel_interface_numbers: 110-112
-              #     - name: DIRECT-EXIT-POLICY-1
-              #     - name: DIRECT-EXIT-POLICY-2
-        # - name: all-wan-ha-interfaces-are-not-uplink-interfaces-node2
-        #   id: 2 1
-        #   uplink_switch_interfaces: [Ethernet1]
-        #   l3_interfaces:
-        #     - name: Ethernet3
-        #       wan_carrier: ATT
-        #       wan_circuit_id: 404
-        #       ip_address: dhcp
-        #       peer_ip: 172.31.0.1
-        #       dhcp_ip: 10.0.0.145
 
 wan_path_groups:
   - name: INET

@@ -56,8 +56,9 @@ class WanMixin(Protocol):
     @cached_property
     def cv_pathfinder_transit_mode(self: SharedUtilsProtocol) -> Literal["region", "zone"] | None:
         """When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None."""
-        # TODO: For this node should be server as wan_role but and this method called in cv_pathfinder_role
-        # and under that if node is server it return the role as pathfinder so this condition never occur.
+        # TODO: The expected 'wan_role' for this node is 'server', but this method is called within 'cv_pathfinder_role'.
+        # Within 'cv_pathfinder_role', if the 'wan_role' is 'server', the function returns 'pathfinder',
+        # so this condition will never occur under the current logic.
         if not self.is_cv_pathfinder_client:
             return None
 
@@ -70,6 +71,7 @@ class WanMixin(Protocol):
 
         Interfaces under node config l3_interfaces where wan_carrier is set are considered as WAN interfaces.
         """
+        # TODO: As we are calling the method 'wan_interfaces' within the WAN settings context, this condition can be removed.
         if not self.is_wan_router:
             return EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3Interfaces()
 
@@ -84,6 +86,7 @@ class WanMixin(Protocol):
 
         Interfaces under node config l3_port_channels where wan_carrier is set are considered as WAN interfaces.
         """
+        # TODO: As we are calling the method 'wan_port_channels' within the WAN settings context, this condition can be removed.
         if not self.is_wan_router:
             return EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannels()
 
@@ -100,6 +103,7 @@ class WanMixin(Protocol):
               - name: ...
                 ip: ... (for route-servers the IP may come from wan_route_servers).
         """
+        # TODO: As we are calling the method 'wan_local_carriers' within the WAN settings context, this condition can be removed.
         if not self.is_wan_router:
             return []
 
@@ -167,7 +171,7 @@ class WanMixin(Protocol):
                 public_ip: ...
         """
         local_path_groups = EosDesigns.WanPathGroups()
-
+        # TODO: As we are calling the method 'wan_local_path_groups' within the WAN settings context, this condition can be removed.
         if not self.is_wan_router:
             return local_path_groups
 
@@ -193,6 +197,7 @@ class WanMixin(Protocol):
     @cached_property
     def wan_ha_peer_path_groups(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol.WanPathGroups:
         """List of WAN HA peer path-groups coming from facts."""
+        # TODO: As we are calling the method 'wan_ha_peer_path_groups' within the WAN settings context, this condition can be removed.
         if not self.is_wan_router or not self.wan_ha_peer:
             return EosDesignsFactsProtocol.WanPathGroups()
         peer_facts = self.get_peer_facts(self.wan_ha_peer)
@@ -310,7 +315,6 @@ class WanMixin(Protocol):
         """
         # Injecting default zone with id 1.
 
-        # TODO: Unable to reach this condition
         if self.wan_region is None:
             # Should never happen but just in case.
             msg = "Could not find 'cv_pathfinder_region' so it is not possible to auto-generate the zone."
@@ -360,7 +364,7 @@ class WanMixin(Protocol):
                 if not wan_rs.path_groups:
                     if not (peer_path_groups := peer_facts.wan_path_groups):
                         msg = (
-                            f"'wan_path_groups' is missing for peering with {wan_rs}, either set it in under 'wan_route_servers'"
+                            f"'wan_path_groups' is missing for peering with {wan_rs.hostname}, either set it in under 'wan_route_servers'"
                             " or something is wrong with the peer facts."
                         )
                         raise AristaAvdInvalidInputsError(msg)
@@ -440,9 +444,6 @@ class WanMixin(Protocol):
 
     @cached_property
     def cv_pathfinder_role(self: SharedUtilsProtocol) -> str | None:
-        if not self.is_cv_pathfinder_router:
-            return None
-
         if self.is_cv_pathfinder_server:
             return "pathfinder"
 
@@ -490,7 +491,7 @@ class WanMixin(Protocol):
 
         if self.node_group_is_primary_and_peer_hostname is not None:
             return self.node_group_is_primary_and_peer_hostname[1]
-
+        # TODO: Unable to reach this condition. Need to discuss with maintainers.
         msg = "Unable to find WAN HA peer within same node group"
         raise AristaAvdError(msg)
 
@@ -583,6 +584,7 @@ class WanMixin(Protocol):
             interfaces = set(self.node_config.wan_ha.ha_interfaces)
             for uplink in vrf_default_peer_uplinks:
                 if not interfaces or uplink.interface in interfaces:
+                    # TODO: Need help to get this condition.
                     if not uplink.ip_address:
                         msg = f"The uplink interface {uplink.interface} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address."
                         raise AristaAvdInvalidInputsError(msg)
