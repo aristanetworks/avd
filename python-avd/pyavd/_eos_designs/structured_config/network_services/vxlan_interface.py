@@ -136,7 +136,7 @@ class VxlanInterfaceMixin(Protocol):
 
             vni = self._filtered_wan_vrfs[vrf_name].wan_vni if is_wan_vrf else default(vrf.vrf_vni, vrf.vrf_id)
 
-            # This condition will never be reached, as "wan_vni" is a required key, and the methods 
+            # This condition will never be reached, as "wan_vni" is a required key, and the methods
             # "get_vrf_vni" and "get_vrf_id" will raise an error beforehand if "vrf.vrf_vni" or "vrf.vrf_id" are not defined.
             if vni is None:
                 # Silently ignore if we cannot set a VNI
