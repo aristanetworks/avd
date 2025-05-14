@@ -61202,11 +61202,11 @@ class EosDesigns(EosDesignsRootModel):
     'underlay_multicast_anycast_rp.mode' setting.
 
     Requires 'underlay_multicast: true' or
-    'underlay_multicast_pim_sm: true' or 'underlay_multicast_static: true'.
+    'underlay_multicast_pim_sm: true'.
 
 
-    Subclass of AvdIndexedList
-    with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem`
+    items. Primary key is `rp` (`str`).
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -62789,11 +62789,11 @@ class EosDesigns(EosDesignsRootModel):
                    'underlay_multicast_anycast_rp.mode' setting.
 
                    Requires 'underlay_multicast: true' or
-                   'underlay_multicast_pim_sm: true' or 'underlay_multicast_static: true'.
+                   'underlay_multicast_pim_sm: true'.
 
 
-                   Subclass of AvdIndexedList
-                   with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
+                   Subclass of AvdIndexedList with `UnderlayMulticastRpsItem`
+                   items. Primary key is `rp` (`str`).
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable

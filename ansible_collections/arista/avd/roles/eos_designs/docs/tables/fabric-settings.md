@@ -44,7 +44,7 @@
     | [<samp>underlay_multicast_static</samp>](## "underlay_multicast_static") | Boolean |  |  |  | Enable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.<br>Specifically "multicast ipv4 static" will be configured on all routed underlay interfaces.<br>This also enables "router multicast | ipv4 routing".<br> |
     | [<samp>underlay_multicast_anycast_rp</samp>](## "underlay_multicast_anycast_rp") | Dictionary |  |  |  | If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address, they will be configured<br>with one of the following methods:<br>- Anycast RP using PIM (RFC4610).<br>- Anycast RP using MSDP (RFC4611).<br><br>NOTE: When using MSDP, all nodes across all MSDP enabled RPs will be added to a single MSDP mesh group named "ANYCAST-RP".<br> |
     | [<samp>&nbsp;&nbsp;mode</samp>](## "underlay_multicast_anycast_rp.mode") | String |  | `pim` | Valid Values:<br>- <code>pim</code><br>- <code>msdp</code> |  |
-    | [<samp>underlay_multicast_rps</samp>](## "underlay_multicast_rps") | List, items: Dictionary |  |  |  | List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.<br>The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).<br>If multiple nodes are configured under 'nodes' for the same RP address, they will be configured<br>according to the 'underlay_multicast_anycast_rp.mode' setting.<br><br>Requires 'underlay_multicast: true' or 'underlay_multicast_pim_sm: true' or 'underlay_multicast_static: true'.<br> |
+    | [<samp>underlay_multicast_rps</samp>](## "underlay_multicast_rps") | List, items: Dictionary |  |  |  | List of PIM Sparse-Mode Rendevouz Points configured for underlay multicast on all devices.<br>The device(s) listed under 'nodes', will be configured as the Rendevouz point router(s).<br>If multiple nodes are configured under 'nodes' for the same RP address, they will be configured<br>according to the 'underlay_multicast_anycast_rp.mode' setting.<br><br>Requires 'underlay_multicast: true' or 'underlay_multicast_pim_sm: true'.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;rp</samp>](## "underlay_multicast_rps.[].rp") | String | Required, Unique |  |  | RP IPv4 address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "underlay_multicast_rps.[].nodes") | List, items: Dictionary |  |  |  | List of nodes where a Loopback interface with the RP address will be configured.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "underlay_multicast_rps.[].nodes.[].name") | String | Required, Unique |  |  | Hostname. |
@@ -317,7 +317,7 @@
     # If multiple nodes are configured under 'nodes' for the same RP address, they will be configured
     # according to the 'underlay_multicast_anycast_rp.mode' setting.
     #
-    # Requires 'underlay_multicast: true' or 'underlay_multicast_pim_sm: true' or 'underlay_multicast_static: true'.
+    # Requires 'underlay_multicast: true' or 'underlay_multicast_pim_sm: true'.
     underlay_multicast_rps:
 
         # RP IPv4 address.

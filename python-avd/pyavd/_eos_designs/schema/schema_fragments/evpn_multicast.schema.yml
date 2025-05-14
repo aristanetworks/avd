@@ -10,7 +10,7 @@ keys:
     documentation_options:
       table: evpn-settings
     type: bool
-    description: |
+    description: |-
       General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must also be configured under the Network Services (tenants).
       Requires "underlay_multicast: true" or "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
       For MLAG devices Route Distinguisher must be unique since this feature will create multi-vtep configuration.

@@ -160,7 +160,7 @@ $defs:
           deprecation:
             removed: false
             warning: true
-            new_key: p2p_links.underlay_multicast_pim_sm
+            new_key: underlay_multicast_pim_sm
             remove_in_version: 6.0.0
         underlay_multicast_pim_sm:
           type: bool
