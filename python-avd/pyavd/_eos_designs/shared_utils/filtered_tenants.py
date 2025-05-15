@@ -197,9 +197,7 @@ class FilteredTenantsMixin(Protocol):
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.svis = self.filtered_svis(vrf)
-            vrf.l3_interfaces = vrf.l3_interfaces._filtered(
-                lambda l3_interface: bool(self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces)
-            )
+            vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
             vrf.l3_port_channels = vrf.l3_port_channels._filtered(lambda l3_port_channel: bool(self.hostname == l3_port_channel.node))
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
 
@@ -325,6 +323,26 @@ class FilteredTenantsMixin(Protocol):
                 )
 
         return filtered_svis._natural_sorted(sort_key="id")
+
+    def filtered_l3_interfaces(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces:
+        """
+        Returns filtered l3_interfaces for the VRFs.
+
+        Also filters static_routes set under l3_interfaces and appends to vrf.static_routes.
+        """
+        filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
+        for l3_interface in vrf.l3_interfaces:
+            if not (self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces):
+                continue
+            if l3_interface.static_routes:
+                vrf.static_routes.extend(
+                    l3_interface.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            filtered_l3_interfaces.append(l3_interface)
+
+        return filtered_l3_interfaces
 
     @cached_property
     def endpoint_vlans(self: SharedUtilsProtocol) -> list:

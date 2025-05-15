@@ -156,6 +156,9 @@ tenant_a:
             mtu: 9000
             enabled: true
             description: "test"
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10
             ospf:
               enabled: true
               cost: 100

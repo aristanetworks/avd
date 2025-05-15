@@ -7033,6 +7033,11 @@ $defs:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: Static routes to be configured on every device
+                        when this interface is configured.
                     nodes:
                       type: list
                       items:
