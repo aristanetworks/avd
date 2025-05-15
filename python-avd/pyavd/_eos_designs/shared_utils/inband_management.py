@@ -62,16 +62,8 @@ class InbandManagementMixin(Protocol):
 
         Otherwise return None
         """
-        # inband_mgmt_gateway would never be called if inband_mgmt_ip is not defined since configure_inband_mgmt is being checked.
-        if not self.inband_mgmt_ip:
-            return None
-
         if not self.configure_parent_for_inband_mgmt:
             return self.node_config.inband_mgmt_gateway
-
-        # If inband_mgmt_ip and inband_mgmt_subnet both are not defined the code will not reach this condition.
-        if not self.node_config.inband_mgmt_subnet:
-            return None
 
         subnet = ip_network(self.node_config.inband_mgmt_subnet, strict=False)
         return f"{subnet[1]!s}"
@@ -87,16 +79,8 @@ class InbandManagementMixin(Protocol):
 
         Otherwise return None
         """
-        # inband_mgmt_ipv6_gateway would never be called if inband_mgmt_ipv6_address is not defined since configure_inband_mgmt is being checked.
-        if not self.inband_mgmt_ipv6_address:
-            return None
-
         if not self.configure_parent_for_inband_mgmt_ipv6:
             return self.node_config.inband_mgmt_ipv6_gateway
-
-        # if inband_mgmt_ipv6_address and inband_mgmt_ipv6_subnet both are not defined the code will not reach this condition.
-        if not self.node_config.inband_mgmt_ipv6_subnet:
-            return None
 
         subnet = ip_network(self.node_config.inband_mgmt_ipv6_subnet, strict=False)
         return f"{subnet[1]!s}"
