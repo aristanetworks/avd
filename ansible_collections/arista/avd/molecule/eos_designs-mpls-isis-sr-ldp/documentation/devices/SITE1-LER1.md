@@ -189,8 +189,8 @@ vlan 2020
 
 | Interface | Description | Vlan ID | Client Encapsulation | Client Inner Encapsulation | Client VLAN | Client Outer VLAN Tag | Client Inner VLAN Tag | Network Encapsulation | Network Inner Encapsulation | Network VLAN | Network Outer VLAN Tag | Network Inner VLAN Tag |
 | --------- | ----------- | ------- | --------------- | --------------------- | ----------- | --------------------- | --------------------- | ---------------- | ---------------------- |------------ | ---------------------- | ---------------------- |
-| Ethernet6.100 | - | - | dot1q | - | 100 | - | - | client | - | - | - | - |
-| Ethernet6.101 | - | - | dot1q | - | 101 | - | - | client | - | - | - | - |
+| Ethernet9.100 | - | - | dot1q | - | 100 | - | - | client | - | - | - | - |
+| Ethernet9.101 | - | - | dot1q | - | 101 | - | - | client | - | - | - | - |
 
 ##### IPv4
 
@@ -271,6 +271,8 @@ interface Ethernet4
 interface Ethernet6
    no shutdown
    no switchport
+   no lldp transmit
+   no lldp receive
 !
 interface Ethernet6.10
    description TENANT_B_SITE_3_INTRA_L3VPN
@@ -282,22 +284,26 @@ interface Ethernet6.10
    ip ospf network point-to-point
    ip ospf area 0.0.0.0
 !
-interface Ethernet6.100
+interface Ethernet8
+   description CPE_CPE_TENANT_A_SITE1_Ethernet1
+   no shutdown
+   channel-group 8 mode active
+!
+interface Ethernet9
+   no shutdown
+   no switchport
+!
+interface Ethernet9.100
    no shutdown
    encapsulation vlan
       client dot1q 100 network client
    storm-control broadcast level 10
 !
-interface Ethernet6.101
+interface Ethernet9.101
    !! Test structured_config for Ethernet subinterface
    no shutdown
    encapsulation vlan
       client dot1q 101 network client
-!
-interface Ethernet8
-   description CPE_CPE_TENANT_A_SITE1_Ethernet1
-   no shutdown
-   channel-group 8 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -728,8 +734,9 @@ ASN Notation: asplain
 
 | Instance | Route-Distinguisher | Both Route-Target | MPLS Control Word | Label Flow | MTU | Pseudowire | Local ID | Remote ID |
 | -------- | ------------------- | ----------------- | ----------------- | -----------| --- | ---------- | -------- | --------- |
-| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site2_site5_eline_port_based_100 | 126 | 157 |
-| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site2_site5_eline_port_based_101 | 127 | 158 |
+| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_port_based | 16 | 27 |
+| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_100 | 119 | 129 |
+| TENANT_A | 100.70.0.5:1000 | 65000:1000 | False | False | - | TEN_A_site1_site2_eline_with_subinterfaces_101 | 120 | 130 |
 | TENANT_B | 100.70.0.5:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1000 | 31000 | 51000 |
 | TENANT_B | 100.70.0.5:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1001 | 31001 | 51001 |
 | TENANT_B | 100.70.0.5:2000 | 65000:2000 | False | False | - | TEN_B_site3_site5_eline_vlan_based_1002 | 31002 | 51002 |
@@ -783,11 +790,14 @@ router bgp 65000
       rd 100.70.0.5:1000
       route-target import export evpn 65000:1000
       !
-      pseudowire TEN_A_site2_site5_eline_port_based_100
-         evpn vpws id local 126 remote 157
+      pseudowire TEN_A_site1_site2_eline_port_based
+         evpn vpws id local 16 remote 27
       !
-      pseudowire TEN_A_site2_site5_eline_port_based_101
-         evpn vpws id local 127 remote 158
+      pseudowire TEN_A_site1_site2_eline_with_subinterfaces_100
+         evpn vpws id local 119 remote 129
+      !
+      pseudowire TEN_A_site1_site2_eline_with_subinterfaces_101
+         evpn vpws id local 120 remote 130
    !
    vpws TENANT_B
       rd 100.70.0.5:2000
@@ -885,8 +895,9 @@ mpls ldp
 
 | Patch Name | Enabled | Connector A Type | Connector A Endpoint | Connector B Type | Connector B Endpoint |
 | ---------- | ------- | ---------------- | -------------------- | ---------------- | -------------------- |
-| TEN_A_site2_site5_eline_port_based_100 | True | Interface | Ethernet6.100 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based_100 |
-| TEN_A_site2_site5_eline_port_based_101 | True | Interface | Ethernet6.101 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based_101 |
+| TEN_A_site1_site2_eline_port_based | True | Interface | Ethernet6 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_port_based |
+| TEN_A_site1_site2_eline_with_subinterfaces_100 | True | Interface | Ethernet9.100 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_100 |
+| TEN_A_site1_site2_eline_with_subinterfaces_101 | True | Interface | Ethernet9.101 | Pseudowire | bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_101 |
 | TEN_B_site3_site5_eline_vlan_based_1000 | True | Interface | Port-Channel3.1000 | Pseudowire | bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1000 |
 | TEN_B_site3_site5_eline_vlan_based_1001 | True | Interface | Port-Channel3.1001 | Pseudowire | bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1001 |
 | TEN_B_site3_site5_eline_vlan_based_1002 | True | Interface | Port-Channel3.1002 | Pseudowire | bgp vpws TENANT_B pseudowire TEN_B_site3_site5_eline_vlan_based_1002 |
@@ -898,13 +909,17 @@ mpls ldp
 ```eos
 !
 patch panel
-   patch TEN_A_site2_site5_eline_port_based_100
-      connector 1 interface Ethernet6.100
-      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based_100
+   patch TEN_A_site1_site2_eline_port_based
+      connector 1 interface Ethernet6
+      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_port_based
    !
-   patch TEN_A_site2_site5_eline_port_based_101
-      connector 1 interface Ethernet6.101
-      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based_101
+   patch TEN_A_site1_site2_eline_with_subinterfaces_100
+      connector 1 interface Ethernet9.100
+      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_100
+   !
+   patch TEN_A_site1_site2_eline_with_subinterfaces_101
+      connector 1 interface Ethernet9.101
+      connector 2 pseudowire bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_101
    !
    patch TEN_B_site3_site5_eline_vlan_based_1000
       connector 1 interface Port-Channel3.1000
