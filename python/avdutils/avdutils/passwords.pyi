@@ -12,8 +12,11 @@ def sha512_crypt(password: str, salt: str) -> str:
 
     Args:
       password: The password.
-      salt: The salt to use (should be 16 in length max or will be truncated).
+      salt: The salt to use (truncated to 16 characters). Allowed characters are [a-zA-Z0-9/.].
 
     Returns:
       The sha512 crypt value.
+
+    Raises:
+      ValueError: If the salt is empty or contain invalid characters.
     """
