@@ -38,6 +38,11 @@ spanning-tree bpduguard rate-limit count {{ spanning_tree.bpduguard_rate_limit.c
 {%     if spanning_tree.root_super is arista.avd.defined(true) %}
 spanning-tree root super
 {%     endif %}
+{%     if spanning_tree.port_id_allocation_port_channel_range is arista.avd.defined %}
+{%         set min_range = spanning_tree.port_id_allocation_port_channel_range.minimum %}
+{%         set max_range = spanning_tree.port_id_allocation_port_channel_range.maximum %}
+spanning-tree port-id allocation port-channel range {{ min_range }} {{ max_range }}
+{%     endif %}
 {%     if spanning_tree.mode is arista.avd.defined('mstp') %}
 {%         for mst_instance in spanning_tree.mst_instances | arista.avd.natural_sort('id') %}
 {%             if mst_instance.priority is arista.avd.defined %}

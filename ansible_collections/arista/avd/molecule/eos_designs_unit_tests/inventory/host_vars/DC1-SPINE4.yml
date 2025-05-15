@@ -21,3 +21,5 @@ custom_platform_settings:
     reload_delay:
       mlag: 900
       non_mlag: 1020
+
+bfd_multihop:
