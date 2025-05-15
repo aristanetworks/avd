@@ -307,15 +307,19 @@ class FilteredTenantsMixin(Protocol):
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
 
-        svis = vrf.svis._filtered(self.is_accepted_vlan)
-
-        # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
-        svis = svis._filtered(lambda svi: "all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags)))
         all_svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
-        for svi in svis:
+        for svi in vrf.svis:
+            if not self.is_accepted_vlan(svi):
+                continue
             # Handle svi_profile inheritance
-            all_svis.append(self.get_merged_svi_config(svi))
-            if svi.static_routes:
+            merged_svi = self.get_merged_svi_config(svi)
+            # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
+            if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
+                continue
+
+            all_svis.append(merged_svi)
+
+            if len(svi.static_routes) > 0:
                 vrf.static_routes.extend(
                     svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
                 )
