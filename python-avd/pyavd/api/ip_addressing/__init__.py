@@ -78,6 +78,26 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
         return self._mlag_ip(mlag_ibgp_peering_ipv4_pool, 1)
 
+    def mlag_ibgp_peering_ipv6_primary(self, mlag_ibgp_peering_ipv6_pool: str) -> str:
+        """Return IP for L3 Peerings in VRFs for MLAG Primary."""
+        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_primary:
+            return self._template(
+                template_path,
+                vrf={"mlag_ibgp_peering_ipv6_pool": mlag_ibgp_peering_ipv6_pool},
+            )
+
+        return self._mlag_ip(mlag_ibgp_peering_ipv6_pool, 0, address_family="ipv6")
+
+    def mlag_ibgp_peering_ipv6_secondary(self, mlag_ibgp_peering_ipv6_pool: str) -> str:
+        """Return IP for L3 Peerings in VRFs for MLAG Secondary."""
+        if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ibgp_peering_ip_secondary:
+            return self._template(
+                template_path,
+                vrf={"mlag_ibgp_peering_ipv6_pool": mlag_ibgp_peering_ipv6_pool},
+            )
+
+        return self._mlag_ip(mlag_ibgp_peering_ipv6_pool, 1, address_family="ipv6")
+
     def mlag_ip_primary(self) -> str:
         """
         Return IP for MLAG Primary.

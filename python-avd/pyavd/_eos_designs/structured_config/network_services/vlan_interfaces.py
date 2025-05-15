@@ -195,13 +195,13 @@ class VlanInterfacesMixin(Protocol):
                 if self.shared_utils.mlag_role == "primary":
                     return {
                         "ipv6_address": (
-                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
                             f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
                         )
                     }
                 return {
                     "ipv6_address": (
-                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ip_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
                         f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
                     )
                 }
