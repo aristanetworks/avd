@@ -40748,10 +40748,9 @@ class EosDesigns(EosDesignsRootModel):
                         """Subinterface number."""
                         port_channel: PortChannel
                         """
-                        Settings to be applied to the Port-Channel subinterface connected to the service.
+                        Settings to be applied to the Port-Channel subinterface.
 
-                        Subclass of
-                        AvdModel.
+                        Subclass of AvdModel.
                         """
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config added on the Ethernet subinterface for eos_cli_config_gen."""
@@ -40777,10 +40776,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Args:
                                     number: Subinterface number.
                                     port_channel:
-                                       Settings to be applied to the Port-Channel subinterface connected to the service.
+                                       Settings to be applied to the Port-Channel subinterface.
 
-                                       Subclass of
-                                       AvdModel.
+                                       Subclass of AvdModel.
                                     structured_config: Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
                                     raw_eos_cli: EOS cli commands rendered on the Ethernet subinterface.
 
