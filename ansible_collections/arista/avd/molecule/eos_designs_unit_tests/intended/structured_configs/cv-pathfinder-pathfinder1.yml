@@ -12,6 +12,10 @@ application_traffic_recognition:
     - name: CUSTOM-APPLICATION-2
     - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
+  - name: VIDEO-WITH-SERVICE
+    applications:
+    - name: microsoft
+      service: chat
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -59,10 +63,13 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+      service: chat
     application_transports:
     - rtp
     categories:
     - name: VIDEO1
+    - name: VIDEO-WITH-SERVICE
+      service: audio-video
   - name: VOICE
     applications:
     - name: CUSTOM-VOICE-APPLICATION
@@ -459,10 +466,15 @@ metadata:
       - name: VIDEO
         builtin_applications:
         - name: skype
+          services:
+          - chat
         user_defined_applications:
         - name: CUSTOM-APPLICATION-1
         categories:
         - category: VIDEO1
+        - category: VIDEO-WITH-SERVICE
+          services:
+          - audio-video
         transport_protocols:
         - rtp
       - name: VOICE
@@ -473,6 +485,10 @@ metadata:
         builtin_applications:
         - name: microsoft-teams
           category: VIDEO1
+        - name: microsoft
+          category: VIDEO-WITH-SERVICE
+          services:
+          - chat
         user_defined_applications:
         - name: CUSTOM-APPLICATION-2
           category: VIDEO1

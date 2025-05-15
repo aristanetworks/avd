@@ -1,3 +1,6 @@
+aaa_authorization:
+  exec:
+    default: local
 aaa_root:
   disabled: true
 config_end: true

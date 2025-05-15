@@ -40,6 +40,14 @@ all:
               ansible_host: 192.168.17.20
             site3-leaf1:
               ansible_host: 192.168.17.21
+        SITE4:
+          hosts:
+            site4-wan1:
+              ansible_host: 192.168.17.22
+            site4-border1:
+              ansible_host: 192.168.17.23
+            site4-border2:
+              ansible_host: 192.168.17.24
         TRANSPORTS:
           hosts:
             mpls-cloud:

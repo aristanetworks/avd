@@ -299,16 +299,16 @@ anta.tests.greent:
 anta.tests.hardware:
 - VerifyEnvironmentPower:
     result_overwrite:
-      custom_field: 'Accepted States: ''ok'', ''Not Present'''
+      custom_field: 'Accepted States: ''ok'', ''powerLoss'''
     states:
     - ok
-    - Not Present
+    - powerLoss
 - VerifyEnvironmentCooling:
     result_overwrite:
-      custom_field: 'Accepted States: ''ok'', ''Not Present'''
+      custom_field: 'Accepted States: ''ok'', ''powerLoss'''
     states:
     - ok
-    - Not Present
+    - powerLoss
 - VerifyTemperature: null
 - VerifyTransceiversManufacturers:
     manufacturers:
