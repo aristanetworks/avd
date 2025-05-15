@@ -31,6 +31,9 @@
 | WAN | wan_router | site2-wan2 | 192.168.17.17/24 | CloudEOS | Provisioned | - |
 | WAN | l2leaf | site3-leaf1 | 192.168.17.21/24 | vEOS-lab | Provisioned | - |
 | WAN | wan_router | site3-wan1 | 192.168.17.20/24 | CloudEOS | Provisioned | - |
+| WAN | l3leaf | site4-border1 | 192.168.17.23/24 | vEOS-lab | Provisioned | - |
+| WAN | l3leaf | site4-border2 | 192.168.17.24/24 | vEOS-lab | Provisioned | - |
+| WAN | wan_router | site4-wan1 | 192.168.17.22/24 | CloudEOS | Provisioned | - |
 
 > Provision status is based on Ansible inventory declaration and do not represent real status from CloudVision.
 
@@ -69,6 +72,10 @@
 | l2leaf | site3-leaf1 | Ethernet1 VLAN 666 | wan_router | site3-wan1 | Ethernet1.666 |
 | l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
 | l2leaf | site3-leaf1 | Ethernet1 | wan_router | site3-wan1 | Ethernet1 |
+| l3leaf | site4-border1 | Ethernet3 | wan_router | site4-wan1 | Ethernet1 |
+| l3leaf | site4-border1 | Ethernet5 | mlag_peer | site4-border2 | Ethernet5 |
+| l3leaf | site4-border1 | Ethernet6 | mlag_peer | site4-border2 | Ethernet6 |
+| l3leaf | site4-border2 | Ethernet3 | wan_router | site4-wan1 | Ethernet2 |
 
 ## Fabric IP Allocation
 
@@ -79,6 +86,7 @@
 | 10.0.1.0/24 | 256 | 24 | 9.38 % |
 | 10.0.2.0/24 | 256 | 12 | 4.69 % |
 | 10.0.3.0/24 | 256 | 0 | 0.0 % |
+| 10.0.4.0/24 | 256 | 4 | 1.57 % |
 
 ### Point-To-Point Links Node Allocation
 
@@ -102,13 +110,15 @@
 | site2-leaf2 | Ethernet3 | 10.0.2.14/31 | site2-wan2 | Ethernet1 | 10.0.2.15/31 |
 | site2-leaf2 | Ethernet3.100 | 10.0.2.14/31 | site2-wan2 | Ethernet1.100 | 10.0.2.15/31 |
 | site2-leaf2 | Ethernet3.101 | 10.0.2.14/31 | site2-wan2 | Ethernet1.101 | 10.0.2.15/31 |
+| site4-border1 | Ethernet3 | 10.0.4.56/31 | site4-wan1 | Ethernet1 | 10.0.4.57/31 |
+| site4-border2 | Ethernet3 | 10.0.4.58/31 | site4-wan1 | Ethernet2 | 10.0.4.59/31 |
 
 ### Loopback Interfaces (BGP EVPN Peering)
 
 | Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------- | ------------------- | ------------------ | ------------------ |
 | 172.31.255.0/24 | 256 | 2 | 0.79 % |
-| 192.168.255.0/24 | 256 | 11 | 4.3 % |
+| 192.168.255.0/24 | 256 | 14 | 5.47 % |
 
 ### Loopback0 Interfaces Node Allocation
 
@@ -127,12 +137,15 @@
 | WAN | site2-wan1 | 192.168.255.7/32 |
 | WAN | site2-wan2 | 192.168.255.8/32 |
 | WAN | site3-wan1 | 192.168.255.11/32 |
+| WAN | site4-border1 | 192.168.255.13/32 |
+| WAN | site4-border2 | 192.168.255.14/32 |
+| WAN | site4-wan1 | 192.168.255.15/32 |
 
 ### VTEP Loopback VXLAN Tunnel Source Interfaces (VTEPs Only)
 
 | VTEP Loopback Pool | Available Addresses | Assigned addresses | Assigned Address % |
 | ------------------ | ------------------- | ------------------ | ------------------ |
-| 192.168.42.0/24 | 256 | 4 | 1.57 % |
+| 192.168.42.0/24 | 256 | 6 | 2.35 % |
 
 ### VTEP Loopback Node allocation
 
@@ -142,3 +155,5 @@
 | WAN | site1-border2 | 192.168.42.5/32 |
 | WAN | site2-leaf1 | 192.168.42.9/32 |
 | WAN | site2-leaf2 | 192.168.42.9/32 |
+| WAN | site4-border1 | 192.168.42.13/32 |
+| WAN | site4-border2 | 192.168.42.13/32 |
