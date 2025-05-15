@@ -12,15 +12,6 @@ from typing import TYPE_CHECKING, NoReturn
 
 from grpclib import GRPCError, Status
 
-from pyavd._cv.api.arista.workspace.v1 import (
-    Request,
-    RequestParams,
-    WorkspaceConfig,
-    WorkspaceConfigServiceStub,
-    WorkspaceConfigSetRequest,
-    WorkspaceKey,
-)
-from pyavd._cv.client.constants import DEFAULT_API_TIMEOUT
 from pyavd._utils import get_v2
 
 if TYPE_CHECKING:
@@ -32,7 +23,7 @@ if TYPE_CHECKING:
     from grpclib._typing import IProtoMessage
     from grpclib.metadata import Deadline
 
-    from pyavd._cv.client import CVClient, CVClientProtocol
+    from pyavd._cv.client import CVClient
 
     T_Message = TypeVar("T_Message", bound=Message)
 
@@ -155,65 +146,6 @@ async def playback_static_recording_unary_stream(
         raise GRPCError(Status[recorded_exception["status"]], recorded_exception["message"])
     for message_as_dict in recording["payload"]:
         yield response_type().from_dict(message_as_dict)
-
-
-async def mocked_cv_client_build_workspace(
-    self: CVClientProtocol,
-    workspace_id: str,
-    timeout: float = DEFAULT_API_TIMEOUT,
-) -> WorkspaceConfig:
-    """
-    Request a build of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
-
-    Parameters:
-        workspace_id: Unique identifier the workspace.
-        timeout: Timeout in seconds.
-
-    Returns:
-        WorkspaceConfig object after being set including any server-generated values.
-    """
-    request = WorkspaceConfigSetRequest(
-        WorkspaceConfig(
-            key=WorkspaceKey(workspace_id=workspace_id),
-            request=Request.START_BUILD,
-            request_params=RequestParams(
-                request_id=self._workspace_build_id,
-            ),
-        ),
-    )
-    client = WorkspaceConfigServiceStub(self._channel)
-    response = await client.set(request, metadata=self._metadata, timeout=timeout)
-    return response.value
-
-
-async def mocked_cv_client_submit_workspace(
-    self: CVClientProtocol,
-    workspace_id: str,
-    force: bool = False,
-    timeout: float = DEFAULT_API_TIMEOUT,
-) -> WorkspaceConfig:
-    """
-    Request submission of the Workspace using arista.workspace.v1.WorkspaceConfigService.Set API.
-
-    Parameters:
-        workspace_id: Unique identifier the Workspace.
-        force: Force submit the Workspace.
-        timeout: Timeout in seconds.
-
-    Returns:
-        WorkspaceConfig object after being set including any server-generated values.
-    """
-    request = WorkspaceConfigSetRequest(
-        WorkspaceConfig(
-            key=WorkspaceKey(workspace_id=workspace_id),
-            request=Request.SUBMIT_FORCE if force else Request.SUBMIT,
-            request_params=RequestParams(request_id=self._workspace_submit_id),
-        ),
-    )
-    client = WorkspaceConfigServiceStub(self._channel)
-    response = await client.set(request, metadata=self._metadata, timeout=timeout)
-    LOGGER.debug("submit_workspace: Got response to submission: %s", response.value)
-    return response.value
 
 
 async def mocked_cv_client_aenter(self: CVClient) -> CVClient:

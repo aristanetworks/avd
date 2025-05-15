@@ -62,6 +62,10 @@
                             "status": "SUCCESS",
                             "message": "Build req-914310f3-08dd-4239-bd42-6d78bf781229 finished successfully"
                         },
+                        "req-914310f3-08dd-4239-bd42-6d78b0000000": {
+                            "status": "FAIL",
+                            "message": "Build req-914310f3-08dd-4239-bd42-6d78b0000000 failed"
+                        },
                         "req-18654b6a-9f75-4a57-878d-d40d73701238": {
                         "status": "FAIL",
                         "message": "some devices are inactive",
@@ -109,11 +113,38 @@
                 "ccIds": {},
                 "needsBuild": false,
                 "needsRebase": false,
-                "displayName": "ws_name",
-                "description": "ws_description"
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
             },
             "time": "2025-05-07T01:26:43.432802896",
             "type": "UPDATED"
+        },
+        {
+            "value": {
+                "key": {
+                    "workspaceId": "ws-cbf7c7ea-a57c-481d-b96b-97c12856395e"
+                },
+                "createdAt": "2025-05-14T22:49:40.714107277",
+                "createdBy": "agorbunov",
+                "lastModifiedAt": "2025-05-14T22:49:53.648243775",
+                "lastModifiedBy": "agorbunov",
+                "state": "ABANDONED",
+                "lastBuildId": "",
+                "responses": {
+                    "values": {
+                        "req-b65374c1-4333-4c68-9b09-d753e8560609": {
+                            "status": "SUCCESS",
+                            "message": "Abandoned"
+                        }
+                    }
+                },
+                "ccIds": {},
+                "needsBuild": false,
+                "needsRebase": false,
+                "displayName": "MOCKED_WS_NAME",
+                "description": "MOCKED_WS_DESCRIPTION"
+            },
+            "time": "2025-05-14T22:49:53.648243775"
         }
     ]
 }

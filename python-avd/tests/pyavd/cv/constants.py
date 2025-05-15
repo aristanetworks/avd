@@ -22,6 +22,30 @@ MOCKED_WORKSPACE_REQUEST_ID_BUILD_SUCCESS = {
 }
 
 """
+recorded mocked api Set responses:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
+  094fa72d5437063770b645129730633334c7e4ed.json
+"""
+MOCKED_WORKSPACE_REQUEST_ID_BUILD_FAIL = {
+    "id": "req-914310f3-08dd-4239-bd42-6d78b0000000",
+    "status": ResponseStatus.FAIL,
+    "message": "Build req-914310f3-08dd-4239-bd42-6d78b0000000 failed",
+    "code": ResponseCode.UNSPECIFIED,
+}
+
+"""
+recorded mocked api Set responses:
+  tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
+  c3455eeb927146c3ba4e5fbb3d51b959fc84da17.json
+"""
+MOCKED_WORKSPACE_REQUEST_ID_ABANDON = {
+    "id": "req-b65374c1-4333-4c68-9b09-d753e8560609",
+    "status": ResponseStatus.SUCCESS,
+    "message": "Abandoned",
+    "code": ResponseCode.UNSPECIFIED,
+}
+
+"""
 recorded mocked api arista.workspace.v1.WorkspaceConfigService/Set responses:
   UNFORCED: tests/pyavd/cv/mocked_api_recordings/arista.workspace.v1.WorkspaceConfigService/Set/www.cv-prod-us-central1-c.arista.io/\\
   54f25797c08b0d4ca2c4497e73b4afbfd2959b6f.json
