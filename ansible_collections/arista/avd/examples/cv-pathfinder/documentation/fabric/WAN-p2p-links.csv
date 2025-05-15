@@ -6,3 +6,5 @@ l3leaf,site1-border2,Ethernet4,10.0.1.14/31,wan_router,site1-wan2,Ethernet2,10.0
 l3leaf,site2-leaf1,Ethernet3,10.0.2.12/31,wan_router,site2-wan1,Ethernet1,10.0.2.13/31
 l3leaf,site2-leaf2,Ethernet3,10.0.2.14/31,wan_router,site2-wan2,Ethernet1,10.0.2.15/31
 l2leaf,site3-leaf1,Ethernet1,,wan_router,site3-wan1,Ethernet1,
+l3leaf,site4-border1,Ethernet3,10.0.4.56/31,wan_router,site4-wan1,Ethernet1,10.0.4.57/31
+l3leaf,site4-border2,Ethernet3,10.0.4.58/31,wan_router,site4-wan1,Ethernet2,10.0.4.59/31
