@@ -264,6 +264,10 @@
             "status": "adminDown"
           },
           {
+            "name": "Ethernet17",
+            "status": "adminDown"
+          },
+          {
             "name": "Loopback0",
             "status": "up"
           },
