@@ -96,6 +96,7 @@ class LogMessage(Enum):
     INTERFACE_NOT_INBAND_MGMT = "{caller} skipped - not an inband management SVI"
     INTERFACE_VALIDATION_DISABLED = "{caller} skipped - validate_state or validate_lldp disabled"
     INTERFACE_NO_IP = "{caller} skipped - no IP address configured"
+    INTERFACE_UNNUMBERED = "{caller} skipped - IP unnumbered interface"
 
     # IP-related messages
     IPV6_UNSUPPORTED = "{caller} skipped - IPv6 not supported"

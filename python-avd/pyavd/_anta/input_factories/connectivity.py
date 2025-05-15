@@ -73,11 +73,17 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
     Generates test inputs for verifying the following reachability checks:
 
-    - Point-to-point links between Ethernet interfaces with `peer`, `peer_interface`,
-    and `ip_address` (non-dhcp) configured. Links are checked when interfaces are not `shutdown`,
-    fabric peers exist and are deployed (`is_deployed: true`), and peer interfaces have IP addresses.
+    - Point-to-Point Ethernet Links:
+        Inputs are generated for Ethernet interfaces that meet all the following criteria:
+        * `peer`, `peer_interface` and `ip_address` are defined.
+        * `ip_address` is static - *not* 'dhcp' and *not* 'unnumbered').
+        * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`.
+        * `peer` device is deployed - `is_deployed=True`.
+        * `peer_interface` on the `peer` device has a defined `ip_address`.
 
-    - IPv4 BGP neighbors with `update_source` configured.
+    - IPv4 BGP Neighbors:
+        Inputs are generated for BGP neighbors that meet all the following criteria:
+        * `update_source` IP address defined.
     """
 
     def create(self) -> list[VerifyReachability.Input] | None:
@@ -114,6 +120,11 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
             if intf.ip_address == "dhcp":
                 self.logger.debug(LogMessage.INTERFACE_USING_DHCP, caller=intf.name)
+                continue
+
+            # TODO: Consider adding reachability check between lending interfaces without creating duplicate src-dst pairs
+            if "unnumbered" in intf.ip_address:
+                self.logger.debug(LogMessage.INTERFACE_UNNUMBERED, caller=intf.name)
                 continue
 
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, caller=intf.name)) is None:
