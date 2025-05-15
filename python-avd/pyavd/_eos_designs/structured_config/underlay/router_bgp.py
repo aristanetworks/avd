@@ -34,6 +34,10 @@ class RouterBgpMixin(Protocol):
                 maximum_routes=12000,
                 send_community="all",
             )
+            if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
+                self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
+                    self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                )
         else:
             peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
                 name=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name,
@@ -43,11 +47,10 @@ class RouterBgpMixin(Protocol):
                 maximum_routes=12000,
                 send_community="all",
             )
-
-        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
-                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-            )
+            if self.inputs.bgp_peer_groups.ipv6_underlay_peers.structured_config:
+                self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv6_underlay_peers.name)._deepmerge(
+                    self.inputs.bgp_peer_groups.ipv6_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                )
 
         if self.shared_utils.is_cv_pathfinder_router:
             peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
