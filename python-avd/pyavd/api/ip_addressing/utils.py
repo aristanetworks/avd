@@ -153,7 +153,6 @@ class UtilsMixin(Protocol):
 
         for downlink_pool in downlink_pools:
             if not downlink_pool.ipv4_pool:
-                # TODO: Consider making it required in the schema
                 continue
 
             downlink_interfaces = range_expand(downlink_pool.downlink_interfaces)
@@ -186,7 +185,6 @@ class UtilsMixin(Protocol):
 
         for downlink_pool in downlink_pools:
             if not downlink_pool.ipv6_pool:
-                # TODO: Consider making it required in the schema
                 continue
 
             downlink_interfaces = range_expand(downlink_pool.downlink_interfaces)
