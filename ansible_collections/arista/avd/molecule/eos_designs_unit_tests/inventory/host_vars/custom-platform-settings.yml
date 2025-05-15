@@ -1,0 +1,8 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: custom-platform-settings
+
+custom_platform_settings:
+  - platforms: [ default ]
+    management_interface: Management100

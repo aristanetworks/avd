@@ -1,0 +1,8 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: non-default-platform-settings
+
+platform_settings:
+  - platforms: [ Test1 ]
+    management_interface: Management100
