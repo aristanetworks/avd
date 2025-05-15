@@ -39,8 +39,8 @@ class TestLoggerAdapter(LoggerAdapter):
         kwargs["extra"] = self.extra
 
         # Extract the device, test, and context from extra
-        device = self.extra.get("device", "-")
-        test = self.extra.get("test", "-")
+        device = self.extra["device"]
+        test = self.extra["test"]
         context = self.extra.get("context")
 
         prefix = f"<{device}> {test}"
@@ -76,23 +76,23 @@ class LogMessage(Enum):
     """
 
     # Peer-related messages
-    PEER_UNAVAILABLE = "{caller} skipped - Peer {peer} not in fabric or not deployed"
-    PEER_INTERFACE_NO_IP = "{caller} skipped - Peer {peer} interface {peer_interface} has no IP"
+    PEER_UNAVAILABLE = "{identity} skipped - Peer {peer} not in fabric or not deployed"
+    PEER_INTERFACE_NO_IP = "{interface} skipped - Peer {peer} interface {peer_interface} has no IP"
 
     # Interface state messages
-    INTERFACE_SHUTDOWN = "{caller} skipped - Interface is shutdown"
-    INTERFACE_USING_DHCP = "{caller} skipped - DHCP interface"
-    INTERFACE_IS_SUBINTERFACE = "{caller} skipped - Subinterface"
-    INTERFACE_VALIDATION_DISABLED = "{caller} skipped - validate_state or validate_lldp disabled"
-    INTERFACE_NO_IP = "{caller} skipped - No IP address configured"
+    INTERFACE_SHUTDOWN = "{interface} skipped - Interface is shutdown"
+    INTERFACE_USING_DHCP = "{interface} skipped - DHCP interface"
+    INTERFACE_IS_SUBINTERFACE = "{interface} skipped - Subinterface"
+    INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
+    INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
 
-    # STUN-specific messages
-    STUN_NO_CLIENT_INTERFACE = "path group {caller} skipped - No STUN client interfaces found"
-    STUN_NO_STATIC_PEERS = "path group {caller} skipped - No static peers configured"
+    # WAN-specific messages
+    PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
+    PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
 
     # Input generation messages
     INPUT_NONE_FOUND = "skipped - No inputs available"
-    INPUT_NO_DATA_MODEL = "skipped - Data model {caller} not found"
-    INPUT_MISSING_FIELDS = "{caller} skipped - Missing required fields: {fields}"
-    INPUT_RENDERING = "rendering inputs with {caller}"
+    INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
+    INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
+    INPUT_RENDERING = "rendering inputs with {mode}"
     INPUT_RENDERED = "rendered input dict: {inputs}"

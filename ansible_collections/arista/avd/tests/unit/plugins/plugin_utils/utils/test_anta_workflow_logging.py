@@ -42,15 +42,8 @@ class TestAntaWorkflowFilter:
 class TestAntaWorkflowHandler:
     """Test suite for the AntaWorkflowHandler class."""
 
-    def test_anta_workflow_handler_init_with_display(self, mock_display: Mock) -> None:
-        """Test AntaWorkflowHandler initialization with a provided display."""
-        errors_list = [False]
-        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
-        assert handler.display == mock_display
-        assert handler.has_errors_ref == errors_list
-
-    def test_anta_workflow_handler_init_without_display(self) -> None:
-        """Test AntaWorkflowHandler initialization without a display (it should create one)."""
+    def test_anta_workflow_handler_init(self) -> None:
+        """Test AntaWorkflowHandler initialization."""
         errors_list = [False]
         handler = AntaWorkflowHandler(has_errors_ref=errors_list)
         assert handler.display is not None
@@ -67,11 +60,12 @@ class TestAntaWorkflowHandler:
             pytest.param(logging.CRITICAL, "Critical message", "error", True, id="critical_level"),
         ],
     )
-    def test_anta_workflow_handler_emit_levels(self, mock_display: Mock, level: int, msg: str, expected_display_method_name: str, set_error_true: bool) -> None:
+    def test_anta_workflow_handler_emit_levels(self, mock_display: Display, level: int, msg: str, expected_display_method_name: str, set_error_true: bool) -> None:
         """Test AntaWorkflowHandler emit calls the correct display method and updates errors."""
         unique_context_id = "ctx-123"
         errors_list = [False]
-        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list)
+        handler.display = mock_display
         # Set a basic formatter to ensure record.getMessage() works as expected
         handler.setFormatter(logging.Formatter("%(message)s"))
 
@@ -100,7 +94,8 @@ class TestAntaWorkflowHandler:
     def test_anta_workflow_handler_emit_unknown_unique_id(self, mock_display: Mock) -> None:
         """Test AntaWorkflowHandler emit with a record that has no unique_id attribute."""
         errors_list = [False]
-        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list)
+        handler.display = mock_display
         handler.setFormatter(logging.Formatter("%(message)s"))
 
         log_message = "Info message without explicit unique_id"
@@ -128,7 +123,8 @@ class TestAntaWorkflowHandler:
         """Test that emit correctly formats messages with arguments."""
         unique_context_id = "ctx-format"
         errors_list = [False]
-        handler = AntaWorkflowHandler(has_errors_ref=errors_list, display=mock_display)
+        handler = AntaWorkflowHandler(has_errors_ref=errors_list)
+        handler.display = mock_display
         # Using a formatter that includes the message part
         formatter = logging.Formatter("%(message)s")
         handler.setFormatter(formatter)

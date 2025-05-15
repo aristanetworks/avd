@@ -276,7 +276,7 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
             file.write(result_manager.json)
 
     # Build a summary with ANTA test stats
-    test_summary = {
+    tests_summary = {
         "total_tests": result_manager.get_total_results(),
         "tests_passed": result_manager.get_total_results({"success"}),
         "tests_failed": result_manager.get_total_results({"failure"}),
@@ -288,14 +288,14 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     }
     for device, stat in result_manager.device_stats.items():
         if stat.tests_failure_count:
-            test_summary["devices_with_test_failures"].append(device)
+            tests_summary["devices_with_test_failures"].append(device)
         if stat.tests_error_count:
-            test_summary["devices_with_test_errors"].append(device)
+            tests_summary["devices_with_test_errors"].append(device)
 
-    return test_summary
+    return tests_summary
 
 
-def update_ansible_result(result: dict[str, Any], test_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
+def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
     """
     Update the Ansible result dictionary from aggregated ANTA test results and workflow log errors.
 
@@ -306,7 +306,7 @@ def update_ansible_result(result: dict[str, Any], test_summary: dict[str, Any], 
 
     Args:
         result: The Ansible result dictionary to update.
-        test_summary: The dictionary created from `build_reports` containing aggregated test statistics.
+        anta_tests_summary: The dictionary created from `build_reports` containing aggregated test statistics.
         has_errors_ref: The boolean list passed to the AntaWorkflowHandler to keep track of error logs.
 
     Returns:
@@ -322,8 +322,8 @@ def update_ansible_result(result: dict[str, Any], test_summary: dict[str, Any], 
         result["failed"] = True
 
     # Intermediate flags for test outcomes
-    has_test_issues = test_summary["tests_failed"] > 0 or test_summary["tests_error"] > 0
-    no_tests_run = test_summary["total_tests"] == 0
+    has_test_issues = anta_tests_summary["tests_failed"] > 0 or anta_tests_summary["tests_error"] > 0
+    no_tests_run = anta_tests_summary["total_tests"] == 0
 
     # Fail the task if no tests were run
     if no_tests_run:
@@ -344,7 +344,7 @@ def update_ansible_result(result: dict[str, Any], test_summary: dict[str, Any], 
         result["msg"] = final_msg
 
     # Populate final result dictionary directly from summary
-    result["anta_test_summary"] = test_summary
+    result["anta_tests_summary"] = anta_tests_summary
 
     return result
 
@@ -534,7 +534,7 @@ def setup_queue_listener(log_queue: Queue, has_errors_ref: list[bool]) -> QueueL
     Returns:
       QueueListener: The started QueueListener instance.
     """
-    log_handler = AntaWorkflowHandler(has_errors_ref, display)
+    log_handler = AntaWorkflowHandler(has_errors_ref)
 
     listener = QueueListener(log_queue, log_handler)
     listener.start()
@@ -594,27 +594,25 @@ def setup_root_logger(unique_id: str, log_queue: Queue, verbosity: int) -> None:
     """
     root_logger = logging.getLogger()
 
-    # All loggers (pyavd, anta, ansible_collections.arista.avd) including low-level libraries (asyncio, httpcore, httpx) will be at DEBUG
+    # ANTA low-level libraries (asyncio, httpcore, httpx) are always at WARNING level except at full verbosity `-vvvvv`
+    for logger_name in ("asyncio", "httpcore", "httpx"):
+        logging.getLogger(logger_name).setLevel(logging.WARNING)
+
+    # All loggers (pyavd, anta, ansible_collections.arista.avd) including low-level libraries will be at DEBUG
     if verbosity >= 5:
         root_logger.setLevel(logging.DEBUG)
-    # All loggers except low-level libraries will be at DEBUG
+        for logger_name in ("asyncio", "httpcore", "httpx"):
+            logging.getLogger(logger_name).setLevel(logging.DEBUG)
+    # All loggers except low-level libraries (WARNING) will be at DEBUG
     elif verbosity == 4:
         root_logger.setLevel(logging.DEBUG)
-        for logger_name in ("asyncio", "httpcore", "httpx"):
-            logging.getLogger(logger_name).setLevel(logging.INFO)
-    # All loggers except anta and low-level libraries will be at DEBUG
+    # All loggers except anta (INFO) and low-level libraries (WARNING) will be at DEBUG
     elif verbosity == 3:
         root_logger.setLevel(logging.DEBUG)
-        for logger_name in ("anta", "asyncio", "httpcore", "httpx"):
-            logging.getLogger(logger_name).setLevel(logging.INFO)
-    # All loggers will be at INFO
-    elif verbosity == 2:
+        logging.getLogger("anta").setLevel(logging.INFO)
+    # All loggers except low-level libraries (WARNING) will be at INFO
+    elif verbosity in (1, 2):
         root_logger.setLevel(logging.INFO)
-    # All loggers except httpx will be at INFO
-    elif verbosity == 1:
-        root_logger.setLevel(logging.INFO)
-        # HTTPX is really chatty at INFO
-        logging.getLogger("httpx").setLevel(logging.WARNING)
     # All loggers will be at WARNING
     else:
         root_logger.setLevel(logging.WARNING)

@@ -61,36 +61,36 @@ def create_catalog(
 
 def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestContext) -> list[AntaTestDefinition] | None:
     """Create the AntaTestDefinition's from this TestSpec instance."""
-    logger = TestLoggerAdapter(logger=getLogger(__name__), extra={"device": device_context.hostname, "test": test_spec.test_class.name})
+    logger_adapter = TestLoggerAdapter(logger=getLogger(__name__), extra={"device": device_context.hostname, "test": test_spec.test_class.name})
 
     # Skip the test if the conditional keys are not present in the structured config
     if test_spec.conditional_keys and not all(get_v2(device_context.structured_config, key.value) for key in test_spec.conditional_keys):
         keys = StructuredConfigKey.to_string_list(test_spec.conditional_keys)
-        logger.debug(LogMessage.INPUT_NO_DATA_MODEL, caller=", ".join(keys))
+        logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(keys))
         return None
 
     # Create the AntaTest.Input instance from the input dict if available
     if test_spec.input_dict is not None:
-        logger.debug(LogMessage.INPUT_RENDERING, caller="input dictionary")
+        logger_adapter.debug(LogMessage.INPUT_RENDERING, mode="input dictionary")
         rendered_inputs = {}
         for input_field, structured_config_key in test_spec.input_dict.items():
             field_value = get_v2(device_context.structured_config, structured_config_key.value)
             if field_value is not None:
                 rendered_inputs[input_field] = field_value
             else:
-                logger.debug(LogMessage.INPUT_NO_DATA_MODEL, caller=structured_config_key.value)
+                logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=structured_config_key.value)
                 return None
-        logger.debug(LogMessage.INPUT_RENDERED, inputs=rendered_inputs)
+        logger_adapter.debug(LogMessage.INPUT_RENDERED, inputs=rendered_inputs)
         inputs = test_spec.test_class.Input(**rendered_inputs)
         return [AntaTestDefinition(test=test_spec.test_class, inputs=inputs)]
 
     # Create the AntaTest.Input instance(s) from the input factory if available
     if test_spec.input_factory is not None:
-        logger.debug(LogMessage.INPUT_RENDERING, caller="input factory")
-        factory = test_spec.input_factory(device_context, test_spec.test_class.name)  # pylint: disable=not-callable
+        logger_adapter.debug(LogMessage.INPUT_RENDERING, mode="input factory")
+        factory = test_spec.input_factory(device_context, test_spec.test_class.name)
         results = factory.create()
         if results is None:
-            logger.debug(LogMessage.INPUT_NONE_FOUND)
+            logger_adapter.debug(LogMessage.INPUT_NONE_FOUND)
             return None
         return [AntaTestDefinition(test=test_spec.test_class, inputs=inputs) for inputs in results]
 

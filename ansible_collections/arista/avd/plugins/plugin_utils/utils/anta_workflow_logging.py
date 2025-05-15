@@ -46,17 +46,16 @@ class AntaWorkflowHandler(logging.Handler):
     boolean list.
     """
 
-    def __init__(self, has_errors_ref: list[bool], display: Display | None = None) -> None:
+    def __init__(self, has_errors_ref: list[bool]) -> None:
         """
         Initialize the handler.
 
         Args:
           has_errors_ref: Mutable boolean list to track errors.
                           It's expected to be a list with one boolean element.
-          display: Optional Ansible Display instance. Retrieves singleton if None.
         """
         super().__init__()
-        self.display = display or Display()
+        self.display = Display()
         self.has_errors_ref = has_errors_ref
 
     def emit(self, record: logging.LogRecord) -> None:
