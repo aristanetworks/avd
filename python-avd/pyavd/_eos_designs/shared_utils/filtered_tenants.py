@@ -319,9 +319,9 @@ class FilteredTenantsMixin(Protocol):
 
             all_svis.append(merged_svi)
 
-            if len(svi.static_routes) > 0:
+            if merged_svi.static_routes:
                 vrf.static_routes.extend(
-                    svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                    merged_svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
                 )
 
         return all_svis._natural_sorted(sort_key="id")
