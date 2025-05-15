@@ -6,7 +6,7 @@ l3leaf:
     bgp_as: 42
     vtep_loopback_ipv4_pool: 10.43.0.0/24
   nodes:
-    - name: no-underlay-l2-multicast-group-ipv4-pool
+    - name: missing-underlay-l2-multicast-group-ipv4-pool
       id: 42
 
 type: l3leaf
