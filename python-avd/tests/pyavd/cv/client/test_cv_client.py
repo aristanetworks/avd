@@ -35,9 +35,6 @@ from tests.pyavd.cv.constants import (
 )
 from tests.pyavd.cv.mockery import (
     mocked_cv_client_aenter,
-    # mocked_cv_client_build_workspace,
-    # mocked_cv_client_submit_workspace,
-    # mocked_cv_client_abandon_workspace,
     playback_static_recording_unary_stream,
     playback_static_recording_unary_unary,
     playback_unary_stream,
