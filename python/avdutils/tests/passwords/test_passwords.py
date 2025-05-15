@@ -28,7 +28,7 @@ SHA512_CRYPT_TEST_DATA = [
         "🐍",
         "",
         pytest.raises(ValueError, match="Invalid Salt: Salt contains an invalid character"),
-        id="Wrong character in salt",
+        id="Invalid character in salt",
     ),
 ]
 
