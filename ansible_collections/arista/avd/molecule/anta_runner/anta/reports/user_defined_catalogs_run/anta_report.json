@@ -137,7 +137,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the interface vxlan1 source interface and UDP port.",
+        "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -170,7 +170,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface.",
+        "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -181,7 +181,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the VTEP peers of the Vxlan1 interface.",
+        "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -555,7 +555,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the interface vxlan1 source interface and UDP port.",
+        "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -588,7 +588,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface.",
+        "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -599,7 +599,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the VTEP peers of the Vxlan1 interface.",
+        "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -643,7 +643,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the interface vxlan1 source interface and UDP port.",
+        "description": "Verifies Vxlan1 source interface and UDP port.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -676,7 +676,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface.",
+        "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",
         "result": "unset",
         "messages": [],
         "custom_field": null
@@ -687,7 +687,7 @@
         "categories": [
             "vxlan"
         ],
-        "description": "Verifies the VTEP peers of the Vxlan1 interface.",
+        "description": "Verifies Vxlan1 VTEP peers.",
         "result": "unset",
         "messages": [],
         "custom_field": null

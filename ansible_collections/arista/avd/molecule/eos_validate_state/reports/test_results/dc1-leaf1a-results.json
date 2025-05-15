@@ -450,7 +450,7 @@
       "hardware"
     ],
     "description": "Verifies the status of power supply fans and all fan trays.",
-    "custom_field": "Accepted States: 'ok', 'Not Present'"
+    "custom_field": "Accepted States: 'ok', 'powerLoss'"
   },
   {
     "name": "dc1-leaf1a",
@@ -467,7 +467,7 @@
       "hardware"
     ],
     "description": "Verifies the power supplies status.",
-    "custom_field": "Accepted States: 'ok', 'Not Present'"
+    "custom_field": "Accepted States: 'ok', 'powerLoss'"
   },
   {
     "name": "dc1-leaf1a",
@@ -1343,7 +1343,7 @@
     "categories": [
       "vxlan"
     ],
-    "description": "Verifies the interface vxlan1 source interface and UDP port."
+    "description": "Verifies Vxlan1 source interface and UDP port."
   },
   {
     "name": "dc1-leaf1a",
@@ -1367,7 +1367,7 @@
     "categories": [
       "vxlan"
     ],
-    "description": "Verifies the VNI-VLAN bindings of the Vxlan1 interface."
+    "description": "Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface."
   },
   {
     "name": "dc1-leaf1a",
@@ -1375,6 +1375,6 @@
     "categories": [
       "vxlan"
     ],
-    "description": "Verifies the VTEP peers of the Vxlan1 interface."
+    "description": "Verifies Vxlan1 VTEP peers."
   }
 ]
