@@ -198,9 +198,9 @@ class ActionModule(ActionBase):
                 batch_results = executor.map(run_anta, batches)
 
             # Build the ANTA reports and summary
-            test_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"))
+            anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"))
 
-            result = update_ansible_result(result, test_summary, has_errors_ref)
+            result = update_ansible_result(result, anta_tests_summary, has_errors_ref)
 
         except Exception as error:
             # Recast errors as AnsibleActionFail

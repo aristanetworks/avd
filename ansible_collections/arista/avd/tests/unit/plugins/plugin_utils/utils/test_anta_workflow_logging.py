@@ -60,7 +60,9 @@ class TestAntaWorkflowHandler:
             pytest.param(logging.CRITICAL, "Critical message", "error", True, id="critical_level"),
         ],
     )
-    def test_anta_workflow_handler_emit_levels(self, mock_display: Display, level: int, msg: str, expected_display_method_name: str, set_error_true: bool) -> None:
+    def test_anta_workflow_handler_emit_levels(
+        self, mock_display: Display, level: int, msg: str, expected_display_method_name: str, set_error_true: bool
+    ) -> None:
         """Test AntaWorkflowHandler emit calls the correct display method and updates errors."""
         unique_context_id = "ctx-123"
         errors_list = [False]
