@@ -29,6 +29,7 @@ where
             Some(path) => match path.extension().and_then(OsStr::to_str) {
                 Some("yml" | "yaml") => Self::from_yaml_file(path),
                 Some("json") => Self::from_json_file(path),
+                #[cfg(feature = "xz2")]
                 Some("xz2") => Self::from_xz2_file(path),
                 Some("gz") => Self::from_gz_file(path),
                 _ => Err(LoadError::InvalidExtension {}),
@@ -47,7 +48,7 @@ where
         let reader = BufReader::new(file);
         Ok(serde_yaml::from_reader(reader)?)
     }
-    #[cfg(feature = "dump_load_files")]
+    #[cfg(feature = "xz2")]
     fn from_xz2_file(path: PathBuf) -> Result<Self, LoadError> {
         let file = File::open(path)?;
         let decompressor = xz2::read::XzDecoder::new(file);
@@ -60,7 +61,7 @@ where
         let reader = BufReader::new(file);
         Ok(serde_json::from_reader(reader)?)
     }
-    #[cfg(feature = "dump_load_files")]
+    #[cfg(feature = "xz2")]
     fn from_xz2_bytes(bytes: &[u8]) -> Result<Self, LoadError> {
         let decompressor = xz2::read::XzDecoder::new(bytes);
         let reader = BufReader::new(decompressor);

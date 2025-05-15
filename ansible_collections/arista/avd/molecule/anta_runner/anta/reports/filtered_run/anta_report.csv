@@ -1,6 +1,6 @@
 Device,Test Name,Test Status,Message(s),Test description,Test category
 dc1-leaf1a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -38,7 +38,7 @@ dc1-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc1-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf1b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -103,7 +103,7 @@ dc1-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc1-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-leaf2a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -139,11 +139,11 @@ dc1-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-leaf2a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc1-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies the interface vxlan1 source interface and UDP port.,VXLAN
+dc1-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
 dc1-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
 dc1-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc1-leaf2a,VerifyVxlanVniBinding,unset,,Verifies the VNI-VLAN bindings of the Vxlan1 interface.,VXLAN
-dc1-leaf2a,VerifyVxlanVtep,unset,,Verifies the VTEP peers of the Vxlan1 interface.,VXLAN
+dc1-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
+dc1-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc1-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -173,7 +173,7 @@ dc1-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc1-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-spine1,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -203,7 +203,7 @@ dc1-spine1,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc1-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc1-spine2,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-spine2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -245,7 +245,7 @@ dc1-svc-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of
 dc1-wan1,VerifyAVTPathHealth,unset,,Verifies the status of all AVT paths for all VRFs.,AVT
 dc1-wan1,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
 dc1-wan1,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-wan1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-wan1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-wan1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-wan1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan1,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -280,7 +280,7 @@ dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,
 dc1-wan2,VerifyAVTPathHealth,unset,,Verifies the status of all AVT paths for all VRFs.,AVT
 dc1-wan2,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
 dc1-wan2,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc1-wan2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc1-wan2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-wan2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-wan2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc1-wan2,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -313,7 +313,7 @@ dc1-wan2,VerifyFileSystemUtilization,unset,,Verifies that no partition is utiliz
 dc1-wan2,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan2,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -349,7 +349,7 @@ dc2-leaf1a,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-leaf1a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf1b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf1b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf1b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf1b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf1b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -413,7 +413,7 @@ dc2-leaf1c,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-leaf1c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf1c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf2a,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf2a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf2a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf2a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2a,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -448,13 +448,13 @@ dc2-leaf2a,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2a,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf2a,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2a,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc2-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies the interface vxlan1 source interface and UDP port.,VXLAN
+dc2-leaf2a,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
 dc2-leaf2a,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
 dc2-leaf2a,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2a,VerifyVxlanVniBinding,unset,,Verifies the VNI-VLAN bindings of the Vxlan1 interface.,VXLAN
-dc2-leaf2a,VerifyVxlanVtep,unset,,Verifies the VTEP peers of the Vxlan1 interface.,VXLAN
+dc2-leaf2a,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
+dc2-leaf2a,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc2-leaf2b,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-leaf2b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf2b,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf2b,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf2b,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2b,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -489,11 +489,11 @@ dc2-leaf2b,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc2-leaf2b,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc2-leaf2b,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2b,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc2-leaf2b,VerifyVxlan1ConnSettings,unset,,Verifies the interface vxlan1 source interface and UDP port.,VXLAN
+dc2-leaf2b,VerifyVxlan1ConnSettings,unset,,Verifies Vxlan1 source interface and UDP port.,VXLAN
 dc2-leaf2b,VerifyVxlan1Interface,unset,,Verifies the Vxlan1 interface status.,VXLAN
 dc2-leaf2b,VerifyVxlanConfigSanity,unset,,Verifies there are no VXLAN config-sanity inconsistencies.,VXLAN
-dc2-leaf2b,VerifyVxlanVniBinding,unset,,Verifies the VNI-VLAN bindings of the Vxlan1 interface.,VXLAN
-dc2-leaf2b,VerifyVxlanVtep,unset,,Verifies the VTEP peers of the Vxlan1 interface.,VXLAN
+dc2-leaf2b,VerifyVxlanVniBinding,unset,,"Verifies the VNI-VLAN, VNI-VRF bindings of the Vxlan1 interface.",VXLAN
+dc2-leaf2b,VerifyVxlanVtep,unset,,Verifies Vxlan1 VTEP peers.,VXLAN
 dc2-leaf2c,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf2c,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf2c,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -523,7 +523,7 @@ dc2-leaf2c,VerifyFileSystemUtilization,unset,,Verifies that no partition is util
 dc2-leaf2c,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf2c,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3a.arista.com,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf3a.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf3a.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf3a.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3a.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -559,7 +559,7 @@ dc2-leaf3a.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partit
 dc2-leaf3a.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3a.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-leaf3b.arista.com,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-leaf3b.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-leaf3b.arista.com,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-leaf3b.arista.com,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-leaf3b.arista.com,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-leaf3b.arista.com,VerifyLLDPNeighbors,unset,,Verifies the connection status of the specified LLDP (Link Layer Discovery Protocol) neighbors.,Connectivity
@@ -595,7 +595,7 @@ dc2-leaf3b.arista.com,VerifyFileSystemUtilization,unset,,Verifies that no partit
 dc2-leaf3b.arista.com,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc2-leaf3b.arista.com,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-spine1,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-spine1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine1,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
@@ -625,7 +625,7 @@ dc2-spine1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilizatio
 dc2-spine1,VerifyNTP,unset,,Verifies if NTP is synchronised.,System
 dc2-spine1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
 dc2-spine2,VerifyBFDPeersHealth,unset,,Verifies the health of IPv4 BFD peers across all VRFs.,BFD
-dc2-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP IPv4 peer(s).,BGP
+dc2-spine2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc2-spine2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc2-spine2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
 dc2-spine2,VerifyReachability,unset,,Verifies point-to-point reachability between Ethernet interfaces.,Connectivity
