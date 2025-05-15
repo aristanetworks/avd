@@ -307,7 +307,7 @@ class FilteredTenantsMixin(Protocol):
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
 
-        all_svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
+        filtered_svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
         for svi in vrf.svis:
             if not self.is_accepted_vlan(svi):
                 continue
@@ -317,14 +317,14 @@ class FilteredTenantsMixin(Protocol):
             if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
                 continue
 
-            all_svis.append(merged_svi)
+            filtered_svis.append(merged_svi)
 
             if merged_svi.static_routes:
                 vrf.static_routes.extend(
                     merged_svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
                 )
 
-        return all_svis._natural_sorted(sort_key="id")
+        return filtered_svis._natural_sorted(sort_key="id")
 
     @cached_property
     def endpoint_vlans(self: SharedUtilsProtocol) -> list:
