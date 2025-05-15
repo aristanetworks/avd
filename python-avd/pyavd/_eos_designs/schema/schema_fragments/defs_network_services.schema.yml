@@ -1638,7 +1638,7 @@ $defs:
                         - str
                     port_channel:
                       type: dict
-                      description: Settings to be applied to the Port-Channel subinterface connected to the service.
+                      description: Settings to be applied to the Port-Channel subinterface.
                       keys:
                         structured_config:
                           type: dict
