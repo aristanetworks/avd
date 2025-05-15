@@ -1,0 +1,82 @@
+---
+# Testing having two routers in a site with EVPN GW activated which is not supported currently.
+wan_use_evpn_node_settings_for_lan: true
+# enabling EVPN on LAN
+overlay_routing_protocol: ebgp
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_route_servers:
+  - hostname: cv-pathfinder-pathfinder
+    vtep_ip: 10.10.10.10
+    path_groups:
+      - name: INET
+        interfaces:
+          - name: Ethernet1
+            public_ip: 192.168.55.55
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+default_node_types:
+  - node_type: wan_router
+    match_hostnames:
+      - "cv-pathfinder-edge.*"
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    uplink_ipv4_pool: 172.18.0.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA, TenantD]
+      deny_vrfs: [IT]
+    bgp_as: 65000
+  node_groups:
+    - group: dual router EVPN GW site
+      cv_pathfinder_region: AVD_Land_West
+      cv_pathfinder_site: Site422
+      uplink_interfaces: [Ethernet52]
+      uplink_type: p2p
+      evpn_role: client
+      nodes:
+        - name: cv-pathfinder-edge-wan-use-evpn-on-lan-1
+          uplink_switch_interfaces: [Ethernet1]
+          id: 12
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+        - name: cv-pathfinder-edge-wan-use-evpn-on-lan-2
+          uplink_switch_interfaces: [Ethernet2]
+          id: 13
+          l3_interfaces:
+            - name: Ethernet1
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+
+expected_error_message: >-
+  WAN gateway is supported only on sites with a single WAN router, configured: 2

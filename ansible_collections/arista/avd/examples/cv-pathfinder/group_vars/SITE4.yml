@@ -1,0 +1,76 @@
+---
+# SITE4 variables
+# Use eBGP as underlay routing protocol on SITE4, the default is 'none' for WAN routers.
+underlay_routing_protocol: ebgp
+overlay_routing_protocol: ebgp # (1)!
+
+# Enable usage of EVPN settings to configure LAN. This is required to enable EVPN Gateway on Site4.
+# This is a PREVIEW key
+wan_use_evpn_node_settings_for_lan: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.42.0/24
+    filter:
+      always_include_vrfs_in_tenants: [all]
+    mlag_interfaces: [Ethernet5, Ethernet6]
+    mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+    mlag_peer_ipv4_pool: 10.255.252.0/24
+  node_groups:
+    - group: SITE4
+      bgp_as: 65104
+      nodes:
+        - name: site4-border1
+          mgmt_ip: 192.168.17.23/24
+          id: 13
+          evpn_role: server
+        - name: site4-border2
+          mgmt_ip: 192.168.17.24/24
+          id: 14
+
+wan_router:
+  defaults:
+    platform: CloudEOS
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.42.0/24
+    uplink_ipv4_pool: 10.0.4.0/24
+    filter:
+      always_include_vrfs_in_tenants: [all]
+    uplink_interfaces: [Ethernet1, Ethernet2]
+    uplink_switches: [site4-border1, site4-border2]
+    uplink_type: p2p # (2)!
+    evpn_role: client # (3)!
+    evpn_route_servers: [site4-border1] # (4)!
+    bgp_as: 65000
+  node_groups:
+    - group: SITE4
+      cv_pathfinder_region: REGION1
+      cv_pathfinder_site: SITE4
+      cv_pathfinder_transit_mode: region
+      wan_ha:
+        enabled: false
+      nodes:
+        - name: site4-wan1
+          id: 15
+          evpn_role: client
+          mgmt_ip: 192.168.17.22/24
+          uplink_switch_interfaces: [Ethernet3, Ethernet3]
+          l3_interfaces:
+            - name: Ethernet3
+              profile: MPLS-WAN-INTERFACE
+              peer_interface: Ethernet8
+              peer_ip: 172.18.40.1
+              ip_address: 172.18.40.2/24
+              wan_carrier: ACME-MPLS-INC
+              wan_circuit_id: mpls-site4-wan1
+            - name: Ethernet4
+              peer_interface: Ethernet10
+              peer_ip: 100.64.40.1
+              ip_address: 100.64.40.2/24
+              static_routes:
+                - prefix: 100.64.0.0/16
+              profile: INTERNET-WAN-INTERFACE
+              wan_carrier: REGION1-INTERNET-CORP
+              wan_circuit_id: inet-site4-wan1

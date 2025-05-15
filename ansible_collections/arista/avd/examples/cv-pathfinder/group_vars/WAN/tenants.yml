@@ -22,6 +22,10 @@ tenants:
                 ip_address: 10.66.22.1/24
               - node: site3-wan1
                 ip_address: 10.66.3.1/24
+              - node: site4-border1
+                ip_address: 10.66.4.1/24
+              - node: site4-border2
+                ip_address: 10.66.44.1/24
       - name: RED
         vrf_vni: 101
         svis:
@@ -39,3 +43,7 @@ tenants:
                 ip_address: 10.42.22.1/24
               - node: site3-wan1
                 ip_address: 10.42.3.1/24
+              - node: site4-border1
+                ip_address: 10.42.4.1/24
+              - node: site4-border2
+                ip_address: 10.42.44.1/24
