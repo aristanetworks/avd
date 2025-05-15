@@ -126,6 +126,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyReloadCause,
+        input_factory=VerifyReloadCauseInputFactory,
     ),
     TestSpec(
         test_class=VerifyRoutingProtocolModel,
