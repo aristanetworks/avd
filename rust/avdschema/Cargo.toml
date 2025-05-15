@@ -21,4 +21,5 @@ walkdir = { version = "2.5.0", optional = true }
 xz2 = { version = "0.1.7", optional = true }
 
 [features]
-dump_load_files = ["walkdir", "xz2"]
+dump_load_files = ["dep:walkdir"]
+xz2 = ["dump_load_files", "dep:xz2"]

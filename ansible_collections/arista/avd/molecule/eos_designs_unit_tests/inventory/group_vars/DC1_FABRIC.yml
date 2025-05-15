@@ -432,6 +432,6 @@ platform_speed_groups:
         speed_groups: [ 1, 2, 4 ]
 
 # Set Aboot password with sha512 hash
-boot:
+override_boot:
   secret:
     key: a153de6290ff1409257ade45f
