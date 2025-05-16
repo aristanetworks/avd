@@ -60,6 +60,12 @@ options:
     description: If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue.
     type: bool
     default: false
+  strict_system_mac_address:
+    description: |-
+      If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.
+      Otherwise, just issue a warning.
+    type: bool
+    default: false
   configlet_name_template:
     description: Python String Template to use for creating the configlet name for each device configuration.
     type: str
@@ -167,6 +173,7 @@ EXAMPLES = r"""
         device_list: "{{ ansible_play_hosts }}"
         # strict_tags: false
         # skip_missing_devices: false
+        # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
         workspace:
         #   name:

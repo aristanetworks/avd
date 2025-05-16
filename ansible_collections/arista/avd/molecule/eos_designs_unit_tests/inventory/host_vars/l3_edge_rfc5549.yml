@@ -1,0 +1,44 @@
+type: spine
+underlay_rfc5549: true
+spine:
+  nodes:
+    - name: l3_edge_rfc5549
+      id: 1
+      evpn_role: "none"
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
+
+l3_edge:
+  p2p_links_ip_pools:
+    - name: pool1
+      ipv4_pool: 192.168.0.0/24
+
+  p2p_links:
+    - nodes: [l3_edge_rfc5549, peer_without_underlay]
+      interfaces: [ethernet1, ethernet1]
+      ip_pool: pool1
+      id: 1
+      include_in_underlay_protocol: false
+
+    - nodes: [l3_edge_rfc5549, peer_with_underlay]
+      interfaces: [ethernet2, ethernet2]
+      as: [65000, 65002]
+      ip_pool: pool1
+      id: 2
+      include_in_underlay_protocol: true
+
+    - nodes: [l3_edge_rfc5549, peer_without_underlay_with_ebgp]
+      interfaces: [ethernet3, ethernet3]
+      as: [65000, 65003]
+      ip_pool: pool1
+      id: 3
+      include_in_underlay_protocol: false
+      routing_protocol: ebgp
+
+    - nodes: [l3_edge_rfc5549, peer_with_underlay_with_ebgp]
+      interfaces: [ethernet4, ethernet4]
+      as: [65000, 65004]
+      ip_pool: pool1
+      id: 4
+      include_in_underlay_protocol: true
+      routing_protocol: ebgp

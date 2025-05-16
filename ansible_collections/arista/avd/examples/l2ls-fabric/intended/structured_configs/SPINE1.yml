@@ -1,3 +1,10 @@
+aaa_authentication:
+  policies:
+    local:
+      allow_nopassword: true
+aaa_authorization:
+  exec:
+    default: local
 aaa_root:
   disabled: true
 config_end: true

@@ -40,6 +40,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
 | <samp>device_list</samp> | list | True | None |  | List of devices to deploy. The names are used to find AVD structured configuration and EOS configuration files. |
 | <samp>strict_tags</samp> | bool | optional | False |  | If `true` other tags associated with the devices will get removed. Otherwise other tags will be left as-is. |
 | <samp>skip_missing_devices</samp> | bool | optional | False |  | If `true` anything that can be deployed will get deployed. Otherwise the Workspace will be abandoned on any issue. |
+| <samp>strict_system_mac_address</samp> | bool | optional | False |  | If `true`, raise an exception if the input data contains devices with a duplicated system_mac_address but unique serial_number values.<br>Otherwise, just issue a warning. |
 | <samp>configlet_name_template</samp> | str | optional | AVD-${hostname} |  | Python String Template to use for creating the configlet name for each device configuration. |
 | <samp>workspace</samp> | dict | optional | None |  | CloudVision Workspace to create or use for the deployment. |
 | <samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp> | str | optional | None |  | Optional name to use for the created Workspace. By default the name will be `AVD &lt;timestamp&gt;`. |
@@ -89,6 +90,7 @@ The `arista.avd.cv_workflow` module is an Ansible Action Plugin providing the fo
         device_list: "{{ ansible_play_hosts }}"
         # strict_tags: false
         # skip_missing_devices: false
+        # strict_system_mac_address: false
         # configlet_name_template: "AVD-${hostname}"
         workspace:
         #   name:

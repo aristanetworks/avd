@@ -1,5 +1,8 @@
 aaa_root:
   disabled: true
+boot:
+  secret:
+    key: a153de6290ff1409257ade45f
 config_end: true
 daemon_terminattr:
   cvaddrs:
@@ -367,6 +370,8 @@ port_channel_interfaces:
     identifier: 0000:0000:0808:0707:0606
     route_target: 08:08:07:07:06:06
   lacp_id: 0808.0707.0606
+  ptp:
+    enable: true
   switchport:
     enabled: true
     mode: trunk

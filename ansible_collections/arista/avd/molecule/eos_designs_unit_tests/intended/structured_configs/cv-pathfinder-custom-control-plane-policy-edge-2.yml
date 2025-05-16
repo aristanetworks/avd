@@ -12,6 +12,10 @@ application_traffic_recognition:
     - name: CUSTOM-APPLICATION-2
     - name: CUSTOM-DSCP-APPLICATION
     - name: microsoft-teams
+  - name: VIDEO-WITH-SERVICE
+    applications:
+    - name: microsoft
+      service: chat
   field_sets:
     l4_ports:
     - name: TCP-SRC-2
@@ -59,10 +63,13 @@ application_traffic_recognition:
     applications:
     - name: CUSTOM-APPLICATION-1
     - name: skype
+      service: chat
     application_transports:
     - rtp
     categories:
     - name: VIDEO1
+    - name: VIDEO-WITH-SERVICE
+      service: audio-video
 config_end: true
 dps_interfaces:
 - name: Dps1
