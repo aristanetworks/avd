@@ -114,6 +114,9 @@ management_interfaces:
   ip_address: 172.16.1.101/24
   type: oob
   gateway: 172.16.1.1
+management_security:
+  password:
+    encryption_key_common: true
 metadata:
   platform: vEOS-lab
   fabric_name: FABRIC

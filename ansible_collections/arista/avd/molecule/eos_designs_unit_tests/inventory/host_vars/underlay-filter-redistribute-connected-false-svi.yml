@@ -1,0 +1,36 @@
+---
+
+# Test the scenario where underlay_filter_redistribute_connected is false within the _route_maps_vrf_default_check function in network_services/route_maps.py
+type: l3leaf
+
+underlay_filter_redistribute_connected: false
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    evpn_services_l2_only: false
+  nodes:
+    - name: underlay-filter-redistribute-connected-false-svi
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [fabric, ipmi, storageProd, sit]
+
+tenants:
+  - name: SIT
+    vlan_aware_bundle_number_base: 300
+    mac_vrf_vni_base: 20000
+    l2vlans:
+      - id: 10
+        name: storage_prod
+        tags: ['storageProd']
+    vrfs:
+      - name: default
+        vrf_vni: 789654
+        svis:
+          - id: 1008
+            name: SVI_1
+            enabled: true
+            tags: ['sit']
