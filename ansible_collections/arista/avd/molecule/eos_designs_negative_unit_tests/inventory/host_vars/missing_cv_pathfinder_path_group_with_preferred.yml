@@ -1,0 +1,74 @@
+---
+type: wan_router
+wan_mode: cv-pathfinder
+underlay_routing_protocol: none
+
+bgp_as: 65000
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+cv_pathfinder_regions:
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+        location: Miami
+
+wan_ipsec_profiles:
+  control_plane:
+    ike_policy_name: AUTOVPN-IKE
+    sa_policy_name: AUTOVPN-SA
+    profile_name: AUTOVPN
+    shared_key: ABCDEF1234567890
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.30.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    - name: missing_cv_pathfinder_path_group_with_preferred
+      id: 1
+      wan_role: server
+      data_plane_cpu_allocation_max: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 666
+          ip_address: 10.1.1.1/24
+
+wan_path_groups:
+  - name: MPLS
+    ipsec:
+      static_peers: false
+      dynamic_peers: false
+    id: 100
+    default_preference: 2
+  - name: INET
+    id: 101
+    default_preference: 3
+  - name: LTE
+    id: 102
+    default_preference: 4
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+
+wan_virtual_topologies:
+  vrfs:
+    - name: PROD
+      wan_vni: 42
+    - name: IT
+      wan_vni: 100
+
+expected_error_message: >-
+  At least one path-group must be configured with preference '1' or 'preferred' for load-balance policy LB-DEFAULT-POLICY-DEFAULT'
+  to use CloudVision integration. If this is an auto-generated policy, ensure that at least one default_preference for a non
+  excluded path-group is set to 'preferred' (or unset as this is the default).
