@@ -9,6 +9,36 @@ l2leaf:
       link_tracking:
         enabled: true
 
+custom_connected_endpoints_keys:
+  - key: servers
+    type: custom_server
+  - key: monitor
+    type: monitor
+
+connected_endpoints_keys:
+  - key: Testing_1
+    type: Testing_Type_1
+
+Testing_1:
+  - name: testing
+    adapters:
+      - endpoint_ports: [ Nic1 ]
+        switch_ports: [ Ethernet111 ]
+        switches: [ connected_endpoints ]
+        trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS ]
+
+# This should not impact structured config.
+firewalls:
+  - name: FIREWALL01
+    rack: RackB
+    adapters:
+      - endpoint_ports: [ E0 ]
+        switch_ports: [ Ethernet20 ]
+        switches: [ connected_endpoints ]
+        port_channel:
+          endpoint_port_channel: PortChanne1
+          mode: active
+
 servers:
   # port-channel provide physical and port-channel descriptions as templates with all fields
   - name: OLD_SW-1/2
@@ -123,3 +153,10 @@ port_profiles:
     phone_vlan: 321
     link_tracking:
       enabled: true
+
+monitor:
+  - name: custom_connected_endpoint
+    adapters:
+      - endpoint_ports: [ Nic101 ]
+        switch_ports: [ Ethernet31 ]
+        switches: [ connected_endpoints ]

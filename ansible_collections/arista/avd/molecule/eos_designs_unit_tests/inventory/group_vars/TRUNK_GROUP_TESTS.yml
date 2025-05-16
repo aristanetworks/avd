@@ -87,37 +87,6 @@ tenants:
         name: duplicate l2vlan210_with_trunk_groups not in use. Should not get configured anywhere
         trunk_groups: [ TG_NOT_MATCHING_ANY_SERVERS ]
 
-custom_connected_endpoints_keys:
-  - key: servers
-    type: custom_server
-  - key: monitor
-    type: monitor
-
-connected_endpoints_keys:
-  - key: Testing_1
-    type: Testing_Type_1
-
-Testing_1:
-  - name: testing
-    adapters:
-      - endpoint_ports: [ Nic1 ]
-        switch_ports: [ Ethernet111 ]
-        switches: [ trunk-group-tests-l3leaf1a ]
-        trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS ]
-
-# This should not impact structured config.
-firewalls:
-  - name: FIREWALL01
-    rack: RackB
-    adapters:
-      - endpoint_ports: [ E0, E1 ]
-        switch_ports: [ Ethernet20, Ethernet20 ]
-        switches: [ DC1-LEAF2A, DC1-LEAF2B ]
-        profile: TENANT_A_B
-        port_channel:
-          endpoint_port_channel: PortChanne1
-          mode: active
-
 servers:
   - name: server_with_tg_100
     adapters:
@@ -146,10 +115,3 @@ servers:
         port_channel:
           mode: active
           description: portchannel
-
-monitor:
-  - name: custom_connected_endpoint
-    adapters:
-      - endpoint_ports: [ Nic101, Nic102, Nic103, Nic104 ]
-        switch_ports: [ Ethernet31, Ethernet31, Ethernet31, Ethernet31 ]
-        switches: [ trunk-group-tests-l3leaf1a, trunk-group-tests-l3leaf1b, trunk-group-tests-l2leaf1a, trunk-group-tests-l2leaf1b ]

@@ -23,11 +23,11 @@ ethernet_interfaces:
   peer_interface: Ethernet1
   peer_type: l3leaf
 - name: Ethernet12
-  description: CUSTOM_SERVER_server_with_tg_200_Nic3
+  description: SERVER_server_with_tg_200_Nic3
   shutdown: false
   peer: server_with_tg_200
   peer_interface: Nic3
-  peer_type: custom_server
+  peer_type: server
   switchport:
     enabled: true
     mode: trunk
