@@ -36,7 +36,7 @@ TESTHOST4 = {
 
 
 def get_assignment(hostvars: dict, node_id: int) -> dict:
-    return {"key": {"hostname": hostvars["inventory_hostname"]}, "value": node_id}
+    return {"key": f"hostname={hostvars['inventory_hostname']}", "value": node_id}
 
 
 def get_pool(hostvars: dict, assignments: list[dict] | None = None) -> dict:
@@ -327,9 +327,9 @@ class DummySharedUtils:
             id="invalid_pool_assignment_type",
         ),
         pytest.param(
-            {"node_id_pools": [{"pool_key": "fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype", "assignments": [{"key": "foo"}]}]},
+            {"node_id_pools": [{"pool_key": "fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype", "assignments": [{"key": {"hostname": "foo"}}]}]},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for assignment 'key' '<class 'str'>'. Expected a dict."),
+            TypeError("Invalid type for assignment 'key' '<class 'dict'>'. Expected a str."),
             id="invalid_pool_assignment_key",
         ),
         pytest.param(
@@ -337,7 +337,7 @@ class DummySharedUtils:
                 "node_id_pools": [
                     {
                         "pool_key": "fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype",
-                        "assignments": [{"key": {"hostname": "myhost"}, "value": "foo"}],
+                        "assignments": [{"key": "hostname=myhost", "value": "foo"}],
                     }
                 ]
             },

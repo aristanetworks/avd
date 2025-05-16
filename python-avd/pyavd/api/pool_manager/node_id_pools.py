@@ -9,24 +9,18 @@ from typing import TYPE_CHECKING
 
 from pyavd._utils import AvdStringFormatter, default
 
-from .base_classes import AssignmentKey, Pool, PoolAssignment, PoolCollection
+from .base_classes import Pool, PoolAssignment, PoolCollection
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
 
-@dataclass(frozen=True)
-class NodeIdAssignmentKey(AssignmentKey):
-    hostname: str
-
-
 @dataclass()
-class NodeIdPoolCollection(PoolCollection[NodeIdAssignmentKey, int]):
+class NodeIdPoolCollection(PoolCollection[int]):
     pools_key: str = "node_id_pools"
-    pools: dict[str, Pool[NodeIdAssignmentKey, int]] = field(default_factory=dict)
-    pool_cls: type[Pool[NodeIdAssignmentKey, int]] = Pool[NodeIdAssignmentKey, int]
-    assignment_cls: type[PoolAssignment[NodeIdAssignmentKey, int]] = PoolAssignment[NodeIdAssignmentKey, int]
-    assignment_key_cls: type[NodeIdAssignmentKey] = NodeIdAssignmentKey
+    pools: dict[str, Pool[int]] = field(default_factory=dict)
+    pool_cls: type[Pool[int]] = Pool[int]
+    assignment_cls: type[PoolAssignment[int]] = PoolAssignment[int]
     value_type: type = int
     min_value: int = 1
 
@@ -50,6 +44,6 @@ class NodeIdPoolCollection(PoolCollection[NodeIdAssignmentKey, int]):
         return Path(default(shared_utils.inputs.fabric_numbering.node_id.pools_file, default_id_file))
 
     @staticmethod
-    def _assignment_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> NodeIdAssignmentKey:
+    def _assignment_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
         """Returns the assignment key to use for this device."""
-        return NodeIdAssignmentKey(hostname=shared_utils.hostname)
+        return f"hostname={shared_utils.hostname}"
