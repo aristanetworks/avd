@@ -60588,7 +60588,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         eg. `dom_threshold_file: flash:/dom_threshold.csv`
         Note: Set
         `dom_threshold_file` to `default` for default Arista-standardized thresholds.
-              eg.
+        eg.
         `dom_threshold_file: default`
         """
 
@@ -60607,7 +60607,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        eg. `dom_threshold_file: flash:/dom_threshold.csv`
                        Note: Set
                        `dom_threshold_file` to `default` for default Arista-standardized thresholds.
-                             eg.
+                       eg.
                        `dom_threshold_file: default`
 
                 """
