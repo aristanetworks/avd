@@ -65,6 +65,9 @@ class InbandManagementMixin(Protocol):
         if not self.configure_parent_for_inband_mgmt:
             return self.node_config.inband_mgmt_gateway
 
+        if not self.node_config.inband_mgmt_subnet:
+            return None
+
         subnet = ip_network(self.node_config.inband_mgmt_subnet, strict=False)
         return f"{subnet[1]!s}"
 
@@ -81,6 +84,9 @@ class InbandManagementMixin(Protocol):
         """
         if not self.configure_parent_for_inband_mgmt_ipv6:
             return self.node_config.inband_mgmt_ipv6_gateway
+
+        if not self.node_config.inband_mgmt_ipv6_subnet:
+            return None
 
         subnet = ip_network(self.node_config.inband_mgmt_ipv6_subnet, strict=False)
         return f"{subnet[1]!s}"
