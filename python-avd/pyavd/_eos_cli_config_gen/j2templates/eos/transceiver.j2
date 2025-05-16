@@ -5,6 +5,5 @@
 #}
 {# eos - transceiver qsfp default mode #}
 {% if transceiver.dom_threshold_file is arista.avd.defined %}
-!
 transceiver dom-threshold file {{ transceiver.dom_threshold_file }}
 {% endif %}

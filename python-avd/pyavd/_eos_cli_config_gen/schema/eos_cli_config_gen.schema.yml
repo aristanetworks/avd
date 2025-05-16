@@ -22679,7 +22679,7 @@ keys:
         description: "CSV file path for DOM threshold values.\neg. `dom_threshold_file:
           flash:/dom_threshold.csv`\nNote: Set `dom_threshold_file` to `default` for
           default Arista-standardized thresholds.\n      eg. `dom_threshold_file:
-          default`\n"
+          default`"
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
