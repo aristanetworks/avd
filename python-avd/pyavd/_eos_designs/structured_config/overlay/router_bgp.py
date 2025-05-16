@@ -116,8 +116,7 @@ class RouterBgpMixin(Protocol):
 
                 peer_groups.append(mpls_peer_group)
 
-            # TODO: AVD 6.0.0 remove the check for WAN routers.
-            if self.shared_utils.overlay_evpn_vxlan is True and (not self.shared_utils.is_wan_router or self.inputs.wan_use_evpn_node_settings_for_lan):
+            if self.shared_utils.overlay_evpn_vxlan is True:
                 evpn_overlay_peer_group = self._generate_base_peer_group("evpn", "evpn_overlay_peers")
                 evpn_overlay_peer_group.remote_as = self.shared_utils.bgp_as
                 # EVPN OVERLAY peer group - also in EBGP..
@@ -175,8 +174,7 @@ class RouterBgpMixin(Protocol):
             if self._is_wan_server_with_peers:
                 peer_groups.append_new(name=self.inputs.bgp_peer_groups.wan_rr_overlay_peers.name, activate=False)
 
-        # TODO: no elif
-        elif self.shared_utils.overlay_evpn_vxlan is True:
+        if self.shared_utils.overlay_evpn_vxlan is True:
             peer_groups.append_new(name=self.inputs.bgp_peer_groups.evpn_overlay_peers.name, activate=False)
 
         if self.shared_utils.overlay_routing_protocol == "ebgp" and (
@@ -202,7 +200,11 @@ class RouterBgpMixin(Protocol):
                 activate=True,
                 encapsulation=self.inputs.wan_encapsulation,
             )
-            if self.shared_utils.wan_role != "server":
+
+            if self.shared_utils.evpn_wan_gateway:
+                wan_overlay_peer_group.domain_remote = True
+
+            if self.shared_utils.is_wan_client:
                 wan_overlay_peer_group._update(
                     route_map_in="RM-EVPN-SOO-IN",
                     route_map_out="RM-EVPN-SOO-OUT",
@@ -216,7 +218,30 @@ class RouterBgpMixin(Protocol):
                     domain_remote=True,
                     activate=True,
                 )
-
+                if self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enabled:
+                    if self.shared_utils.node_config.mlag:
+                        msg = "The All Active Multihoming resiliency model does not support MLAG, ensure the mlag key is set to false for the node."
+                        raise AristaAvdError(msg)
+                    if not self.shared_utils.platform_settings.feature_support.evpn_gateway_all_active_multihoming:
+                        msg = "The All Active Multihoming resiliency model is not supported by this platform, refer to platform_settings.feature_support."
+                        raise AristaAvdError(msg)
+                    if self.shared_utils.overlay_ipvpn_gateway:
+                        msg = "The all-active EVPN Gateway redundancy feature is not supported alongside the IPVPN Gateway feature."
+                        raise AristaAvdError(msg)
+                    if not self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain and self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
+                        msg = "The all-active EVPN Gateway redundancy feature requires evpn_gateway.evpn_l3.inter_domain to be enabled."
+                        raise AristaAvdError(msg)
+                    self.structured_config.router_bgp.address_family_evpn._update(
+                        domain_identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_local,
+                        domain_identifier_remote=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_domain_id_remote,
+                    )
+                    self.structured_config.router_bgp.address_family_evpn.evpn_ethernet_segment.append_new(
+                        domain="all",
+                        identifier=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.identifier,
+                        route_target_import=self.shared_utils.node_config.evpn_gateway.all_active_multihoming.evpn_ethernet_segment.rt_import,
+                    )
+                    if self.shared_utils.node_config.evpn_gateway.all_active_multihoming.enable_d_path:
+                        self.structured_config.router_bgp.bgp.bestpath.d_path = True
             if self.shared_utils.node_config.evpn_gateway.evpn_l3.enabled:
                 self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(
                     enable=True, inter_domain=self.shared_utils.node_config.evpn_gateway.evpn_l3.inter_domain
@@ -238,7 +263,7 @@ class RouterBgpMixin(Protocol):
                     peer_groups.append_new(name=self.inputs.bgp_peer_groups.rr_overlay_peers.name, activate=True)
 
             # TODO: this is written for matching either evpn_mpls or evpn_vlxan based for iBGP see if we cannot make this better.
-            if self.shared_utils.overlay_vtep is True and self.shared_utils.evpn_role != "server" and overlay_peer_group:
+            if self.shared_utils.overlay_vtep is True and self.shared_utils.evpn_role == "client" and overlay_peer_group:
                 overlay_peer_group._update(
                     route_map_in="RM-EVPN-SOO-IN",
                     route_map_out="RM-EVPN-SOO-OUT",
@@ -258,7 +283,7 @@ class RouterBgpMixin(Protocol):
             if self.inputs.evpn_import_pruning:
                 self.structured_config.router_bgp.address_family_evpn.route.import_match_failure_action = "discard"
 
-        if self.shared_utils.overlay_dpath is True:
+        if self.shared_utils.overlay_dpath:
             self.structured_config.router_bgp.address_family_evpn.domain_identifier = self.shared_utils.node_config.ipvpn_gateway.evpn_domain_id
 
         if self.shared_utils.is_wan_server:
@@ -279,6 +304,9 @@ class RouterBgpMixin(Protocol):
                 activate=True,
                 encapsulation=self.inputs.wan_encapsulation,
             )
+
+        if self.shared_utils.evpn_wan_gateway:
+            self.structured_config.router_bgp.address_family_evpn.neighbor_default.next_hop_self_received_evpn_routes._update(enable=True, inter_domain=True)
 
     def _set_address_family_ipv4_sr_te(self: AvdStructuredConfigOverlayProtocol) -> None:
         """Set the structured config for IPv4 SR-TE address family."""

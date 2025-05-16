@@ -1664,7 +1664,7 @@ keys:
               This can be an absolute path or a path relative to current working directory.
 
 
-              By default the path is "<root_dir>/intended/data/<fabric_name>-ids.yml".
+              By default the path is: `<root_dir>/intended/data/<fabric_name>-ids.yml`.
 
 
               Note: Since the pool manager will remove stale entries after every run,
@@ -3450,6 +3450,10 @@ keys:
                   convert_types:
                   - str
                   description: Maximum rx_queue count supported on any interface.
+            evpn_gateway_all_active_multihoming:
+              type: bool
+              default: false
+              description: Support for all-active EVPN gateway redundancy.
         management_interface:
           type: str
           default: Management1
@@ -3552,6 +3556,8 @@ keys:
         mlag: 900
         non_mlag: 1020
       tcam_profile: vxlan-routing
+      feature_support:
+        evpn_gateway_all_active_multihoming: true
     - platforms:
       - 7500R
       - 7500R2
@@ -3569,6 +3575,8 @@ keys:
         mlag: 900
         non_mlag: 1020
       tcam_profile: vxlan-routing
+      feature_support:
+        evpn_gateway_all_active_multihoming: true
     - platforms:
       - 7358X4
       management_interface: Management1/1
@@ -3604,6 +3612,7 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        evpn_gateway_all_active_multihoming: true
       reload_delay:
         mlag: 300
         non_mlag: 330
@@ -3617,10 +3626,18 @@ keys:
         bgp_update_wait_install: false
         interface_storm_control: false
         queue_monitor_length_notify: false
+        evpn_gateway_all_active_multihoming: true
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
+    - platforms:
+      - CloudEOS
+      feature_support:
+        bgp_update_wait_install: false
+        interface_storm_control: false
+        queue_monitor_length_notify: false
+      p2p_uplinks_mtu: 9194
     - platforms:
       - AWE-5310
       - AWE-7230R
@@ -5067,6 +5084,19 @@ keys:
 
       When using automatic ceritficate deployment via CloudVision this name must be
       the same on all WAN routers.'
+  wan_use_agent_env_var_for_kernel_software_forwarding_ecmp:
+    type: bool
+    documentation_options:
+      table: wan-settings
+    default: true
+    description: 'For EOS kernel forwarding, ECMP programming can be enabled in two
+      different ways depending on the EOS version.
+
+
+      - `true`: For older EOS versions use an agent environment variable. Changing
+      this requires a restart of the KernelFib agent.
+
+      - `false`: For newer EOS versions (starting 4.33.2) use the proper CLI.'
   wan_use_evpn_node_settings_for_lan:
     type: bool
     documentation_options:
@@ -7419,9 +7449,23 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
+                    prefix:
+                      type: str
+                      description: Destination prefix.
                     gateway:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
+                    next_hop:
+                      type: str
+                      description: Next-hop IPv4 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.
@@ -7460,8 +7504,22 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv6_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
+                    prefix:
+                      type: str
+                      description: Destination prefix.
                     gateway:
                       type: str
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
+                    next_hop:
+                      type: str
+                      description: Next-hop IPv6 address.
                     track_bfd:
                       type: bool
                       description: Track next-hop using BFD.
@@ -8917,6 +8975,45 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+              all_active_multihoming:
+                description: 'Enable Active Active Multihoming architecture for EVPN
+                  Gateways.
+
+                  Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain
+                  to be enabled.'
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable Active Active Multihoming resiliency model.
+                    type: bool
+                    required: true
+                  enable_d_path:
+                    description: Enable D-path for use with BGP bestpath selection
+                      algorithm.
+                    type: bool
+                    default: true
+                  evpn_domain_id_local:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin
+                      notation
+                    type: str
+                    required: true
+                  evpn_domain_id_remote:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin
+                      notation
+                    type: str
+                    required: true
+                  evpn_ethernet_segment:
+                    type: dict
+                    required: true
+                    keys:
+                      identifier:
+                        description: EVPN Ethernet Segment Identifier (Type 1 format)
+                        type: str
+                        required: true
+                      rt_import:
+                        description: Low-order 6 bytes of ES-Import Route Target.
+                        type: str
+                        required: true
           ipvpn_gateway:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration
@@ -10587,6 +10684,25 @@ $defs:
               - active
               - passive
               default: active
+            channel_id_algorithm:
+              type: str
+              valid_values:
+              - first_port
+              - p2p_link_id
+              default: first_port
+              description: 'Configures how to derive the Port-Channel ID when not
+                set.
+
+                By default the ID is derived from the first switch port in node_child_interfaces[].interfaces.
+
+                The `p2p_link_id` setting will use the `id` for each link plus the
+                `channel_id_offset` to derive the Port-Channel ID.'
+            channel_id_offset:
+              description: Offset added to the ID of the p2p_link when `channel_id_algorithm`
+                is set to `p2p_link_id` and `channel_id` is not set.
+              type: int
+              convert_types:
+              - str
             nodes_child_interfaces:
               type: list
               primary_key: node
@@ -10605,8 +10721,8 @@ $defs:
                     type: int
                     convert_types:
                     - str
-                    description: Port-Channel ID. If no channel_id is specified, an
-                      id is generated from the first switch port in the port channel.
+                    description: Port-Channel ID. If no `channel_id` is specified,
+                      an id is generated using the `channel_id_algorithm`.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in
@@ -10618,7 +10734,8 @@ $defs:
           description: 'Enables deviation of the routing protocol used on this link
             from the fabric underlay default.
 
-            - ebgp: Enforce plain IPv4 BGP peering'
+            - ebgp: Enforce plain IPv4 BGP peering and exempt the neighbor from the
+            RFC5549 underlay if configured.'
         structured_config:
           type: dict
           relaxed_validation: true
@@ -11084,6 +11201,12 @@ $defs:
           loss_rate:
             type: str
             $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
+      outlier_elimination:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/outlier_elimination
+      metric_order:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/metric_order
       path_groups:
         type: list
         min_length: 1

@@ -86,9 +86,5 @@ class CVMessageSizeExceeded(CVClientException):
     """Actual GRPC message size"""
 
 
-class CVInterfaceAlreadyManagedByStudio(CVClientException):
-    """
-    Interface(s) targeted for configuration update by AVD already managed by CloudVision Studio.
-
-    Use cv_strict_tags to force AVD-sourced tags and Designed Configuration.
-    """
+class CVDuplicatedDevices(CVClientException):
+    """Device inputs contain duplicated serial_number or system_mac_address."""

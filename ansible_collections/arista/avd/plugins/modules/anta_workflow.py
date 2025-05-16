@@ -124,6 +124,12 @@ options:
             type: list
             elements: str
             choices: ["success", "failure", "error", "skipped", "unset"]
+  strict_mode:
+    description: |-
+      When `strict_mode` is `true`, the plugin returns `failed: true` if any ANTA tests fail or error.
+      Otherwise, the plugin returns `changed: true` in such cases.
+    type: bool
+    default: false
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
@@ -168,4 +174,5 @@ EXAMPLES = r"""
           #   hide_statuses:
           #     - success
           #     - skipped
+        strict_mode: true
 """

@@ -670,6 +670,40 @@ $defs:
                   inter_domain:
                     type: bool
                     default: true
+              all_active_multihoming:
+                description: |-
+                  Enable Active Active Multihoming architecture for EVPN Gateways.
+                  Not supported with MLAG or IPVPN Gateway. Requires EVPN L3 inter-domain to be enabled.
+                type: dict
+                keys:
+                  enabled:
+                    description: Enable Active Active Multihoming resiliency model.
+                    type: bool
+                    required: true
+                  enable_d_path:
+                    description: Enable D-path for use with BGP bestpath selection algorithm.
+                    type: bool
+                    default: true
+                  evpn_domain_id_local:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
+                  evpn_domain_id_remote:
+                    description: ASN(asplain):local_admin or ASN(asdot):local_admin notation
+                    type: str
+                    required: true
+                  evpn_ethernet_segment:
+                    type: dict
+                    required: true
+                    keys:
+                      identifier:
+                        description: EVPN Ethernet Segment Identifier (Type 1 format)
+                        type: str
+                        required: true
+                      rt_import:
+                        description: Low-order 6 bytes of ES-Import Route Target.
+                        type: str
+                        required: true
           ipvpn_gateway:
             documentation_options:
               table: node-type-evpn-ipvpn-gateway-configuration

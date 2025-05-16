@@ -53,6 +53,7 @@
       json_output: "{{ anta_report_json_path }}"
       filters:
         hide_statuses: "{{ anta_report_hide_statuses | arista.avd.default([]) }}"
+    strict_mode: "{{ anta_strict_mode }}"
   register: anta
   delegate_to: localhost
   run_once: true

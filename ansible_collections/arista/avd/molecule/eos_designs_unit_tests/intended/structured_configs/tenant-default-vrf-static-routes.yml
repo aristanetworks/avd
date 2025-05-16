@@ -1,0 +1,178 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: L2_add-subnets-to-redistribution-in-default-vrf-with-sequence30_Ethernet2
+  shutdown: false
+  spanning_tree_portfast: edge
+  peer: add-subnets-to-redistribution-in-default-vrf-with-sequence30
+  peer_interface: Ethernet2
+  peer_type: wan_router
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '111'
+      native_vlan: 10
+hostname: tenant-default-vrf-static-routes
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.10.0.3/32
+- name: Loopback1
+  description: VXLAN_TUNNEL_SOURCE
+  shutdown: false
+  ip_address: 10.11.0.3/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.0.0/24 eq 32
+  - sequence: 20
+    action: permit 10.11.0.0/24 eq 32
+- name: PL-STATIC-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.0.0.0/8
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 15
+    type: deny
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+  - sequence: 20
+    type: permit
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65101'
+  router_id: 10.10.0.3
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+    static:
+      enabled: true
+  vlans:
+  - id: 111
+    tenant: TEST
+    rd: 10.10.0.3:10111
+    route_targets:
+      both:
+      - 10111:10111
+    redistribute_routes:
+    - learned
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+  vrfs:
+  - name: default
+    rd: 10.10.0.3:111
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - 111:111
+      export:
+      - address_family: evpn
+        route_targets:
+        - 111:111
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
+service_routing_protocols_model: multi-agent
+static_routes:
+- vrf: default
+  prefix: 10.0.0.0/8
+  next_hop: 10.2.10.100
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan111
+  description: svi_with_default_vrf
+  shutdown: true
+  tenant: TEST
+  tags:
+  - fabric
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 10
+  name: NATIVE
+  state: suspend
+- id: 111
+  name: svi_with_default_vrf
+  tenant: TEST
+vrfs:
+- name: MGMT
+  ip_routing: false
+vxlan_interface:
+  vxlan1:
+    description: tenant-default-vrf-static-routes_VTEP
+    vxlan:
+      source_interface: Loopback1
+      udp_port: 4789
+      vlans:
+      - id: 111
+        vni: 10111
+      vrfs:
+      - name: default
+        vni: 111

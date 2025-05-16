@@ -31,6 +31,9 @@ This example will go over the following:
 - Build the intended configurations and documentation
 - Deploy the configuration via CloudVision as a Service (CVaaS)
 
+!!! warning
+    - Site4 is using EVPN GW which is under preview.
+
 ## Installation
 
 --8<--
@@ -57,7 +60,7 @@ ansible-avd-examples/ (or wherever the playbook was run)
 
 ### Physical topology
 
-The target topology comprises two Pathfinder nodes and three sites distributed in two regions.
+The target topology comprises two Pathfinder nodes and four sites distributed in two regions.
 
 The drawing below shows the physical topology used in this example.
 
@@ -74,6 +77,7 @@ The following table describes the characteristics of each site:
 | Site 1 | Region 1 | Transt | 2 routers | `INTERNET` and `MPLS` on both routers | Via the LAN | eBGP |
 | Site 2 | Region 2 | Transit | 2 routers | `MPLS` on router 1 and `INTERNET` on router 2 | Direct HA | eBGP |
 | Site 3 | Region 2 | Edge | 1 router | `INTERNET` | - | Subinterfaces facing L2Leaf |
+| Site 4 | Region 1 | Transit | 1 router | `MPLS` and `INTERNET` | - | EVPN Gateway using Next-Hop-Self |
 
 ### IP ranges used
 
@@ -100,6 +104,10 @@ Subnet: `192.168.17.0/24`
 | **Site 3**       |               |
 | site3-wan1       | 192.168.17.20 |
 | site3-leaf1      | 192.168.17.21 |
+| **Site 4**       |               |
+| site4-wan1       | 192.168.17.22 |
+| site4-border1    | 192.168.17.23 |
+| site4-border2    | 192.168.17.24 |
 | **Clouds**       |               |
 | mpls-cloud       | 192.168.17.30 |
 | inet-cloud       | 192.168.17.31 |
@@ -114,17 +122,20 @@ Subnet: `192.168.17.0/24`
 | **MLAG iBGP peering (interface VLAN 4093)** | 10.255.251.0/24   |
 | **Site1 uplink between WANs and border**    | 10.0.1.0/24       |
 | **Site2 uplink between WANs and leafs**     | 10.0.2.0/24       |
+| **Site4 uplink between WANs and borders**   | 10.0.4.0/24       |
 | **pf1 to mpls-cloud**                       | 172.18.100.0/24   |
 | **pf1 to inet-cloud**                       | 100.64.100.0/24   |
 | **pf2 to mpls-cloud**                       | 172.18.200.0/24   |
 | **pf2 to inet-cloud**                       | 100.64.200.0/24   |
 | **site1-wan1 to mpls-cloud**                | 172.18.10.0/24    |
-| **site1-wan1 to inet-cloud**                | 172.18.10.0/24    |
+| **site1-wan1 to inet-cloud**                | 100.64.10.0/24    |
 | **site1-wan2 to mpls-cloud**                | 172.18.11.0/24    |
-| **site1-wan2 to inet-cloud**                | 172.18.11.0/24    |
+| **site1-wan2 to inet-cloud**                | 100.64.11.0/24    |
 | **site2-wan1 to mpls-cloud**                | 172.18.20.0/24    |
-| **site2-wan2 to inet-cloud**                | 172.18.21.0/24    |
+| **site2-wan2 to inet-cloud**                | 100.64.21.0/24    |
 | **site3-wan1 to inet-cloud**                | 172.18.30.0/24    |
+| **site4-wan1 to mpls-cloud**                | 172.18.40.0/24    |
+| **site4-wan1 to inet-cloud**                | 100.64.40.0/24    |
 
 For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is allocated `.1` and the site / pf router is allocated `.2`.
 
@@ -142,6 +153,10 @@ For every connection to `inet-cloud` or `mpls-cloud`, the cloud router is alloca
 | Site 2 | site1-leaf2 | RED | 10.42.21.1/24 |
 | Site 3 | site1-wan3 | BLUE | 10.66.30.1/24 |
 | Site 3 | site1-wan3 | RED | 10.42.30.1/24 |
+| Site 4 | site4-border1 | BLUE | 10.66.40.1/24 |
+| Site 4 | site4-border1 | RED | 10.42.40.1/24 |
+| Site 4 | site4-border2 | BLUE | 10.66.44.1/24 |
+| Site 4 | site4-border2 | RED | 10.42.44.1/24 |
 
 !!! note
     For site 3, the IP addresses are configured on the WAN router as site3-leaf1 is an l2leaf.
@@ -481,6 +496,32 @@ The following diagrams describe the Site3 physical and LAN connectivity.
 ansible_collections/arista/avd/examples/cv-pathfinder/group_vars/SITE3.yml
 --8<--
 ```
+
+### Site 4
+
+!!! warning
+    - Site4 is using EVPN GW which is under preview.
+
+The following diagrams describe the Site4 physical and LAN connectivity.
+
+=== "Physical"
+
+    ![Figure: Site 4 Physical](images/site4-physical.svg){: style="height:700px"}
+
+=== "LAN"
+
+    ![Figure: Site 4 LAN](images/site4-lan.svg){: style="height:700px"}
+
+```yaml title="group_vars/SITE4.yml"
+--8<--
+ansible_collections/arista/avd/examples/cv-pathfinder/group_vars/SITE4.yml
+--8<--
+```
+
+1. Setting the overlay routing protocol to eBGP. This is required to enable EVPN on the LAN side in conjunction with `wan_use_evpn_node_settings_for_lan` set in the `WAN/cv-pathfinder-settings.yml` group var file.
+2. The uplink type `p2p` is used to connect to the LAN switches using EVPN.
+3. Set the `evpn_role` to client to enable EVPN on the LAN side.
+4. Declares `site4-border1` as the EVPN server to pair with to receive LAN side EVPN routes.
 
 ## The playbooks
 

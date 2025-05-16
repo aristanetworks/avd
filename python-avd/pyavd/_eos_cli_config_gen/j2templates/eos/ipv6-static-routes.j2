@@ -13,13 +13,20 @@
 {%                 set ipv6_static_route_cli = ipv6_static_route_cli ~ " vrf " ~ ipv6_static_route.vrf %}
 {%             endif %}
 {%         endif %}
-{%         if ipv6_static_route.destination_address_prefix is arista.avd.defined %}
+{%         if ipv6_static_route.prefix is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.prefix %}
+{%         elif ipv6_static_route.destination_address_prefix is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.destination_address_prefix %}
 {%         endif %}
 {%         if ipv6_static_route.interface is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.interface | capitalize %}
 {%         endif %}
-{%         if ipv6_static_route.gateway is arista.avd.defined %}
+{%         if ipv6_static_route.next_hop is arista.avd.defined %}
+{%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.next_hop %}
+{%             if ipv6_static_route.track_bfd is arista.avd.defined(true) %}
+{%                 set ipv6_static_route_cli = ipv6_static_route_cli ~ " track bfd" %}
+{%             endif %}
+{%         elif ipv6_static_route.gateway is arista.avd.defined %}
 {%             set ipv6_static_route_cli = ipv6_static_route_cli ~ " " ~ ipv6_static_route.gateway %}
 {%             if ipv6_static_route.track_bfd is arista.avd.defined(true) %}
 {%                 set ipv6_static_route_cli = ipv6_static_route_cli ~ " track bfd" %}

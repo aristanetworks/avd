@@ -113,12 +113,10 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if self.inputs.mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.mgmt_destination_networks:
                 self.structured_config.static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix=mgmt_destination_network, gateway=self.shared_utils.mgmt_gateway
+                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.mgmt_gateway
                 )
         else:
-            self.structured_config.static_routes.append_new(
-                vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix="0.0.0.0/0", gateway=self.shared_utils.mgmt_gateway
-            )
+            self.structured_config.static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="0.0.0.0/0", next_hop=self.shared_utils.mgmt_gateway)
 
     @structured_config_contributor
     def ipv6_static_routes(self) -> None:
@@ -129,13 +127,11 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if self.inputs.ipv6_mgmt_destination_networks:
             for mgmt_destination_network in self.inputs.ipv6_mgmt_destination_networks:
                 self.structured_config.ipv6_static_routes.append_new(
-                    vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix=mgmt_destination_network, gateway=self.shared_utils.ipv6_mgmt_gateway
+                    vrf=self.inputs.mgmt_interface_vrf, prefix=mgmt_destination_network, next_hop=self.shared_utils.ipv6_mgmt_gateway
                 )
             return
 
-        self.structured_config.ipv6_static_routes.append_new(
-            vrf=self.inputs.mgmt_interface_vrf, destination_address_prefix="::/0", gateway=self.shared_utils.ipv6_mgmt_gateway
-        )
+        self.structured_config.ipv6_static_routes.append_new(vrf=self.inputs.mgmt_interface_vrf, prefix="::/0", next_hop=self.shared_utils.ipv6_mgmt_gateway)
 
     @structured_config_contributor
     def service_routing_protocols_model(self) -> None:
@@ -298,7 +294,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
         # Remove notifying key if not supported by the platform settings.
         queue_monitor_length = self.inputs.queue_monitor_length._cast_as(EosCliConfigGen.QueueMonitorLength)
-        if not self.shared_utils.platform_settings.feature_support.queue_monitor_length_notify:
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor_length_notify and hasattr(queue_monitor_length, "notifying"):
             del queue_monitor_length.notifying
         self.structured_config.queue_monitor_length = queue_monitor_length
 

@@ -4,7 +4,6 @@
 """Centralized package to import all the tests of the ANTA framework."""
 
 from anta.tests.avt import VerifyAVTPathHealth, VerifyAVTRole
-from anta.tests.bfd import VerifyBFDPeersHealth
 from anta.tests.configuration import VerifyRunningConfigDiffs, VerifyZeroTouch
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 from anta.tests.hardware import (
@@ -50,7 +49,6 @@ __all__ = [
     "VerifyAVTPathHealth",
     "VerifyAVTRole",
     "VerifyAgentLogs",
-    "VerifyBFDPeersHealth",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
     "VerifyEnvironmentSystemCooling",
