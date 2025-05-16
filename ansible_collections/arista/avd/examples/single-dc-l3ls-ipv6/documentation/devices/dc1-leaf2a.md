@@ -42,7 +42,6 @@
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
-  - [Prefix-lists](#prefix-lists)
   - [IPv6 Prefix-lists](#ipv6-prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
@@ -987,24 +986,6 @@ router bfd
 
 ## Filters
 
-### Prefix-lists
-
-#### Prefix-lists Summary
-
-##### PL-MLAG-PEER-VRFS
-
-| Sequence | Action |
-| -------- | ------ |
-| 10 | permit 2001:db8:4:2::/64 |
-
-#### Prefix-lists Device Configuration
-
-```eos
-!
-ip prefix-list PL-MLAG-PEER-VRFS
-   seq 10 permit 2001:db8:4:2::/64
-```
-
 ### IPv6 Prefix-lists
 
 #### IPv6 Prefix-lists Summary
@@ -1016,6 +997,12 @@ ip prefix-list PL-MLAG-PEER-VRFS
 | 10 | permit 2001:db8:1::/48 eq 64 |
 | 15 | permit 2001:db8:5::/48 eq 64 |
 
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 2001:db8:4:2::/64 |
+
 #### IPv6 Prefix-lists Device Configuration
 
 ```eos
@@ -1023,6 +1010,9 @@ ip prefix-list PL-MLAG-PEER-VRFS
 ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
    seq 10 permit 2001:db8:1::/48 eq 64
    seq 15 permit 2001:db8:5::/48 eq 64
+!
+ipv6 prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 2001:db8:4:2::/64
 ```
 
 ### Route-maps

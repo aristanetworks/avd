@@ -38,7 +38,10 @@ class PrefixListsMixin(Protocol):
             for index, mlag_prefix in enumerate(mlag_prefixes, start=1):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {mlag_prefix}")
 
-            self.structured_config.prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
+            if not self.shared_utils.underlay_ipv6_numbered:
+                self.structured_config.prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
+            else:
+                self.structured_config.ipv6_prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
 
     def _set_prefix_lists_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set the prefix_lists for EVPN services in VRF "default"."""
