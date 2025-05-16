@@ -198,7 +198,7 @@ class FilteredTenantsMixin(Protocol):
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.svis = self.filtered_svis(vrf)
             vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
-            vrf.l3_port_channels = vrf.l3_port_channels._filtered(lambda l3_port_channel: bool(self.hostname == l3_port_channel.node))
+            vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
 
             if self.vtep is True:
@@ -330,7 +330,7 @@ class FilteredTenantsMixin(Protocol):
         """
         Returns filtered l3_interfaces for the VRFs.
 
-        Also filters static_routes set under l3_interfaces and appends to vrf.static_routes.
+        Extracts static_routes set under l3_interfaces and appends to vrf.static_routes.
         """
         filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
         for l3_interface in vrf.l3_interfaces:
@@ -343,6 +343,26 @@ class FilteredTenantsMixin(Protocol):
             filtered_l3_interfaces.append(l3_interface)
 
         return filtered_l3_interfaces
+
+    def filtered_l3_port_channels(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels:
+        """
+        Returns filtered l3_port_channels for the VRFs.
+
+        Extracts static_routes set under l3_port_channels and appends to vrf.static_routes.
+        """
+        filtered_l3_port_channels = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels()
+        for l3_port_channel in vrf.l3_port_channels:
+            if self.hostname != l3_port_channel.node:
+                continue
+            if l3_port_channel.static_routes:
+                vrf.static_routes.extend(
+                    l3_port_channel.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            filtered_l3_port_channels.append(l3_port_channel)
+
+        return filtered_l3_port_channels
 
     @cached_property
     def endpoint_vlans(self: SharedUtilsProtocol) -> list:

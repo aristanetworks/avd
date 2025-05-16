@@ -125,6 +125,9 @@ tenants:
                 speed: forced 100gfull
                 structured_config:
                   mtu: 1600
+            static_routes:
+              - prefix: 10.10.10.10/24
+                next_hop: 10.1.1.1
           - name: Port-Channel1111.100
             description: Single description line
             peer: inet-cloud-sub100
