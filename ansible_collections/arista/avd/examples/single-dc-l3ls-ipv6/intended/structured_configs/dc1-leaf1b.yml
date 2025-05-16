@@ -341,10 +341,6 @@ router_bgp:
       activate: true
   address_family_ipv4:
     peer_groups:
-    - name: MLAG-IPv6-UNDERLAY-PEER
-      activate: true
-    - name: IPv6-UNDERLAY-PEERS
-      activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
   address_family_ipv6:

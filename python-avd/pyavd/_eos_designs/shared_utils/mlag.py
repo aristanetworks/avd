@@ -232,17 +232,18 @@ class MlagMixin(Protocol):
                 router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
                 if self.underlay_ipv6:
                     router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
-        elif self.underlay_bgp or not self.use_separate_peer_group_for_mlag_vrfs:
+
+            if self.use_separate_peer_group_for_mlag_vrfs:
+                bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
+                router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
+                router_bgp.address_family_ipv4.peer_groups.append(
+                    self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549)
+                )
+        # underlay_ipv6_numbered only supports BGP underlay routing for now so we can simplify the logic
+        else:
             bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv6_underlay_peer
             router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
-            router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.underlay_rfc5549))
-            if self.underlay_ipv6:
-                router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
-
-        if self.use_separate_peer_group_for_mlag_vrfs:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer
-            router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
-            router_bgp.address_family_ipv4.peer_groups.append(self.get_mlag_peer_group_address_familiy_ipv4(bgp_peer_group, self.inputs.overlay_mlag_rfc5549))
+            router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 
     def get_mlag_peer_group(
         self: SharedUtilsProtocol,

@@ -448,7 +448,6 @@ router bgp 65100
    !
    address-family ipv4
       no neighbor EVPN-OVERLAY-PEERS activate
-      neighbor IPv6-UNDERLAY-PEERS activate
    !
    address-family ipv6
       neighbor IPv6-UNDERLAY-PEERS activate

@@ -68,15 +68,15 @@ class RouterBgpMixin(Protocol):
             address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
             )
+            if self.inputs.underlay_rfc5549 is True:
+                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
         else:
-            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
+            address_family_ipv6_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(
                 name=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name, activate=True
             )
-
-        if self.inputs.underlay_rfc5549 is True:
-            address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
-
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
+            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(address_family_ipv6_peer_group)
 
         if self.shared_utils.underlay_ipv6 and not self.shared_utils.underlay_ipv6_numbered:
             self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
