@@ -14,6 +14,7 @@ from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pathlib import Path
+    from typing import Any
 
     from pyavd._eos_designs.shared_utils import SharedUtilsProtocol
 
@@ -104,12 +105,12 @@ class Pool(Generic[T_ValueType]):
         self.assignments = {key: assignment for key, assignment in self.assignments.items() if assignment.accessed}
         self.collection.changed = self.collection.changed or len_before != len(self.assignments)
 
-    def assignments_as_dict(self) -> dict:
+    def assignments_as_dict(self) -> dict[str, T_ValueType]:
         """Returns a dict sorted on assignment value representing the assignments."""
         return {assignment_key: self.assignments[assignment_key].value for assignment_key in natural_sort(self.assignments)}
 
     @classmethod
-    def load(cls, pool_key: str, pool_assignments: dict, collection: PoolCollection[T_ValueType]) -> Pool[T_ValueType]:
+    def load(cls, pool_key: Any, pool_assignments: Any, collection: PoolCollection[T_ValueType]) -> Pool[T_ValueType]:
         """Returns pool from file data."""
         if not isinstance(pool_key, str):
             msg = f"Invalid type for pool key '{type(pool_key)}'. Expected a str."
@@ -119,7 +120,7 @@ class Pool(Generic[T_ValueType]):
             msg = f"Invalid type for pool assignments '{type(pool_assignments)}'. Expected a dict."
             raise TypeError(msg)
 
-        assignments = {}
+        assignments: dict[str, PoolAssignment[T_ValueType]] = {}
         for assignment_key, assignment_value in pool_assignments.items():
             if not isinstance(assignment_key, str):
                 msg = f"Invalid type for assignment key '{type(assignment_key)}'. Expected a str."
@@ -175,7 +176,7 @@ class PoolCollection(ABC, Generic[T_ValueType]):
             msg = f"An error occurred during parsing of '{self.pools_file}': {e.__class__.__name__}: {e}"
             raise TypeError(msg) from e
 
-    def load(self, data: dict) -> dict[str, Pool[T_ValueType]]:
+    def load(self, data: Any) -> dict[str, Pool[T_ValueType]]:
         """Returns pools from file data."""
         if not isinstance(data, dict):
             msg = f"Invalid type '{type(data)}'. Expected a dict."
