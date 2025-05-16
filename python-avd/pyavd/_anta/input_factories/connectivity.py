@@ -75,15 +75,15 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
     - Point-to-Point Ethernet Links:
         Inputs are generated for Ethernet interfaces that meet all the following criteria:
-        * `peer`, `peer_interface` and `ip_address` are defined.
-        * `ip_address` is static - *not* 'dhcp' and *not* 'unnumbered').
-        * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`.
-        * `peer` device is deployed - `is_deployed=True`.
-        * `peer_interface` on the `peer` device has a defined `ip_address`.
+        * `peer`, `peer_interface` and `ip_address` are defined
+        * `ip_address` is static - *not* 'dhcp' and *not* 'unnumbered'
+        * Interface is not shutdown - considers `shutdown` and `interface_defaults.ethernet.shutdown`
+        * `peer` device is deployed - `is_deployed=True`
+        * `peer_interface` on the `peer` device has a defined static `ip_address` - *not* 'dhcp' and *not* 'unnumbered'
 
     - IPv4 BGP Neighbors:
         Inputs are generated for BGP neighbors that meet all the following criteria:
-        * `update_source` IP address defined.
+        * `update_source` IP address defined
     """
 
     def create(self) -> list[VerifyReachability.Input] | None:
