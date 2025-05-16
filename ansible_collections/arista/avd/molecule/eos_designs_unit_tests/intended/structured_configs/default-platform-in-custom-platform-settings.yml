@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: custom-platform-settings
+hostname: default-platform-in-custom-platform-settings
 ip_igmp_snooping:
   globally_enabled: true
 is_deployed: true
