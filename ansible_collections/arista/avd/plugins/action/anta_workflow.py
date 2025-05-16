@@ -383,7 +383,7 @@ def get_device_catalog_filters(device: str, avd_catalogs_filters: list[dict[str,
     """
     Get the test filters for a device from the provided AVD catalogs filters.
 
-    A filter is applied to the device unless `device_list` is provided and the device is *not* part of it.
+    A filter is applied to the device unless `device_list` is provided in the filter and the device is *not* part of it.
 
     Filters are not cumulative for the device. If the device matches multiple filters, the last filter (appearing later in the list) wins.
 
