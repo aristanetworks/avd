@@ -31,9 +31,6 @@ class PoolAssignment(Generic[T_ValueType]):
     value: T_ValueType
     accessed: bool = False
 
-    def as_dict(self) -> dict:
-        return {"key": self.key, "value": self.value}
-
 
 @dataclass
 class Pool(Generic[T_ValueType]):
@@ -107,39 +104,28 @@ class Pool(Generic[T_ValueType]):
         self.assignments = {key: assignment for key, assignment in self.assignments.items() if assignment.accessed}
         self.collection.changed = self.collection.changed or len_before != len(self.assignments)
 
-    def as_dict(self) -> dict:
-        """Returns a dict representing the object."""
-        return {
-            "pool_key": self.pool_key,
-            "assignments": natural_sort([assignment.as_dict() for assignment in self.assignments.values()], sort_key="value"),
-        }
+    def assignments_as_dict(self) -> dict:
+        """Returns a dict sorted on assignment value representing the assignments."""
+        return {assignment_key: self.assignments[assignment_key].value for assignment_key in natural_sort(self.assignments)}
 
     @classmethod
-    def from_dict(cls, data: dict, collection: PoolCollection[T_ValueType]) -> Pool[T_ValueType]:
+    def load(cls, pool_key: str, pool_assignments: dict, collection: PoolCollection[T_ValueType]) -> Pool[T_ValueType]:
         """Returns pool from file data."""
-        if not isinstance(data, dict):
-            msg = f"Invalid type for 'pool' '{type(data)}'. Expected a dict."
+        if not isinstance(pool_key, str):
+            msg = f"Invalid type for pool key '{type(pool_key)}'. Expected a str."
             raise TypeError(msg)
 
-        if not isinstance(pool_key := data["pool_key"], str):
-            msg = f"Invalid type for 'pool_key' '{type(pool_key)}'. Expected a str."
-            raise TypeError(msg)
-
-        if not isinstance(pool_assignments := data["assignments"], list):
-            msg = f"Invalid type for 'assignments' '{type(pool_assignments)}'. Expected a list."
+        if not isinstance(pool_assignments, dict):
+            msg = f"Invalid type for pool assignments '{type(pool_assignments)}'. Expected a dict."
             raise TypeError(msg)
 
         assignments = {}
-        for assignment_dict in pool_assignments:
-            if not isinstance(assignment_dict, dict):
-                msg = f"Invalid assignment type '{type(assignment_dict)}'. Expected a dict."
+        for assignment_key, assignment_value in pool_assignments.items():
+            if not isinstance(assignment_key, str):
+                msg = f"Invalid type for assignment key '{type(assignment_key)}'. Expected a str."
                 raise TypeError(msg)
 
-            if not isinstance(assignment_key := assignment_dict["key"], str):
-                msg = f"Invalid type for assignment 'key' '{type(assignment_key)}'. Expected a str."
-                raise TypeError(msg)
-
-            if not isinstance(assignment_value := assignment_dict["value"], collection.value_type):
+            if not isinstance(assignment_value, collection.value_type):
                 msg = f"Invalid type for assignment 'value' '{type(assignment_value)}'. Expected a {collection.value_type.__name__}."
                 raise TypeError(msg)
 
@@ -184,17 +170,17 @@ class PoolCollection(ABC, Generic[T_ValueType]):
             return
 
         try:
-            self._pools = self._pools_from_list(file_data[self.pools_key])
+            self._pools = self.load(file_data[self.pools_key])
         except (TypeError, KeyError, ValueError) as e:
             msg = f"An error occurred during parsing of '{self.pools_file}': {e.__class__.__name__}: {e}"
             raise TypeError(msg) from e
 
-    def _pools_from_list(self, data: list) -> dict[str, Pool[T_ValueType]]:
+    def load(self, data: dict) -> dict[str, Pool[T_ValueType]]:
         """Returns pools from file data."""
-        if not isinstance(data, list):
-            msg = f"Invalid type '{type(data)}'. Expected a list."
+        if not isinstance(data, dict):
+            msg = f"Invalid type '{type(data)}'. Expected a dict."
             raise TypeError(msg)
-        return {pool.pool_key: pool for item in data if (pool := self.pool_cls.from_dict(item, collection=self))}
+        return {pool.pool_key: pool for pool_key, pool_assignments in data.items() if (pool := self.pool_cls.load(pool_key, pool_assignments, collection=self))}
 
     def get_pool(self, pool_key: str) -> Pool[T_ValueType]:
         """
@@ -219,9 +205,9 @@ class PoolCollection(ABC, Generic[T_ValueType]):
         self._pools = non_empty_pools
         self.changed = self.changed or len_before != len(self._pools)
 
-    def as_list(self) -> list[dict]:
-        """Returns a list of dicts representing the object."""
-        return natural_sort([pool.as_dict() for pool in self._pools.values()], sort_key="pool_key")
+    def as_dict(self) -> dict[str, dict[str, T_ValueType]]:
+        """Returns a dicts representing the pools."""
+        return {pool_key: self._pools[pool_key].assignments_as_dict() for pool_key in natural_sort(self._pools)}
 
     def save_updates(self, dumper_cls: type = CSafeDumper) -> bool:
         """
@@ -241,7 +227,7 @@ class PoolCollection(ABC, Generic[T_ValueType]):
             self.pools_file.touch(mode=0o664)
 
         try:
-            self.pools_file.write_text(FILE_HEADER + dump({self.pools_key: self.as_list()}, Dumper=dumper_cls))
+            self.pools_file.write_text(FILE_HEADER + dump({self.pools_key: self.as_dict()}, Dumper=dumper_cls))
         except OSError as e:
             msg = f"An error occurred during writing of the AVD Pool Manager file '{self.pools_file}': {e}"
             raise type(e)(msg) from e
