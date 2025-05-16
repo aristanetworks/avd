@@ -268,6 +268,14 @@
             "status": "adminDown"
           },
           {
+            "name": "Ethernet18",
+            "status": "adminDown"
+          },
+          {
+            "name": "Ethernet19",
+            "status": "adminDown"
+          },
+          {
             "name": "Loopback0",
             "status": "up"
           },

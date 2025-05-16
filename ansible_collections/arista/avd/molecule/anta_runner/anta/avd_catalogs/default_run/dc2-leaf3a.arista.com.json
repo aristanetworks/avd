@@ -75,6 +75,16 @@
             "port": "Ethernet17",
             "neighbor_device": "dc2-leaf3b.arista.com",
             "neighbor_port": "Ethernet17"
+          },
+          {
+            "port": "Ethernet18",
+            "neighbor_device": "dc2-leaf3b.arista.com",
+            "neighbor_port": "Ethernet18"
+          },
+          {
+            "port": "Ethernet19",
+            "neighbor_device": "dc2-leaf3b.arista.com",
+            "neighbor_port": "Ethernet19"
           }
         ]
       }
@@ -288,6 +298,14 @@
           },
           {
             "name": "Ethernet17",
+            "status": "up"
+          },
+          {
+            "name": "Ethernet18",
+            "status": "up"
+          },
+          {
+            "name": "Ethernet19",
             "status": "up"
           },
           {

@@ -56,8 +56,16 @@ class AntaTestInputFactory(ABC):
         """Get the IP address of a peer interface."""
         if not self.is_peer_available(peer, caller=caller):
             return None
+
         for intf in self.structured_configs[peer].ethernet_interfaces:
             if intf.name == peer_interface:
+                if intf.ip_address == "dhcp":
+                    self.logger.debug(LogMessage.PEER_INTERFACE_USING_DHCP, caller=intf.name, peer=peer, peer_interface=peer_interface)
+                    return None
+                if "unnumbered" in intf.ip_address:
+                    self.logger.debug(LogMessage.PEER_INTERFACE_UNNUMBERED, caller=intf.name, peer=peer, peer_interface=peer_interface)
+                    return None
                 return intf.ip_address
-        self.logger.debug(LogMessage.PEER_INTERFACE_NO_IP, caller=caller, peer=peer, peer_interface=peer_interface)
+
+        self.logger.debug(LogMessage.PEER_INTERFACE_NOT_FOUND, caller=caller, peer=peer, peer_interface=peer_interface)
         return None

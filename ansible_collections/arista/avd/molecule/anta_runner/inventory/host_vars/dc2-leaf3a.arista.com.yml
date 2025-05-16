@@ -63,12 +63,30 @@ custom_structured_configuration_ethernet_interfaces:
     switchport:
       enabled: false
 
-  # Test to skip the VerifyReachability test case for IP unnumbered interface
+    # Test to skip the VerifyReachability test case for IP unnumbered interface
   - name: Ethernet17
     description: Test_ip_unnumbered_interface_connectivity
     ip_address: unnumbered Loopback0
     peer: dc2-leaf3b.arista.com
     peer_interface: Ethernet17
+    switchport:
+      enabled: false
+
+    # Test to skip the VerifyReachability test case for a peer with DHCP interface
+  - name: Ethernet18
+    description: Test_peer_dhcp_interface_connectivity
+    ip_address: 10.18.18.0/31
+    peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet18
+    switchport:
+      enabled: false
+
+    # Test to skip the VerifyReachability test case for a peer with IP unnumbered interface
+  - name: Ethernet19
+    description: Test_peer_ip_unnumbered_interface_connectivity
+    ip_address: 10.19.19.0/31
+    peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet19
     switchport:
       enabled: false
 
