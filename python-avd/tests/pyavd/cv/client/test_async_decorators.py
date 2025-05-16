@@ -18,7 +18,7 @@ from grpclib import Status
 from grpclib.exceptions import GRPCError
 
 from pyavd._cv.client.async_decorators import GRPCRequestHandler, LimitCvVersion
-from pyavd._cv.client.exceptions import CVClientException, CVGRPCStatusUnavailable, CVResourceNotFound, CVTimeoutError
+from pyavd._cv.client.exceptions import CVClientException, CVGRPCStatusUnavailable, CVMessageSizeExceeded, CVResourceNotFound, CVTimeoutError
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 
 LOGGER = logging.getLogger(__name__)
@@ -138,6 +138,28 @@ async def test_invalid_versions(version: str, expected_exception: Exception) -> 
 
 
 @pytest.mark.asyncio
+async def test_invalid_versions_min_max_swapped() -> None:
+    with pytest.raises(ValueError, match="Invalid min and max versions passed to 'cv_version' decorator. Min version must be larger than max version"):
+
+        @LimitCvVersion(min_ver="2024.1.99", max_ver="2024.1.0")
+        async def version_limited_method() -> None:
+            pass
+
+
+@pytest.mark.asyncio
+async def test_invalid_versions_overlapping() -> None:
+    with pytest.raises(ValueError, match=r"Overlapping min and max versions.*2024\.1\.0\-2024\.1\.99 overlaps with 2024\.1\.0\-2024\.1\.99\."):  # noqa: PT012
+
+        @LimitCvVersion(min_ver="2024.1.0", max_ver="2024.1.99")
+        async def version_limited_method() -> None:
+            pass
+
+        @LimitCvVersion(min_ver="2024.1.10", max_ver="2024.1.88")
+        async def version_limited_method() -> None:  # noqa: F811
+            pass
+
+
+@pytest.mark.asyncio
 @pytest.mark.parametrize(("version", "expected_response"), VALID_VERSION_TESTS)
 async def test_valid_versions(version: str, expected_response: tuple[str, str]) -> None:
     resp = await CvClass(CvVersion(version)).version_limited_method()
@@ -196,6 +218,14 @@ async def test_msg_size_handler_invalid_function_list_field_value_type() -> None
 
     with pytest.raises(TypeError, match="GRPCRequestHandler decorator expected the value of the list_field.*to be a list. Got"):
         await GRPCRequestHandler(list_field="_field")(function_with_wrong_value_type_of_field)("foo")
+
+
+@pytest.mark.asyncio
+async def test_msg_size_handler_zero_chunk_size(caplog: pytest.LogCaptureFixture) -> None:
+    mocked_cv_client = CvClass(CvVersion(CVAAS_VERSION_STRING))
+
+    with caplog.at_level(logging.DEBUG), pytest.raises(CVMessageSizeExceeded, match=r"Status\.RESOURCE_EXHAUSTED.*message larger than max \(100 vs\. 3\)"):
+        await mocked_cv_client.msgsize_limited_grpc_method_success(field=[100, 100], max_accepted_size=3)
 
 
 @pytest.mark.asyncio
@@ -543,6 +573,12 @@ async def test_grpc_request_handler_unlimited_success(
             pytest.raises(CVClientException, match=r"Status\.DEADLINE_EXCEEDED: 4"),
             id="GRPC_DEADLINE_EXCEEDED_DEADLINE_EXCEEDED",
         ),
+        pytest.param(
+            ["Preparing call.*with 1 item"],
+            CVResourceNotFound("Raising the same CV exception."),
+            pytest.raises(CVResourceNotFound, match="Raising the same CV exception."),
+            id="GRPC_DEADLINE_EXCEEDED_DEADLINE_EXCEEDED",
+        ),
     ],
 )
 @pytest.mark.parametrize(
@@ -567,3 +603,12 @@ async def test_grpc_request_handler_exceptions(
     # Assert that log messages match expected log patterns
     for current_pattern, current_record in zip(log_patterns, caplog.records, strict=False):
         assert re.search(re.compile(current_pattern), current_record.message)
+
+
+@pytest.mark.asyncio
+async def test_grpc_request_handler_negative_max_retries() -> None:
+    def basic_function() -> None:
+        return
+
+    result = await GRPCRequestHandler(max_retries=-1)(basic_function)()
+    assert result is None

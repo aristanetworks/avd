@@ -197,7 +197,7 @@ class GRPCRequestHandler:
 
         return wrapper
 
-    async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> Any:
+    async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
         func_name = self.func.__name__
 
