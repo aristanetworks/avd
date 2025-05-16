@@ -73,7 +73,7 @@ class OverlayMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def vtep_ip(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """Exposed in avd_switch_facts."""
-        if (self.shared_utils.vtep or self.shared_utils.is_wan_router) and not self.inputs.underlay_ipv6_numbered:
+        if (self.shared_utils.vtep or self.shared_utils.is_wan_router) and not self.shared_utils.underlay_ipv6_numbered:
             return self.shared_utils.vtep_ip
         return None
 
@@ -81,6 +81,6 @@ class OverlayMixin(EosDesignsFactsProtocol, Protocol):
     @cached_property
     def vtep_ipv6(self: EosDesignsFactsGeneratorProtocol) -> str | None:
         """Exposed in avd_switch_facts."""
-        if self.shared_utils.vtep and self.inputs.underlay_ipv6_numbered:
+        if self.shared_utils.vtep and self.shared_utils.underlay_ipv6_numbered:
             return self.shared_utils.vtep_ipv6
         return None

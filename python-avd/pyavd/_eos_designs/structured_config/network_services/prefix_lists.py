@@ -82,7 +82,7 @@ class PrefixListsMixin(Protocol):
                     continue
 
                 # Convert mlag_ip_address to network prefix string and add to set.
-                if self.inputs.underlay_ipv6_numbered:
+                if self.shared_utils.underlay_ipv6_numbered:
                     mlag_prefixes.add(str(IPv6Network(mlag_ip_address, strict=False)))
                 else:
                     mlag_prefixes.add(str(IPv4Network(mlag_ip_address, strict=False)))

@@ -190,7 +190,7 @@ class VlanInterfacesMixin(Protocol):
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             return {"ipv6_enable": True}
 
-        if self.inputs.underlay_ipv6_numbered:
+        if self.shared_utils.underlay_ipv6_numbered:
             if vrf.mlag_ibgp_peering_ipv6_pool:
                 if self.shared_utils.mlag_role == "primary":
                     return {
