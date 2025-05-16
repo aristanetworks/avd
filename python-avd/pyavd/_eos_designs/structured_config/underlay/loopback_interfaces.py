@@ -40,14 +40,12 @@ class LoopbackInterfacesMixin(Protocol):
                 ),
             ),
             shutdown=False,
-            ip_address=f"{self.shared_utils.router_id}/32",
         )
 
-        if self.shared_utils.underlay_ipv6_numbered:
-            del loopback0.ip_address
+        if self.shared_utils.ipv6_router_id:
             loopback0.ipv6_address = f"{self.shared_utils.ipv6_router_id}/{self.inputs.fabric_ip_addressing.loopback.ipv6_prefix_length}"
-        elif self.shared_utils.ipv6_router_id is not None:
-            loopback0.ipv6_address = f"{self.shared_utils.ipv6_router_id}/128"
+        if not self.shared_utils.underlay_ipv6_numbered:
+            loopback0.ip_address = f"{self.shared_utils.router_id}/32"
 
         if self.shared_utils.underlay_ospf:
             loopback0.ospf_area = self.inputs.underlay_ospf_area
