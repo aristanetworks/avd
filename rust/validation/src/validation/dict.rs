@@ -81,7 +81,7 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                 Some(Value::Null) | None => {
                     // nullish values don't need to be validated beyond a requiredness check
 
-                    // Don't validate required keys if we are at the rool level.
+                    // Don't validate required keys if we are at the root level.
                     if ctx.configuration.ignore_required_keys_on_root_dict && ctx.path.is_empty() {
                         continue;
                     }
