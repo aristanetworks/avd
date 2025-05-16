@@ -21,8 +21,7 @@ config:
   # being expressed.
 
   # default state for all rules
-  default:
-    true
+  default: true
 
   # heading style
   MD003:
@@ -102,3 +101,7 @@ config:
   MD050:
     # Strong style should be consistent
     style: "asterisk"
+
+  # MD059/descriptive-link-text
+  # Link text should be descriptive - by default this rule flags when a link text is "here"
+  MD059: false

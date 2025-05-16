@@ -27,6 +27,7 @@ where
             Some(path) => match path.extension().and_then(OsStr::to_str) {
                 Some("yml" | "yaml") => self.to_yaml_file(path),
                 Some("json") => self.to_json_file(path),
+                #[cfg(feature = "xz2")]
                 Some("xz2") => self.to_xz2_file(path),
                 Some("gz") => self.to_gz_file(path),
                 _ => Err(DumpError::InvalidExtension {}),
@@ -45,7 +46,7 @@ where
         let writer = BufWriter::new(file);
         Ok(serde_yaml::to_writer(writer, self)?)
     }
-    #[cfg(feature = "dump_load_files")]
+    #[cfg(feature = "xz2")]
     fn to_xz2_file(&self, path: PathBuf) -> Result<(), DumpError> {
         let file = File::create(path)?;
         let compressor = xz2::write::XzEncoder::new(file, 1);

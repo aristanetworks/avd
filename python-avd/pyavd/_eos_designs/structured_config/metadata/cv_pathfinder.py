@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
@@ -91,44 +91,43 @@ class CvPathfinderMixin(Protocol):
 
     def _metadata_pathfinder_vtep_ips(self: AvdStructuredConfigMetadataProtocol) -> None:
         for wan_route_server in self.shared_utils.filtered_wan_route_servers:
-            self.structured_config.metadata.cv_pathfinder.pathfinders.append_new(vtep_ip=wan_route_server.vtep_ip)
+            self.structured_config.metadata.cv_pathfinder.pathfinders.append_new(vtep_ip=cast("str", wan_route_server.vtep_ip))
 
     def _metadata_vrfs(self: AvdStructuredConfigMetadataProtocol) -> None:
-        """Set the metadata for VRFs by parsing the generated structured config and flatten it a bit (like hiding load-balance policies)."""
+        """
+        Set the metadata for VRFs by parsing the generated structured config and flatten it a bit (like hiding load-balance policies).
+
+        Should only be called for cv_pathfinder servers.
+        """
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         load_balance_policies = self.structured_config.router_path_selection.load_balance_policies
-        if not avt_vrfs or not load_balance_policies:
-            return
-
         avt_policies = self.structured_config.router_adaptive_virtual_topology.policies
 
-        if self.shared_utils.is_wan_server:
-            # On pathfinders, verify that the Load Balance policies have at least one priority one except for the HA path-group
-            for lb_policy in load_balance_policies:
-                if not any(
-                    default(path_group.priority, 1) == 1 for path_group in lb_policy.path_groups if path_group.name != self.inputs.wan_ha.lan_ha_path_group_name
-                ):
-                    msg = (
-                        "At least one path-group must be configured with preference '1' or 'preferred' for "
-                        f"load-balance policy {lb_policy.name}' to use CloudVision integration. "
-                        "If this is an auto-generated policy, ensure that at least one default_preference "
-                        "for a non excluded path-group is set to 'preferred' (or unset as this is the default)."
-                    )
-                    raise AristaAvdError(msg)
+        # On pathfinders, verify that the Load Balance policies have at least one priority one except for the HA path-group
+        for lb_policy in load_balance_policies:
+            if not any(
+                default(path_group.priority, 1) == 1 for path_group in lb_policy.path_groups if path_group.name != self.inputs.wan_ha.lan_ha_path_group_name
+            ):
+                msg = (
+                    "At least one path-group must be configured with preference '1' or 'preferred' for "
+                    f"load-balance policy {lb_policy.name}' to use CloudVision integration. "
+                    "If this is an auto-generated policy, ensure that at least one default_preference "
+                    "for a non excluded path-group is set to 'preferred' (or unset as this is the default)."
+                )
+                raise AristaAvdError(msg)
 
         for vrf in avt_vrfs:
-            if not vrf.policy:
-                continue
-
-            avt_policy = avt_policies[vrf.policy]
-            metadata_vrf = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem(name=vrf.name, vni=self._get_vni_for_vrf_name(vrf.name))
+            vrf_policy = cast("str", vrf.policy)
+            avt_policy = avt_policies[vrf_policy]
+            metadata_vrf = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem(
+                name=vrf.name, vni=1 if vrf.name == "default" else self.inputs.wan_virtual_topologies.vrfs[vrf.name].wan_vni
+            )
             for profile in vrf.profiles:
-                if not profile.name:
-                    continue
-                lb_policy = load_balance_policies[self.shared_utils.generate_lb_policy_name(profile.name)]
-                avt = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem.AvtsItem(id=profile.id, name=profile.name)
+                profile_name = cast("str", profile.name)
+                lb_policy = load_balance_policies[self.shared_utils.generate_lb_policy_name(profile_name)]
+                avt = EosCliConfigGen.Metadata.CvPathfinder.VrfsItem.AvtsItem(id=profile.id, name=profile_name)
                 for match in avt_policy.matches:
-                    if match.avt_profile == profile.name and match.application_profile and match.application_profile != "default":
+                    if match.avt_profile == profile_name and match.application_profile and match.application_profile != "default":
                         avt.application_profiles.append(match.application_profile)
 
                 avt.constraints._update(
@@ -143,13 +142,3 @@ class CvPathfinderMixin(Protocol):
                 metadata_vrf.avts.append(avt)
 
             self.structured_config.metadata.cv_pathfinder.vrfs.append(metadata_vrf)
-
-    def _get_vni_for_vrf_name(self: AvdStructuredConfigMetadataProtocol, vrf_name: str) -> int:
-        if vrf_name not in self.inputs.wan_virtual_topologies.vrfs or (wan_vni := self.inputs.wan_virtual_topologies.vrfs[vrf_name].wan_vni) is None:
-            if vrf_name == "default":
-                return 1
-
-            msg = f"Unable to find the WAN VNI for VRF {vrf_name} during generation of cv_pathfinder metadata."
-            raise AristaAvdError(msg)
-
-        return wan_vni

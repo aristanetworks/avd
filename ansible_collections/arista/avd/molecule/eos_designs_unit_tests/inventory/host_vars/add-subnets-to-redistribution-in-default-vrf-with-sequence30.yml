@@ -1,0 +1,70 @@
+type: wan_router
+
+wan_router: # dynamic_key: node_type
+  defaults:
+    bgp_as: 65100
+    id: 1
+    loopback_ipv4_pool: 192.168.1.0/24
+    vtep_loopback_ipv4_pool: 192.168.2.0/24
+    uplink_type: lan
+    uplink_switches: [tenant-default-vrf-static-routes]
+    uplink_interfaces: [Ethernet2]
+    filter:
+      tags: [wan_router]
+  nodes:
+    - name: add-subnets-to-redistribution-in-default-vrf-with-sequence30
+      id: 1
+      uplink_switch_interfaces: [Ethernet1]
+      uplink_native_vlan: 10
+      cv_pathfinder_region: region1
+      cv_pathfinder_site: site1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 999
+          ip_address: 10.9.9.9/31
+
+tenants: # dynamic_key: network_services
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 111
+        svis:
+          - id: 111
+            name: svi_with_default_vrf
+            ip_address: 10.10.10.111/24
+            tags: [wan_router]
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: test
+
+wan_mode: cv-pathfinder
+
+wan_path_groups:
+  - name: INET
+    ipsec:
+      static_peers: false
+    id: 100
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+bgp_peer_groups:
+  wan_overlay_peers:
+    listen_range_prefixes: [0.0.0.0/0]
+
+wan_virtual_topologies:
+  vrfs:
+    - name: VRF1
+      wan_vni: 123
+
+cv_pathfinder_regions:
+  - name: region1
+    id: 1
+    sites:
+      - name: site1
+        id: 1
+      - name: site2
+        id: 2

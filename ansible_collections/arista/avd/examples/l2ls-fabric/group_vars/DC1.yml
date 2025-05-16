@@ -1,7 +1,7 @@
 ---
 ### group_vars/DC1.yml
 
-aaa_authentication:
+custom_structured_configuration_aaa_authentication:
   policies:
     local:
       allow_nopassword: true
@@ -37,6 +37,6 @@ ntp_settings:
     - name: pool.ntp.org
 
 # Establish exec/enable role when logging in to switch
-aaa_authorization:
+custom_structured_configuration_aaa_authorization:
   exec:
     default: local

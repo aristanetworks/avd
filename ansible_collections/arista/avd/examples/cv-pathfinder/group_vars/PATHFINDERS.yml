@@ -1,9 +1,10 @@
 ---
 # WAN Pathfinder nodes variables
+
 wan_rr:
   defaults:
     platform: CloudEOS
-    data_plane_cpu_allocation_max: 1  # (1)!
+    data_plane_cpu_allocation_max: 1 # (1)!
     loopback_ipv4_pool: 192.168.255.0/24
     vtep_loopback_ipv4_pool: 192.168.42.0/24
     bgp_as: 65000
@@ -11,7 +12,7 @@ wan_rr:
     - name: pf1
       id: 1
       mgmt_ip: 192.168.17.10/24
-      cv_pathfinder_site: PF1-GLOBAL  # (2)!
+      cv_pathfinder_site: PF1-GLOBAL # (2)!
       # WAN interfaces
       l3_interfaces:
         - name: Ethernet1

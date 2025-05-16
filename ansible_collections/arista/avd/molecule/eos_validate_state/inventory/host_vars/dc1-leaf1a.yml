@@ -24,8 +24,8 @@ accepted_xcvr_manufacturers:
 
 accepted_pwr_supply_states:
   - "ok"
-  - "Not Present"
+  - "powerLoss"
 
 accepted_fan_states:
   - "ok"
-  - "Not Present"
+  - "powerLoss"
