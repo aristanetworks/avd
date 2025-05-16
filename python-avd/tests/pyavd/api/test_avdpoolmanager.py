@@ -298,17 +298,17 @@ class DummySharedUtils:
         pytest.param(
             {"node_id_pools": "test"},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type '<class 'str'>'. Expected a list."),
+            TypeError("Invalid type '<class 'str'>'. Expected a dict."),
             id="invalid_pools_type",
         ),
         pytest.param(
             {"node_id_pools": {123: {}}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for 'pool_key' '<class 'int'>'. Expected a str."),
+            TypeError("Invalid type for pool key '<class 'int'>'. Expected a str."),
             id="invalid_pool_key_type",
         ),
         pytest.param(
-            {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": {}}},
+            {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": None}},
             DummySharedUtils(fabric_name="Test", type="test"),
             TypeError("assignments"),
             id="missing_pool_assignments",
@@ -316,19 +316,19 @@ class DummySharedUtils:
         pytest.param(
             {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": "foo"}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for 'assignments' '<class 'str'>'. Expected a list."),
+            TypeError("Invalid type for pool assignments '<class 'str'>'. Expected a dict."),
             id="invalid_pool_assignments_type",
         ),
         pytest.param(
             {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": ["foo"]}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid assignment type '<class 'str'>'. Expected a dict."),
+            TypeError("Invalid type for pool assignments '<class 'list'>'. Expected a dict."),
             id="invalid_pool_assignment_type",
         ),
         pytest.param(
             {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": {123: 123}}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for assignment 'key' '<class 'int'>'. Expected a str."),
+            TypeError("Invalid type for assignment key '<class 'int'>'. Expected a str."),
             id="invalid_pool_assignment_key",
         ),
         pytest.param(
