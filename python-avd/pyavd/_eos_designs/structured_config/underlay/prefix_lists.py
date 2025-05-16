@@ -47,6 +47,14 @@ class PrefixListsMixin(Protocol):
 
         self.structured_config.prefix_lists.append_new(name="PL-LOOPBACKS-EVPN-OVERLAY", sequence_numbers=sequence_numbers)
 
+        # IPv4 - PL-DPS-WAN-OVERLAY - Prefix list distributes DPS VTEPs from WAN to LAN.
+        # Not bundled with LOOPBACKS prefix list to avoid tagging DPS VTEPs with SOO, to prevent
+        # DPS VTEPs from being redistributed within WAN overlay directly.
+        if self.shared_utils.evpn_wan_gateway:
+            sequence_numbers_dps = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
+            sequence_numbers_dps.append_new(sequence=(len(sequence_numbers_dps) + 1) * 10, action=f"permit {self.shared_utils.vtep_ip}/32 eq 32")
+            self.structured_config.prefix_lists.append_new(name="PL-DPS-WAN-OVERLAY", sequence_numbers=sequence_numbers_dps)
+
         if self.shared_utils.underlay_multicast_rp_interfaces is not None:
             sequence_numbers = EosCliConfigGen.PrefixListsItem.SequenceNumbers()
             for index, interface in enumerate(self.shared_utils.underlay_multicast_rp_interfaces, start=1):
