@@ -6,11 +6,12 @@ from __future__ import annotations
 from asyncio import sleep as asyncio_sleep
 from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from functools import wraps
-from inspect import Signature, signature
+from inspect import signature
 from logging import getLogger
 from re import compile as re_compile
 from re import fullmatch
-from typing import TYPE_CHECKING, Any, ClassVar, get_origin
+from types import UnionType
+from typing import TYPE_CHECKING, Any, ClassVar, get_args, get_origin
 
 from grpclib import Status
 from grpclib.exceptions import GRPCError
@@ -24,6 +25,7 @@ from .versioning import CvVersion
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from inspect import BoundArguments, Signature
 
 LOGGER = getLogger(__name__)
 
@@ -120,6 +122,16 @@ class GRPCRequestHandler:
         min_items_for_splitting_attempt (int): Minimum length of the item that we'll still try to split.
     """
 
+    max_retries: int
+    initial_delay: int
+    factor: int
+    list_field: str | None
+    min_items_for_splitting_attempt: int
+    func: Callable
+    func_signature: Signature
+    bound_arguments: BoundArguments
+    current_arguments_dict: dict
+
     def __init__(
         self,
         max_retries: int = 5,
@@ -128,28 +140,54 @@ class GRPCRequestHandler:
         list_field: str | None = None,
         min_items_for_splitting_attempt: int = 2,
     ) -> None:
-        self.max_retries: int = max_retries
-        self.initial_delay: int = initial_delay
-        self.factor: int = factor
-        self.list_field: str | None = list_field
+        self.max_retries = max_retries
+        self.initial_delay = initial_delay
+        self.factor = factor
+        self.list_field = list_field
         self.min_items_for_splitting_attempt = max(2, min_items_for_splitting_attempt)
-        self.func: Callable
-        self.func_signature: Signature
 
     def __call__(self, func: Callable) -> Callable:
         self.func = func
         self.func_signature = signature(func)
 
-        if self.list_field:
-            return_annotation = (
+        def _is_list_annotation(annotation: Any, strict: bool = False) -> tuple[bool, Any]:
+            """
+            Check if provided annotation is a `list`.
+
+            Default `strict: False` will also match 'types.UnionType' with included `list`.
+            """
+            _string_based_annotation = (
                 list
-                if isinstance(self.func_signature.return_annotation, str) and self.func_signature.return_annotation.startswith("list")
-                else self.func_signature.return_annotation
+                if (
+                    (isinstance(annotation, str) and annotation.startswith("list"))
+                    or (not strict and get_origin(annotation) is UnionType and any(get_origin(arg) is list for arg in get_args(annotation)))
+                )
+                else annotation
             )
-            if return_annotation is not list and get_origin(return_annotation) is not list:
+
+            return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
+
+        if self.list_field:
+            if not (return_annotation := _is_list_annotation(self.func_signature.return_annotation, strict=True))[0]:
                 msg = (
                     f"GRPCRequestHandler decorator is unable to bind to the function '{func.__name__}'. "
-                    f"Expected a return type of 'list'. Got '{return_annotation}'."
+                    f"Expected a return type of 'list'. Got '{return_annotation[1]}'."
+                )
+                raise TypeError(msg)
+
+            # Verify that `self.list_field` is listed in parameters of the decorated function
+            if self.list_field not in (func_parameters := self.func_signature.parameters.keys()):
+                msg = (
+                    f"{self.__class__.__name__} decorator is unable to find the list_field '{self.list_field}' "
+                    f"in the given arguments to '{self.func.__name__}'. Found: '{list(func_parameters)}'."
+                )
+                raise KeyError(msg)
+
+            # Verify that annotation of `self.list_field` is a `list` (or a `UnionType` with `list` being one of the arguments)
+            if not (list_field_annotation := _is_list_annotation(self.func_signature.parameters[self.list_field].annotation))[0]:
+                msg = (
+                    f"{self.__class__.__name__} decorator expected the type of the list_field '{self.list_field}' in function '{self.func.__name__}' "
+                    f"to be defined as a list. Got '{list_field_annotation[1]}' (type '{type(list_field_annotation[1])}')."
                 )
                 raise TypeError(msg)
 
@@ -168,6 +206,9 @@ class GRPCRequestHandler:
                 return await self.func(*call_args, **call_kwargs)
             except Exception as e:  # noqa: PERF203
                 match e:
+                    case CVClientException():
+                        raise
+
                     case AsyncioTimeoutError():
                         raise CVTimeoutError(*e.args, call_args, call_kwargs)
 
@@ -224,13 +265,6 @@ class GRPCRequestHandler:
         bound_arguments = self.func_signature.bind(*original_call_args, **original_call_kwargs)
         current_arguments_dict = bound_arguments.arguments
 
-        if self.list_field not in current_arguments_dict:
-            msg = (
-                f"{self.__class__.__name__} decorator is unable to find the list_field '{self.list_field}' "
-                f"in the given arguments to '{func_name}'. Found: '{list(current_arguments_dict.keys())}'."
-            )
-            raise KeyError(msg)
-
         list_value: list = current_arguments_dict[self.list_field]
         if not isinstance(list_value, list):
             msg = (
@@ -239,7 +273,7 @@ class GRPCRequestHandler:
             )
             raise TypeError(msg)
 
-        LOGGER.info("%s: Preparing call for '%s' for list_field '%s' with %s item(s).", self.__class__.__name__, func_name, self.list_field, len(list_value))
+        LOGGER.debug("%s: Preparing call for '%s' for list_field '%s' with %s item(s).", self.__class__.__name__, func_name, self.list_field, len(list_value))
 
         if len(list_value) < self.min_items_for_splitting_attempt:
             # No need to try/except if we cannot split the list.
