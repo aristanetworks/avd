@@ -122,6 +122,15 @@ ethernet_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 1-4096
+- name: Ethernet25
+  description: SERVER_OLD_SW-1/12_Endpoint_port6
+  shutdown: false
+  channel_group:
+    id: 25
+    mode: active
+  peer: OLD_SW-1/12
+  peer_interface: Endpoint_port6
+  peer_type: server
 - name: Ethernet12
   description: SERVER_INDIVIDUAL_1
   shutdown: false
@@ -343,6 +352,11 @@ port_channel_interfaces:
     network:
       encapsulation: client
   vlan_id: 200
+- name: Port-Channel25
+  description: SERVER_OLD_SW-1/12
+  shutdown: false
+  switchport:
+    enabled: false
 - name: Port-Channel12
   description: SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false

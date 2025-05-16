@@ -89,6 +89,15 @@ servers:
         endpoint_ports: [Endpoint_port5]
         mode: trunk
         vlans: 1-4096
+  - name: OLD_SW-1/12
+    adapters:
+      - switches: [connected_endpoints]
+        switch_ports: [Ethernet25]
+        endpoint_ports: [Endpoint_port6]
+        port_channel:
+          mode: active
+          subinterfaces:
+            - short_esi: auto
   # port-channel with lacp fallback individual and profile for member interfaces
   - name: INDIVIDUAL_1
     adapters:
