@@ -9,7 +9,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd.j2filters import default, natural_sort
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigNetworkServicesProtocol
@@ -73,18 +73,13 @@ class PrefixListsMixin(Protocol):
                     # By default the BGP peering is redistributed, so we only need the prefix-list for the false case.
                     continue
 
-                if (
-                    mlag_ip_address := default(
-                        self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address"), self._get_vlan_ip_config_for_mlag_peering(vrf).get("ipv6_address")
-                    )
-                ) is None:
+                # Convert mlag_ip_address to network prefix string and add to set.
+                if mlag_ipv4_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address"):
+                    mlag_prefixes.add(str(IPv4Network(mlag_ipv4_address, strict=False)))
+                elif mlag_ipv6_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ipv6_address"):
+                    mlag_prefixes.add(str(IPv6Network(mlag_ipv6_address, strict=False)))
+                else:
                     # No MLAG prefix for this VRF (could be RFC5549)
                     continue
-
-                # Convert mlag_ip_address to network prefix string and add to set.
-                if self.shared_utils.underlay_ipv6_numbered:
-                    mlag_prefixes.add(str(IPv6Network(mlag_ip_address, strict=False)))
-                else:
-                    mlag_prefixes.add(str(IPv4Network(mlag_ip_address, strict=False)))
 
         return natural_sort(mlag_prefixes)
