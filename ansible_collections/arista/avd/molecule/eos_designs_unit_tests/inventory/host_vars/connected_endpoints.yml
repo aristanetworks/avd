@@ -80,6 +80,7 @@ servers:
           mode: active
           subinterfaces:
             - number: 100
+            - short_esi: auto
             - number: 200
               vlan_id: 200
   - name: OLD_SW-1/11
