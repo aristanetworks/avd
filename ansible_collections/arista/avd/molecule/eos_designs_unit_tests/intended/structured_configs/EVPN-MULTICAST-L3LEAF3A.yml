@@ -1368,6 +1368,7 @@ vxlan_interface:
       - id: 257
         vni: 10257
         multicast_group: 232.0.1.0
+        flood_group: 232.1.1.1
       - id: 4092
         vni: 14092
         multicast_group: 232.0.15.251

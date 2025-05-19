@@ -31,6 +31,10 @@ tenants:
       enabled: true
       underlay_l2_multicast_group_ipv4_pool: 232.0.0.0/20
       fast_leave: true
+    vxlan_flood_multicast:
+      enabled: false
+      underlay_l2_multicast_group_ipv4_pool: 232.1.0.0-232.1.1.1
+      underlay_l2_multicast_group_ipv4_pool_offset: 1
     vrfs:
       - name: MULTICAST_ENABLED_110_111
         description: "MULTICAST_ENABLED_110_111"

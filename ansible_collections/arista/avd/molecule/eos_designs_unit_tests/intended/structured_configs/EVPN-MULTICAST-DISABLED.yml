@@ -1131,6 +1131,7 @@ vxlan_interface:
         flood_group: 232.1.0.10
       - id: 257
         vni: 10257
+        flood_group: 232.1.1.1
       - id: 4092
         vni: 14092
       - id: 5
