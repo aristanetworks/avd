@@ -89,7 +89,7 @@ core_interfaces:
       speed: "forced 1000full"
       mtu: 1500
       ip_pool: underlay_pool
-      underlay_multicast_static: true
+      multicast_static: true
       ptp:
         enabled: true
       # Testing merge of structured config on profile and link.
@@ -112,7 +112,7 @@ core_interfaces:
       ip_pool: some_other_pool
       speed: 100full
       mtu: 1601
-      underlay_multicast_static: true
+      multicast_static: true
       isis_hello_padding: true
       isis_circuit_type: level-1
       isis_metric: 60
@@ -205,25 +205,25 @@ core_interfaces:
       ptp:
         enabled: true
 
-    # P2P core links with underlay_multicast_pim_sm(pim-sparse) enabled.
+    # P2P core links with multicast_pim_sm(pim-sparse) enabled.
     - nodes: [ core-4-multicast, peer1 ]
       id: 10
       as: [65001, 65002]
       interfaces: [ Ethernet1, Ethernet1 ]
       include_in_underlay_protocol: true
-      underlay_multicast_pim_sm: true
+      multicast_pim_sm: true
       ip_pool: underlay_pool
 
-     # P2P core links with underlay_multicast_pim_sm(pim-sparse) disabled.
+     # P2P core links with multicast_pim_sm(pim-sparse) disabled.
     - nodes: [ core-4-multicast, peer2 ]
       id: 11
       as: [65001, 65003]
       interfaces: [ Ethernet2, Ethernet2 ]
       include_in_underlay_protocol: true
-      underlay_multicast_pim_sm: false
+      multicast_pim_sm: false
       ip_pool: underlay_pool
 
-    # P2P core links with underlay_multicast_pim_sm(pim-sparse) default.
+    # P2P core links with multicast_pim_sm(pim-sparse) default.
     - nodes: [ core-4-multicast, peer3 ]
       id: 12
       as: [65001, 65004]
@@ -279,4 +279,4 @@ l3_edge:
       include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 2
-      underlay_multicast_static: false
+      multicast_static: false

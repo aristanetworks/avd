@@ -1198,8 +1198,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
                 "underlay_multicast": {"type": bool, "default": False},
-                "underlay_multicast_pim_sm": {"type": bool},
-                "underlay_multicast_static": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -1308,12 +1308,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            underlay_multicast_pim_sm: bool | None
+            multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
             `underlay_multicast_pim_sm` to be `true`.
             """
-            underlay_multicast_static: bool | None
+            multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
             `underlay_multicast_static` to be `true`.
@@ -1380,8 +1380,8 @@ class EosDesigns(EosDesignsRootModel):
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
                     underlay_multicast: bool | UndefinedType = Undefined,
-                    underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-                    underlay_multicast_static: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -1454,10 +1454,10 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
-                        underlay_multicast_pim_sm:
+                        multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
                            `underlay_multicast_pim_sm` to be `true`.
-                        underlay_multicast_static:
+                        multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` to be `true`.
                         flow_tracking:
@@ -1789,8 +1789,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
                 "underlay_multicast": {"type": bool, "default": False},
-                "underlay_multicast_pim_sm": {"type": bool},
-                "underlay_multicast_static": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -1899,12 +1899,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            underlay_multicast_pim_sm: bool | None
+            multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
             `underlay_multicast_pim_sm` to be `true`.
             """
-            underlay_multicast_static: bool | None
+            multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
             `underlay_multicast_static` to be `true`.
@@ -1971,8 +1971,8 @@ class EosDesigns(EosDesignsRootModel):
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
                     underlay_multicast: bool | UndefinedType = Undefined,
-                    underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-                    underlay_multicast_static: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -2045,10 +2045,10 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
-                        underlay_multicast_pim_sm:
+                        multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
                            `underlay_multicast_pim_sm` to be `true`.
-                        underlay_multicast_static:
+                        multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` to be `true`.
                         flow_tracking:
@@ -5198,8 +5198,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
                 "underlay_multicast": {"type": bool, "default": False},
-                "underlay_multicast_pim_sm": {"type": bool},
-                "underlay_multicast_static": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -5308,12 +5308,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            underlay_multicast_pim_sm: bool | None
+            multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
             `underlay_multicast_pim_sm` to be `true`.
             """
-            underlay_multicast_static: bool | None
+            multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
             `underlay_multicast_static` to be `true`.
@@ -5380,8 +5380,8 @@ class EosDesigns(EosDesignsRootModel):
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
                     underlay_multicast: bool | UndefinedType = Undefined,
-                    underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-                    underlay_multicast_static: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -5454,10 +5454,10 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
-                        underlay_multicast_pim_sm:
+                        multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
                            `underlay_multicast_pim_sm` to be `true`.
-                        underlay_multicast_static:
+                        multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` to be `true`.
                         flow_tracking:
@@ -5789,8 +5789,8 @@ class EosDesigns(EosDesignsRootModel):
                 "ptp": {"type": Ptp},
                 "sflow": {"type": bool},
                 "underlay_multicast": {"type": bool, "default": False},
-                "underlay_multicast_pim_sm": {"type": bool},
-                "underlay_multicast_static": {"type": bool},
+                "multicast_pim_sm": {"type": bool},
+                "multicast_static": {"type": bool},
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
@@ -5899,12 +5899,12 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            underlay_multicast_pim_sm: bool | None
+            multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
             `underlay_multicast_pim_sm` to be `true`.
             """
-            underlay_multicast_static: bool | None
+            multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
             `underlay_multicast_static` to be `true`.
@@ -5971,8 +5971,8 @@ class EosDesigns(EosDesignsRootModel):
                     ptp: Ptp | UndefinedType = Undefined,
                     sflow: bool | None | UndefinedType = Undefined,
                     underlay_multicast: bool | UndefinedType = Undefined,
-                    underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-                    underlay_multicast_static: bool | None | UndefinedType = Undefined,
+                    multicast_pim_sm: bool | None | UndefinedType = Undefined,
+                    multicast_static: bool | None | UndefinedType = Undefined,
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
@@ -6045,10 +6045,10 @@ class EosDesigns(EosDesignsRootModel):
                         underlay_multicast:
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
-                        underlay_multicast_pim_sm:
+                        multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
                            `underlay_multicast_pim_sm` to be `true`.
-                        underlay_multicast_static:
+                        multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` to be `true`.
                         flow_tracking:
@@ -60168,18 +60168,19 @@ class EosDesigns(EosDesignsRootModel):
     "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
     For MLAG devices
     Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-    Warning!!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
-      The Following default platform
-    setting will be configured on 7050X3 and 7300X3: "platform trident forwarding-table partition
-    flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
-      The Following default platform
-    setting will be configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
-    All forwarding agents will be restarted when this configuration is applied.
-      You can tune the
-    settings by overriding the default variable:
-    "platform_settings[platforms].trident_forwarding_table_partition:"
-      Please contact an Arista
-    representative for help with determining the appropriate values for your environment.
+    Warning
+    !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
+      The Following default platform setting
+    will be configured on 7050X3 and 7300X3: "platform trident forwarding-table partition flexible
+    exact-match 16384 l2-shared 98304 l3-shared 131072"
+      The Following default platform setting will be
+    configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
+      All forwarding
+    agents will be restarted when this configuration is applied.
+      You can tune the settings by
+    overriding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
+    Please contact an Arista representative for help with determining the appropriate values for your
+    environment.
 
     Default value: `False`
     """
@@ -62053,18 +62054,20 @@ class EosDesigns(EosDesignsRootModel):
                    "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
                    For MLAG devices
                    Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-                   Warning!!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
-                     The Following default platform
-                   setting will be configured on 7050X3 and 7300X3: "platform trident forwarding-table partition
-                   flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
-                     The Following default platform
-                   setting will be configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
-                   All forwarding agents will be restarted when this configuration is applied.
-                     You can tune the
-                   settings by overriding the default variable:
-                   "platform_settings[platforms].trident_forwarding_table_partition:"
-                     Please contact an Arista
-                   representative for help with determining the appropriate values for your environment.
+
+            Warning:
+                   !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
+                     The Following default platform setting
+                   will be configured on 7050X3 and 7300X3: "platform trident forwarding-table partition flexible
+                   exact-match 16384 l2-shared 98304 l3-shared 131072"
+                     The Following default platform setting will be
+                   configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
+                     All forwarding
+                   agents will be restarted when this configuration is applied.
+                     You can tune the settings by
+                   overriding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
+                   Please contact an Arista representative for help with determining the appropriate values for your
+                   environment.
                 evpn_overlay_bgp_rtc:
                    Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS
                    4.25.1F).

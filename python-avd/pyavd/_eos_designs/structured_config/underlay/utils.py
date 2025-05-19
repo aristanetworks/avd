@@ -77,7 +77,6 @@ class UtilsMixin(Protocol):
                     mac_security=uplink.mac_security,
                     short_esi=uplink.peer_short_esi,
                     mlag=uplink.peer_mlag,
-                    underlay_multicast=uplink.underlay_multicast,
                     underlay_multicast_static=uplink.underlay_multicast_static,
                     underlay_multicast_pim_sm=uplink.underlay_multicast_pim_sm,
                     ipv6_enable=uplink.ipv6_enable,

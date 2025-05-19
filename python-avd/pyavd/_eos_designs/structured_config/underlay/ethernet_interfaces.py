@@ -136,9 +136,6 @@ class EthernetInterfacesMixin(Protocol):
                 if link.underlay_multicast_static:
                     ethernet_interface.multicast.ipv4.static = True
 
-                if link.underlay_multicast:
-                    ethernet_interface.pim.ipv4.sparse_mode = True
-
                 # DHCP server settings (primarily used for ZTP)
                 if link.ip_address and "unnumbered" not in link.ip_address.lower() and link.dhcp_server:
                     ethernet_interface.dhcp_server_ipv4 = True

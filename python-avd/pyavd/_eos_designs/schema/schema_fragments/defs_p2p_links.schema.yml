@@ -162,10 +162,10 @@ $defs:
             warning: true
             new_key: underlay_multicast_pim_sm
             remove_in_version: 6.0.0
-        underlay_multicast_pim_sm:
+        multicast_pim_sm:
           type: bool
           description: Enable/Disable Protocol Independent Multicast sparse mode. Requires the global `underlay_multicast_pim_sm` to be `true`.
-        underlay_multicast_static:
+        multicast_static:
           description: Enable/Disable static Protocol Independent Multicast. Requires the global `underlay_multicast_static` to be `true`.
           type: bool
         flow_tracking:
