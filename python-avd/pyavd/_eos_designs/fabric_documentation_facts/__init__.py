@@ -180,12 +180,10 @@ class FabricDocumentationFacts(AvdFacts):
             ]
         )
 
+    # TODO: - Add IPv6 to fabric docs.
     @cached_property
     def uplink_ipv4_networks(self) -> list[dict]:
         """List of unique networks from uplink_ipv4_pools containing information about size and usage."""
-        if any(facts.uplink_ipv6_pool for facts in self.avd_facts.values()):
-            # If we have IPv6 pools, we should not have IPv4 pools.
-            return []
         # Build set of loopback_ipv4_pool for all devices
         pools_set = {facts.uplink_ipv4_pool for facts in self.avd_facts.values() if facts.uplink_ipv4_pool}
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]
@@ -221,9 +219,6 @@ class FabricDocumentationFacts(AvdFacts):
     @cached_property
     def vtep_loopback_ipv4_networks(self) -> list[dict]:
         """List of unique networks from vtep_loopback_ipv4_pools containing information about size and usage."""
-        if any(facts.uplink_ipv6_pool for facts in self.avd_facts.values()):
-            # If we have IPv6 pools, we should not have IPv4 pools.
-            return []
         # Build set of vtep_loopback_ipv4_pool from all devices
         pools_set = {facts.vtep_loopback_ipv4_pool for facts in self.avd_facts.values() if facts.vtep_loopback_ipv4_pool}
         networks = [network for pool in pools_set for network in get_networks_from_pool(pool) if network.version == 4]

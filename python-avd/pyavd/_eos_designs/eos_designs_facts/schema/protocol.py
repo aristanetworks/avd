@@ -36,8 +36,8 @@ class EosDesignsFactsProtocol(Protocol):
         """
         ipv6_pool: str | None
         """
-        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
-        IPv4
+        Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        IPv6
         subnets used for links to downlink switches will be derived from this pool based on index the peer's
         uplink interface's index in 'downlink_interfaces'.
         """
@@ -72,8 +72,8 @@ class EosDesignsFactsProtocol(Protocol):
                        subnets used for links to downlink switches will be derived from this pool based on index the peer's
                        uplink interface's index in 'downlink_interfaces'.
                     ipv6_pool:
-                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
-                       IPv4
+                       Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                       IPv6
                        subnets used for links to downlink switches will be derived from this pool based on index the peer's
                        uplink interface's index in 'downlink_interfaces'.
                     downlink_interfaces:

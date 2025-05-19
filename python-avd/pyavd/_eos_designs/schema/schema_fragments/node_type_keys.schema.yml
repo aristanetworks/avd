@@ -203,6 +203,7 @@ keys:
               description: Path to Custom J2 template.
             router_id_ipv6:
               type: str
+              description: Path to Custom J2 template.
             mlag_ip_primary:
               type: str
               description: Path to Custom J2 template.
