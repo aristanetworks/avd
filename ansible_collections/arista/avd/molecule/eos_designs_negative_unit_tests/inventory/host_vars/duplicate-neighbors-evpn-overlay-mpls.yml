@@ -29,9 +29,4 @@ l3leaf:
       mpls_overlay_role: server
 
 expected_error_message: >-
-  Found duplicate objects with conflicting data while generating configuration for Neighbors.
-  {'ip_address': '172.28.4.1', 'peer_group': 'RR-OVERLAY-PEERS', 'peer': 'isis-system-id-format-missing-node-id',
-  'description': 'isis-system-id-format-missing-node-id_Loopback0'}
-  conflicts with
-  {'ip_address': '172.28.4.1', 'peer_group': 'MPLS-OVERLAY-PEERS', 'peer': 'isis-system-id-format-missing-node-id',
-  'description': 'isis-system-id-format-missing-node-id_Loopback0'}.
+  The combination of `evpn_role: client` and `mpls_overlay_role: server` is currently not supported in AVD.

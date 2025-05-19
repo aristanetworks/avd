@@ -43,7 +43,10 @@ class OverlayMixin(Protocol):
     def mpls_overlay_role(self: SharedUtilsProtocol) -> str | None:
         if self.underlay_router:
             default_mpls_overlay_role = self.node_type_key_data.default_mpls_overlay_role
-            return default(self.node_config.mpls_overlay_role, default_mpls_overlay_role)
+            mpls_overlay_role = default(self.node_config.mpls_overlay_role, default_mpls_overlay_role)
+            if self.evpn_role == "client" and mpls_overlay_role == "server":
+                raise AristaAvdError("The combination of `evpn_role: client` and `mpls_overlay_role: server` is currently not supported in AVD.")
+            return mpls_overlay_role
         return None
 
     @cached_property

@@ -4,11 +4,6 @@ config_end: true
 enable_password:
   disabled: true
 hostname: evpn_overlay_mpls_route_reflectors
-ip_extcommunity_lists:
-- name: ECL-EVPN-SOO
-  entries:
-  - type: permit
-    extcommunities: soo 169.253.103.1:1
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -51,20 +46,6 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-- name: RM-EVPN-SOO-IN
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-SOO-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - extcommunity soo 169.253.103.1:1 additive
 router_bfd:
   multihop:
     interval: 300
@@ -112,8 +93,6 @@ router_bgp:
       activate: true
     - name: MPLS-OVERLAY-PEERS
       activate: true
-      route_map_in: RM-EVPN-SOO-IN
-      route_map_out: RM-EVPN-SOO-OUT
   address_family_rtc:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
