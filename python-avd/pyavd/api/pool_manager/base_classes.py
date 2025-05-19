@@ -107,7 +107,10 @@ class Pool(Generic[T_ValueType]):
 
     def assignments_as_dict(self) -> dict[str, T_ValueType]:
         """Returns a dict sorted on assignment value representing the assignments."""
-        return {assignment_key: self.assignments[assignment_key].value for assignment_key in natural_sort(self.assignments)}
+        return {
+            assignment.key: assignment.value
+            for assignment in cast("list[PoolAssignment[T_ValueType]]", natural_sort(self.assignments.values(), sort_key="value"))
+        }
 
     @classmethod
     def load(cls, pool_key: Any, pool_assignments: Any, collection: PoolCollection[T_ValueType]) -> Pool[T_ValueType]:
