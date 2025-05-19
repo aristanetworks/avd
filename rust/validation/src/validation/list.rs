@@ -159,7 +159,7 @@ mod tests {
         let schema = List::default();
         let input = serde_json::json!(["foo", "bar"]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -169,7 +169,7 @@ mod tests {
         let schema = List::default();
         let input = true.into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -193,7 +193,7 @@ mod tests {
         };
         let input = serde_json::json!(["foo", "bar"]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -206,7 +206,7 @@ mod tests {
         };
         let input = serde_json::json!([{}, {}]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -240,7 +240,7 @@ mod tests {
         };
         let mut input = serde_json::json!([1, []]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
@@ -275,7 +275,7 @@ mod tests {
         };
         let input = serde_json::json!(["foo", "bar"]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -288,7 +288,7 @@ mod tests {
         };
         let input = serde_json::json!(["foo", "bar"]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -312,7 +312,7 @@ mod tests {
         };
         let input = serde_json::json!(["foo", "bar"]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -325,7 +325,7 @@ mod tests {
         };
         let input = serde_json::json!(["foo", "bar", "baz"]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -356,7 +356,7 @@ mod tests {
         };
         let input = serde_json::json!([{ "foo": "v1" }, { "foo": "v2" }]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -376,7 +376,7 @@ mod tests {
         };
         let input = serde_json::json!([{ "foo": null }, { "foo": "v1" }]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -403,7 +403,7 @@ mod tests {
         };
         let input = serde_json::json!([{ "foo": "111" }, { "foo": "222" }, { "foo": "111" }]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -443,7 +443,7 @@ mod tests {
         };
         let input = serde_json::json!([{ "foo": "111" }, { "foo": "222" }, { "foo": "111" }]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert!(ctx.violations.is_empty());
