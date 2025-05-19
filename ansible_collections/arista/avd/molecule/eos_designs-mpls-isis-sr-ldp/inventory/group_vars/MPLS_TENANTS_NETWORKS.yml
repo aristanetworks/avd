@@ -5,15 +5,39 @@ tenants:
     pseudowire_rt_base: 1000
     point_to_point_services:
       # Port-based vpws service
-      - name: TEN_A_site2_site5_eline_port_based
+      - name: TEN_A_site1_site2_eline_port_based
         type: vpws-pseudowire
         endpoints:
-          - id: 26
+          - id: 16
             nodes: ["SITE1-LER1"]
             interfaces: ["Ethernet6"]
-          - id: 57
+          - id: 27
             nodes: ["SITE2-LER1"]
             interfaces: ["Ethernet7"]
+        lldp_disable: true
+      # Port-based vpws service
+      - name: TEN_A_site1_site2_eline_with_subinterfaces
+        type: vpws-pseudowire
+        subinterfaces:
+          - number: 100
+            raw_eos_cli: |-
+              storm-control broadcast level 10
+            port_channel:
+              raw_eos_cli: |-
+                !! This should be ignored because this is not a Port-Channel.
+          - number: 101
+            structured_config:
+              comment: Test structured_config for Ethernet subinterface
+            port_channel:
+              structured_config:
+                comment: This should also be ignored because this is not a Port-Channel.
+        endpoints:
+          - id: 19
+            nodes: ["SITE1-LER1"]
+            interfaces: ["Ethernet9"]
+          - id: 29
+            nodes: ["SITE2-LER1"]
+            interfaces: ["Ethernet9"]
         lldp_disable: true
     l2vlans:
       - id: 10
@@ -35,8 +59,14 @@ tenants:
         type: vpws-pseudowire
         subinterfaces:
           - number: 1000
+            port_channel:
+              raw_eos_cli: |-
+                storm-control broadcast level 15
           - number: 1001
           - number: 1002
+            port_channel:
+              structured_config:
+                comment: Test structured_config for Port-Channel subinterface
           - number: 1003
           - number: 1004
         endpoints:

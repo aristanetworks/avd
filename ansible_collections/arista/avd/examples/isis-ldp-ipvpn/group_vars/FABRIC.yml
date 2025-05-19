@@ -48,6 +48,6 @@ bgp_peer_groups:
   rr_overlay_peers:
     password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
 
-management_security:
+custom_structured_configuration_management_security:
   password:
     encryption_key_common: true
