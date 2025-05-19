@@ -1,0 +1,17 @@
+fabric_name: FABRIC_INBAND_MANAGEMENT
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    filter:
+      only_vlans_in_use: true
+  nodes:
+    - name: inband-mgmt-missing-id-with-subnet
+      inband_mgmt_vlan: 108
+      inband_mgmt_subnet: 192.168.102.0/24
+      uplink_type: port-channel
+
+expected_error_message: >-
+  'id' is required to set inband_mgmt_ip from
+  inband_mgmt_subnet for host 'inband-mgmt-missing-id-with-subnet'.
