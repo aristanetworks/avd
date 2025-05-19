@@ -1,0 +1,16 @@
+fabric_name: FABRIC_INBAND_MANAGEMENT_IPV6
+
+type: l2leaf
+
+l2leaf:
+  defaults:
+    filter:
+      only_vlans_in_use: true
+  nodes:
+    - name: inband-mgmt-missing-id-with-ipv6-subnet
+      inband_mgmt_vlan: 109
+      inband_mgmt_ipv6_subnet: 2a00:104::/64
+
+expected_error_message: >-
+  'id' is required to set inband_mgmt_ipv6_address from
+  inband_mgmt_ipv6_subnet for host 'inband-mgmt-missing-id-with-ipv6-subnet'.

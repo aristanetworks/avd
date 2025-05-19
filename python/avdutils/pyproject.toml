@@ -14,13 +14,21 @@ coverage = ["coverage[toml]"]
 py-limited-api = "cp310"
 
 [tool.setuptools.packages.find]
-include = ["src"]
+include = ["avdutils"]
+
+[tool.setuptools.package-data]
+"avdutils" = ["*.pyi"]
 
 [[tool.setuptools-rust.ext-modules]]
 target = "avdutils.validation"
 path = "../../rust/validation/Cargo.toml"
 binding = "PyO3"
 features = ["python_bindings"]
+
+[[tool.setuptools-rust.ext-modules]]
+target = "avdutils.passwords"
+path = "../../rust/passwords/Cargo.toml"
+binding = "PyO3"
 
 [tool.pytest.ini_options]
 testpaths = "tests"

@@ -21991,6 +21991,26 @@ keys:
               type: int
               convert_types:
               - str
+      port_id_allocation_port_channel_range:
+        description: Specify range of port-ids to reserve for port-channels.
+        type: dict
+        keys:
+          minimum:
+            description: Specify minimum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
+          maximum:
+            description: Specify maximum value for reserved range.
+            type: int
+            min: 1
+            max: 2048
+            required: true
+            convert_types:
+            - str
   standard_access_lists:
     type: list
     primary_key: name
