@@ -40627,7 +40627,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     mlag_ibgp_peering_ipv6_pool: str | None
                     """
-                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+                    Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                     The
                     subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
                     MLAG switch.
@@ -40910,7 +40910,7 @@ class EosDesigns(EosDesignsRootModel):
                                    MLAG switch.
                                    If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will be used.
                                 mlag_ibgp_peering_ipv6_pool:
-                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv4_address).
+                                   Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                                    The
                                    subnet used for the iBGP peering in the VRF is derived from this pool based on the ID of the first
                                    MLAG switch.
