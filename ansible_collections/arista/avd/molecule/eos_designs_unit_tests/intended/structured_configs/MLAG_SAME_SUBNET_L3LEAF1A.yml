@@ -22,26 +22,6 @@ ethernet_interfaces:
   peer: MLAG_SAME_SUBNET_L3LEAF1B
   peer_interface: Ethernet6
   peer_type: mlag_peer
-- name: Ethernet1
-  description: P2P_MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1A_Ethernet11
-  shutdown: false
-  mtu: 9214
-  ip_address: 172.31.255.0/31
-  peer: MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1A
-  peer_interface: Ethernet11
-  peer_type: l3leaf
-  switchport:
-    enabled: false
-- name: Ethernet2
-  description: P2P_MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1B_Ethernet11
-  shutdown: false
-  mtu: 9214
-  ip_address: 172.31.255.2/31
-  peer: MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1B
-  peer_interface: Ethernet11
-  peer_type: l3leaf
-  switchport:
-    enabled: false
 hostname: MLAG_SAME_SUBNET_L3LEAF1A
 ip_igmp_snooping:
   globally_enabled: true
@@ -98,7 +78,7 @@ prefix_lists:
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.224.0/30
+    action: permit 10.255.240.0/30
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -162,16 +142,6 @@ router_bgp:
     peer_group: MLAG-IPv4-UNDERLAY-PEER
     peer: MLAG_SAME_SUBNET_L3LEAF1B
     description: MLAG_SAME_SUBNET_L3LEAF1B_Vlan4093
-  - ip_address: 172.31.255.1
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65101'
-    peer: MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1A
-    description: MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1A_Ethernet11
-  - ip_address: 172.31.255.3
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65101'
-    peer: MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1B
-    description: MLAG-COMMA-SEPARATED-SAME-SUBNET-L3LEAF1B_Ethernet11
   redistribute:
     connected:
       enabled: true
@@ -213,7 +183,7 @@ router_bgp:
     updates:
       wait_install: true
     neighbors:
-    - ip_address: 10.10.224.2
+    - ip_address: 10.255.240.2
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: MLAG_SAME_SUBNET_L3LEAF1B_Vlan3000
     redistribute:
@@ -246,7 +216,7 @@ vlan_interfaces:
   description: MLAG_L3_VRF_TEST
   shutdown: false
   vrf: TEST
-  ip_address: 10.10.224.1/30
+  ip_address: 10.255.240.1/30
   mtu: 9214
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
   type: underlay_peering

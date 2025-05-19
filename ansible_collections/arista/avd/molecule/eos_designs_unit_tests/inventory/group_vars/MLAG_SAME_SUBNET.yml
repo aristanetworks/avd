@@ -38,6 +38,7 @@ tenants:
     vrfs:
       - name: TEST
         vrf_id: 1
+        mlag_ibgp_peering_ipv4_pool: 10.255.240.0/24, 10.255.241.0/24
         svis:
           - id: 10
             name: VLAN10

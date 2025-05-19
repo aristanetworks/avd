@@ -78,7 +78,7 @@ prefix_lists:
 - name: PL-MLAG-PEER-VRFS
   sequence_numbers:
   - sequence: 10
-    action: permit 10.10.224.0/30
+    action: permit 10.255.240.0/30
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -183,7 +183,7 @@ router_bgp:
     updates:
       wait_install: true
     neighbors:
-    - ip_address: 10.10.224.1
+    - ip_address: 10.255.240.1
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: MLAG_SAME_SUBNET_L3LEAF1A_Vlan3000
     redistribute:
@@ -216,7 +216,7 @@ vlan_interfaces:
   description: MLAG_L3_VRF_TEST
   shutdown: false
   vrf: TEST
-  ip_address: 10.10.224.2/30
+  ip_address: 10.255.240.2/30
   mtu: 9214
   tenant: TEST_MLAG_SAME_SUBNET_ON_VRF
   type: underlay_peering
