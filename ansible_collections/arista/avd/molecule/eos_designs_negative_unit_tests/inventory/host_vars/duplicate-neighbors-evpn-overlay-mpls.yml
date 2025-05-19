@@ -20,7 +20,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 192.168.254.0/24
     mpls_route_reflectors: [isis-system-id-format-missing-node-id]
   nodes:
-    - name: duplicate-neighbors-evpn-ovelray-mpls
+    - name: duplicate-neighbors-evpn-overlay-mpls
       id: 101
       bgp_as: 101
       evpn_services_l2_only: true

@@ -16,7 +16,7 @@ pe:
     is_type: level-2
     loopback_ipv4_pool: 172.28.4.0/22
     overlay_address_families: [ "evpn" ]
-    mpls_route_reflectors: [duplicate-neighbors-evpn-ovelray-mpls]
+    mpls_route_reflectors: [duplicate-neighbors-evpn-overlay-mpls]
   nodes:
     - name: "isis-system-id-format-missing-node-id"
       id: 1
