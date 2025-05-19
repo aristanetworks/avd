@@ -57809,6 +57809,7 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_ip_addressing": {"type": FabricIpAddressing},
         "fabric_name": {"type": str},
         "fabric_numbering": {"type": FabricNumbering},
+        "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
@@ -58786,6 +58787,32 @@ class EosDesigns(EosDesignsRootModel):
     Assignment policies for numbers like Node ID.
 
     Subclass of AvdModel.
+    """
+    fabric_numbering_node_id_pool: str
+    """
+    Name of Node ID pool or template used to render the name of each Node ID pool.
+    For each device the
+    Node ID is assigned from a pool shared by all devices rendering the same pool name.
+    This can be
+    modified to include fewer or more fields to keep separate pools or to use the same pool across
+    areas.
+    This can be a template using the AVD string formatter syntax:
+    https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-
+    string-formatter-syntax.
+    The available template fields are:
+      - `fabric_name`: The `fabric_name`
+    assigned to the device.
+      - `dc_name`: The `dc_name` assigned to the device.
+      - `pod_name`: The
+    `pod_name` assigned to the device.
+      - `type`: The `type` assigned to the device.
+      - `rack`: The
+    `rack` assigned to the device.
+
+    By default the Node ID pool key is templated from `fabric_name`,
+    `dc_name`, `pod_name` and `type`.
+
+    Default value: `"fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"`
     """
     fabric_sflow: FabricSflow
     """
@@ -59992,6 +60019,7 @@ class EosDesigns(EosDesignsRootModel):
             fabric_ip_addressing: FabricIpAddressing | UndefinedType = Undefined,
             fabric_name: str | UndefinedType = Undefined,
             fabric_numbering: FabricNumbering | UndefinedType = Undefined,
+            fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
@@ -60624,6 +60652,28 @@ class EosDesigns(EosDesignsRootModel):
                    Assignment policies for numbers like Node ID.
 
                    Subclass of AvdModel.
+                fabric_numbering_node_id_pool:
+                   Name of Node ID pool or template used to render the name of each Node ID pool.
+                   For each device the
+                   Node ID is assigned from a pool shared by all devices rendering the same pool name.
+                   This can be
+                   modified to include fewer or more fields to keep separate pools or to use the same pool across
+                   areas.
+                   This can be a template using the AVD string formatter syntax:
+                   https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-
+                   string-formatter-syntax.
+                   The available template fields are:
+                     - `fabric_name`: The `fabric_name`
+                   assigned to the device.
+                     - `dc_name`: The `dc_name` assigned to the device.
+                     - `pod_name`: The
+                   `pod_name` assigned to the device.
+                     - `type`: The `type` assigned to the device.
+                     - `rack`: The
+                   `rack` assigned to the device.
+
+                   By default the Node ID pool key is templated from `fabric_name`,
+                   `dc_name`, `pod_name` and `type`.
                 fabric_sflow:
                    Default enabling of sFlow for various interface types across the fabric.
                    sFlow can also be
