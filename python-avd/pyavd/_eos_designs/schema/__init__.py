@@ -13630,8 +13630,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             vxlan_flood_multicast: VxlanFloodMulticast
             """
-            Explicitly enable or disable vxlan_flood_multicast to override setting of
-            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+            Explicitly enable or disable vxlan_flood_multicast to override settings of
+            `<network_services_key>.[].vxlan_flood_multicast`.
 
 
             Subclass of AvdModel.
@@ -13828,8 +13828,8 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass
                            of AvdModel.
                         vxlan_flood_multicast:
-                           Explicitly enable or disable vxlan_flood_multicast to override setting of
-                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                           Explicitly enable or disable vxlan_flood_multicast to override settings of
+                           `<network_services_key>.[].vxlan_flood_multicast`.
 
 
                            Subclass of AvdModel.
@@ -14382,8 +14382,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         vxlan_flood_multicast: VxlanFloodMulticast
         """
-        Explicitly enable or disable vxlan_flood_multicast to override setting of
-        `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+        Explicitly enable or disable vxlan_flood_multicast to override settings of
+        `<network_services_key>.[].vxlan_flood_multicast`.
 
 
         Subclass of AvdModel.
@@ -14594,8 +14594,8 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass
                        of AvdModel.
                     vxlan_flood_multicast:
-                       Explicitly enable or disable vxlan_flood_multicast to override setting of
-                       `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                       Explicitly enable or disable vxlan_flood_multicast to override settings of
+                       `<network_services_key>.[].vxlan_flood_multicast`.
 
 
                        Subclass of AvdModel.
@@ -36882,8 +36882,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             vxlan_flood_multicast: VxlanFloodMulticast
                             """
-                            Explicitly enable or disable vxlan_flood_multicast to override setting of
-                            `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                            Explicitly enable or disable vxlan_flood_multicast to override settings of
+                            `<network_services_key>.[].vxlan_flood_multicast`.
 
 
                             Subclass of AvdModel.
@@ -37087,8 +37087,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass
                                            of AvdModel.
                                         vxlan_flood_multicast:
-                                           Explicitly enable or disable vxlan_flood_multicast to override setting of
-                                           `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                                           Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                           `<network_services_key>.[].vxlan_flood_multicast`.
 
 
                                            Subclass of AvdModel.
@@ -37666,8 +37666,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         vxlan_flood_multicast: VxlanFloodMulticast
                         """
-                        Explicitly enable or disable vxlan_flood_multicast to override setting of
-                        `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                        Explicitly enable or disable vxlan_flood_multicast to override settings of
+                        `<network_services_key>.[].vxlan_flood_multicast`.
 
 
                         Subclass of AvdModel.
@@ -37892,8 +37892,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Subclass
                                        of AvdModel.
                                     vxlan_flood_multicast:
-                                       Explicitly enable or disable vxlan_flood_multicast to override setting of
-                                       `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                                       Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                       `<network_services_key>.[].vxlan_flood_multicast`.
 
 
                                        Subclass of AvdModel.
