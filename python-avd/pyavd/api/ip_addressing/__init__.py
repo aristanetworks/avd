@@ -360,7 +360,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
                 return self._template(
                     template_path,
                     switch_id=self._id,
-                    loopback_ipv4_pool=self._router_id_pool,
+                    router_id_pool=self._router_id_pool,
                     loopback_ipv4_offset=self._loopback_ipv4_offset,
                 )
 
