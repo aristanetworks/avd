@@ -118,6 +118,26 @@ ethernet_interfaces:
   peer_type: point_to_point_service
   switchport:
     enabled: false
+- name: Ethernet9.100
+  shutdown: false
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 100
+    network:
+      encapsulation: client
+  peer_type: point_to_point_service
+  eos_cli: storm-control broadcast level 10
+- name: Ethernet9.101
+  comment: Test structured_config for Ethernet subinterface
+  shutdown: false
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 101
+    network:
+      encapsulation: client
+  peer_type: point_to_point_service
 - name: Ethernet4
   shutdown: false
   channel_group:
@@ -130,6 +150,11 @@ ethernet_interfaces:
     id: 4
     mode: active
   peer_type: point_to_point_service
+- name: Ethernet9
+  shutdown: false
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet8
   description: CPE_CPE_TENANT_A_SITE2_eth0
   shutdown: false
@@ -188,7 +213,7 @@ mpls:
     transport_address_interface: Loopback0
 patch_panel:
   patches:
-  - name: TEN_A_site2_site5_eline_port_based
+  - name: TEN_A_site1_site2_eline_port_based
     enabled: true
     connectors:
     - id: '1'
@@ -196,7 +221,25 @@ patch_panel:
       endpoint: Ethernet7
     - id: '2'
       type: pseudowire
-      endpoint: bgp vpws TENANT_A pseudowire TEN_A_site2_site5_eline_port_based
+      endpoint: bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_port_based
+  - name: TEN_A_site1_site2_eline_with_subinterfaces_100
+    enabled: true
+    connectors:
+    - id: '1'
+      type: interface
+      endpoint: Ethernet9.100
+    - id: '2'
+      type: pseudowire
+      endpoint: bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_100
+  - name: TEN_A_site1_site2_eline_with_subinterfaces_101
+    enabled: true
+    connectors:
+    - id: '1'
+      type: interface
+      endpoint: Ethernet9.101
+    - id: '2'
+      type: pseudowire
+      endpoint: bgp vpws TENANT_A pseudowire TEN_A_site1_site2_eline_with_subinterfaces_101
   - name: TEN_B_site3_site5_eline_vlan_based_1000
     enabled: true
     connectors:
@@ -310,6 +353,7 @@ port_channel_interfaces:
     network:
       encapsulation: client
   peer_type: point_to_point_service
+  eos_cli: storm-control broadcast level 15
 - name: Port-Channel4.1001
   shutdown: false
   encapsulation_vlan:
@@ -320,6 +364,7 @@ port_channel_interfaces:
       encapsulation: client
   peer_type: point_to_point_service
 - name: Port-Channel4.1002
+  comment: Test structured_config for Port-Channel subinterface
   shutdown: false
   encapsulation_vlan:
     client:
@@ -418,9 +463,15 @@ router_bgp:
     route_targets:
       import_export: 65000:1000
     pseudowires:
-    - name: TEN_A_site2_site5_eline_port_based
-      id_local: 57
-      id_remote: 26
+    - name: TEN_A_site1_site2_eline_port_based
+      id_local: 27
+      id_remote: 16
+    - name: TEN_A_site1_site2_eline_with_subinterfaces_100
+      id_local: 129
+      id_remote: 119
+    - name: TEN_A_site1_site2_eline_with_subinterfaces_101
+      id_local: 130
+      id_remote: 120
   - name: TENANT_B
     rd: 100.70.0.7:2000
     route_targets:
