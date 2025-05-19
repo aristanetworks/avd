@@ -11,6 +11,7 @@ use crate::feedback::{Feedback, Issue};
 /// The store is used for looking up schema references.
 #[derive(Debug)]
 pub(crate) struct Context<'a> {
+    pub(crate) configuration: Configuration,
     pub(crate) store: &'a Store,
     pub(crate) path: Vec<String>,
     pub(crate) violations: Vec<Feedback>,
@@ -18,8 +19,9 @@ pub(crate) struct Context<'a> {
 }
 
 impl<'a> Context<'a> {
-    pub(crate) fn new(store: &'a Store) -> Self {
+    pub(crate) fn new(store: &'a Store, configuration: Option<&'a Configuration>) -> Self {
         Self {
+            configuration: configuration.cloned().unwrap_or_default(),
             store,
             path: vec![],
             violations: vec![],
@@ -40,4 +42,10 @@ impl<'a> Context<'a> {
             issue: coercion.into(),
         });
     }
+}
+
+/// Configuration to use during validation.
+#[derive(Clone, Debug, Default)]
+pub struct Configuration {
+    pub ignore_required_keys_on_root_dict: bool,
 }
