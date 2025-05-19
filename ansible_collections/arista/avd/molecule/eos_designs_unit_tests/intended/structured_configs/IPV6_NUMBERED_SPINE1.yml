@@ -45,6 +45,9 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: IPV6_NUMBERED_SPINE1
+ip_name_servers:
+- ip_address: 192.168.1.1
+  vrf: MGMT
 ip_routing: true
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6

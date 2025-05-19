@@ -54,11 +54,8 @@ terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
 terminattr_disable_aaa: true
 
 # DNS Server
-ip_name_servers:
-    # IPv4 or IPv6 address for DNS server
-  - ip_address: 192.168.1.1
-    # VRF Name
-    vrf: MGMT
+name_servers:
+  - 192.168.1.1
 
 underlay_ipv6: true
 underlay_ipv6_numbered: true
