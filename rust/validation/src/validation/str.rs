@@ -111,7 +111,7 @@ mod tests {
         let schema = Str::default();
         let input = "foo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -121,7 +121,7 @@ mod tests {
         let schema = Str::default();
         let input = serde_json::json!([]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -148,7 +148,7 @@ mod tests {
         };
         let input = "foo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -164,7 +164,7 @@ mod tests {
         };
         let input = "FOO".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -192,7 +192,7 @@ mod tests {
         };
         let mut input = "FOO".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -221,7 +221,7 @@ mod tests {
         };
         let mut input = true.into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -256,7 +256,7 @@ mod tests {
         };
         let input = "foo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -269,7 +269,7 @@ mod tests {
         };
         let input = "go".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -293,7 +293,7 @@ mod tests {
         };
         let input = "foo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -306,7 +306,7 @@ mod tests {
         };
         let input = "fooo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -330,7 +330,7 @@ mod tests {
         };
         let input = "fOo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -343,7 +343,7 @@ mod tests {
         };
         let input = "foo".into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
