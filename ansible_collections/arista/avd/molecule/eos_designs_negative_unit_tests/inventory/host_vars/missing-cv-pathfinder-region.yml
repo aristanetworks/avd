@@ -31,9 +31,9 @@ wan_router:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.255.0/24
   nodes:
-    - name: missing-cv-pathfinder-site-variable
-      cv_pathfinder_region: AVD_Land_West
+    - name: missing-cv-pathfinder-region
       id: 1
+      cv_pathfinder_site: WEST
       l3_interfaces:
         - name: Ethernet1
           wan_carrier: ATT
@@ -51,4 +51,4 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  A node variable 'cv_pathfinder_site' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'.
+  A node variable 'cv_pathfinder_region' must be defined when 'wan_role' is 'client' and 'wan_mode' is 'cv-pathfinder'.

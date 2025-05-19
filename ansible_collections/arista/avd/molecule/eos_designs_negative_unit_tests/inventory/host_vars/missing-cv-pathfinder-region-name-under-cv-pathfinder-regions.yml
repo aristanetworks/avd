@@ -31,7 +31,7 @@ wan_router:
     loopback_ipv4_pool: 192.168.42.0/24
     vtep_loopback_ipv4_pool: 192.168.255.0/24
   nodes:
-    - name: missing-cv-pathfinder-region-name-name-under-cv-pathfinder-regions
+    - name: missing-cv-pathfinder-region-name-under-cv-pathfinder-regions
       id: 1
       cv_pathfinder_region: WEST
       cv_pathfinder_site: WEST

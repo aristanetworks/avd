@@ -62,31 +62,8 @@ wan_router:
           uplink_switch_interfaces: [Ethernet2, Ethernet2]
 
 wan_path_groups:
-  - name: MPLS
-    ipsec:
-      static_peers: false
-      dynamic_peers: false
-    id: 100
-    dps_keepalive:
-      interval: 300
   - name: INET
     id: 101
-  - name: LTE
-    id: 102
-    excluded_from_default_policy: true
-    dps_keepalive:
-      interval: 100
-      failure_threshold: 12
-  - name: Equinix
-    id: 103
-    default_preference: alternate
-  - name: Satellite
-    id: 104
-    default_preference: alternate
-    dps_keepalive:
-      interval: auto
-  - name: AWS
-    id: 105
 
 wan_carriers:
   - name: ATT
