@@ -15,6 +15,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].type") | String |  | `vpws-pseudowire` | Valid Values:<br>- <code>vpws-pseudowire</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterfaces</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces") | List, items: Dictionary |  |  |  | Subinterfaces will create subinterfaces and additional pseudowires/patch panel config for each endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces.[].number") | Integer | Required, Unique |  |  | Subinterface number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port_channel</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces.[].port_channel") | Dictionary |  |  |  | Settings to be applied to the Port-Channel subinterface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces.[].port_channel.structured_config") | Dictionary |  |  |  | Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces.[].port_channel.raw_eos_cli") | String |  |  |  | EOS cli commands rendered on the Port-Channel subinterface.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].subinterfaces.[].raw_eos_cli") | String |  |  |  | EOS cli commands rendered on the Ethernet subinterface.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoints</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints") | List, items: Dictionary |  |  | Min Length: 2<br>Max Length: 2 | Pseudowire terminating endpoints. Must have exactly two items. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].id") | Integer | Required |  |  | Pseudowire ID on this endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].point_to_point_services.[].endpoints.[].nodes") | List, items: String | Required |  | Min Length: 1 | Usually one node. With ESI multihoming we support two nodes per pseudowire endpoint. |
@@ -54,6 +59,21 @@
 
                 # Subinterface number.
               - number: <int; required; unique>
+
+                # Settings to be applied to the Port-Channel subinterface.
+                port_channel:
+
+                  # Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                  structured_config: <dict>
+
+                  # EOS cli commands rendered on the Port-Channel subinterface.
+                  raw_eos_cli: <str>
+
+                # Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                structured_config: <dict>
+
+                # EOS cli commands rendered on the Ethernet subinterface.
+                raw_eos_cli: <str>
 
             # Pseudowire terminating endpoints. Must have exactly two items.
             endpoints: # 2-2 items

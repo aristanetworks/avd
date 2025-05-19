@@ -1636,6 +1636,34 @@ $defs:
                       description: Subinterface number.
                       convert_types:
                         - str
+                    port_channel:
+                      type: dict
+                      description: Settings to be applied to the Port-Channel subinterface.
+                      keys:
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: |
+                            Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                          documentation_options:
+                            hide_keys: true
+                          $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+                        raw_eos_cli:
+                          type: str
+                          description: |
+                            EOS cli commands rendered on the Port-Channel subinterface.
+                    structured_config:
+                      type: dict
+                      relaxed_validation: true
+                      description: |
+                        Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                      documentation_options:
+                        hide_keys: true
+                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+                    raw_eos_cli:
+                      type: str
+                      description: |
+                        EOS cli commands rendered on the Ethernet subinterface.
               endpoints:
                 type: list
                 description: Pseudowire terminating endpoints. Must have exactly two items.
