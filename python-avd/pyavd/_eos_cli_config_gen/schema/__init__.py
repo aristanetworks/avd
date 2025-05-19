@@ -64926,7 +64926,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     ip_virtual_router_mac_address_advertisement_interval: int | None
     """Advertisement interval in seconds."""
     ip_virtual_router_mac_address_mlag_peer: bool | None
-    """Mlag peer router MAC."""
+    """Enable/Disable MLAG peer gateway."""
     ipv6_access_lists: Ipv6AccessLists
     """Subclass of AvdIndexedList with `Ipv6AccessListsItem` items. Primary key is `name` (`str`)."""
     ipv6_dhcp_relay: Ipv6DhcpRelay
@@ -65596,7 +65596,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_tftp_client_source_interfaces: Subclass of AvdList with `IpTftpClientSourceInterfacesItem` items.
                 ip_virtual_router_mac_address: MAC address (hh:hh:hh:hh:hh:hh).
                 ip_virtual_router_mac_address_advertisement_interval: Advertisement interval in seconds.
-                ip_virtual_router_mac_address_mlag_peer: Mlag peer router MAC.
+                ip_virtual_router_mac_address_mlag_peer: Enable/Disable MLAG peer gateway.
                 ipv6_access_lists: Subclass of AvdIndexedList with `Ipv6AccessListsItem` items. Primary key is `name` (`str`).
                 ipv6_dhcp_relay: Subclass of AvdModel.
                 ipv6_hardware: Subclass of AvdModel.
