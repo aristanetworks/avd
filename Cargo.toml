@@ -4,6 +4,7 @@ members = [
     "rust/included_store",
     "rust/avdschema_macros",
     "rust/validation",
+    "rust/passwords",
     ]
 resolver = "2"
 
