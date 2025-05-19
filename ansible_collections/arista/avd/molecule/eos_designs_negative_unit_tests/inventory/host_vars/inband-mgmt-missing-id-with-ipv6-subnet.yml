@@ -10,7 +10,6 @@ l2leaf:
     - name: inband-mgmt-missing-id-with-ipv6-subnet
       inband_mgmt_vlan: 109
       inband_mgmt_ipv6_subnet: 2a00:104::/64
-      # uplink_type: port-channel
 
 expected_error_message: >-
   'id' is required to set inband_mgmt_ipv6_address from
