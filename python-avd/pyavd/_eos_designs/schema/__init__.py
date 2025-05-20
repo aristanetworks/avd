@@ -60225,19 +60225,19 @@ class EosDesigns(EosDesignsRootModel):
     "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
     For MLAG devices
     Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-    Warning
-    !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
-      The Following default platform setting
-    will be configured on 7050X3 and 7300X3: "platform trident forwarding-table partition flexible
-    exact-match 16384 l2-shared 98304 l3-shared 131072"
-      The Following default platform setting will be
-    configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
-      All forwarding
-    agents will be restarted when this configuration is applied.
-      You can tune the settings by
-    overriding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
-    Please contact an Arista representative for help with determining the appropriate values for your
-    environment.
+    `Warning` !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
+      The Following default
+    platform setting will be configured on 7050X3 and 7300X3: "platform trident forwarding-table
+    partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+      The Following default
+    platform setting will be configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared
+    22000"
+      All forwarding agents will be restarted when this configuration is applied.
+      You can tune
+    the settings by overriding the default variable:
+    "platform_settings[platforms].trident_forwarding_table_partition:"
+      Please contact an Arista
+    representative for help with determining the appropriate values for your environment.
 
     Default value: `False`
     """
@@ -62111,20 +62111,19 @@ class EosDesigns(EosDesignsRootModel):
                    "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
                    For MLAG devices
                    Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-
-            Warning:
-                   !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
-                     The Following default platform setting
-                   will be configured on 7050X3 and 7300X3: "platform trident forwarding-table partition flexible
-                   exact-match 16384 l2-shared 98304 l3-shared 131072"
-                     The Following default platform setting will be
-                   configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared 22000"
-                     All forwarding
-                   agents will be restarted when this configuration is applied.
-                     You can tune the settings by
-                   overriding the default variable: "platform_settings[platforms].trident_forwarding_table_partition:"
-                   Please contact an Arista representative for help with determining the appropriate values for your
-                   environment.
+                   `Warning` !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
+                     The Following default
+                   platform setting will be configured on 7050X3 and 7300X3: "platform trident forwarding-table
+                   partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
+                     The Following default
+                   platform setting will be configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared
+                   22000"
+                     All forwarding agents will be restarted when this configuration is applied.
+                     You can tune
+                   the settings by overriding the default variable:
+                   "platform_settings[platforms].trident_forwarding_table_partition:"
+                     Please contact an Arista
+                   representative for help with determining the appropriate values for your environment.
                 evpn_overlay_bgp_rtc:
                    Enable Route Target Membership Constraint Address Family on EVPN overlay BGP peerings (Min. EOS
                    4.25.1F).
