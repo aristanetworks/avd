@@ -243,7 +243,7 @@ anta.tests.vxlan:
 
 #### Test-Based Filtering
 
-`avd_catalogs_filters`: Filters are used to run or skip tests from the AVD-generated catalogs. These filters do **not** apply to user-defined catalogs, use `anta_runner_tags` for that. See the [AVD test index](#avd-generated-catalog-test-index) for the available tests.
+`avd_catalogs_filters`: Filters are used to run or skip tests from the AVD-generated catalogs. These filters do **not** apply to user-defined catalogs, use `anta_runner_tags` for that. See the [AVD test index](#avd-generated-catalog-test-index) section for the available tests.
 
 ```yaml
 # In the playbook
@@ -267,7 +267,7 @@ anta.tests.vxlan:
             run_tests: [ VerifyLLDPNeighbors]
 ```
 
-By default, filters apply to all devices targeted by the run. `device_list` can be used in a filter to target a subset of devices only. Filters are not cumulative for a device. If a device matches multiple filters, the last filter (appearing later in the list) wins.
+By default, filters apply to all devices targeted by the run. `device_list` can be used in a filter to target a subset of devices only. Filters are not cumulative for a device. If a device matches multiple filters, the last filter (appearing later in the list) wins for both `skip_tests` and `run_tests` independently.
 
 !!! note
     `skip_tests` takes precedence over `run_tests`. If the same test is in both lists, it will be skipped and other tests will be run.
