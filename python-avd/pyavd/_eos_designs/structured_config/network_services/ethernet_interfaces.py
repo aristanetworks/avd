@@ -289,10 +289,16 @@ class EthernetInterfacesMixin(Protocol):
                                 peer_type="point_to_point_service",
                                 shutdown=False,
                             )
+                            if subif.raw_eos_cli:
+                                interface.eos_cli = subif.raw_eos_cli
                             interface.encapsulation_vlan.client.encapsulation = "dot1q"
                             interface.encapsulation_vlan.client.vlan = subif.number
                             interface.encapsulation_vlan.network.encapsulation = "client"
 
+                            if subif.structured_config:
+                                self.custom_structured_configs.nested.ethernet_interfaces.obtain(subif_name)._deepmerge(
+                                    subif.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                                )
                             self.structured_config.ethernet_interfaces.append(interface)
 
                     else:

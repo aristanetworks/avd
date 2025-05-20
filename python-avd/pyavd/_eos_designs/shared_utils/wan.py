@@ -648,3 +648,21 @@ class WanMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         return configured_as_wan_vrf
+
+    @cached_property
+    def evpn_wan_gateway(self: SharedUtilsProtocol) -> bool:
+        """Return whether device is running in wan gateway mode."""
+        gateway = (
+            self.wan_role == "client"
+            and self.evpn_role != "none"
+            and self.overlay_routing_protocol != "none"
+            and self.inputs.wan_use_evpn_node_settings_for_lan
+        )
+        if not gateway:
+            return False
+
+        if self.node_group_config and len(self.node_group_config.nodes) != 1:
+            msg = f"WAN gateway is supported only on sites with a single WAN router, configured: {len(self.node_group_config.nodes)}"
+            raise AristaAvdError(msg)
+
+        return gateway

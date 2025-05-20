@@ -12,6 +12,7 @@ from .mlag import VerifyMlagDualPrimaryInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .security import VerifySpecificIPSecConnInputFactory
 from .stun import VerifyStunClientTranslationInputFactory
+from .system import VerifyReloadCauseInputFactory
 
 __all__ = [
     "VerifyAVTRoleInputFactory",
@@ -20,6 +21,7 @@ __all__ = [
     "VerifyLLDPNeighborsInputFactory",
     "VerifyMlagDualPrimaryInputFactory",
     "VerifyReachabilityInputFactory",
+    "VerifyReloadCauseInputFactory",
     "VerifySpecificIPSecConnInputFactory",
     "VerifyStunClientTranslationInputFactory",
 ]
