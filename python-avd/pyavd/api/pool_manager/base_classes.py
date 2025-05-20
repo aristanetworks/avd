@@ -107,9 +107,11 @@ class Pool(Generic[T_ValueType]):
 
     def assignments_as_dict(self) -> dict[str, T_ValueType]:
         """Returns a dict sorted on assignment value representing the assignments."""
+        # Convert assignments to a list of dicts with value key to make it sortable by our natural_sort.
+        assignments_as_list_of_dicts = [{"value": assignment.value, "assignment": assignment} for assignment in self.assignments.values()]
         return {
-            assignment.key: assignment.value
-            for assignment in cast("list[PoolAssignment[T_ValueType]]", natural_sort(self.assignments.values(), sort_key="value"))
+            assignment_dict["assignment"].key: assignment_dict["assignment"].value
+            for assignment_dict in natural_sort(assignments_as_list_of_dicts, sort_key="value")
         }
 
     @classmethod
@@ -231,7 +233,7 @@ class PoolCollection(ABC, Generic[T_ValueType]):
             self.pools_file.touch(mode=0o664)
 
         try:
-            self.pools_file.write_text(FILE_HEADER + dump({self.pools_key: self.as_dict()}, Dumper=dumper_cls))
+            self.pools_file.write_text(FILE_HEADER + dump({self.pools_key: self.as_dict()}, Dumper=dumper_cls, sort_keys=False))
         except OSError as e:
             msg = f"An error occurred during writing of the AVD Pool Manager file '{self.pools_file}': {e}"
             raise type(e)(msg) from e
