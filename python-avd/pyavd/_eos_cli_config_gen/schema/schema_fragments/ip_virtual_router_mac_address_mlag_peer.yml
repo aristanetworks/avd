@@ -8,4 +8,4 @@ type: dict
 keys:
   ip_virtual_router_mac_address_mlag_peer:
     type: bool
-    description: Enable/Disable MLAG peer gateway.
+    description: Enable MLAG peer gateway.
