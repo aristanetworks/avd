@@ -3476,9 +3476,9 @@ class EosDesigns(EosDesignsRootModel):
             an even ID.
               - same_subnet: the offset will always be zero.
                 This allocation method will use the
-            first available /<prefixlen> subnet from the provided pool for all MLAG links.
-            ¹ The prefix length
-            is configurable with a default of /31.
+            first /31¹ subnet from the pool for all MLAG links.
+            ¹ The prefix length is configurable with a
+            default of /31.
 
             Default value: `"first_id"`
             """
@@ -3524,9 +3524,9 @@ class EosDesigns(EosDesignsRootModel):
                            an even ID.
                              - same_subnet: the offset will always be zero.
                                This allocation method will use the
-                           first available /<prefixlen> subnet from the provided pool for all MLAG links.
-                           ¹ The prefix length
-                           is configurable with a default of /31.
+                           first /31¹ subnet from the pool for all MLAG links.
+                           ¹ The prefix length is configurable with a
+                           default of /31.
                         ipv4_prefix_length: IPv4 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.
                         ipv6_prefix_length: IPv6 prefix length used for MLAG peer-vlan and L3 point-to-point SVIs over the MLAG peer-link.
 

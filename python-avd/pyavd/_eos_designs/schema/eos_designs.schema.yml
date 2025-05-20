@@ -1544,9 +1544,8 @@ keys:
               than `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group
               to have a node with an odd ID and a node with an even ID.\n  - same_subnet:
               the offset will always be zero.\n    This allocation method will use
-              the first available /<prefixlen> subnet from the provided pool for all
-              MLAG links.\n\xB9 The prefix length is configurable with a default of
-              /31."
+              the first /31\xB9 subnet from the pool for all MLAG links.\n\xB9 The
+              prefix length is configurable with a default of /31."
             valid_values:
             - first_id
             - odd_id

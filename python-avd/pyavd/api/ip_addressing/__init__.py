@@ -36,7 +36,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
             - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
             - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
-            - same_subnet: offset from pool is always 0. All MLAG peer links will use IPs from the same subnet defined by the pool's prefix length.
+            - same_subnet: offset from pool is always 0. All MLAG peer links will use the first subnet of the pool.
         """
         prefixlen = (
             self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length if address_family == "ipv6" else self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length
