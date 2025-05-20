@@ -150,27 +150,10 @@ class GRPCRequestHandler:
         self.func = func
         self.func_signature = signature(func)
 
-        def _is_list_annotation(annotation: Any, strict: bool = False) -> tuple[bool, Any]:
-            """
-            Check if provided annotation is a `list`.
-
-            Default `strict: False` will also match 'types.UnionType' with included `list`.
-            """
-            _string_based_annotation = (
-                list
-                if (
-                    (isinstance(annotation, str) and annotation.startswith("list"))
-                    or (not strict and get_origin(annotation) is UnionType and any(get_origin(arg) is list for arg in get_args(annotation)))
-                )
-                else annotation
-            )
-
-            return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
-
         if self.list_field:
-            if not (return_annotation := _is_list_annotation(self.func_signature.return_annotation, strict=True))[0]:
+            if not (return_annotation := self._is_list_annotation(self.func_signature.return_annotation, strict=True))[0]:
                 msg = (
-                    f"GRPCRequestHandler decorator is unable to bind to the function '{func.__name__}'. "
+                    f"GRPCRequestHandler decorator is unable to bind to the function '{func.__name__}' with the 'list_field' argument. "
                     f"Expected a return type of 'list'. Got '{return_annotation[1]}'."
                 )
                 raise TypeError(msg)
@@ -184,7 +167,7 @@ class GRPCRequestHandler:
                 raise KeyError(msg)
 
             # Verify that annotation of `self.list_field` is a `list` (or a `UnionType` with `list` being one of the arguments)
-            if not (list_field_annotation := _is_list_annotation(self.func_signature.parameters[self.list_field].annotation))[0]:
+            if not (list_field_annotation := self._is_list_annotation(self.func_signature.parameters[self.list_field].annotation))[0]:
                 msg = (
                     f"{self.__class__.__name__} decorator expected the type of the list_field '{self.list_field}' in function '{self.func.__name__}' "
                     f"to be defined as a list. Got '{list_field_annotation[1]}' (type '{type(list_field_annotation[1])}')."
@@ -196,6 +179,24 @@ class GRPCRequestHandler:
             return await self._execute_with_splitting(args, kwargs)
 
         return wrapper
+
+    @staticmethod
+    def _is_list_annotation(annotation: Any, strict: bool = False) -> tuple[bool, Any]:
+        """
+        Check if provided annotation is a `list`.
+
+        Default `strict: False` will also match 'types.UnionType' with included `list`.
+        """
+        _string_based_annotation = (
+            list
+            if (
+                (isinstance(annotation, str) and annotation.startswith("list"))
+                or (not strict and get_origin(annotation) is UnionType and any(get_origin(arg) is list for arg in get_args(annotation)))
+            )
+            else annotation
+        )
+
+        return _string_based_annotation is list or get_origin(annotation) is list, _string_based_annotation
 
     async def _execute_single_call_with_retries(self, call_args: tuple, call_kwargs: dict) -> None:
         """Executes a single call to self.func with retry logic for gRPC UNAVAILABLE."""
@@ -235,10 +236,8 @@ class GRPCRequestHandler:
                                     await asyncio_sleep(delay)
                                 # Use case where all retries for this specific call failed
                                 else:
-                                    LOGGER.exception(
-                                        "%s: Attempt %s/%s to execute call '%s' failed.", self.__class__.__name__, attempt, self.max_retries + 1, func_name
-                                    )
-                                    raise CVGRPCStatusUnavailable(*e.args, call_args, call_kwargs)
+                                    msg = f"{self.__class__.__name__}: Attempt {attempt}/{self.max_retries + 1} to execute call '{func_name}' failed."
+                                    raise CVGRPCStatusUnavailable(msg, *e.args, call_args, call_kwargs)
 
                             case Status.RESOURCE_EXHAUSTED:
                                 if matches := fullmatch(MSG_SIZE_EXCEEDED_REGEX, e.message):
@@ -301,17 +300,6 @@ class GRPCRequestHandler:
                 chunk_size = 1
 
             planned_attempts_qty = int((len(list_value) / chunk_size) + (1 if len(list_value) % chunk_size else 0))
-
-            if chunk_size >= len(list_value) and len(list_value) > 0:
-                LOGGER.exception(
-                    "%s: Cannot split list_field '%s' for '%s' any further. Item count %s, calculated chunk_size %s.",
-                    self.__class__.__name__,
-                    self.list_field,
-                    func_name,
-                    len(list_value),
-                    chunk_size,
-                )
-                raise
 
             LOGGER.info(
                 "%s: Splitting list_field '%s' for '%s' into %s calls with up to %s items each.",

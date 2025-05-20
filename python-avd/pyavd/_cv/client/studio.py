@@ -30,7 +30,7 @@ from pyavd._cv.api.arista.studio.v1 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 from pyavd._cv.api.fmp import RepeatedString
-from pyavd._cv.client.exceptions import CVClientException, CVResourceNotFound
+from pyavd._cv.client.exceptions import CVResourceNotFound
 
 from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
@@ -261,15 +261,12 @@ class StudioMixin(Protocol):
         client = InputsServiceStub(self._channel)
         try:
             response = await client.get_one(request, metadata=self._metadata, timeout=timeout)
-        except GRPCError as e:  # pylint: disable=broad-exception-caught
+        except GRPCError as e:
             if e.status == Status.NOT_FOUND and workspace_id != "":
                 # Ignore this error, since it simply means we have to check if inputs got deleted in this workspace or fetch from mainline as last resort.
                 pass
             else:
                 raise
-        except Exception as e:
-            msg = f"Unable to get Inputs '{input_path}' of Studio '{studio_id}' in workspace '{workspace_id}'."
-            raise CVClientException(msg) from e
         else:
             # We get here if no exception was raised.
             # We only get a response if the inputs are set/changed in the workspace.
@@ -314,9 +311,6 @@ class StudioMixin(Protocol):
                 # Ignore this error, since it simply means we no inputs are in the studio so we will return the default value.
                 return default_value
             raise
-        except Exception as e:
-            msg = f"Unable to get Inputs '{input_path}' of Studio '{studio_id}' in workspace '{workspace_id}'."
-            raise CVClientException(msg) from e
 
         if response.value.inputs is not None:
             return json.loads(response.value.inputs)
