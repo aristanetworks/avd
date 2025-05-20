@@ -611,9 +611,9 @@ class RouterBgpMixin(Protocol):
             peer_facts = self.shared_utils.get_peer_facts(route_reflector_client)
             if not self._is_peer_mpls_client(peer_facts):
                 continue
-            
+
             # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
-            ip_address = cast(str, peer_facts.overlay.peering_address)
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 route_reflector_client,
@@ -637,8 +637,8 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_client(peer_facts):
                 continue
 
-            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address    
-            ip_address = cast(str, peer_facts.overlay.peering_address)
+            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 fabric_switch,
@@ -660,7 +660,7 @@ class RouterBgpMixin(Protocol):
                 continue
 
             # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
-            ip_address = cast(str, peer_facts.overlay.peering_address)
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 route_reflector,
@@ -678,7 +678,7 @@ class RouterBgpMixin(Protocol):
                 continue
 
             # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
-            ip_address = cast(str, peer_facts.overlay.peering_address)
+            ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
                 route_reflector_client,
