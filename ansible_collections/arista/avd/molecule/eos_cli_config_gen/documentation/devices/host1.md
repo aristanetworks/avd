@@ -88,6 +88,7 @@
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
   - [Monitor TWAMP](#monitor-twamp)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [VRF Configuration](#vrf-configuration)
@@ -2965,6 +2966,10 @@ monitor twamp
       !
       sender profile test-profile2
 ```
+
+### Transceiver
+
+Transceiver dom-threshold file: flash:/dom_threshold.csv
 
 ## Monitor Connectivity
 
