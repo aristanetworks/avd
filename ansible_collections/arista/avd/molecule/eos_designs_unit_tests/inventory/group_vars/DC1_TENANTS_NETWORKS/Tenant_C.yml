@@ -86,6 +86,7 @@ tenant_c:
               rcf_out: TEST_RCF_OUT()
             nodes: [ DC1-BL2B ]
             update_source: lo0
+            bfd: false
             ebgp_multihop: 3
             route_map_out: TEST_OUT
             route_map_in: TEST_IN
