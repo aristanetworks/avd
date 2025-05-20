@@ -1,0 +1,17 @@
+---
+### group_vars/HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_NETWORK_SERVICES.yml
+
+tenants:
+  - name: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT
+    vrfs:
+      - name: default
+        l3_interfaces:
+          - interfaces:
+              - Ethernet10
+              - Ethernet10
+            ip_addresses:
+              - "199.199.1.1/30"
+              - "199.199.2.1/30"
+            nodes:
+              - HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE1
+              - HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE2

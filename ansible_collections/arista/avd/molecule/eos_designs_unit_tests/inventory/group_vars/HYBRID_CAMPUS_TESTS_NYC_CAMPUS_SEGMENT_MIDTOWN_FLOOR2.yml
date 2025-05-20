@@ -1,0 +1,11 @@
+---
+### group_vars/HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR2.yml
+
+type: l2leaf
+
+network_ports:
+  - switches:
+      - NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR2_LEAFS_LEAF2[A]
+    switch_ports:
+      - Ethernet3-7/1-48
+    description: NYC Midtown Floor2 Standard Port configuration

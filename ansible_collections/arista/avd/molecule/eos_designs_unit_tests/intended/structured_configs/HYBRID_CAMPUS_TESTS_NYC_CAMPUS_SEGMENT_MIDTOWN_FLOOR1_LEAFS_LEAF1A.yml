@@ -1,0 +1,146 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet53
+  description: MLAG_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS_LEAF1B_Ethernet53
+  shutdown: false
+  channel_group:
+    id: 53
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS_LEAF1B
+  peer_interface: Ethernet53
+  peer_type: mlag_peer
+- name: Ethernet54
+  description: MLAG_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS_LEAF1B_Ethernet54
+  shutdown: false
+  channel_group:
+    id: 53
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS_LEAF1B
+  peer_interface: Ethernet54
+  peer_type: mlag_peer
+- name: Ethernet51
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE1_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 51
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE1
+  peer_interface: Ethernet1
+  peer_type: l3spine
+hostname: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS_LEAF1A
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.100.101/24
+  type: oob
+metadata:
+  fabric_name: HYBRID_CAMPUS_TESTS_NYC_FABRIC
+  cv_tags:
+    device_tags:
+    - name: topology_hint_network_type
+      value: campusV2
+    - name: topology_hint_type
+      value: Leaf
+    - name: Role
+      value: Leaf
+    - name: Campus
+      value: NYC
+    - name: Campus-Pod
+      value: Midtown
+    - name: Access-Pod
+      value: Floor1
+    interface_tags:
+    - interface: Ethernet53
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: MLAG
+    - interface: Ethernet54
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: MLAG
+    - interface: Ethernet51
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Uplink
+    - interface: Management1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Management
+mlag_configuration:
+  domain_id: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS
+  local_interface: Vlan4094
+  peer_address: 192.168.0.1
+  peer_link: Port-Channel53
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel53
+  description: MLAG_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR1_LEAFS_LEAF1B_Port-Channel53
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+- name: Port-Channel51
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_Port-Channel1
+  shutdown: false
+  mlag: 51
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: '4094'
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 192.168.0.0/31
+  mtu: 9214
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  tenant: system
+vrfs:
+- name: MGMT
+  ip_routing: false

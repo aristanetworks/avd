@@ -1,0 +1,4 @@
+---
+### group_vars/HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT.yml
+
+campus: "NYC"

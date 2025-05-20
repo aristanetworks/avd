@@ -49,6 +49,14 @@ generate_cv_tags:
 
 ## CloudVision Topology Tags for Campus deployments
 
+!!! warning
+
+    The generation of CloudVision Tags for Campus deployments in the `eos_designs` role is in preview mode.
+
+    Everything is subject to change, is not supported and may not be complete.
+
+    If you have any questions, please leverage the GitHub [discussions board](https://github.com/aristanetworks/avd/discussions)
+
 `arista.avd.eos_designs` can generate CloudVision Tags that assist CloudVision with rendering the Campus Topologies (supported on CloudVision as a Service (CVaaS) or "on-prem" CloudVision 2024.3.0 or later).
 This specific use case is required to support Hybrid workflow of managing Campus fabrics with both AVD and CloudVision Studios where:
 
@@ -118,7 +126,7 @@ Note that for standard Arista Universal Cloud Network designs (`L3LS`, `L2LS` an
 
 `cv_tags_topology_type` must be explicitly set for all Campus `Member-Leaf` devices.
 
-Providing these input variable will lead to the automatic generation of the following Campus-related CloudVision Tags:
+Providing these input variables will lead to the automatic generation of the following Campus-related CloudVision Tags:
 
 | Campus Tag Name             | Tag type  | Description                                                                          | Source of information |
 | --------------------------- | --------- | ------------------------------------------------------------------------------------ | --------------------- |
@@ -133,6 +141,10 @@ Providing these input variable will lead to the automatic generation of the foll
 !!! warning
     If `cv_deploy` is targeting Campus devices that are not yet registered with CloudVision `Inventory and Topology` studio - `cv_deploy` will currently register those devices skipping their `Model` and `Interfaces`. This will by default not allow `Quick Actions` feature of the `Access Interface Configuration` CloudVision Studio to manage such devices until all `Network Updates` related to these devices are `Accepted` in CloudVision UI.
     This limitation will be addressed in AVD once CloudVision 2025.2.1 is released. After this release, automatic registration of new devices by `cv_deploy` in CloudVision `Inventory and Topology` studio will automatically include `Model` and `Interfaces`.
+
+!!! warning
+    Generation of the `Link-Type: Uplink` and `Link-Type: Downlink` tags for fabric uplink and downlink interfaces may fail when node type settings for different `node_type_keys.key` values are defined at different levels of the group variable hierarchy. For example, if the `l2leaf` node type settings are defined at the group level for Leaf devices, Spine nodes will not be able to resolve them, resulting in the inability to correctly label interfaces between Leaf and Spine devices as `Uplink` or `Downlink`.
+    To avoid this issue, define node type settings for all `node_type_keys.key` values at a group level that is common to all relevant hosts, ensuring the settings are accessible to all fabric nodes that require them.
 
 ## CloudVision Custom Tags
 

@@ -166,7 +166,6 @@ async def deploy_to_cv(
                     deployed_tags=result.deployed_device_tags,
                     removed_tags=result.removed_device_tags,
                     cv_client=cv_client,
-                    warnings=result.warnings,
                 )
 
                 # Deploy interface tags
@@ -178,7 +177,6 @@ async def deploy_to_cv(
                     deployed_tags=result.deployed_interface_tags,
                     removed_tags=result.removed_interface_tags,
                     cv_client=cv_client,
-                    warnings=result.warnings,
                 )
 
                 # Deploy configs

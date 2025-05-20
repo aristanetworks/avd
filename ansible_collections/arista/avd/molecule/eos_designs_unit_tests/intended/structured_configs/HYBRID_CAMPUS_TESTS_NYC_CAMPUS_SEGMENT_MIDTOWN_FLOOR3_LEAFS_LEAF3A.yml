@@ -1,0 +1,1201 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet98/3
+  description: MLAG_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3B_Ethernet98/3
+  shutdown: false
+  channel_group:
+    id: 983
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3B
+  peer_interface: Ethernet98/3
+  peer_type: mlag_peer
+- name: Ethernet98/4
+  description: MLAG_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3B_Ethernet98/4
+  shutdown: false
+  channel_group:
+    id: 983
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3B
+  peer_interface: Ethernet98/4
+  peer_type: mlag_peer
+- name: Ethernet97/1
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE1_Ethernet50/1
+  shutdown: false
+  channel_group:
+    id: 971
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE1
+  peer_interface: Ethernet50/1
+  peer_type: l3spine
+- name: Ethernet97/2
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE2_Ethernet50/1
+  shutdown: false
+  channel_group:
+    id: 971
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_SPINE2
+  peer_interface: Ethernet50/1
+  peer_type: l3spine
+- name: Ethernet97/3
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3C_Ethernet97/1
+  shutdown: false
+  channel_group:
+    id: 973
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3C
+  peer_interface: Ethernet97/1
+  peer_type: l2leaf
+- name: Ethernet97/4
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3D_Ethernet97/1
+  shutdown: false
+  channel_group:
+    id: 974
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3D
+  peer_interface: Ethernet97/1
+  peer_type: l2leaf
+- name: Ethernet98/1
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3E_Ethernet97/1
+  shutdown: false
+  channel_group:
+    id: 981
+    mode: active
+  peer: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3E
+  peer_interface: Ethernet97/1
+  peer_type: l2leaf
+- name: Ethernet1
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet2
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet3
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet4
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet5
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet6
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet7
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet8
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet9
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet10
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet11
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet12
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet13
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet14
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet15
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet16
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet17
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet18
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet19
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet20
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet21
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet22
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet23
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet24
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet25
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet26
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet27
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet28
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet29
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet30
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet31
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet32
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet33
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet34
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet35
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet36
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet37
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet38
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet39
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet40
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet41
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet42
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet43
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet44
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet45
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet46
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet47
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet48
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet49
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet50
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet51
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet52
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet53
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet54
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet55
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet56
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet57
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet58
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet59
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet60
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet61
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet62
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet63
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet64
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet65
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet66
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet67
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet68
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet69
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet70
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet71
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet72
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet73
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet74
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet75
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet76
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet77
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet78
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet79
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet80
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet81
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet82
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet83
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet84
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet85
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet86
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet87
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet88
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet89
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet90
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet91
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet92
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet93
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet94
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet95
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet96
+  description: NYC Midtown Floor3 Standard Port configuration
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+hostname: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3A
+ip_igmp_snooping:
+  globally_enabled: true
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 172.16.100.106/24
+  type: oob
+metadata:
+  fabric_name: HYBRID_CAMPUS_TESTS_NYC_FABRIC
+  cv_tags:
+    device_tags:
+    - name: topology_hint_network_type
+      value: campusV2
+    - name: topology_hint_type
+      value: Leaf
+    - name: Role
+      value: Leaf
+    - name: Campus
+      value: NYC
+    - name: Campus-Pod
+      value: Midtown
+    - name: Access-Pod
+      value: Floor3
+    interface_tags:
+    - interface: Ethernet98/3
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: MLAG
+    - interface: Ethernet98/4
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: MLAG
+    - interface: Ethernet97/1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Uplink
+    - interface: Ethernet97/2
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Uplink
+    - interface: Ethernet97/3
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet97/4
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet98/1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Fabric
+      - name: Link-Type
+        value: Downlink
+    - interface: Ethernet1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet2
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet3
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet4
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet5
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet6
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet7
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet8
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet9
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet10
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet11
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet12
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet13
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet14
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet15
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet16
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet17
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet18
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet19
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet20
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet21
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet22
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet23
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet24
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet25
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet26
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet27
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet28
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet29
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet30
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet31
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet32
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet33
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet34
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet35
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet36
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet37
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet38
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet39
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet40
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet41
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet42
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet43
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet44
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet45
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet46
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet47
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet48
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet49
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet50
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet51
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet52
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet53
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet54
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet55
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet56
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet57
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet58
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet59
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet60
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet61
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet62
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet63
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet64
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet65
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet66
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet67
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet68
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet69
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet70
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet71
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet72
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet73
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet74
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet75
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet76
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet77
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet78
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet79
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet80
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet81
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet82
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet83
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet84
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet85
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet86
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet87
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet88
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet89
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet90
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet91
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet92
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet93
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet94
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet95
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet96
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Management1
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Management
+mlag_configuration:
+  domain_id: HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_AB
+  local_interface: Vlan4094
+  peer_address: 192.168.0.7
+  peer_link: Port-Channel983
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel983
+  description: MLAG_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3B_Port-Channel983
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+- name: Port-Channel971
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_SPINES_Port-Channel501
+  shutdown: false
+  mlag: 971
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Port-Channel973
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3C_Port-Channel971
+  shutdown: false
+  mlag: 973
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Port-Channel974
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3D_Port-Channel971
+  shutdown: false
+  mlag: 974
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+- name: Port-Channel981
+  description: L2_HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3E_Port-Channel971
+  shutdown: false
+  mlag: 981
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: none
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: '4094'
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 192.168.0.6/31
+  mtu: 9214
+  no_autostate: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  tenant: system
+vrfs:
+- name: MGMT
+  ip_routing: false

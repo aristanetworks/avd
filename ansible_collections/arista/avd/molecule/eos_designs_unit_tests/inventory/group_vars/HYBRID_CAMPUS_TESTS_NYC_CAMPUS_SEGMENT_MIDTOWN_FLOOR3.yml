@@ -1,0 +1,12 @@
+---
+### group_vars/HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3.yml
+
+type: l2leaf
+
+network_ports:
+  - switches:
+      - HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_LEAFS_LEAF3[AB]
+      - HYBRID_CAMPUS_TESTS_NYC_CAMPUS_SEGMENT_MIDTOWN_FLOOR3_MEMBER_LEAFS_LEAF3[CDE]
+    switch_ports:
+      - Ethernet1-96
+    description: NYC Midtown Floor3 Standard Port configuration

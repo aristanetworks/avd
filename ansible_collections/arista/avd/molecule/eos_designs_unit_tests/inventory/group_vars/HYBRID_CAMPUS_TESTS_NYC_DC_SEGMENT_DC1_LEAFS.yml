@@ -1,0 +1,21 @@
+---
+### group_vars/HYBRID_CAMPUS_TESTS_NYC_DC_SEGMENT_DC1_LEAFS.yml
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    mlag_peer_ipv4_pool: 192.168.150.0/24
+    loopback_ipv4_pool: 172.16.150.0/24
+    vtep_loopback_ipv4_pool: 172.16.151.0/24
+    bgp_as: 65150
+  node_groups:
+    - group: HYBRID_CAMPUS_TESTS_NYC_DC_SEGMENT_DC1_LEAFS
+      nodes:
+        - name: HYBRID_CAMPUS_TESTS_NYC_DC_SEGMENT_DC1_LEAFS_LEAF10A
+          id: 1
+          mgmt_ip: 172.16.150.103/24
+          rack: HYBRID_CAMPUS_TESTS_NYC_DC_SEGMENT_DC1_RACK1
+
+dc_name: HYBRID_CAMPUS_TESTS_NYC_DC_SEGMENT_DC1
+pod_name: HYBRID_CAMPUS_TESTS_NYC_DC_SEGMENT_DC1_POD1
