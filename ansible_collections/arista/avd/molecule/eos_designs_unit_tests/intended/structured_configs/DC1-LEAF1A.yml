@@ -357,6 +357,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      static:
+        enabled: true
   - name: Tenant_A_OP_Zone
     rd: 1.1.1.1:9
     route_targets:
@@ -429,6 +431,9 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
+- vrf: Tenant_A_APP_Zone
+  prefix: 10.10.10.0/24
+  next_hop: 10.10.10.1
 - vrf: Tenant_A_APP_Zone
   prefix: 10.2.32.0/24
   interface: Vlan132

@@ -88,7 +88,7 @@ mod validation {
     #[pyfunction]
     pub fn validate_json(data_as_json: &str, schema_name: &str) -> PyResult<ValidationResult> {
         get_store()
-            .validate_json(data_as_json, schema_name)
+            .validate_json(data_as_json, schema_name, None)
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))
     }
 
@@ -105,7 +105,7 @@ mod validation {
         let mut data: serde_json::Value = serde_json::from_str(data_as_json)
             .map_err(|err| PyRuntimeError::new_err(format!("Invalid JSON in data: {err}")))?;
 
-        let mut ctx = Context::new(get_store());
+        let mut ctx = Context::new(get_store(), None);
         schema.coerce(&mut data, &mut ctx);
         schema.validate_value(&data, &mut ctx);
 

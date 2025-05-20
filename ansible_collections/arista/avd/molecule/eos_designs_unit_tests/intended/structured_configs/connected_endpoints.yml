@@ -86,6 +86,51 @@ ethernet_interfaces:
     mode: active
   peer: OLD_SW-1/7
   peer_type: server
+- name: Ethernet19
+  description: SERVER_OLD_SW-1/8_Endpoint_port4
+  shutdown: false
+  peer: OLD_SW-1/8
+  peer_interface: Endpoint_port4
+  peer_type: server
+  switchport:
+    enabled: true
+    mode: trunk
+- name: Ethernet20
+  description: SERVER_OLD_SW-1/9
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  peer: OLD_SW-1/9
+  peer_type: server
+- name: Ethernet21
+  description: SERVER_OLD_SW-1/9
+  shutdown: false
+  channel_group:
+    id: 20
+    mode: active
+  peer: OLD_SW-1/9
+  peer_type: server
+- name: Ethernet24
+  description: SERVER_OLD_SW-1/11_Endpoint_port5
+  shutdown: false
+  peer: OLD_SW-1/11
+  peer_interface: Endpoint_port5
+  peer_type: server
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: 1-4096
+- name: Ethernet25
+  description: SERVER_OLD_SW-1/12_Endpoint_port6
+  shutdown: false
+  channel_group:
+    id: 25
+    mode: active
+  peer: OLD_SW-1/12
+  peer_interface: Endpoint_port6
+  peer_type: server
 - name: Ethernet12
   description: SERVER_INDIVIDUAL_1
   shutdown: false
@@ -286,6 +331,32 @@ port_channel_interfaces:
   shutdown: false
   switchport:
     enabled: true
+- name: Port-Channel20
+  description: SERVER_OLD_SW-1/9
+  shutdown: false
+  switchport:
+    enabled: false
+- name: Port-Channel20.100
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 100
+    network:
+      encapsulation: client
+  vlan_id: 100
+- name: Port-Channel20.200
+  encapsulation_vlan:
+    client:
+      encapsulation: dot1q
+      vlan: 200
+    network:
+      encapsulation: client
+  vlan_id: 200
+- name: Port-Channel25
+  description: SERVER_OLD_SW-1/12
+  shutdown: false
+  switchport:
+    enabled: false
 - name: Port-Channel12
   description: SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false

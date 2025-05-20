@@ -216,7 +216,7 @@ mod tests {
         };
         let mut input = json!({});
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         assert!(ctx.violations.is_empty());
         assert_eq!(
