@@ -1,0 +1,145 @@
+---
+# TODO: Add tests for rfc5549, overlay_routing_protocol: none with bgp peers etc under network services (since this uplink type expands bgp support there)
+overlay_routing_protocol: none
+underlay_rfc5549: true
+node_type_keys:
+  # modify spine to get l3 network_services
+  - key: spine
+    type: spine
+    default_evpn_role: server
+    default_ptp_priority1: 20
+    network_services:
+      l3: true
+  - key: l3leaf
+    type: l3leaf
+    connected_endpoints: true
+    default_evpn_role: client
+    mlag_support: true
+    network_services:
+      l2: true
+      l3: true
+    vtep: true
+    default_ptp_priority1: 30
+    cv_tags_topology_type: leaf
+  - key: l2leaf
+    type: l2leaf
+    connected_endpoints: true
+    mlag_support: true
+    network_services:
+      l2: true
+    underlay_router: false
+    uplink_type: port-channel
+    cv_tags_topology_type: leaf
+
+default_node_types:
+  - node_type: spine
+    match_hostnames:
+      - ".*SPINE.*"
+  # Order matters
+  - node_type: l2leaf
+    match_hostnames:
+      - ".*L2LEAF.*"
+  - node_type: l3leaf
+    match_hostnames:
+      - ".*LEAF.*"
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 172.16.0.0/24
+    virtual_router_mac_address: cafe:cafe:cafe
+    uplink_ipv4_pool: 10.42.42.0/24
+    uplink_switches: [ UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1, UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2 ]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+    uplink_type: p2p-vrfs
+    mlag_interfaces: [ Ethernet5, Ethernet6 ]
+    mlag_peer_ipv4_pool: 92.168.43.0/24
+    bgp_as: 65101
+    uplink_macsec:
+      profile: TEST
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
+  node_groups:
+    - group: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAFS
+      # Testing RFC5549 with IPv6 overlay peers only
+      bgp_as: 65106
+      uplink_interfaces: ['Ethernet1', 'Ethernet2']
+      loopback_ipv6_pool: 2001:1::/64
+      loopback_ipv6_offset: 4
+      # since this device is not using rfc5549 for overlay, we need mlag_peer_l3_ipv4_pool set specifically.
+      mlag_peer_l3_ipv4_pool: 10.255.251.0/24
+      nodes:
+        - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1
+          id: 8
+          mgmt_ip: 192.168.200.106/24
+          mac_address: '0c:1d:c0:1d:62:01'
+          uplink_switch_interfaces: [ Ethernet1, Ethernet3 ]
+        - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2
+          id: 9
+          mgmt_ip: 192.168.200.107/24
+          uplink_switch_interfaces: [ Ethernet2, Ethernet4 ]
+l2leaf:
+  defaults:
+    platform: vEOS-LAB
+    uplink_switches: [ UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1,  UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2 ]
+    uplink_interfaces: [ Ethernet1, Ethernet2 ]
+  nodes:
+    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_L2LEAF1
+      id: 4
+      uplink_switch_interfaces: [ Ethernet51, Ethernet52 ]
+      filter:
+        tags: [wan]
+
+spine:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.42.0/24
+    bgp_as: 65001
+  nodes:
+    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+      id: 1
+      filter:
+        always_include_vrfs_in_tenants: [TenantA]
+    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+      id: 2
+      filter:
+        always_include_vrfs_in_tenants: [TenantA]
+
+tenants:
+  - name: TenantA
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: Tenant_A_WAN_Zone
+        vrf_vni: 14
+        static_routes:
+          - prefix: 10.3.4.0/24
+            next_hop: 1.2.3.4
+            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1, UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2]
+        bgp_peers:
+          - ip_address: 123.1.1.10
+            remote_as: "1234"
+            description: External IPv4 BGP peer
+            send_community: standard extended
+            maximum_routes: 0
+            default_originate:
+              always: false
+            update_source: Loopback123
+            ebgp_multihop: 3
+            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1, UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2]
+            set_ipv4_next_hop: 123.1.1.1
+            local_as: 123
+          - ip_address: fd5a:fe45:8831:06c5::a
+            remote_as: "12345"
+            send_community:
+            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1, UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2]
+            set_ipv6_next_hop: fd5a:fe45:8831:06c5::1
+          - ip_address: fd5a:fe45:8831:06c5::b
+            remote_as: "12345"
+            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1, UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2]
+        svis:
+          - id: 150
+            name: Tenant_A_WAN_Zone_1
+            tags: ['wan']
+            enabled: true
+            ip_address_virtual: 10.1.40.1/24

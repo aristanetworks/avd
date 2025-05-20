@@ -1,0 +1,342 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet5
+  description: MLAG_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2_Ethernet5
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2
+  peer_interface: Ethernet5
+  peer_type: mlag_peer
+- name: Ethernet6
+  description: MLAG_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2_Ethernet6
+  shutdown: false
+  channel_group:
+    id: 5
+    mode: active
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2
+  peer_interface: Ethernet6
+  peer_type: mlag_peer
+- name: Ethernet1
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  mac_security:
+    profile: TEST
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+  peer_interface: Ethernet1
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet1.14
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet1.14_VRF_Tenant_A_WAN_Zone
+  shutdown: false
+  mtu: 9214
+  vrf: Tenant_A_WAN_Zone
+  encapsulation_dot1q:
+    vlan: 14
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+  peer_interface: Ethernet1.14
+  peer_type: spine
+- name: Ethernet2
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet3
+  shutdown: false
+  mtu: 9214
+  ipv6_enable: true
+  mac_security:
+    profile: TEST
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+  peer_interface: Ethernet3
+  peer_type: spine
+  switchport:
+    enabled: false
+- name: Ethernet2.14
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet3.14_VRF_Tenant_A_WAN_Zone
+  shutdown: false
+  mtu: 9214
+  vrf: Tenant_A_WAN_Zone
+  encapsulation_dot1q:
+    vlan: 14
+  ipv6_enable: true
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+  peer_interface: Ethernet3.14
+  peer_type: spine
+- name: Ethernet51
+  description: L2_UPLINK_P2P_VRFS_RFC5549_TESTS_L2LEAF1_Ethernet1
+  shutdown: false
+  channel_group:
+    id: 51
+    mode: active
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_L2LEAF1
+  peer_interface: Ethernet1
+  peer_type: l2leaf
+hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF1
+ip_igmp_snooping:
+  globally_enabled: true
+ip_routing_ipv6_interfaces: true
+ip_virtual_router_mac_address: cafe:cafe:cafe
+ipv6_unicast_routing: true
+is_deployed: true
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 192.168.42.8/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.200.106/24
+  type: oob
+metadata:
+  platform: vEOS-LAB
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+mlag_configuration:
+  domain_id: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAFS
+  local_interface: Vlan4094
+  peer_address: 92.168.43.15
+  peer_link: Port-Channel5
+  reload_delay_mlag: '300'
+  reload_delay_non_mlag: '330'
+port_channel_interfaces:
+- name: Port-Channel5
+  description: MLAG_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2_Port-Channel5
+  shutdown: false
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      groups:
+      - MLAG
+- name: Port-Channel51
+  description: L2_UPLINK_P2P_VRFS_RFC5549_TESTS_L2LEAF1_Port-Channel1
+  shutdown: false
+  mlag: 51
+  switchport:
+    enabled: true
+    mode: trunk
+    trunk:
+      allowed_vlan: '150'
+prefix_lists:
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.255.251.14/31
+route_maps:
+- name: RM-MLAG-PEER-IN
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
+    set:
+    - origin incomplete
+- name: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ip next-hop 123.1.1.1
+- name: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    set:
+    - ipv6 next-hop fd5a:fe45:8831:06c5::1
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
+router_bgp:
+  as: '65106'
+  router_id: 192.168.42.8
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: MLAG-IPv4-UNDERLAY-PEER
+    type: ipv4
+    remote_as: '65106'
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2
+    next_hop_self: true
+    send_community: all
+    maximum_routes: 12000
+    route_map_in: RM-MLAG-PEER-IN
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  neighbor_interfaces:
+  - name: Vlan4093
+    remote_as: '65106'
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2
+    peer_group: MLAG-IPv4-UNDERLAY-PEER
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2_Vlan4093
+  - name: Ethernet1
+    remote_as: '65001'
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    peer_group: IPv4-UNDERLAY-PEERS
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet1
+  - name: Ethernet2
+    remote_as: '65001'
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2
+    peer_group: IPv4-UNDERLAY-PEERS
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet3
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: MLAG-IPv4-UNDERLAY-PEER
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+      next_hop:
+        address_family_ipv6:
+          enabled: true
+          originate: true
+  vrfs:
+  - name: Tenant_A_WAN_Zone
+    router_id: 192.168.42.8
+    updates:
+      wait_install: true
+    neighbors:
+    - ip_address: 10.255.251.15
+      peer_group: MLAG-IPv4-UNDERLAY-PEER
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2_Vlan3013
+    - ip_address: 123.1.1.10
+      remote_as: '1234'
+      local_as: '123'
+      description: External IPv4 BGP peer
+      ebgp_multihop: 3
+      send_community: standard extended
+      maximum_routes: 0
+      default_originate:
+        always: false
+        route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+      update_source: Loopback123
+      route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
+    - ip_address: fd5a:fe45:8831:06c5::a
+      remote_as: '12345'
+      route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
+    - ip_address: fd5a:fe45:8831:06c5::b
+      remote_as: '12345'
+    neighbor_interfaces:
+    - name: Ethernet1.14
+      remote_as: '65001'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet1.14_vrf_Tenant_A_WAN_Zone
+    - name: Ethernet2.14
+      remote_as: '65001'
+      peer_group: IPv4-UNDERLAY-PEERS
+      description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE2_Ethernet3.14_vrf_Tenant_A_WAN_Zone
+    redistribute:
+      connected:
+        enabled: true
+        route_map: RM-CONN-2-BGP-VRFS
+      static:
+        enabled: true
+    address_family_ipv4:
+      neighbors:
+      - ip_address: 10.255.251.15
+        next_hop:
+          address_family_ipv6:
+            enabled: false
+      - ip_address: 123.1.1.10
+        activate: true
+    address_family_ipv6:
+      neighbors:
+      - ip_address: fd5a:fe45:8831:06c5::a
+        activate: true
+      - ip_address: fd5a:fe45:8831:06c5::b
+        activate: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  no_spanning_tree_vlan: 4093-4094
+static_routes:
+- vrf: Tenant_A_WAN_Zone
+  prefix: 10.3.4.0/24
+  next_hop: 1.2.3.4
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4093
+  description: MLAG_L3
+  shutdown: false
+  ipv6_enable: true
+  mtu: 9214
+- name: Vlan4094
+  description: MLAG
+  shutdown: false
+  ip_address: 92.168.43.14/31
+  mtu: 9214
+  no_autostate: true
+- name: Vlan150
+  description: Tenant_A_WAN_Zone_1
+  shutdown: false
+  vrf: Tenant_A_WAN_Zone
+  ip_address_virtual: 10.1.40.1/24
+  tenant: TenantA
+  tags:
+  - wan
+- name: Vlan3013
+  description: MLAG_L3_VRF_Tenant_A_WAN_Zone
+  shutdown: false
+  vrf: Tenant_A_WAN_Zone
+  ip_address: 10.255.251.14/31
+  mtu: 9214
+  tenant: TenantA
+  type: underlay_peering
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4093
+  name: MLAG_L3
+  trunk_groups:
+  - MLAG
+  tenant: system
+- id: 4094
+  name: MLAG
+  trunk_groups:
+  - MLAG
+  tenant: system
+- id: 150
+  name: Tenant_A_WAN_Zone_1
+  tenant: TenantA
+- id: 3013
+  name: MLAG_L3_VRF_Tenant_A_WAN_Zone
+  trunk_groups:
+  - MLAG
+  tenant: TenantA
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: Tenant_A_WAN_Zone
+  ip_routing: true
+  tenant: TenantA
