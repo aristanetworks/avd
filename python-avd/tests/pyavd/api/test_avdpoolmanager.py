@@ -61,7 +61,7 @@ BASIC_DATA = get_data([get_pool(TESTHOST1, [get_assignment(TESTHOST1, 1)])])
 
 def get_file_content(data: dict) -> str:
     """Computed file content either to be used for mock_file_content or expected file content."""
-    return f"{FILE_HEADER}{safe_dump(data)}"
+    return f"{FILE_HEADER}{safe_dump(data, sort_keys=False)}"
 
 
 @pytest.mark.parametrize(
