@@ -70,7 +70,6 @@ l3leaf:
       inband_ztp: true
       uplink_switches: [inband-mgmt-spine1-ztp]
       uplink_ipv4_pool: 172.16.255.0/24
-      inband_mgmt_mtu: 1500
   node_groups:
     - group: inband-mgmt-parents-dualstack
       mlag_peer_ipv4_pool: 100.64.0.0/24
@@ -78,10 +77,8 @@ l3leaf:
       nodes:
         - name: inband-mgmt-parent-dualstack1
           id: 3
-          inband_mgmt_mtu: 1500
         - name: inband-mgmt-parent-dualstack2
           id: 4
-          inband_mgmt_mtu: 1500
     - group: inband-mgmt-parents-ipv6
       mlag_peer_ipv4_pool: 100.64.0.0/24
       mlag_peer_l3_ipv4_pool: 100.64.1.0/24
