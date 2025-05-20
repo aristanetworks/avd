@@ -1,0 +1,46 @@
+---
+type: wan_router
+wan_mode: cv-pathfinder
+underlay_routing_protocol: none
+
+bgp_as: 65000
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_ipsec_profiles:
+  control_plane:
+    ike_policy_name: AUTOVPN-IKE
+    sa_policy_name: AUTOVPN-SA
+    profile_name: AUTOVPN
+    shared_key: ABCDEF1234567890
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.30.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+  nodes:
+    - name: missing_cv_pathfinder_regions
+      id: 1
+      wan_role: server
+      data_plane_cpu_allocation_max: 1
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: Comcast
+          wan_circuit_id: 666
+          ip_address: 10.1.1.1/24
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+
+expected_error_message: >-
+  'cv_pathfinder_regions' key must be set when 'wan_mode' is 'cv-pathfinder'.
