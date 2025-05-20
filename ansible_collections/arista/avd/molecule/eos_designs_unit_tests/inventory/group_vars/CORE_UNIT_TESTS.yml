@@ -57,6 +57,8 @@ core_router:
       id: 3
     - name: core-4-multicast
       id: 4
+    - name: core-5-isis-sr-ldp
+      id: 5
 
 core_interfaces:
   p2p_links_ip_pools:
