@@ -153,7 +153,7 @@ rr:
           id: 9
           mgmt_ip: 10.30.30.109/24
         - name: SITE3-RR1
-          id: 10
+          id: 12
           mgmt_ip: 10.30.30.120/24
           overlay_address_families: []
 

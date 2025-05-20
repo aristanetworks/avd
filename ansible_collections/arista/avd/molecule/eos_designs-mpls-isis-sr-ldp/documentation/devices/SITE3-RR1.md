@@ -132,13 +132,13 @@ vlan internal order ascending range 1006 1199
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | ROUTER_ID | default | 100.70.0.10/32 |
+| Loopback0 | ROUTER_ID | default | 100.70.0.12/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::a/128 |
+| Loopback0 | ROUTER_ID | default | 2000:1234:ffff:ffff::c/128 |
 
 ##### ISIS
 
@@ -153,11 +153,11 @@ vlan internal order ascending range 1006 1199
 interface Loopback0
    description ROUTER_ID
    no shutdown
-   ip address 100.70.0.10/32
-   ipv6 address 2000:1234:ffff:ffff::a/128
+   ip address 100.70.0.12/32
+   ipv6 address 2000:1234:ffff:ffff::c/128
    mpls ldp interface
-   node-segment ipv4 index 110
-   node-segment ipv6 index 110
+   node-segment ipv4 index 112
+   node-segment ipv6 index 112
    isis enable CORE
    isis passive
 ```
@@ -228,9 +228,9 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 | Settings | Value |
 | -------- | ----- |
 | Instance | CORE |
-| Net-ID | 49.0001.1000.7000.0010.00 |
+| Net-ID | 49.0001.1000.7000.0012.00 |
 | Type | level-1-2 |
-| Router-ID | 100.70.0.10 |
+| Router-ID | 100.70.0.12 |
 | Log Adjacency Changes | True |
 | MPLS LDP Sync Default | True |
 | Advertise Passive-only | True |
@@ -252,7 +252,7 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 
 | Loopback | IPv4 Index | IPv6 Index |
 | -------- | ---------- | ---------- |
-| Loopback0 | 110 | 110 |
+| Loopback0 | 112 | 112 |
 
 #### ISIS IPv4 Address Family Summary
 
@@ -275,8 +275,8 @@ ip route vrf MGMT 0.0.0.0/0 192.168.200.5
 ```eos
 !
 router isis CORE
-   net 49.0001.1000.7000.0010.00
-   router-id ipv4 100.70.0.10
+   net 49.0001.1000.7000.0012.00
+   router-id ipv4 100.70.0.12
    is-type level-1-2
    log-adjacency-changes
    mpls ldp sync default
@@ -303,7 +303,7 @@ ASN Notation: asplain
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65000 | 100.70.0.10 |
+| 65000 | 100.70.0.12 |
 
 | BGP AS | Cluster ID |
 | ------ | --------- |
@@ -363,7 +363,7 @@ ASN Notation: asplain
 ```eos
 !
 router bgp 65000
-   router-id 100.70.0.10
+   router-id 100.70.0.12
    update wait-install
    no bgp default ipv4-unicast
    bgp cluster-id 1.1.1.1
@@ -427,7 +427,7 @@ router bfd
 | -------- | ---- |
 | MPLS IP Enabled | True |
 | LDP Enabled | True |
-| LDP Router ID | 100.70.0.10 |
+| LDP Router ID | 100.70.0.12 |
 | LDP Interface Disabled Default | True |
 | LDP Transport-Address Interface | Loopback0 |
 
@@ -444,7 +444,7 @@ router bfd
 mpls ip
 !
 mpls ldp
-   router-id 100.70.0.10
+   router-id 100.70.0.12
    transport-address interface Loopback0
    interface disabled default
    no shutdown

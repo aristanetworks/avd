@@ -645,11 +645,17 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 100.70.0.1 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.3 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.4 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.5 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.8 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.9 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.10 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.11 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.12 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 192.168.48.1 | 65201 | TENANT_B_WAN | - | - | - | - | - | - | - | - | - |
 
 #### Router BGP EVPN Address Family
@@ -724,6 +730,14 @@ router bgp 65000
    neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
+   neighbor 100.70.0.1 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.1 description SITE1-LSR1_Loopback0
+   neighbor 100.70.0.2 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.2 description SITE1-LSR2_Loopback0
+   neighbor 100.70.0.3 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.3 description SITE2-LSR1_Loopback0
+   neighbor 100.70.0.4 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.4 description SITE2-LSR2_Loopback0
    neighbor 100.70.0.5 peer group MPLS-OVERLAY-PEERS
    neighbor 100.70.0.5 description SITE1-LER1_Loopback0
    neighbor 100.70.0.7 peer group MPLS-OVERLAY-PEERS
@@ -732,8 +746,12 @@ router bgp 65000
    neighbor 100.70.0.8 description SITE1-RR1_Loopback0
    neighbor 100.70.0.9 peer group MPLS-OVERLAY-PEERS
    neighbor 100.70.0.9 description SITE2-RR1_Loopback0
+   neighbor 100.70.0.10 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.10 description SITE3-LER1_Loopback0
    neighbor 100.70.0.11 peer group MPLS-OVERLAY-PEERS
    neighbor 100.70.0.11 description SITE1-LER3_Loopback0
+   neighbor 100.70.0.12 peer group MPLS-OVERLAY-PEERS
+   neighbor 100.70.0.12 description SITE3-RR1_Loopback0
    !
    vlan 10
       rd 100.70.0.6:10010

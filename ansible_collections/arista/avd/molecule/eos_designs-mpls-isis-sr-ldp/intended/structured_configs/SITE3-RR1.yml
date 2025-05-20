@@ -12,16 +12,16 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 100.70.0.10/32
-  ipv6_address: 2000:1234:ffff:ffff::a/128
+  ip_address: 100.70.0.12/32
+  ipv6_address: 2000:1234:ffff:ffff::c/128
   mpls:
     ldp:
       interface: true
   isis_enable: CORE
   isis_passive: true
   node_segment:
-    ipv4_index: 110
-    ipv6_index: 110
+    ipv4_index: 112
+    ipv6_index: 112
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -41,7 +41,7 @@ mpls:
   ip: true
   ldp:
     interface_disabled_default: true
-    router_id: 100.70.0.10
+    router_id: 100.70.0.12
     shutdown: false
     transport_address_interface: Loopback0
 router_bfd:
@@ -51,7 +51,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65000'
-  router_id: 100.70.0.10
+  router_id: 100.70.0.12
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -105,8 +105,8 @@ router_bgp:
       activate: true
 router_isis:
   instance: CORE
-  net: 49.0001.1000.7000.0010.00
-  router_id: 100.70.0.10
+  net: 49.0001.1000.7000.0012.00
+  router_id: 100.70.0.12
   is_type: level-1-2
   log_adjacency_changes: true
   mpls_ldp_sync_default: true
@@ -128,7 +128,7 @@ router_isis:
       mode: link-protection
   segment_routing_mpls:
     enabled: true
-    router_id: 100.70.0.10
+    router_id: 100.70.0.12
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
