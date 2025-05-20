@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import ipaddress
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -611,9 +611,11 @@ class RouterBgpMixin(Protocol):
             peer_facts = self.shared_utils.get_peer_facts(route_reflector_client)
             if not self._is_peer_mpls_client(peer_facts):
                 continue
-
+            
+            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            ip_address = cast(str, peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
-                peer_facts.overlay.peering_address,
+                ip_address,
                 route_reflector_client,
                 self.inputs.bgp_peer_groups.mpls_overlay_peers.name,
                 overlay_peering_interface="Loopback0",
@@ -635,8 +637,10 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_client(peer_facts):
                 continue
 
+            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address    
+            ip_address = cast(str, peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
-                peer_facts.overlay.peering_address,
+                ip_address,
                 fabric_switch,
                 self.inputs.bgp_peer_groups.mpls_overlay_peers.name,
                 overlay_peering_interface="Loopback0",
@@ -655,8 +659,10 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
+            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            ip_address = cast(str, peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
-                peer_facts.overlay.peering_address,
+                ip_address,
                 route_reflector,
                 self.inputs.bgp_peer_groups.rr_overlay_peers.name,
                 overlay_peering_interface="Loopback0",
@@ -671,8 +677,10 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
+            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            ip_address = cast(str, peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
-                peer_facts.overlay.peering_address,
+                ip_address,
                 route_reflector_client,
                 self.inputs.bgp_peer_groups.rr_overlay_peers.name,
                 overlay_peering_interface="Loopback0",

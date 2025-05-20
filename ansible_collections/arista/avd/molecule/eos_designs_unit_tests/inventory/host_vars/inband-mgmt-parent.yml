@@ -1,1 +1,2 @@
+# Testing evpn_gateway.evpn_l2/evpn_l3 disabled
 evpn_overlay_bgp_rtc: true
