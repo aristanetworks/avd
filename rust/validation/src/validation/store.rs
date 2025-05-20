@@ -6,7 +6,10 @@ use avdschema::{Schema, Store};
 use serde_json::Value;
 
 use crate::{
-    coercion::Coercion, context::Context, feedback::Violation, validation_result::ValidationResult,
+    coercion::Coercion,
+    context::{Configuration, Context},
+    feedback::Violation,
+    validation_result::ValidationResult,
 };
 
 use super::Validation;
@@ -17,6 +20,7 @@ pub trait StoreValidate<T> {
         &self,
         json: &str,
         schema_name: T,
+        configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError>;
 
     /// Entrypoint for validating a YAML document against the given schema name.
@@ -24,6 +28,7 @@ pub trait StoreValidate<T> {
         &self,
         yaml: &str,
         schema_name: T,
+        configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError>;
 
     /// Coerce the given value recursively to match the types of the schema.
@@ -39,9 +44,10 @@ impl StoreValidate<Schema> for Store {
         &self,
         json: &str,
         schema_type: Schema,
+        configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
         let mut value = serde_json::from_str(json)?;
-        let mut ctx = Context::new(self);
+        let mut ctx = Context::new(self, configuration);
 
         let schema = self.get(schema_type);
         schema.coerce(&mut value, &mut ctx);
@@ -53,11 +59,12 @@ impl StoreValidate<Schema> for Store {
         &self,
         yaml: &str,
         schema_type: Schema,
+        configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
         // todo: remove `serde_yaml` once `saphyr` adds `serde` support
         // https://github.com/saphyr-rs/saphyr/issues/1
         let mut value = serde_yaml::from_str::<Value>(yaml)?;
-        let mut ctx = Context::new(self);
+        let mut ctx = Context::new(self, configuration);
 
         let schema = self.get(schema_type);
         schema.coerce(&mut value, &mut ctx);
@@ -66,7 +73,7 @@ impl StoreValidate<Schema> for Store {
         Ok(ctx.into())
     }
     fn coerce_value(&self, value: &mut Value, schema_name: Schema) -> ValidationResult {
-        let mut ctx = Context::new(self);
+        let mut ctx = Context::new(self, None);
         let schema = self.get(schema_name);
         schema.coerce(value, &mut ctx);
         ctx.into()
@@ -78,11 +85,12 @@ impl StoreValidate<&str> for Store {
         &self,
         json: &str,
         schema_name: &str,
+        configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
         if let Ok(schema_type) = Schema::try_from(schema_name) {
-            self.validate_json(json, schema_type)
+            self.validate_json(json, schema_type, configuration)
         } else {
-            let mut ctx = Context::new(self);
+            let mut ctx = Context::new(self, None);
             ctx.add_violation(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
@@ -94,11 +102,12 @@ impl StoreValidate<&str> for Store {
         &self,
         yaml: &str,
         schema_name: &str,
+        configuration: Option<&Configuration>,
     ) -> Result<ValidationResult, StoreValidateError> {
         if let Ok(schema_type) = Schema::try_from(schema_name) {
-            self.validate_yaml(yaml, schema_type)
+            self.validate_yaml(yaml, schema_type, configuration)
         } else {
-            let mut ctx = Context::new(self);
+            let mut ctx = Context::new(self, None);
             ctx.add_violation(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
@@ -110,7 +119,7 @@ impl StoreValidate<&str> for Store {
         if let Ok(schema_type) = Schema::try_from(schema_name) {
             self.coerce_value(value, schema_type)
         } else {
-            let mut ctx = Context::new(self);
+            let mut ctx = Context::new(self, None);
             ctx.add_violation(Violation::InvalidSchema {
                 schema: schema_name.into(),
             });
@@ -138,7 +147,7 @@ mod tests {
     fn validate_yaml_err() {
         let input = "key3:\n  some_key: some_value\n";
         let store = get_test_store();
-        let result = store.validate_yaml(input, "eos_designs");
+        let result = store.validate_yaml(input, "eos_designs", None);
         assert!(result.is_ok());
         let validation_result = result.unwrap();
         assert!(validation_result.coercions.is_empty());

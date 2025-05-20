@@ -53,6 +53,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
   - HA for AutoVPN is not supported
 - Internet-exit for Zscaler is in preview
 - `eos_validate_state` is being enriched to support new tests for WAN designs.
+- EVPN WAN gateway is in preview as it requires the use of `wan_use_evpn_node_settings_for_lan`. It is supported only on sites with single WAN Router.
 
 ### Known limitations
 
@@ -65,6 +66,7 @@ Please familiarize yourself with the Arista WAN terminology before proceeding:
 - All the WAN routers must have a common path-group with at least one WAN route server to be able to inject the default control-plane match statement in the VRF default WAN policy.
 - For the default VRF, routes received over BGP peering configured under tenants in `network_services` will not be automatically advertised to the WAN (they will be advertised toward the LAN if eBGP is used). To advertise them towards the WAN, they need to be injected in EVPN and this can be achieved by adding a route-map to mark them with the site SOO.
 - Internet exit policies are not supported under WAN port-channel interfaces.
+- EVPN WAN gateway is supported only on sites with single WAN Router.
 
 ### Future work
 
@@ -695,7 +697,8 @@ The following LAN scenarios are supported:
 - Single Router L3 EBGP LAN
 - Single Router L2 LAN
 - Dual Router L3 EBGP LAN with HA
-- Dual Router using one directed connected HA interface.
+- Dual Router using one directed connected HA interface
+- [PREVIEW] - Single Router EVPN Gateway
 
 Some design points:
 
@@ -864,6 +867,40 @@ In the situation where the LAN is EBGP but HA is configured over a direct link, 
     If it is the case, only one interface can be used for Direct HA, and the port-channel creation can be disabled using `wan_ha.use_port_channel_for_direct_ha: false`.
 
     It is *not* possible to use multiple direct HA links while disabling the port-channel.
+
+#### EVPN Gateway LAN (PREVIEW)
+
+- the LAN routes are received via EVPN
+- Enabling the gateway requires to configure:
+  - `wan_use_evpn_node_settings_for_lan: true`
+  - `overlay_routing_protocol: ebgp` for the WAN router
+  - `evpn_role: client` for the WAN router
+  - an EVPN route server should be defined, e.g. using `evpn_route_servers` settings.
+- When all the conditions are met, the EVPN Gateway using DPS Interconnect is enabled and the following configuration is added to the WAN router:
+
+```shell
+router adaptive-virtual-topology
+   topology role edge gateway vxlan # (1)!
+   [...]
+[...]
+router bgp <AS>
+   ...
+   !
+   address-family evpn
+      neighbor WAN_RR activate
+      neighbor WAN_RR domain remote
+      neighbor WAN_RR encapsulation path-selection
+      neighbor DC1_RR activate
+      neighbor default next-hop-self received-evpn-routes route-type ip-prefix inter-domain
+```
+
+1. Notice the gateway VXLAN
+
+!!! warning
+
+    TODO: Add a drawing.
+
+    TOI: https://www.arista.com/en/support/toi/eos-4-32-2f/20422-l3-evpn-dci-gateway-using-dps-interconnect
 
 #### OSPF LAN (NOT SUPPORTED)
 

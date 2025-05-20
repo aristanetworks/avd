@@ -30,10 +30,6 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyAVTRoleInputFactory,
     ),
     TestSpec(
-        test_class=VerifyBFDPeersHealth,
-        conditional_keys=[StructuredConfigKey.ROUTER_BFD],
-    ),
-    TestSpec(
         test_class=VerifyBGPPeerSession,
         conditional_keys=[StructuredConfigKey.ROUTER_BGP],
         input_factory=VerifyBGPPeerSessionInputFactory,
@@ -126,6 +122,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     ),
     TestSpec(
         test_class=VerifyReloadCause,
+        input_factory=VerifyReloadCauseInputFactory,
     ),
     TestSpec(
         test_class=VerifyRoutingProtocolModel,

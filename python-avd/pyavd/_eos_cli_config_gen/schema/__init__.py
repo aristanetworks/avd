@@ -58781,6 +58781,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         RapidPvstInstances._item_type = RapidPvstInstancesItem
 
+        class PortIdAllocationPortChannelRange(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"minimum": {"type": int}, "maximum": {"type": int}}
+            minimum: int
+            """Specify minimum value for reserved range."""
+            maximum: int
+            """Specify maximum value for reserved range."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, minimum: int | UndefinedType = Undefined, maximum: int | UndefinedType = Undefined) -> None:
+                    """
+                    PortIdAllocationPortChannelRange.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        minimum: Specify minimum value for reserved range.
+                        maximum: Specify maximum value for reserved range.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "root_super": {"type": bool},
             "edge_port": {"type": EdgePort},
@@ -58791,6 +58815,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "mst_instances": {"type": MstInstances},
             "no_spanning_tree_vlan": {"type": str},
             "rapid_pvst_instances": {"type": RapidPvstInstances},
+            "port_id_allocation_port_channel_range": {"type": PortIdAllocationPortChannelRange},
         }
         root_super: bool | None
         edge_port: EdgePort
@@ -58810,6 +58835,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         rapid_pvst_instances: RapidPvstInstances
         """Subclass of AvdIndexedList with `RapidPvstInstancesItem` items. Primary key is `id` (`str`)."""
+        port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange
+        """
+        Specify range of port-ids to reserve for port-channels.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -58825,6 +58856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 mst_instances: MstInstances | UndefinedType = Undefined,
                 no_spanning_tree_vlan: str | None | UndefinedType = Undefined,
                 rapid_pvst_instances: RapidPvstInstances | UndefinedType = Undefined,
+                port_id_allocation_port_channel_range: PortIdAllocationPortChannelRange | UndefinedType = Undefined,
             ) -> None:
                 """
                 SpanningTree.
@@ -58844,6 +58876,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        "< vlan_id >, < vlan_id >-< vlan_id >"
                        Example: 105,202,505-506
                     rapid_pvst_instances: Subclass of AvdIndexedList with `RapidPvstInstancesItem` items. Primary key is `id` (`str`).
+                    port_id_allocation_port_channel_range:
+                       Specify range of port-ids to reserve for port-channels.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -64536,6 +64572,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "ip_tftp_client_source_interfaces": {"type": IpTftpClientSourceInterfaces},
         "ip_virtual_router_mac_address": {"type": str},
         "ip_virtual_router_mac_address_advertisement_interval": {"type": int},
+        "ip_virtual_router_mac_address_mlag_peer": {"type": bool},
         "ipv6_access_lists": {"type": Ipv6AccessLists},
         "ipv6_dhcp_relay": {"type": Ipv6DhcpRelay},
         "ipv6_hardware": {"type": Ipv6Hardware},
@@ -64923,6 +64960,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """MAC address (hh:hh:hh:hh:hh:hh)."""
     ip_virtual_router_mac_address_advertisement_interval: int | None
     """Advertisement interval in seconds."""
+    ip_virtual_router_mac_address_mlag_peer: bool | None
+    """Enable MLAG peer gateway."""
     ipv6_access_lists: Ipv6AccessLists
     """Subclass of AvdIndexedList with `Ipv6AccessListsItem` items. Primary key is `name` (`str`)."""
     ipv6_dhcp_relay: Ipv6DhcpRelay
@@ -65294,6 +65333,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             ip_tftp_client_source_interfaces: IpTftpClientSourceInterfaces | UndefinedType = Undefined,
             ip_virtual_router_mac_address: str | None | UndefinedType = Undefined,
             ip_virtual_router_mac_address_advertisement_interval: int | None | UndefinedType = Undefined,
+            ip_virtual_router_mac_address_mlag_peer: bool | None | UndefinedType = Undefined,
             ipv6_access_lists: Ipv6AccessLists | UndefinedType = Undefined,
             ipv6_dhcp_relay: Ipv6DhcpRelay | UndefinedType = Undefined,
             ipv6_hardware: Ipv6Hardware | UndefinedType = Undefined,
@@ -65594,6 +65634,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_tftp_client_source_interfaces: Subclass of AvdList with `IpTftpClientSourceInterfacesItem` items.
                 ip_virtual_router_mac_address: MAC address (hh:hh:hh:hh:hh:hh).
                 ip_virtual_router_mac_address_advertisement_interval: Advertisement interval in seconds.
+                ip_virtual_router_mac_address_mlag_peer: Enable MLAG peer gateway.
                 ipv6_access_lists: Subclass of AvdIndexedList with `Ipv6AccessListsItem` items. Primary key is `name` (`str`).
                 ipv6_dhcp_relay: Subclass of AvdModel.
                 ipv6_hardware: Subclass of AvdModel.

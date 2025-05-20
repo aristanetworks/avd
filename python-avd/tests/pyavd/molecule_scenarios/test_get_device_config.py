@@ -31,13 +31,12 @@ from tests.models import MoleculeHost
 )
 def test_get_device_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_config."""
-    # Loading inputs first and then updating structured config on top.
-    # This is how Ansible behaves, so we need this to generate the same configs.
-    # The underlying cause is eos_cli_config_gen inputs being set in eos_designs molecule vars,
-    #   which are then _not_ included in the structured_config, hence lost unless we include the
-    #   inputs as well.
-    structured_config: dict = deepcopy(molecule_host.hostvars)
-    structured_config.update(deepcopy(molecule_host.structured_config))
+    # For eos_designs scenarios, only load structured config, so this will fail if any inputs are not covered by eos_designs schemas.
+    if molecule_host.scenario.name.startswith("eos_cli_config_gen"):
+        structured_config = deepcopy(molecule_host.hostvars)
+    else:
+        structured_config = deepcopy(molecule_host.structured_config)
+
     expected_config = molecule_host.config
 
     if not get(structured_config, "eos_cli_config_gen_configuration.enable", default=True):

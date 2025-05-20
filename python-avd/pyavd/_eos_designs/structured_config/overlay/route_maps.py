@@ -37,7 +37,7 @@ class RouteMapsMixin(Protocol):
                 self.structured_config.route_maps.append(route_maps_item)
 
         if (
-            self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_vtep and self.shared_utils.evpn_role != "server"
+            self.shared_utils.overlay_routing_protocol == "ibgp" and self.shared_utils.overlay_vtep and self.shared_utils.evpn_role == "client"
         ) or self.shared_utils.is_wan_client:
             # Route-map IN and OUT for SOO
 

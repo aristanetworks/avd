@@ -3362,6 +3362,7 @@ STP mode: **rapid-pvst**
 - Spanning Tree disabled for VLANs: **105,202,505-506**
 - Global BPDU Guard for Edge ports is disabled.
 - Global BPDU Filter for Edge ports is disabled.
+- Range of port-ids reserved for port-channels: 201-2001.
 
 ### Spanning Tree Device Configuration
 
@@ -3373,6 +3374,7 @@ no spanning-tree edge-port bpduguard default
 no spanning-tree edge-port bpdufilter default
 spanning-tree bpduguard rate-limit default
 spanning-tree bpduguard rate-limit count 100
+spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
@@ -6806,6 +6808,7 @@ service routing protocols model multi-agent
 
 Virtual Router MAC Address: 00:1c:73:00:dc:01
 Virtual Router MAC Address Advertisement Interval: 40
+Virtual Router MAC Address MLAG Peer: Enabled
 
 #### Virtual Router MAC Address Device Configuration
 
@@ -6813,6 +6816,8 @@ Virtual Router MAC Address Advertisement Interval: 40
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ip virtual-router mac-address advertisement-interval 40
+!
+ip virtual-router mac-address mlag-peer
 ```
 
 ### IP Routing

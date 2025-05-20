@@ -13202,6 +13202,67 @@ class EosDesigns(EosDesignsRootModel):
 
             IpHelpers._item_type = IpHelpersItem
 
+            class StaticRoutesItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "prefix": {"type": str},
+                    "next_hop": {"type": str},
+                    "track_bfd": {"type": bool},
+                    "distance": {"type": int},
+                    "tag": {"type": int},
+                    "name": {"type": str},
+                    "metric": {"type": int},
+                    "interface": {"type": str},
+                }
+                prefix: str | None
+                next_hop: str | None
+                track_bfd: bool | None
+                """Track next-hop using BFD."""
+                distance: int | None
+                tag: int | None
+                name: str | None
+                """description."""
+                metric: int | None
+                interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        prefix: str | None | UndefinedType = Undefined,
+                        next_hop: str | None | UndefinedType = Undefined,
+                        track_bfd: bool | None | UndefinedType = Undefined,
+                        distance: int | None | UndefinedType = Undefined,
+                        tag: int | None | UndefinedType = Undefined,
+                        name: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        StaticRoutesItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            prefix: prefix
+                            next_hop: next_hop
+                            track_bfd: Track next-hop using BFD.
+                            distance: distance
+                            tag: tag
+                            name: description.
+                            metric: metric
+                            interface: interface
+
+                        """
+
+            class StaticRoutes(AvdList[StaticRoutesItem]):
+                """Subclass of AvdList with `StaticRoutesItem` items."""
+
+            StaticRoutes._item_type = StaticRoutesItem
+
             class TrunkGroups(AvdList[str]):
                 """Subclass of AvdList with `str` items."""
 
@@ -13461,6 +13522,7 @@ class EosDesigns(EosDesignsRootModel):
                 "ipv4_acl_in": {"type": str},
                 "ipv4_acl_out": {"type": str},
                 "ip_helpers": {"type": IpHelpers},
+                "static_routes": {"type": StaticRoutes},
                 "vni_override": {"type": int},
                 "rt_override": {"type": str},
                 "rd_override": {"type": str},
@@ -13556,6 +13618,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
             `ip_helper` (`str`).
+            """
+            static_routes: StaticRoutes
+            """
+            Static routes to be configured on every device where the SVI is configured.
+
+            Subclass of AvdList
+            with `StaticRoutesItem` items.
             """
             vni_override: int | None
             """
@@ -13676,6 +13745,7 @@ class EosDesigns(EosDesignsRootModel):
                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                     ip_helpers: IpHelpers | UndefinedType = Undefined,
+                    static_routes: StaticRoutes | UndefinedType = Undefined,
                     vni_override: int | None | UndefinedType = Undefined,
                     rt_override: str | None | UndefinedType = Undefined,
                     rd_override: str | None | UndefinedType = Undefined,
@@ -13756,6 +13826,11 @@ class EosDesigns(EosDesignsRootModel):
 
                            Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
                            `ip_helper` (`str`).
+                        static_routes:
+                           Static routes to be configured on every device where the SVI is configured.
+
+                           Subclass of AvdList
+                           with `StaticRoutesItem` items.
                         vni_override:
                            By default the VNI will be derived from "mac_vrf_vni_base".
                            The vni_override allows us to override
@@ -13895,6 +13970,67 @@ class EosDesigns(EosDesignsRootModel):
             _primary_key: ClassVar[str] = "ip_helper"
 
         IpHelpers._item_type = IpHelpersItem
+
+        class StaticRoutesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "prefix": {"type": str},
+                "next_hop": {"type": str},
+                "track_bfd": {"type": bool},
+                "distance": {"type": int},
+                "tag": {"type": int},
+                "name": {"type": str},
+                "metric": {"type": int},
+                "interface": {"type": str},
+            }
+            prefix: str | None
+            next_hop: str | None
+            track_bfd: bool | None
+            """Track next-hop using BFD."""
+            distance: int | None
+            tag: int | None
+            name: str | None
+            """description."""
+            metric: int | None
+            interface: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    prefix: str | None | UndefinedType = Undefined,
+                    next_hop: str | None | UndefinedType = Undefined,
+                    track_bfd: bool | None | UndefinedType = Undefined,
+                    distance: int | None | UndefinedType = Undefined,
+                    tag: int | None | UndefinedType = Undefined,
+                    name: str | None | UndefinedType = Undefined,
+                    metric: int | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    StaticRoutesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        prefix: prefix
+                        next_hop: next_hop
+                        track_bfd: Track next-hop using BFD.
+                        distance: distance
+                        tag: tag
+                        name: description.
+                        metric: metric
+                        interface: interface
+
+                    """
+
+        class StaticRoutes(AvdList[StaticRoutesItem]):
+            """Subclass of AvdList with `StaticRoutesItem` items."""
+
+        StaticRoutes._item_type = StaticRoutesItem
 
         class TrunkGroups(AvdList[str]):
             """Subclass of AvdList with `str` items."""
@@ -14157,6 +14293,7 @@ class EosDesigns(EosDesignsRootModel):
             "ipv4_acl_in": {"type": str},
             "ipv4_acl_out": {"type": str},
             "ip_helpers": {"type": IpHelpers},
+            "static_routes": {"type": StaticRoutes},
             "vni_override": {"type": int},
             "rt_override": {"type": str},
             "rd_override": {"type": str},
@@ -14268,6 +14405,13 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
         `ip_helper` (`str`).
+        """
+        static_routes: StaticRoutes
+        """
+        Static routes to be configured on every device where the SVI is configured.
+
+        Subclass of AvdList
+        with `StaticRoutesItem` items.
         """
         vni_override: int | None
         """
@@ -14390,6 +14534,7 @@ class EosDesigns(EosDesignsRootModel):
                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
+                static_routes: StaticRoutes | UndefinedType = Undefined,
                 vni_override: int | None | UndefinedType = Undefined,
                 rt_override: str | None | UndefinedType = Undefined,
                 rd_override: str | None | UndefinedType = Undefined,
@@ -14482,6 +14627,11 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
                        `ip_helper` (`str`).
+                    static_routes:
+                       Static routes to be configured on every device where the SVI is configured.
+
+                       Subclass of AvdList
+                       with `StaticRoutesItem` items.
                     vni_override:
                        By default the VNI will be derived from "mac_vrf_vni_base".
                        The vni_override allows us to override
@@ -15706,6 +15856,8 @@ class EosDesigns(EosDesignsRootModel):
                 "dscp": {"type": int},
                 "lowest_hop_count": {"type": bool},
                 "constraints": {"type": Constraints},
+                "outlier_elimination": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination},
+                "metric_order": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder},
                 "path_groups": {"type": PathGroups},
                 "internet_exit": {"type": InternetExit},
             }
@@ -15737,6 +15889,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             constraints: Constraints
             """Subclass of AvdModel."""
+            outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination
+            """AVT path outlier elimination."""
+            metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder
+            """Metric order to be used for path comparison."""
             path_groups: PathGroups
             """Subclass of AvdList with `PathGroupsItem` items."""
             internet_exit: InternetExit
@@ -15753,6 +15909,8 @@ class EosDesigns(EosDesignsRootModel):
                     dscp: int | None | UndefinedType = Undefined,
                     lowest_hop_count: bool | None | UndefinedType = Undefined,
                     constraints: Constraints | UndefinedType = Undefined,
+                    outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination | UndefinedType = Undefined,
+                    metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder | UndefinedType = Undefined,
                     path_groups: PathGroups | UndefinedType = Undefined,
                     internet_exit: InternetExit | UndefinedType = Undefined,
                 ) -> None:
@@ -15781,6 +15939,8 @@ class EosDesigns(EosDesignsRootModel):
                            Prefer paths with lowest hop-count.
                            Only applicable for `wan_mode: "cv-pathfinder"`.
                         constraints: Subclass of AvdModel.
+                        outlier_elimination: AVT path outlier elimination.
+                        metric_order: Metric order to be used for path comparison.
                         path_groups: Subclass of AvdList with `PathGroupsItem` items.
                         internet_exit: Subclass of AvdModel.
 
@@ -15926,6 +16086,8 @@ class EosDesigns(EosDesignsRootModel):
                     "dscp": {"type": int},
                     "lowest_hop_count": {"type": bool},
                     "constraints": {"type": Constraints},
+                    "outlier_elimination": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination},
+                    "metric_order": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder},
                     "path_groups": {"type": PathGroups},
                     "internet_exit": {"type": InternetExit},
                 }
@@ -15955,6 +16117,10 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 constraints: Constraints
                 """Subclass of AvdModel."""
+                outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination
+                """AVT path outlier elimination."""
+                metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder
+                """Metric order to be used for path comparison."""
                 path_groups: PathGroups
                 """Subclass of AvdList with `PathGroupsItem` items."""
                 internet_exit: InternetExit
@@ -15972,6 +16138,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: int | None | UndefinedType = Undefined,
                         lowest_hop_count: bool | None | UndefinedType = Undefined,
                         constraints: Constraints | UndefinedType = Undefined,
+                        outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination | UndefinedType = Undefined,
+                        metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder | UndefinedType = Undefined,
                         path_groups: PathGroups | UndefinedType = Undefined,
                         internet_exit: InternetExit | UndefinedType = Undefined,
                     ) -> None:
@@ -15998,6 +16166,8 @@ class EosDesigns(EosDesignsRootModel):
                                Prefer paths with lowest hop-count.
                                Only applicable for `wan_mode: "cv-pathfinder"`.
                             constraints: Subclass of AvdModel.
+                            outlier_elimination: AVT path outlier elimination.
+                            metric_order: Metric order to be used for path comparison.
                             path_groups: Subclass of AvdList with `PathGroupsItem` items.
                             internet_exit: Subclass of AvdModel.
 
@@ -16149,6 +16319,8 @@ class EosDesigns(EosDesignsRootModel):
                     "dscp": {"type": int},
                     "lowest_hop_count": {"type": bool},
                     "constraints": {"type": Constraints},
+                    "outlier_elimination": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination},
+                    "metric_order": {"type": EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder},
                     "path_groups": {"type": PathGroups},
                     "internet_exit": {"type": InternetExit},
                 }
@@ -16171,6 +16343,10 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 constraints: Constraints
                 """Subclass of AvdModel."""
+                outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination
+                """AVT path outlier elimination."""
+                metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder
+                """Metric order to be used for path comparison."""
                 path_groups: PathGroups
                 """Subclass of AvdList with `PathGroupsItem` items."""
                 internet_exit: InternetExit
@@ -16187,6 +16363,8 @@ class EosDesigns(EosDesignsRootModel):
                         dscp: int | None | UndefinedType = Undefined,
                         lowest_hop_count: bool | None | UndefinedType = Undefined,
                         constraints: Constraints | UndefinedType = Undefined,
+                        outlier_elimination: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.OutlierElimination | UndefinedType = Undefined,
+                        metric_order: EosCliConfigGen.RouterAdaptiveVirtualTopology.ProfilesItem.MetricOrder | UndefinedType = Undefined,
                         path_groups: PathGroups | UndefinedType = Undefined,
                         internet_exit: InternetExit | UndefinedType = Undefined,
                     ) -> None:
@@ -16205,6 +16383,8 @@ class EosDesigns(EosDesignsRootModel):
                                Prefer paths with lowest hop-count.
                                Only applicable for `wan_mode: "cv-pathfinder"`.
                             constraints: Subclass of AvdModel.
+                            outlier_elimination: AVT path outlier elimination.
+                            metric_order: Metric order to be used for path comparison.
                             path_groups: Subclass of AvdList with `PathGroupsItem` items.
                             internet_exit: Subclass of AvdModel.
 
@@ -36286,6 +36466,67 @@ class EosDesigns(EosDesignsRootModel):
 
                             IpHelpers._item_type = IpHelpersItem
 
+                            class StaticRoutesItem(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {
+                                    "prefix": {"type": str},
+                                    "next_hop": {"type": str},
+                                    "track_bfd": {"type": bool},
+                                    "distance": {"type": int},
+                                    "tag": {"type": int},
+                                    "name": {"type": str},
+                                    "metric": {"type": int},
+                                    "interface": {"type": str},
+                                }
+                                prefix: str | None
+                                next_hop: str | None
+                                track_bfd: bool | None
+                                """Track next-hop using BFD."""
+                                distance: int | None
+                                tag: int | None
+                                name: str | None
+                                """description."""
+                                metric: int | None
+                                interface: str | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        prefix: str | None | UndefinedType = Undefined,
+                                        next_hop: str | None | UndefinedType = Undefined,
+                                        track_bfd: bool | None | UndefinedType = Undefined,
+                                        distance: int | None | UndefinedType = Undefined,
+                                        tag: int | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        metric: int | None | UndefinedType = Undefined,
+                                        interface: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        StaticRoutesItem.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            prefix: prefix
+                                            next_hop: next_hop
+                                            track_bfd: Track next-hop using BFD.
+                                            distance: distance
+                                            tag: tag
+                                            name: description.
+                                            metric: metric
+                                            interface: interface
+
+                                        """
+
+                            class StaticRoutes(AvdList[StaticRoutesItem]):
+                                """Subclass of AvdList with `StaticRoutesItem` items."""
+
+                            StaticRoutes._item_type = StaticRoutesItem
+
                             class TrunkGroups(AvdList[str]):
                                 """Subclass of AvdList with `str` items."""
 
@@ -36554,6 +36795,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "ipv4_acl_in": {"type": str},
                                 "ipv4_acl_out": {"type": str},
                                 "ip_helpers": {"type": IpHelpers},
+                                "static_routes": {"type": StaticRoutes},
                                 "vni_override": {"type": int},
                                 "rt_override": {"type": str},
                                 "rd_override": {"type": str},
@@ -36659,6 +36901,13 @@ class EosDesigns(EosDesignsRootModel):
 
                             Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
                             `ip_helper` (`str`).
+                            """
+                            static_routes: StaticRoutes
+                            """
+                            Static routes to be configured on every device where the SVI is configured.
+
+                            Subclass of AvdList
+                            with `StaticRoutesItem` items.
                             """
                             vni_override: int | None
                             """
@@ -36780,6 +37029,7 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_in: str | None | UndefinedType = Undefined,
                                     ipv4_acl_out: str | None | UndefinedType = Undefined,
                                     ip_helpers: IpHelpers | UndefinedType = Undefined,
+                                    static_routes: StaticRoutes | UndefinedType = Undefined,
                                     vni_override: int | None | UndefinedType = Undefined,
                                     rt_override: str | None | UndefinedType = Undefined,
                                     rd_override: str | None | UndefinedType = Undefined,
@@ -36866,6 +37116,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                            Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
                                            `ip_helper` (`str`).
+                                        static_routes:
+                                           Static routes to be configured on every device where the SVI is configured.
+
+                                           Subclass of AvdList
+                                           with `StaticRoutesItem` items.
                                         vni_override:
                                            By default the VNI will be derived from "mac_vrf_vni_base".
                                            The vni_override allows us to override
@@ -37005,6 +37260,67 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "ip_helper"
 
                         IpHelpers._item_type = IpHelpersItem
+
+                        class StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class StaticRoutes(AvdList[StaticRoutesItem]):
+                            """Subclass of AvdList with `StaticRoutesItem` items."""
+
+                        StaticRoutes._item_type = StaticRoutesItem
 
                         class TrunkGroups(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
@@ -37274,6 +37590,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
                             "ip_helpers": {"type": IpHelpers},
+                            "static_routes": {"type": StaticRoutes},
                             "vni_override": {"type": int},
                             "rt_override": {"type": str},
                             "rd_override": {"type": str},
@@ -37404,6 +37721,13 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
                         `ip_helper` (`str`).
                         """
+                        static_routes: StaticRoutes
+                        """
+                        Static routes to be configured on every device where the SVI is configured.
+
+                        Subclass of AvdList
+                        with `StaticRoutesItem` items.
+                        """
                         vni_override: int | None
                         """
                         By default the VNI will be derived from "mac_vrf_vni_base".
@@ -37527,6 +37851,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
                                 ip_helpers: IpHelpers | UndefinedType = Undefined,
+                                static_routes: StaticRoutes | UndefinedType = Undefined,
                                 vni_override: int | None | UndefinedType = Undefined,
                                 rt_override: str | None | UndefinedType = Undefined,
                                 rd_override: str | None | UndefinedType = Undefined,
@@ -37631,6 +37956,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdIndexedList with `IpHelpersItem` items. Primary key is
                                        `ip_helper` (`str`).
+                                    static_routes:
+                                       Static routes to be configured on every device where the SVI is configured.
+
+                                       Subclass of AvdList
+                                       with `StaticRoutesItem` items.
                                     vni_override:
                                        By default the VNI will be derived from "mac_vrf_vni_base".
                                        The vni_override allows us to override
@@ -38509,8 +38839,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
-                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "nodes": {"type": Nodes},
+                            "prefix": {"type": str},
                             "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
@@ -38518,16 +38849,15 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "metric": {"type": int},
                             "interface": {"type": str},
-                            "nodes": {"type": Nodes},
                         }
                         destination_address_prefix: str | None
                         """IPv4_address."""
-                        prefix: str | None
-                        """Destination prefix."""
                         gateway: str | None
                         """IPv4_address."""
+                        nodes: Nodes
+                        """Subclass of AvdList with `str` items."""
+                        prefix: str | None
                         next_hop: str | None
-                        """Next-hop IPv4 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -38536,8 +38866,6 @@ class EosDesigns(EosDesignsRootModel):
                         """description."""
                         metric: int | None
                         interface: str | None
-                        nodes: Nodes
-                        """Subclass of AvdList with `str` items."""
 
                         if TYPE_CHECKING:
 
@@ -38545,8 +38873,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
-                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                nodes: Nodes | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
@@ -38554,7 +38883,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | None | UndefinedType = Undefined,
                                 metric: int | None | UndefinedType = Undefined,
                                 interface: str | None | UndefinedType = Undefined,
-                                nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 StaticRoutesItem.
@@ -38564,16 +38892,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv4_address.
-                                    prefix: Destination prefix.
                                     gateway: IPv4_address.
-                                    next_hop: Next-hop IPv4 address.
+                                    nodes: Subclass of AvdList with `str` items.
+                                    prefix: prefix
+                                    next_hop: next_hop
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
                                     name: description.
                                     metric: metric
                                     interface: interface
-                                    nodes: Subclass of AvdList with `str` items.
 
                                 """
 
@@ -38592,8 +38920,9 @@ class EosDesigns(EosDesignsRootModel):
 
                         _fields: ClassVar[dict] = {
                             "destination_address_prefix": {"type": str},
-                            "prefix": {"type": str},
                             "gateway": {"type": str},
+                            "nodes": {"type": Nodes},
+                            "prefix": {"type": str},
                             "next_hop": {"type": str},
                             "track_bfd": {"type": bool},
                             "distance": {"type": int},
@@ -38601,15 +38930,14 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "metric": {"type": int},
                             "interface": {"type": str},
-                            "nodes": {"type": Nodes},
                         }
                         destination_address_prefix: str | None
                         """IPv6_address."""
-                        prefix: str | None
-                        """Destination prefix."""
                         gateway: str | None
+                        nodes: Nodes
+                        """Subclass of AvdList with `str` items."""
+                        prefix: str | None
                         next_hop: str | None
-                        """Next-hop IPv6 address."""
                         track_bfd: bool | None
                         """Track next-hop using BFD."""
                         distance: int | None
@@ -38618,8 +38946,6 @@ class EosDesigns(EosDesignsRootModel):
                         """description."""
                         metric: int | None
                         interface: str | None
-                        nodes: Nodes
-                        """Subclass of AvdList with `str` items."""
 
                         if TYPE_CHECKING:
 
@@ -38627,8 +38953,9 @@ class EosDesigns(EosDesignsRootModel):
                                 self,
                                 *,
                                 destination_address_prefix: str | None | UndefinedType = Undefined,
-                                prefix: str | None | UndefinedType = Undefined,
                                 gateway: str | None | UndefinedType = Undefined,
+                                nodes: Nodes | UndefinedType = Undefined,
+                                prefix: str | None | UndefinedType = Undefined,
                                 next_hop: str | None | UndefinedType = Undefined,
                                 track_bfd: bool | None | UndefinedType = Undefined,
                                 distance: int | None | UndefinedType = Undefined,
@@ -38636,7 +38963,6 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | None | UndefinedType = Undefined,
                                 metric: int | None | UndefinedType = Undefined,
                                 interface: str | None | UndefinedType = Undefined,
-                                nodes: Nodes | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ipv6StaticRoutesItem.
@@ -38646,16 +38972,16 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     destination_address_prefix: IPv6_address.
-                                    prefix: Destination prefix.
                                     gateway: gateway
-                                    next_hop: Next-hop IPv6 address.
+                                    nodes: Subclass of AvdList with `str` items.
+                                    prefix: prefix
+                                    next_hop: next_hop
                                     track_bfd: Track next-hop using BFD.
                                     distance: distance
                                     tag: tag
                                     name: description.
                                     metric: metric
                                     interface: interface
-                                    nodes: Subclass of AvdList with `str` items.
 
                                 """
 
@@ -40679,13 +41005,64 @@ class EosDesigns(EosDesignsRootModel):
                     class SubinterfacesItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"number": {"type": int}}
+                        class PortChannel(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem}, "raw_eos_cli": {"type": str}}
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen."""
+                            raw_eos_cli: str | None
+                            """EOS cli commands rendered on the Port-Channel subinterface."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PortChannel.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        structured_config: Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                                        raw_eos_cli: EOS cli commands rendered on the Port-Channel subinterface.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "number": {"type": int},
+                            "port_channel": {"type": PortChannel},
+                            "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                            "raw_eos_cli": {"type": str},
+                        }
                         number: int
                         """Subinterface number."""
+                        port_channel: PortChannel
+                        """
+                        Settings to be applied to the Port-Channel subinterface.
+
+                        Subclass of AvdModel.
+                        """
+                        structured_config: EosCliConfigGen.EthernetInterfacesItem
+                        """Custom structured config added on the Ethernet subinterface for eos_cli_config_gen."""
+                        raw_eos_cli: str | None
+                        """EOS cli commands rendered on the Ethernet subinterface."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, number: int | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                number: int | UndefinedType = Undefined,
+                                port_channel: PortChannel | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 SubinterfacesItem.
 
@@ -40694,6 +41071,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     number: Subinterface number.
+                                    port_channel:
+                                       Settings to be applied to the Port-Channel subinterface.
+
+                                       Subclass of AvdModel.
+                                    structured_config: Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                                    raw_eos_cli: EOS cli commands rendered on the Ethernet subinterface.
 
                                 """
 
