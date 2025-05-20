@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
@@ -25,6 +25,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _evpn_route_clients(self: AvdStructuredConfigOverlayProtocol) -> dict[str, dict[str, str | None]]:
+        # TODO: unable to add a test for this condition. Either test dont reach to this condition or if reach then overlay_evpn is always true
         if not self.shared_utils.overlay_evpn:
             return {}
 
@@ -46,6 +47,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _evpn_route_servers(self: AvdStructuredConfigOverlayProtocol) -> dict[str, dict[str, str | None]]:
+        # TODO: unable to add a test for this condition. Either test dont reach to this condition or if reach then overlay_evpn is always true
         if not self.shared_utils.overlay_evpn:
             return {}
 
@@ -103,6 +105,7 @@ class UtilsMixin(Protocol):
         }.
         """
         bgp_as = peer_facts.bgp_as
+        # TODO: unable to add a test for this condition. Either test dont reach to this condition or if reach then always have overlay peering address
         if not (ip_address := peer_facts.overlay.peering_address):
             msg = f"switch.overlay.peering_address for {peer_name} is required."
             raise AristaAvdInvalidInputsError(msg)
@@ -141,10 +144,3 @@ class UtilsMixin(Protocol):
                     for interface in path_group.interfaces
                 )
         return stun_server_profiles
-
-    def _wan_ha_peer_vtep_ip(self: AvdStructuredConfigOverlayProtocol) -> str:
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer)
-        if not peer_facts.vtep_ip:
-            msg = f"'vtep_ip' for host {self.shared_utils.wan_ha_peer}"
-            raise AristaAvdMissingVariableError(msg)
-        return peer_facts.vtep_ip
