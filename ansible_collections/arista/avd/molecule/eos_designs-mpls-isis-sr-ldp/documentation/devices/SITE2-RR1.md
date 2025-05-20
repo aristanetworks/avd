@@ -407,8 +407,8 @@ ASN Notation: asplain
 | 100.70.0.6 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
 | 100.70.0.7 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - |
 | 100.70.0.8 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
-| 100.70.0.11 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
 | 100.70.0.12 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
+| 100.70.0.13 | Inherited from peer group RR-OVERLAY-PEERS | default | - | Inherited from peer group RR-OVERLAY-PEERS | Inherited from peer group RR-OVERLAY-PEERS | - | Inherited from peer group RR-OVERLAY-PEERS | - | - | - | - |
 
 #### Router BGP EVPN Address Family
 
@@ -478,10 +478,10 @@ router bgp 65000
    neighbor 100.70.0.7 description SITE2-LER1_Loopback0
    neighbor 100.70.0.8 peer group RR-OVERLAY-PEERS
    neighbor 100.70.0.8 description SITE1-RR1_Loopback0
-   neighbor 100.70.0.11 peer group RR-OVERLAY-PEERS
-   neighbor 100.70.0.11 description SITE1-LER3_Loopback0
    neighbor 100.70.0.12 peer group RR-OVERLAY-PEERS
    neighbor 100.70.0.12 description SITE3-RR1_Loopback0
+   neighbor 100.70.0.13 peer group RR-OVERLAY-PEERS
+   neighbor 100.70.0.13 description SITE4-RR1_Loopback0
    !
    address-family evpn
       neighbor default encapsulation mpls

@@ -327,10 +327,6 @@ router_bgp:
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE1-LER1
     description: SITE1-LER1_Loopback0
-  - ip_address: 100.70.0.11
-    peer_group: MPLS-OVERLAY-PEERS
-    peer: SITE1-LER3
-    description: SITE1-LER3_Loopback0
   - ip_address: 100.70.0.1
     peer_group: MPLS-OVERLAY-PEERS
     peer: SITE1-LSR1

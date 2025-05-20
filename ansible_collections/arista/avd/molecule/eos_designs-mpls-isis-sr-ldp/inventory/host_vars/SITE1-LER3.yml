@@ -1,4 +1,0 @@
-# Test when overlay_mpls is false
-evpn_overlay_bgp_rtc: true
-
-fabric_evpn_encapsulation: vxlan
