@@ -86,7 +86,6 @@ tenant_c:
               rcf_out: TEST_RCF_OUT()
             nodes: [ DC1-BL2B ]
             update_source: lo0
-            bfd: false
             ebgp_multihop: 3
             route_map_out: TEST_OUT
             route_map_in: TEST_IN
@@ -97,6 +96,11 @@ tenant_c:
             description: test_description
             nodes: [ DC1-BL2B ]
             set_ipv4_next_hop: 1.1.1.1
+            bfd: true
+            bfd_timers:
+              interval: 100
+              min_rx: 100
+              multiplier: 3
           - ip_address: BEBA::C0CA:C07A
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
             nodes: [ DC1-BL2B ]

@@ -7519,6 +7519,9 @@ $defs:
                       type: str
                       description: BGP Keepalive and Hold Timer values in seconds
                         as string <0-3600> <0-3600>.
+                    bfd_timers:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers
                     maximum_routes:
                       type: int
                       convert_types:
