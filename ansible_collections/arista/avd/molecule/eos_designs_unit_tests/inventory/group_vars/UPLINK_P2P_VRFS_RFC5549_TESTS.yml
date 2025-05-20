@@ -1,9 +1,7 @@
 ---
-# TODO: Add tests for rfc5549, overlay_routing_protocol: none with bgp peers etc under network services (since this uplink type expands bgp support there)
 overlay_routing_protocol: none
 underlay_rfc5549: true
 node_type_keys:
-  # modify spine to get l3 network_services
   - key: spine
     type: spine
     default_evpn_role: server
