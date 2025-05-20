@@ -7,11 +7,11 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>ip_virtual_router_mac_address_mlag_peer</samp>](## "ip_virtual_router_mac_address_mlag_peer") | Boolean |  |  |  | Enable/Disable MLAG peer gateway. |
+    | [<samp>ip_virtual_router_mac_address_mlag_peer</samp>](## "ip_virtual_router_mac_address_mlag_peer") | Boolean |  |  |  | Enable MLAG peer gateway. |
 
 === "YAML"
 
     ```yaml
-    # Enable/Disable MLAG peer gateway.
+    # Enable MLAG peer gateway.
     ip_virtual_router_mac_address_mlag_peer: <bool>
     ```

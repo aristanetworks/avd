@@ -6376,7 +6376,7 @@ keys:
     max: 86400
   ip_virtual_router_mac_address_mlag_peer:
     type: bool
-    description: Enable/Disable MLAG peer gateway.
+    description: Enable MLAG peer gateway.
   ipv6_access_lists:
     type: list
     primary_key: name
