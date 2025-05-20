@@ -215,7 +215,12 @@ network_ports:
         # Ethernet22 was inserted before 23, so even though we overwrite 22 here,
         # it is still rendered first, so the 23 variant of structured config "wins"
         description: This will not be rendered since it is overwritten by "Range" coming from the Eth22-23 range.
-
+  - switches:
+      - network-ports-tests.1
+    switch_ports:
+      - Ethernet25
+    description: Add all vlans
+    vlans: 1-4094
 # Overwriting one interface from a range to ensure that we don't reuse objects in memory across multiple interfaces.
 # We should only see updates for this interface.
 custom_structured_configuration_ethernet_interfaces:

@@ -236,8 +236,7 @@ class PortChannelInterfacesMixin(Protocol):
 
                     for subif in point_to_point_service.subinterfaces:
                         subif_name = f"{interface_name}.{subif.number}"
-
-                        self.structured_config.port_channel_interfaces.append_new(
+                        interface = EosCliConfigGen.PortChannelInterfacesItem(
                             name=subif_name,
                             peer_type="point_to_point_service",
                             shutdown=False,
@@ -246,6 +245,15 @@ class PortChannelInterfacesMixin(Protocol):
                                 network=EosCliConfigGen.PortChannelInterfacesItem.EncapsulationVlan.Network(encapsulation="client"),
                             ),
                         )
+                        if subif.port_channel.raw_eos_cli:
+                            interface.eos_cli = subif.port_channel.raw_eos_cli
+
+                        if subif.port_channel.structured_config:
+                            self.custom_structured_configs.nested.port_channel_interfaces.obtain(subif_name)._deepmerge(
+                                subif.port_channel.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
+                            )
+
+                        self.structured_config.port_channel_interfaces.append(interface)
 
                 else:
                     port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
