@@ -25,5 +25,10 @@ path = "../../rust/validation/Cargo.toml"
 binding = "PyO3"
 features = ["python_bindings"]
 
+[[tool.setuptools-rust.ext-modules]]
+target = "avdutils.passwords"
+path = "../../rust/passwords/Cargo.toml"
+binding = "PyO3"
+
 [tool.pytest.ini_options]
 testpaths = "tests"

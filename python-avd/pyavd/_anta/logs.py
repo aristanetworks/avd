@@ -94,5 +94,3 @@ class LogMessage(Enum):
     INPUT_NONE_FOUND = "skipped - No inputs available"
     INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
     INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"
-    INPUT_RENDERING = "rendering inputs with {mode}"
-    INPUT_RENDERED = "rendered input dict: {inputs}"

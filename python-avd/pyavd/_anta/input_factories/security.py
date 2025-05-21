@@ -6,12 +6,26 @@ from __future__ import annotations
 from ipaddress import ip_interface
 
 from anta.input_models.security import IPSecPeer
-from anta.tests.security import VerifySpecificIPSecConn
+from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
+
+
+class VerifyAPIHttpsSSLInputFactory(AntaTestInputFactory):
+    """
+    Input factory class for the `VerifyAPIHttpsSSL` test.
+
+    The test input `profile` is collected from the value of
+    `management_api_http.https_ssl_profile` of the device structured config.
+    """
+
+    def create(self) -> list[VerifyAPIHttpsSSL] | None:
+        """Create a list of inputs for the `VerifyAPIHttpsSSL test."""
+        profile = self.structured_config.management_api_http.https_ssl_profile
+        return [VerifyAPIHttpsSSL.Input(profile=profile)] if profile else None
 
 
 class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory):

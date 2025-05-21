@@ -200,6 +200,7 @@ port_channel_interfaces:
     network:
       encapsulation: client
   peer_type: point_to_point_service
+  eos_cli: storm-control broadcast level 15
 - name: Port-Channel3.1001
   shutdown: false
   encapsulation_vlan:
@@ -210,6 +211,7 @@ port_channel_interfaces:
       encapsulation: client
   peer_type: point_to_point_service
 - name: Port-Channel3.1002
+  comment: Test structured_config for Port-Channel subinterface
   shutdown: false
   encapsulation_vlan:
     client:
