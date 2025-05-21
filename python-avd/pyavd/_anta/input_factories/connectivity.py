@@ -54,7 +54,7 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
                 continue
 
             # LLDP neighbor is the FQDN when dns domain is set in EOS
-            fqdn = f"{intf.peer}.{dns_domain}" if (dns_domain := self.structured_configs[intf.peer].dns_domain) is not None else intf.peer
+            fqdn = f"{intf.peer}.{dns_domain}" if (dns_domain := self.minimal_structured_configs[intf.peer].dns_domain) is not None else intf.peer
 
             neighbors.append(
                 LLDPNeighbor(

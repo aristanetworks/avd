@@ -34,7 +34,7 @@ class DeviceTestContext:
 
     hostname: str
     structured_config: EosCliConfigGen
-    structured_configs: dict[str, MinimalStructuredConfig]
+    minimal_structured_configs: dict[str, MinimalStructuredConfig]
     input_factory_settings: InputFactorySettings
 
     @cached_property
@@ -100,7 +100,7 @@ class DeviceTestContext:
         if (
             isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem)
             and neighbor.peer
-            and (neighbor.peer not in self.structured_configs or not self.structured_configs[neighbor.peer].is_deployed)
+            and (neighbor.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None

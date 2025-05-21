@@ -28,7 +28,7 @@ class AntaTestInputFactory(ABC):
         The device context for the test.
     structured_config : EosCliConfigGen
         The structured configuration model of the device.
-    structured_configs : dict[str, MinimalStructuredConfig]
+    minimal_structured_configs : dict[str, MinimalStructuredConfig]
         The minimal structured configurations of all devices in the fabric.
     logger_adapter : TestLoggerAdapter
         Custom logger adapter used for the input factory.
@@ -38,7 +38,7 @@ class AntaTestInputFactory(ABC):
         """Initialize the `AntaTestInputFactory`."""
         self.device = device_context
         self.structured_config = device_context.structured_config
-        self.structured_configs = device_context.structured_configs
+        self.minimal_structured_configs = device_context.minimal_structured_configs
 
         # Create the logger adapter for the test input factory
         self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
@@ -49,7 +49,7 @@ class AntaTestInputFactory(ABC):
 
     def is_peer_available(self, peer: str, identity: str) -> bool:
         """Check if a peer is part of the fabric and is deployed."""
-        if peer not in self.structured_configs or not self.structured_configs[peer].is_deployed:
+        if peer not in self.minimal_structured_configs or not self.minimal_structured_configs[peer].is_deployed:
             self.logger_adapter.debug(LogMessage.PEER_UNAVAILABLE, identity=identity, peer=peer)
             return False
         return True
@@ -58,7 +58,7 @@ class AntaTestInputFactory(ABC):
         """Get the IP address of a peer interface."""
         if not self.is_peer_available(peer, identity=interface):
             return None
-        for intf in self.structured_configs[peer].ethernet_interfaces:
+        for intf in self.minimal_structured_configs[peer].ethernet_interfaces:
             if intf.name == peer_interface:
                 return intf.ip_address
         self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NO_IP, interface=interface, peer=peer, peer_interface=peer_interface)
