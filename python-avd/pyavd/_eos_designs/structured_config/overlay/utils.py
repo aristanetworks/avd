@@ -25,7 +25,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _evpn_route_clients(self: AvdStructuredConfigOverlayProtocol) -> dict[str, dict[str, str | None]]:
-        # TODO: unable to add a test for this condition. Either test dont reach to this condition or if reach then overlay_evpn is always true
+        # TODO: Unable to add a test for this condition. Either the test doesn't reach this condition, or if it does, overlay_evpn is always true.
         if not self.shared_utils.overlay_evpn:
             return {}
 
@@ -47,7 +47,7 @@ class UtilsMixin(Protocol):
 
     @cached_property
     def _evpn_route_servers(self: AvdStructuredConfigOverlayProtocol) -> dict[str, dict[str, str | None]]:
-        # TODO: unable to add a test for this condition. Either test dont reach to this condition or if reach then overlay_evpn is always true
+        # TODO: Unable to add a test for this condition. Either the test doesn't reach this condition, or if it does, overlay_evpn is always true.
         if not self.shared_utils.overlay_evpn:
             return {}
 
@@ -105,7 +105,7 @@ class UtilsMixin(Protocol):
         }.
         """
         bgp_as = peer_facts.bgp_as
-        # TODO: unable to add a test for this condition. Either test dont reach to this condition or if reach then always have overlay peering address
+        # TODO: Unable to add a test for this condition. Either the test doesn't reach this condition, or if it does, overlay peering address is always there.
         if not (ip_address := peer_facts.overlay.peering_address):
             msg = f"switch.overlay.peering_address for {peer_name} is required."
             raise AristaAvdInvalidInputsError(msg)
