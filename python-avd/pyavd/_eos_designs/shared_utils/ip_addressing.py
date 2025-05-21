@@ -77,9 +77,9 @@ class IpAddressingMixin(Protocol):
     def vtep_ipv6(self: SharedUtilsProtocol) -> str:
         """Render ipv6 address for vtep_ip using dynamically loaded python module."""
         if self.mlag is True:
-            return self.ipv6_addressing.vtep_ipv6_mlag()
+            return self.ip_addressing.vtep_ipv6_mlag()
 
-        return self.ipv6_addressing.vtep_ipv6()
+        return self.ip_addressing.vtep_ipv6()
 
     @cached_property
     def ip_addressing(self: SharedUtilsProtocol) -> AvdIpAddressing:
@@ -95,25 +95,6 @@ class IpAddressingMixin(Protocol):
         cls: type[AvdIpAddressing] = load_python_class(
             module_path,
             self.node_type_key_data.ip_addressing.python_class_name,
-            AvdIpAddressing,
-        )
-
-        return cls(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
-
-    @cached_property
-    def ipv6_addressing(self: SharedUtilsProtocol) -> AvdIpAddressing:
-        """
-        Load the python_module defined in `templates.ipv6_addressing.python_module`.
-
-        Return an instance of the class defined by `templates.ipv6_addressing.python_class_name` as cached_property.
-        """
-        module_path = self.node_type_key_data.ipv6_addressing.python_module
-        if module_path is None:
-            return AvdIpAddressing(hostvars=self.hostvars, inputs=self.inputs, shared_utils=self)
-
-        cls: type[AvdIpAddressing] = load_python_class(
-            module_path,
-            self.node_type_key_data.ipv6_addressing.python_class_name,
             AvdIpAddressing,
         )
 

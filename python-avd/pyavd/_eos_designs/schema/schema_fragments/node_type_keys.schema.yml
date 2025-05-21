@@ -234,50 +234,6 @@ keys:
             vtep_ip:
               type: str
               description: Path to Custom J2 template.
-        ipv6_addressing:
-          type: dict
-          description: Override ip_addressing templates.
-          keys:
-            python_module:
-              type: str
-              description: Custom Python Module to import for IP addressing.
-            python_class_name:
-              type: str
-              default: AvdIpAddressing
-              description: Name of Custom Python Class to import for IP addressing.
-            router_id_ipv6:
-              type: str
-              description: Path to Custom J2 template.
-            mlag_ip_primary:
-              type: str
-              description: Path to Custom J2 template.
-            mlag_ip_secondary:
-              type: str
-              description: Path to Custom J2 template.
-            mlag_l3_ip_primary:
-              type: str
-              description: Path to Custom J2 template.
-            mlag_l3_ip_secondary:
-              type: str
-              description: Path to Custom J2 template.
-            mlag_ibgp_peering_ip_primary:
-              type: str
-              description: Path to Custom J2 template.
-            mlag_ibgp_peering_ip_secondary:
-              type: str
-              description: Path to Custom J2 template.
-            p2p_uplinks_ip:
-              type: str
-              description: Path to Custom J2 template.
-            p2p_uplinks_peer_ip:
-              type: str
-              description: Path to Custom J2 template.
-            vtep_ipv6_mlag:
-              type: str
-              description: Path to Custom J2 template.
-            vtep_ip:
-              type: str
-              description: Path to Custom J2 template.
         interface_descriptions:
           type: dict
           description: |

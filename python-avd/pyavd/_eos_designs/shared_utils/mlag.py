@@ -143,11 +143,11 @@ class MlagMixin(Protocol):
             return None
         if self.mlag_role == "primary":
             if self.underlay_ipv6_numbered:
-                return self.ipv6_addressing.mlag_l3_ipv6_primary()
+                return self.ip_addressing.mlag_l3_ipv6_primary()
             return self.ip_addressing.mlag_l3_ip_primary()
         if self.mlag_role == "secondary":
             if self.underlay_ipv6_numbered:
-                return self.ipv6_addressing.mlag_l3_ipv6_secondary()
+                return self.ip_addressing.mlag_l3_ipv6_secondary()
             return self.ip_addressing.mlag_l3_ip_secondary()
         return None
 

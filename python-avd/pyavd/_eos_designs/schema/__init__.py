@@ -8502,97 +8502,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Ipv6Addressing(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {
-                "python_module": {"type": str},
-                "python_class_name": {"type": str, "default": "AvdIpAddressing"},
-                "router_id_ipv6": {"type": str},
-                "mlag_ip_primary": {"type": str},
-                "mlag_ip_secondary": {"type": str},
-                "mlag_l3_ip_primary": {"type": str},
-                "mlag_l3_ip_secondary": {"type": str},
-                "mlag_ibgp_peering_ip_primary": {"type": str},
-                "mlag_ibgp_peering_ip_secondary": {"type": str},
-                "p2p_uplinks_ip": {"type": str},
-                "p2p_uplinks_peer_ip": {"type": str},
-                "vtep_ipv6_mlag": {"type": str},
-                "vtep_ip": {"type": str},
-            }
-            python_module: str | None
-            """Custom Python Module to import for IP addressing."""
-            python_class_name: str
-            """
-            Name of Custom Python Class to import for IP addressing.
-
-            Default value: `"AvdIpAddressing"`
-            """
-            router_id_ipv6: str | None
-            """Path to Custom J2 template."""
-            mlag_ip_primary: str | None
-            """Path to Custom J2 template."""
-            mlag_ip_secondary: str | None
-            """Path to Custom J2 template."""
-            mlag_l3_ip_primary: str | None
-            """Path to Custom J2 template."""
-            mlag_l3_ip_secondary: str | None
-            """Path to Custom J2 template."""
-            mlag_ibgp_peering_ip_primary: str | None
-            """Path to Custom J2 template."""
-            mlag_ibgp_peering_ip_secondary: str | None
-            """Path to Custom J2 template."""
-            p2p_uplinks_ip: str | None
-            """Path to Custom J2 template."""
-            p2p_uplinks_peer_ip: str | None
-            """Path to Custom J2 template."""
-            vtep_ipv6_mlag: str | None
-            """Path to Custom J2 template."""
-            vtep_ip: str | None
-            """Path to Custom J2 template."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    python_module: str | None | UndefinedType = Undefined,
-                    python_class_name: str | UndefinedType = Undefined,
-                    router_id_ipv6: str | None | UndefinedType = Undefined,
-                    mlag_ip_primary: str | None | UndefinedType = Undefined,
-                    mlag_ip_secondary: str | None | UndefinedType = Undefined,
-                    mlag_l3_ip_primary: str | None | UndefinedType = Undefined,
-                    mlag_l3_ip_secondary: str | None | UndefinedType = Undefined,
-                    mlag_ibgp_peering_ip_primary: str | None | UndefinedType = Undefined,
-                    mlag_ibgp_peering_ip_secondary: str | None | UndefinedType = Undefined,
-                    p2p_uplinks_ip: str | None | UndefinedType = Undefined,
-                    p2p_uplinks_peer_ip: str | None | UndefinedType = Undefined,
-                    vtep_ipv6_mlag: str | None | UndefinedType = Undefined,
-                    vtep_ip: str | None | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Ipv6Addressing.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        python_module: Custom Python Module to import for IP addressing.
-                        python_class_name: Name of Custom Python Class to import for IP addressing.
-                        router_id_ipv6: Path to Custom J2 template.
-                        mlag_ip_primary: Path to Custom J2 template.
-                        mlag_ip_secondary: Path to Custom J2 template.
-                        mlag_l3_ip_primary: Path to Custom J2 template.
-                        mlag_l3_ip_secondary: Path to Custom J2 template.
-                        mlag_ibgp_peering_ip_primary: Path to Custom J2 template.
-                        mlag_ibgp_peering_ip_secondary: Path to Custom J2 template.
-                        p2p_uplinks_ip: Path to Custom J2 template.
-                        p2p_uplinks_peer_ip: Path to Custom J2 template.
-                        vtep_ipv6_mlag: Path to Custom J2 template.
-                        vtep_ip: Path to Custom J2 template.
-
-                    """
-
         class InterfaceDescriptions(AvdModel):
             """Subclass of AvdModel."""
 
@@ -8694,7 +8603,6 @@ class EosDesigns(EosDesignsRootModel):
             "vtep": {"type": bool, "default": False},
             "mpls_lsr": {"type": bool, "default": False},
             "ip_addressing": {"type": IpAddressing},
-            "ipv6_addressing": {"type": Ipv6Addressing},
             "interface_descriptions": {"type": InterfaceDescriptions},
             "cv_tags_topology_type": {"type": str},
         }
@@ -8834,12 +8742,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        ipv6_addressing: Ipv6Addressing
-        """
-        Override ip_addressing templates.
-
-        Subclass of AvdModel.
-        """
         interface_descriptions: InterfaceDescriptions
         """
         Override interface_descriptions templates.
@@ -8881,7 +8783,6 @@ class EosDesigns(EosDesignsRootModel):
                 vtep: bool | UndefinedType = Undefined,
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
-                ipv6_addressing: Ipv6Addressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
                 cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
             ) -> None:
@@ -8955,10 +8856,6 @@ class EosDesigns(EosDesignsRootModel):
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
-                       Override ip_addressing templates.
-
-                       Subclass of AvdModel.
-                    ipv6_addressing:
                        Override ip_addressing templates.
 
                        Subclass of AvdModel.
@@ -9129,97 +9026,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Ipv6Addressing(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {
-                "python_module": {"type": str},
-                "python_class_name": {"type": str, "default": "AvdIpAddressing"},
-                "router_id_ipv6": {"type": str},
-                "mlag_ip_primary": {"type": str},
-                "mlag_ip_secondary": {"type": str},
-                "mlag_l3_ip_primary": {"type": str},
-                "mlag_l3_ip_secondary": {"type": str},
-                "mlag_ibgp_peering_ip_primary": {"type": str},
-                "mlag_ibgp_peering_ip_secondary": {"type": str},
-                "p2p_uplinks_ip": {"type": str},
-                "p2p_uplinks_peer_ip": {"type": str},
-                "vtep_ipv6_mlag": {"type": str},
-                "vtep_ip": {"type": str},
-            }
-            python_module: str | None
-            """Custom Python Module to import for IP addressing."""
-            python_class_name: str
-            """
-            Name of Custom Python Class to import for IP addressing.
-
-            Default value: `"AvdIpAddressing"`
-            """
-            router_id_ipv6: str | None
-            """Path to Custom J2 template."""
-            mlag_ip_primary: str | None
-            """Path to Custom J2 template."""
-            mlag_ip_secondary: str | None
-            """Path to Custom J2 template."""
-            mlag_l3_ip_primary: str | None
-            """Path to Custom J2 template."""
-            mlag_l3_ip_secondary: str | None
-            """Path to Custom J2 template."""
-            mlag_ibgp_peering_ip_primary: str | None
-            """Path to Custom J2 template."""
-            mlag_ibgp_peering_ip_secondary: str | None
-            """Path to Custom J2 template."""
-            p2p_uplinks_ip: str | None
-            """Path to Custom J2 template."""
-            p2p_uplinks_peer_ip: str | None
-            """Path to Custom J2 template."""
-            vtep_ipv6_mlag: str | None
-            """Path to Custom J2 template."""
-            vtep_ip: str | None
-            """Path to Custom J2 template."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    python_module: str | None | UndefinedType = Undefined,
-                    python_class_name: str | UndefinedType = Undefined,
-                    router_id_ipv6: str | None | UndefinedType = Undefined,
-                    mlag_ip_primary: str | None | UndefinedType = Undefined,
-                    mlag_ip_secondary: str | None | UndefinedType = Undefined,
-                    mlag_l3_ip_primary: str | None | UndefinedType = Undefined,
-                    mlag_l3_ip_secondary: str | None | UndefinedType = Undefined,
-                    mlag_ibgp_peering_ip_primary: str | None | UndefinedType = Undefined,
-                    mlag_ibgp_peering_ip_secondary: str | None | UndefinedType = Undefined,
-                    p2p_uplinks_ip: str | None | UndefinedType = Undefined,
-                    p2p_uplinks_peer_ip: str | None | UndefinedType = Undefined,
-                    vtep_ipv6_mlag: str | None | UndefinedType = Undefined,
-                    vtep_ip: str | None | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Ipv6Addressing.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        python_module: Custom Python Module to import for IP addressing.
-                        python_class_name: Name of Custom Python Class to import for IP addressing.
-                        router_id_ipv6: Path to Custom J2 template.
-                        mlag_ip_primary: Path to Custom J2 template.
-                        mlag_ip_secondary: Path to Custom J2 template.
-                        mlag_l3_ip_primary: Path to Custom J2 template.
-                        mlag_l3_ip_secondary: Path to Custom J2 template.
-                        mlag_ibgp_peering_ip_primary: Path to Custom J2 template.
-                        mlag_ibgp_peering_ip_secondary: Path to Custom J2 template.
-                        p2p_uplinks_ip: Path to Custom J2 template.
-                        p2p_uplinks_peer_ip: Path to Custom J2 template.
-                        vtep_ipv6_mlag: Path to Custom J2 template.
-                        vtep_ip: Path to Custom J2 template.
-
-                    """
-
         class InterfaceDescriptions(AvdModel):
             """Subclass of AvdModel."""
 
@@ -9321,7 +9127,6 @@ class EosDesigns(EosDesignsRootModel):
             "vtep": {"type": bool, "default": False},
             "mpls_lsr": {"type": bool, "default": False},
             "ip_addressing": {"type": IpAddressing},
-            "ipv6_addressing": {"type": Ipv6Addressing},
             "interface_descriptions": {"type": InterfaceDescriptions},
             "cv_tags_topology_type": {"type": str},
         }
@@ -9461,12 +9266,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        ipv6_addressing: Ipv6Addressing
-        """
-        Override ip_addressing templates.
-
-        Subclass of AvdModel.
-        """
         interface_descriptions: InterfaceDescriptions
         """
         Override interface_descriptions templates.
@@ -9508,7 +9307,6 @@ class EosDesigns(EosDesignsRootModel):
                 vtep: bool | UndefinedType = Undefined,
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
-                ipv6_addressing: Ipv6Addressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
                 cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
             ) -> None:
@@ -9582,10 +9380,6 @@ class EosDesigns(EosDesignsRootModel):
                     vtep: Is this switch an EVPN VTEP.
                     mpls_lsr: Is this switch an MPLS LSR.
                     ip_addressing:
-                       Override ip_addressing templates.
-
-                       Subclass of AvdModel.
-                    ipv6_addressing:
                        Override ip_addressing templates.
 
                        Subclass of AvdModel.
