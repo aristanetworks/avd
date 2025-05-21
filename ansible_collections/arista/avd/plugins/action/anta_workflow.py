@@ -594,27 +594,28 @@ def setup_root_logger(unique_id: str, log_queue: Queue, verbosity: int) -> None:
     """
     root_logger = logging.getLogger()
 
-    # ANTA low-level libraries (asyncio, httpcore, httpx) are always at WARNING level except at full verbosity `-vvvvv`
-    for logger_name in ("asyncio", "httpcore", "httpx"):
+    # ANTA low-level libraries are always at WARNING level except at full verbosity `-vvvvv`
+    low_level_libraries = ("asyncio", "httpcore", "httpx")
+    for logger_name in low_level_libraries:
         logging.getLogger(logger_name).setLevel(logging.WARNING)
 
-    # All loggers (pyavd, anta, ansible_collections.arista.avd) including low-level libraries will be at DEBUG
     if verbosity >= 5:
+        # All loggers (pyavd, anta, ansible_collections.arista.avd) including low-level libraries will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
-        for logger_name in ("asyncio", "httpcore", "httpx"):
+        for logger_name in low_level_libraries:
             logging.getLogger(logger_name).setLevel(logging.DEBUG)
-    # All loggers except low-level libraries (WARNING) will be at DEBUG
     elif verbosity == 4:
+        # All loggers except low-level libraries (WARNING) will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
-    # All loggers except anta (INFO) and low-level libraries (WARNING) will be at DEBUG
     elif verbosity == 3:
+        # All loggers except anta (INFO) and low-level libraries (WARNING) will be at DEBUG
         root_logger.setLevel(logging.DEBUG)
         logging.getLogger("anta").setLevel(logging.INFO)
-    # All loggers except low-level libraries (WARNING) will be at INFO
     elif verbosity in (1, 2):
+        # All loggers except low-level libraries (WARNING) will be at INFO
         root_logger.setLevel(logging.INFO)
-    # All loggers will be at WARNING
     else:
+        # All loggers will be at WARNING
         root_logger.setLevel(logging.WARNING)
 
     # Create and configure the QueueHandler to send all logs to the listener thread
