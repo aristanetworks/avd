@@ -99,7 +99,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default pool is "mlag_peer_ipv4_pool"
         """
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            if template_path := self.shared_utils.node_type_key_data.ipv6_addressing.mlag_ip_primary:
+            if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ip_primary:
                 return self._template(
                     template_path,
                     mlag_primary_id=self._mlag_primary_id,
@@ -126,7 +126,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         Default pool is "mlag_peer_ipv4_pool"
         """
         if self.shared_utils.node_config.mlag_peer_address_family == "ipv6":
-            if template_path := self.shared_utils.node_type_key_data.ipv6_addressing.mlag_ip_secondary:
+            if template_path := self.shared_utils.node_type_key_data.ip_addressing.mlag_ip_secondary:
                 return self._template(
                     template_path,
                     mlag_primary_id=self._mlag_primary_id,
