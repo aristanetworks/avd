@@ -22,13 +22,10 @@ if TYPE_CHECKING:
     from pyavd.api._anta import InputFactorySettings, MinimalStructuredConfig, TestSpec
 
 
-LOGGER = getLogger(__name__)
-
-
 def create_catalog(
     hostname: str,
     structured_config: dict[str, Any],
-    structured_configs: dict[str, MinimalStructuredConfig],
+    minimal_structured_configs: dict[str, MinimalStructuredConfig],
     input_factory_settings: InputFactorySettings,
     test_specs: list[TestSpec],
 ) -> AntaCatalog:
@@ -36,13 +33,12 @@ def create_catalog(
     device_context = DeviceTestContext(
         hostname=hostname,
         structured_config=EosCliConfigGen._load(structured_config),
-        structured_configs=structured_configs,
+        minimal_structured_configs=minimal_structured_configs,
         input_factory_settings=input_factory_settings,
     )
     tests: list[AntaTestDefinition] = []
     for test in test_specs:
-        test_logger = TestLoggerAdapter.create(device=hostname, test=test.test_class.name, logger=LOGGER)
-        test_definitions = create_test_definitions(test, device_context, test_logger)
+        test_definitions = create_test_definitions(test, device_context)
 
         # Skip the test if we couldn't create the test definitions. Logging is done when creating the test definitions
         if test_definitions is None:
@@ -63,20 +59,22 @@ def create_catalog(
     return AntaCatalog(tests=tests)
 
 
-def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestContext, logger: TestLoggerAdapter) -> list[AntaTestDefinition] | None:
+def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestContext) -> list[AntaTestDefinition] | None:
     """Create the AntaTestDefinition's from this TestSpec instance."""
+    logger_adapter = TestLoggerAdapter(logger=getLogger(__name__), extra={"device": device_context.hostname, "test": test_spec.test_class.name})
+
     # Skip the test if the conditional keys are not present in the structured config
     if test_spec.conditional_keys and not all(get_v2(device_context.structured_config, key.value) for key in test_spec.conditional_keys):
         keys = StructuredConfigKey.to_string_list(test_spec.conditional_keys)
-        logger.debug(LogMessage.INPUT_NO_DATA_MODEL, caller=", ".join(keys))
+        logger_adapter.debug(LogMessage.INPUT_NO_DATA_MODELS, data_models=", ".join(keys))
         return None
 
     # Create the test definitions from the input factory if provided
     if test_spec.input_factory is not None:
-        factory = test_spec.input_factory(device_context, logger)
+        factory = test_spec.input_factory(device_context, test_spec.test_class.name)
         results = factory.create()
         if results is None:
-            logger.debug(LogMessage.INPUT_NONE_FOUND)
+            logger_adapter.debug(LogMessage.INPUT_NONE_FOUND)
             return None
         return [AntaTestDefinition(test=test_spec.test_class, inputs=inputs) for inputs in results]
 
