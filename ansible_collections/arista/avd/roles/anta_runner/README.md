@@ -65,7 +65,7 @@ The `Run ANTA on EOS devices` task will fail if any of the following conditions 
 - **Test failures or errors:** If any ANTA test reports a failure or error status.
 
 !!! tip
-    Standard Ansible error handling (e.g., `ignore_errors`) can be used if desired. For more details, refer to the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html).
+    To continue running the playbook when `anta_runner` fails, use Ansible `ignore_errors`. For more details, refer to the [Ansible documentation](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_error_handling.html).
 
 ## Roadmap
 
