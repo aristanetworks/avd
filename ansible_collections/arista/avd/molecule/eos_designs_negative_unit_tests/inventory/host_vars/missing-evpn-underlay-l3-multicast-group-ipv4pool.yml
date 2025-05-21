@@ -8,7 +8,7 @@ l3leaf:
     vtep_loopback_ipv4_pool: 10.11.0.0/24
     vtep_loopback: Loopback1
   nodes:
-    - name: evpn-underlay-l3-multicast-group-ipv4pool-undefined
+    - name: missing-evpn-underlay-l3-multicast-group-ipv4pool
       id: 3
       bgp_as: 65101
 
@@ -27,7 +27,6 @@ tenants:
             name: Tenant_A_OP_Zone_1
         evpn_l3_multicast:
           enabled: true
-
 
 expected_error_message: >-
   'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: TenantA is required.
