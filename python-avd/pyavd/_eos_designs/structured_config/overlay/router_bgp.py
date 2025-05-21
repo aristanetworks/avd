@@ -612,7 +612,7 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_client(peer_facts):
                 continue
 
-            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            # since _is_peer_mpls_client check passed above, we will always have peer_facts.overlay.peering_address
             ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
@@ -637,7 +637,7 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_client(peer_facts):
                 continue
 
-            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            # since _is_peer_mpls_client check passed above, we will always have peer_facts.overlay.peering_address
             ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
@@ -659,7 +659,7 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
-            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            # since _is_peer_mpls_server check passed above, we will always have peer_facts.overlay.peering_address
             ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
@@ -677,7 +677,7 @@ class RouterBgpMixin(Protocol):
             if not self._is_peer_mpls_server(peer_facts):
                 continue
 
-            # since underlay_router is true, we will always get str in peer_facts.overlay.peering_address
+            # since _is_peer_mpls_server check passed above, we will always have peer_facts.overlay.peering_address
             ip_address = cast("str", peer_facts.overlay.peering_address)
             neighbor = self._create_neighbor(
                 ip_address,
