@@ -23,7 +23,7 @@ keys:
                   This allocation method will skip every other /31¹ subnet making it less space efficient than `odd_id`.
                 - odd_id: `(odd_id - 1) / 2`. Requires the node_group to have a node with an odd ID and a node with an even ID.
                 - same_subnet: the offset will always be zero.
-                  This allocation method will cause every MLAG link to be addressed with the same /31¹ subnet.
+                  This allocation method will use the first /31¹ subnet from the pool for all MLAG links.
               ¹ The prefix length is configurable with a default of /31.
             valid_values:
               - "first_id"
