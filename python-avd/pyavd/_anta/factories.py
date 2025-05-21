@@ -71,30 +71,14 @@ def create_test_definitions(test_spec: TestSpec, device_context: DeviceTestConte
         logger.debug(LogMessage.INPUT_NO_DATA_MODEL, caller=", ".join(keys))
         return None
 
-    # Create the AntaTest.Input instance from the input dict if available
-    if test_spec.input_dict is not None:
-        logger.debug(LogMessage.INPUT_RENDERING, caller="input dictionary")
-        rendered_inputs = {}
-        for input_field, structured_config_key in test_spec.input_dict.items():
-            field_value = get_v2(device_context.structured_config, structured_config_key.value)
-            if field_value is not None:
-                rendered_inputs[input_field] = field_value
-            else:
-                logger.debug(LogMessage.INPUT_NO_DATA_MODEL, caller=structured_config_key.value)
-                return None
-        logger.debug(LogMessage.INPUT_RENDERED, inputs=rendered_inputs)
-        inputs = test_spec.test_class.Input(**rendered_inputs)
-        return [AntaTestDefinition(test=test_spec.test_class, inputs=inputs)]
-
-    # Create the AntaTest.Input instance(s) from the input factory if available
+    # Create the test definitions from the input factory if provided
     if test_spec.input_factory is not None:
-        logger.debug(LogMessage.INPUT_RENDERING, caller="input factory")
-        factory = test_spec.input_factory(device_context, logger)  # pylint: disable=not-callable
+        factory = test_spec.input_factory(device_context, logger)
         results = factory.create()
         if results is None:
             logger.debug(LogMessage.INPUT_NONE_FOUND)
             return None
         return [AntaTestDefinition(test=test_spec.test_class, inputs=inputs) for inputs in results]
 
-    # Otherwise AntaTestDefinition takes `inputs=None` if the test does not require any input
+    # Otherwise AntaTestDefinition takes `inputs=None` if the test does not require any inputs
     return [AntaTestDefinition(test=test_spec.test_class, inputs=None)]
