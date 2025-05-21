@@ -59,12 +59,15 @@ class UnderlayMixin(Protocol):
         return self.inputs.underlay_ipv6 and self.underlay_router
 
     @cached_property
-    def underlay_multicast_pim_sm(self: SharedUtilsProtocol) -> bool | None:
-        return (self.inputs.underlay_multicast_pim_sm or self.inputs.underlay_multicast) and self.underlay_router
+    def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:
+        return bool(
+            default(self.node_config.underlay_multicast.pim_sm.enabled, bool(default(self.inputs.underlay_multicast_pim_sm, self.inputs.underlay_multicast)))
+            and self.underlay_router
+        )
 
     @cached_property
-    def underlay_multicast_static(self: SharedUtilsProtocol) -> bool | None:
-        return self.inputs.underlay_multicast_static and self.underlay_router
+    def underlay_multicast_static_enabled(self: SharedUtilsProtocol) -> bool:
+        return bool(default(self.node_config.underlay_multicast.static.enabled, self.inputs.underlay_multicast_static) and self.underlay_router)
 
     @cached_property
     def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> list[EosCliConfigGen.LoopbackInterfacesItem] | None:
@@ -88,11 +91,3 @@ class UnderlayMixin(Protocol):
             return underlay_multicast_rp_interfaces
 
         return None
-
-    @cached_property
-    def underlay_multicast_pim_sm_enabled(self: SharedUtilsProtocol) -> bool:
-        return bool(default(self.node_config.underlay_multicast.pim_sm.enabled, self.underlay_multicast_pim_sm))
-
-    @cached_property
-    def underlay_multicast_static_enabled(self: SharedUtilsProtocol) -> bool:
-        return bool(default(self.node_config.underlay_multicast.static.enabled, self.underlay_multicast_static))
