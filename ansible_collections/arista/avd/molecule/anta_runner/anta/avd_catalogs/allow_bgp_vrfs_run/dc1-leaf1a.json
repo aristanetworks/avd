@@ -680,7 +680,12 @@
           "tags": [
             "dc1-leaf1a"
           ]
-        }
+        },
+        "allowed_causes": [
+          "Reload requested by the user.",
+          "Reload requested after FPGA upgrade",
+          "System reloaded due to Zero Touch Provisioning"
+        ]
       }
     }
   ]

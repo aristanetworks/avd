@@ -7395,6 +7395,7 @@ $defs:
                         '
               static_routes:
                 type: list
+                $ref: eos_designs#/$defs/static_routes
                 description: 'List of static routes for v4 and/or v6.
 
                   This will create static routes inside the tenant VRF.
@@ -7419,9 +7420,6 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: prefix
-                    prefix:
-                      type: str
-                      description: Destination prefix.
                     gateway:
                       type: str
                       description: IPv4_address.
@@ -7429,41 +7427,13 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    next_hop:
-                      type: str
-                      description: Next-hop IPv4 address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
                     nodes:
                       type: list
                       items:
                         type: str
               ipv6_static_routes:
                 type: list
+                $ref: eos_designs#/$defs/static_routes
                 items:
                   type: dict
                   keys:
@@ -7474,44 +7444,12 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: prefix
-                    prefix:
-                      type: str
-                      description: Destination prefix.
                     gateway:
                       type: str
                       deprecation:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    next_hop:
-                      type: str
-                      description: Next-hop IPv6 address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
                     nodes:
                       type: list
                       items:
@@ -10754,6 +10692,41 @@ $defs:
         valid_values:
         - shared
         - exclusive
+  static_routes:
+    type: list
+    items:
+      type: dict
+      keys:
+        prefix:
+          type: str
+        next_hop:
+          type: str
+        track_bfd:
+          type: bool
+          description: Track next-hop using BFD.
+        distance:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 255
+        tag:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        name:
+          type: str
+          description: description.
+        metric:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        interface:
+          type: str
   svi:
     type: dict
     $ref: eos_designs#/$defs/svi_settings
@@ -10897,6 +10870,11 @@ $defs:
                 not set, EOS uses the VRF on the SVI.
               convert_types:
               - int
+      static_routes:
+        type: list
+        $ref: eos_designs#/$defs/static_routes
+        description: Static routes to be configured on every device where the SVI
+          is configured.
       vni_override:
         type: int
         convert_types:

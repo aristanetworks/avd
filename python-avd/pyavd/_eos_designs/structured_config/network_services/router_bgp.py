@@ -637,6 +637,9 @@ class RouterBgpMixin(Protocol):
         Add redistribute static to default if either "redistribute_in_overlay" is set or
         "redistribute_in_underlay" and underlay protocol is BGP.
         """
+        if not self.shared_utils.network_services_l3:
+            return
+
         if not (
             self._vrf_default_ipv4_static_routes["redistribute_in_overlay"]
             or (self._vrf_default_ipv4_static_routes["redistribute_in_underlay"] and self.shared_utils.underlay_bgp)
