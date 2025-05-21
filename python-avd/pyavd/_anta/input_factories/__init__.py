@@ -11,7 +11,8 @@ from .interfaces import VerifyInterfacesStatusInputFactory
 from .mlag import VerifyMlagDualPrimaryInputFactory, VerifyMlagReloadDelayInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
-from .security import VerifyAPIHttpsSSLInputFactory, VerifyDNSServersInputFactory, VerifySpecificIPSecConnInputFactory
+from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
+from .services import VerifyDNSServersInputFactory
 from .stun import VerifyStunClientTranslationInputFactory
 from .system import VerifyReloadCauseInputFactory
 

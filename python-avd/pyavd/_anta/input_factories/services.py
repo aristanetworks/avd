@@ -12,7 +12,13 @@ from ._base_classes import AntaTestInputFactory
 
 
 class VerifyDNSServersInputFactory(AntaTestInputFactory):
-    """Input factory class for the `VerifyDNSServers` test."""
+    """
+    Input factory class for the `VerifyDNSServers` test.
+
+    The test inputs `dns_servers` are collected from the values of
+    `ip_address`, `vrf` and `priority` of each item in `ip_name_servers`
+    of the device structured config.
+    """
 
     def create(self) -> list[VerifyDNSServers.Input] | None:
         """Create a list of inputs for the `VerifyDNSServers` test."""
