@@ -124,7 +124,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
 
             # TODO: Consider adding reachability check between lending interfaces without creating duplicate src-dst pairs
             if "unnumbered" in intf.ip_address:
-                self.logger.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_UNNUMBERED, interface=intf.name)
                 continue
 
             if (peer_interface_ip := self.get_interface_ip(intf.peer, intf.peer_interface, intf.name)) is None:
