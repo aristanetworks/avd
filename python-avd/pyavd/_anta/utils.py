@@ -25,6 +25,6 @@ def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str) -> 
     catalog_path = Path(catalog_dir) / f"{hostname}.json"
     catalog_dump = catalog.dump()
 
-    LOGGER.debug("<%s> dumping ANTA catalog at %s", hostname, catalog_path)
+    LOGGER.debug("<%s> Dumping ANTA catalog at %s", hostname, catalog_path)
     with catalog_path.open(mode="w", encoding="UTF-8") as stream:
         stream.write(catalog_dump.to_json())

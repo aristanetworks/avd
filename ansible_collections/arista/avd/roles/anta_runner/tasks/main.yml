@@ -24,7 +24,6 @@
     - "{{ avd_catalogs_dir }}"
     - "{{ user_catalogs_dir }}"
     - "{{ anta_reports_dir }}"
-    - "{{ anta_runner_logs_dir }}"
   delegate_to: localhost
   run_once: true
   check_mode: false
@@ -46,14 +45,12 @@
       batch_size: "{{ anta_runner_batch_size }}"
       tags: "{{ anta_runner_tags | arista.avd.default([]) }}"
       dry_run: "{{ anta_runner_dry_run }}"
-      logs_dir: "{{ anta_runner_logs_dir }}"
     report:
       csv_output: "{{ anta_report_csv_path }}"
       md_output: "{{ anta_report_md_path }}"
       json_output: "{{ anta_report_json_path }}"
       filters:
         hide_statuses: "{{ anta_report_hide_statuses | arista.avd.default([]) }}"
-    strict_mode: "{{ anta_strict_mode }}"
   register: anta
   delegate_to: localhost
   run_once: true
