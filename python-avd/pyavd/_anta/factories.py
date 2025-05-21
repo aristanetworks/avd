@@ -25,7 +25,7 @@ if TYPE_CHECKING:
 def create_catalog(
     hostname: str,
     structured_config: dict[str, Any],
-    structured_configs: dict[str, MinimalStructuredConfig],
+    minimal_structured_configs: dict[str, MinimalStructuredConfig],
     input_factory_settings: InputFactorySettings,
     test_specs: list[TestSpec],
 ) -> AntaCatalog:
@@ -33,7 +33,7 @@ def create_catalog(
     device_context = DeviceTestContext(
         hostname=hostname,
         structured_config=EosCliConfigGen._load(structured_config),
-        structured_configs=structured_configs,
+        minimal_structured_configs=minimal_structured_configs,
         input_factory_settings=input_factory_settings,
     )
     tests: list[AntaTestDefinition] = []
