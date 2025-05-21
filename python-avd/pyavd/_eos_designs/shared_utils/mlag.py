@@ -211,8 +211,6 @@ class MlagMixin(Protocol):
     def mlag_vrfs_peer_group_name(self: SharedUtilsProtocol) -> str:
         if self.use_separate_peer_group_for_mlag_vrfs:
             return self.inputs.bgp_peer_groups.mlag_ipv4_vrfs_peer.name
-        if self.underlay_ipv6_numbered:
-            return self.inputs.bgp_peer_groups.mlag_ipv6_underlay_peer.name
         return self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
 
     def update_router_bgp_with_mlag_peer_group(self: SharedUtilsProtocol, router_bgp: EosCliConfigGen.RouterBgp, custom_structured_configs: StructCfgs) -> None:
@@ -241,7 +239,7 @@ class MlagMixin(Protocol):
                 )
         # underlay_ipv6_numbered only supports BGP underlay routing for now so we can simplify the logic
         else:
-            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv6_underlay_peer
+            bgp_peer_group = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer
             router_bgp.peer_groups.append(self.get_mlag_peer_group(bgp_peer_group, custom_structured_configs))
             router_bgp.address_family_ipv6.peer_groups.append_new(name=bgp_peer_group.name, activate=True)
 

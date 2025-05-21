@@ -25,32 +25,20 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
 
-        if not self.shared_utils.underlay_ipv6_numbered:
-            peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                type="ipv4",
-                password=self.inputs.bgp_peer_groups.ipv4_underlay_peers.password,
-                bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
-                maximum_routes=12000,
-                send_community="all",
+        af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
+
+        peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
+            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+            type=af_type,
+            password=self.inputs.bgp_peer_groups.ipv4_underlay_peers.password,
+            bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
+            maximum_routes=12000,
+            send_community="all",
+        )
+        if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
+            self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
+                self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
             )
-            if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
-                self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
-                    self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
-        else:
-            peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name,
-                type="ipv6",
-                password=self.inputs.bgp_peer_groups.ipv6_underlay_peers.password,
-                bfd=self.inputs.bgp_peer_groups.ipv6_underlay_peers.bfd or None,
-                maximum_routes=12000,
-                send_community="all",
-            )
-            if self.inputs.bgp_peer_groups.ipv6_underlay_peers.structured_config:
-                self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv6_underlay_peers.name)._deepmerge(
-                    self.inputs.bgp_peer_groups.ipv6_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
-                )
 
         if self.shared_utils.is_cv_pathfinder_router:
             peer_group.route_map_in = "RM-BGP-UNDERLAY-PEERS-IN"
@@ -74,17 +62,13 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
         else:
             address_family_ipv6_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv6.PeerGroupsItem(
-                name=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name, activate=True
+                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
             )
             self.structured_config.router_bgp.address_family_ipv6.peer_groups.append(address_family_ipv6_peer_group)
 
-        if self.shared_utils.underlay_ipv6 and not self.shared_utils.underlay_ipv6_numbered:
+        if (self.shared_utils.underlay_ipv6 and not self.shared_utils.underlay_ipv6_numbered) or self.shared_utils.underlay_ipv6_numbered:
             self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-            )
-        elif self.shared_utils.underlay_ipv6_numbered:
-            self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
-                name=self.inputs.bgp_peer_groups.ipv6_underlay_peers.name, activate=True
             )
 
         # Neighbor Interfaces and VRF Neighbor Interfaces
@@ -116,17 +100,13 @@ class RouterBgpMixin(Protocol):
 
         # Neighbors and VRF Neighbors
         else:
-            if self.shared_utils.underlay_ipv6_numbered:
-                peer_group = self.inputs.bgp_peer_groups.ipv6_underlay_peers.name
-            else:
-                peer_group = self.inputs.bgp_peer_groups.ipv4_underlay_peers.name
             for link in self._underlay_links:
                 if link.type != "underlay_p2p":
                     continue
 
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
                     ip_address=link.peer_ip_address,
-                    peer_group=peer_group,
+                    peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                     remote_as=link.peer_bgp_as,
                     peer=link.peer,
                     description=f"{link.peer}_{link.peer_interface}",
@@ -149,7 +129,7 @@ class RouterBgpMixin(Protocol):
 
                     self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
                         ip_address=subinterface.peer_ip_address,
-                        peer_group=peer_group,
+                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                         remote_as=link.peer_bgp_as,
                         description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
                         bfd=link.bfd,

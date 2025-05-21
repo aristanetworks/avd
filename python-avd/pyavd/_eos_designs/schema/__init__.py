@@ -127,52 +127,6 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Ipv6UnderlayPeers(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {
-                "name": {"type": str, "default": "IPv6-UNDERLAY-PEERS"},
-                "password": {"type": str},
-                "bfd": {"type": bool, "default": False},
-                "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
-            }
-            name: str
-            """
-            Name of peer group.
-
-            Default value: `"IPv6-UNDERLAY-PEERS"`
-            """
-            password: str | None
-            """Type 7 encrypted password."""
-            bfd: bool
-            """Default value: `False`"""
-            structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    name: str | UndefinedType = Undefined,
-                    password: str | None | UndefinedType = Undefined,
-                    bfd: bool | UndefinedType = Undefined,
-                    structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Ipv6UnderlayPeers.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: Name of peer group.
-                        password: Type 7 encrypted password.
-                        bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
-
-                    """
-
         class MlagIpv4VrfsPeer(AvdModel):
             """Subclass of AvdModel."""
 
@@ -249,52 +203,6 @@ class EosDesigns(EosDesignsRootModel):
                 ) -> None:
                     """
                     MlagIpv4UnderlayPeer.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        name: Name of peer group.
-                        password: Type 7 encrypted password.
-                        bfd: bfd
-                        structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
-
-                    """
-
-        class MlagIpv6UnderlayPeer(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {
-                "name": {"type": str, "default": "MLAG-IPv6-UNDERLAY-PEER"},
-                "password": {"type": str},
-                "bfd": {"type": bool, "default": False},
-                "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
-            }
-            name: str
-            """
-            Name of peer group.
-
-            Default value: `"MLAG-IPv6-UNDERLAY-PEER"`
-            """
-            password: str | None
-            """Type 7 encrypted password."""
-            bfd: bool
-            """Default value: `False`"""
-            structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
-            """Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    name: str | UndefinedType = Undefined,
-                    password: str | None | UndefinedType = Undefined,
-                    bfd: bool | UndefinedType = Undefined,
-                    structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    MlagIpv6UnderlayPeer.
 
 
                     Subclass of AvdModel.
@@ -816,10 +724,8 @@ class EosDesigns(EosDesignsRootModel):
 
         _fields: ClassVar[dict] = {
             "ipv4_underlay_peers": {"type": Ipv4UnderlayPeers},
-            "ipv6_underlay_peers": {"type": Ipv6UnderlayPeers},
             "mlag_ipv4_vrfs_peer": {"type": MlagIpv4VrfsPeer},
             "mlag_ipv4_underlay_peer": {"type": MlagIpv4UnderlayPeer},
-            "mlag_ipv6_underlay_peer": {"type": MlagIpv6UnderlayPeer},
             "evpn_overlay_peers": {"type": EvpnOverlayPeers},
             "evpn_overlay_core": {"type": EvpnOverlayCore},
             "mpls_overlay_peers": {"type": MplsOverlayPeers},
@@ -829,8 +735,6 @@ class EosDesigns(EosDesignsRootModel):
             "wan_rr_overlay_peers": {"type": WanRrOverlayPeers},
         }
         ipv4_underlay_peers: Ipv4UnderlayPeers
-        """Subclass of AvdModel."""
-        ipv6_underlay_peers: Ipv6UnderlayPeers
         """Subclass of AvdModel."""
         mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer
         """
@@ -846,8 +750,6 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdModel.
         """
         mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer
-        """Subclass of AvdModel."""
-        mlag_ipv6_underlay_peer: MlagIpv6UnderlayPeer
         """Subclass of AvdModel."""
         evpn_overlay_peers: EvpnOverlayPeers
         """Subclass of AvdModel."""
@@ -873,10 +775,8 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 ipv4_underlay_peers: Ipv4UnderlayPeers | UndefinedType = Undefined,
-                ipv6_underlay_peers: Ipv6UnderlayPeers | UndefinedType = Undefined,
                 mlag_ipv4_vrfs_peer: MlagIpv4VrfsPeer | UndefinedType = Undefined,
                 mlag_ipv4_underlay_peer: MlagIpv4UnderlayPeer | UndefinedType = Undefined,
-                mlag_ipv6_underlay_peer: MlagIpv6UnderlayPeer | UndefinedType = Undefined,
                 evpn_overlay_peers: EvpnOverlayPeers | UndefinedType = Undefined,
                 evpn_overlay_core: EvpnOverlayCore | UndefinedType = Undefined,
                 mpls_overlay_peers: MplsOverlayPeers | UndefinedType = Undefined,
@@ -893,7 +793,6 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     ipv4_underlay_peers: Subclass of AvdModel.
-                    ipv6_underlay_peers: Subclass of AvdModel.
                     mlag_ipv4_vrfs_peer:
                        Set this peer group name to use a different peer-group for MLAG peerings in VRFs.
                        By default AVD
@@ -906,7 +805,6 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     mlag_ipv4_underlay_peer: Subclass of AvdModel.
-                    mlag_ipv6_underlay_peer: Subclass of AvdModel.
                     evpn_overlay_peers: Subclass of AvdModel.
                     evpn_overlay_core: Subclass of AvdModel.
                     mpls_overlay_peers: Subclass of AvdModel.

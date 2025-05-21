@@ -234,27 +234,6 @@ keys:
             documentation_options:
               hide_keys: true
             $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
-      ipv6_underlay_peers:
-        type: dict
-        keys:
-          name:
-            type: str
-            default: IPv6-UNDERLAY-PEERS
-            description: Name of peer group.
-          password:
-            type: str
-            description: Type 7 encrypted password.
-          bfd:
-            type: bool
-            default: false
-          structured_config:
-            type: dict
-            relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
-            documentation_options:
-              hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
       mlag_ipv4_vrfs_peer:
         type: dict
         description: 'Set this peer group name to use a different peer-group for MLAG
@@ -293,27 +272,6 @@ keys:
           name:
             type: str
             default: MLAG-IPv4-UNDERLAY-PEER
-            description: Name of peer group.
-          password:
-            type: str
-            description: Type 7 encrypted password.
-          bfd:
-            type: bool
-            default: false
-          structured_config:
-            type: dict
-            relaxed_validation: true
-            description: Custom structured config added under router_bgp.peer_groups.[name=<name>]
-              for eos_cli_config_gen.
-            documentation_options:
-              hide_keys: true
-            $ref: eos_cli_config_gen#/keys/router_bgp/keys/peer_groups/items
-      mlag_ipv6_underlay_peer:
-        type: dict
-        keys:
-          name:
-            type: str
-            default: MLAG-IPv6-UNDERLAY-PEER
             description: Name of peer group.
           password:
             type: str
