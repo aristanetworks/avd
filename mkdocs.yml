@@ -170,6 +170,7 @@ nav:
       - Campus Fabric: ansible_collections/arista/avd/examples/campus-fabric/README.md
       - ISIS-LDP IPVPN: ansible_collections/arista/avd/examples/isis-ldp-ipvpn/README.md
       - CV Pathfinder: ansible_collections/arista/avd/examples/cv-pathfinder/README.md
+      - Media Fabric: ansible_collections/arista/avd/examples/media/README.md
   - Installation:
       - Collection Installation: docs/installation/collection-installation.md
   - Ansible Collection Roles:

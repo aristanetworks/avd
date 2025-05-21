@@ -1,0 +1,38 @@
+---
+scenario:
+  converge_sequence:
+    - converge
+  test_sequence:
+    - converge
+    - idempotence
+  cleanup_sequence:
+    - destroy
+dependency:
+  name: galaxy
+driver:
+  name: delegated
+platforms:
+  - name: dummy
+    # image: avdteam/base:3.8-v2.0
+    # pre_build_image: true
+    managed: false
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      jinja2_extensions: jinja2.ext.loopcontrols,jinja2.ext.do,jinja2.ext.i18n
+      duplicate_dict_key: error
+  playbooks:
+    converge: '../../examples/media/build.yml'
+  ansible_args:
+    - --inventory
+    - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/media/inventory.yml
+    - --extra-vars
+    - "avd_data_validation_mode=error"
+    - --extra-vars
+    - "avd_data_conversion_mode=error"
+    # Running with tags build to avoid deploy_eapi to run.
+    - --tags
+    - build
+verifier:
+  name: ansible

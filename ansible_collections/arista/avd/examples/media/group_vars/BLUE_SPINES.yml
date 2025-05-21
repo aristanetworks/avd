@@ -1,0 +1,15 @@
+---
+type: media_spine
+
+media_spine:
+  defaults:
+    platform: vEOS-lab
+    loopback_ipv4_pool: 10.255.2.0/27
+    bgp_as: 65200
+    filter:
+      tenants: [ blue ]
+
+  nodes:
+    - name: blue-spine1
+      id: 1
+      mgmt_ip: 172.16.1.21/24
