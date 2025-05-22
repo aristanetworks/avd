@@ -70,12 +70,12 @@ class UtilsMixin(Protocol):
     def _is_peer_mpls_client(self: AvdStructuredConfigOverlayProtocol, peer_facts: EosDesignsFactsProtocol) -> bool:
         if peer_facts.overlay.evpn_mpls:
             return peer_facts.evpn_role == "client"
-        return self.shared_utils.mpls_overlay_role == "client"
+        return peer_facts.mpls_overlay_role == "client"
 
     def _is_peer_mpls_server(self: AvdStructuredConfigOverlayProtocol, peer_facts: EosDesignsFactsProtocol) -> bool:
         if peer_facts.overlay.evpn_mpls:
             return peer_facts.evpn_role == "server"
-        return self.shared_utils.mpls_overlay_role == "server"
+        return peer_facts.mpls_overlay_role == "server"
 
     @cached_property
     def _mpls_route_reflectors(self: AvdStructuredConfigOverlayProtocol) -> dict:

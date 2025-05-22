@@ -460,6 +460,8 @@ ASN Notation: asplain
 
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 10.255.2.1 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
+| 10.255.2.2 | Inherited from peer group MPLS-OVERLAY-PEERS | default | - | Inherited from peer group MPLS-OVERLAY-PEERS | Inherited from peer group MPLS-OVERLAY-PEERS | - | Inherited from peer group MPLS-OVERLAY-PEERS | - | - | - | - |
 | 10.1.1.10 | 65124 | C2_VRF1 | - | standard | 100 | - | - | - | - | - | - |
 
 #### Router BGP VPN-IPv4 Address Family
@@ -493,6 +495,10 @@ router bgp 65001
    neighbor MPLS-OVERLAY-PEERS password 7 <removed>
    neighbor MPLS-OVERLAY-PEERS send-community
    neighbor MPLS-OVERLAY-PEERS maximum-routes 0
+   neighbor 10.255.2.1 peer group MPLS-OVERLAY-PEERS
+   neighbor 10.255.2.1 description rr1_Loopback0
+   neighbor 10.255.2.2 peer group MPLS-OVERLAY-PEERS
+   neighbor 10.255.2.2 description rr2_Loopback0
    !
    address-family ipv4
       no neighbor MPLS-OVERLAY-PEERS activate

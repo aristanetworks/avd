@@ -149,6 +149,15 @@ router_bgp:
     password: $1c$G8BQN0ezkiJOX2cuAYpsEA==
     send_community: all
     maximum_routes: 0
+  neighbors:
+  - ip_address: 10.255.2.1
+    peer_group: MPLS-OVERLAY-PEERS
+    peer: rr1
+    description: rr1_Loopback0
+  - ip_address: 10.255.2.2
+    peer_group: MPLS-OVERLAY-PEERS
+    peer: rr2
+    description: rr2_Loopback0
   address_family_ipv4:
     peer_groups:
     - name: MPLS-OVERLAY-PEERS
