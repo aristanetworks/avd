@@ -39027,7 +39027,6 @@ class EosDesigns(EosDesignsRootModel):
                             "send_community": {"type": str},
                             "next_hop_self": {"type": bool},
                             "timers": {"type": str},
-                            "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
                             "maximum_routes": {"type": int},
                             "maximum_routes_warning_only": {"type": bool},
                             "default_originate": {"type": DefaultOriginate},
@@ -39043,6 +39042,7 @@ class EosDesigns(EosDesignsRootModel):
                             "local_as": {"type": str},
                             "weight": {"type": int},
                             "bfd": {"type": bool},
+                            "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
                             "shutdown": {"type": bool},
                         }
                         ip_address: str
@@ -39064,8 +39064,6 @@ class EosDesigns(EosDesignsRootModel):
                         next_hop_self: bool | None
                         timers: str | None
                         """BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>."""
-                        bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
-                        """Override default BFD timers. BFD must be enabled with `bfd: true`."""
                         maximum_routes: int | None
                         """Maximum number of routes (0 means unlimited)."""
                         maximum_routes_warning_only: bool | None
@@ -39118,6 +39116,14 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         weight: int | None
                         bfd: bool | None
+                        bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
+                        """
+                        Specify the BFD timers to override the default values.
+                        It is recommended to keep BFD total timeout
+                        longer than the DPS timeout.
+                        The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+                        is 5 x 1 seconds.
+                        """
                         shutdown: bool | None
 
                         if TYPE_CHECKING:
@@ -39133,7 +39139,6 @@ class EosDesigns(EosDesignsRootModel):
                                 send_community: str | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
                                 timers: str | None | UndefinedType = Undefined,
-                                bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
                                 maximum_routes: int | None | UndefinedType = Undefined,
                                 maximum_routes_warning_only: bool | None | UndefinedType = Undefined,
                                 default_originate: DefaultOriginate | UndefinedType = Undefined,
@@ -39149,6 +39154,7 @@ class EosDesigns(EosDesignsRootModel):
                                 local_as: str | None | UndefinedType = Undefined,
                                 weight: int | None | UndefinedType = Undefined,
                                 bfd: bool | None | UndefinedType = Undefined,
+                                bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
                                 shutdown: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -39170,7 +39176,6 @@ class EosDesigns(EosDesignsRootModel):
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     next_hop_self: next_hop_self
                                     timers: BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
-                                    bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
                                     maximum_routes: Maximum number of routes (0 means unlimited).
                                     maximum_routes_warning_only: maximum_routes_warning_only
                                     default_originate: Subclass of AvdModel.
@@ -39206,6 +39211,12 @@ class EosDesigns(EosDesignsRootModel):
                                        number.
                                     weight: weight
                                     bfd: bfd
+                                    bfd_timers:
+                                       Specify the BFD timers to override the default values.
+                                       It is recommended to keep BFD total timeout
+                                       longer than the DPS timeout.
+                                       The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
+                                       is 5 x 1 seconds.
                                     shutdown: shutdown
 
                                 """
