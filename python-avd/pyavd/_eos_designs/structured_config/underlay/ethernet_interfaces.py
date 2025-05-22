@@ -96,15 +96,9 @@ class EthernetInterfacesMixin(Protocol):
                 if self.shared_utils.underlay_ospf:
                     ethernet_interface.ospf_network_point_to_point = True
                     ethernet_interface.ospf_area = self.inputs.underlay_ospf_area
-                    ospf_authentication = self.inputs.underlay_ospf_authentication.enabled
-                    ospf_message_digest_keys = self.inputs.underlay_ospf_authentication.message_digest_keys
-                    if ospf_authentication:
-                        if not ospf_message_digest_keys:
-                            msg = "'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined."
-                            raise AristaAvdInvalidInputsError(msg)
-
+                    if self.shared_utils.underlay_ospf_authentication.enabled:
                         ethernet_interface.ospf_authentication = "message-digest"
-                        for ospf_key in ospf_message_digest_keys:
+                        for ospf_key in self.shared_utils.underlay_ospf_authentication.message_digest_keys:
                             ethernet_interface.ospf_message_digest_keys.append_new(
                                 id=ospf_key.id,
                                 hash_algorithm=ospf_key.hash_algorithm,

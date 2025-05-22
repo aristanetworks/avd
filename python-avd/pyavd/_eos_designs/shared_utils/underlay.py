@@ -7,8 +7,11 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
+    from pyavd._eos_designs.schema import EosDesigns
+
     from . import SharedUtilsProtocol
 
 
@@ -44,6 +47,14 @@ class UnderlayMixin(Protocol):
     @cached_property
     def underlay_ospf(self: SharedUtilsProtocol) -> bool:
         return self.underlay_routing_protocol in ["ospf", "ospf-ldp"] and self.underlay_router and self.uplink_type in ["p2p", "p2p-vrfs"]
+
+    @cached_property
+    def underlay_ospf_authentication(self: SharedUtilsProtocol) -> EosDesigns.UnderlayOspfAuthentication:
+        if self.inputs.underlay_ospf_authentication.enabled and not self.inputs.underlay_ospf_authentication.message_digest_keys:
+            msg = "'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined."
+            raise AristaAvdInvalidInputsError(msg)
+
+        return self.inputs.underlay_ospf_authentication
 
     @cached_property
     def underlay_isis(self: SharedUtilsProtocol) -> bool:

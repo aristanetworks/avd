@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import AvdStringFormatter, default
 from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
@@ -119,14 +118,9 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 ospf_network_point_to_point=True,
                 ospf_area=self.inputs.underlay_ospf_area,
             )
-            ospf_message_digest_keys = self.inputs.underlay_ospf_authentication.message_digest_keys
-            if self.inputs.underlay_ospf_authentication.enabled:
-                if not ospf_message_digest_keys:
-                    msg = "'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined."
-                    raise AristaAvdInvalidInputsError(msg)
-
+            if self.shared_utils.underlay_ospf_authentication.enabled:
                 vlan_interface.ospf_authentication = "message-digest"
-                for ospf_key in ospf_message_digest_keys:
+                for ospf_key in self.shared_utils.underlay_ospf_authentication.message_digest_keys:
                     vlan_interface.ospf_message_digest_keys.append_new(
                         id=ospf_key.id,
                         hash_algorithm=ospf_key.hash_algorithm,
