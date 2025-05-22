@@ -13,11 +13,11 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 169.254.102.1/32
+  ip_address: 169.254.102.4/32
 - name: Loopback1
   description: VXLAN_TUNNEL_SOURCE
   shutdown: false
-  ip_address: 169.253.103.1/32
+  ip_address: 169.253.103.4/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -27,7 +27,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.205/24
+  ip_address: 192.168.0.207/24
   type: oob
 metadata:
   platform: vEOS
@@ -53,7 +53,7 @@ router_bfd:
     multiplier: 3
 router_bgp:
   as: '65233'
-  router_id: 169.254.102.1
+  router_id: 169.254.102.4
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -80,7 +80,7 @@ router_bgp:
   vlans:
   - id: 11
     tenant: TENANT1
-    rd: 169.254.102.1:10011
+    rd: 169.254.102.4:10011
     route_targets:
       both:
       - 10011:10011
@@ -88,10 +88,50 @@ router_bgp:
     - learned
   - id: 12
     tenant: TENANT1
-    rd: 169.254.102.1:10012
+    rd: 169.254.102.4:10012
     route_targets:
       both:
       - 10012:10012
+    redistribute_routes:
+    - learned
+  - id: 21
+    tenant: TENANT1
+    rd: 169.254.102.4:10021
+    route_targets:
+      both:
+      - 10021:10021
+    redistribute_routes:
+    - learned
+  - id: 22
+    tenant: TENANT1
+    rd: 169.254.102.4:10022
+    route_targets:
+      both:
+      - 10022:10022
+    redistribute_routes:
+    - learned
+  - id: 300
+    tenant: TENANT1
+    rd: 169.254.102.4:10300
+    route_targets:
+      both:
+      - 10300:10300
+    redistribute_routes:
+    - learned
+  - id: 3401
+    tenant: TENANT1
+    rd: 169.254.102.4:13401
+    route_targets:
+      both:
+      - 13401:13401
+    redistribute_routes:
+    - learned
+  - id: 3402
+    tenant: TENANT1
+    rd: 169.254.102.4:13402
+    route_targets:
+      both:
+      - 13402:13402
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -112,7 +152,7 @@ router_bgp:
       activate: false
   vrfs:
   - name: VRF10
-    rd: 169.254.102.1:10
+    rd: 169.254.102.4:10
     route_targets:
       import:
       - address_family: evpn
@@ -122,7 +162,22 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '10:10'
-    router_id: 169.254.102.1
+    router_id: 169.254.102.4
+    redistribute:
+      connected:
+        enabled: true
+  - name: VRF11
+    rd: 169.254.102.4:11
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '11:11'
+    router_id: 169.254.102.4
     redistribute:
       connected:
         enabled: true
@@ -141,6 +196,23 @@ vlan_interfaces:
   vrf: VRF10
   ip_address_virtual: 10.10.12.1/24
   tenant: TENANT1
+- name: Vlan21
+  description: VRF11_VLAN21
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.21.1/24
+  tenant: TENANT1
+- name: Vlan22
+  description: VRF11_VLAN22
+  shutdown: false
+  vrf: VRF11
+  ip_address_virtual: 10.10.22.1/24
+  tenant: TENANT1
+- name: Vlan300
+  description: VRF11_VLAN300
+  shutdown: false
+  vrf: VRF11
+  tenant: TENANT1
 vlan_internal_order:
   allocation: ascending
   range:
@@ -153,10 +225,28 @@ vlans:
 - id: 12
   name: VRF10_VLAN12
   tenant: TENANT1
+- id: 21
+  name: VRF11_VLAN21
+  tenant: TENANT1
+- id: 22
+  name: VRF11_VLAN22
+  tenant: TENANT1
+- id: 300
+  name: VRF11_VLAN300
+  tenant: TENANT1
+- id: 3401
+  name: L2_VLAN3401
+  tenant: TENANT1
+- id: 3402
+  name: L2_VLAN3402
+  tenant: TENANT1
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: VRF10
+  ip_routing: true
+  tenant: TENANT1
+- name: VRF11
   ip_routing: true
   tenant: TENANT1
 vxlan_interface:
@@ -170,6 +260,18 @@ vxlan_interface:
         vni: 10011
       - id: 12
         vni: 10012
+      - id: 21
+        vni: 10021
+      - id: 22
+        vni: 10022
+      - id: 300
+        vni: 10300
+      - id: 3401
+        vni: 13401
+      - id: 3402
+        vni: 13402
       vrfs:
       - name: VRF10
         vni: 10
+      - name: VRF11
+        vni: 11
