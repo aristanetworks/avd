@@ -6,7 +6,7 @@
 from __future__ import annotations
 
 import random
-from typing import Any
+from typing import Any, Literal
 
 from .password_utils import cbc_decrypt, cbc_encrypt
 
@@ -335,6 +335,48 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
         raise ValueError(msg) from exc
 
 
+########
+# Tacacs
+########
+def tacacs_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
+    """
+    Encrypt (obfuscate) a password from insecure type-7.
+
+    Args:
+        password: The clear text password
+        salt: A number within the range 0-15.
+
+    Returns:
+        str: The decrypted password as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    if not isinstance(salt, int) or salt < 0 or salt > 15:
+        msg = "Salt MUST be an integer within the range 0-15."
+        raise ValueError(msg)
+
+    return simple_7_encrypt(password, salt)
+
+
+def tacacs_decrypt(password: str) -> str:
+    """
+    Decrypt (deobfuscate) a password from insecure type-7.
+
+    Args:
+        password: The encrypted password to be decrypted.
+
+    Returns:
+        str: The decrypted password as a string.
+    """
+    if not isinstance(password, str) or not password:
+        msg = "Password MUST be a string with at least 1 character."
+        raise ValueError(msg)
+
+    return simple_7_decrypt(password)
+
+
 ###############
 # Simple type 7
 ###############
@@ -343,13 +385,14 @@ SIMPLE_7_SEED = b"dsfd;kfoA,.iyewrkldJKDHSUBsgvca69834ncxv9873254k;fg87"
 
 def simple_7_decrypt(data: str) -> str:
     """
-    Decrypt (deobfuscate) a password from insecure type-7.
+    Decrypt (deobfuscate) a tacacs key from insecure type-7.
 
     Args:
-        data: The encrypted password
+        data: The encrypted password to be decrypted.
+        salt: A number within the range 0-15.
 
     Returns:
-        str: The decrypted password as a string.
+        str: The encrypted password as a string.
     """
     salt = int(data[0:2])
     secret = bytearray.fromhex(data[2:])
