@@ -64,4 +64,4 @@ keys:
               description: The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with this MAC address and VLAN. This option is mutually exclusive with 'drop'.
             eligibility_forwarding:
               type: bool
-              description: If true, enables the ability to forward traffic on the specified interface and VLAN for this MAC address. This option is only applicable when 'interface' is defined.
+              description: Enable the ability to forward traffic on the specified interface and VLAN for this MAC address. This option is only applicable when 'interface' is defined.

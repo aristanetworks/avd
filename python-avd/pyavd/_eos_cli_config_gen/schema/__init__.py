@@ -18534,8 +18534,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             eligibility_forwarding: bool | None
             """
-            If true, enables the ability to forward traffic on the specified interface and VLAN for this MAC
-            address. This option is only applicable when 'interface' is defined.
+            Enable the ability to forward traffic on the specified interface and VLAN for this MAC address. This
+            option is only applicable when 'interface' is defined.
             """
 
             if TYPE_CHECKING:
@@ -18568,8 +18568,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
                            this MAC address and VLAN. This option is mutually exclusive with 'drop'.
                         eligibility_forwarding:
-                           If true, enables the ability to forward traffic on the specified interface and VLAN for this MAC
-                           address. This option is only applicable when 'interface' is defined.
+                           Enable the ability to forward traffic on the specified interface and VLAN for this MAC address. This
+                           option is only applicable when 'interface' is defined.
 
                     """
 
