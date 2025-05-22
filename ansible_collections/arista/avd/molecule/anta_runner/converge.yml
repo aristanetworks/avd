@@ -40,9 +40,8 @@
         anta_reports_dir: "{{ root_dir }}/anta/reports/filtered_run"
         # When a device is part of multiple filters, the last filter will be applied so the order is important
         avd_catalogs_filters:
-          # Skip VerifyNTP for all fabric devices
-          - device_list: "{{ groups['FABRIC'] }}"
-            skip_tests:
+          # Skip VerifyNTP for all devices
+          - skip_tests:
               - VerifyNTP
           # Only VerifyReachability will run on DC1_SVC_LEAVES devices
           - device_list: "{{ groups['DC1_SVC_LEAVES'] }}"
