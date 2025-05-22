@@ -1,0 +1,16 @@
+[package]
+name = "passwords"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[build-dependencies]
+pyo3-build-config = { version = "0.24.2"}
+
+[dependencies]
+sha-crypt = { version = "0.5.0", default-features = false }
+derive_more = { version = "2.0.1", features = ["display", "from"] }
+pyo3 = { version = "0.24.2", "features" = ["extension-module", "abi3"] }
+
+[lib]
+crate-type = ["cdylib", "lib"]

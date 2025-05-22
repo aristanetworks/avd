@@ -1,12 +1,11 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-import ipaddress
+
 from collections import ChainMap
 from typing import Any, Protocol
 
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
-from pyavd._errors import AristaAvdError
 from pyavd._utils import get_ip_from_pool
 
 from .utils import UtilsMixin
@@ -37,8 +36,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
 
             - first_id: offset from pool is `(mlag_primary_id - 1) * 2`
             - odd_id: offset from pool is `(odd_id - 1) * 2`. Requires MLAG pair to have a node with odd and a node with an even ID
-            - same_subnet: offset from pool is always 0. All MLAG pairs will be using the same subnet (default /31).
-              Requires the pool to have the same prefix length.
+            - same_subnet: offset from pool is always 0. All MLAG peer links will use the first subnet of the pool.
         """
         prefixlen = (
             self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length if address_family == "ipv6" else self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length
@@ -48,10 +46,6 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             return get_ip_from_pool(pool, prefixlen, offset, ip_offset)
 
         if self.inputs.fabric_ip_addressing.mlag.algorithm == "same_subnet":
-            pool_network = ipaddress.ip_network(pool, strict=False)
-            if pool_network.prefixlen != prefixlen:
-                msg = f"MLAG same_subnet addressing requires the pool to be a /{prefixlen}"
-                raise AristaAvdError(msg)
             return get_ip_from_pool(pool, prefixlen, 0, ip_offset)
 
         # Use default first_id
