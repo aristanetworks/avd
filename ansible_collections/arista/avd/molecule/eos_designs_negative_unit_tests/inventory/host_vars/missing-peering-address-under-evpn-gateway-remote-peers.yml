@@ -7,7 +7,7 @@ l3leaf:
     virtual_router_mac_address: 00:1c:73:00:00:99
     bgp_as: 65233
   nodes:
-    - name: evpn_gateway_remote_peers_no_peering_address
+    - name: missing-peering-address-under-evpn-gateway-remote-peers
       id: 1
       platform: vEOS
       mlag: false
