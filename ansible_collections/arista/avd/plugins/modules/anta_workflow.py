@@ -99,9 +99,6 @@ options:
           and a report is created to preview the tests that would be run against each device.
         type: bool
         default: false
-      logs_dir:
-        description: Directory where the ANTA debug logs will be stored. Logs are stored per ANTA instance. Debug logs can be created using `-vvv` verbosity.
-        type: str
   report:
     description: ANTA report settings. These settings define the output format and location of the ANTA reports.
     type: dict
@@ -124,12 +121,6 @@ options:
             type: list
             elements: str
             choices: ["success", "failure", "error", "skipped", "unset"]
-  strict_mode:
-    description: |-
-      When `strict_mode` is `true`, the plugin returns `failed: true` if any ANTA tests fail or error.
-      Otherwise, the plugin returns `changed: true` in such cases.
-    type: bool
-    default: false
 seealso:
   - name: ANTA website
     description: Documentation for the ANTA test framework
@@ -165,7 +156,6 @@ EXAMPLES = r"""
           # tags:
           #   - leaf
           # dry_run: true
-          logs_dir: "{{ inventory_dir }}/anta/logs"
         report:
           csv_output: "{{ inventory_dir }}/anta/reports/anta_report.csv"
           md_output: "{{ inventory_dir }}/anta/reports/anta_report.md"
@@ -174,5 +164,4 @@ EXAMPLES = r"""
           #   hide_statuses:
           #     - success
           #     - skipped
-        strict_mode: true
 """
