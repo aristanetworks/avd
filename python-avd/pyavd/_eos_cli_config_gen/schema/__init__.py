@@ -6785,6 +6785,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "sparse_mode": {"type": bool},
                     "bfd": {"type": bool},
                     "bidirectional": {"type": bool},
+                    "neighbor_filter": {"type": str},
                     "hello": {"type": Hello},
                 }
                 border_router: bool | None
@@ -6794,6 +6795,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd: bool | None
                 """Set the default for whether Bidirectional Forwarding Detection is enabled for PIM."""
                 bidirectional: bool | None
+                neighbor_filter: str | None
+                """Standard access list name."""
                 hello: Hello
                 """Subclass of AvdModel."""
 
@@ -6807,6 +6810,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         sparse_mode: bool | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -6821,6 +6825,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             sparse_mode: sparse_mode
                             bfd: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                             bidirectional: bidirectional
+                            neighbor_filter: Standard access list name.
                             hello: Subclass of AvdModel.
 
                         """
@@ -29010,6 +29015,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "sparse_mode": {"type": bool},
                     "bfd": {"type": bool},
                     "bidirectional": {"type": bool},
+                    "neighbor_filter": {"type": str},
                     "hello": {"type": Hello},
                 }
                 border_router: bool | None
@@ -29019,6 +29025,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd: bool | None
                 """Set the default for whether Bidirectional Forwarding Detection is enabled for PIM."""
                 bidirectional: bool | None
+                neighbor_filter: str | None
+                """Standard access list name."""
                 hello: Hello
                 """Subclass of AvdModel."""
 
@@ -29032,6 +29040,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         sparse_mode: bool | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -29046,6 +29055,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             sparse_mode: sparse_mode
                             bfd: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                             bidirectional: bidirectional
+                            neighbor_filter: Standard access list name.
                             hello: Subclass of AvdModel.
 
                         """
@@ -61898,6 +61908,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "local_interface": {"type": str},
                     "bfd": {"type": bool},
                     "bidirectional": {"type": bool},
+                    "neighbor_filter": {"type": str},
                     "hello": {"type": Hello},
                 }
                 border_router: bool | None
@@ -61908,6 +61919,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd: bool | None
                 """Set the default for whether Bidirectional Forwarding Detection is enabled for PIM."""
                 bidirectional: bool | None
+                neighbor_filter: str | None
+                """Standard access list name."""
                 hello: Hello
                 """Subclass of AvdModel."""
 
@@ -61922,6 +61935,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         local_interface: str | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -61937,6 +61951,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             local_interface: local_interface
                             bfd: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                             bidirectional: bidirectional
+                            neighbor_filter: Standard access list name.
                             hello: Subclass of AvdModel.
 
                         """
