@@ -10,6 +10,7 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
@@ -19,7 +20,7 @@
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [VLANs](#vlans)
   - [VLANs Summary](#vlans-summary)
   - [VLANs Device Configuration](#vlans-device-configuration)
@@ -49,22 +50,22 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.212/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.212/24 | 172.16.1.1 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.1.212/24
@@ -121,26 +122,26 @@ ntp server vrf MGMT 0.pool.ntp.org
 ```eos
 !
 ptp clock-identity 00:1C:73:1e:00:02
-ptp priority1 30
-ptp priority2 2
 ptp domain 127
 ptp mode boundary
+ptp priority1 30
+ptp priority2 2
 ptp monitor threshold offset-from-master 250
 ptp monitor threshold mean-path-delay 1500
 ptp monitor sequence-id
-ptp monitor threshold missing-message announce 3 sequence-ids
-ptp monitor threshold missing-message delay-resp 3 sequence-ids
-ptp monitor threshold missing-message follow-up 3 sequence-ids
 ptp monitor threshold missing-message sync 3 sequence-ids
+ptp monitor threshold missing-message follow-up 3 sequence-ids
+ptp monitor threshold missing-message delay-resp 3 sequence-ids
+ptp monitor threshold missing-message announce 3 sequence-ids
 ```
 
 ### Management API HTTP
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | Default Services |
-| ---- | ----- | ---------------- |
-| False | True | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services |
+| ---- | ----- | ----------- | ---------------- |
+| False | True | - | - |
 
 #### Management API VRF Access
 
@@ -148,7 +149,7 @@ ptp monitor threshold missing-message sync 3 sequence-ids
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -178,6 +179,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authentication
 
@@ -258,7 +263,7 @@ spanning-tree mst 0 priority 4096
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -291,93 +296,93 @@ vlan 212
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
-| Ethernet3 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet4 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet5 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet6 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet7 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet8 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet9 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet10 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet11 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet12 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet13 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet14 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet15 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet16 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet17 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet18 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet19 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet20 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet21 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet22 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet23 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet24 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet25 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet26 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet27 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet28 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet29 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet30 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet31 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet32 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet33 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet34 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet35 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet36 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet37 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet38 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet39 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet40 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet41 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet42 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet43 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet44 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet45 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet46 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet47 |  BLUE_VLAN212 | access | 212 | - | - | - |
-| Ethernet48 |  BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet3 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet4 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet5 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet6 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet7 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet8 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet9 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet10 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet11 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet12 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet13 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet14 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet15 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet16 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet17 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet18 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet19 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet20 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet21 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet22 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet23 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet24 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet25 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet26 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet27 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet28 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet29 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet30 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet31 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet32 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet33 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet34 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet35 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet36 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet37 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet38 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet39 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet40 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet41 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet42 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet43 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet44 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet45 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet46 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet47 | BLUE_VLAN212 | access | 212 | - | - | - |
+| Ethernet48 | BLUE_VLAN212 | access | 212 | - | - | - |
 
 *Inherited from Port-Channel Interface
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_BLUE-SPINE1_Ethernet3 | routed | - | 10.255.255.9/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_BLUE-SPINE1_Ethernet4 | routed | - | 10.255.255.11/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_blue-spine1_Ethernet3 | - | 10.255.255.9/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_blue-spine1_Ethernet4 | - | 10.255.255.11/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_BLUE-SPINE1_Ethernet3
+   description P2P_blue-spine1_Ethernet3
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.255.9/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet2
-   description P2P_LINK_TO_BLUE-SPINE1_Ethernet4
+   description P2P_blue-spine1_Ethernet4
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.255.11/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet3
    description BLUE_VLAN212
@@ -386,12 +391,12 @@ interface Ethernet3
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -402,12 +407,12 @@ interface Ethernet4
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -418,12 +423,12 @@ interface Ethernet5
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -434,12 +439,12 @@ interface Ethernet6
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -450,12 +455,12 @@ interface Ethernet7
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -466,12 +471,12 @@ interface Ethernet8
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -482,12 +487,12 @@ interface Ethernet9
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -498,12 +503,12 @@ interface Ethernet10
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -514,12 +519,12 @@ interface Ethernet11
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -530,12 +535,12 @@ interface Ethernet12
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -546,12 +551,12 @@ interface Ethernet13
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -562,12 +567,12 @@ interface Ethernet14
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -578,12 +583,12 @@ interface Ethernet15
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -594,12 +599,12 @@ interface Ethernet16
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -610,12 +615,12 @@ interface Ethernet17
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -626,12 +631,12 @@ interface Ethernet18
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -642,12 +647,12 @@ interface Ethernet19
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -658,12 +663,12 @@ interface Ethernet20
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -674,12 +679,12 @@ interface Ethernet21
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -690,12 +695,12 @@ interface Ethernet22
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -706,12 +711,12 @@ interface Ethernet23
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -722,12 +727,12 @@ interface Ethernet24
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -738,12 +743,12 @@ interface Ethernet25
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -754,12 +759,12 @@ interface Ethernet26
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -770,12 +775,12 @@ interface Ethernet27
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -786,12 +791,12 @@ interface Ethernet28
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -802,12 +807,12 @@ interface Ethernet29
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -818,12 +823,12 @@ interface Ethernet30
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -834,12 +839,12 @@ interface Ethernet31
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -850,12 +855,12 @@ interface Ethernet32
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -866,12 +871,12 @@ interface Ethernet33
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -882,12 +887,12 @@ interface Ethernet34
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -898,12 +903,12 @@ interface Ethernet35
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -914,12 +919,12 @@ interface Ethernet36
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -930,12 +935,12 @@ interface Ethernet37
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -946,12 +951,12 @@ interface Ethernet38
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -962,12 +967,12 @@ interface Ethernet39
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -978,12 +983,12 @@ interface Ethernet40
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -994,12 +999,12 @@ interface Ethernet41
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1010,12 +1015,12 @@ interface Ethernet42
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1026,12 +1031,12 @@ interface Ethernet43
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1042,12 +1047,12 @@ interface Ethernet44
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1058,12 +1063,12 @@ interface Ethernet45
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1074,12 +1079,12 @@ interface Ethernet46
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1090,12 +1095,12 @@ interface Ethernet47
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 !
@@ -1106,12 +1111,12 @@ interface Ethernet48
    switchport mode access
    switchport
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
    ptp role master
+   ptp sync-message interval -3
+   ptp transport ipv4
    spanning-tree portfast
    spanning-tree bpdufilter enable
 ```
@@ -1124,20 +1129,20 @@ interface Ethernet48
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 10.255.2.3/32 |
+| Loopback0 | ROUTER_ID | default | 10.255.2.3/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 10.255.2.3/32
 ```
@@ -1152,9 +1157,9 @@ interface Loopback0
 
 ##### IPv4
 
-| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | VRRP | ACL In | ACL Out |
-| --------- | --- | ---------- | ------------------ | ------------------------- | ---- | ------ | ------- |
-| Vlan212 |  default  |  10.10.212.1/24  |  -  |  -  |  -  |  -  |  -  |
+| Interface | VRF | IP Address | IP Address Virtual | IP Router Virtual Address | ACL In | ACL Out |
+| --------- | --- | ---------- | ------------------ | ------------------------- | ------ | ------- |
+| Vlan212 |  default  |  10.10.212.1/24  |  -  |  -  |  -  |  -  |
 
 #### VLAN Interfaces Device Configuration
 
@@ -1207,8 +1212,8 @@ no ip routing vrf MGMT
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
@@ -1220,11 +1225,13 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65202|  10.255.2.3 |
+| 65202 | 10.255.2.3 |
 
 | BGP Tuning |
 | ---------- |
@@ -1243,10 +1250,10 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.255.255.8 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.255.10 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 10.255.255.8 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.255.10 | 65200 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -1254,8 +1261,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 !
 router bgp 65202
    router-id 10.255.2.3
-   maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
@@ -1304,12 +1311,12 @@ router multicast
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet1 | - | IPv4 | - | - |
-| Ethernet2 | - | IPv4 | - | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Ethernet1 | - | IPv4 | - | - | - |
+| Ethernet2 | - | IPv4 | - | - | - |
 
 ## VRF Instances
 

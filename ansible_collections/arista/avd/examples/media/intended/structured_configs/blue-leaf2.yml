@@ -1,56 +1,1027 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+ethernet_interfaces:
+- name: Ethernet1
+  description: P2P_blue-spine1_Ethernet3
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.255.9/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: blue-spine1
+  peer_interface: Ethernet3
+  peer_type: media_spine
+  switchport:
+    enabled: false
+- name: Ethernet2
+  description: P2P_blue-spine1_Ethernet4
+  shutdown: false
+  mtu: 1500
+  ip_address: 10.255.255.11/31
+  pim:
+    ipv4:
+      sparse_mode: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    transport: ipv4
+  peer: blue-spine1
+  peer_interface: Ethernet4
+  peer_type: media_spine
+  switchport:
+    enabled: false
+- name: Ethernet3
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet4
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet5
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet6
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet7
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet8
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet9
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet10
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet11
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet12
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet13
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet14
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet15
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet16
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet17
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet18
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet19
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet20
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet21
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet22
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet23
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet24
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet25
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet26
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet27
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet28
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet29
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet30
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet31
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet32
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet33
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet34
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet35
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet36
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet37
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet38
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet39
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet40
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet41
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet42
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet43
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet44
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet45
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet46
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet47
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
+- name: Ethernet48
+  description: BLUE_VLAN212
+  shutdown: true
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
+  spanning_tree_bpdufilter: enabled
+  spanning_tree_portfast: edge
+  peer_type: network_port
+  port_profile: BLUE_212
+  switchport:
+    enabled: true
+    mode: access
+    access_vlan: 212
 hostname: blue-leaf2
-router_bgp:
-  as: '65202'
-  router_id: 10.255.2.3
-  bgp:
-    default:
-      ipv4_unicast: false
-  maximum_paths:
-    paths: 4
-    ecmp: 4
-  peer_groups:
-  - name: IPv4-UNDERLAY-PEERS
-    type: ipv4
-    password: 7x4B4rnJhZB438m9+BrBfQ==
-    maximum_routes: 12000
-    send_community: all
-  address_family_ipv4:
-    peer_groups:
-    - name: IPv4-UNDERLAY-PEERS
-      activate: true
-  redistribute_routes:
-  - source_protocol: connected
-  neighbors:
-  - ip_address: 10.255.255.8
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65200'
-    description: blue-spine1_Ethernet3
-  - ip_address: 10.255.255.10
-    peer_group: IPv4-UNDERLAY-PEERS
-    remote_as: '65200'
-    description: blue-spine1_Ethernet4
-static_routes:
-- vrf: MGMT
-  destination_address_prefix: 0.0.0.0/0
-  gateway: 172.16.1.1
-service_routing_protocols_model: multi-agent
-ip_routing: true
-router_multicast:
-  ipv4:
-    routing: true
-vlan_internal_order:
-  allocation: ascending
-  range:
-    beginning: 1006
-    ending: 1199
+ip_igmp_snooping:
+  globally_enabled: true
 ip_name_servers:
 - ip_address: 192.168.1.1
   vrf: MGMT
-spanning_tree:
-  mode: mstp
-  mst_instances:
-  - id: '0'
-    priority: 4096
+ip_routing: true
+is_deployed: true
 local_users:
 - name: admin
   privilege: 15
@@ -60,21 +1031,26 @@ local_users:
   privilege: 15
   role: network-admin
   sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
-vrfs:
-- name: MGMT
-  ip_routing: false
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 10.255.2.3/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
 management_interfaces:
 - name: Management1
-  description: oob_management
+  description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
   ip_address: 172.16.1.212/24
-  gateway: 172.16.1.1
   type: oob
-management_api_http:
-  enable_vrfs:
-  - name: MGMT
-  enable_https: true
+  gateway: 172.16.1.1
+metadata:
+  platform: vEOS-lab
+  fabric_name: MEDIA_FABRIC
 ptp:
   mode: boundary
   clock_identity: 00:1C:73:1e:00:02
@@ -93,1031 +1069,70 @@ ptp:
         delay_resp: 3
         follow_up: 3
         sync: 3
-ethernet_interfaces:
-- name: Ethernet1
-  peer: blue-spine1
-  peer_interface: Ethernet3
-  peer_type: media_spine
-  description: P2P_LINK_TO_BLUE-SPINE1_Ethernet3
+router_bgp:
+  as: '65202'
+  router_id: 10.255.2.3
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    password: 7x4B4rnJhZB438m9+BrBfQ==
+    send_community: all
+    maximum_routes: 12000
+  neighbors:
+  - ip_address: 10.255.255.8
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65200'
+    peer: blue-spine1
+    description: blue-spine1_Ethernet3
+  - ip_address: 10.255.255.10
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65200'
+    peer: blue-spine1
+    description: blue-spine1_Ethernet4
+  redistribute:
+    connected:
+      enabled: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+router_multicast:
+  ipv4:
+    routing: true
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: mstp
+  mst_instances:
+  - id: '0'
+    priority: 4096
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 172.16.1.1
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan212
+  description: VLAN212
   shutdown: false
-  mtu: 1500
-  type: routed
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-  ip_address: 10.255.255.9/31
-  pim:
-    ipv4:
-      sparse_mode: true
-- name: Ethernet2
-  peer: blue-spine1
-  peer_interface: Ethernet4
-  peer_type: media_spine
-  description: P2P_LINK_TO_BLUE-SPINE1_Ethernet4
-  shutdown: false
-  mtu: 1500
-  type: routed
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-  ip_address: 10.255.255.11/31
-  pim:
-    ipv4:
-      sparse_mode: true
-- name: Ethernet3
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet4
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet5
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet6
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet7
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet8
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet9
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet10
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet11
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet12
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet13
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet14
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet15
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet16
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet17
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet18
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet19
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet20
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet21
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet22
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet23
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet24
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet25
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet26
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet27
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet28
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet29
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet30
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet31
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet32
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet33
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet34
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet35
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet36
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet37
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet38
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet39
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet40
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet41
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet42
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet43
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet44
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet45
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet46
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet47
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-- name: Ethernet48
-  peer: BLUE_VLAN212
-  peer_type: network_port
-  port_profile: BLUE_212
-  description: BLUE_VLAN212
-  shutdown: true
-  type: switched
-  mode: access
-  vlans: '212'
-  spanning_tree_portfast: edge
-  spanning_tree_bpdufilter: enabled
-  ptp:
-    announce:
-      interval: 0
-      timeout: 3
-    delay_req: -3
-    sync_message:
-      interval: -3
-    transport: ipv4
-    enable: true
-    role: master
-loopback_interfaces:
-- name: Loopback0
-  description: Router_ID
-  shutdown: false
-  ip_address: 10.255.2.3/32
+  ip_address: 10.10.212.1/24
+  tenant: blue
+  tags:
+  - blue-leaf2
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
 vlans:
 - id: 212
   name: VLAN212
   tenant: blue
-ip_igmp_snooping:
-  globally_enabled: true
-vlan_interfaces:
-- name: Vlan212
-  tenant: blue
-  tags:
-  - blue-leaf2
-  description: VLAN212
-  shutdown: false
-  ip_address: 10.10.212.1/24
+vrfs:
+- name: MGMT
+  ip_routing: false

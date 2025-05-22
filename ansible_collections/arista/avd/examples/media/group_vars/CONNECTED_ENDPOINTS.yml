@@ -79,8 +79,6 @@ network_ports:
     enabled: false
     description: Routed Endpoints
     speed: forced 1000full
-    structured_config:
-      type: routed
 
   - switches:
       - media-PTP-1
@@ -103,8 +101,6 @@ network_ports:
     enabled: false
     description: Routed Endpoints
     speed: forced 1000full
-    structured_config:
-      type: routed
 
   - switches:
       - media-PTP-2

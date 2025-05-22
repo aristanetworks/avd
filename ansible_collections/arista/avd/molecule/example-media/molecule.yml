@@ -9,13 +9,13 @@ scenario:
     - destroy
 dependency:
   name: galaxy
+  enabled: false
 driver:
-  name: delegated
+  name: default
+  options:
+    managed: false
 platforms:
   - name: dummy
-    # image: avdteam/base:3.8-v2.0
-    # pre_build_image: true
-    managed: false
 provisioner:
   name: ansible
   config_options:
@@ -27,12 +27,5 @@ provisioner:
   ansible_args:
     - --inventory
     - ${MOLECULE_SCENARIO_DIRECTORY}/../../examples/media/inventory.yml
-    - --extra-vars
-    - "avd_data_validation_mode=error"
-    - --extra-vars
-    - "avd_data_conversion_mode=error"
-    # Running with tags build to avoid deploy_eapi to run.
-    - --tags
-    - build
 verifier:
   name: ansible

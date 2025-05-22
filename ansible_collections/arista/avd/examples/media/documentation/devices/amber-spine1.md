@@ -10,13 +10,14 @@
   - [Management API HTTP](#management-api-http)
 - [Authentication](#authentication)
   - [Local Users](#local-users)
+  - [Enable Password](#enable-password)
   - [AAA Authentication](#aaa-authentication)
   - [AAA Authorization](#aaa-authorization)
 - [Monitoring](#monitoring)
   - [TerminAttr Daemon](#terminattr-daemon)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
-  - [Internal VLAN Allocation Policy Configuration](#internal-vlan-allocation-policy-configuration)
+  - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
 - [Interfaces](#interfaces)
   - [Ethernet Interfaces](#ethernet-interfaces)
   - [Loopback Interfaces](#loopback-interfaces)
@@ -42,22 +43,22 @@
 
 ##### IPv4
 
-| Management Interface | description | Type | VRF | IP Address | Gateway |
+| Management Interface | Description | Type | VRF | IP Address | Gateway |
 | -------------------- | ----------- | ---- | --- | ---------- | ------- |
-| Management1 | oob_management | oob | MGMT | 172.16.1.11/24 | 172.16.1.1 |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | 172.16.1.11/24 | 172.16.1.1 |
 
 ##### IPv6
 
-| Management Interface | description | Type | VRF | IPv6 Address | IPv6 Gateway |
+| Management Interface | Description | Type | VRF | IPv6 Address | IPv6 Gateway |
 | -------------------- | ----------- | ---- | --- | ------------ | ------------ |
-| Management1 | oob_management | oob | MGMT | - | - |
+| Management1 | OOB_MANAGEMENT | oob | MGMT | - | - |
 
 #### Management Interfaces Device Configuration
 
 ```eos
 !
 interface Management1
-   description oob_management
+   description OOB_MANAGEMENT
    no shutdown
    vrf MGMT
    ip address 172.16.1.11/24
@@ -114,26 +115,26 @@ ntp server vrf MGMT 0.pool.ntp.org
 ```eos
 !
 ptp clock-identity 00:1C:73:14:00:01
-ptp priority1 20
-ptp priority2 1
 ptp domain 127
 ptp mode boundary
+ptp priority1 20
+ptp priority2 1
 ptp monitor threshold offset-from-master 250
 ptp monitor threshold mean-path-delay 1500
 ptp monitor sequence-id
-ptp monitor threshold missing-message announce 3 sequence-ids
-ptp monitor threshold missing-message delay-resp 3 sequence-ids
-ptp monitor threshold missing-message follow-up 3 sequence-ids
 ptp monitor threshold missing-message sync 3 sequence-ids
+ptp monitor threshold missing-message follow-up 3 sequence-ids
+ptp monitor threshold missing-message delay-resp 3 sequence-ids
+ptp monitor threshold missing-message announce 3 sequence-ids
 ```
 
 ### Management API HTTP
 
 #### Management API HTTP Summary
 
-| HTTP | HTTPS | Default Services |
-| ---- | ----- | ---------------- |
-| False | True | - |
+| HTTP | HTTPS | UNIX-Socket | Default Services |
+| ---- | ----- | ----------- | ---------------- |
+| False | True | - | - |
 
 #### Management API VRF Access
 
@@ -141,7 +142,7 @@ ptp monitor threshold missing-message sync 3 sequence-ids
 | -------- | -------- | -------- |
 | MGMT | - | - |
 
-#### Management API HTTP Configuration
+#### Management API HTTP Device Configuration
 
 ```eos
 !
@@ -171,6 +172,10 @@ management api http-commands
 username admin privilege 15 role network-admin nopassword
 username ansible privilege 15 role network-admin secret sha512 <removed>
 ```
+
+### Enable Password
+
+Enable password has been disabled
 
 ### AAA Authentication
 
@@ -231,7 +236,7 @@ daemon TerminAttr
 | ------------------| --------------- | ------------ |
 | ascending | 1006 | 1199 |
 
-### Internal VLAN Allocation Policy Configuration
+### Internal VLAN Allocation Policy Device Configuration
 
 ```eos
 !
@@ -253,102 +258,102 @@ vlan internal order ascending range 1006 1199
 
 ##### IPv4
 
-| Interface | Description | Type | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
-| --------- | ----------- | -----| ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
-| Ethernet1 | P2P_LINK_TO_AMBER-LEAF1_Ethernet1 | routed | - | 10.255.254.0/31 | default | 1500 | False | - | - |
-| Ethernet2 | P2P_LINK_TO_AMBER-LEAF1_Ethernet2 | routed | - | 10.255.254.2/31 | default | 1500 | False | - | - |
-| Ethernet3 | P2P_LINK_TO_AMBER-LEAF2_Ethernet1 | routed | - | 10.255.254.8/31 | default | 1500 | False | - | - |
-| Ethernet4 | P2P_LINK_TO_AMBER-LEAF2_Ethernet2 | routed | - | 10.255.254.10/31 | default | 1500 | False | - | - |
-| Ethernet5 | P2P_LINK_TO_MEDIA-PTP-1_Ethernet1 | routed | - | 10.255.253.0/31 | default | 1500 | False | - | - |
-| Ethernet6 | P2P_LINK_TO_MEDIA-PTP-2_Ethernet1 | routed | - | 10.255.253.4/31 | default | 1500 | False | - | - |
+| Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
+| Ethernet1 | P2P_amber-leaf1_Ethernet1 | - | 10.255.254.0/31 | default | 1500 | False | - | - |
+| Ethernet2 | P2P_amber-leaf1_Ethernet2 | - | 10.255.254.2/31 | default | 1500 | False | - | - |
+| Ethernet3 | P2P_amber-leaf2_Ethernet1 | - | 10.255.254.8/31 | default | 1500 | False | - | - |
+| Ethernet4 | P2P_amber-leaf2_Ethernet2 | - | 10.255.254.10/31 | default | 1500 | False | - | - |
+| Ethernet5 | P2P_media-PTP-1_Ethernet1 | - | 10.255.253.0/31 | default | 1500 | False | - | - |
+| Ethernet6 | P2P_media-PTP-2_Ethernet1 | - | 10.255.253.4/31 | default | 1500 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
 ```eos
 !
 interface Ethernet1
-   description P2P_LINK_TO_AMBER-LEAF1_Ethernet1
+   description P2P_amber-leaf1_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.254.0/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet2
-   description P2P_LINK_TO_AMBER-LEAF1_Ethernet2
+   description P2P_amber-leaf1_Ethernet2
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.254.2/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet3
-   description P2P_LINK_TO_AMBER-LEAF2_Ethernet1
+   description P2P_amber-leaf2_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.254.8/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet4
-   description P2P_LINK_TO_AMBER-LEAF2_Ethernet2
+   description P2P_amber-leaf2_Ethernet2
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.254.10/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet5
-   description P2P_LINK_TO_MEDIA-PTP-1_Ethernet1
+   description P2P_media-PTP-1_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.253.0/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 !
 interface Ethernet6
-   description P2P_LINK_TO_MEDIA-PTP-2_Ethernet1
+   description P2P_media-PTP-2_Ethernet1
    no shutdown
    mtu 1500
    no switchport
    ip address 10.255.253.4/31
    pim ipv4 sparse-mode
    ptp enable
-   ptp sync-message interval -3
    ptp announce interval 0
-   ptp transport ipv4
    ptp announce timeout 3
    ptp delay-req interval -3
+   ptp sync-message interval -3
+   ptp transport ipv4
 ```
 
 ### Loopback Interfaces
@@ -359,20 +364,20 @@ interface Ethernet6
 
 | Interface | Description | VRF | IP Address |
 | --------- | ----------- | --- | ---------- |
-| Loopback0 | Router_ID | default | 10.255.1.1/32 |
+| Loopback0 | ROUTER_ID | default | 10.255.1.1/32 |
 
 ##### IPv6
 
 | Interface | Description | VRF | IPv6 Address |
 | --------- | ----------- | --- | ------------ |
-| Loopback0 | Router_ID | default | - |
+| Loopback0 | ROUTER_ID | default | - |
 
 #### Loopback Interfaces Device Configuration
 
 ```eos
 !
 interface Loopback0
-   description Router_ID
+   description ROUTER_ID
    no shutdown
    ip address 10.255.1.1/32
 ```
@@ -418,8 +423,8 @@ no ip routing vrf MGMT
 
 #### Static Routes Summary
 
-| VRF | Destination Prefix | Next Hop IP             | Exit interface      | Administrative Distance       | Tag               | Route Name                    | Metric         |
-| --- | ------------------ | ----------------------- | ------------------- | ----------------------------- | ----------------- | ----------------------------- | -------------- |
+| VRF | Destination Prefix | Next Hop IP | Exit interface | Administrative Distance | Tag | Route Name | Metric |
+| --- | ------------------ | ----------- | -------------- | ----------------------- | --- | ---------- | ------ |
 | MGMT | 0.0.0.0/0 | 172.16.1.1 | - | 1 | - | - | - |
 
 #### Static Routes Device Configuration
@@ -431,11 +436,13 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 ### Router BGP
 
+ASN Notation: asplain
+
 #### Router BGP Summary
 
 | BGP AS | Router ID |
 | ------ | --------- |
-| 65100|  10.255.1.1 |
+| 65100 | 10.255.1.1 |
 
 | BGP Tuning |
 | ---------- |
@@ -454,14 +461,14 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 
 #### BGP Neighbors
 
-| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive |
-| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- |
-| 10.255.253.1 | 65401 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.253.5 | 65402 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.254.1 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.254.3 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.254.9 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
-| 10.255.254.11 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - |
+| Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
+| -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
+| 10.255.253.1 | 65401 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.253.5 | 65402 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.254.1 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.254.3 | 65101 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.254.9 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 10.255.254.11 | 65102 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
 
@@ -469,8 +476,8 @@ ip route vrf MGMT 0.0.0.0/0 172.16.1.1
 !
 router bgp 65100
    router-id 10.255.1.1
-   maximum-paths 4 ecmp 4
    no bgp default ipv4-unicast
+   maximum-paths 4 ecmp 4
    neighbor IPv4-UNDERLAY-PEERS peer group
    neighbor IPv4-UNDERLAY-PEERS password 7 <removed>
    neighbor IPv4-UNDERLAY-PEERS send-community
@@ -531,16 +538,16 @@ router multicast
 
 ### PIM Sparse Mode
 
-#### PIM Sparse Mode enabled interfaces
+#### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ----------- | --------------- |
-| Ethernet1 | - | IPv4 | - | - |
-| Ethernet2 | - | IPv4 | - | - |
-| Ethernet3 | - | IPv4 | - | - |
-| Ethernet4 | - | IPv4 | - | - |
-| Ethernet5 | - | IPv4 | - | - |
-| Ethernet6 | - | IPv4 | - | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Ethernet1 | - | IPv4 | - | - | - |
+| Ethernet2 | - | IPv4 | - | - | - |
+| Ethernet3 | - | IPv4 | - | - | - |
+| Ethernet4 | - | IPv4 | - | - | - |
+| Ethernet5 | - | IPv4 | - | - | - |
+| Ethernet6 | - | IPv4 | - | - | - |
 
 ## VRF Instances
 
