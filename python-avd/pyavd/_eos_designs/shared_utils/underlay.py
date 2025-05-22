@@ -7,6 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -58,10 +59,6 @@ class UnderlayMixin(Protocol):
         return self.inputs.underlay_ipv6 and self.underlay_router
 
     @cached_property
-    def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
-        return self.inputs.underlay_ipv6_numbered
-
-    @cached_property
     def underlay_multicast(self: SharedUtilsProtocol) -> bool:
         return self.inputs.underlay_multicast and self.underlay_router
 
@@ -87,3 +84,17 @@ class UnderlayMixin(Protocol):
             return underlay_multicast_rp_interfaces
 
         return None
+
+    @cached_property
+    def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
+        if self.inputs.underlay_ipv6_numbered:
+            if self.is_wan_router:
+                msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.underlay_multicast_rp_interfaces:
+                msg = "Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.underlay_rfc5549:
+                msg = "Invalid combination of inputs. RFC5549 is not supported with numbered IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+        return self.inputs.underlay_ipv6_numbered

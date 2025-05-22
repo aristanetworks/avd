@@ -9,7 +9,6 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import get_ipv4_networks_from_pool, get_ipv6_networks_from_pool
 
 if TYPE_CHECKING:
@@ -33,12 +32,6 @@ class PrefixListsMixin(Protocol):
             return
 
         if self.shared_utils.underlay_ipv6_numbered:
-            if self.shared_utils.is_wan_router:
-                msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
-            if self.shared_utils.underlay_multicast_rp_interfaces:
-                msg = "Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay"
-                raise AristaAvdInvalidInputsError(msg)
             return
 
         # IPv4 - PL-LOOPBACKS-EVPN-OVERLAY
