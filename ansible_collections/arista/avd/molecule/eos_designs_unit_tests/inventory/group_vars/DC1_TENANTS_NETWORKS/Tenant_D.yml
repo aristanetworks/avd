@@ -124,6 +124,9 @@ tenant_d:
             ospf:
               area: 0.0.0.0
               enabled: true
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.1
       - name: TENANT_D_WAN_ZONE
         vrf_vni: 42
         redistribute_connected: false

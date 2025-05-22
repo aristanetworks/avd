@@ -6803,6 +6803,7 @@ service routing protocols model multi-agent
 
 Virtual Router MAC Address: 00:1c:73:00:dc:01
 Virtual Router MAC Address Advertisement Interval: 40
+Virtual Router MAC Address MLAG Peer: Enabled
 
 #### Virtual Router MAC Address Device Configuration
 
@@ -6810,6 +6811,8 @@ Virtual Router MAC Address Advertisement Interval: 40
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ip virtual-router mac-address advertisement-interval 40
+!
+ip virtual-router mac-address mlag-peer
 ```
 
 ### IP Routing

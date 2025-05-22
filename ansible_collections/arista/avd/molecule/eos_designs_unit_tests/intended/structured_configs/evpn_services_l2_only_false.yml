@@ -111,6 +111,10 @@ prefix_lists:
     action: permit 192.168.255.0/24 eq 32
   - sequence: 20
     action: permit 192.168.254.0/24 eq 32
+- name: PL-STATIC-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 10
+    action: permit 10.10.10.0/24
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -118,6 +122,20 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+- name: RM-EVPN-EXPORT-VRF-DEFAULT
+  sequence_numbers:
+  - sequence: 20
+    type: permit
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+- name: RM-BGP-UNDERLAY-PEERS-OUT
+  sequence_numbers:
+  - sequence: 15
+    type: deny
+    match:
+    - ip address prefix-list PL-STATIC-VRF-DEFAULT
+  - sequence: 20
+    type: permit
 router_bfd:
   multihop:
     interval: 1200
@@ -140,6 +158,7 @@ router_bgp:
     password: 0nsCUm70mvSTxVO0ldytrg==
     send_community: all
     maximum_routes: 12000
+    route_map_out: RM-BGP-UNDERLAY-PEERS-OUT
   - name: EVPN-OVERLAY-PEERS
     type: evpn
     update_source: Loopback0
@@ -153,6 +172,8 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
     ospf:
+      enabled: true
+    static:
       enabled: true
   vlan_aware_bundles:
   - name: Tenant_A_APP_Zone
@@ -401,6 +422,8 @@ router_bgp:
     redistribute:
       connected:
         enabled: true
+      static:
+        enabled: true
   - name: Tenant_A_WEB_Zone
     rd: 192.168.255.109:11
     route_targets:
@@ -502,6 +525,7 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - 123:123
+        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
   - name: Tenant_D_OP_Zone
     rd: 192.168.255.109:40
     route_targets:
@@ -548,6 +572,13 @@ static_routes:
 - vrf: MGMT
   prefix: 0.0.0.0/0
   next_hop: 192.168.200.5
+- vrf: Tenant_A_WAN_Zone
+  prefix: 10.3.5.0/24
+  next_hop: 1.2.3.4
+  name: SVI_static_route
+- vrf: default
+  prefix: 10.10.10.0/24
+  next_hop: 10.10.10.1
 - vrf: Tenant_D_OP_Zone
   prefix: 10.3.11.0/24
   interface: Vlan411

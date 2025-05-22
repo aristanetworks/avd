@@ -110,6 +110,9 @@ tenant_a:
             nodes:
               - node: DC1-LEAF1A
                 ip_address: 10.1.32.1/24
+                static_routes:
+                  - prefix: 10.10.10.0/24
+                    next_hop: 10.10.10.1
             ip_virtual_router_addresses:
               - 10.1.32.254
               - 10.2.32.254/24
@@ -232,6 +235,10 @@ tenant_a:
               cost: 100
               authentication: simple
               simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+            static_routes:
+              - prefix: 10.3.5.0/24
+                next_hop: 1.2.3.4
+                name: SVI_static_route
           - id: 151
             name: svi_with_no_tags
             enabled: true

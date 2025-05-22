@@ -329,6 +329,7 @@ interface Port-Channel3.1000
    !
    encapsulation vlan
       client dot1q 1000 network client
+   storm-control broadcast level 15
 !
 interface Port-Channel3.1001
    no shutdown
@@ -337,6 +338,7 @@ interface Port-Channel3.1001
       client dot1q 1001 network client
 !
 interface Port-Channel3.1002
+   !! Test structured_config for Port-Channel subinterface
    no shutdown
    !
    encapsulation vlan
