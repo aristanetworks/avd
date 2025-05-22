@@ -23718,6 +23718,13 @@ keys:
                       '
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
+                  dscp_ecn:
+                    type: dict
+                    keys:
+                      rewrite_bridged_enabled:
+                        type: bool
+                        description: Enable DSCP and ECN rewrite for VXLAN bridged
+                          packets.
               vlan_range:
                 type: dict
                 description: 'Set VNI on range of VLANs. Number of VLANs must equal

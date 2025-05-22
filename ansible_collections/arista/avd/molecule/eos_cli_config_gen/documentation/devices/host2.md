@@ -878,6 +878,7 @@ interface Dps1
 | UDP port | 4789 |
 | Qos dscp propagation encapsulation | Disabled |
 | Qos ECN propagation | Disabled |
+| Qos DHCP ECN rewrite bridged | Disabled |
 | Qos map dscp to traffic-class decapsulation | Disabled |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings
@@ -898,6 +899,7 @@ interface Vxlan1
    vxlan vlan 111 flood vtep 10.1.1.10 10.1.1.11
    vxlan vlan 110 multicast group 239.9.1.4
    no vxlan qos ecn propagation
+   no vxlan qos dscp ecn rewrite bridged enabled
    no vxlan qos dscp propagation encapsulation
    no vxlan qos map dscp to traffic-class decapsulation
 ```
