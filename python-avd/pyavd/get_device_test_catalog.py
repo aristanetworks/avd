@@ -63,10 +63,10 @@ def get_device_test_catalog(
     settings = settings or AvdCatalogGenerationSettings()
 
     start_time = perf_counter()
-    LOGGER.info("<%s>: generating catalog with settings: %s", hostname, settings.model_dump(mode="json"))
+    LOGGER.debug("<%s> Generating ANTA catalog with settings: %s", hostname, settings.model_dump(mode="json"))
 
     if settings.ignore_is_deployed is False and not structured_config.get("is_deployed", False):
-        LOGGER.debug("<%s>: device is not deployed, returning an empty catalog", hostname)
+        LOGGER.info("<%s> Device is not deployed, returning an empty catalog", hostname)
         return AntaCatalog()
 
     # Check for invalid test names across all filters
@@ -83,7 +83,7 @@ def get_device_test_catalog(
     # Remove any tests from run_tests that are in skip_tests
     if settings.run_tests and settings.skip_tests:
         settings.run_tests = [test for test in settings.run_tests if test not in settings.skip_tests]
-        LOGGER.debug("<%s>: cleaned up run_tests after removing skipped tests: %s", hostname, settings.run_tests)
+        LOGGER.debug("<%s> Cleaned up run_tests after removing skipped tests: %s", hostname, settings.run_tests)
 
     # Filter test specs based on skip_tests and run_tests
     filtered_test_specs = []
@@ -107,6 +107,6 @@ def get_device_test_catalog(
         dump_anta_catalog(hostname, catalog, settings.output_dir)
 
     stop_time = perf_counter()
-    LOGGER.debug("<%s>: generated catalog in %.4f seconds", hostname, stop_time - start_time)
+    LOGGER.debug("<%s> Generated ANTA catalog in %.4f seconds", hostname, stop_time - start_time)
 
     return catalog

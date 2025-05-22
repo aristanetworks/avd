@@ -2,6 +2,11 @@
 # Testing the rendering of `eos_cli` when this knob is true
 avd_eos_designs_enforce_duplication_checks_across_all_models: true
 
+# To test node_config does not have platform defined and platform_settings has non-default platform.
+platform_settings:
+  - platforms: [ Test1 ]
+    management_interface: Management100
+
 type: l3spine
 l3spine:
   nodes:
