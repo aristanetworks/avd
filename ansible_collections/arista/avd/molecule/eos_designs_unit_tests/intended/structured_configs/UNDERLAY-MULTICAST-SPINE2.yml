@@ -209,6 +209,9 @@ router_bgp:
       activate: true
     - name: EVPN-OVERLAY-PEERS
       activate: false
+router_multicast:
+  ipv4:
+    routing: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

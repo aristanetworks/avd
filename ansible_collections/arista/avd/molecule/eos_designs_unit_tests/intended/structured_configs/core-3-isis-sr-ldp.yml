@@ -60,6 +60,9 @@ router_isis:
   segment_routing_mpls:
     enabled: true
     router_id: 10.0.0.3
+router_multicast:
+  ipv4:
+    routing: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

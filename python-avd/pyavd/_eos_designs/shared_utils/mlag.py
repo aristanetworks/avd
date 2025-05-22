@@ -266,8 +266,8 @@ class MlagMixin(Protocol):
 
     @cached_property
     def underlay_multicast_pim_mlag_enabled(self: SharedUtilsProtocol) -> bool:
-        return bool(default(self.node_config.underlay_multicast.pim_sm.mlag, self.underlay_multicast_pim_sm_enabled))
+        return default(self.node_config.underlay_multicast.pim_sm.mlag, self.underlay_multicast_pim_sm_enabled)
 
     @cached_property
     def underlay_multicast_static_mlag_enabled(self: SharedUtilsProtocol) -> bool:
-        return bool(default(self.node_config.underlay_multicast.static.mlag, self.underlay_multicast_static_enabled))
+        return default(self.node_config.underlay_multicast.static.mlag, self.underlay_multicast_static_enabled)
