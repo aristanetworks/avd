@@ -13,7 +13,6 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from collections.abc import Generator
-    from logging import Logger
 
 
 class TestLoggerAdapter(LoggerAdapter):
@@ -26,13 +25,12 @@ class TestLoggerAdapter(LoggerAdapter):
     extra = {
         "device": "<device_name>",
         "test": "<test_name>",
-        "context": "<test_context>",
+        "context": "<test_context>",  # Optional
     }
     ```
-    The `create` method can be used as an alternative constructor to create a new TestLoggerAdapter instance using the proper `extra` dict shown above.
 
     When logging a message, the logger will format the `LogMessage` Enum message using the kwargs passed to the logger,
-    and prepend the message with the device and test names, and optionally the context.
+    and prepend the message with the device and test names, and optionally the context: `<device> test context message`.
     """
 
     def process(self, msg: LogMessage, kwargs: dict) -> tuple[str, dict]:
@@ -43,12 +41,11 @@ class TestLoggerAdapter(LoggerAdapter):
         # Extract the device, test, and context from extra
         device = self.extra["device"]
         test = self.extra["test"]
-        context = self.extra.get("context", "")
+        context = self.extra.get("context")
 
-        # Format: <device> [test] (context): message
-        prefix = f"<{device}> [{test}]"
+        prefix = f"<{device}> {test}"
         if context:
-            prefix += f" ({context})"
+            prefix += f" {context}"
 
         # Format the LogMessage using the provided kwargs and extract the fields name from the message string
         fields = [field_name for _, field_name, _, _ in string.Formatter().parse(msg.value) if field_name is not None]
@@ -58,7 +55,7 @@ class TestLoggerAdapter(LoggerAdapter):
         for field in fields:
             kwargs.pop(field, None)
 
-        return f"{prefix}: {msg}", kwargs
+        return f"{prefix} {msg}", kwargs
 
     @contextmanager
     def context(self, context: str) -> Generator[TestLoggerAdapter, None, None]:
@@ -70,12 +67,6 @@ class TestLoggerAdapter(LoggerAdapter):
         finally:
             self.extra = original_extra
 
-    @staticmethod
-    def create(device: str, test: str, logger: Logger, context: str | None = None) -> TestLoggerAdapter:
-        """Construct a new TestLoggerAdapter instance."""
-        extra = {"device": device, "test": test, "context": context or ""}
-        return TestLoggerAdapter(logger, extra)
-
 
 class LogMessage(Enum):
     """
@@ -85,36 +76,21 @@ class LogMessage(Enum):
     """
 
     # Peer-related messages
-    PEER_UNAVAILABLE = "{caller} skipped - peer {peer} not in fabric or not deployed"
-    PEER_OUTSIDE_BOUNDARY = "{caller} skipped - peer {peer} not in {boundary} boundary"
-    PEER_INTERFACE_NO_IP = "{caller} skipped - peer {peer} interface {peer_interface} has no IP"
+    PEER_UNAVAILABLE = "{identity} skipped - Peer {peer} not in fabric or not deployed"
+    PEER_INTERFACE_NO_IP = "{interface} skipped - Peer {peer} interface {peer_interface} has no IP"
 
     # Interface state messages
-    INTERFACE_SHUTDOWN = "{caller} skipped - interface is shutdown"
-    INTERFACE_USING_DHCP = "{caller} skipped - DHCP interface"
-    INTERFACE_IS_SUBINTERFACE = "{caller} skipped - subinterface"
-    INTERFACE_NOT_INBAND_MGMT = "{caller} skipped - not an inband management SVI"
-    INTERFACE_VALIDATION_DISABLED = "{caller} skipped - validate_state or validate_lldp disabled"
-    INTERFACE_NO_IP = "{caller} skipped - no IP address configured"
+    INTERFACE_SHUTDOWN = "{interface} skipped - Interface is shutdown"
+    INTERFACE_USING_DHCP = "{interface} skipped - DHCP interface"
+    INTERFACE_IS_SUBINTERFACE = "{interface} skipped - Subinterface"
+    INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
+    INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
 
-    # IP-related messages
-    IPV6_UNSUPPORTED = "{caller} skipped - IPv6 not supported"
-    LOOPBACK0_NO_IP = "skipped - no Loopback0 IP"
-    VTEP_NO_IP = "skipped - no VTEP IP"
-
-    # Device role messages
-    DEVICE_NOT_VTEP = "skipped - device is not a VTEP or is a WAN router"
-    DEVICE_NOT_WAN_ROUTER = "skipped - device is not a WAN router"
-    DEVICE_NO_INBAND_MGMT = "skipped - no inband management SVI found"
-
-    # BGP-specific messages
-    BGP_AF_NOT_ACTIVATED = "{caller} - address families {capability} skipped"
-
-    # STUN-specific messages
-    STUN_NO_CLIENT_INTERFACE = "path group {caller} skipped - no STUN client interfaces found"
-    STUN_NO_STATIC_PEERS = "path group {caller} skipped - no static peers configured"
+    # WAN-specific messages
+    PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
+    PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
 
     # Input generation messages
-    INPUT_NONE_FOUND = "skipped - no inputs available"
-    INPUT_NO_DATA_MODEL = "skipped - data model {caller} not found"
-    INPUT_MISSING_FIELDS = "{caller} skipped - missing required fields: {fields}"
+    INPUT_NONE_FOUND = "skipped - No inputs available"
+    INPUT_NO_DATA_MODELS = "skipped - Data models {data_models} not found"
+    INPUT_MISSING_FIELDS = "{identity} skipped - Missing required fields: {fields}"

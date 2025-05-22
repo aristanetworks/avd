@@ -48,7 +48,7 @@ class VerifySpecificIPSecConnInputFactory(AntaTestInputFactory):
         for path_group in self.structured_config.router_path_selection.path_groups:
             # Check if the path group has static peers
             if not path_group.static_peers:
-                self.logger.debug(LogMessage.STUN_NO_STATIC_PEERS, caller=path_group.name)
+                self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
 
             # Add static peers to the list of IP security connections

@@ -4,14 +4,14 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
+from logging import getLogger
 from typing import TYPE_CHECKING
 
-from pyavd._anta.logs import LogMessage
+from pyavd._anta.logs import LogMessage, TestLoggerAdapter
 
 if TYPE_CHECKING:
     from anta.models import AntaTest
 
-    from pyavd._anta.logs import TestLoggerAdapter
     from pyavd._anta.models import DeviceTestContext
 
 
@@ -28,36 +28,38 @@ class AntaTestInputFactory(ABC):
         The device context for the test.
     structured_config : EosCliConfigGen
         The structured configuration model of the device.
-    structured_configs : dict[str, MinimalStructuredConfig]
+    minimal_structured_configs : dict[str, MinimalStructuredConfig]
         The minimal structured configurations of all devices in the fabric.
-    logger : TestLoggerAdapter
-        Custom logger used for the input factory.
+    logger_adapter : TestLoggerAdapter
+        Custom logger adapter used for the input factory.
     """
 
-    def __init__(self, device_context: DeviceTestContext, logger: TestLoggerAdapter) -> None:
+    def __init__(self, device_context: DeviceTestContext, test_name: str) -> None:
         """Initialize the `AntaTestInputFactory`."""
         self.device = device_context
         self.structured_config = device_context.structured_config
-        self.structured_configs = device_context.structured_configs
-        self.logger = logger
+        self.minimal_structured_configs = device_context.minimal_structured_configs
+
+        # Create the logger adapter for the test input factory
+        self.logger_adapter = TestLoggerAdapter(logger=getLogger(self.__module__), extra={"device": self.device.hostname, "test": test_name})
 
     @abstractmethod
     def create(self) -> list[AntaTest.Input] | None:
         """Create the `AntaTest.Input` models for the `AntaTest`."""
 
-    def is_peer_available(self, peer: str, caller: str) -> bool:
+    def is_peer_available(self, peer: str, identity: str) -> bool:
         """Check if a peer is part of the fabric and is deployed."""
-        if peer not in self.structured_configs or not self.structured_configs[peer].is_deployed:
-            self.logger.debug(LogMessage.PEER_UNAVAILABLE, caller=caller, peer=peer)
+        if peer not in self.minimal_structured_configs or not self.minimal_structured_configs[peer].is_deployed:
+            self.logger_adapter.debug(LogMessage.PEER_UNAVAILABLE, identity=identity, peer=peer)
             return False
         return True
 
-    def get_interface_ip(self, peer: str, peer_interface: str, caller: str) -> str | None:
+    def get_interface_ip(self, peer: str, peer_interface: str, interface: str) -> str | None:
         """Get the IP address of a peer interface."""
-        if not self.is_peer_available(peer, caller=caller):
+        if not self.is_peer_available(peer, identity=interface):
             return None
-        for intf in self.structured_configs[peer].ethernet_interfaces:
+        for intf in self.minimal_structured_configs[peer].ethernet_interfaces:
             if intf.name == peer_interface:
                 return intf.ip_address
-        self.logger.debug(LogMessage.PEER_INTERFACE_NO_IP, caller=caller, peer=peer, peer_interface=peer_interface)
+        self.logger_adapter.debug(LogMessage.PEER_INTERFACE_NO_IP, interface=interface, peer=peer, peer_interface=peer_interface)
         return None
