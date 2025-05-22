@@ -32,7 +32,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.0.205/24
+  ip_address: 192.168.0.204/24
   type: oob
 metadata:
   platform: vEOS
@@ -94,7 +94,7 @@ router_bgp:
     send_community: all
     maximum_routes: 0
   neighbors:
-  - ip_address: 169.254.102.1
+  - ip_address: 169.254.102.2
     peer_group: MPLS-OVERLAY-PEERS
     peer: evpn_overlay_mpls_route_reflectors2_ibgp
     description: evpn_overlay_mpls_route_reflectors2_ibgp_Loopback0
