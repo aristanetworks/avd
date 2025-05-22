@@ -1,5 +1,6 @@
 ---
 wan_mode: cv-pathfinder
+fabric_name: FABRIC_UNSPPORTED_WAN_ROUTER_UNDERLAY_IPV6_UNMBERED
 type: wan_router
 underlay_routing_protocol: ebgp
 underlay_ipv6_numbered: true
@@ -51,4 +52,4 @@ wan_carriers:
     trusted: true
 
 expected_error_message: >-
-  Invalid combination of inputs. WAN is not yet supported with IPv6 underlay
+  Invalid combination of inputs. WAN is not yet supported with IPv6 underlay for host 'unsupported-wan-router-underlay-ipv6-numbered'.
