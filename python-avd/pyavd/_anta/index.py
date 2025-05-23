@@ -30,6 +30,11 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyAVTRoleInputFactory,
     ),
     TestSpec(
+        test_class=VerifyAVTSpecificPath,
+        conditional_keys=[StructuredConfigKey.ROUTER_AVT_VRFS, StructuredConfigKey.ROUTER_PATH_SELECTION_PATH_GROUPS],
+        input_factory=VerifyAVTSpecificPathInputFactory,
+    ),
+    TestSpec(
         test_class=VerifyBGPPeerSession,
         conditional_keys=[StructuredConfigKey.ROUTER_BGP],
         input_factory=VerifyBGPPeerSessionInputFactory,
@@ -112,6 +117,11 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyPathsHealth,
         conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
+    ),
+    TestSpec(
+        test_class=VerifySpecificPath,
+        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION_PATH_GROUPS],
+        input_factory=VerifySpecificPathInputFactory,
     ),
     TestSpec(
         test_class=VerifyReachability,

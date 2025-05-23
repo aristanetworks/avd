@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 """Centralized package to import all the tests of the ANTA framework."""
 
-from anta.tests.avt import VerifyAVTPathHealth, VerifyAVTRole
+from anta.tests.avt import VerifyAVTPathHealth, VerifyAVTRole, VerifyAVTSpecificPath
 from anta.tests.configuration import VerifyRunningConfigDiffs, VerifyZeroTouch
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 from anta.tests.hardware import (
@@ -29,7 +29,7 @@ from anta.tests.mlag import (
     VerifyMlagReloadDelay,
     VerifyMlagStatus,
 )
-from anta.tests.path_selection import VerifyPathsHealth
+from anta.tests.path_selection import VerifyPathsHealth, VerifySpecificPath
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn, VerifyTelnetStatus
@@ -48,6 +48,7 @@ __all__ = [
     "VerifyAPIHttpsSSL",
     "VerifyAVTPathHealth",
     "VerifyAVTRole",
+    "VerifyAVTSpecificPath",
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
@@ -77,6 +78,7 @@ __all__ = [
     "VerifySTPBlockedPorts",
     "VerifySTPCounters",
     "VerifySpecificIPSecConn",
+    "VerifySpecificPath",
     "VerifyStormControlDrops",
     "VerifyStunClientTranslation",
     "VerifyTelnetStatus",
