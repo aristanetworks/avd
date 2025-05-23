@@ -22,6 +22,7 @@ T_P2pLinksProfiles = TypeVar("T_P2pLinksProfiles", EosDesigns.CoreInterfaces.P2p
 T_Ptp = TypeVar("T_Ptp", EosCliConfigGen.EthernetInterfacesItem.Ptp, EosCliConfigGen.PortChannelInterfacesItem.Ptp)
 T_Te = TypeVar("T_Te", EosCliConfigGen.EthernetInterfacesItem.TrafficEngineering, EosCliConfigGen.PortChannelInterfacesItem.TrafficEngineering)
 
+
 class UtilsMixin(Protocol):
     """
     Mixin Class with internal functions.
