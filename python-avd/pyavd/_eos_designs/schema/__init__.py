@@ -1012,6 +1012,97 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class TrafficEngineering(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdministrativeGroups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AdministrativeGroups._item_type = str
+
+                class Bandwidth(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
+                    number: int
+                    unit: Literal["gbps", "mbps", "percent"]
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, number: int | UndefinedType = Undefined, unit: Literal["gbps", "mbps", "percent"] | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            Bandwidth.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                number: number
+                                unit: unit
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "administrative_groups": {"type": AdministrativeGroups},
+                    "srlg": {"type": str},
+                    "metric": {"type": int},
+                    "bandwidth": {"type": Bandwidth},
+                }
+                enabled: bool
+                """Default value: `False`"""
+                administrative_groups: AdministrativeGroups
+                """
+                List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                integers 0-127.
+
+                Subclass of AvdList with `str` items.
+                """
+                srlg: str | None
+                """SRLG name or number."""
+                metric: int | None
+                bandwidth: Bandwidth
+                """
+                Interface maximum reservable bandwidth.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
+                        srlg: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        bandwidth: Bandwidth | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrafficEngineering.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            administrative_groups:
+                               List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                               integers 0-127.
+
+                               Subclass of AvdList with `str` items.
+                            srlg: SRLG name or number.
+                            metric: metric
+                            bandwidth:
+                               Interface maximum reservable bandwidth.
+
+                               Subclass of AvdModel.
+
+                        """
+
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -1201,6 +1292,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
+                "traffic_engineering": {"type": TrafficEngineering},
                 "port_channel": {"type": PortChannel},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
@@ -1316,6 +1408,8 @@ class EosDesigns(EosDesignsRootModel):
             """QOS service profile."""
             macsec_profile: str | None
             """MAC security profile."""
+            traffic_engineering: TrafficEngineering
+            """Subclass of AvdModel."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -1371,6 +1465,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
+                    traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
@@ -1446,6 +1541,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
                         macsec_profile: MAC security profile.
+                        traffic_engineering: Subclass of AvdModel.
                         port_channel:
                            Port-channel parameters.
 
@@ -1580,6 +1676,97 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: enabled
                             name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            class TrafficEngineering(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdministrativeGroups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AdministrativeGroups._item_type = str
+
+                class Bandwidth(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
+                    number: int
+                    unit: Literal["gbps", "mbps", "percent"]
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, number: int | UndefinedType = Undefined, unit: Literal["gbps", "mbps", "percent"] | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            Bandwidth.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                number: number
+                                unit: unit
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "administrative_groups": {"type": AdministrativeGroups},
+                    "srlg": {"type": str},
+                    "metric": {"type": int},
+                    "bandwidth": {"type": Bandwidth},
+                }
+                enabled: bool
+                """Default value: `False`"""
+                administrative_groups: AdministrativeGroups
+                """
+                List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                integers 0-127.
+
+                Subclass of AvdList with `str` items.
+                """
+                srlg: str | None
+                """SRLG name or number."""
+                metric: int | None
+                bandwidth: Bandwidth
+                """
+                Interface maximum reservable bandwidth.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
+                        srlg: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        bandwidth: Bandwidth | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrafficEngineering.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            administrative_groups:
+                               List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                               integers 0-127.
+
+                               Subclass of AvdList with `str` items.
+                            srlg: SRLG name or number.
+                            metric: metric
+                            bandwidth:
+                               Interface maximum reservable bandwidth.
+
+                               Subclass of AvdModel.
 
                         """
 
@@ -1772,6 +1959,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
+                "traffic_engineering": {"type": TrafficEngineering},
                 "port_channel": {"type": PortChannel},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
@@ -1887,6 +2075,8 @@ class EosDesigns(EosDesignsRootModel):
             """QOS service profile."""
             macsec_profile: str | None
             """MAC security profile."""
+            traffic_engineering: TrafficEngineering
+            """Subclass of AvdModel."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -1942,6 +2132,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
+                    traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
@@ -2017,6 +2208,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
                         macsec_profile: MAC security profile.
+                        traffic_engineering: Subclass of AvdModel.
                         port_channel:
                            Port-channel parameters.
 
@@ -4972,6 +5164,97 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class TrafficEngineering(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdministrativeGroups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AdministrativeGroups._item_type = str
+
+                class Bandwidth(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
+                    number: int
+                    unit: Literal["gbps", "mbps", "percent"]
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, number: int | UndefinedType = Undefined, unit: Literal["gbps", "mbps", "percent"] | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            Bandwidth.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                number: number
+                                unit: unit
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "administrative_groups": {"type": AdministrativeGroups},
+                    "srlg": {"type": str},
+                    "metric": {"type": int},
+                    "bandwidth": {"type": Bandwidth},
+                }
+                enabled: bool
+                """Default value: `False`"""
+                administrative_groups: AdministrativeGroups
+                """
+                List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                integers 0-127.
+
+                Subclass of AvdList with `str` items.
+                """
+                srlg: str | None
+                """SRLG name or number."""
+                metric: int | None
+                bandwidth: Bandwidth
+                """
+                Interface maximum reservable bandwidth.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
+                        srlg: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        bandwidth: Bandwidth | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrafficEngineering.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            administrative_groups:
+                               List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                               integers 0-127.
+
+                               Subclass of AvdList with `str` items.
+                            srlg: SRLG name or number.
+                            metric: metric
+                            bandwidth:
+                               Interface maximum reservable bandwidth.
+
+                               Subclass of AvdModel.
+
+                        """
+
             class PortChannel(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -5161,6 +5444,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
+                "traffic_engineering": {"type": TrafficEngineering},
                 "port_channel": {"type": PortChannel},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
@@ -5276,6 +5560,8 @@ class EosDesigns(EosDesignsRootModel):
             """QOS service profile."""
             macsec_profile: str | None
             """MAC security profile."""
+            traffic_engineering: TrafficEngineering
+            """Subclass of AvdModel."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -5331,6 +5617,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
+                    traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
@@ -5406,6 +5693,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
                         macsec_profile: MAC security profile.
+                        traffic_engineering: Subclass of AvdModel.
                         port_channel:
                            Port-channel parameters.
 
@@ -5540,6 +5828,97 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             enabled: enabled
                             name: Flow tracker name as defined in flow_tracking_settings.
+
+                        """
+
+            class TrafficEngineering(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdministrativeGroups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                AdministrativeGroups._item_type = str
+
+                class Bandwidth(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"number": {"type": int}, "unit": {"type": str}}
+                    number: int
+                    unit: Literal["gbps", "mbps", "percent"]
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, number: int | UndefinedType = Undefined, unit: Literal["gbps", "mbps", "percent"] | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            Bandwidth.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                number: number
+                                unit: unit
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "enabled": {"type": bool, "default": False},
+                    "administrative_groups": {"type": AdministrativeGroups},
+                    "srlg": {"type": str},
+                    "metric": {"type": int},
+                    "bandwidth": {"type": Bandwidth},
+                }
+                enabled: bool
+                """Default value: `False`"""
+                administrative_groups: AdministrativeGroups
+                """
+                List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                integers 0-127.
+
+                Subclass of AvdList with `str` items.
+                """
+                srlg: str | None
+                """SRLG name or number."""
+                metric: int | None
+                bandwidth: Bandwidth
+                """
+                Interface maximum reservable bandwidth.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        enabled: bool | UndefinedType = Undefined,
+                        administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
+                        srlg: str | None | UndefinedType = Undefined,
+                        metric: int | None | UndefinedType = Undefined,
+                        bandwidth: Bandwidth | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrafficEngineering.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            enabled: enabled
+                            administrative_groups:
+                               List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
+                               integers 0-127.
+
+                               Subclass of AvdList with `str` items.
+                            srlg: SRLG name or number.
+                            metric: metric
+                            bandwidth:
+                               Interface maximum reservable bandwidth.
+
+                               Subclass of AvdModel.
 
                         """
 
@@ -5732,6 +6111,7 @@ class EosDesigns(EosDesignsRootModel):
                 "flow_tracking": {"type": FlowTracking},
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
+                "traffic_engineering": {"type": TrafficEngineering},
                 "port_channel": {"type": PortChannel},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
@@ -5847,6 +6227,8 @@ class EosDesigns(EosDesignsRootModel):
             """QOS service profile."""
             macsec_profile: str | None
             """MAC security profile."""
+            traffic_engineering: TrafficEngineering
+            """Subclass of AvdModel."""
             port_channel: PortChannel
             """
             Port-channel parameters.
@@ -5902,6 +6284,7 @@ class EosDesigns(EosDesignsRootModel):
                     flow_tracking: FlowTracking | UndefinedType = Undefined,
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
+                    traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
@@ -5977,6 +6360,7 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         qos_profile: QOS service profile.
                         macsec_profile: MAC security profile.
+                        traffic_engineering: Subclass of AvdModel.
                         port_channel:
                            Port-channel parameters.
 

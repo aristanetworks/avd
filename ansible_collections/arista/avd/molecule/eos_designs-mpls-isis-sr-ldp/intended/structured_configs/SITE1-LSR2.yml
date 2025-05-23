@@ -32,6 +32,16 @@ ethernet_interfaces:
   peer_type: pe
   switchport:
     enabled: false
+  traffic_engineering:
+    enabled: true
+    administrative_groups:
+    - GRP2
+    - '127'
+    srlg: SRLG2
+    metric: 20
+    bandwidth:
+      number: 90
+      unit: percent
   eos_cli: 'link-debounce time 1000
 
     '
@@ -62,6 +72,16 @@ ethernet_interfaces:
   peer_type: p
   switchport:
     enabled: false
+  traffic_engineering:
+    enabled: true
+    administrative_groups:
+    - TEST_GRP
+    - '129'
+    srlg: TEST
+    metric: 10
+    bandwidth:
+      number: 90
+      unit: percent
   eos_cli: 'link-debounce time 1000
 
     '

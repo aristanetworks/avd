@@ -214,6 +214,12 @@ vlan 2020
 | Ethernet1 | - | CORE | - | 60 | point-to-point | level-2 | False | md5 |
 | Ethernet2 | - | CORE | - | 500 | point-to-point | level-2 | False | md5 |
 
+#### Traffic Engineering
+
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| Ethernet2 | True | TEST_GRP,129 | 10 | 90 percent | - | TEST |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -257,6 +263,11 @@ interface Ethernet2
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   traffic-engineering
+   traffic-engineering bandwidth 90 percent
+   traffic-engineering administrative-group TEST_GRP,129
+   traffic-engineering srlg TEST
+   traffic-engineering metric 10
    link-debounce time 1500
 
 !

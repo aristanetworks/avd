@@ -170,6 +170,12 @@ vlan internal order ascending range 1006 1199
 
 *Inherited from Port-Channel Interface
 
+#### Traffic Engineering
+
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| Ethernet3 | True | TEST_GRP,129 | 10 | 90 percent | - | TEST |
+
 #### Ethernet Interfaces Device Configuration
 
 ```eos
@@ -192,6 +198,11 @@ interface Ethernet3
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   traffic-engineering
+   traffic-engineering bandwidth 90 percent
+   traffic-engineering administrative-group TEST_GRP,129
+   traffic-engineering srlg TEST
+   traffic-engineering metric 10
    link-debounce time 1000
 
 !
@@ -243,6 +254,13 @@ interface Ethernet15
 | Port-Channel12 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
 | Port-Channel110 | CUSTOM_NAME | - | 60 | point-to-point | level-2 | False | md5 |
 
+#### Traffic Engineering
+
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
+| Port-Channel12 | True | TEST_GRP,129 | 10 | 90 percent | - | TEST |
+| Port-Channel110 | True | TEST_GRP,129 | 10 | 90 percent | - | TEST |
+
 #### Port-Channel Interfaces Device Configuration
 
 ```eos
@@ -264,6 +282,11 @@ interface Port-Channel12
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   traffic-engineering
+   traffic-engineering bandwidth 90 percent
+   traffic-engineering administrative-group TEST_GRP,129
+   traffic-engineering srlg TEST
+   traffic-engineering metric 10
    link-debounce time 1600
 
 !
@@ -284,6 +307,11 @@ interface Port-Channel110
    isis network point-to-point
    isis authentication mode md5
    isis authentication key 7 <removed>
+   traffic-engineering
+   traffic-engineering bandwidth 90 percent
+   traffic-engineering administrative-group TEST_GRP,129
+   traffic-engineering srlg TEST
+   traffic-engineering metric 10
    link-debounce time 1600
 
 ```

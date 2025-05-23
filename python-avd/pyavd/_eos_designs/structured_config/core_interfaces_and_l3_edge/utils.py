@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 T_P2pLinksItem = TypeVar("T_P2pLinksItem", EosDesigns.CoreInterfaces.P2pLinksItem, EosDesigns.L3Edge.P2pLinksItem)
 T_P2pLinksProfiles = TypeVar("T_P2pLinksProfiles", EosDesigns.CoreInterfaces.P2pLinksProfiles, EosDesigns.L3Edge.P2pLinksProfiles)
 T_Ptp = TypeVar("T_Ptp", EosCliConfigGen.EthernetInterfacesItem.Ptp, EosCliConfigGen.PortChannelInterfacesItem.Ptp)
-
+T_Te = TypeVar("T_Te", EosCliConfigGen.EthernetInterfacesItem.TrafficEngineering, EosCliConfigGen.PortChannelInterfacesItem.TrafficEngineering)
 
 class UtilsMixin(Protocol):
     """
@@ -224,6 +224,32 @@ class UtilsMixin(Protocol):
         ptp_config.enable = True
 
         return ptp_config
+
+    def _get_te_config_interface(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, output_type: type[T_Te]) -> T_Te:
+        """
+        Returns traffic-engineering configuration for one interface.
+
+        Covers common config that is applicable to both port-channels and ethernet interfaces.
+        This config will only be used on the main interface - so not port-channel members.
+        """
+        te_config = output_type()
+
+        if p2p_link.traffic_engineering.enabled:
+            te_config = p2p_link.traffic_engineering
+
+            # if (admingroups := p2p_link.traffic_engineering.administrative_groups):
+            #     te_config.administrative_groups = admingroups
+
+            # if (srlg := p2p_link.traffic_engineering.srlg):
+            #     te_config.srlg = srlg
+
+            # if (metric := p2p_link.traffic_engineering.metric):
+            #     te_config.metric = metric
+
+            # if (bandwidth := p2p_link.traffic_engineering.bandwidth):
+            #     te_config.bandwidth = bandwidth
+
+        return te_config
 
     def _update_common_interface_cfg(
         self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,

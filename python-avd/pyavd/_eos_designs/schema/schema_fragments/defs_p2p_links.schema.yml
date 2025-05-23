@@ -167,6 +167,48 @@ $defs:
         macsec_profile:
           type: str
           description: MAC security profile.
+        traffic_engineering:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              default: false
+            administrative_groups:
+              type: list
+              description: List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single integers 0-127.
+              items:
+                type: str
+                convert_types:
+                  - int
+            srlg:
+              description: SRLG name or number.
+              type: str
+              convert_types:
+                - int
+            metric:
+              type: int
+              convert_types:
+                - str
+              min: 1
+              max: 16777215
+            bandwidth:
+              type: dict
+              description: Interface maximum reservable bandwidth.
+              keys:
+                number:
+                  type: int
+                  required: true
+                  convert_types:
+                    - str
+                  min: 0
+                  max: 10000
+                unit:
+                  type: str
+                  required: true
+                  valid_values:
+                    - gbps
+                    - mbps
+                    - percent
         port_channel:
           description: Port-channel parameters.
           type: dict

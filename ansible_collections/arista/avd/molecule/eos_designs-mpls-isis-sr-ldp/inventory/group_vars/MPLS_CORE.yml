@@ -170,12 +170,24 @@ core_interfaces:
       isis_authentication_key: asdadjiwtelogkkdng
       raw_eos_cli: |
         link-debounce time 1000
+      traffic_engineering:
+        enabled: true
+        srlg: TEST
+        administrative_groups:
+          - TEST_GRP
+          - 129
+        metric: 10
+        bandwidth:
+          number: 90
+          unit: percent
   p2p_links:
 
     - nodes: [ SITE1-LER1, SITE1-LSR1 ]
       id: 1
       interfaces: [ Ethernet1, Ethernet1 ]
       profile: default_bb_profile
+      traffic_engineering:
+        enabled: false
 
     - nodes: [ SITE1-LER2, SITE1-LSR2 ]
       id: 2
@@ -186,6 +198,12 @@ core_interfaces:
       isis_hello_padding: false
       isis_circuit_type: level-1-2
       isis_metric: 50
+      traffic_engineering:
+        srlg: SRLG2
+        metric: 20
+        administrative_groups:
+          - GRP2
+          - 127
 
     - nodes: [ SITE1-LER1, SITE1-LER2 ]
       id: 3
