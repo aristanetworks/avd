@@ -7376,6 +7376,8 @@ keys:
             mac_address:
               type: str
               required: true
+              convert_types:
+              - int
               description: 'The static MAC address to configure.
 
                 The combination of ''mac_address'' and ''vlan'' must be unique across
