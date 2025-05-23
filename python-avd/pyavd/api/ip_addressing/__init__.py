@@ -296,18 +296,8 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
         """
         if self._loopback_ipv4_address:
             return self._loopback_ipv4_address
-
-        if self.shared_utils.underlay_ipv6_numbered:
-            if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
-                return self._template(
-                    template_path,
-                    switch_id=self._id,
-                    router_id_pool=self._router_id_pool,
-                    loopback_ipv4_offset=self._loopback_ipv4_offset,
-                )
-
-            offset = self._id + self._loopback_ipv4_offset
-            return get_ip_from_pool(self._router_id_pool, 32, offset, 0)
+        
+        loopback_pool = self._loopback_ipv4_pool if not self.shared_utils.underlay_ipv6_numbered else self._router_id_pool
 
         if template_path := self.shared_utils.node_type_key_data.ip_addressing.router_id:
             return self._template(
@@ -318,7 +308,7 @@ class AvdIpAddressingProtocol(UtilsMixin, AvdFactsProtocol, Protocol):
             )
 
         offset = self._id + self._loopback_ipv4_offset
-        return get_ip_from_pool(self._loopback_ipv4_pool, 32, offset, 0)
+        return get_ip_from_pool(loopback_pool, 32, offset, 0)
 
     def ipv6_router_id(self) -> str:
         """
