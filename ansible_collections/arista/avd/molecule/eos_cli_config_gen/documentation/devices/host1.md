@@ -7102,6 +7102,14 @@ router adaptive-virtual-topology
 
 - Nexthop fast fail-over is enabled.
 
+- Software Forwarding Hardware Offload MTU: 78
+
+#### VRF Software Forwarding Hardware Offload MTU
+
+| VRF | MTU |
+|-----|-----|
+| BLUE-C2 | 98 |
+
 #### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy |
@@ -7123,9 +7131,11 @@ router adaptive-virtual-topology
 router general
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
+   software forwarding hardware offload mtu 78
    hardware next-hop fast-failover
    !
    vrf BLUE-C2
+      software forwarding hardware offload mtu 98
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1

@@ -51995,13 +51995,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "leak_routes": {"type": LeakRoutes}, "routes": {"type": Routes}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "leak_routes": {"type": LeakRoutes},
+                "routes": {"type": Routes},
+                "software_forwarding_hardware_offload_mtu": {"type": int},
+            }
             name: str
             """Destination-VRF."""
             leak_routes: LeakRoutes
             """Subclass of AvdList with `LeakRoutesItem` items."""
             routes: Routes
             """Subclass of AvdModel."""
+            software_forwarding_hardware_offload_mtu: int | None
+            """
+            MTU value for software-forwarded packets within a specific VRF that use hardware offload.
+            This
+            setting overrides the global config for a specific vrf.
+            """
 
             if TYPE_CHECKING:
 
@@ -52011,6 +52022,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     leak_routes: LeakRoutes | UndefinedType = Undefined,
                     routes: Routes | UndefinedType = Undefined,
+                    software_forwarding_hardware_offload_mtu: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -52022,6 +52034,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: Destination-VRF.
                         leak_routes: Subclass of AvdList with `LeakRoutesItem` items.
                         routes: Subclass of AvdModel.
+                        software_forwarding_hardware_offload_mtu:
+                           MTU value for software-forwarded packets within a specific VRF that use hardware offload.
+                           This
+                           setting overrides the global config for a specific vrf.
 
                     """
 
@@ -52100,6 +52116,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "router_id": {"type": RouterId},
             "nexthop_fast_failover": {"type": bool, "default": False},
+            "software_forwarding_hardware_offload_mtu": {"type": int},
             "vrfs": {"type": Vrfs},
             "control_functions": {"type": ControlFunctions},
         }
@@ -52107,6 +52124,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         nexthop_fast_failover: bool
         """Default value: `False`"""
+        software_forwarding_hardware_offload_mtu: int | None
+        """MTU value for software-forwarded packets across all vrfs that use hardware offload."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         control_functions: ControlFunctions
@@ -52129,6 +52148,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 router_id: RouterId | UndefinedType = Undefined,
                 nexthop_fast_failover: bool | UndefinedType = Undefined,
+                software_forwarding_hardware_offload_mtu: int | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 control_functions: ControlFunctions | UndefinedType = Undefined,
             ) -> None:
@@ -52141,6 +52161,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     router_id: Subclass of AvdModel.
                     nexthop_fast_failover: nexthop_fast_failover
+                    software_forwarding_hardware_offload_mtu: MTU value for software-forwarded packets across all vrfs that use hardware offload.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     control_functions:
                        Routing control functions (RCF) used to filter and update routes from a peer or during
