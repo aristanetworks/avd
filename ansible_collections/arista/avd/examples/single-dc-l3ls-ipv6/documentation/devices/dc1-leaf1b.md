@@ -995,7 +995,7 @@ router bfd
 | Sequence | Action |
 | -------- | ------ |
 | 10 | permit 2001:db8:1::/48 eq 64 |
-| 15 | permit 2001:db8:5::/48 eq 64 |
+| 20 | permit 2001:db8:5::/48 eq 64 |
 
 ##### PL-MLAG-PEER-VRFS
 
@@ -1009,7 +1009,7 @@ router bfd
 !
 ipv6 prefix-list PL-LOOPBACKS-EVPN-OVERLAY-V6
    seq 10 permit 2001:db8:1::/48 eq 64
-   seq 15 permit 2001:db8:5::/48 eq 64
+   seq 20 permit 2001:db8:5::/48 eq 64
 !
 ipv6 prefix-list PL-MLAG-PEER-VRFS
    seq 10 permit 2001:db8:4::/64

@@ -47,7 +47,7 @@ ipv6_prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 2001:db8:1::/48 eq 64
-  - sequence: 15
+  - sequence: 20
     action: permit 2001:db8:5::/48 eq 64
 ipv6_unicast_routing: true
 is_deployed: true
