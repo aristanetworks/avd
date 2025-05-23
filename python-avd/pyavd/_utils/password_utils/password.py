@@ -340,14 +340,14 @@ def isis_decrypt(password: str, key: str, mode: str) -> str:
 ########
 def tacacs_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) -> str:
     """
-    Encrypt (obfuscate) a password from insecure type-7.
+    Encrypt (obfuscate) a Tacacs key with insecure type-7.
 
     Args:
-        password: The clear text password
+        password: The clear text Tacacs key.
         salt: A number within the range 0-15.
 
     Returns:
-        str: The decrypted password as a string.
+        str: The encrypted Tacacs key as a string.
     """
     if not isinstance(password, str) or not password:
         msg = "Password MUST be a string with at least 1 character."
@@ -362,13 +362,13 @@ def tacacs_encrypt(password: str, salt: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
 
 def tacacs_decrypt(password: str) -> str:
     """
-    Decrypt (deobfuscate) a password from insecure type-7.
+    Decrypt (deobfuscate) a Tacacs key from insecure type-7.
 
     Args:
-        password: The encrypted password to be decrypted.
+        password: The encrypted Tacacs key to be decrypted.
 
     Returns:
-        str: The decrypted password as a string.
+        str: The decrypted Tacacs key as a string.
     """
     if not isinstance(password, str) or not password:
         msg = "Password MUST be a string with at least 1 character."
@@ -385,14 +385,13 @@ SIMPLE_7_SEED = b"dsfd;kfoA,.iyewrkldJKDHSUBsgvca69834ncxv9873254k;fg87"
 
 def simple_7_decrypt(data: str) -> str:
     """
-    Decrypt (deobfuscate) a tacacs key from insecure type-7.
+    Decrypt (deobfuscate) a password from insecure type-7.
 
     Args:
         data: The encrypted password to be decrypted.
-        salt: A number within the range 0-15.
 
     Returns:
-        str: The encrypted password as a string.
+        str: The decrypted password as a string.
     """
     salt = int(data[0:2])
     secret = bytearray.fromhex(data[2:])
