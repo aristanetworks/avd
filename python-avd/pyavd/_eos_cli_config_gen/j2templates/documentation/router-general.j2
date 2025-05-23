@@ -23,7 +23,7 @@
 
 - Software Forwarding Hardware Offload MTU: {{ router_general.software_forwarding_hardware_offload_mtu }}
 {%     endif %}
-{%     if router_general.vrfs | arista.avd.default([]) | selectattr('leak_routes','arista.avd.defined') | list %}
+{%     if router_general.vrfs | arista.avd.default([]) | selectattr('software_forwarding_hardware_offload_mtu','arista.avd.defined') | list %}
 
 #### VRF Software Forwarding Hardware Offload MTU
 
@@ -33,7 +33,7 @@
 | {{ vrf.name }} | {{ vrf.software_forwarding_hardware_offload_mtu }} |
 {%         endfor %}
 {%     endif %}
-{%     if router_general.vrfs | arista.avd.default([]) | selectattr('software_forwarding_hardware_offload_mtu','arista.avd.defined') | list %}
+{%     if router_general.vrfs | arista.avd.default([]) | selectattr('leak_routes','arista.avd.defined') | list %}
 
 #### VRF Route leaking
 
