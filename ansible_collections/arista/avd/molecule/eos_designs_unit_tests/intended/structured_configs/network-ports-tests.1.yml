@@ -732,6 +732,12 @@ ethernet_interfaces:
     id: 222
     mode: active
   peer_type: network_port
+- name: Ethernet25
+  description: Add all vlans
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
 hostname: network-ports-tests.1
 ip_igmp_snooping:
   globally_enabled: true

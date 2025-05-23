@@ -152,18 +152,6 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         return vlans, trunk_groups
 
     @cached_property
-    def _mlag_peer_endpoint_vlans_and_trunk_groups(self: EosDesignsFactsGeneratorProtocol) -> tuple[set, set]:
-        """
-        Return set of vlans and set of trunk groups used by connected_endpoints on the MLAG peer.
-
-        This could differ from local vlans and trunk groups if a connected endpoint is only connected to one leaf.
-        """
-        if not self.shared_utils.mlag:
-            return set(), set()
-
-        return self._mlag_peer_facts_generator._endpoint_vlans_and_trunk_groups
-
-    @cached_property
     def _endpoint_vlans_and_trunk_groups(self: EosDesignsFactsGeneratorProtocol) -> tuple[set, set]:
         """
         Return set of vlans and set of trunk groups.
@@ -182,14 +170,13 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
 
         Ex: {1, 20, 21, 22, 23} or set().
         """
-        if not self.shared_utils.node_config.filter.only_vlans_in_use:
-            return set()
-
         endpoint_vlans, _ = self._endpoint_vlans_and_trunk_groups
         if not self.shared_utils.mlag:
             return endpoint_vlans
 
-        mlag_endpoint_vlans, _ = self._mlag_peer_endpoint_vlans_and_trunk_groups
+        # Get the set of vlans and set of trunk groups used by connected_endpoints on the MLAG peer.
+        # This could differ from local vlans and trunk groups if a connected endpoint is only connected to one leaf.
+        mlag_endpoint_vlans, _ = self._mlag_peer_facts_generator._endpoint_vlans_and_trunk_groups
 
         return endpoint_vlans.union(mlag_endpoint_vlans)
 
@@ -216,7 +203,9 @@ class VlansMixin(EosDesignsFactsProtocol, Protocol):
         if not self.shared_utils.mlag:
             return endpoint_trunk_groups
 
-        _, mlag_endpoint_trunk_groups = self._mlag_peer_endpoint_vlans_and_trunk_groups
+        # Get the set of vlans and set of trunk groups used by connected_endpoints on the MLAG peer.
+        # This could differ from local vlans and trunk groups if a connected endpoint is only connected to one leaf.
+        _, mlag_endpoint_trunk_groups = self._mlag_peer_facts_generator._endpoint_vlans_and_trunk_groups
         return endpoint_trunk_groups.union(mlag_endpoint_trunk_groups)
 
     @remove_cached_property_type

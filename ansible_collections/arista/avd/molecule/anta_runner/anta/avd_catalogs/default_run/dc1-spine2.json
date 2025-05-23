@@ -514,7 +514,12 @@
           "tags": [
             "dc1-spine2"
           ]
-        }
+        },
+        "allowed_causes": [
+          "Reload requested by the user.",
+          "Reload requested after FPGA upgrade",
+          "System reloaded due to Zero Touch Provisioning"
+        ]
       }
     }
   ]
