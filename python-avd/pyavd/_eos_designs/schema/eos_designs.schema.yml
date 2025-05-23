@@ -7606,14 +7606,6 @@ $defs:
                     bfd:
                       type: bool
                     bfd_timers:
-                      description: 'Specify the BFD timers to override the default
-                        values.
-
-                        It is recommended to keep BFD total timeout longer than the
-                        DPS timeout.
-
-                        The Default BFD timeout is 10 x 1 seconds and the default
-                        DPS timeout is 5 x 1 seconds.'
                       type: dict
                       $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers
                     shutdown:

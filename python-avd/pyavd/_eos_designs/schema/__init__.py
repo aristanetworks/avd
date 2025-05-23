@@ -39117,13 +39117,7 @@ class EosDesigns(EosDesignsRootModel):
                         weight: int | None
                         bfd: bool | None
                         bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
-                        """
-                        Specify the BFD timers to override the default values.
-                        It is recommended to keep BFD total timeout
-                        longer than the DPS timeout.
-                        The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
-                        is 5 x 1 seconds.
-                        """
+                        """Override default BFD timers. BFD must be enabled with `bfd: true`."""
                         shutdown: bool | None
 
                         if TYPE_CHECKING:
@@ -39211,12 +39205,7 @@ class EosDesigns(EosDesignsRootModel):
                                        number.
                                     weight: weight
                                     bfd: bfd
-                                    bfd_timers:
-                                       Specify the BFD timers to override the default values.
-                                       It is recommended to keep BFD total timeout
-                                       longer than the DPS timeout.
-                                       The Default BFD timeout is 10 x 1 seconds and the default DPS timeout
-                                       is 5 x 1 seconds.
+                                    bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
                                     shutdown: shutdown
 
                                 """

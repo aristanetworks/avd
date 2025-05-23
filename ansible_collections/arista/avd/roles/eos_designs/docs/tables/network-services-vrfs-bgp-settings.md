@@ -132,7 +132,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_as</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].local_as") | String |  |  |  | Local BGP AS <1-4294967295> or AS number in asdot notation "<1-65535>.<0-65535>".<br>For asdot notation in YAML inputs, the value must be put in quotes, to prevent it from being interpreted as a float number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;weight</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].weight") | Integer |  |  | Min: 0<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers") | Dictionary |  |  |  | Specify the BFD timers to override the default values.<br>It is recommended to keep BFD total timeout longer than the DPS timeout.<br>The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers") | Dictionary |  |  |  | Override default BFD timers. BFD must be enabled with `bfd: true`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.interval") | Integer | Required |  | Min: 50<br>Max: 60000 | Interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;min_rx</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.min_rx") | Integer | Required |  | Min: 50<br>Max: 60000 | Rate in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "<network_services_keys.name>.[].vrfs.[].bgp_peers.[].bfd_timers.multiplier") | Integer | Required |  | Min: 3<br>Max: 50 |  |
@@ -533,9 +533,7 @@
                 weight: <int; 0-65535>
                 bfd: <bool>
 
-                # Specify the BFD timers to override the default values.
-                # It is recommended to keep BFD total timeout longer than the DPS timeout.
-                # The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds.
+                # Override default BFD timers. BFD must be enabled with `bfd: true`.
                 bfd_timers:
 
                   # Interval in milliseconds.
