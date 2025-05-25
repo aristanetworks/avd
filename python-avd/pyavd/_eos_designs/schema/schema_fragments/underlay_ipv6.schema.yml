@@ -20,5 +20,6 @@ keys:
     description: |
       This feature allows pure IPv6 underlay routing protocol with numbered addresses.
       Requires "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type settings.
+      Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses
     type: bool
     default: false
