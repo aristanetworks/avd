@@ -100,4 +100,11 @@ class UnderlayMixin(Protocol):
             if self.inputs.vtep_vvtep_ip:
                 msg = "Invalid combination of inputs. vtep_vvtep_ip is not supported with numbered IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
+            if self.switch_facts.inband_ztp:
+                msg = "Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.underlay_routing_protocol != "ebgp":
+                msg = f"Invalid combination of inputs. {self.inputs.underlay_routing_protocol} is not supported with numbered IPv6 underlay, \
+                    underlay_routing_protocol must be set to 'ebgp'"
+                raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6_numbered

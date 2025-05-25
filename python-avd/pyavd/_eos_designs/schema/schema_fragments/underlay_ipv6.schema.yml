@@ -19,7 +19,17 @@ keys:
       table: fabric-settings
     description: |
       This feature allows pure IPv6 underlay routing protocol with numbered addresses.
-      Requires "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type settings.
-      Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses
+      Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses.
+      Requires:
+        - "underlay_ipv6: true"
+        - "loopback_ipv6_pool"
+        - "underlay_routing_protocol: ebgp"
+      Some settings are not yet supported with IPv6 underlay:
+        - underlay_multicast
+        - underlay_multicast_rp_interfaces
+        - underlay_rfc5549
+        - is_wan_router
+        - vtep_vvtep_ip
+        - inband_ztp
     type: bool
     default: false

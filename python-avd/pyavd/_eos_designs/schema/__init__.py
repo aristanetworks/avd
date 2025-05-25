@@ -60696,8 +60696,21 @@ class EosDesigns(EosDesignsRootModel):
     underlay_ipv6_numbered: bool
     """
     This feature allows pure IPv6 underlay routing protocol with numbered addresses.
-    Requires
-    "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type settings.
+    Currently sets both
+    underlay and overlay, including MLAG, to use IPv6 addresses.
+    Requires:
+      - "underlay_ipv6: true"
+      -
+    "loopback_ipv6_pool"
+      - "underlay_routing_protocol: ebgp"
+    A number of settings are not yet
+    supported with IPv6 underlay, such as:
+      - underlay_multicast
+      - underlay_multicast_rp_interfaces
+    - underlay_rfc5549
+      - is_wan_router
+      - vtep_vvtep_ip
+      - inband_ztp
 
     Default value: `False`
     """
@@ -62298,8 +62311,21 @@ class EosDesigns(EosDesignsRootModel):
                    under the node type settings.
                 underlay_ipv6_numbered:
                    This feature allows pure IPv6 underlay routing protocol with numbered addresses.
-                   Requires
-                   "underlay_ipv6: true" and "loopback_ipv6_pool" under the node type settings.
+                   Currently sets both
+                   underlay and overlay, including MLAG, to use IPv6 addresses.
+                   Requires:
+                     - "underlay_ipv6: true"
+                     -
+                   "loopback_ipv6_pool"
+                     - "underlay_routing_protocol: ebgp"
+                   A number of settings are not yet
+                   supported with IPv6 underlay, such as:
+                     - underlay_multicast
+                     - underlay_multicast_rp_interfaces
+                   - underlay_rfc5549
+                     - is_wan_router
+                     - vtep_vvtep_ip
+                     - inband_ztp
                 underlay_isis_authentication_key: Type-7 encrypted password.
                 underlay_isis_authentication_mode: Underlay ISIS authentication mode.
                 underlay_isis_bfd: Enable BFD for ISIS on all underlay links.
