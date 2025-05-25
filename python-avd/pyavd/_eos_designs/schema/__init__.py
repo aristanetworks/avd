@@ -60703,12 +60703,13 @@ class EosDesigns(EosDesignsRootModel):
       -
     "loopback_ipv6_pool"
       - "underlay_routing_protocol: ebgp"
-    A number of settings are not yet
-    supported with IPv6 underlay, such as:
+    Some settings are not yet supported with
+    IPv6 underlay:
       - underlay_multicast
       - underlay_multicast_rp_interfaces
-    - underlay_rfc5549
-      - is_wan_router
+      - underlay_rfc5549
+      -
+    is_wan_router
       - vtep_vvtep_ip
       - inband_ztp
 
@@ -62318,12 +62319,13 @@ class EosDesigns(EosDesignsRootModel):
                      -
                    "loopback_ipv6_pool"
                      - "underlay_routing_protocol: ebgp"
-                   A number of settings are not yet
-                   supported with IPv6 underlay, such as:
+                   Some settings are not yet supported with
+                   IPv6 underlay:
                      - underlay_multicast
                      - underlay_multicast_rp_interfaces
-                   - underlay_rfc5549
-                     - is_wan_router
+                     - underlay_rfc5549
+                     -
+                   is_wan_router
                      - vtep_vvtep_ip
                      - inband_ztp
                 underlay_isis_authentication_key: Type-7 encrypted password.

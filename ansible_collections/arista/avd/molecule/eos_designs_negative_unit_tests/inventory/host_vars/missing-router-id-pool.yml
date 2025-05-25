@@ -2,6 +2,7 @@
 fabric_name: FABRIC_MISSING_ROUTER_ID_POOL
 underlay_ipv6: true
 underlay_ipv6_numbered: true
+underlay_routing_protocol: ebgp
 
 type: l3leaf
 
