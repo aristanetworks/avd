@@ -331,8 +331,6 @@ router_bgp:
         enabled: true
       ospf:
         enabled: true
-      static:
-        enabled: true
   - name: subIntVRF
     rd: 192.168.255.109:3
     route_targets:
@@ -362,10 +360,6 @@ router_ospf:
         enabled: true
     auto_cost_reference_bandwidth: 10
 service_routing_protocols_model: multi-agent
-static_routes:
-- vrf: TESTING
-  prefix: 10.10.10.10/24
-  next_hop: 10.1.1.1
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

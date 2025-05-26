@@ -12,22 +12,22 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
-- name: Ethernet10
-  description: some_peer_Ethernet10
+- name: Ethernet2
+  description: some_peer_Ethernet2
   shutdown: false
   channel_group:
-    id: 11
+    id: 1
     mode: active
   peer: some_peer
-  peer_interface: Ethernet10
+  peer_interface: Ethernet2
   peer_type: l3_port_channel_member
-- name: Ethernet11
+- name: Ethernet3
   shutdown: false
   channel_group:
-    id: 11
+    id: 1
     mode: active
   peer_type: l3_port_channel_member
-- name: Ethernet2
+- name: Ethernet4
   description: test
   shutdown: false
   mtu: 9000
@@ -36,20 +36,49 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
-- name: Ethernet12
-  description: some_peer_Ethernet12
+- name: Ethernet5
+  description: some_peer_Ethernet5
   shutdown: false
   channel_group:
-    id: 12
+    id: 2
     mode: active
   peer: some_peer
-  peer_interface: Ethernet12
+  peer_interface: Ethernet5
   peer_type: l3_port_channel_member
-- name: Ethernet13
+- name: Ethernet6
   shutdown: false
   channel_group:
-    id: 12
+    id: 2
     mode: active
+  peer_type: l3_port_channel_member
+- name: Ethernet7
+  description: test
+  shutdown: false
+  mtu: 9000
+  vrf: VRF_SVI_IN_L3_INTERFACE
+  ip_address: 10.10.10.10/24
+  peer_type: l3_interface
+  switchport:
+    enabled: false
+- name: Ethernet8
+  description: some_peer_Ethernet8
+  shutdown: false
+  speed: forced 100gfull
+  channel_group:
+    id: 3
+    mode: active
+  peer: some_peer
+  peer_interface: Ethernet8
+  peer_type: l3_port_channel_member
+- name: Ethernet9
+  description: some_peer_Ethernet9
+  shutdown: false
+  speed: forced 100gfull
+  channel_group:
+    id: 3
+    mode: active
+  peer: some_peer
+  peer_interface: Ethernet9
   peer_type: l3_port_channel_member
 hostname: network-services-static-routes
 ip_igmp_snooping:
@@ -73,18 +102,28 @@ management_api_http:
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
-- name: Port-Channel11
-  description: Po11
+- name: Port-Channel1
+  description: Po1
   shutdown: false
-  peer_interface: Po11
+  peer_interface: Po1
   peer_type: l3_port_channel
   switchport:
     enabled: false
-- name: Port-Channel12
-  description: Po12
+- name: Port-Channel2
+  description: Po2
   shutdown: false
   vrf: TESTING
-  peer_interface: Po12
+  peer_interface: Po2
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
+- name: Port-Channel3
+  description: Description list
+  shutdown: false
+  vrf: VRF_SVI_IN_L3_PORT_CHANNEL
+  mtu: 1555
+  peer: some_peer
+  peer_interface: Po3
   peer_type: l3_port_channel
   switchport:
     enabled: false
@@ -228,12 +267,52 @@ router_bgp:
         enabled: true
       static:
         enabled: true
+  - name: VRF_SVI_IN_L3_INTERFACE
+    rd: 192.168.255.109:3
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '3:3'
+    router_id: 192.168.255.109
+    redistribute:
+      connected:
+        enabled: true
+      static:
+        enabled: true
+  - name: VRF_SVI_IN_L3_PORT_CHANNEL
+    rd: 192.168.255.109:4
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '4:4'
+    router_id: 192.168.255.109
+    redistribute:
+      connected:
+        enabled: true
+      static:
+        enabled: true
 service_routing_protocols_model: multi-agent
 static_routes:
 - vrf: default
   prefix: 10.10.10.0/24
   next_hop: 10.10.10.10
 - vrf: TESTING
+  prefix: 10.10.10.0/24
+  next_hop: 10.10.10.10
+- vrf: VRF_SVI_IN_L3_INTERFACE
+  prefix: 10.10.10.0/24
+  next_hop: 10.10.10.10
+- vrf: VRF_SVI_IN_L3_PORT_CHANNEL
   prefix: 10.10.10.0/24
   next_hop: 10.10.10.10
 transceiver_qsfp_default_mode_4x10: true
@@ -267,6 +346,12 @@ vrfs:
 - name: TESTING
   ip_routing: true
   tenant: TENANT1
+- name: VRF_SVI_IN_L3_INTERFACE
+  ip_routing: true
+  tenant: TENANT1
+- name: VRF_SVI_IN_L3_PORT_CHANNEL
+  ip_routing: true
+  tenant: TENANT1
 vxlan_interface:
   vxlan1:
     description: network-services-static-routes_VTEP
@@ -283,3 +368,7 @@ vxlan_interface:
         vni: 1
       - name: TESTING
         vni: 2
+      - name: VRF_SVI_IN_L3_INTERFACE
+        vni: 3
+      - name: VRF_SVI_IN_L3_PORT_CHANNEL
+        vni: 4
