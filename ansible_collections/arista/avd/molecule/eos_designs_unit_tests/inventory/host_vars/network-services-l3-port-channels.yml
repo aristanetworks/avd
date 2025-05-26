@@ -193,6 +193,16 @@ tenants:
               authentication: "message-digest"
               message_digest_keys:
                 - hash_algorithm: "sha256"
+          - name: Port-Channel1113
+            description: empty message_digest_keys with authentication set to message-digest
+            peer: inet-cloud-po1113
+            peer_port_channel: Po1113
+            enabled: true
+            ip_address: 1.1.1.13/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
 
   - name: Subinterface
     mac_vrf_vni_base: 20000

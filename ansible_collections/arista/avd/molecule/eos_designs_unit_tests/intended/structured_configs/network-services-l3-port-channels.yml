@@ -259,6 +259,18 @@ port_channel_interfaces:
   peer_type: l3_port_channel
   switchport:
     enabled: false
+- name: Port-Channel1113
+  description: empty message_digest_keys with authentication set to message-digest
+  shutdown: false
+  vrf: TESTING
+  ip_address: 1.1.1.13/29
+  ospf_network_point_to_point: false
+  ospf_area: 0.0.0.0
+  peer: inet-cloud-po1113
+  peer_interface: Po1113
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 - name: Port-Channel22.100
   description: inet-cloud-sub100_Po22.100
   shutdown: false
@@ -368,6 +380,7 @@ router_ospf:
     - Port-Channel1111.100
     - Port-Channel1111.200
     - Port-Channel1112
+    - Port-Channel1113
     redistribute:
       bgp:
         enabled: true

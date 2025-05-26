@@ -165,7 +165,7 @@ class PortChannelInterfacesMixin(Protocol):
                     ospf_authentication = l3_port_channel.ospf.authentication
                     if ospf_authentication == "simple" and (ospf_simple_auth_key := l3_port_channel.ospf.simple_auth_key) is not None:
                         port_channel_interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_port_channel.ospf.message_digest_keys) is not None:
+                    elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := l3_port_channel.ospf.message_digest_keys):
                         for ospf_key in ospf_message_digest_keys:
                             if not (ospf_key.id and ospf_key.key):
                                 continue
