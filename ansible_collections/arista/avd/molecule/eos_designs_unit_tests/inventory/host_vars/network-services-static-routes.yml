@@ -1,0 +1,92 @@
+---
+# This test is to make sure that static routes are not duplicated when set at different places
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: network-services-static-routes
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 1
+        static_routes:
+          - prefix: 10.10.10.0/24
+            next_hop: 10.10.10.10
+        svis:
+          - id: 2
+            name: Tenant1_SVI
+            enabled: true
+            ip_address_virtual: 10.1.40.1/24
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10
+        l3_interfaces:
+          - interfaces: [Ethernet1]
+            ip_addresses: [10.10.10.10/24]
+            nodes: [network-services-static-routes]
+            mtu: 9000
+            enabled: true
+            description: "test"
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10
+        l3_port_channels:
+          - name: Port-Channel11
+            mode: active
+            peer_port_channel: Po11
+            enabled: true
+            node: network-services-static-routes
+            member_interfaces:
+              - name: Ethernet10
+                peer_interface: Ethernet10
+                peer: some_peer
+              - name: Ethernet11
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10
+      - name: TESTING
+        vrf_id: 2
+        static_routes:
+          - prefix: 10.10.10.0/24
+            next_hop: 10.10.10.10
+        svis:
+          - id: 3
+            name: Tenant1_VRF_SVI
+            enabled: true
+            ip_address_virtual: 10.1.40.1/24
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10
+        l3_interfaces:
+          - interfaces: [Ethernet2]
+            ip_addresses: [10.10.10.10/24]
+            nodes: [network-services-static-routes]
+            mtu: 9000
+            enabled: true
+            description: "test"
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10
+        l3_port_channels:
+          - name: Port-Channel12
+            mode: active
+            peer_port_channel: Po12
+            enabled: true
+            node: network-services-static-routes
+            member_interfaces:
+              - name: Ethernet12
+                peer_interface: Ethernet12
+                peer: some_peer
+              - name: Ethernet13
+            static_routes:
+              - prefix: 10.10.10.0/24
+                next_hop: 10.10.10.10

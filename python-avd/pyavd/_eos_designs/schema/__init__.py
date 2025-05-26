@@ -38765,8 +38765,10 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
                         static_routes: StaticRoutes
                         """
-                        Static routes to be configured on the device when this l3_port_channel interface is configured.
-                        Subclass of AvdList with `StaticRoutesItem` items.
+                        Static routes to be configured on the device when this Port-channel is configured.
+
+                        Subclass of
+                        AvdList with `StaticRoutesItem` items.
                         """
                         ospf: Ospf
                         """
@@ -38849,8 +38851,10 @@ class EosDesigns(EosDesignsRootModel):
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
                                     static_routes:
-                                       Static routes to be configured on the device when this l3_port_channel interface is configured.
-                                       Subclass of AvdList with `StaticRoutesItem` items.
+                                       Static routes to be configured on the device when this Port-channel is configured.
+
+                                       Subclass of
+                                       AvdList with `StaticRoutesItem` items.
                                     ospf:
                                        OSPF interface configuration.
 

@@ -7279,7 +7279,7 @@ $defs:
                     static_routes:
                       type: list
                       description: Static routes to be configured on the device when
-                        this l3_port_channel interface is configured.
+                        this Port-channel is configured.
                       $ref: eos_designs#/$defs/static_routes
                     ospf:
                       type: dict
