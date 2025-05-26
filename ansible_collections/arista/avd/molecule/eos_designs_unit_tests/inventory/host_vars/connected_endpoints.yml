@@ -29,7 +29,7 @@ Testing_1:
         switches: [ connected_endpoints ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS ]
 
-# This should not impact structured config.
+# This should not impact structured config since connected_endpoints_keys are defined in this test file.
 firewalls:
   - name: FIREWALL01
     rack: RackB
