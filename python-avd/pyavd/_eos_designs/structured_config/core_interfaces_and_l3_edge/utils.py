@@ -238,18 +238,6 @@ class UtilsMixin(Protocol):
         if p2p_link.traffic_engineering.enabled:
             te_config = p2p_link.traffic_engineering
 
-            # if (admingroups := p2p_link.traffic_engineering.administrative_groups):
-            #     te_config.administrative_groups = admingroups
-
-            # if (srlg := p2p_link.traffic_engineering.srlg):
-            #     te_config.srlg = srlg
-
-            # if (metric := p2p_link.traffic_engineering.metric):
-            #     te_config.metric = metric
-
-            # if (bandwidth := p2p_link.traffic_engineering.bandwidth):
-            #     te_config.bandwidth = bandwidth
-
         return te_config
 
     def _update_common_interface_cfg(
