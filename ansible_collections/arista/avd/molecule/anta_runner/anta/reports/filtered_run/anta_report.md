@@ -15,19 +15,19 @@
 
 | Total Tests | Total Tests Success | Total Tests Skipped | Total Tests Failure | Total Tests Error |
 | ----------- | ------------------- | ------------------- | ------------------- | ------------------|
-| 641 | 0 | 0 | 0 | 0 |
+| 679 | 0 | 0 | 0 | 0 |
 
 ### Summary Totals Device Under Test
 
 | Device Under Test | Total Tests | Tests Success | Tests Skipped | Tests Failure | Tests Error | Categories Skipped | Categories Failed |
 | ------------------| ----------- | ------------- | ------------- | ------------- | ----------- | -------------------| ------------------|
-| dc1-leaf1a | 38 | 0 | 0 | 0 | 0 | - | - |
-| dc1-leaf1b | 36 | 0 | 0 | 0 | 0 | - | - |
-| dc1-leaf1c | 28 | 0 | 0 | 0 | 0 | - | - |
-| dc1-leaf2a | 41 | 0 | 0 | 0 | 0 | - | - |
-| dc1-leaf2c | 28 | 0 | 0 | 0 | 0 | - | - |
-| dc1-spine1 | 29 | 0 | 0 | 0 | 0 | - | - |
-| dc1-spine2 | 29 | 0 | 0 | 0 | 0 | - | - |
+| dc1-leaf1a | 40 | 0 | 0 | 0 | 0 | - | - |
+| dc1-leaf1b | 38 | 0 | 0 | 0 | 0 | - | - |
+| dc1-leaf1c | 30 | 0 | 0 | 0 | 0 | - | - |
+| dc1-leaf2a | 43 | 0 | 0 | 0 | 0 | - | - |
+| dc1-leaf2c | 30 | 0 | 0 | 0 | 0 | - | - |
+| dc1-spine1 | 31 | 0 | 0 | 0 | 0 | - | - |
+| dc1-spine2 | 31 | 0 | 0 | 0 | 0 | - | - |
 | dc1-svc-leaf1a | 5 | 0 | 0 | 0 | 0 | - | - |
 | dc1-svc-leaf1b | 5 | 0 | 0 | 0 | 0 | - | - |
 | dc1-wan1 | 36 | 0 | 0 | 0 | 0 | - | - |
