@@ -153,7 +153,7 @@ class VxlanInterfaceMixin(Protocol):
                     if not tenant.evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool:
                         msg = (
                             f"'evpn_l3_multicast.evpn_underlay_l3_multicast_group_ipv4_pool' for Tenant: {tenant.name}"
-                            f" or evpn_l3_multicast.evpn_underlay_l3_multicast_group for VRF {vrf.name} is required."
+                            f" or 'evpn_l3_multicast.evpn_underlay_l3_multicast_group' for VRF {vrf.name} is required."
                         )
                         raise AristaAvdInvalidInputsError(msg)
 
