@@ -1247,6 +1247,9 @@ $defs:
                       max: 65535
                     bfd:
                       type: bool
+                    bfd_timers:
+                      type: dict
+                      $ref: "eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers"
                     shutdown:
                       type: bool
               bgp:

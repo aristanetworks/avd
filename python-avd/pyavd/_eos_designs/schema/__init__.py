@@ -39192,6 +39192,7 @@ class EosDesigns(EosDesignsRootModel):
                             "local_as": {"type": str},
                             "weight": {"type": int},
                             "bfd": {"type": bool},
+                            "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
                             "shutdown": {"type": bool},
                         }
                         ip_address: str
@@ -39265,6 +39266,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         weight: int | None
                         bfd: bool | None
+                        bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
+                        """Override default BFD timers. BFD must be enabled with `bfd: true`."""
                         shutdown: bool | None
 
                         if TYPE_CHECKING:
@@ -39295,6 +39298,7 @@ class EosDesigns(EosDesignsRootModel):
                                 local_as: str | None | UndefinedType = Undefined,
                                 weight: int | None | UndefinedType = Undefined,
                                 bfd: bool | None | UndefinedType = Undefined,
+                                bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
                                 shutdown: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -39351,6 +39355,7 @@ class EosDesigns(EosDesignsRootModel):
                                        number.
                                     weight: weight
                                     bfd: bfd
+                                    bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
                                     shutdown: shutdown
 
                                 """

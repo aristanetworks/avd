@@ -38,6 +38,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyCoredump,
     ),
     TestSpec(
+        test_class=VerifyEnvironmentCooling,
+        input_factory=VerifyEnvironmentCoolingInputFactory,
+    ),
+    TestSpec(
+        test_class=VerifyEnvironmentPower,
+        input_factory=VerifyEnvironmentPowerInputFactory,
+    ),
+    TestSpec(
         test_class=VerifyEnvironmentSystemCooling,
     ),
     TestSpec(
