@@ -18524,17 +18524,20 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """The VLAN ID associated with the MAC address."""
             drop: bool | None
             """
-            If true, traffic destined for this MAC address on the specified VLAN will be dropped. This option is
+            If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+            This option is
             mutually exclusive with 'interface' and takes precedence if both are defined.
             """
             interface: str | None
             """
             The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
-            this MAC address and VLAN. This option is mutually exclusive with 'drop'.
+            this MAC address and VLAN.
+            This option is mutually exclusive with 'drop'.
             """
             eligibility_forwarding: bool | None
             """
-            Enable the ability to forward traffic on the specified interface and VLAN for this MAC address. This
+            Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+            This
             option is only applicable when 'interface' is defined.
             """
 
@@ -18562,13 +18565,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            across all static entries.
                         vlan: The VLAN ID associated with the MAC address.
                         drop:
-                           If true, traffic destined for this MAC address on the specified VLAN will be dropped. This option is
+                           If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+                           This option is
                            mutually exclusive with 'interface' and takes precedence if both are defined.
                         interface:
                            The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
-                           this MAC address and VLAN. This option is mutually exclusive with 'drop'.
+                           this MAC address and VLAN.
+                           This option is mutually exclusive with 'drop'.
                         eligibility_forwarding:
-                           Enable the ability to forward traffic on the specified interface and VLAN for this MAC address. This
+                           Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+                           This
                            option is only applicable when 'interface' is defined.
 
                     """

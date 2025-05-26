@@ -3474,17 +3474,17 @@ vlan 3012
 
 ### Static MAC Address Entries
 
-| MAC Address | VLAN | DROP | Interface | Eligibility Forwarding |
-|-------------|------|------|-----------|------------------------|
-| 000c.000c.000c | 30 | True | - | - |
+| MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
+|-------------|------|--------------|-----------|------------------------|
 | 000a.000a.000a | 10 | - | Ethernet1 | - |
-| 000b.000b.000b | 20 | - | Port-Channel1 | True |
-| 000a.000a.000a | 20 | - | Ethernet1 | - |
-| 000d.000d.000d | 10 | - | Ethernet2 | - |
 | 000c.000c.000c | 10 | True | - | - |
+| 000d.000d.000d | 10 | - | Ethernet2 | - |
+| 000a.000a.000a | 20 | - | Ethernet1 | - |
+| 000b.000b.000b | 20 | - | Port-Channel1 | True |
 | 0001.0001.0001 | 20 | - | Ethernet2 | - |
-| 000e.000e.000e | 40 | - | - | - |
 | 0002.0002.0002 | 20 | True | - | - |
+| 000c.000c.000c | 30 | True | - | - |
+| 000e.000e.000e | 40 | - | - | - |
 
 ### MAC Address Table Device Configuration
 

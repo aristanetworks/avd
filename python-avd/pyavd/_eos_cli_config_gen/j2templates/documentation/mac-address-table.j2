@@ -32,9 +32,9 @@
 
 ### Static MAC Address Entries
 
-| MAC Address | VLAN | DROP | Interface | Eligibility Forwarding |
-|-------------|------|------|-----------|------------------------|
-{%         for static_entry in mac_address_table.static_entries %}
+| MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
+|-------------|------|--------------|-----------|------------------------|
+{%         for static_entry in mac_address_table.static_entries | arista.avd.natural_sort('mac_address') | arista.avd.natural_sort('vlan') %}
 | {{ static_entry.mac_address }} | {{ static_entry.vlan }} | {{ static_entry.drop | arista.avd.default("-") }} | {{ static_entry.interface | arista.avd.default("-") }} | {{ static_entry.eligibility_forwarding | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
