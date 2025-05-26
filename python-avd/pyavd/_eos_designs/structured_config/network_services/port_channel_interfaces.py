@@ -90,9 +90,6 @@ class PortChannelInterfacesMixin(Protocol):
         """
         for vrf in tenant.vrfs:
             for l3_port_channel in vrf.l3_port_channels:
-                if l3_port_channel.node != self.shared_utils.hostname:
-                    continue
-
                 if not (is_subinterface := "." in l3_port_channel.name):
                     # This is a regular Port-Channel (not sub-interface)
                     regular_l3_port_channel_names.add(l3_port_channel.name)

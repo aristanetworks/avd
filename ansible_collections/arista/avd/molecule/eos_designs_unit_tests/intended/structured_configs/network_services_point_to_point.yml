@@ -4,6 +4,12 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet4
+  shutdown: false
+  channel_group:
+    id: 4
+    mode: active
+  peer_type: point_to_point_service
 - name: Ethernet3
   shutdown: false
   lldp:
@@ -43,6 +49,15 @@ mpls:
   ip: true
 patch_panel:
   patches:
+  - name: PORT_CHANNEL_WITHOUT_SUBINTERFACE
+    enabled: true
+    connectors:
+    - id: '1'
+      type: interface
+      endpoint: Port-Channel4
+    - id: '2'
+      type: pseudowire
+      endpoint: bgp vpws TENANT_A pseudowire PORT_CHANNEL_WITHOUT_SUBINTERFACE
   - name: TEN_A_ELINE_PORT_BASED
     enabled: true
     connectors:
@@ -62,6 +77,15 @@ patch_panel:
       type: pseudowire
       endpoint: bgp vpws TENANT_A pseudowire TEN_A_ELINE_VLAN_BASE_AUTO_GENERATED_PARENT_1000
 port_channel_interfaces:
+- name: Port-Channel4
+  shutdown: false
+  evpn_ethernet_segment:
+    identifier: 0000:0000:0102:CAFE:F00D
+    route_target: 01:02:CA:FE:F0:0D
+  lacp_id: 0102.CAFE.F00D
+  peer_type: point_to_point_service
+  switchport:
+    enabled: false
 - name: Port-Channel7.1000
   shutdown: false
   encapsulation_vlan:

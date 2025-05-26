@@ -50,3 +50,17 @@ tenants:
             interfaces: [Ethernet6, Ethernet7]
             port_channel:
               mode: active
+      - name: PORT_CHANNEL_WITHOUT_SUBINTERFACE
+        type: vpws-pseudowire
+        endpoints:
+          - id: 58
+            nodes: [network_services_point_to_point]
+            interfaces: [Ethernet4]
+            port_channel:
+              mode: active
+              short_esi: "0102:CAFE:F00D"
+          - id: 59
+            nodes: [fake_node]
+            interfaces: [Ethernet5]
+            port_channel:
+              mode: active

@@ -174,9 +174,25 @@ tenants:
                   key: testpass1
                 - id: 2
                   key: testpass2
+                  # 'id' and 'key' are not set
+                  # TODO: AVD 6.0.0 Make 'id' a primary key and set 'hash_algorithm' and 'key' required
+                - hash_algorithm: "sha256"
+            # Test 'ip ospf authentication message-digest' is not rendered when message-digest keys are incomplete
             raw_eos_cli: |
                logging event storm-control discards
                logging event link-status
+          - name: Port-Channel1112
+            description: incomplete message-digest keys
+            peer: inet-cloud-po1112
+            peer_port_channel: Po1112
+            enabled: true
+            ip_address: 1.1.1.12/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
+              message_digest_keys:
+                - hash_algorithm: "sha256"
 
   - name: Subinterface
     mac_vrf_vni_base: 20000
