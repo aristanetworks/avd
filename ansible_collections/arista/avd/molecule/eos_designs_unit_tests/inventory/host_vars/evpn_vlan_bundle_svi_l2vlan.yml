@@ -56,6 +56,16 @@ tenants:
             name: SVI_3
             enabled: true
             tags: ['sit']
+      # test when vrf_id and vrf_vni are not set with bgp disabled
+      - name: VRF_ID_VNI_NONE
+        bgp:
+          enabled: false
+        svis:
+          - id: 1011
+            name: SVI_4
+            enabled: true
+            evpn_vlan_bundle: bundle3
+            tags: ['sit']
 
 evpn_vlan_bundles:
   - name: bundle3
