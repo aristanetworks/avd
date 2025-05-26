@@ -142,12 +142,6 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
-- name: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - ip next-hop 123.1.1.1
 - name: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
   sequence_numbers:
   - sequence: 10
@@ -228,18 +222,6 @@ router_bgp:
     - ip_address: 10.255.251.15
       peer_group: MLAG-IPv4-UNDERLAY-PEER
       description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF2_Vlan3013
-    - ip_address: 123.1.1.10
-      remote_as: '1234'
-      local_as: '123'
-      description: External IPv4 BGP peer
-      ebgp_multihop: 3
-      send_community: standard extended
-      maximum_routes: 0
-      default_originate:
-        always: false
-        route_map: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
-      update_source: Loopback123
-      route_map_out: RM-Tenant_A_WAN_Zone-123.1.1.10-SET-NEXT-HOP-OUT
     - ip_address: fd5a:fe45:8831:06c5::a
       remote_as: '12345'
       route_map_out: RM-Tenant_A_WAN_Zone-fd5a:fe45:8831:06c5::a-SET-NEXT-HOP-OUT
@@ -266,8 +248,6 @@ router_bgp:
         next_hop:
           address_family_ipv6:
             enabled: false
-      - ip_address: 123.1.1.10
-        activate: true
     address_family_ipv6:
       neighbors:
       - ip_address: fd5a:fe45:8831:06c5::a
