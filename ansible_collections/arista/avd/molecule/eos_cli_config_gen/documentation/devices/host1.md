@@ -4262,6 +4262,7 @@ interface Ethernet5
    pim ipv4 hello interval 10
    pim ipv4 hello count 2.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Ethernet
    pim ipv4 bfd
    isis enable ISIS_TEST
    isis bfd
@@ -5562,6 +5563,7 @@ interface Port-Channel99
    pim ipv4 hello interval 15
    pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
 !
 interface Port-Channel100
@@ -6675,6 +6677,7 @@ interface Vlan4094
    pim ipv4 hello interval 10
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Vlan
    pim ipv4 bfd
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 rx-disabled level-1
@@ -9958,12 +9961,12 @@ router pim sparse-mode
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | True | 200 | - |
-| Port-Channel99 | - | IPv4 | - | 200 | - |
-| Vlan89 | - | IPv4 | - | - | Loopback0 |
-| Vlan4094 | - | IPv4 | - | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface | Neighbor Filter |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - | Test_Filter_Ethernet |
+| Port-Channel99 | - | IPv4 | - | 200 | - | Test_Filter_PortChannel |
+| Vlan89 | - | IPv4 | - | - | Loopback0 | - |
+| Vlan4094 | - | IPv4 | - | 200 | - | Test_Filter_Vlan |
 
 ### Router MSDP
 
