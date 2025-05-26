@@ -55,7 +55,7 @@ ethernet_interfaces:
   description: test
   shutdown: false
   mtu: 9000
-  vrf: VRF_SVI_IN_L3_INTERFACE
+  vrf: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   ip_address: 10.10.10.10/24
   peer_type: l3_interface
   switchport:
@@ -120,7 +120,7 @@ port_channel_interfaces:
 - name: Port-Channel3
   description: Description list
   shutdown: false
-  vrf: VRF_SVI_IN_L3_PORT_CHANNEL
+  vrf: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   mtu: 1555
   peer: some_peer
   peer_interface: Po3
@@ -267,7 +267,7 @@ router_bgp:
         enabled: true
       static:
         enabled: true
-  - name: VRF_SVI_IN_L3_INTERFACE
+  - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
     rd: 192.168.255.109:3
     route_targets:
       import:
@@ -284,7 +284,7 @@ router_bgp:
         enabled: true
       static:
         enabled: true
-  - name: VRF_SVI_IN_L3_PORT_CHANNEL
+  - name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
     rd: 192.168.255.109:4
     route_targets:
       import:
@@ -309,10 +309,10 @@ static_routes:
 - vrf: TESTING
   prefix: 10.10.10.0/24
   next_hop: 10.10.10.10
-- vrf: VRF_SVI_IN_L3_INTERFACE
+- vrf: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   prefix: 10.10.10.0/24
   next_hop: 10.10.10.10
-- vrf: VRF_SVI_IN_L3_PORT_CHANNEL
+- vrf: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   prefix: 10.10.10.0/24
   next_hop: 10.10.10.10
 transceiver_qsfp_default_mode_4x10: true
@@ -346,10 +346,10 @@ vrfs:
 - name: TESTING
   ip_routing: true
   tenant: TENANT1
-- name: VRF_SVI_IN_L3_INTERFACE
+- name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
   ip_routing: true
   tenant: TENANT1
-- name: VRF_SVI_IN_L3_PORT_CHANNEL
+- name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
   ip_routing: true
   tenant: TENANT1
 vxlan_interface:
@@ -368,7 +368,7 @@ vxlan_interface:
         vni: 1
       - name: TESTING
         vni: 2
-      - name: VRF_SVI_IN_L3_INTERFACE
+      - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
         vni: 3
-      - name: VRF_SVI_IN_L3_PORT_CHANNEL
+      - name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
         vni: 4

@@ -90,7 +90,7 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
-      - name: VRF_SVI_IN_L3_INTERFACE
+      - name: VRF_STATIC_ROUTE_ON_L3_INTERFACE
         vrf_id: 3
         l3_interfaces:
           - interfaces: [Ethernet7]
@@ -102,7 +102,7 @@ tenants:
             static_routes:
               - prefix: 10.10.10.0/24
                 next_hop: 10.10.10.10
-      - name: VRF_SVI_IN_L3_PORT_CHANNEL
+      - name: VRF_STATIC_ROUTE_ON_L3_PORT_CHANNEL
         vrf_id: 4
         l3_port_channels:
           - name: Port-Channel3
