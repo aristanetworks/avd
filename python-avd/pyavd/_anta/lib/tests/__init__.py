@@ -7,6 +7,8 @@ from anta.tests.avt import VerifyAVTPathHealth, VerifyAVTRole
 from anta.tests.configuration import VerifyRunningConfigDiffs, VerifyZeroTouch
 from anta.tests.connectivity import VerifyLLDPNeighbors, VerifyReachability
 from anta.tests.hardware import (
+    VerifyEnvironmentCooling,
+    VerifyEnvironmentPower,
     VerifyEnvironmentSystemCooling,
     VerifyTemperature,
     VerifyTransceiversTemperature,
@@ -53,6 +55,8 @@ __all__ = [
     "VerifyBGPPeerSession",
     "VerifyCoredump",
     "VerifyDNSServers",
+    "VerifyEnvironmentCooling",
+    "VerifyEnvironmentPower",
     "VerifyEnvironmentSystemCooling",
     "VerifyFileSystemUtilization",
     "VerifyIllegalLACP",
