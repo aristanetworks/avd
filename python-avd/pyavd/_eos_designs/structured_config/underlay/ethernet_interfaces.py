@@ -94,11 +94,10 @@ class EthernetInterfacesMixin(Protocol):
                         ethernet_interface.ip_address = f"{link.ip_address}/{link.prefix_length}"
 
                 if self.shared_utils.underlay_ospf:
-                    ethernet_interface.ospf_network_point_to_point = True
-                    ethernet_interface.ospf_area = self.inputs.underlay_ospf_area
-                    if self.shared_utils.underlay_ospf_authentication.enabled:
+                    ethernet_interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+                    if self.inputs.underlay_ospf_authentication.enabled:
                         ethernet_interface.ospf_authentication = "message-digest"
-                        for ospf_key in self.shared_utils.underlay_ospf_authentication.message_digest_keys:
+                        for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
                             ethernet_interface.ospf_message_digest_keys.append_new(
                                 id=ospf_key.id,
                                 hash_algorithm=ospf_key.hash_algorithm,

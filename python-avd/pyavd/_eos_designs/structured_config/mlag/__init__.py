@@ -114,13 +114,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
     def _set_mlag_l3_vlan_interface(self, vlan_interface: EosCliConfigGen.VlanInterfacesItem) -> None:
         if self.shared_utils.underlay_routing_protocol == "ospf":
-            vlan_interface._update(
-                ospf_network_point_to_point=True,
-                ospf_area=self.inputs.underlay_ospf_area,
-            )
-            if self.shared_utils.underlay_ospf_authentication.enabled:
+            vlan_interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+            if self.inputs.underlay_ospf_authentication.enabled:
                 vlan_interface.ospf_authentication = "message-digest"
-                for ospf_key in self.shared_utils.underlay_ospf_authentication.message_digest_keys:
+                for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
                     vlan_interface.ospf_message_digest_keys.append_new(
                         id=ospf_key.id,
                         hash_algorithm=ospf_key.hash_algorithm,
