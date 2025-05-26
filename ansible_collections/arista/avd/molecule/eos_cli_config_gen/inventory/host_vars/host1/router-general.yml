@@ -17,6 +17,10 @@ router_general:
         dynamic_prefix_lists:
           - name: DYNAMIC_TEST_PREFIX_LIST_2
           - name: DYNAMIC_TEST_PREFIX_LIST_1
+    - name: BLUE3
+      leak_routes:
+        - source_vrf: BLUE-C1
+          subscribe_policy: RM-BLUE-LEAKING
   control_functions:
     code_units:
       - name: code1

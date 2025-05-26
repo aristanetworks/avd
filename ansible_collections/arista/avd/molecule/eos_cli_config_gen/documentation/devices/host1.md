@@ -7116,6 +7116,7 @@ router adaptive-virtual-topology
 |-----|------------|------------------|
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
 | BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7133,6 +7134,10 @@ router general
    router-id ipv6 2001:beef:cafe::1
    software forwarding hardware offload mtu 78
    hardware next-hop fast-failover
+   !
+   vrf BLUE3
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      exit
    !
    vrf BLUE-C2
       software forwarding hardware offload mtu 98
