@@ -1,5 +1,4 @@
 ---
-# This test is to make sure that static routes are not duplicated when set at different places
 type: l3leaf
 l3leaf:
   defaults:
