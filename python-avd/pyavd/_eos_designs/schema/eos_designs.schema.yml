@@ -7033,6 +7033,11 @@ $defs:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: Static routes to be configured on every device
+                        when this interface is configured.
                     nodes:
                       type: list
                       items:
@@ -7271,6 +7276,11 @@ $defs:
                       type: str
                       convert_types:
                       - int
+                    static_routes:
+                      type: list
+                      description: Static routes to be configured on the device when
+                        this Port-channel is configured.
+                      $ref: eos_designs#/$defs/static_routes
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
