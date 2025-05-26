@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "router_general.router_id.ipv4") | String |  |  |  | IPv4 Address. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "router_general.router_id.ipv6") | String |  |  |  | IPv6 Address. |
     | [<samp>&nbsp;&nbsp;nexthop_fast_failover</samp>](## "router_general.nexthop_fast_failover") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;software_forwarding_hardware_offload_mtu</samp>](## "router_general.software_forwarding_hardware_offload_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | MTU value for software-forwarded packets across all vrfs that use hardware offload. |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "router_general.vrfs") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.vrfs.[].name") | String | Required, Unique |  |  | Destination-VRF. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;leak_routes</samp>](## "router_general.vrfs.[].leak_routes") | List, items: Dictionary |  |  |  |  |
@@ -20,6 +21,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routes</samp>](## "router_general.vrfs.[].routes") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic_prefix_lists</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.vrfs.[].routes.dynamic_prefix_lists.[].name") | String |  |  |  | Dynamic Prefix List Name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;software_forwarding_hardware_offload_mtu</samp>](## "router_general.vrfs.[].software_forwarding_hardware_offload_mtu") | Integer |  |  | Min: 68<br>Max: 65535 | MTU value for software-forwarded packets within a specific VRF that use hardware offload.<br>This setting overrides the global config for a specific vrf. |
     | [<samp>&nbsp;&nbsp;control_functions</samp>](## "router_general.control_functions") | Dictionary |  |  |  | Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.<br>Warning:<br>This configuration cannot be pushed with `eos_config_deploy_eapi`, because of limitations in `arista.eos` and `ansible.netcommon` plugins.<br>The configuration can be pushed via CloudVision with `eos_config_deploy_cvp` or `cv_deploy`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;code_units</samp>](## "router_general.control_functions.code_units") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_general.control_functions.code_units.[].name") | String | Required, Unique |  |  | Name of the code unit. |
@@ -37,6 +39,9 @@
         # IPv6 Address.
         ipv6: <str>
       nexthop_fast_failover: <bool; default=False>
+
+      # MTU value for software-forwarded packets across all vrfs that use hardware offload.
+      software_forwarding_hardware_offload_mtu: <int; 68-65535>
       vrfs:
 
           # Destination-VRF.
@@ -51,6 +56,10 @@
 
                 # Dynamic Prefix List Name.
               - name: <str>
+
+          # MTU value for software-forwarded packets within a specific VRF that use hardware offload.
+          # This setting overrides the global config for a specific vrf.
+          software_forwarding_hardware_offload_mtu: <int; 68-65535>
 
       # Routing control functions (RCF) used to filter and update routes from a peer or during redistributions.
       # Warning:

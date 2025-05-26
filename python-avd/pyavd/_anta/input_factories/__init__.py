@@ -13,6 +13,7 @@ from .mlag import VerifyMlagDualPrimaryInputFactory, VerifyMlagReloadDelayInputF
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
+from .services import VerifyDNSServersInputFactory
 from .stun import VerifyStunClientTranslationInputFactory
 from .system import VerifyReloadCauseInputFactory
 
@@ -20,6 +21,7 @@ __all__ = [
     "VerifyAPIHttpsSSLInputFactory",
     "VerifyAVTRoleInputFactory",
     "VerifyBGPPeerSessionInputFactory",
+    "VerifyDNSServersInputFactory",
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
     "VerifyInterfacesStatusInputFactory",

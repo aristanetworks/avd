@@ -37,6 +37,7 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyCoredump,
     ),
+    TestSpec(test_class=VerifyDNSServers, conditional_keys=[StructuredConfigKey.IP_NAME_SERVERS], input_factory=VerifyDNSServersInputFactory),
     TestSpec(
         test_class=VerifyEnvironmentCooling,
         input_factory=VerifyEnvironmentCoolingInputFactory,

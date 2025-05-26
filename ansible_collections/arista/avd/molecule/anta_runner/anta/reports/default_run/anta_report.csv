@@ -28,6 +28,7 @@ dc1-leaf1a,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all
 dc1-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-leaf1a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
+dc1-leaf1a,VerifyDNSServers,unset,,Verifies if the DNS (Domain Name Service) servers are correctly configured.,Services
 dc1-leaf1a,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-leaf1a,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-leaf1a,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software

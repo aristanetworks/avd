@@ -19403,6 +19403,14 @@ keys:
       nexthop_fast_failover:
         type: bool
         default: false
+      software_forwarding_hardware_offload_mtu:
+        description: MTU value for software-forwarded packets across all vrfs that
+          use hardware offload.
+        type: int
+        convert_types:
+        - str
+        min: 68
+        max: 65535
       vrfs:
         type: list
         primary_key: name
@@ -19437,6 +19445,16 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+            software_forwarding_hardware_offload_mtu:
+              description: 'MTU value for software-forwarded packets within a specific
+                VRF that use hardware offload.
+
+                This setting overrides the global config for a specific vrf.'
+              type: int
+              convert_types:
+              - str
+              min: 68
+              max: 65535
       control_functions:
         type: dict
         description: 'Routing control functions (RCF) used to filter and update routes

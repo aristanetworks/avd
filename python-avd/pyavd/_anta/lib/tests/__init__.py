@@ -35,6 +35,7 @@ from anta.tests.path_selection import VerifyPathsHealth
 from anta.tests.routing.bgp import VerifyBGPPeerSession
 from anta.tests.routing.generic import VerifyRoutingProtocolModel
 from anta.tests.security import VerifyAPIHttpsSSL, VerifySpecificIPSecConn, VerifyTelnetStatus
+from anta.tests.services import VerifyDNSServers
 from anta.tests.stp import VerifySTPBlockedPorts, VerifySTPCounters
 from anta.tests.stun import VerifyStunClientTranslation
 from anta.tests.system import (
@@ -53,6 +54,7 @@ __all__ = [
     "VerifyAgentLogs",
     "VerifyBGPPeerSession",
     "VerifyCoredump",
+    "VerifyDNSServers",
     "VerifyEnvironmentCooling",
     "VerifyEnvironmentPower",
     "VerifyEnvironmentSystemCooling",
