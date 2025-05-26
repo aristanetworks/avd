@@ -24,6 +24,7 @@ dependencies = [
     "cryptography>=38.0.4",
     "deepmerge>=1.1.0",
     "Jinja2>=3.0",
+    "PyYAML>=6.0.0",
     "requests>=2.27.0",
 ]
 
@@ -37,7 +38,6 @@ pytest = [
     "anta>=1.4.0",
     "pytest",
     "pytest-asyncio",
-    "PyYAML>=6.0.0",
     "pydantic>=2.3.0",
     "referencing>=0.35.0",
 ]
@@ -54,7 +54,6 @@ ansible-collection = [
     "anta>=1.4.0",
     "cvprac>=1.4.0",
     "netaddr>=0.7.19",
-    "PyYAML>=6.0.0",
     "treelib>=1.5.5",
     # jsonschema is required for the arista.cvp Ansible collection
     "jsonschema>=3.2.0",
