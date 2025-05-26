@@ -9,6 +9,8 @@ vxlan_interface:
         dscp_propagation_encapsulation: false
         map_dscp_to_traffic_class_decapsulation: false
         ecn_propagation: false
+        dscp_ecn:
+          rewrite_bridged_enabled: false
       vlans:
         - id: 110
           vni: 10110
