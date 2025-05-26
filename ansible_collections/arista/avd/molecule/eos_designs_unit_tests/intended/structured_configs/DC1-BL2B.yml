@@ -424,6 +424,11 @@ router_bgp:
     - ip_address: 1.1.1.1
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
       description: test_description
+      bfd: true
+      bfd_timers:
+        interval: 100
+        min_rx: 100
+        multiplier: 3
       route_map_out: RM-Tenant_C_WAN_Zone-1.1.1.1-SET-NEXT-HOP-OUT
     - ip_address: 2.2.2.3
       peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
