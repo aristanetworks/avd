@@ -63744,15 +63744,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Qos(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class DscpEcn(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"rewrite_bridged_enabled": {"type": bool}}
+                        rewrite_bridged_enabled: bool | None
+                        """Enable DSCP and ECN rewrite for VXLAN bridged packets."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, rewrite_bridged_enabled: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                DscpEcn.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    rewrite_bridged_enabled: Enable DSCP and ECN rewrite for VXLAN bridged packets.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "dscp_propagation_encapsulation": {"type": bool},
                         "ecn_propagation": {"type": bool},
                         "map_dscp_to_traffic_class_decapsulation": {"type": bool},
+                        "dscp_ecn": {"type": DscpEcn},
                     }
                     dscp_propagation_encapsulation: bool | None
                     ecn_propagation: bool | None
                     """Enable copying the ECN marking to/from encapsulated packets."""
                     map_dscp_to_traffic_class_decapsulation: bool | None
+                    dscp_ecn: DscpEcn
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -63762,6 +63786,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             dscp_propagation_encapsulation: bool | None | UndefinedType = Undefined,
                             ecn_propagation: bool | None | UndefinedType = Undefined,
                             map_dscp_to_traffic_class_decapsulation: bool | None | UndefinedType = Undefined,
+                            dscp_ecn: DscpEcn | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Qos.
@@ -63773,6 +63798,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 dscp_propagation_encapsulation: dscp_propagation_encapsulation
                                 ecn_propagation: Enable copying the ECN marking to/from encapsulated packets.
                                 map_dscp_to_traffic_class_decapsulation: map_dscp_to_traffic_class_decapsulation
+                                dscp_ecn: Subclass of AvdModel.
 
                             """
 
@@ -64143,15 +64169,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Qos(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class DscpEcn(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"rewrite_bridged_enabled": {"type": bool}}
+                        rewrite_bridged_enabled: bool | None
+                        """Enable DSCP and ECN rewrite for VXLAN bridged packets."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, rewrite_bridged_enabled: bool | None | UndefinedType = Undefined) -> None:
+                                """
+                                DscpEcn.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    rewrite_bridged_enabled: Enable DSCP and ECN rewrite for VXLAN bridged packets.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "dscp_propagation_encapsulation": {"type": bool},
                         "ecn_propagation": {"type": bool},
                         "map_dscp_to_traffic_class_decapsulation": {"type": bool},
+                        "dscp_ecn": {"type": DscpEcn},
                     }
                     dscp_propagation_encapsulation: bool | None
                     ecn_propagation: bool | None
                     """Enable copying the ECN marking to/from encapsulated packets."""
                     map_dscp_to_traffic_class_decapsulation: bool | None
+                    dscp_ecn: DscpEcn
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -64161,6 +64211,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             dscp_propagation_encapsulation: bool | None | UndefinedType = Undefined,
                             ecn_propagation: bool | None | UndefinedType = Undefined,
                             map_dscp_to_traffic_class_decapsulation: bool | None | UndefinedType = Undefined,
+                            dscp_ecn: DscpEcn | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Qos.
@@ -64172,6 +64223,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 dscp_propagation_encapsulation: dscp_propagation_encapsulation
                                 ecn_propagation: Enable copying the ECN marking to/from encapsulated packets.
                                 map_dscp_to_traffic_class_decapsulation: map_dscp_to_traffic_class_decapsulation
+                                dscp_ecn: Subclass of AvdModel.
 
                             """
 

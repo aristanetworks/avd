@@ -6696,6 +6696,7 @@ interface Vlan4094
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
 | Qos ECN propagation | Enabled |
+| Qos DHCP ECN rewrite bridged | Enabled |
 | Qos map dscp to traffic-class decapsulation | Enabled |
 | Remote VTEPs EVPN BFD transmission rate | 300ms |
 | Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
@@ -6750,6 +6751,7 @@ interface Vxlan1
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
    vxlan multicast headend-replication
    vxlan qos ecn propagation
+   vxlan qos dscp ecn rewrite bridged enabled
    vxlan qos dscp propagation encapsulation
    vxlan qos map dscp to traffic-class decapsulation
    vxlan encapsulation ipv4
