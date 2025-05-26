@@ -29,6 +29,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_propagation_encapsulation</samp>](## "vxlan_interface.vxlan1.vxlan.qos.dscp_propagation_encapsulation") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn_propagation</samp>](## "vxlan_interface.vxlan1.vxlan.qos.ecn_propagation") | Boolean |  |  |  | Enable copying the ECN marking to/from encapsulated packets.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_dscp_to_traffic_class_decapsulation</samp>](## "vxlan_interface.vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_ecn</samp>](## "vxlan_interface.vxlan1.vxlan.qos.dscp_ecn") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rewrite_bridged_enabled</samp>](## "vxlan_interface.vxlan1.vxlan.qos.dscp_ecn.rewrite_bridged_enabled") | Boolean |  |  |  | Enable DSCP and ECN rewrite for VXLAN bridged packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_range</samp>](## "vxlan_interface.vxlan1.vxlan.vlan_range") | Dictionary |  |  |  | Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.<br>If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "vxlan_interface.vxlan1.vxlan.vlan_range.vlans") | String | Required |  |  | e.g. "94,96,100-110". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vnis</samp>](## "vxlan_interface.vxlan1.vxlan.vlan_range.vnis") | String | Required |  |  | Set `vnis` in the correct sequence as `vlans`.<br>e.g. "10094,10096,10100-10110". |
@@ -67,6 +69,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_propagation_encapsulation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.dscp_propagation_encapsulation") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn_propagation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.ecn_propagation") | Boolean |  |  |  | Enable copying the ECN marking to/from encapsulated packets.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;map_dscp_to_traffic_class_decapsulation</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.map_dscp_to_traffic_class_decapsulation") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp_ecn</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.dscp_ecn") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;rewrite_bridged_enabled</samp>](## "vxlan_interface.Vxlan1.vxlan.qos.dscp_ecn.rewrite_bridged_enabled") | Boolean |  |  |  | Enable DSCP and ECN rewrite for VXLAN bridged packets. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_range</samp>](## "vxlan_interface.Vxlan1.vxlan.vlan_range") | Dictionary |  |  |  | Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.<br>If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlans</samp>](## "vxlan_interface.Vxlan1.vxlan.vlan_range.vlans") | String | Required |  |  | e.g. "94,96,100-110". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vnis</samp>](## "vxlan_interface.Vxlan1.vxlan.vlan_range.vnis") | String | Required |  |  | Set `vnis` in the correct sequence as `vlans`.<br>e.g. "10094,10096,10100-10110". |
@@ -123,6 +127,10 @@
             # Enable copying the ECN marking to/from encapsulated packets.
             ecn_propagation: <bool>
             map_dscp_to_traffic_class_decapsulation: <bool>
+            dscp_ecn:
+
+              # Enable DSCP and ECN rewrite for VXLAN bridged packets.
+              rewrite_bridged_enabled: <bool>
 
           # Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
           # If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
@@ -202,6 +210,10 @@
             # Enable copying the ECN marking to/from encapsulated packets.
             ecn_propagation: <bool>
             map_dscp_to_traffic_class_decapsulation: <bool>
+            dscp_ecn:
+
+              # Enable DSCP and ECN rewrite for VXLAN bridged packets.
+              rewrite_bridged_enabled: <bool>
 
           # Set VNI on range of VLANs. Number of VLANs must equal number of VNIs.
           # If a VNI is set for a VLAN using `vlan_range`, VNI setting in `vxlan_interface.vxlan1.vxlan.vlans` is ignored for that VLAN.
