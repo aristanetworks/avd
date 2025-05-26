@@ -40,6 +40,10 @@ snmp_server:
     users:
     - username: USER-WRITE
       authentication_level: auth
+  traps:
+    snmp_traps:
+    - name: foo
+      enabled: true
   vrfs:
   - name: default
     enable: true

@@ -3357,6 +3357,7 @@ STP mode: **rapid-pvst**
 - Spanning Tree disabled for VLANs: **105,202,505-506**
 - Global BPDU Guard for Edge ports is disabled.
 - Global BPDU Filter for Edge ports is disabled.
+- Range of port-ids reserved for port-channels: 201-2001.
 
 ### Spanning Tree Device Configuration
 
@@ -3368,6 +3369,7 @@ no spanning-tree edge-port bpduguard default
 no spanning-tree edge-port bpdufilter default
 spanning-tree bpduguard rate-limit default
 spanning-tree bpduguard rate-limit count 100
+spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
@@ -6801,6 +6803,7 @@ service routing protocols model multi-agent
 
 Virtual Router MAC Address: 00:1c:73:00:dc:01
 Virtual Router MAC Address Advertisement Interval: 40
+Virtual Router MAC Address MLAG Peer: Enabled
 
 #### Virtual Router MAC Address Device Configuration
 
@@ -6808,6 +6811,8 @@ Virtual Router MAC Address Advertisement Interval: 40
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ip virtual-router mac-address advertisement-interval 40
+!
+ip virtual-router mac-address mlag-peer
 ```
 
 ### IP Routing
@@ -8832,15 +8837,18 @@ router bgp 65101
       neighbor WELCOME_ROUTERS additional-paths send any
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
+      no neighbor 10.2.3.8 next-hop address-family ipv6
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 10.2.3.9 default-originate route-map Address_Family_IPV4 always
       neighbor 10.2.3.9 additional-paths send ecmp limit 4
+      neighbor 10.2.3.9 next-hop address-family ipv6
       neighbor 192.0.2.1 additional-paths receive
       neighbor 192.0.2.1 route-map Address_Family_IPV4_In in
       neighbor 192.0.2.1 route-map Address_Family_IPV4_Out out
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       neighbor 192.0.2.1 additional-paths send limit 20 prefix-list PL1
+      neighbor 192.0.2.1 next-hop address-family ipv6 originate
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
       network 10.0.0.0/8

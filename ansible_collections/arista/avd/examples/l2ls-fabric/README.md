@@ -351,6 +351,7 @@ The updated changes are noted in the tabs below.
       - name: MY_FABRIC
         vrfs:
           - name: default
+            vrf_id: 10
             svis:
               - id: 10
                 name: 'BLUE-NET'

@@ -7,10 +7,6 @@ intends to clarify why the words are ignored and if any action is pending
     Acronym for Neighbor Discovery
 - iif
     Used as test data
-- supress
-    This word is in the schema - probably wrongly spelled. It was introduced in
-    https://github.com/aristanetworks/avd/pull/3360 in AVD 3.6.0
-    TODO - raise an issue to fix it.
 - inout
     Key name `route_map_inout` in `eos_cli_config_gen` schema
 - claus
@@ -29,3 +25,5 @@ intends to clarify why the words are ignored and if any action is pending
     Valid value for class_maps.qos.[].ecn in eos_cli_config_gen
 - TE
     Traffic Engineering
+- crate
+    Name of package for Rust 🦀

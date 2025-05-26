@@ -42,3 +42,10 @@ tenants:
           - id: 10
             name: VLAN10
             ip_address_virtual: 10.10.10.1/24
+      - name: TEST_COMMA_SEPERATED_MLAG_IBGP_PEERING_POOL
+        vrf_id: 2
+        mlag_ibgp_peering_ipv4_pool: 10.255.240.0/24, 10.255.241.0/24
+        svis:
+          - id: 101
+            name: VLAN101
+            ip_address_virtual: 10.10.11.1/24

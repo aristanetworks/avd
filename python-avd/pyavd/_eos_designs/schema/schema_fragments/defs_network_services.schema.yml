@@ -1068,6 +1068,7 @@ $defs:
                         EOS CLI rendered directly on the Loopback interface in the final EOS configuration.
               static_routes:
                 type: list
+                $ref: "eos_designs#/$defs/static_routes"
                 description: |
                   List of static routes for v4 and/or v6.
                   This will create static routes inside the tenant VRF.
@@ -1080,75 +1081,40 @@ $defs:
                     destination_address_prefix:
                       type: str
                       description: IPv4_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
                     gateway:
                       type: str
                       description: IPv4_address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
                     nodes:
                       type: list
                       items:
                         type: str
               ipv6_static_routes:
                 type: list
+                $ref: "eos_designs#/$defs/static_routes"
                 items:
                   type: dict
                   keys:
                     destination_address_prefix:
                       type: str
                       description: IPv6_address.
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: prefix
                     gateway:
                       type: str
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                        - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
+                      deprecation:
+                        warning: true
+                        remove_in_version: 6.0.0
+                        new_key: next_hop
                     nodes:
                       type: list
                       items:
@@ -1608,6 +1574,34 @@ $defs:
                       description: Subinterface number.
                       convert_types:
                         - str
+                    port_channel:
+                      type: dict
+                      description: Settings to be applied to the Port-Channel subinterface.
+                      keys:
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: |
+                            Custom structured config added on the Port-Channel subinterface for eos_cli_config_gen.
+                          documentation_options:
+                            hide_keys: true
+                          $ref: "eos_cli_config_gen#/keys/port_channel_interfaces/items"
+                        raw_eos_cli:
+                          type: str
+                          description: |
+                            EOS cli commands rendered on the Port-Channel subinterface.
+                    structured_config:
+                      type: dict
+                      relaxed_validation: true
+                      description: |
+                        Custom structured config added on the Ethernet subinterface for eos_cli_config_gen.
+                      documentation_options:
+                        hide_keys: true
+                      $ref: "eos_cli_config_gen#/keys/ethernet_interfaces/items"
+                    raw_eos_cli:
+                      type: str
+                      description: |
+                        EOS cli commands rendered on the Ethernet subinterface.
               endpoints:
                 type: list
                 description: Pseudowire terminating endpoints. Must have exactly two items.

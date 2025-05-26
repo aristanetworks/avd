@@ -99,7 +99,11 @@ wan_virtual_topologies:
   policies:
     - name: DEFAULT-POLICY
       default_virtual_topology:
-        drop_unmatched: true
+        path_groups:
+          - names: [ INET ]
+        outlier_elimination:
+          threshold:
+            loss_rate: 11.5
       application_virtual_topologies:
         - application_profile: TEST
           path_groups:
@@ -107,6 +111,11 @@ wan_virtual_topologies:
           internet_exit:
             policy: ZSCALER-EXIT-POLICY-1
           id: 42
+          metric_order:
+            preferred_metric: latency
+          outlier_elimination:
+            threshold:
+              latency: 54
 
 application_classification:
   application_profiles:

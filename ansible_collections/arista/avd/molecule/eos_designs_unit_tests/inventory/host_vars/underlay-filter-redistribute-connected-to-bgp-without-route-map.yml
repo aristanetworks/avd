@@ -1,0 +1,29 @@
+---
+type: l3leaf
+
+underlay_filter_redistribute_connected: false
+
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.10.0.0/24
+    vtep_loopback_ipv4_pool: 10.11.0.0/24
+    vtep_loopback: Loopback1
+    evpn_services_l2_only: false
+  nodes:
+    - name: underlay-filter-redistribute-connected-to-bgp-without-route-map
+      id: 3
+      bgp_as: 65101
+      filter:
+        tags: [fabric, ipmi, storageProd, sit]
+
+tenants: # dynamic_key: network_services
+  - name: TEST
+    mac_vrf_vni_base: 10000
+    vrfs:
+      - name: default
+        vrf_id: 111
+        svis:
+          - id: 111
+            name: svi_with_default_vrf
+            ip_address: 10.10.10.111/24
+            tags: [fabric]
