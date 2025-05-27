@@ -40,6 +40,7 @@
   - [Flow Tracking](#flow-tracking)
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
@@ -691,6 +692,10 @@ monitor telemetry postcard policy
 monitor server radius
    probe method status-server
 ```
+
+### Transceiver
+
+Transceiver dom-threshold file: default
 
 ## Monitor Connectivity
 
