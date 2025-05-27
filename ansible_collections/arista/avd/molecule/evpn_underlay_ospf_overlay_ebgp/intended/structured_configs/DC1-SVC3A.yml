@@ -354,6 +354,11 @@ vlan_interfaces:
   ip_address: 10.255.252.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: 2G9asDPPy0iUHSSYSY29pc7vWoX9vNlL
   mtu: 1500
   no_autostate: true
 - name: Vlan210

@@ -2896,6 +2896,11 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -6374,6 +6379,9 @@ keys:
     - str
     min: 0
     max: 86400
+  ip_virtual_router_mac_address_mlag_peer:
+    type: bool
+    description: Enable MLAG peer gateway.
   ipv6_access_lists:
     type: list
     primary_key: name
@@ -11501,6 +11509,11 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -19390,6 +19403,14 @@ keys:
       nexthop_fast_failover:
         type: bool
         default: false
+      software_forwarding_hardware_offload_mtu:
+        description: MTU value for software-forwarded packets across all vrfs that
+          use hardware offload.
+        type: int
+        convert_types:
+        - str
+        min: 68
+        max: 65535
       vrfs:
         type: list
         primary_key: name
@@ -19424,6 +19445,16 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+            software_forwarding_hardware_offload_mtu:
+              description: 'MTU value for software-forwarded packets within a specific
+                VRF that use hardware offload.
+
+                This setting overrides the global config for a specific vrf.'
+              type: int
+              convert_types:
+              - str
+              min: 68
+              max: 65535
       control_functions:
         type: dict
         description: 'Routing control functions (RCF) used to filter and update routes
@@ -23254,6 +23285,9 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -23715,6 +23749,13 @@ keys:
                       '
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
+                  dscp_ecn:
+                    type: dict
+                    keys:
+                      rewrite_bridged_enabled:
+                        type: bool
+                        description: Enable DSCP and ECN rewrite for VXLAN bridged
+                          packets.
               vlan_range:
                 type: dict
                 description: 'Set VNI on range of VLANs. Number of VLANs must equal
