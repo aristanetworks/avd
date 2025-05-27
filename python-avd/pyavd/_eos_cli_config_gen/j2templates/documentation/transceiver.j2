@@ -4,11 +4,9 @@
  that can be found in the LICENSE file.
 #}
 {# doc - transceiver #}
-{% if transceiver is arista.avd.defined %}
+{% if transceiver.dom_threshold_file is arista.avd.defined %}
 
 ### Transceiver
-{%     if transceiver.dom_threshold_file is arista.avd.defined %}
 
 Transceiver dom-threshold file: {{ transceiver.dom_threshold_file }}
-{%     endif %}
 {% endif %}
