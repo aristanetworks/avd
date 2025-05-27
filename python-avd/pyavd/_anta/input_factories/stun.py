@@ -34,7 +34,7 @@ class VerifyStunClientTranslationInputFactory(AntaTestInputFactory):
             # Check if the path group has local interfaces with STUN server profiles
             stun_interfaces = [local_interface.name for local_interface in path_group.local_interfaces if local_interface.stun.server_profiles]
             if not stun_interfaces:
-                self.logger.debug(LogMessage.STUN_NO_CLIENT_INTERFACE, caller=path_group.name)
+                self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STUN_INTERFACE, path_group=path_group.name)
                 continue
 
             for interface in stun_interfaces:
@@ -43,10 +43,10 @@ class VerifyStunClientTranslationInputFactory(AntaTestInputFactory):
                     self.structured_config.ethernet_interfaces[interface].ip_address if interface in self.structured_config.ethernet_interfaces else None
                 )
                 if ip_address is None:
-                    self.logger.debug(LogMessage.INTERFACE_NO_IP, caller=interface)
+                    self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface)
                     continue
                 if ip_address == "dhcp":
-                    self.logger.debug(LogMessage.INTERFACE_USING_DHCP, caller=interface)
+                    self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface)
                     continue
 
                 source_address = ip_interface(ip_address).ip

@@ -359,6 +359,7 @@ ethernet_interfaces:
         border_router: true
         bfd: true
         bidirectional: true
+        neighbor_filter: Test_Filter_Ethernet
         hello:
           count: 2.5
           interval: 10

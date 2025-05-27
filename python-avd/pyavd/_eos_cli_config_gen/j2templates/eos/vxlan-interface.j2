@@ -79,6 +79,9 @@ interface Vxlan1
 {%     elif vxlan_config.vxlan.qos.ecn_propagation is arista.avd.defined(false) %}
    no vxlan qos ecn propagation
 {%     endif %}
+{%     if vxlan_config.vxlan.qos.dscp_ecn.rewrite_bridged_enabled is arista.avd.defined(true) %}
+   vxlan qos dscp ecn rewrite bridged enabled
+{%     endif %}
 {%     if vxlan_config.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(true) %}
    vxlan qos dscp propagation encapsulation
 {%     elif vxlan_config.vxlan.qos.dscp_propagation_encapsulation is arista.avd.defined(false) %}
