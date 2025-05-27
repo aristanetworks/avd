@@ -3418,12 +3418,12 @@ vlan internal order ascending range 10 40
 
 #### Private VLANs
 
-| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| Primary VLAN ID | Secondary VLAN ID | Private VLAN Type |
 | --------------- | ----------------- | ----------------- |
 | community | 111 | 110 |
 | isolated | 112 | 110 |
 
-#### E-Tree role
+#### E-Tree Role
 
 | VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
 | ------- | --------- | ---- | --------------------- |

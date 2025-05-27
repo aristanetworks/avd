@@ -32,7 +32,7 @@
 
 #### Private VLANs
 
-| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| Primary VLAN ID | Secondary VLAN ID | Private VLAN Type |
 | --------------- | ----------------- | ----------------- |
 {%         for vlan in vlans | arista.avd.natural_sort('id') %}
 {%             if vlan.private_vlan.type is arista.avd.defined and
@@ -43,7 +43,7 @@
 {%     endif %}
 {%     if ns.show_e_tree_table %}
 
-#### E-Tree role
+#### E-Tree Role
 
 | VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
 | ------- | --------- | ---- | --------------------- |
