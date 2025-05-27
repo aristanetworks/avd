@@ -22792,6 +22792,9 @@ keys:
         source_interface:
           type: str
           description: Tunnel Source Interface Name.
+        source_ipaddress:
+          type: str
+          description: Tunnel Source IPv4/IPv6 address.
         destination:
           type: str
           description: IPv4 or IPv6 Address Tunnel Destination.

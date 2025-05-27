@@ -60667,6 +60667,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "tunnel_mode": {"type": str},
             "source_interface": {"type": str},
+            "source_ipaddress": {"type": str},
             "destination": {"type": str},
             "path_mtu_discovery": {"type": bool},
             "ipsec_profile": {"type": str},
@@ -60706,6 +60707,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         source_interface: str | None
         """Tunnel Source Interface Name."""
+        source_ipaddress: str | None
+        """Tunnel Source IPv4/IPv6 address."""
         destination: str | None
         """IPv4 or IPv6 Address Tunnel Destination."""
         path_mtu_discovery: bool | None
@@ -60744,6 +60747,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 tunnel_mode: Literal["gre", "ipsec"] | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
+                source_ipaddress: str | None | UndefinedType = Undefined,
                 destination: str | None | UndefinedType = Undefined,
                 path_mtu_discovery: bool | None | UndefinedType = Undefined,
                 ipsec_profile: str | None | UndefinedType = Undefined,
@@ -60777,6 +60781,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `ipsec`: IPsec-over-IP
                        encapsulation.
                     source_interface: Tunnel Source Interface Name.
+                    source_ipaddress: Tunnel Source IPv4/IPv6 address.
                     destination: IPv4 or IPv6 Address Tunnel Destination.
                     path_mtu_discovery: Enable Path MTU Discovery On Tunnel.
                     ipsec_profile:
