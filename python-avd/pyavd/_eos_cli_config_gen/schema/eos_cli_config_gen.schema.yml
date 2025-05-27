@@ -23607,6 +23607,17 @@ keys:
           items:
             type: str
             description: Trunk Group Name.
+        e_tree:
+          type: dict
+          keys:
+            leaf_role:
+              type: bool
+              description: Set the VLAN into the E-Tree leaf role. By default all
+                VLANs are in root role
+            remote_host_leaf_drop:
+              type: bool
+              description: Enables remote leaf hosts to instead be installed as explicit
+                drop routes in the local FDB
         private_vlan:
           type: dict
           keys:

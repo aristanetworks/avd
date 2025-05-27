@@ -16,6 +16,12 @@ vlan {{ vlan.id }}
 {%     for trunk_group in vlan.trunk_groups | arista.avd.natural_sort %}
    trunk group {{ trunk_group }}
 {%     endfor %}
+{%     if vlan.e_tree is arista.avd.defined and vlan.e_tree.leaf_role is arista.avd.defined(true) %}
+   e-tree role leaf
+{%         if vlan.e_tree.remote_host_leaf_drop is arista.avd.defined(true) %}
+      remote leaf host drop
+{%         endif %}
+{%     endif %}
 {%     if vlan.private_vlan.type is arista.avd.defined and
           vlan.private_vlan.primary_vlan is arista.avd.defined %}
    private-vlan {{ vlan.private_vlan.type }} primary vlan {{ vlan.private_vlan.primary_vlan }}
