@@ -39678,6 +39678,67 @@ class EosDesigns(EosDesignsRootModel):
 
                         IpAddresses._item_type = str
 
+                        class StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class StaticRoutes(AvdList[StaticRoutesItem]):
+                            """Subclass of AvdList with `StaticRoutesItem` items."""
+
+                        StaticRoutes._item_type = StaticRoutesItem
+
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -39831,6 +39892,7 @@ class EosDesigns(EosDesignsRootModel):
                             "interfaces": {"type": Interfaces},
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
                             "ip_addresses": {"type": IpAddresses},
+                            "static_routes": {"type": StaticRoutes},
                             "nodes": {"type": Nodes},
                             "description": {"type": str},
                             "descriptions": {"type": Descriptions},
@@ -39855,6 +39917,13 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         ip_addresses: IpAddresses
                         """Subclass of AvdList with `str` items."""
+                        static_routes: StaticRoutes
+                        """
+                        Static routes to be configured on every device when this interface is configured.
+
+                        Subclass of
+                        AvdList with `StaticRoutesItem` items.
+                        """
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         description: str | None
@@ -39906,6 +39975,7 @@ class EosDesigns(EosDesignsRootModel):
                                 interfaces: Interfaces | UndefinedType = Undefined,
                                 encapsulation_dot1q_vlan: EncapsulationDot1qVlan | UndefinedType = Undefined,
                                 ip_addresses: IpAddresses | UndefinedType = Undefined,
+                                static_routes: StaticRoutes | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 descriptions: Descriptions | UndefinedType = Undefined,
@@ -39933,6 +40003,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `int` items.
                                     ip_addresses: Subclass of AvdList with `str` items.
+                                    static_routes:
+                                       Static routes to be configured on every device when this interface is configured.
+
+                                       Subclass of
+                                       AvdList with `StaticRoutesItem` items.
                                     nodes: Subclass of AvdList with `str` items.
                                     description: description
                                     descriptions:
@@ -40056,6 +40131,67 @@ class EosDesigns(EosDesignsRootModel):
                             _primary_key: ClassVar[str] = "name"
 
                         MemberInterfaces._item_type = MemberInterfacesItem
+
+                        class StaticRoutesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {
+                                "prefix": {"type": str},
+                                "next_hop": {"type": str},
+                                "track_bfd": {"type": bool},
+                                "distance": {"type": int},
+                                "tag": {"type": int},
+                                "name": {"type": str},
+                                "metric": {"type": int},
+                                "interface": {"type": str},
+                            }
+                            prefix: str | None
+                            next_hop: str | None
+                            track_bfd: bool | None
+                            """Track next-hop using BFD."""
+                            distance: int | None
+                            tag: int | None
+                            name: str | None
+                            """description."""
+                            metric: int | None
+                            interface: str | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    prefix: str | None | UndefinedType = Undefined,
+                                    next_hop: str | None | UndefinedType = Undefined,
+                                    track_bfd: bool | None | UndefinedType = Undefined,
+                                    distance: int | None | UndefinedType = Undefined,
+                                    tag: int | None | UndefinedType = Undefined,
+                                    name: str | None | UndefinedType = Undefined,
+                                    metric: int | None | UndefinedType = Undefined,
+                                    interface: str | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    StaticRoutesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        prefix: prefix
+                                        next_hop: next_hop
+                                        track_bfd: Track next-hop using BFD.
+                                        distance: distance
+                                        tag: tag
+                                        name: description.
+                                        metric: metric
+                                        interface: interface
+
+                                    """
+
+                        class StaticRoutes(AvdList[StaticRoutesItem]):
+                            """Subclass of AvdList with `StaticRoutesItem` items."""
+
+                        StaticRoutes._item_type = StaticRoutesItem
 
                         class Ospf(AvdModel):
                             """Subclass of AvdModel."""
@@ -40190,6 +40326,7 @@ class EosDesigns(EosDesignsRootModel):
                             "mtu": {"type": int},
                             "ipv4_acl_in": {"type": str},
                             "ipv4_acl_out": {"type": str},
+                            "static_routes": {"type": StaticRoutes},
                             "ospf": {"type": Ospf},
                             "flow_tracking": {"type": FlowTracking},
                             "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
@@ -40247,6 +40384,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Name of the IPv4 access-list to be assigned in the ingress direction."""
                         ipv4_acl_out: str | None
                         """Name of the IPv4 Access-list to be assigned in the egress direction."""
+                        static_routes: StaticRoutes
+                        """
+                        Static routes to be configured on the device when this Port-channel is configured.
+
+                        Subclass of
+                        AvdList with `StaticRoutesItem` items.
+                        """
                         ospf: Ospf
                         """
                         OSPF interface configuration.
@@ -40286,6 +40430,7 @@ class EosDesigns(EosDesignsRootModel):
                                 mtu: int | None | UndefinedType = Undefined,
                                 ipv4_acl_in: str | None | UndefinedType = Undefined,
                                 ipv4_acl_out: str | None | UndefinedType = Undefined,
+                                static_routes: StaticRoutes | UndefinedType = Undefined,
                                 ospf: Ospf | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
@@ -40326,6 +40471,11 @@ class EosDesigns(EosDesignsRootModel):
                                     mtu: MTU can only be set on the parent Port-Channel.
                                     ipv4_acl_in: Name of the IPv4 access-list to be assigned in the ingress direction.
                                     ipv4_acl_out: Name of the IPv4 Access-list to be assigned in the egress direction.
+                                    static_routes:
+                                       Static routes to be configured on the device when this Port-channel is configured.
+
+                                       Subclass of
+                                       AvdList with `StaticRoutesItem` items.
                                     ospf:
                                        OSPF interface configuration.
 
@@ -40663,6 +40813,7 @@ class EosDesigns(EosDesignsRootModel):
                             "local_as": {"type": str},
                             "weight": {"type": int},
                             "bfd": {"type": bool},
+                            "bfd_timers": {"type": EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers},
                             "shutdown": {"type": bool},
                         }
                         ip_address: str
@@ -40736,6 +40887,8 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         weight: int | None
                         bfd: bool | None
+                        bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers
+                        """Override default BFD timers. BFD must be enabled with `bfd: true`."""
                         shutdown: bool | None
 
                         if TYPE_CHECKING:
@@ -40766,6 +40919,7 @@ class EosDesigns(EosDesignsRootModel):
                                 local_as: str | None | UndefinedType = Undefined,
                                 weight: int | None | UndefinedType = Undefined,
                                 bfd: bool | None | UndefinedType = Undefined,
+                                bfd_timers: EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem.BfdTimers | UndefinedType = Undefined,
                                 shutdown: bool | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -40822,6 +40976,7 @@ class EosDesigns(EosDesignsRootModel):
                                        number.
                                     weight: weight
                                     bfd: bfd
+                                    bfd_timers: Override default BFD timers. BFD must be enabled with `bfd: true`.
                                     shutdown: shutdown
 
                                 """
