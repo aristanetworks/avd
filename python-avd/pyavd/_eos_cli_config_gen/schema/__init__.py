@@ -63516,7 +63516,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             leaf_role: bool | None
             """Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role."""
             remote_leaf_host_drop: bool | None
-            """Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB"""
+            """
+            Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+            only applicable for VLANs operating in the 'Leaf' role.
+            """
 
             if TYPE_CHECKING:
 
@@ -63531,7 +63534,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         leaf_role: Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role.
-                        remote_leaf_host_drop: Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB
+                        remote_leaf_host_drop:
+                           Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+                           only applicable for VLANs operating in the 'Leaf' role.
 
                     """
 

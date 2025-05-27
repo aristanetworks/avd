@@ -23630,7 +23630,8 @@ keys:
             remote_leaf_host_drop:
               type: bool
               description: Enables remote leaf hosts to instead be installed as explicit
-                drop routes in the local FDB
+                drop routes in the local FDB. This is only applicable for VLANs operating
+                in the 'Leaf' role.
         private_vlan:
           type: dict
           keys:
