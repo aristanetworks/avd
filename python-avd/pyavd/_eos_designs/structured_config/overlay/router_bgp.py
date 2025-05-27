@@ -607,7 +607,7 @@ class RouterBgpMixin(Protocol):
         for route_reflector_client in natural_sort(self.facts.mpls_route_reflector_clients):
             # TODO: This condition will never meet as it is conflicting with the condition in self._mpls_route_reflectors
             # The code will reach here only when self._is_mpls_server is true (line 604), but in self._mpls_route_reflectors
-            # if mpls_overlay_role or evpn_role is server it return {}
+            # if mpls_overlay_role or evpn_role is server it returns {}
             if route_reflector_client in self._mpls_route_reflectors:
                 continue
 
