@@ -6842,6 +6842,8 @@ ip virtual-router mac-address mlag-peer
 !
 ip routing ipv6 interfaces
 ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
