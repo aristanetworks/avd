@@ -23614,7 +23614,7 @@ keys:
               type: bool
               description: Set the VLAN into the E-Tree leaf role. By default all
                 VLANs are in root role
-            remote_host_leaf_drop:
+            remote_leaf_host_drop:
               type: bool
               description: Enables remote leaf hosts to instead be installed as explicit
                 drop routes in the local FDB

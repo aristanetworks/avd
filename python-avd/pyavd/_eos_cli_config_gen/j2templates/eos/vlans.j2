@@ -18,7 +18,7 @@ vlan {{ vlan.id }}
 {%     endfor %}
 {%     if vlan.e_tree is arista.avd.defined and vlan.e_tree.leaf_role is arista.avd.defined(true) %}
    e-tree role leaf
-{%         if vlan.e_tree.remote_host_leaf_drop is arista.avd.defined(true) %}
+{%         if vlan.e_tree.remote_leaf_host_drop is arista.avd.defined(true) %}
       remote leaf host drop
 {%         endif %}
 {%     endif %}

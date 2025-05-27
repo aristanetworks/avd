@@ -63478,16 +63478,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class ETree(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"leaf_role": {"type": bool}, "remote_host_leaf_drop": {"type": bool}}
+            _fields: ClassVar[dict] = {"leaf_role": {"type": bool}, "remote_leaf_host_drop": {"type": bool}}
             leaf_role: bool | None
             """Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role"""
-            remote_host_leaf_drop: bool | None
+            remote_leaf_host_drop: bool | None
             """Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB"""
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, leaf_role: bool | None | UndefinedType = Undefined, remote_host_leaf_drop: bool | None | UndefinedType = Undefined
+                    self, *, leaf_role: bool | None | UndefinedType = Undefined, remote_leaf_host_drop: bool | None | UndefinedType = Undefined
                 ) -> None:
                     """
                     ETree.
@@ -63497,7 +63497,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         leaf_role: Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role
-                        remote_host_leaf_drop: Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB
+                        remote_leaf_host_drop: Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB
 
                     """
 

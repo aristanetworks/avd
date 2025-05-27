@@ -42,6 +42,7 @@
 {%         endfor %}
 {%     endif %}
 {%     if ns.show_e_tree_table %}
+
 #### E-Tree role
 
 | VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
@@ -53,10 +54,11 @@
 {%             else %}
 {%                 set row_role = 'Root' %}
 {%             endif %}
-{%             set row_host_drop = vlan.e_tree.remote_host_leaf_drop | arista.avd.default('-' ) %}
+{%             set row_host_drop = vlan.e_tree.remote_leaf_host_drop | arista.avd.default('-' ) %}
 | {{ vlan.id }} | {{ row_name }} | {{ row_role }} | {{ row_host_drop }} |
 {%         endfor %}
 {%     endif %}
+
 ### VLANs Device Configuration
 
 ```eos
