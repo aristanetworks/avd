@@ -22722,6 +22722,19 @@ keys:
                     log:
                       type: bool
                       description: Only supported when action is set to drop.
+  transceiver:
+    type: dict
+    keys:
+      dom_threshold_file:
+        type: str
+        description: 'CSV file path for DOM threshold values.
+
+          eg. `dom_threshold_file: flash:/dom_threshold.csv`
+
+          Note: Set `dom_threshold_file` to `default` for default Arista-standardized
+          thresholds.
+
+          eg. `dom_threshold_file: default`'
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
