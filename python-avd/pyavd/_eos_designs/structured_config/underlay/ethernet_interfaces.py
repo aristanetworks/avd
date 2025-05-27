@@ -7,9 +7,10 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
-from pyavd._errors import AristaAvdError, AristaAvdMissingVariableError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
-from pyavd.j2filters import encrypt, natural_sort
+from pyavd.j2filters import natural_sort
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.schema import EosDesigns
@@ -93,26 +94,18 @@ class EthernetInterfacesMixin(Protocol):
                         ethernet_interface.ip_address = f"{link.ip_address}/{link.prefix_length}"
 
                 if self.shared_utils.underlay_ospf:
-                    ethernet_interface.ospf_network_point_to_point = True
-                    ethernet_interface.ospf_area = self.inputs.underlay_ospf_area
-                    ospf_authentication = self.inputs.underlay_ospf_authentication.enabled
-                    ospf_message_digest_keys = self.inputs.underlay_ospf_authentication.message_digest_keys
-                    if ospf_authentication:
-                        if not ospf_message_digest_keys:
-                            msg = "'underlay_ospf_authentication.enabled' is True but no message-digest keys with both key and ID are defined."
-                            raise AristaAvdError(msg)
-
+                    ethernet_interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+                    if self.inputs.underlay_ospf_authentication.enabled:
                         ethernet_interface.ospf_authentication = "message-digest"
-                        for ospf_key in ospf_message_digest_keys:
+                        for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
                             ethernet_interface.ospf_message_digest_keys.append_new(
                                 id=ospf_key.id,
                                 hash_algorithm=ospf_key.hash_algorithm,
-                                key=encrypt(
-                                    ospf_key.key,
-                                    passwd_type="ospf_message_digest",  # NOSONAR # noqa: S106
+                                key=ospf_message_digest_encrypt(
+                                    password=ospf_key.key,
                                     key=ethernet_interface.name,
                                     hash_algorithm=ospf_key.hash_algorithm,
-                                    key_id=ospf_key.id,
+                                    key_id=str(ospf_key.id),
                                 ),
                             )
 
@@ -298,7 +291,7 @@ class EthernetInterfacesMixin(Protocol):
                 "'ipv4_acl_in' must be set on WAN interfaces where 'wan_carrier' is set, unless the carrier is configured as 'trusted' "
                 f"under 'wan_carriers'. 'ipv4_acl_in' is missing on L3 interface '{l3_interface.name}'."
             )
-            raise AristaAvdError(msg)
+            raise AristaAvdInvalidInputsError(msg)
 
         self.structured_config.ethernet_interfaces.append(interface)
 
