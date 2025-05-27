@@ -35,7 +35,8 @@ queue-monitor length cpu threshold {{ queue_monitor_length.cpu.thresholds.high }
 !
 queue-monitor length log {{ queue_monitor_length.log }}
 {%     endif %}
-{%     if queue_monitor_length.mirror is arista.avd.defined %}
+{%     if queue_monitor_length.mirror.enabled is arista.avd.defined(true) or
+        queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) %}
 !
 {%         if queue_monitor_length.mirror.enabled is arista.avd.defined(true) %}
 queue-monitor length mirror
