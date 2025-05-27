@@ -33287,6 +33287,57 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Mirror(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Destination(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"cpu": {"type": bool}}
+                cpu: bool | None
+                """CPU ports."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, cpu: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Destination.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            cpu: CPU ports.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "destination": {"type": Destination}}
+            enabled: bool | None
+            destination: Destination
+            """
+            Mirror destination.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, destination: Destination | UndefinedType = Undefined) -> None:
+                    """
+                    Mirror.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        destination:
+                           Mirror destination.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool},
             "default_thresholds": {"type": DefaultThresholds},
@@ -33294,6 +33345,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "notifying": {"type": bool},
             "cpu": {"type": Cpu},
             "tx_latency": {"type": bool},
+            "mirror": {"type": Mirror},
         }
         enabled: bool
         default_thresholds: DefaultThresholds
@@ -33306,6 +33358,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         tx_latency: bool | None
         """Enable tx-latency mode."""
+        mirror: Mirror
+        """
+        Enable frame mirroring during congestion.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -33318,6 +33376,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 notifying: bool | None | UndefinedType = Undefined,
                 cpu: Cpu | UndefinedType = Undefined,
                 tx_latency: bool | None | UndefinedType = Undefined,
+                mirror: Mirror | UndefinedType = Undefined,
             ) -> None:
                 """
                 QueueMonitorLength.
@@ -33332,6 +33391,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     notifying: Should only be used for platforms supporting the "queue-monitor length notifying" CLI.
                     cpu: Subclass of AvdModel.
                     tx_latency: Enable tx-latency mode.
+                    mirror:
+                       Enable frame mirroring during congestion.
+
+                       Subclass of AvdModel.
 
                 """
 

@@ -54,6 +54,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.cpu.thresholds.high") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.cpu.thresholds.low") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;tx_latency</samp>](## "queue_monitor_length.tx_latency") | Boolean |  |  |  | Enable tx-latency mode. |
+    | [<samp>&nbsp;&nbsp;mirror</samp>](## "queue_monitor_length.mirror") | Dictionary |  |  |  | Enable frame mirroring during congestion. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.mirror.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination") | Dictionary |  |  |  | Mirror destination. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.mirror.destination.cpu") | Boolean |  |  |  | CPU ports. |
     | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional. |
     | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- <code>sso</code><br>- <code>rpr</code> |  |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
@@ -223,6 +227,16 @@
 
       # Enable tx-latency mode.
       tx_latency: <bool>
+
+      # Enable frame mirroring during congestion.
+      mirror:
+        enabled: <bool>
+
+        # Mirror destination.
+        destination:
+
+          # CPU ports.
+          cpu: <bool>
 
     # Redundancy for chassis platforms with dual supervisors | Optional.
     redundancy:

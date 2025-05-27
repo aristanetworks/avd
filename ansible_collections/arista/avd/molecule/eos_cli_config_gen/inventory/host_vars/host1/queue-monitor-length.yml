@@ -12,3 +12,7 @@ queue_monitor_length:
       # "high" threshold is mandatory
       high: 200000
       low: 100000
+  mirror:
+    enabled: true
+    destination:
+      cpu: true

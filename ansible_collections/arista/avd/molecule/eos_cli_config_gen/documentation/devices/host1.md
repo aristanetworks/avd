@@ -9747,9 +9747,9 @@ patch panel
 
 ### Queue Monitor Length
 
-| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
-| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destination |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
+| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 | True | Cpu |
 
 ### Queue Monitor Streaming
 
@@ -9768,6 +9768,9 @@ queue-monitor length default thresholds 100 10
 queue-monitor length cpu thresholds 200000 100000
 !
 queue-monitor length log 100
+!
+queue-monitor length mirror
+queue-monitor length mirror Cpu
 !
 queue-monitor streaming
    max-connections 5

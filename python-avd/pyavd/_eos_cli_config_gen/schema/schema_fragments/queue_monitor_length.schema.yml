@@ -55,3 +55,16 @@ keys:
       tx_latency:
         type: bool
         description: "Enable tx-latency mode."
+      mirror:
+        description: Enable frame mirroring during congestion.
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          destination:
+            description: Mirror destination.
+            type: dict
+            keys:
+              cpu:
+                type: bool
+                description: CPU ports.

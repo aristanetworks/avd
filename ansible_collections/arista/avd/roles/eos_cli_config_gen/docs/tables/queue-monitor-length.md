@@ -19,6 +19,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.cpu.thresholds.high") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.cpu.thresholds.low") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;tx_latency</samp>](## "queue_monitor_length.tx_latency") | Boolean |  |  |  | Enable tx-latency mode. |
+    | [<samp>&nbsp;&nbsp;mirror</samp>](## "queue_monitor_length.mirror") | Dictionary |  |  |  | Enable frame mirroring during congestion. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.mirror.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination") | Dictionary |  |  |  | Mirror destination. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.mirror.destination.cpu") | Boolean |  |  |  | CPU ports. |
 
 === "YAML"
 
@@ -46,4 +50,14 @@
 
       # Enable tx-latency mode.
       tx_latency: <bool>
+
+      # Enable frame mirroring during congestion.
+      mirror:
+        enabled: <bool>
+
+        # Mirror destination.
+        destination:
+
+          # CPU ports.
+          cpu: <bool>
     ```
