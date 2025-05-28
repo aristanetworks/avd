@@ -47,8 +47,7 @@ keys:
             mac_address:
               type: str
               required: true
-              convert_types:
-              - int
+              pattern: "^[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}\\.[0-9A-Fa-f]{4}$"
               description: |-
                 The static MAC address to configure.
                 The combination of 'mac_address' and 'vlan' must be unique across all static entries.
