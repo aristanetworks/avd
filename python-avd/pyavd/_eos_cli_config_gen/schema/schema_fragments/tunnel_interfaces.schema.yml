@@ -95,7 +95,7 @@ keys:
           type: str
           description: |-
             Tunnel Source IPv4/IPv6 address.
-            Mutually exclusive with source_interface, if both are defined source_interface takes precedence.
+            Mutually exclusive with `source_interface`, if both are defined `source_interface` takes precedence.
         destination:
           type: str
           description: IPv4 or IPv6 Address Tunnel Destination.
