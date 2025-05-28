@@ -93,6 +93,12 @@ keys:
             poe:
               type: bool
               default: false
+            subinterface_mtu:
+              type: bool
+              default: true
+              description: |
+                Allow/disallow MTU configuration under sub-interfaces.
+                When this key is set to False, MTU is not rendered under the sub-interface even though it is set in the inputs.
             per_interface_mtu:
               type: bool
               default: true
@@ -290,6 +296,7 @@ keys:
           interface_storm_control: false
           queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
+          subinterface_mtu: false
         reload_delay:
           mlag: 300
           non_mlag: 330

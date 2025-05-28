@@ -166,6 +166,8 @@ class EthernetInterfacesMixin(Protocol):
                     self._set_ipv4_acl(acl)
 
                 if "." in interface_name:
+                    if not self.shared_utils.platform_settings.feature_support.subinterface_mtu:
+                        interface.mtu = None
                     # This is a subinterface so we need to ensure that the parent is created
                     parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
                     subif_parent_interface_names.add(parent_interface_name)
