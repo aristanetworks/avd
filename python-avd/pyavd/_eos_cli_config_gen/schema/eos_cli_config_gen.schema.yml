@@ -5683,8 +5683,8 @@ keys:
                     type: bool
                     description: Enable dynamic load balancing.
                   flow_set_size:
-                    description: 'Set flow set size. Requires enabled key to be set
-                      `true`.
+                    description: 'Set flow set size. Requires `enabled` key to be
+                      set to `true`.
 
                       1: Allow up to 128 ECMP groups of 256 entries each.
 

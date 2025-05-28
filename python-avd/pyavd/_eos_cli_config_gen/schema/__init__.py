@@ -14342,7 +14342,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Enable dynamic load balancing."""
                     flow_set_size: int | None
                     """
-                    Set flow set size. Requires enabled key to be set `true`.
+                    Set flow set size. Requires `enabled` key to be set to `true`.
                     1: Allow up to 128 ECMP groups of 256
                     entries each.
                     2: Allow up to 64 ECMP groups of 512 entries each.
@@ -14368,7 +14368,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 enabled: Enable dynamic load balancing.
                                 flow_set_size:
-                                   Set flow set size. Requires enabled key to be set `true`.
+                                   Set flow set size. Requires `enabled` key to be set to `true`.
                                    1: Allow up to 128 ECMP groups of 256
                                    entries each.
                                    2: Allow up to 64 ECMP groups of 512 entries each.
