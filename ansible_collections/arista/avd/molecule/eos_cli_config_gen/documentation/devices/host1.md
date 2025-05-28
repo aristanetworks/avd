@@ -9754,7 +9754,7 @@ patch panel
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destination |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
-| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 | True | Cpu |
+| True | 100 | 100 | 10 | enabled | enabled | 200000 | 100000 | True | Cpu,Ethernet,tunnel |
 
 ### Queue Monitor Streaming
 
