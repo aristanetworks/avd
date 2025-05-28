@@ -18,11 +18,11 @@ class StructuredConfigKey(Enum):
     MLAG_DUAL_PRIMARY_DETECTION_DELAY = "mlag_configuration.dual_primary_detection_delay"
     RELOAD_DELAY_MLAG = "mlag_configuration.reload_delay_mlag"
     RELOAD_DELAY_NON_MLAG = "mlag_configuration.reload_delay_non_mlag"
-    ROUTER_BFD = "router_bfd"
     ROUTER_BGP = "router_bgp"
     SERVICE_ROUTING_PROTOCOLS_MODEL = "service_routing_protocols_model"
     ROUTER_AVT = "router_adaptive_virtual_topology"
     ROUTER_PATH_SELECTION = "router_path_selection"
+    IP_NAME_SERVERS = "ip_name_servers"
 
     @classmethod
     def to_string_list(cls, keys: list[StructuredConfigKey]) -> list[str]:

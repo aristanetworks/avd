@@ -81,9 +81,8 @@ fn validate_keys(schema: &Dict, input: &Map<String, Value>, ctx: &mut Context) {
                 Some(Value::Null) | None => {
                     // nullish values don't need to be validated beyond a requiredness check
 
-                    #[cfg(feature = "relaxed_validation_on_root_dicts")]
-                    // Don't validate required keys if we are at the rool level.
-                    if ctx.path.is_empty() {
+                    // Don't validate required keys if we are at the root level.
+                    if ctx.configuration.ignore_required_keys_on_root_dict && ctx.path.is_empty() {
                         continue;
                     }
                     if key_schema.is_required() {
@@ -128,7 +127,7 @@ mod tests {
 
     use super::*;
     use crate::coercion::Coercion as _;
-    use crate::context::Context;
+    use crate::context::{Configuration, Context};
     use crate::feedback::{CoercionNote, Feedback, Issue};
     use crate::validation::test_utils::get_test_store;
 
@@ -137,7 +136,7 @@ mod tests {
         let schema = Dict::default();
         let input = serde_json::json!({ "foo": true });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -147,7 +146,7 @@ mod tests {
         let schema = Dict::default();
         let input = serde_json::json!(true);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -174,7 +173,7 @@ mod tests {
         };
         let input = serde_json::json!({ "foo": "bar", "bar": 123 });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -190,7 +189,7 @@ mod tests {
         };
         let input = serde_json::json!({ "foo": [], "bar": "boo" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -227,7 +226,7 @@ mod tests {
         };
         let mut input = serde_json::json!({ "foo": 321, "bar": "123" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -288,7 +287,7 @@ mod tests {
         let input = serde_json::json!(
             { "my_dynamic_keys": [{"key": "dynkey1"}, {"key": "dynkey2"}], "dynkey1": 5, "dynkey2": 9 });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(ctx.violations, vec![]);
         assert_eq!(ctx.coercions, vec![]);
@@ -328,7 +327,7 @@ mod tests {
         let input = serde_json::json!(
             { "my_dynamic_keys": [{"key": "dynkey1"}, {"key": "dynkey2"}], "dynkey1": 11, "dynkey2": "wrong" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(ctx.coercions, vec![]);
         assert_eq!(
@@ -382,7 +381,7 @@ mod tests {
         };
         let mut input = serde_json::json!({ "dynkey1": 5, "dynkey2": 9 });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
@@ -423,7 +422,7 @@ mod tests {
         };
         let mut input = serde_json::json!({ "dynkey1": 11, "dynkey2": "wrong" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert_eq!(
@@ -465,7 +464,7 @@ mod tests {
         };
         let input = serde_json::json!({ "foo": "ok", "foo1": "wrong" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -478,7 +477,7 @@ mod tests {
         };
         let input = serde_json::json!({ "foo": "ok", "foo1": "wrong", "_internal": "ignored" });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(
@@ -508,17 +507,14 @@ mod tests {
         };
         let mut input = serde_json::json!({ "foo": true });
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
-        // Using a deeper path since tests are run with all features including "relaxed_validation_on_root_dicts"
-        // where required keys at the root are not enforced.
-        ctx.path.push("deeper".into());
+        let mut ctx = Context::new(&store, None);
         schema.coerce(&mut input, &mut ctx);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty());
         assert_eq!(
             ctx.coercions,
             vec![Feedback {
-                path: vec!["deeper".into(), "foo".into()],
+                path: vec!["foo".into()],
                 issue: CoercionNote {
                     found: true.into(),
                     made: "True".into()
@@ -546,9 +542,73 @@ mod tests {
         };
         let input = serde_json::json!({});
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
-        // Using a deeper path since tests are run with all features including "relaxed_validation_on_root_dicts"
-        // where required keys at the root are not enforced.
+        let mut ctx = Context::new(&store, None);
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.coercions.is_empty());
+        assert_eq!(
+            ctx.violations,
+            vec![Feedback {
+                path: vec![],
+                issue: Violation::MissingRequiredKey { key: "foo".into() }.into()
+            }]
+        )
+    }
+
+    #[test]
+    fn validate_key_required_relaxed_root_dict_ok() {
+        let schema = Dict {
+            keys: Some(OrderMap::from_iter([(
+                "foo".into(),
+                Str {
+                    base: Base {
+                        required: Some(true),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            ..Default::default()
+        };
+        let mut input = serde_json::json!({});
+        let store = get_test_store();
+        let mut ctx = Context::new(
+            &store,
+            Some(&Configuration {
+                ignore_required_keys_on_root_dict: true,
+            }),
+        );
+        schema.coerce(&mut input, &mut ctx);
+        schema.validate_value(&input, &mut ctx);
+        assert!(ctx.violations.is_empty());
+        assert!(ctx.coercions.is_empty());
+    }
+
+    #[test]
+    fn validate_key_required_relaxed_root_dict_err() {
+        let schema = Dict {
+            keys: Some(OrderMap::from_iter([(
+                "foo".into(),
+                Str {
+                    base: Base {
+                        required: Some(true),
+                        ..Default::default()
+                    },
+                    ..Default::default()
+                }
+                .into(),
+            )])),
+            ..Default::default()
+        };
+        let input = serde_json::json!({});
+        let store = get_test_store();
+        let mut ctx = Context::new(
+            &store,
+            Some(&Configuration {
+                ignore_required_keys_on_root_dict: true,
+            }),
+        );
+        // Using a deeper path and see that we still get the error even though we relax for the root dict.
         ctx.path.push("deeper".into());
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());

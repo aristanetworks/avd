@@ -60,7 +60,7 @@ mod tests {
         let schema = Bool::default();
         let input = true.into();
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.violations.is_empty() && ctx.coercions.is_empty());
     }
@@ -70,7 +70,7 @@ mod tests {
         let schema = Bool::default();
         let input = serde_json::json!([]);
         let store = get_test_store();
-        let mut ctx = Context::new(&store);
+        let mut ctx = Context::new(&store, None);
         schema.validate_value(&input, &mut ctx);
         assert!(ctx.coercions.is_empty());
         assert_eq!(

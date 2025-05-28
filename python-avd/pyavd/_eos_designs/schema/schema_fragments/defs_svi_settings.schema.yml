@@ -102,6 +102,10 @@ $defs:
               description: VRF to originate DHCP relay packets to DHCP server. If not set, EOS uses the VRF on the SVI.
               convert_types:
                 - int
+      static_routes:
+        type: list
+        $ref: "eos_designs#/$defs/static_routes"
+        description: Static routes to be configured on every device where the SVI is configured.
       vni_override:
         type: int
         convert_types:
