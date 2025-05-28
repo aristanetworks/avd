@@ -88,6 +88,7 @@
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
   - [Monitor TWAMP](#monitor-twamp)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [VRF Configuration](#vrf-configuration)
@@ -2966,6 +2967,10 @@ monitor twamp
       sender profile test-profile2
 ```
 
+### Transceiver
+
+Transceiver dom-threshold file: flash:/dom_threshold.csv
+
 ## Monitor Connectivity
 
 ### Global Configuration
@@ -3357,6 +3362,7 @@ STP mode: **rapid-pvst**
 - Spanning Tree disabled for VLANs: **105,202,505-506**
 - Global BPDU Guard for Edge ports is disabled.
 - Global BPDU Filter for Edge ports is disabled.
+- Range of port-ids reserved for port-channels: 201-2001.
 
 ### Spanning Tree Device Configuration
 
@@ -3368,6 +3374,7 @@ no spanning-tree edge-port bpduguard default
 no spanning-tree edge-port bpdufilter default
 spanning-tree bpduguard rate-limit default
 spanning-tree bpduguard rate-limit count 100
+spanning-tree port-id allocation port-channel range 201 2001
 spanning-tree vlan-id 1,2,3,4,5,10-15 priority 4096
 spanning-tree vlan-id 3 priority 8192
 spanning-tree vlan-id 100-500 priority 16384
@@ -4260,6 +4267,7 @@ interface Ethernet5
    pim ipv4 hello interval 10
    pim ipv4 hello count 2.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Ethernet
    pim ipv4 bfd
    isis enable ISIS_TEST
    isis bfd
@@ -5560,6 +5568,7 @@ interface Port-Channel99
    pim ipv4 hello interval 15
    pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
 !
 interface Port-Channel100
@@ -6673,6 +6682,7 @@ interface Vlan4094
    pim ipv4 hello interval 10
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Vlan
    pim ipv4 bfd
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 rx-disabled level-1
@@ -6694,6 +6704,7 @@ interface Vlan4094
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
 | Qos ECN propagation | Enabled |
+| Qos DHCP ECN rewrite bridged | Enabled |
 | Qos map dscp to traffic-class decapsulation | Enabled |
 | Remote VTEPs EVPN BFD transmission rate | 300ms |
 | Remote VTEPs EVPN BFD expected minimum incoming rate (min-rx) | 300ms |
@@ -6748,6 +6759,7 @@ interface Vxlan1
    vxlan vrf Tenant_A_OP_Zone multicast group 232.0.0.10
    vxlan multicast headend-replication
    vxlan qos ecn propagation
+   vxlan qos dscp ecn rewrite bridged enabled
    vxlan qos dscp propagation encapsulation
    vxlan qos map dscp to traffic-class decapsulation
    vxlan encapsulation ipv4
@@ -6801,6 +6813,7 @@ service routing protocols model multi-agent
 
 Virtual Router MAC Address: 00:1c:73:00:dc:01
 Virtual Router MAC Address Advertisement Interval: 40
+Virtual Router MAC Address MLAG Peer: Enabled
 
 #### Virtual Router MAC Address Device Configuration
 
@@ -6808,6 +6821,8 @@ Virtual Router MAC Address Advertisement Interval: 40
 !
 ip virtual-router mac-address 00:1c:73:00:dc:01
 ip virtual-router mac-address advertisement-interval 40
+!
+ip virtual-router mac-address mlag-peer
 ```
 
 ### IP Routing
@@ -7097,12 +7112,21 @@ router adaptive-virtual-topology
 
 - Nexthop fast fail-over is enabled.
 
+- Software Forwarding Hardware Offload MTU: 78
+
+#### VRF Software Forwarding Hardware Offload MTU
+
+| VRF | MTU |
+|-----|-----|
+| BLUE-C2 | 98 |
+
 #### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy |
 |-----|------------|------------------|
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
 | BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7118,9 +7142,15 @@ router adaptive-virtual-topology
 router general
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
+   software forwarding hardware offload mtu 78
    hardware next-hop fast-failover
    !
+   vrf BLUE3
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      exit
+   !
    vrf BLUE-C2
+      software forwarding hardware offload mtu 98
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
@@ -8832,15 +8862,18 @@ router bgp 65101
       neighbor WELCOME_ROUTERS additional-paths send any
       neighbor 10.2.3.8 rcf in Address_Family_IPV4_In()
       no neighbor 10.2.3.8 additional-paths send
+      no neighbor 10.2.3.8 next-hop address-family ipv6
       neighbor 10.2.3.9 rcf out Address_Family_IPV4_Out()
       neighbor 10.2.3.9 default-originate route-map Address_Family_IPV4 always
       neighbor 10.2.3.9 additional-paths send ecmp limit 4
+      neighbor 10.2.3.9 next-hop address-family ipv6
       neighbor 192.0.2.1 additional-paths receive
       neighbor 192.0.2.1 route-map Address_Family_IPV4_In in
       neighbor 192.0.2.1 route-map Address_Family_IPV4_Out out
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-IN in
       neighbor 192.0.2.1 prefix-list PL-FOO-v4-OUT out
       neighbor 192.0.2.1 additional-paths send limit 20 prefix-list PL1
+      neighbor 192.0.2.1 next-hop address-family ipv6 originate
       no neighbor 192.168.66.21 activate
       neighbor 192.168.66.21 additional-paths send any
       network 10.0.0.0/8
@@ -9948,12 +9981,12 @@ router pim sparse-mode
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | True | 200 | - |
-| Port-Channel99 | - | IPv4 | - | 200 | - |
-| Vlan89 | - | IPv4 | - | - | Loopback0 |
-| Vlan4094 | - | IPv4 | - | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface | Neighbor Filter |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - | Test_Filter_Ethernet |
+| Port-Channel99 | - | IPv4 | - | 200 | - | Test_Filter_PortChannel |
+| Vlan89 | - | IPv4 | - | - | Loopback0 | - |
+| Vlan4094 | - | IPv4 | - | 200 | - | Test_Filter_Vlan |
 
 ### Router MSDP
 

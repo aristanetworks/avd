@@ -1,0 +1,10 @@
+[package]
+name = "included_store"
+version = "0.0.0"
+edition = "2024"
+license = "Apache-2.0"
+
+[dependencies]
+avdschema = { path = "../avdschema" }
+avdschema_macros = { path = "../avdschema_macros" }
+log = "0.4.26"

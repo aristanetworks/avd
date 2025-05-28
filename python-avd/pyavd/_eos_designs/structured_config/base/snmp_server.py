@@ -56,9 +56,8 @@ class SnmpServerMixin(Protocol):
             ipv6_acls=snmp_settings.ipv6_acls._cast_as(EosCliConfigGen.SnmpServer.Ipv6Acls),
             views=snmp_settings.views._cast_as(EosCliConfigGen.SnmpServer.Views),
             groups=snmp_settings.groups._cast_as(EosCliConfigGen.SnmpServer.Groups),
+            traps=snmp_settings.traps,
         )
-        if snmp_settings.traps.enable:
-            self.structured_config.snmp_server._update(traps=snmp_settings.traps)
 
     def _snmp_engine_ids(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """Set dict of engine ids if "snmp_settings.compute_local_engineid" is True."""

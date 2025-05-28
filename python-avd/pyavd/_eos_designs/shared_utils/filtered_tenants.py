@@ -197,10 +197,8 @@ class FilteredTenantsMixin(Protocol):
             vrf.static_routes = vrf.static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.ipv6_static_routes = vrf.ipv6_static_routes._filtered(lambda route: not route.nodes or self.hostname in route.nodes)
             vrf.svis = self.filtered_svis(vrf)
-            vrf.l3_interfaces = vrf.l3_interfaces._filtered(
-                lambda l3_interface: bool(self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces)
-            )
-            vrf.l3_port_channels = vrf.l3_port_channels._filtered(lambda l3_port_channel: bool(self.hostname == l3_port_channel.node))
+            vrf.l3_interfaces = self.filtered_l3_interfaces(vrf)
+            vrf.l3_port_channels = self.filtered_l3_port_channels(vrf)
             vrf.loopbacks = vrf.loopbacks._filtered(lambda loopback: loopback.node == self.hostname)
 
             if self.vtep is True:
@@ -302,19 +300,69 @@ class FilteredTenantsMixin(Protocol):
 
         Filtering based on accepted vlans since eos_designs_facts already
         filtered that on tags and trunk_groups.
+        Extracts static_routes set under SVIs.
         """
         if not (self.network_services_l2 or self.network_services_l2_as_subint):
             return EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
 
-        svis = vrf.svis._filtered(self.is_accepted_vlan)
+        filtered_svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis()
+        for svi in vrf.svis:
+            if not self.is_accepted_vlan(svi):
+                continue
+            # Handle svi_profile inheritance
+            merged_svi = self.get_merged_svi_config(svi)
+            # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
+            if not ("all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags))):
+                continue
 
-        # Handle svi_profile inheritance
-        svis = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Svis([self.get_merged_svi_config(svi) for svi in svis])
+            filtered_svis.append(merged_svi)
 
-        # Perform filtering on tags after merge of profiles, to support tags being set inside profiles.
-        svis = svis._filtered(lambda svi: "all" in self.filter_tags or bool(set(svi.tags).intersection(self.filter_tags)))
+            if merged_svi.static_routes:
+                vrf.static_routes.extend(
+                    merged_svi.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
 
-        return svis._natural_sorted(sort_key="id")
+        return filtered_svis._natural_sorted(sort_key="id")
+
+    def filtered_l3_interfaces(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces:
+        """
+        Returns filtered l3_interfaces for the VRFs.
+
+        Extracts static_routes set under l3_interfaces and appends to vrf.static_routes.
+        """
+        filtered_l3_interfaces = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3Interfaces()
+        for l3_interface in vrf.l3_interfaces:
+            if not (self.hostname in l3_interface.nodes and l3_interface.ip_addresses and l3_interface.interfaces):
+                continue
+            if l3_interface.static_routes:
+                vrf.static_routes.extend(
+                    l3_interface.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            filtered_l3_interfaces.append(l3_interface)
+
+        return filtered_l3_interfaces
+
+    def filtered_l3_port_channels(
+        self: SharedUtilsProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
+    ) -> EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels:
+        """
+        Returns filtered l3_port_channels for the VRFs.
+
+        Extracts static_routes set under l3_port_channels and appends to vrf.static_routes.
+        """
+        filtered_l3_port_channels = EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannels()
+        for l3_port_channel in vrf.l3_port_channels:
+            if self.hostname != l3_port_channel.node:
+                continue
+            if l3_port_channel.static_routes:
+                vrf.static_routes.extend(
+                    l3_port_channel.static_routes._cast_as(EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.StaticRoutes)
+                )
+            filtered_l3_port_channels.append(l3_port_channel)
+
+        return filtered_l3_port_channels
 
     @cached_property
     def endpoint_vlans(self: SharedUtilsProtocol) -> list:

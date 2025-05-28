@@ -478,7 +478,9 @@ interface Vlan4094
    no autostate
    ip address 10.255.252.7/31
    ip ospf network point-to-point
+   ip ospf authentication message-digest
    ip ospf area 0.0.0.0
+   ip ospf message-digest-key 1 sha256 7 <removed>
 ```
 
 ### VXLAN Interface

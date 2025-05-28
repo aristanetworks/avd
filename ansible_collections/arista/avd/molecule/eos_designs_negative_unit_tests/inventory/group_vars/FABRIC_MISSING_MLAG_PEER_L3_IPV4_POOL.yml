@@ -1,0 +1,32 @@
+---
+fabric_name: FABRIC_MISSING_MLAG_PEER_L3_IPV4_POOL
+type: l3leaf
+underlay_routing_protocol: isis
+l3leaf:
+  defaults:
+    mlag_peer_vlan: 4094
+    mlag_peer_l3_ipv4_pool:
+    mlag_peer_ipv4_pool: 10.10.255.0/24
+    uplink_ipv4_pool: 10.10.101.0/24
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 32
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    platform: vEOS-LAB
+  node_groups:
+    - group: missing-mlag-peer-l3-ipv4-pool
+      nodes:
+        - name: missing-mlag-peer-l3-ipv4-pool1
+          id: 4
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.114/24
+          uplink_switch_interfaces: [Ethernet18]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+        - name: missing-mlag-peer-l3-ipv4-pool2
+          id: 5
+          bgp_as: 65161
+          mgmt_ip: 192.168.201.115/24
+          uplink_switch_interfaces: [Ethernet220]
+          mlag_interfaces: [Ethernet5, Ethernet6]
+
+expected_error_message: >-
+  'mlag_peer_l3_ipv4_pool' is required but was not found for host 'missing-mlag-peer-l3-ipv4-pool1'.
