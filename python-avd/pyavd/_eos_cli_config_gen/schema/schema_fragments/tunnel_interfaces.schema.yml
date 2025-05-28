@@ -90,7 +90,7 @@ keys:
           type: str
           description: |-
             Tunnel Source Interface Name.
-            Mutually exclusive with source_ipaddress, if both are defined source_interface takes precedence.
+            Mutually exclusive with `source_ipaddress`, if both are defined `source_interface` takes precedence.
         source_ipaddress:
           type: str
           description: |-
