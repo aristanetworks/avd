@@ -256,3 +256,38 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
         items = cast("list[AvdBase]", self._items)
         other_items = cast("list[AvdBase]", other._items)
         return all(item == other_items[index] for index, item in enumerate(items))
+
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combinining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our elements and the other elements.
+
+        for AvdIndexedList this is simply an append, if any conflict occurs a duplicate error will be raised.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: If any item from other is conflicting with an item from self when appending.
+        """
+        cls = type(self)
+        if not isinstance(other, cls):
+            msg = f"Unable to combine type '{type(other)}' into '{cls}'"
+            raise TypeError(msg)
+
+        list_merge = "append_unique"
+
+        if self._created_from_null or other._created_from_null:
+            # Set the flag to the value of other and set list_merge to replace so we overwrite with data from other below.
+            self._created_from_null = other._created_from_null
+            list_merge = "replace"
+
+        match list_merge:
+            case "append_unique":
+                # Append non-existing items.
+                self._items.extend(new_item for new_item in other._items if new_item not in self._items)
+            case "replace":
+                # Replace with the "other" list.
+                self._items = other._items.copy()

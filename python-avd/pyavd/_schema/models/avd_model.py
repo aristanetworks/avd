@@ -8,6 +8,7 @@ from copy import deepcopy
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, cast
 
+from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType, merge
 
@@ -457,3 +458,67 @@ class AvdModel(AvdBase):
 
         # Use regular __eq__ check on all nested models, since we do not carry over ignore_fields.
         return all(value == other.__dict__[field] for field, value in self.items() if field not in ignore_fields)
+
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combinining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our elements and the other elements.
+
+        for AvdIndexedList this is simply an append, if any conflict occurs a duplicate error will be raised.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: If any item from other is conflicting with an item from self when appending.
+        """
+        cls = type(self)
+        if not isinstance(other, cls):
+            msg = f"Unable to combine type '{type(other)}' into '{cls}'"
+            raise TypeError(msg)
+
+        if other._created_from_null:
+            # Force all fields on this instance back to unset if other is a "null" class.
+            self.__dict__ = {}
+            self._custom_data = {}
+
+        for field, new_value in other.items():
+            old_value = self._get_defined_attr(field)
+
+            if old_value is Undefined:
+                # value not set so we can just pick the old_value
+                setattr(self, field, new_value)
+                continue
+
+            # Combine new value
+            field_type = self._fields[field]["type"]
+            if issubclass(field_type, AvdBase):
+                # Merge in to the existing object
+                old_value = cast("AvdBase", old_value)
+                new_value = cast("AvdBase", new_value)
+                old_value._combine(new_value)
+                continue
+
+            if field_type is dict:
+                # TODO: In place combining without schema - need to set the keys probably
+                setattr(self, field, new_value)
+                continue
+
+            if old_value != new_value:
+                # Should maybe collect all the problematic fields
+                raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
+
+        # TODO check the two next lines
+        if other._created_from_null:
+            # Inherit the _created_from_null attribute to make sure we output null values instead of empty dicts.
+            self._created_from_null = True
+        elif self._created_from_null:
+            # We merged into a "null" class, but since we now have proper data, we clear the flag.
+            self._created_from_null = False
+
+        # TODO: Handle clashing custom data when combining?
+        if other._custom_data:
+            legacy_list_merge = list_merge.replace("_unique", "_rp")
+            merge(self._custom_data, deepcopy(other._custom_data), list_merge=legacy_list_merge)

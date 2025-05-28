@@ -297,3 +297,36 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
             return False
 
         return all(item._compare(other[key]) for key, item in self.items())
+
+    def _combine(self, other: Self) -> None:
+        """
+        Update instance by combinining the other instance in.
+
+        Combining is different from merging in the sense that it will raise if there is a conflict
+        between one of our elements and the other elements.
+
+        for AvdIndexedList this is simply an append, if any conflict occurs a duplicate error will be raised.
+
+        Args:
+            other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: If any item from other is conflicting with an item from self when appending.
+        """
+        cls = type(self)
+        if not isinstance(other, cls):
+            msg = f"Unable to combine type '{type(other)}' into '{cls}'"
+            raise TypeError(msg)
+
+        if self._created_from_null or self._block_inheritance:
+            # Null always wins, so no combining.
+            return
+
+        if other._created_from_null:
+            # Nothing to combine, and we set the special block flag to prevent combining with something else later.
+            self._block_inheritance = True
+            return
+
+        for item in other:
+            # TODO: Do we need to copy the item to prevent some unsavory things later if other is modified?
+            self.append(item)

@@ -15,3 +15,5 @@ keys:
     type: list
     items:
       type: int
+  some_key:
+    type: int
