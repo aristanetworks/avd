@@ -14,4 +14,4 @@ queue_monitor_length:
         dscp: 45
         ttl: 200
         protocol: "0xFFFF"
-        vrf: VEF10
+        vrf: VRF10
