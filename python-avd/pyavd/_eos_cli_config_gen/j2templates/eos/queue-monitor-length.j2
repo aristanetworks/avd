@@ -42,7 +42,7 @@ queue-monitor length log {{ queue_monitor_length.log }}
 queue-monitor length mirror
 {%         endif %}
 {%         if queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) %}
-queue-monitor length mirror Cpu
+queue-monitor length mirror destination Cpu
 {%         endif %}
 {%     endif %}
 {% endif %}
