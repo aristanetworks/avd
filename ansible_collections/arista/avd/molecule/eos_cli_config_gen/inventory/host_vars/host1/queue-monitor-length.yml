@@ -16,3 +16,7 @@ queue_monitor_length:
     enabled: true
     destination:
       cpu: true
+      ethernet_interfaces: Ethernet1-2
+      tunnel_mode_gre:
+        source: 1.1.1.1
+        destination: 3.3.3.3

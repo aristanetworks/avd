@@ -33293,13 +33293,80 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Destination(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"cpu": {"type": bool}}
+                class TunnelModeGre(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "source": {"type": str},
+                        "destination": {"type": str},
+                        "dscp": {"type": int},
+                        "ttl": {"type": int},
+                        "protocol": {"type": str},
+                        "vrf": {"type": str},
+                    }
+                    source: str
+                    """Source IP address of GRE tunnel."""
+                    destination: str
+                    """Destination IP address of GRE tunnel."""
+                    dscp: int | None
+                    """DSCP of the GRE tunnel."""
+                    ttl: int | None
+                    """TTL range."""
+                    protocol: str | None
+                    """Protocol type in GRE header. Protocol range - 0x0000-0xFFFF."""
+                    vrf: str | None
+                    """VRF name of the GRE tunnel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            source: str | UndefinedType = Undefined,
+                            destination: str | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            ttl: int | None | UndefinedType = Undefined,
+                            protocol: str | None | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            TunnelModeGre.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                source: Source IP address of GRE tunnel.
+                                destination: Destination IP address of GRE tunnel.
+                                dscp: DSCP of the GRE tunnel.
+                                ttl: TTL range.
+                                protocol: Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                                vrf: VRF name of the GRE tunnel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"cpu": {"type": bool}, "ethernet_interfaces": {"type": str}, "tunnel_mode_gre": {"type": TunnelModeGre}}
                 cpu: bool | None
                 """CPU ports."""
+                ethernet_interfaces: str | None
+                """
+                Hardware Ethernet interface name.
+                Example - Ethernet4
+                        Ethernet4-6
+                        Ethernet3,4
+                """
+                tunnel_mode_gre: TunnelModeGre
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, cpu: bool | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        cpu: bool | None | UndefinedType = Undefined,
+                        ethernet_interfaces: str | None | UndefinedType = Undefined,
+                        tunnel_mode_gre: TunnelModeGre | UndefinedType = Undefined,
+                    ) -> None:
                         """
                         Destination.
 
@@ -33308,6 +33375,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             cpu: CPU ports.
+                            ethernet_interfaces:
+                               Hardware Ethernet interface name.
+                               Example - Ethernet4
+                                       Ethernet4-6
+                                       Ethernet3,4
+                            tunnel_mode_gre: Subclass of AvdModel.
 
                         """
 

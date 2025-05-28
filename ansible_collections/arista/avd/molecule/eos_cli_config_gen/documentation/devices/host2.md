@@ -1320,6 +1320,8 @@ queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
 !
+queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VEF10
+!
 queue-monitor streaming
    shutdown
 ```

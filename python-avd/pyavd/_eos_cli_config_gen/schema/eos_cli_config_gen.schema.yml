@@ -13008,6 +13008,41 @@ keys:
               cpu:
                 type: bool
                 description: CPU ports.
+              ethernet_interfaces:
+                type: str
+                description: "Hardware Ethernet interface name.\nExample - Ethernet4\n
+                  \       Ethernet4-6\n        Ethernet3,4"
+              tunnel_mode_gre:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    required: true
+                    description: Source IP address of GRE tunnel.
+                  destination:
+                    type: str
+                    required: true
+                    description: Destination IP address of GRE tunnel.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: DSCP of the GRE tunnel.
+                  ttl:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                    description: TTL range.
+                  protocol:
+                    type: str
+                    description: Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                  vrf:
+                    type: str
+                    description: VRF name of the GRE tunnel.
   queue_monitor_streaming:
     type: dict
     keys:

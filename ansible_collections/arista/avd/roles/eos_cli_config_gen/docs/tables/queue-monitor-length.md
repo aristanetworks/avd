@@ -23,6 +23,14 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.mirror.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination") | Dictionary |  |  |  | Mirror destination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.mirror.destination.cpu") | Boolean |  |  |  | CPU ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_interfaces</samp>](## "queue_monitor_length.mirror.destination.ethernet_interfaces") | String |  |  |  | Hardware Ethernet interface name.<br>Example - Ethernet4<br>        Ethernet4-6<br>        Ethernet3,4 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_mode_gre</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.source") | String | Required |  |  | Source IP address of GRE tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.destination") | String | Required |  |  | Destination IP address of GRE tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp") | Integer |  |  | Min: 0<br>Max: 63 | DSCP of the GRE tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl") | Integer |  |  | Min: 1<br>Max: 255 | TTL range. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.protocol") | String |  |  |  | Protocol type in GRE header. Protocol range - 0x0000-0xFFFF. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. |
 
 === "YAML"
 
@@ -60,4 +68,29 @@
 
           # CPU ports.
           cpu: <bool>
+
+          # Hardware Ethernet interface name.
+          # Example - Ethernet4
+          #         Ethernet4-6
+          #         Ethernet3,4
+          ethernet_interfaces: <str>
+          tunnel_mode_gre:
+
+            # Source IP address of GRE tunnel.
+            source: <str; required>
+
+            # Destination IP address of GRE tunnel.
+            destination: <str; required>
+
+            # DSCP of the GRE tunnel.
+            dscp: <int; 0-63>
+
+            # TTL range.
+            ttl: <int; 1-255>
+
+            # Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+            protocol: <str>
+
+            # VRF name of the GRE tunnel.
+            vrf: <str>
     ```
