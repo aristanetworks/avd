@@ -8217,6 +8217,7 @@ $defs:
                 default: false
               groups:
                 type: list
+                primary_key: name
                 description: 'Link Tracking Groups.
 
                   By default a single group named "LT_GROUP1" is defined with default

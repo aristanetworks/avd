@@ -3,12 +3,14 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
+    from typing import Literal
+
     from . import AvdStructuredConfigOverlayProtocol
 
 
@@ -41,7 +43,10 @@ class RouterAdaptiveVirtualTopologyMixin(Protocol):
             raise AristaAvdInvalidInputsError(msg)
 
         # Edge or Transit
-        self.structured_config.router_adaptive_virtual_topology._update(topology_role=self.shared_utils.cv_pathfinder_role, zone=self.shared_utils.wan_zone)
+        self.structured_config.router_adaptive_virtual_topology._update(
+            topology_role=cast("Literal['edge', 'pathfinder', 'transit region', 'transit zone']", self.shared_utils.cv_pathfinder_role),
+            zone=self.shared_utils.wan_zone,
+        )
         self.structured_config.router_adaptive_virtual_topology.region._update(name=wan_region.name, id=wan_region.id)
         self.structured_config.router_adaptive_virtual_topology.site._update(name=wan_site.name, id=wan_site.id)
 

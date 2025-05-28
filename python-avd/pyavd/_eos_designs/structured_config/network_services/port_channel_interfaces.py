@@ -132,7 +132,7 @@ class PortChannelInterfacesMixin(Protocol):
                     shutdown=not l3_port_channel.enabled,
                     eos_cli=l3_port_channel.raw_eos_cli,
                     flow_tracker=self.shared_utils.get_flow_tracker(
-                        l3_port_channel.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker
+                        l3_port_channel.flow_tracking, output_type=EosCliConfigGen.PortChannelInterfacesItem.FlowTracker
                     ),
                     vrf=vrf.name if vrf.name != "default" else None,
                     peer_type="l3_port_channel",
