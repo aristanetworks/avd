@@ -60645,6 +60645,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class Transceiver(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"dom_threshold_file": {"type": str}}
+        dom_threshold_file: str | None
+        """
+        CSV file path for DOM threshold values.
+        eg. `dom_threshold_file: flash:/dom_threshold.csv`
+        Note: Set
+        `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+        eg.
+        `dom_threshold_file: default`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, dom_threshold_file: str | None | UndefinedType = Undefined) -> None:
+                """
+                Transceiver.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    dom_threshold_file:
+                       CSV file path for DOM threshold values.
+                       eg. `dom_threshold_file: flash:/dom_threshold.csv`
+                       Note: Set
+                       `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+                       eg.
+                       `dom_threshold_file: default`
+
+                """
+
     class TunnelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -64730,6 +64764,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "terminal": {"type": Terminal},
         "trackers": {"type": Trackers},
         "traffic_policies": {"type": TrafficPolicies},
+        "transceiver": {"type": Transceiver},
         "transceiver_qsfp_default_mode_4x10": {"type": bool, "default": True},
         "tunnel_interfaces": {"type": TunnelInterfaces},
         "virtual_source_nat_vrfs": {"type": VirtualSourceNatVrfs},
@@ -65273,6 +65308,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
     traffic_policies: TrafficPolicies
     """Subclass of AvdModel."""
+    transceiver: Transceiver
+    """Subclass of AvdModel."""
     transceiver_qsfp_default_mode_4x10: bool
     """
     On all front panel ports which support this feature, the following global configuration command
@@ -65488,6 +65525,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             terminal: Terminal | UndefinedType = Undefined,
             trackers: Trackers | UndefinedType = Undefined,
             traffic_policies: TrafficPolicies | UndefinedType = Undefined,
+            transceiver: Transceiver | UndefinedType = Undefined,
             transceiver_qsfp_default_mode_4x10: bool | UndefinedType = Undefined,
             tunnel_interfaces: TunnelInterfaces | UndefinedType = Undefined,
             virtual_source_nat_vrfs: VirtualSourceNatVrfs | UndefinedType = Undefined,
@@ -65828,6 +65866,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 terminal: Subclass of AvdModel.
                 trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
                 traffic_policies: Subclass of AvdModel.
+                transceiver: Subclass of AvdModel.
                 transceiver_qsfp_default_mode_4x10:
                    On all front panel ports which support this feature, the following global configuration command
                    changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default
