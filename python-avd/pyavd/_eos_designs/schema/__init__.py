@@ -13316,14 +13316,12 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                enabled: bool | None
+                enabled: bool
                 underlay_multicast_group: str | None
 
                 if TYPE_CHECKING:
 
-                    def __init__(
-                        self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
-                    ) -> None:
+                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined) -> None:
                         """
                         VxlanFloodMulticast.
 
@@ -14125,14 +14123,12 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-            enabled: bool | None
+            enabled: bool
             underlay_multicast_group: str | None
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
-                ) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined) -> None:
                     """
                     VxlanFloodMulticast.
 
@@ -35721,7 +35717,7 @@ class EosDesigns(EosDesignsRootModel):
                         "underlay_l2_multicast_group_ipv4_pool": {"type": str},
                         "underlay_l2_multicast_group_ipv4_pool_offset": {"type": int, "default": 0},
                     }
-                    enabled: bool | None
+                    enabled: bool
                     underlay_l2_multicast_group_ipv4_pool: str | None
                     """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
                     underlay_l2_multicast_group_ipv4_pool_offset: int
@@ -35732,7 +35728,7 @@ class EosDesigns(EosDesignsRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | None | UndefinedType = Undefined,
+                            enabled: bool | UndefinedType = Undefined,
                             underlay_l2_multicast_group_ipv4_pool: str | None | UndefinedType = Undefined,
                             underlay_l2_multicast_group_ipv4_pool_offset: int | UndefinedType = Undefined,
                         ) -> None:
@@ -36699,16 +36695,13 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                                enabled: bool | None
+                                enabled: bool
                                 underlay_multicast_group: str | None
 
                                 if TYPE_CHECKING:
 
                                     def __init__(
-                                        self,
-                                        *,
-                                        enabled: bool | None | UndefinedType = Undefined,
-                                        underlay_multicast_group: str | None | UndefinedType = Undefined,
+                                        self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
                                     ) -> None:
                                         """
                                         VxlanFloodMulticast.
@@ -37534,13 +37527,13 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                            enabled: bool | None
+                            enabled: bool
                             underlay_multicast_group: str | None
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                    self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     VxlanFloodMulticast.
@@ -41043,13 +41036,13 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                        enabled: bool | None
+                        enabled: bool
                         underlay_multicast_group: str | None
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 VxlanFloodMulticast.

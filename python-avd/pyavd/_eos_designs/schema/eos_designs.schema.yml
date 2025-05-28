@@ -6348,6 +6348,7 @@ $defs:
           keys:
             enabled:
               type: bool
+              required: true
             underlay_l2_multicast_group_ipv4_pool:
               type: str
               description: Comma separated list of prefixes (IPv4 address/Mask) or
@@ -7958,6 +7959,7 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   underlay_multicast_group:
                     type: str
               igmp_snooping_enabled:
@@ -11006,6 +11008,7 @@ $defs:
         keys:
           enabled:
             type: bool
+            required: true
           underlay_multicast_group:
             type: str
       evpn_l3_multicast:

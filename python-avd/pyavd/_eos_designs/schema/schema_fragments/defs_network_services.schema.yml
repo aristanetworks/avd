@@ -211,6 +211,7 @@ $defs:
           keys:
             enabled:
               type: bool
+              required: true
             underlay_l2_multicast_group_ipv4_pool:
               type: str
               description: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
@@ -1530,6 +1531,7 @@ $defs:
                 keys:
                   enabled:
                     type: bool
+                    required: true
                   underlay_multicast_group:
                     type: str
               igmp_snooping_enabled:

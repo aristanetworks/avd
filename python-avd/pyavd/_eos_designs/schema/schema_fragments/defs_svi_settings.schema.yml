@@ -173,6 +173,7 @@ $defs:
         keys:
           enabled:
             type: bool
+            required: true
           underlay_multicast_group:
             type: str
       evpn_l3_multicast:
