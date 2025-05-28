@@ -16,6 +16,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_ports.[].switch_ports.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - always set to `network_port`.<br>  - `endpoint` - content of the `endpoint` key if set.<br>  - `port_channel_id`: The port-channel number for the switch.<br><br>The default description is set by `default_network_ports_description`.<br>By default the description is templated from the `endpoint` key if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;endpoint</samp>](## "network_ports.[].endpoint") | String |  |  |  | Name or description of the endpoints connected to these ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "network_ports.[].digital_twin") | Boolean |  | `True` |  | Setting this flag to `false` will exclude associated network ports from the generated structured and rendered EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "network_ports.[].speed") | String |  |  |  | Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
@@ -234,6 +235,9 @@
 
         # Name or description of the endpoints connected to these ports.
         endpoint: <str>
+
+        # Setting this flag to `false` will exclude associated network ports from the generated structured and rendered EOS configuration.
+        digital_twin: <bool; default=True>
 
         # Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         # If not specified speed will be auto.

@@ -8811,6 +8811,24 @@ keys:
                           type: str
                         category:
                           type: str
+      digital_twin:
+        type: dict
+        description: Metadata used to generate Digital Twin topology.
+        keys:
+          environment:
+            type: str
+            description: Targeted Digital Twin environment (ACT, etc.).
+          node_type:
+            type: str
+          ip_addr:
+            type: str
+            description: IPv4_address/Mask.
+          version:
+            type: str
+          username:
+            type: str
+          password:
+            type: str
   mlag_configuration:
     type: dict
     display_name: Multi-Chassis Link Aggregation (MLAG) Configuration

@@ -122,6 +122,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;user_defined_applications</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications.[].name") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;category</samp>](## "metadata.cv_pathfinder.applications.categories.user_defined_applications.[].category") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;digital_twin</samp>](## "metadata.digital_twin") | Dictionary |  |  |  | Metadata used to generate Digital Twin topology. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;environment</samp>](## "metadata.digital_twin.environment") | String |  |  |  | Targeted Digital Twin environment (ACT, etc.). |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;node_type</samp>](## "metadata.digital_twin.node_type") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ip_addr</samp>](## "metadata.digital_twin.ip_addr") | String |  |  |  | IPv4_address/Mask. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;version</samp>](## "metadata.digital_twin.version") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "metadata.digital_twin.username") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "metadata.digital_twin.password") | String |  |  |  |  |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles. |
 
 === "YAML"
@@ -246,6 +253,19 @@
             user_defined_applications:
               - name: <str>
                 category: <str>
+
+      # Metadata used to generate Digital Twin topology.
+      digital_twin:
+
+        # Targeted Digital Twin environment (ACT, etc.).
+        environment: <str>
+        node_type: <str>
+
+        # IPv4_address/Mask.
+        ip_addr: <str>
+        version: <str>
+        username: <str>
+        password: <str>
 
     # Serial Number of the device.
     # Used only for documentation and deployment purposes. It is used by the 'eos_config_deploy_cvp' and 'cv_deploy' roles.

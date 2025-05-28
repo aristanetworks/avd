@@ -1170,6 +1170,104 @@ keys:
         - mpls
         - l2ls
         default: l3ls-evpn
+  digital_twin:
+    documentation_options:
+      table: digital-twin-configuration
+    type: dict
+    description: 'PREVIEW: This option is marked as "preview", while we refactor the
+      code to conform to the described behavior.
+
+      Global settings to configure the Digital Twin of the Fabric.'
+    keys:
+      environment:
+        type: str
+        description: Targeted Digital Twin environment.
+        valid_values:
+        - act
+        default: act
+      fabric:
+        type: dict
+        description: Global Digital Twin settings related to the configuration of
+          fabric nodes.
+        keys:
+          os_version:
+            type: str
+            description: Desired Digital Twin OS version for fabric nodes.
+          mgmt_ipv4_pool:
+            type: str
+            description: 'IPv4 address pool to automatically generate MGMT IPv4 addresses
+              for digital twins of the Fabric nodes.
+
+              Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).'
+            format: ipv4_pool
+          username:
+            type: str
+            description: Desired Digital Twin username for fabric nodes.
+          password:
+            type: str
+            description: Desired Digital Twin clear-text password for fabric nodes.
+      endpoints:
+        type: dict
+        description: Global Digital Twin settings related to the configuration of
+          the endpoints.
+        keys:
+          enabled:
+            type: bool
+            description: 'Setting this flag to `true` will include all `connected_endpoints`
+              in the generated Digital Twin topology data.
+
+              Specific endpoints may be suppressed by setiing `<connected_endpoints_keys.key>.digital_twin.enabled`
+              to `false`.'
+            default: false
+          platform:
+            type: str
+            description: Desired Digital Twin virtual platform for endpoints.
+            valid_values:
+            - veos
+            - cloudeos
+            - generic
+            default: generic
+          os_version:
+            type: str
+            description: Desired Digital Twin OS version for endpoints.
+          mgmt_ipv4_pool:
+            type: str
+            description: 'IPv4 address pool to automatically generate MGMT IPv4 addresses
+              for Digital Twin endpoints.
+
+              Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).'
+            format: ipv4_pool
+          username:
+            type: str
+            description: Desired Digital Twin username for endpoints.
+          password:
+            type: str
+            description: Desired Digital Twin clear-text password for endpoints.
+  digital_twin_custom_structured_configuration_prefix:
+    documentation_options:
+      table: custom-structured-configuration
+    type: list
+    items:
+      type: str
+    description: 'PREVIEW: This option is marked as "preview", while we refactor the
+      code to conform to the described behavior.
+
+      Custom EOS Structured Configuration keys that will be only applied to the fabric
+      nodes in the Digital Twin mode.
+
+      '
+    default:
+    - digital_twin_custom_structured_configuration_
+  digital_twin_mode:
+    documentation_options:
+      table: digital-twin-configuration
+    type: bool
+    description: 'PREVIEW: This option is marked as "preview", while we refactor the
+      code to conform to the described behavior.
+
+      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
+      adjusted configuration, etc.).'
+    default: false
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -2456,6 +2554,11 @@ keys:
         endpoint:
           type: str
           description: Name or description of the endpoints connected to these ports.
+        digital_twin:
+          type: bool
+          description: Setting this flag to `false` will exclude associated network
+            ports from the generated structured and rendered EOS configuration.
+          default: true
   network_services_keys:
     type: list
     primary_key: name
@@ -3440,6 +3543,30 @@ keys:
             hardware_exclusive:
               type: bool
               description: Only use entropy from the hardware source.
+        digital_twin:
+          type: dict
+          description: Data model that controls the selection of the casted AVD platform
+            as well as the selection of the Digital Twin virtual platform.
+          keys:
+            casted_avd_platform:
+              type: str
+              description: Platform name used to match the AVD `platform_settings`
+                item to enforce platform-specific settings during AVD execution in
+                Digital Twin mode.
+            digital_twin_platform:
+              type: dict
+              description: 'Digital Twin platform (may vary depending on the Digital
+                Twin environment).
+
+                Should only be set for `platform_settings` items that are used by
+                the casted platform types.'
+              keys:
+                act:
+                  type: str
+                  valid_values:
+                  - veos
+                  - cloudeos
+                  - generic
         structured_config:
           type: dict
           relaxed_validation: true
@@ -3459,6 +3586,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7050X3
       feature_support:
@@ -3468,6 +3597,8 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 720XP
       feature_support:
@@ -3478,6 +3609,8 @@ keys:
         non_mlag: 330
       trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000
         l3-shared 22000
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - '750'
       - '755'
@@ -3489,6 +3622,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 720DP
       - 722XP
@@ -3499,6 +3634,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7010TX
       feature_support:
@@ -3507,6 +3644,8 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7280R
       - 7280R2
@@ -3516,6 +3655,8 @@ keys:
         mlag: 900
         non_mlag: 1020
       tcam_profile: vxlan-routing
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7280R3
       reload_delay:
@@ -3524,6 +3665,8 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         evpn_gateway_all_active_multihoming: true
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7500R
       - 7500R2
@@ -3533,6 +3676,8 @@ keys:
         mlag: 900
         non_mlag: 1020
       tcam_profile: vxlan-routing
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7500R3
       - 7800R3
@@ -3543,6 +3688,8 @@ keys:
       tcam_profile: vxlan-routing
       feature_support:
         evpn_gateway_all_active_multihoming: true
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7358X4
       management_interface: Management1/1
@@ -3554,12 +3701,16 @@ keys:
         interface_storm_control: true
         bgp_update_wait_for_convergence: true
         bgp_update_wait_install: false
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7368X4
       management_interface: Management0
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - 7300X3
       management_interface: Management0
@@ -3568,6 +3719,8 @@ keys:
         non_mlag: 1320
       trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304
         l3-shared 131072
+      digital_twin:
+        casted_avd_platform: vEOS
     - platforms:
       - VEOS
       - VEOS-LAB
@@ -3582,6 +3735,9 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        digital_twin_platform:
+          act: veos
     - platforms:
       - CEOS
       - cEOS
@@ -3597,6 +3753,9 @@ keys:
       reload_delay:
         mlag: 300
         non_mlag: 330
+      digital_twin:
+        digital_twin_platform:
+          act: veos
     - platforms:
       - CloudEOS
       feature_support:
@@ -3604,6 +3763,9 @@ keys:
         interface_storm_control: false
         queue_monitor_length_notify: false
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        digital_twin_platform:
+          act: cloudeos
     - platforms:
       - AWE-5310
       - AWE-7230R
@@ -3617,6 +3779,8 @@ keys:
           max_rx_queues: 6
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        casted_avd_platform: CloudEOS
     - platforms:
       - AWE-5510
       - AWE-7250R
@@ -3630,6 +3794,8 @@ keys:
           max_rx_queues: 16
       management_interface: Management1/1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        casted_avd_platform: CloudEOS
     - platforms:
       - AWE-7220R
       feature_support:
@@ -3640,6 +3806,8 @@ keys:
         poe: true
       management_interface: Management1
       p2p_uplinks_mtu: 9194
+      digital_twin:
+        casted_avd_platform: CloudEOS
   platform_speed_groups:
     documentation_options:
       table: platform-settings
@@ -5959,6 +6127,30 @@ $defs:
         rack:
           type: str
           description: Rack is used for documentation purposes only.
+        digital_twin:
+          type: dict
+          keys:
+            enabled:
+              type: bool
+              description: "Setting this flag to `false` will exclude the endpoint
+                and all its associated adapters from the:\n  - generated Digital Twin
+                topology file.\n  - generated structured and rendered EOS configuration.\nThis
+                setting overrides global `digital_twin.endpoints.enabled` flag."
+              default: true
+            generate_port_names:
+              type: bool
+              description: 'Setting this flag to `true` will force all port names
+                of the associated endpoint to be renamed using the `EthX` pattern.
+
+                This may be necessary in environments where the Digital Twin enforces
+                specific port naming conventions. For example, ACT only supports
+
+                port names matching `Et\d+`, `Eth\d+`, `Ethernet\d+`, `Ma\d+` or `Management\d+`
+                patterns. Attempting to generate topology data for connected
+
+                endpoints with port names like `iLO` or `eno.*` will result in an
+                invalid topology file.'
+              default: false
         adapters:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.
@@ -6014,6 +6206,12 @@ $defs:
                   `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
                   - The value from `endpoint_ports` for this switch port if set.\n
                   \ - `port_channel_id`: The port-channel number for the switch."
+              digital_twin:
+                type: bool
+                description: "Setting this flag to `false` will exclude adapter from
+                  the:\n  - generated Digital Twin topology.\n  - generated structured
+                  and rendered EOS configuration."
+                default: true
   flow_tracking_link:
     type: dict
     keys:
@@ -9925,6 +10123,25 @@ $defs:
               new_key: inband_mgmt_vlan
               remove_in_version: 5.0.0
             type: int
+          digital_twin:
+            documentation_options:
+              table: node-type-digital-twin-configuration
+            description: Set the OS version and management IP address for the digital
+              twin of the associated node(s).
+            type: dict
+            keys:
+              os_version:
+                type: str
+                description: 'Desired OS version.
+
+                  Overrides global `digital_twin.fabric.os_version` flag.'
+              mgmt_ip:
+                type: str
+                description: 'Desired management interface IPv4 address.
+
+                  Overrides the dynamically generated (from the pool `digital_twin.fabric.mgmt_ipv4_pool`)
+                  Digital Twin MGMT IP.'
+                format: cidr
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.
