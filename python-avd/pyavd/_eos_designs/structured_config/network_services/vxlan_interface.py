@@ -200,10 +200,10 @@ class VxlanInterfaceMixin(Protocol):
                 tenant.evpn_l2_multicast.underlay_l2_multicast_group_ipv4_pool_offset,
             )
 
-        if not self.shared_utils.underlay_multicast and (vlan.vxlan_flood_multicast.enabled or tenant.vxlan_flood_multicast.enabled):
-            msg = "'vxlan_flood_multicast' is only supported in combination with 'underlay_multicast: True'."
-            raise AristaAvdError(msg)
         if default(vlan.vxlan_flood_multicast.enabled, tenant.vxlan_flood_multicast.enabled):
+            if not self.shared_utils.underlay_multicast:
+                msg = "'vxlan_flood_multicast' is only supported in combination with 'underlay_multicast: True'."
+                raise AristaAvdError(msg)
             vxlan_vlan.flood_group = (
                 vlan.vxlan_flood_multicast.underlay_multicast_group
                 if vlan.vxlan_flood_multicast.underlay_multicast_group and vlan.vxlan_flood_multicast.enabled is True
