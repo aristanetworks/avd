@@ -6871,9 +6871,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": int}, "ipv6_segment_size": {"type": int}, "direction": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "ipv4_segment_size": {"type": int},
+                "ipv4": {"type": int},
+                "ipv6_segment_size": {"type": int},
+                "ipv6": {"type": int},
+                "direction": {"type": str},
+            }
             ipv4_segment_size: int | None
+            ipv4: int | None
             ipv6_segment_size: int | None
+            ipv6: int | None
             direction: Literal["egress", "ingress"] | None
 
             if TYPE_CHECKING:
@@ -6882,7 +6890,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv4_segment_size: int | None | UndefinedType = Undefined,
+                    ipv4: int | None | UndefinedType = Undefined,
                     ipv6_segment_size: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
                     direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -6893,7 +6903,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         ipv4_segment_size: ipv4_segment_size
+                        ipv4: ipv4
                         ipv6_segment_size: ipv6_segment_size
+                        ipv6: ipv6
                         direction: direction
 
                     """
@@ -56135,8 +56147,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": str}, "direction": {"type": str, "default": "ingress"}}
+            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": str}, "ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
             ipv4_segment_size: str | None
+            """
+            Segment Size for IPv4.
+            Can be an integer in the range 64-65515 or "auto".
+            "auto" will enable auto-
+            discovery which clamps the TCP MSS value to the minimum of all the direct paths
+            and multi-hop path
+            MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
+            """
+            ipv4: str | None
             """
             Segment Size for IPv4.
             Can be an integer in the range 64-65515 or "auto".
@@ -56157,7 +56178,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, ipv4_segment_size: str | None | UndefinedType = Undefined, direction: Literal["ingress"] | UndefinedType = Undefined
+                    self,
+                    *,
+                    ipv4_segment_size: str | None | UndefinedType = Undefined,
+                    ipv4: str | None | UndefinedType = Undefined,
+                    direction: Literal["ingress"] | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -56167,6 +56192,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         ipv4_segment_size:
+                           Segment Size for IPv4.
+                           Can be an integer in the range 64-65515 or "auto".
+                           "auto" will enable auto-
+                           discovery which clamps the TCP MSS value to the minimum of all the direct paths
+                           and multi-hop path
+                           MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
+                        ipv4:
                            Segment Size for IPv4.
                            Can be an integer in the range 64-65515 or "auto".
                            "auto" will enable auto-
