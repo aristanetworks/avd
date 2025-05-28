@@ -9775,7 +9775,7 @@ queue-monitor length cpu thresholds 200000 100000
 queue-monitor length log 100
 !
 queue-monitor length mirror
-queue-monitor length mirror Cpu
+queue-monitor length mirror destination Cpu
 !
 queue-monitor streaming
    max-connections 5
