@@ -60773,14 +60773,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         source_interface: str | None
         """
         Tunnel Source Interface Name.
-        Mutually exclusive with source_ipaddress, if both are defined
-        source_interface takes precedence.
+        Mutually exclusive with `source_ipaddress`, if both are defined
+        `source_interface` takes precedence.
         """
         source_ipaddress: str | None
         """
         Tunnel Source IPv4/IPv6 address.
-        Mutually exclusive with source_interface, if both are defined
-        source_interface takes precedence.
+        Mutually exclusive with `source_interface`, if both are defined
+        `source_interface` takes precedence.
         """
         destination: str | None
         """IPv4 or IPv6 Address Tunnel Destination."""
@@ -60855,12 +60855,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        encapsulation.
                     source_interface:
                        Tunnel Source Interface Name.
-                       Mutually exclusive with source_ipaddress, if both are defined
-                       source_interface takes precedence.
+                       Mutually exclusive with `source_ipaddress`, if both are defined
+                       `source_interface` takes precedence.
                     source_ipaddress:
                        Tunnel Source IPv4/IPv6 address.
-                       Mutually exclusive with source_interface, if both are defined
-                       source_interface takes precedence.
+                       Mutually exclusive with `source_interface`, if both are defined
+                       `source_interface` takes precedence.
                     destination: IPv4 or IPv6 Address Tunnel Destination.
                     path_mtu_discovery: Enable Path MTU Discovery On Tunnel.
                     ipsec_profile:
