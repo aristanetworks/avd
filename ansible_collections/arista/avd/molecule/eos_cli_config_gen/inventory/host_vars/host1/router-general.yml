@@ -4,8 +4,10 @@ router_general:
     ipv4: 10.1.2.3
     ipv6: 2001:beef:cafe::1
   nexthop_fast_failover: true
+  software_forwarding_hardware_offload_mtu: 78
   vrfs:
     - name: BLUE-C2
+      software_forwarding_hardware_offload_mtu: 98
       leak_routes:
         - source_vrf: BLUE-C1
           subscribe_policy: RM-BLUE-LEAKING
@@ -15,6 +17,10 @@ router_general:
         dynamic_prefix_lists:
           - name: DYNAMIC_TEST_PREFIX_LIST_2
           - name: DYNAMIC_TEST_PREFIX_LIST_1
+    - name: BLUE3
+      leak_routes:
+        - source_vrf: BLUE-C1
+          subscribe_policy: RM-BLUE-LEAKING
   control_functions:
     code_units:
       - name: code1

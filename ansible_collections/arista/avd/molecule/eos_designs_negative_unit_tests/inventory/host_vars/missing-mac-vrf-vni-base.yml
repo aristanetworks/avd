@@ -1,0 +1,27 @@
+---
+# Minimum config to only test the specific feature.
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 10.42.0.0/24
+    bgp_as: 42
+    vtep_loopback_ipv4_pool: 10.43.0.0/24
+  nodes:
+    - name: missing-mac-vrf-vni-base
+      id: 42
+
+type: l3leaf
+
+tenants:
+  - name: Tenant_A
+    mac_vrf_id_base: 20000
+    vrfs:
+      - name: Tenant_A_OP_Zone
+        description: "Tenant_A_OP_Zone"
+        vrf_vni: 10
+        vrf_id: 9
+        svis:
+          # SVI as string
+          - id: "110"
+            name: Tenant_A_OP_Zone_1
+
+expected_error_message: "'mac_vrf_vni_base' for Tenant: Tenant_A is required."
