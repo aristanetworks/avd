@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal
+from typing import TYPE_CHECKING, ClassVar, Literal
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._schema.coerce_type import coerce_type
@@ -16913,10 +16913,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     EndpointPorts._item_type = str
 
-                    class Descriptions(AvdList[Any]):
-                        """Subclass of AvdList with `Any` items."""
+                    class Descriptions(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
 
-                    Descriptions._item_type = Any
+                    Descriptions._item_type = str
 
                     class TrunkGroups(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -18053,7 +18053,7 @@ class EosDesigns(EosDesignsRootModel):
                       - `port_channel_id`: The port-channel number for the
                     switch.
 
-                    Subclass of AvdList with `Any` items.
+                    Subclass of AvdList with `str` items.
                     """
                     speed: str | None
                     """
@@ -18291,7 +18291,7 @@ class EosDesigns(EosDesignsRootModel):
                                      - `port_channel_id`: The port-channel number for the
                                    switch.
 
-                                   Subclass of AvdList with `Any` items.
+                                   Subclass of AvdList with `str` items.
                                 speed:
                                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                    <interface_speed>`.
@@ -18496,10 +18496,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     EndpointPorts._item_type = str
 
-                    class Descriptions(AvdList[Any]):
-                        """Subclass of AvdList with `Any` items."""
+                    class Descriptions(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
 
-                    Descriptions._item_type = Any
+                    Descriptions._item_type = str
 
                     class TrunkGroups(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -19636,7 +19636,7 @@ class EosDesigns(EosDesignsRootModel):
                       - `port_channel_id`: The port-channel number for the
                     switch.
 
-                    Subclass of AvdList with `Any` items.
+                    Subclass of AvdList with `str` items.
                     """
                     speed: str | None
                     """
@@ -19874,7 +19874,7 @@ class EosDesigns(EosDesignsRootModel):
                                      - `port_channel_id`: The port-channel number for the
                                    switch.
 
-                                   Subclass of AvdList with `Any` items.
+                                   Subclass of AvdList with `str` items.
                                 speed:
                                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                    <interface_speed>`.

@@ -6049,6 +6049,8 @@ $defs:
                   `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
                   - The value from `endpoint_ports` for this switch port if set.\n
                   \ - `port_channel_id`: The port-channel number for the switch."
+                items:
+                  type: str
   flow_tracking_link:
     type: dict
     keys:
