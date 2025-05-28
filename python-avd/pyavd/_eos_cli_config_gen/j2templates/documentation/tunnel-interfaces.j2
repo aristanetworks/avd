@@ -12,8 +12,8 @@
 
 {%     set tunnel_interfaces_ipv4 = [] %}
 {%     set tunnel_interfaces_ipv6 = [] %}
-| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Source Ipaddress | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ---------------- | ---------------- | ----------- | -------------- | ------------- |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Source IP Address | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ---------------- | ----------------- | ----------- | -------------- | ------------- |
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
 {%         if tunnel_interface.ipv6_address is arista.avd.defined %}
 {%             do tunnel_interfaces_ipv6.append(tunnel_interface) %}
