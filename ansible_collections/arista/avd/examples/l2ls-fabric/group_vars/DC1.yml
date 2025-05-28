@@ -9,7 +9,7 @@ custom_structured_configuration_aaa_authentication:
 # local users
 local_users:
   # Username with no password configured
-  - name: ansible
+  - name: admin
     privilege: 15
     role: network-admin
     no_password: true

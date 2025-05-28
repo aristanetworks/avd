@@ -145,15 +145,13 @@ management api http-commands
 | User | Privilege | Role | Disabled | Shell |
 | ---- | --------- | ---- | -------- | ----- |
 | admin | 15 | network-admin | False | - |
-| ansible | 15 | network-admin | False | - |
 | arista | 15 | network-admin | False | - |
 
 #### Local Users Device Configuration
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
-username ansible privilege 15 role network-admin nopassword
+username admin privilege 15 role network-admin nopassword
 username arista privilege 15 role network-admin secret sha512 <removed>
 ```
 

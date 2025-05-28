@@ -112,10 +112,6 @@ local_users:
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
-  privilege: 15
-  role: network-admin
-  sha512_password: $6$QJUtFkyu9yoecsq.$ysGzlb2YXaIMvezqGEna7RE8CMALJHnv7Q1i.27VygyKUtSeX.n2xRTyOtCR8eOAl.4imBLyhXFc4o97P5n071
 - name: arista
   privilege: 15
   role: network-admin

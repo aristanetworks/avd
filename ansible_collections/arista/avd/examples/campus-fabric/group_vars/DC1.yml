@@ -3,6 +3,13 @@
 
 # local users
 local_users:
+  # Username with no password configured
+  - name: admin
+    privilege: 15
+    role: network-admin
+    no_password: true
+
+  # Username with a password
   - name: arista
     privilege: 15
     role: network-admin
