@@ -313,9 +313,15 @@ keys:
                 type: bool
               prefix_length:
                 type: int
+              ipv6_prefix_length:
+                type: int
               ip_address:
                 type: str
+              ipv6_address:
+                type: str
               peer_ip_address:
+                type: str
+              peer_ipv6_address:
                 type: str
               structured_config:
                 type: dict

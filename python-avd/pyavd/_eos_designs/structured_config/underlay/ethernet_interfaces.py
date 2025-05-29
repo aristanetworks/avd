@@ -215,6 +215,9 @@ class EthernetInterfacesMixin(Protocol):
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
 
+                    if subinterface.ipv6_address:
+                        ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
+
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 
         # Support l3_interface as sub interfaces

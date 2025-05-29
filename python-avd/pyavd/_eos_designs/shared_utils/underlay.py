@@ -7,7 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
-from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -108,3 +108,10 @@ class UnderlayMixin(Protocol):
                     underlay_routing_protocol must be set to 'ebgp'"
                 raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6_numbered
+
+    @cached_property
+    def enable_router_id_diagnostic(self: SharedUtilsProtocol) -> bool:
+        if not self.underlay_ipv6_numbered:
+            msg = "Missing input. `underlay_ipv6_numbered: true` is required for enable_router_id_diagnostic"
+            raise AristaAvdMissingVariableError(msg)
+        return self.inputs.enable_router_id_diagnostic

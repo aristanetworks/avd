@@ -69,6 +69,7 @@ loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
+  ip_address: 10.255.0.1/32
   ipv6_address: 2001:db8:0:1::1/64
 management_api_http:
   enable_https: true

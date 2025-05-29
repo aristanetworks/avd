@@ -858,18 +858,11 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksIpPoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "ipv4_pool": {"type": str},
-                "ipv6_pool": {"type": str},
-                "prefix_size": {"type": int, "default": 31},
-            }
+            _fields: ClassVar[dict] = {"name": {"type": str}, "ipv4_pool": {"type": str}, "prefix_size": {"type": int, "default": 31}}
             name: str
             """P2P pool name."""
             ipv4_pool: str | None
             """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
-            ipv6_pool: str | None
-            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
             prefix_size: int
             """
             Subnet mask size.
@@ -884,7 +877,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     ipv4_pool: str | None | UndefinedType = Undefined,
-                    ipv6_pool: str | None | UndefinedType = Undefined,
                     prefix_size: int | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -896,7 +888,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                         prefix_size: Subnet mask size.
 
                     """
@@ -4867,18 +4858,11 @@ class EosDesigns(EosDesignsRootModel):
         class P2pLinksIpPoolsItem(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "ipv4_pool": {"type": str},
-                "ipv6_pool": {"type": str},
-                "prefix_size": {"type": int, "default": 31},
-            }
+            _fields: ClassVar[dict] = {"name": {"type": str}, "ipv4_pool": {"type": str}, "prefix_size": {"type": int, "default": 31}}
             name: str
             """P2P pool name."""
             ipv4_pool: str | None
             """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
-            ipv6_pool: str | None
-            """Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address)."""
             prefix_size: int
             """
             Subnet mask size.
@@ -4893,7 +4877,6 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     ipv4_pool: str | None | UndefinedType = Undefined,
-                    ipv6_pool: str | None | UndefinedType = Undefined,
                     prefix_size: int | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -4905,7 +4888,6 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: P2P pool name.
                         ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-                        ipv6_pool: Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
                         prefix_size: Subnet mask size.
 
                     """
@@ -59140,6 +59122,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_filter_redistribute_connected": {"type": bool, "default": True},
         "underlay_ipv6": {"type": bool, "default": False},
         "underlay_ipv6_numbered": {"type": bool, "default": False},
+        "enable_router_id_diagnostic": {"type": bool, "default": False},
         "underlay_isis_authentication_key": {"type": str},
         "underlay_isis_authentication_mode": {"type": str},
         "underlay_isis_bfd": {"type": bool, "default": False},
@@ -60715,6 +60698,15 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    enable_router_id_diagnostic: bool
+    """
+    This feature allows configuring a loopback0 IPv4 that matches the BGP router_id for diagnostics with
+    an IPv6 unuderlay.
+    Requires:
+      - "underlay_ipv6_numbered: true"
+
+    Default value: `False`
+    """
     underlay_isis_authentication_key: str | None
     """Type-7 encrypted password."""
     underlay_isis_authentication_mode: Literal["md5", "text"] | None
@@ -61177,6 +61169,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_filter_redistribute_connected: bool | UndefinedType = Undefined,
             underlay_ipv6: bool | UndefinedType = Undefined,
             underlay_ipv6_numbered: bool | UndefinedType = Undefined,
+            enable_router_id_diagnostic: bool | UndefinedType = Undefined,
             underlay_isis_authentication_key: str | None | UndefinedType = Undefined,
             underlay_isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
             underlay_isis_bfd: bool | UndefinedType = Undefined,
@@ -62328,6 +62321,11 @@ class EosDesigns(EosDesignsRootModel):
                    is_wan_router
                      - vtep_vvtep_ip
                      - inband_ztp
+                enable_router_id_diagnostic:
+                   This feature allows configuring a loopback0 IPv4 that matches the BGP router_id for diagnostics with
+                   an IPv6 unuderlay.
+                   Requires:
+                     - "underlay_ipv6_numbered: true"
                 underlay_isis_authentication_key: Type-7 encrypted password.
                 underlay_isis_authentication_mode: Underlay ISIS authentication mode.
                 underlay_isis_bfd: Enable BFD for ISIS on all underlay links.

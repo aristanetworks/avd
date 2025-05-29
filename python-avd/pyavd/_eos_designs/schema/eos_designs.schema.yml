@@ -4498,6 +4498,14 @@ keys:
       \ - underlay_rfc5549\n  - is_wan_router\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
+  enable_router_id_diagnostic:
+    documentation_options:
+      table: fabric-settings
+    description: "This feature allows configuring a loopback0 IPv4 that matches the
+      BGP router_id for diagnostics with an IPv6 unuderlay.\nRequires:\n  - \"underlay_ipv6_numbered:
+      true\"\n"
+    type: bool
+    default: false
   underlay_isis_authentication_key:
     documentation_options:
       table: isis-settings
@@ -6091,11 +6099,6 @@ $defs:
               description: Comma separated list of prefixes (IPv4 address/Mask) or
                 ranges (IPv4_address-IPv4_address).
               format: ipv4_pool
-            ipv6_pool:
-              type: str
-              description: Comma separated list of prefixes (IPv6 address/Mask) or
-                ranges (IPv6_address-IPv6_address).
-              format: ipv6_pool
             prefix_size:
               type: int
               convert_types:

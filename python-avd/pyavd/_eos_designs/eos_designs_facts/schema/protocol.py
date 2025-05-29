@@ -304,8 +304,11 @@ class EosDesignsFactsProtocol(Protocol):
                 "encapsulation_dot1q_vlan": {"type": int},
                 "ipv6_enable": {"type": bool},
                 "prefix_length": {"type": int},
+                "ipv6_prefix_length": {"type": int},
                 "ip_address": {"type": str},
+                "ipv6_address": {"type": str},
                 "peer_ip_address": {"type": str},
+                "peer_ipv6_address": {"type": str},
                 "structured_config": {"type": dict},
             }
             interface: str
@@ -314,8 +317,11 @@ class EosDesignsFactsProtocol(Protocol):
             encapsulation_dot1q_vlan: int
             ipv6_enable: bool | None
             prefix_length: int | None
+            ipv6_prefix_length: int | None
             ip_address: str | None
+            ipv6_address: str | None
             peer_ip_address: str | None
+            peer_ipv6_address: str | None
             structured_config: dict
             """
             Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
@@ -342,8 +348,11 @@ class EosDesignsFactsProtocol(Protocol):
                     encapsulation_dot1q_vlan: int | UndefinedType = Undefined,
                     ipv6_enable: bool | None | UndefinedType = Undefined,
                     prefix_length: int | None | UndefinedType = Undefined,
+                    ipv6_prefix_length: int | None | UndefinedType = Undefined,
                     ip_address: str | None | UndefinedType = Undefined,
+                    ipv6_address: str | None | UndefinedType = Undefined,
                     peer_ip_address: str | None | UndefinedType = Undefined,
+                    peer_ipv6_address: str | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -359,8 +368,11 @@ class EosDesignsFactsProtocol(Protocol):
                         encapsulation_dot1q_vlan: encapsulation_dot1q_vlan
                         ipv6_enable: ipv6_enable
                         prefix_length: prefix_length
+                        ipv6_prefix_length: ipv6_prefix_length
                         ip_address: ip_address
+                        ipv6_address: ipv6_address
                         peer_ip_address: peer_ip_address
+                        peer_ipv6_address: peer_ipv6_address
                         structured_config:
                            Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
                            When

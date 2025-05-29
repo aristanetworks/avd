@@ -348,9 +348,9 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                     subinterface.ipv6_enable = True
                 # TODO: Even we have underlay_ipv6_numbered: true in input but still it goes in else condition. Need to discuss further.
                 elif self.shared_utils.underlay_ipv6_numbered:
-                    subinterface["prefix_length"] = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
-                    subinterface["ipv6_address"] = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ipv6(uplink_index, vrf.name)
-                    subinterface["peer_ipv6_address"] = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ipv6(uplink_index, vrf.name)
+                    subinterface.ipv6_prefix_length = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv6_prefix_length
+                    subinterface.ipv6_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ipv6(uplink_index, vrf.name)
+                    subinterface.peer_ipv6_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_peer_ipv6(uplink_index, vrf.name)
                 else:
                     subinterface.prefix_length = self.inputs.fabric_ip_addressing.p2p_uplinks.ipv4_prefix_length
                     subinterface.ip_address = self.shared_utils.ip_addressing.p2p_vrfs_uplinks_ip(uplink_index, vrf.name)

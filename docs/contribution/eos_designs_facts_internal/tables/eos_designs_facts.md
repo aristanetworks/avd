@@ -123,8 +123,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "uplinks.[].subinterfaces.[].encapsulation_dot1q_vlan") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].subinterfaces.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "uplinks.[].subinterfaces.[].prefix_length") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_length</samp>](## "uplinks.[].subinterfaces.[].ipv6_prefix_length") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "uplinks.[].subinterfaces.[].ip_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "uplinks.[].subinterfaces.[].ipv6_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip_address</samp>](## "uplinks.[].subinterfaces.[].peer_ip_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "uplinks.[].subinterfaces.[].peer_ipv6_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
     | [<samp>uplink_peers</samp>](## "uplink_peers") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_peers.[]") | String |  |  |  |  |
@@ -339,8 +342,11 @@
             encapsulation_dot1q_vlan: <int; required>
             ipv6_enable: <bool>
             prefix_length: <int>
+            ipv6_prefix_length: <int>
             ip_address: <str>
+            ipv6_address: <str>
             peer_ip_address: <str>
+            peer_ipv6_address: <str>
 
             # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
             # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.
