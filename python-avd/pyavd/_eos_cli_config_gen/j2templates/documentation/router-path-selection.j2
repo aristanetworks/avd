@@ -21,11 +21,7 @@
 
 | IPV4 segment size | Direction |
 | ----------------- | --------- |
-{%         if router_path_selection.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
-{%             set tcp_mss_ceiling = router_path_selection.tcp_mss_ceiling.ipv4 %}
-{%         else %}
-{%             set tcp_mss_ceiling = router_path_selection.tcp_mss_ceiling.ipv4_segment_size %}
-{%         endif %}
+{%         set tcp_mss_ceiling = router_path_selection.tcp_mss_ceiling.ipv4 | arista.avd.default(router_path_selection.tcp_mss_ceiling.ipv4_segment_size) %}
 | {{ tcp_mss_ceiling }} | {{ router_path_selection.tcp_mss_ceiling.direction | arista.avd.default("ingress") }} |
 {%     endif %}
 {%     if router_path_selection.interfaces is arista.avd.defined %}
