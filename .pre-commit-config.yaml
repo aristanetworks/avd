@@ -116,7 +116,7 @@ repos:
           - 'pydantic>=2.3.0'
           - 'jsonschema-rs>=0.24'
           - 'referencing>=0.35.0'
-          - 'ruff==0.7.2'
+          - 'ruff==0.11.11'
 
   - repo: https://github.com/pycqa/pylint
     rev: "v3.3.7"
