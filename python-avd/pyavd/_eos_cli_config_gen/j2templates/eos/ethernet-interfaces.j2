@@ -1215,6 +1215,19 @@ interface {{ ethernet_interface.name }}
 {%             if vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
 {%             endif %}
+{%             if vrid.peer_authentication is arista.avd.defined() %}
+{%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
+{%                 if vrid.peer_authentication.mode is arista.avd.defined("ietf-md5") %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
+{%                 else %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
+{%                 endif %}
+{%                 if vrid.peer_authentication.key_type is arista.avd.defined() %}
+{%                     set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
+{%                 endif %}
+{%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key %}
+   {{ peer_auth_cli }}
+{%             endif %}
 {%             for tracked_obj in vrid.tracked_object | arista.avd.natural_sort('name') %}
 {%                 if tracked_obj.name is arista.avd.defined %}
 {%                     set tracked_obj_cli = "vrrp " ~ vrid.id ~ " tracked-object " ~ tracked_obj.name %}

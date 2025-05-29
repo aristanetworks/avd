@@ -3987,6 +3987,27 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                    - text
+                    - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                  key_type:
+                    type: str
+                    description: Authentication key type. EOS default is "7".
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
