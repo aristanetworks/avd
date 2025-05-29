@@ -60732,7 +60732,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "tunnel_mode": {"type": str},
             "source_interface": {"type": str},
-            "source_ipaddress": {"type": str},
+            "source": {"type": str},
             "destination": {"type": str},
             "path_mtu_discovery": {"type": bool},
             "ipsec_profile": {"type": str},
@@ -60773,10 +60773,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         source_interface: str | None
         """
         Tunnel Source Interface Name.
-        Mutually exclusive with `source_ipaddress`, if both are defined
+        Mutually exclusive with `source`, if both are defined
         `source_interface` takes precedence.
         """
-        source_ipaddress: str | None
+        source: str | None
         """
         Tunnel Source IPv4/IPv6 address.
         Mutually exclusive with `source_interface`, if both are defined
@@ -60820,7 +60820,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 tunnel_mode: Literal["gre", "ipsec"] | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
-                source_ipaddress: str | None | UndefinedType = Undefined,
+                source: str | None | UndefinedType = Undefined,
                 destination: str | None | UndefinedType = Undefined,
                 path_mtu_discovery: bool | None | UndefinedType = Undefined,
                 ipsec_profile: str | None | UndefinedType = Undefined,
@@ -60855,9 +60855,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        encapsulation.
                     source_interface:
                        Tunnel Source Interface Name.
-                       Mutually exclusive with `source_ipaddress`, if both are defined
+                       Mutually exclusive with `source`, if both are defined
                        `source_interface` takes precedence.
-                    source_ipaddress:
+                    source:
                        Tunnel Source IPv4/IPv6 address.
                        Mutually exclusive with `source_interface`, if both are defined
                        `source_interface` takes precedence.

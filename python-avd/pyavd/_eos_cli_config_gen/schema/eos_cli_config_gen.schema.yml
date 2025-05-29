@@ -22834,9 +22834,9 @@ keys:
           type: str
           description: 'Tunnel Source Interface Name.
 
-            Mutually exclusive with `source_ipaddress`, if both are defined `source_interface`
+            Mutually exclusive with `source`, if both are defined `source_interface`
             takes precedence.'
-        source_ipaddress:
+        source:
           type: str
           description: 'Tunnel Source IPv4/IPv6 address.
 
