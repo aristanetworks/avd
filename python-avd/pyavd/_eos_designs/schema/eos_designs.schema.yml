@@ -3366,7 +3366,8 @@ keys:
               default: true
             queue_monitor_length_notify:
               type: bool
-              description: 'Support for LANZ notifying mode.
+              description: 'Support for LANZ notifying mode. Requires the parent `queue_monitor`
+                feature to be enabled.
 
                 Feature will be ignored on unsupported platforms.'
               default: true

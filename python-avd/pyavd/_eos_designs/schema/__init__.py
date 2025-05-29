@@ -10119,8 +10119,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             queue_monitor_length_notify: bool
             """
-            Support for LANZ notifying mode.
-            Feature will be ignored on unsupported platforms.
+            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+            Feature
+            will be ignored on unsupported platforms.
 
             Default value: `True`
             """
@@ -10244,8 +10245,9 @@ class EosDesigns(EosDesignsRootModel):
                            Support for LANZ.
                            Feature will be ignored on unsupported platforms.
                         queue_monitor_length_notify:
-                           Support for LANZ notifying mode.
-                           Feature will be ignored on unsupported platforms.
+                           Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+                           Feature
+                           will be ignored on unsupported platforms.
                         interface_storm_control:
                            Support for configuration of per interface storm-control settings on Ethernet or Port-channel
                            interfaces.
@@ -10883,8 +10885,9 @@ class EosDesigns(EosDesignsRootModel):
             """
             queue_monitor_length_notify: bool
             """
-            Support for LANZ notifying mode.
-            Feature will be ignored on unsupported platforms.
+            Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+            Feature
+            will be ignored on unsupported platforms.
 
             Default value: `True`
             """
@@ -11008,8 +11011,9 @@ class EosDesigns(EosDesignsRootModel):
                            Support for LANZ.
                            Feature will be ignored on unsupported platforms.
                         queue_monitor_length_notify:
-                           Support for LANZ notifying mode.
-                           Feature will be ignored on unsupported platforms.
+                           Support for LANZ notifying mode. Requires the parent `queue_monitor` feature to be enabled.
+                           Feature
+                           will be ignored on unsupported platforms.
                         interface_storm_control:
                            Support for configuration of per interface storm-control settings on Ethernet or Port-channel
                            interfaces.
