@@ -1304,7 +1304,7 @@ mpls rsvp
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destination |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - | - | tunnel |
+| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 

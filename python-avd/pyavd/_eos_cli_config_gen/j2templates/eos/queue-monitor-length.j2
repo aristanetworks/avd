@@ -38,8 +38,7 @@ queue-monitor length log {{ queue_monitor_length.log }}
 {%     if queue_monitor_length.mirror.enabled is arista.avd.defined(true) or
         queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) or
         queue_monitor_length.mirror.destination.ethernet_interfaces is arista.avd.defined or
-        (queue_monitor_length.mirror.destination.tunnel_mode_gre.source is arista.avd.defined and
-            queue_monitor_length.mirror.destination.tunnel_mode_gre.destination is arista.avd.defined) %}
+        queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
 !
 {%         if queue_monitor_length.mirror.enabled is arista.avd.defined(true) %}
 queue-monitor length mirror
@@ -50,8 +49,7 @@ queue-monitor length mirror destination Cpu
 {%         if queue_monitor_length.mirror.destination.ethernet_interfaces is arista.avd.defined %}
 queue-monitor length mirror destination {{ queue_monitor_length.mirror.destination.ethernet_interfaces }}
 {%         endif %}
-{%         if queue_monitor_length.mirror.destination.tunnel_mode_gre.source is arista.avd.defined and
-            queue_monitor_length.mirror.destination.tunnel_mode_gre.destination is arista.avd.defined %}
+{%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
 {%             set tunnel_config = "queue-monitor length mirror destination tunnel mode gre source " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.source ~ " destination " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.destination %}
 {%             set tunnel_config = tunnel_config ~ " ttl " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl | arista.avd.default(128) %}
 {%             set tunnel_config = tunnel_config ~ " dscp " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp | arista.avd.default(0) %}

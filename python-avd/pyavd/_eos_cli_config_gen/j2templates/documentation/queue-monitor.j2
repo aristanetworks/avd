@@ -24,7 +24,7 @@
 {%             do mirror_destination.append("Cpu") %}
 {%         endif %}
 {%         if queue_monitor_length.mirror.destination.ethernet_interfaces is arista.avd.defined %}
-{%             do mirror_destination.append("Ethernet") %}
+{%             do mirror_destination.append(queue_monitor_length.mirror.destination.ethernet_interfaces) %}
 {%         endif %}
 {%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
 {%             do mirror_destination.append("Tunnel") %}
