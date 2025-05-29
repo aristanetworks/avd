@@ -27,7 +27,7 @@
 {%             do mirror_destination.append("Ethernet") %}
 {%         endif %}
 {%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
-{%             do mirror_destination.append("tunnel") %}
+{%             do mirror_destination.append("Tunnel") %}
 {%         endif %}
 {%         if mirror_destination | length == 0 %}
 {%             set mirror_destination = ["-"] %}
@@ -35,7 +35,7 @@
 
 | Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destination |
 | ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
-| {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} | {{ mirror }} | {{ mirror_destination | join(",") }} |
+| {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} | {{ mirror }} | {{ mirror_destination | join(", ") }} |
 {%     endif %}
 {%     if queue_monitor_streaming is arista.avd.defined %}
 
