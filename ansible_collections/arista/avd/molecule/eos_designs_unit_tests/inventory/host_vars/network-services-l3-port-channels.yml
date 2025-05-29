@@ -174,10 +174,9 @@ tenants:
                   key: testpass1
                 - id: 2
                   key: testpass2
-                  # 'id' and 'key' are not set
-                  # TODO: AVD 6.0.0 Make 'id' a primary key and set 'hash_algorithm' and 'key' required
+                  # Test when 'id' and 'key' are not set under message-digest keys.
+                  # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required
                 - hash_algorithm: "sha256"
-            # Test 'ip ospf authentication message-digest' is not rendered when message-digest keys are incomplete
             raw_eos_cli: |
                logging event storm-control discards
                logging event link-status
