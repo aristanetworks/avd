@@ -100,10 +100,10 @@ class UnderlayMixin(Protocol):
             if self.inputs.vtep_vvtep_ip:
                 msg = "Invalid combination of inputs. vtep_vvtep_ip is not supported with numbered IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
-            if self.switch_facts.inband_ztp:
+            if self.node_config.inband_ztp:
                 msg = "Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
-            if self.inputs.underlay_routing_protocol != "ebgp":
+            if self.inputs.underlay_routing_protocol not in (None, "ebgp"):
                 msg = f"Invalid combination of inputs. {self.inputs.underlay_routing_protocol} is not supported with numbered IPv6 underlay, \
                     underlay_routing_protocol must be set to 'ebgp'"
                 raise AristaAvdInvalidInputsError(msg)
@@ -111,7 +111,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def enable_router_id_diagnostic(self: SharedUtilsProtocol) -> bool:
-        if not self.underlay_ipv6_numbered:
-            msg = "Missing input. `underlay_ipv6_numbered: true` is required for enable_router_id_diagnostic"
+        if self.inputs.enable_router_id_diagnostic and not self.underlay_ipv6_numbered:
+            msg = "Missing input - `underlay_ipv6_numbered: true` is required for enable_router_id_diagnostic"
             raise AristaAvdMissingVariableError(msg)
         return self.inputs.enable_router_id_diagnostic
