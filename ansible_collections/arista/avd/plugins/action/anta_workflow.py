@@ -412,28 +412,38 @@ def get_device_catalog_filters(device: str, avd_catalogs_filters: list[dict[str,
     """
     Get the test filters for a device from the provided AVD catalogs filters.
 
-    More specific filters (appearing later in the list) override earlier ones.
-    For example, if a device matches both a group filter and an individual filter,
-    the individual filter's tests will completely replace the group's run_tests or
-    skip_tests if they are specified.
+    A filter is applied to the device unless `device_list` is provided in the filter and the device is *not* part of it.
+
+    Filters are not cumulative for the device. If the device matches multiple filters, the last filter (appearing later in the list) wins.
+
+    Args:
+        device: The device name to get the filters for.
+        avd_catalogs_filters: The AVD catalogs filters from the plugin argument `avd_catalogs.filters`.
+
+    Returns:
+        dict: A dictionary with the list of tests to run and/or skip: `{"run_tests: [<test1>, ...], "skip_tests" [<test2>, ...]}`.
     """
     final_filters = {"run_tests": [], "skip_tests": []}
 
     for filter_config in avd_catalogs_filters:
-        if device in get(filter_config, "device_list", default=[]):
-            run_tests = get(filter_config, "run_tests")
-            skip_tests = get(filter_config, "skip_tests")
+        # Skip this filter for the device if it's not part of device_list if provided
+        device_list = filter_config.get("device_list")
+        if device_list is not None and device not in device_list:
+            continue
 
-            # Override previous filters if new ones are specified
-            if run_tests is not None:
-                if final_filters["run_tests"]:
-                    LOGGER.debug("<%s> run_tests overridden from %s to %s", device, final_filters["run_tests"], run_tests)
-                final_filters["run_tests"] = list(set(run_tests))
+        run_tests = filter_config.get("run_tests")
+        skip_tests = filter_config.get("skip_tests")
 
-            if skip_tests is not None:
-                if final_filters["skip_tests"]:
-                    LOGGER.debug("<%s> skip_tests overridden from %s to %s", device, final_filters["skip_tests"], skip_tests)
-                final_filters["skip_tests"] = list(set(skip_tests))
+        # Override previous filters if new ones are specified
+        if run_tests is not None:
+            if final_filters["run_tests"]:
+                LOGGER.debug("<%s> run_tests overridden from %s to %s", device, final_filters["run_tests"], run_tests)
+            final_filters["run_tests"] = list(set(run_tests))
+
+        if skip_tests is not None:
+            if final_filters["skip_tests"]:
+                LOGGER.debug("<%s> skip_tests overridden from %s to %s", device, final_filters["skip_tests"], skip_tests)
+            final_filters["skip_tests"] = list(set(skip_tests))
 
     return final_filters
 

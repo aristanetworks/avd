@@ -910,6 +910,11 @@ keys:
                   description: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                    - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
