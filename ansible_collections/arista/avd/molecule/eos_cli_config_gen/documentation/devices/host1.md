@@ -250,6 +250,9 @@
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Hardware FIB](#ip-hardware-fib)
+  - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
+  - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -11960,6 +11963,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Hardware FIB
+
+### IP Hardware FIB Summary
+
+IP hardware fib optimize prefixes profile: urpf-internet
+IP hardware fib dynamic load balancing: Enabled
+IP hardware fib dynamic load balancing flow-set-size: 4
+
+### IP Hardware FIB Configuration
+
+```eos
+ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 ```
 
 ## Errdisable

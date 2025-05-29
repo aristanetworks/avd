@@ -14338,7 +14338,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {"enabled": {"type": bool}, "flow_set_size": {"type": int}}
-                    enabled: bool | None
+                    enabled: bool
                     """Enable dynamic load balancing."""
                     flow_set_size: int | None
                     """
@@ -14358,7 +14358,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
                             """
                             Dynamic.
 

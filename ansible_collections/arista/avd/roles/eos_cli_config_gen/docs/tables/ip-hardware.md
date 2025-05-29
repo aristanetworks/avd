@@ -14,7 +14,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ip_hardware.fib.optimize.prefixes.profile") | String |  |  | Valid Values:<br>- <code>internet</code><br>- <code>urpf-internet</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;load_balance_distribution</samp>](## "ip_hardware.fib.load_balance_distribution") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dynamic</samp>](## "ip_hardware.fib.load_balance_distribution.dynamic") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ip_hardware.fib.load_balance_distribution.dynamic.enabled") | Boolean |  |  |  | Enable dynamic load balancing. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "ip_hardware.fib.load_balance_distribution.dynamic.enabled") | Boolean | Required |  |  | Enable dynamic load balancing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_set_size</samp>](## "ip_hardware.fib.load_balance_distribution.dynamic.flow_set_size") | Integer |  |  | Min: 1<br>Max: 7 | Set flow set size. Requires `enabled` key to be set to `true`.<br>1: Allow up to 128 ECMP groups of 256 entries each.<br>2: Allow up to 64 ECMP groups of 512 entries each.<br>3: Allow up to 32 ECMP groups of 1024 entries each.<br>4: Allow up to 16 ECMP groups of 2048 entries each.<br>5: Allow up to 8 ECMP groups of 4096 entries each.<br>6: Allow up to 4 ECMP groups of 8192 entries each.<br>7: Allow up to 2 ECMP groups of 16384 entries each. |
 
 === "YAML"
@@ -29,7 +29,7 @@
           dynamic:
 
             # Enable dynamic load balancing.
-            enabled: <bool>
+            enabled: <bool; required>
 
             # Set flow set size. Requires `enabled` key to be set to `true`.
             # 1: Allow up to 128 ECMP groups of 256 entries each.

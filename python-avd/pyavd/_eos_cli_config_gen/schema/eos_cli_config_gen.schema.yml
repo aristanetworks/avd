@@ -5682,6 +5682,7 @@ keys:
                   enabled:
                     type: bool
                     description: Enable dynamic load balancing.
+                    required: true
                   flow_set_size:
                     description: 'Set flow set size. Requires `enabled` key to be
                       set to `true`.
@@ -5702,6 +5703,8 @@ keys:
                     type: int
                     min: 1
                     max: 7
+                    convert_types:
+                    - str
   ip_http_client_source_interfaces:
     type: list
     items:
