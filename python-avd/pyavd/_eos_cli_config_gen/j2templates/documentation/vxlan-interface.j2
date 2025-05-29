@@ -45,6 +45,9 @@
 {%     elif vxlan_config.vxlan.qos.ecn_propagation is arista.avd.defined(false) %}
 | Qos ECN propagation | Disabled |
 {%     endif %}
+{%     if vxlan_config.vxlan.qos.dscp_ecn.rewrite_bridged_enabled is arista.avd.defined(true) %}
+| Qos DHCP ECN rewrite bridged | Enabled |
+{%     endif %}
 {%     if vxlan_config.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(true) %}
 | Qos map dscp to traffic-class decapsulation | Enabled |
 {%     elif vxlan_config.vxlan.qos.map_dscp_to_traffic_class_decapsulation is arista.avd.defined(false) %}

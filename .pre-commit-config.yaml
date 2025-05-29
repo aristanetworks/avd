@@ -93,7 +93,7 @@ repos:
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.11.10
+    rev: v0.11.11
     hooks:
       # Run the linter.
       - id: ruff
@@ -231,7 +231,7 @@ repos:
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     # Keep v0.18.0 for now as pre-commit.ci fails on v0.18.1
-    rev: v0.18.0
+    rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.
