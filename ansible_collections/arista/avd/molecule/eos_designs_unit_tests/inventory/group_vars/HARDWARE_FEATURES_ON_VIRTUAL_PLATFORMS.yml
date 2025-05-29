@@ -33,7 +33,7 @@ queue_monitor_length:
 queue_monitor_streaming:
   enable: true
 
-# Test `PoE` and `L2 MTU/MRU` Ethernet and Port-channel interfaces
+# Test `PoE`, `L2 MTU/MRU` and `Storm Control` on Ethernet and Port-channel interfaces
 servers:
   - name: TEST_POE
     adapters:
