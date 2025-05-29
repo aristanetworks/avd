@@ -167,11 +167,7 @@ class UtilsMixin(Protocol):
         output_type: type[T_StormControl],
     ) -> T_StormControl | UndefinedType:
         """Return storm_control for one adapter."""
-        if (
-            self.shared_utils.platform_settings.feature_support.hardware_features
-            and self.shared_utils.platform_settings.feature_support.interface_storm_control
-            and adapter.storm_control
-        ):
+        if self.shared_utils.platform_settings.feature_support.interface_storm_control and adapter.storm_control:
             return adapter.storm_control._cast_as(output_type)
 
         return Undefined
@@ -298,7 +294,7 @@ class UtilsMixin(Protocol):
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> int | None | UndefinedType:
         """Return l2_mtu for one adapter."""
-        if self.shared_utils.platform_settings.feature_support.hardware_and_cloudeos_features and adapter.l2_mtu:
+        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mtu and adapter.l2_mtu:
             return adapter.l2_mtu
 
         return Undefined
@@ -308,7 +304,7 @@ class UtilsMixin(Protocol):
         adapter: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem,
     ) -> int | None | UndefinedType:
         """Return l2_mru for one adapter."""
-        if self.shared_utils.platform_settings.feature_support.hardware_features and adapter.l2_mru:
+        if self.shared_utils.platform_settings.feature_support.per_interface_l2_mru and adapter.l2_mru:
             return adapter.l2_mru
 
         return Undefined

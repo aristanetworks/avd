@@ -107,6 +107,29 @@ servers:
         port_channel:
           mode: active
           endpoint_port_channel: PO_MTU_MRU_2
+  - name: TEST_INTERFACE_STORM_CONTROL
+    adapters:
+      - switch_ports:
+          - Ethernet9
+          - Ethernet9
+          - Ethernet9
+          - Ethernet9
+          - Ethernet9
+        switches:
+          - HARDWARE_FEATURES_VEOS_LAB
+          - HARDWARE_FEATURES_CEOS_LAB
+          - HARDWARE_FEATURES_CLOUDEOS
+          - HARDWARE_FEATURES_720XP
+          - HARDWARE_FEATURES_7280R
+        endpoint_ports:
+          - ETH11_NO_STORM_CONTROL
+          - ETH12_NO_STORM_CONTROL
+          - ETH13_NO_STORM_CONTROL
+          - ETH14_WITH_STORM_CONTROL
+          - ETH15_WITH_STORM_CONTROL
+        storm_control:
+          all:
+            level: 10
 
 # Test `BGP`
 tenants:
@@ -173,8 +196,20 @@ hardware_counters:
       direction: out
       address_type: mac
     # Expected to be filtered out for virtual platforms
+    - name: decap-group
+    # Expected to be filtered out for virtual platforms
+    - name: directflow
+    # Expected to be filtered out for virtual platforms
+    - name: ecn
+    # Expected to be filtered out for virtual platforms
+    - name: flow-spec
+    # Expected to be filtered out for virtual platforms
     - name: gre tunnel interface
       direction: out
+    # Expected to be filtered out for virtual platforms
+    - name: ip
+    # Expected to be filtered out for virtual platforms
+    - name: mpls interface
     # Expected to be filtered out for virtual platforms
     - name: mpls lfib
       units_packets: true
@@ -182,14 +217,41 @@ hardware_counters:
     - name: mpls lfib
       units_packets: false
       direction: in
+    # Expected to be filtered out for virtual platforms
     - name: mpls tunnel
+    # Expected to be filtered out for virtual platforms
+    - name: multicast
     - name: nexthop
     - name: pbr
       direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: pdp
+    # Expected to be filtered out for virtual platforms
+    - name: policing interface
+    # Expected to be filtered out for virtual platforms
+    - name: qos
+    # Expected to be filtered out for virtual platforms
+    - name: qos dual-rate-policer
+    # Expected to be filtered out for virtual platforms
+    - name: route
+    # Expected to be filtered out for virtual platforms
+    - name: routed-port
+    # Expected to be filtered out for virtual platforms
+    - name: segment-security
+      direction: in
+    # Expected to be filtered out for virtual platforms
+    - name: subinterface
+    # Expected to be filtered out for virtual platforms
+    - name: tapagg
+    # Expected to be filtered out for virtual platforms
+    - name: traffic-class
+    # Expected to be filtered out for virtual platforms
+    - name: traffic-policy
+    # Expected to be filtered out for virtual platforms
+    - name: vlan
+    # Expected to be filtered out for virtual platforms
+    - name: vlan-interface
     - name: vni decap
     - name: vni encap
     - name: vtep decap
     - name: vtep encap
-    # Expected to be filtered out for virtual platforms
-    - name: segment-security
-      direction: in

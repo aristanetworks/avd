@@ -84,35 +84,30 @@ keys:
         feature_support:
           type: dict
           keys:
-            hardware_features:
+            queue_monitor:
               type: bool
+              description: |-
+                Support for LANZ.
+                Feature will be ignored on unsupported platforms.
               default: true
-              description: |
-                An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms only:
-                  - `queue-monitor`. Included structured configuration paths: `queue_monitor_length`, `queue_monitor_streaming`.
-                  - `storm-control`. Included structured configuration paths: `ethernet_interfaces.[].storm_control`, `port_channel_interfaces.[].storm_control`.
-                  - `PoE`. Included structured configuration paths: `ethernet_interfaces.[].poe`.
-                  - `BGP wait-install`. Included structured configuration paths: `router_bgp.updates.wait_install`, `router_bgp.vrfs.[].updates.wait_install`.
-                  - `hardware speed-group`. Included structured configuration paths: `hardware.speed_groups`.
-                  - `hardware counter feature` for all features except `acl`, `mpls tunnel`, `nexthop`, `pbr`, `vni (decap|encap)`, `vtep (decap|encap)`. Included structured configuration paths: `hardware_counters.features.[]`.
-                  - `L2 MRU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mru`, `port_channel_interfaces.[].l2_mru`.
-                Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab) and cloudEOS.
-            hardware_and_cloudeos_features:
-              type: bool
-              default: true
-              description: |
-                An abstracted feature indicating aggregated support for the following common EOS capabilities supported on hardware platforms and cloudEOS only:
-                  - `L2 MTU`. Included structured configuration paths: `ethernet_interfaces.[].l2_mtu`, `port_channel_interfaces.[].l2_mtu`.
-                Feature should typically be set to "False" for all virtual EOS platforms (e.g., vEOS-lab, cEOSLab).
             queue_monitor_length_notify:
               type: bool
+              description: |-
+                Support for LANZ notifying mode.
+                Feature will be ignored on unsupported platforms.
               default: true
             interface_storm_control:
               type: bool
               default: true
+              description: |-
+                Support for configuration of per interface storm-control settings on Ethernet or Port-channel interfaces.
+                Feature will be ignored on unsupported platforms.
             poe:
               type: bool
               default: false
+              description: |-
+                Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
+                Feature will be ignored on unsupported platforms.
             per_interface_mtu:
               type: bool
               default: true
@@ -120,12 +115,25 @@ keys:
                 Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                 Effectively this means that all settings regarding interface MTU will be ignored if this is false.
                 Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
+            per_interface_l2_mtu:
+              type: bool
+              default: true
+              description: |
+                Support for configuration of per interface L2 MTU on Ethernet or Port-channel interfaces.
+                Feature will be ignored on unsupported platforms.
+            per_interface_l2_mru:
+              type: bool
+              default: true
+              description: |
+                Support for configuration of per interface L2 MRU (maximum receive unit) on Ethernet and Port-Channel interfaces.
+                Feature will be ignored on unsupported platforms.
             bgp_update_wait_install:
               type: bool
               default: true
               description: |
                 Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.
                 Can be overridden by setting "bgp_update_wait_install" host/group_vars.
+                Feature will be ignored on unsupported platforms.
             bgp_update_wait_for_convergence:
               type: bool
               default: true
@@ -133,6 +141,7 @@ keys:
                 Do not advertise reachability to a prefix until that prefix has been installed in hardware.
                 This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.
                 Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.
+                Feature will be ignored on unsupported platforms.
             platform_sfe_interface_profile:
               type: dict
               description: Support for Platform SFE Interface Profiles.
@@ -151,8 +160,187 @@ keys:
               type: bool
               default: false
               description: Support for all-active EVPN gateway redundancy.
-            hardware_counter_feature:
+            hardware_counter:
+              type: dict
+              description: |-
+                Support for enabling counters for features using programmable hardware counter resources.
+                Feature will be ignored on unsupported platforms.
+              keys:
+                supported:
+                  type: bool
+                  description: |-
+                    General supportability of the `hardware counter` feature.
+                    Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform.
+                  default: true
+                feature:
+                  type: dict
+                  keys:
+                    supported:
+                      type: bool
+                      description: |-
+                        General supportability of the `hardware counter feature` feature.
+                        Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform.
+                      default: true
+                    acl:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `acl` feature.
+                      default: true
+                    decap_group:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `decap-group` feature.
+                      default: true
+                    directflow:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `directflow` feature.
+                      default: true
+                    ecn:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `ecn` feature.
+                      default: true
+                    flow_spec:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `flow-spec` feature.
+                      default: true
+                    gre_tunnel_interface:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `gre tunnel interface` feature.
+                      default: true
+                    ip:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `ip` feature.
+                      default: true
+                    mpls_interface:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `mpls interface` feature.
+                      default: true
+                    mpls_lfib:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `mpls lfib` feature.
+                      default: true
+                    mpls_lfib_units_packets:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `mpls lfib` feature with `units packets` enabled.
+                      default: true
+                    mpls_tunnel:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `mpls tunnel` feature.
+                      default: true
+                    multicast:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `multicast` feature.
+                      default: true
+                    nexthop:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `nexthop` feature.
+                      default: true
+                    pbr:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `pbr` feature.
+                      default: true
+                    pdp:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `pdp` feature.
+                      default: true
+                    policing_interface:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `policing interface` feature.
+                      default: true
+                    qos:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `qos` feature.
+                      default: true
+                    qos_dual_rate_policer:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `qos dual-rate-policer` feature.
+                      default: true
+                    route:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `route` feature.
+                      default: true
+                    routed_port:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `routed-port` feature.
+                      default: true
+                    segment_security:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `segment-security` feature.
+                      default: true
+                    subinterface:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `subinterface` feature.
+                      default: true
+                    tapagg:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `tapagg` feature.
+                      default: true
+                    traffic_class:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `traffic-class` feature.
+                      default: true
+                    traffic_policy:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `traffic-policy` feature.
+                      default: true
+                    vlan:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `vlan` feature.
+                      default: true
+                    vlan_interface:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `vlan-interface` feature.
+                      default: true
+                    vni_decap:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `vni decap` feature.
+                      default: true
+                    vni_encap:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `vni encap` feature.
+                      default: true
+                    vtep_decap:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `vtep decap` feature.
+                      default: true
+                    vtep_encap:
+                      type: bool
+                      description: |-
+                        Supportability of the hardware counter for the `vtep encap` feature.
+                      default: true
+            hardware_speed_group:
               type: bool
+              description: |-
+                Support for configurable speeds per speed-group.
+                Feature will be ignored on unsupported platforms.
               default: true
         management_interface:
           type: str
@@ -308,10 +496,39 @@ keys:
           - vEOS
           - vEOS-lab
         feature_support:
-          hardware_features: false
-          hardware_and_cloudeos_features: false
           bgp_update_wait_for_convergence: false
+          bgp_update_wait_install: false
+          interface_storm_control: false
+          queue_monitor: false
+          queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
+          hardware_counter:
+            feature:
+              decap_group: false
+              directflow: false
+              ecn: false
+              flow_spec: false
+              gre_tunnel_interface: false
+              ip: false
+              mpls_interface: false
+              mpls_lfib_units_packets: false
+              multicast: false
+              pdp: false
+              policing_interface: false
+              qos: false
+              qos_dual_rate_policer: false
+              route: false
+              routed_port: false
+              segment_security: false
+              subinterface: false
+              tapagg: false
+              traffic_class: false
+              traffic_policy: false
+              vlan: false
+              vlan_interface: false
+          hardware_speed_group: false
+          per_interface_l2_mtu: false
+          per_interface_l2_mru: false
         reload_delay:
           mlag: 300
           non_mlag: 330
@@ -321,10 +538,39 @@ keys:
           - ceos
           - cEOSLab
         feature_support:
-          hardware_features: false
-          hardware_and_cloudeos_features: false
           bgp_update_wait_for_convergence: false
+          bgp_update_wait_install: false
+          interface_storm_control: false
+          queue_monitor: false
+          queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
+          hardware_counter:
+            feature:
+              decap_group: false
+              directflow: false
+              ecn: false
+              flow_spec: false
+              gre_tunnel_interface: false
+              ip: false
+              mpls_interface: false
+              mpls_lfib_units_packets: false
+              multicast: false
+              pdp: false
+              policing_interface: false
+              qos: false
+              qos_dual_rate_policer: false
+              route: false
+              routed_port: false
+              segment_security: false
+              subinterface: false
+              tapagg: false
+              traffic_class: false
+              traffic_policy: false
+              vlan: false
+              vlan_interface: false
+          hardware_speed_group: false
+          per_interface_l2_mtu: false
+          per_interface_l2_mru: false
         management_interface: Management0
         reload_delay:
           mlag: 300
@@ -334,8 +580,14 @@ keys:
           - CloudEOS
           - cloudEOS
         feature_support:
-          hardware_features: false
-          hardware_counter_feature: false
+          hardware_counter:
+            supported: false
+          bgp_update_wait_install: false
+          interface_storm_control: false
+          queue_monitor: false
+          queue_monitor_length_notify: false
+          hardware_speed_group: false
+          per_interface_l2_mru: false
         p2p_uplinks_mtu: 9194
       - platforms:
           - AWE-5310

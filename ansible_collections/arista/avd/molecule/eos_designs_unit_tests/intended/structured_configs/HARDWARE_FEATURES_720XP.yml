@@ -32,6 +32,17 @@ ethernet_interfaces:
     mode: active
   peer: TEST_MTU_MRU
   peer_type: server
+- name: Ethernet9
+  description: SERVER_TEST_INTERFACE_STORM_CONTROL_ETH14_WITH_STORM_CONTROL
+  shutdown: false
+  storm_control:
+    all:
+      level: '10'
+  peer: TEST_INTERFACE_STORM_CONTROL
+  peer_interface: ETH14_WITH_STORM_CONTROL
+  peer_type: server
+  switchport:
+    enabled: true
 hardware:
   speed_groups:
   - speed_group: '1'
@@ -41,8 +52,14 @@ hardware_counters:
   - name: acl
     direction: out
     address_type: mac
+  - name: decap-group
+  - name: directflow
+  - name: ecn
+  - name: flow-spec
   - name: gre tunnel interface
     direction: out
+  - name: ip
+  - name: mpls interface
   - name: mpls lfib
     direction: out
     units_packets: true
@@ -50,15 +67,28 @@ hardware_counters:
     direction: in
     units_packets: false
   - name: mpls tunnel
+  - name: multicast
   - name: nexthop
   - name: pbr
     direction: in
+  - name: pdp
+  - name: policing interface
+  - name: qos
+  - name: qos dual-rate-policer
+  - name: route
+  - name: routed-port
+  - name: segment-security
+    direction: in
+  - name: subinterface
+  - name: tapagg
+  - name: traffic-class
+  - name: traffic-policy
+  - name: vlan
+  - name: vlan-interface
   - name: vni decap
   - name: vni encap
   - name: vtep decap
   - name: vtep encap
-  - name: segment-security
-    direction: in
 hostname: HARDWARE_FEATURES_720XP
 ip_igmp_snooping:
   globally_enabled: true

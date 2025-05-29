@@ -60,10 +60,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             return
 
         platform_bgp_update_wait_for_convergence = self.shared_utils.platform_settings.feature_support.bgp_update_wait_for_convergence
-        platform_bgp_update_wait_install = (
-            self.shared_utils.platform_settings.feature_support.hardware_features
-            and self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
-        )
+        platform_bgp_update_wait_install = self.shared_utils.platform_settings.feature_support.bgp_update_wait_install
 
         if self.shared_utils.is_wan_router:
             # Special defaults for WAN routers
@@ -170,27 +167,36 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         Set hardware_counters.
 
         Contributing data sources:
-          - hardware_counters.features variable
-          - platform_settings.feature_support.hardware_counter_feature fact
-          - platform_settings.feature_support.hardware_features fact.
+          - hardware_counters.features variable.
+          - platform_settings.feature_support.hardware_counter fact.
         """
-        if not (self.inputs.hardware_counters and self.shared_utils.platform_settings.feature_support.hardware_counter_feature):
+        if not (self.inputs.hardware_counters and self.shared_utils.platform_settings.feature_support.hardware_counter.supported):
             return
         hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
-        if not self.shared_utils.platform_settings.feature_support.hardware_features:
-            supported_features = {
-                "acl",
-                "mpls tunnel",
-                "nexthop",
-                "pbr",
-                "vni decap",
-                "vni encap",
-                "vtep decap",
-                "vtep encap",
-            }
+
+        # Filter different hardware counter features basedon the platform supportability
+        if self.shared_utils.platform_settings.feature_support.hardware_counter.feature.supported:
             hardware_counters.features = hardware_counters.features._filtered(
-                lambda x: x.name in supported_features or (x.name == "mpls lfib" and not get_v2(x, "units_packets"))
+                lambda x: (
+                    x.name != "mpls lfib"
+                    and get_v2(
+                        self.shared_utils.platform_settings.feature_support.hardware_counter.feature,
+                        x.name.replace(" ", "_").replace("-", "_"),
+                        # Assume all uncovered/new features are supported
+                        default=True,
+                    )
+                )
+                or (
+                    x.name == "mpls lfib"
+                    and (
+                        not get_v2(x, "units_packets")
+                        or (get_v2(x, "units_packets") and self.shared_utils.platform_settings.feature_support.hardware_counter.feature.mpls_lfib_units_packets)
+                    )
+                )
             )
+        elif hasattr(hardware_counters, "features"):
+            del hardware_counters.features
+
         self.structured_config.hardware_counters = hardware_counters
 
     @structured_config_contributor
@@ -200,7 +206,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
         Converting nested dict to list of dict to support avd_v4.0.
         """
-        if not self.shared_utils.platform_settings.feature_support.hardware_features:
+        if not self.shared_utils.platform_settings.feature_support.hardware_speed_group:
             return
         platform_speed_groups = self.inputs.platform_speed_groups
         switch_platform = self.shared_utils.platform
@@ -322,10 +328,10 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
         Contributing data sources:
           - queue_monitor_length data-model
-          - platform_settings.feature_support.hardware_features fact
+          - platform_settings.feature_support.queue_monitor fact
           - platform_settings.feature_support.queue_monitor_length_notify fact.
         """
-        if not (self.shared_utils.platform_settings.feature_support.hardware_features and self.inputs.queue_monitor_length):
+        if not (self.shared_utils.platform_settings.feature_support.queue_monitor and self.inputs.queue_monitor_length):
             return
 
         # Remove notifying key if not supported by the platform settings.
@@ -446,8 +452,8 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
     @structured_config_contributor
     def queue_monitor_streaming(self) -> None:
-        """queue_monitor_streaming set based on queue_monitor_streaming data-model and platform_settings.feature_support.hardware_features fact."""
-        if not self.shared_utils.platform_settings.feature_support.hardware_features:
+        """queue_monitor_streaming set based on queue_monitor_streaming data-model and platform_settings.feature_support.queue_monitor fact."""
+        if not (self.shared_utils.platform_settings.feature_support.queue_monitor and self.inputs.queue_monitor_streaming):
             return
         self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
 
