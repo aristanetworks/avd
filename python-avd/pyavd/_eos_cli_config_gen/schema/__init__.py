@@ -33309,13 +33309,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     destination: str
                     """Destination IP address of GRE tunnel."""
                     dscp: int | None
-                    """DSCP of the GRE tunnel."""
+                    """DSCP of the GRE tunnel. EOS default is 0."""
                     ttl: int | None
-                    """TTL range."""
+                    """TTL range. EOS default is 128."""
                     protocol: str | None
-                    """Protocol type in GRE header. Protocol range - 0x0000-0xFFFF."""
+                    """
+                    Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                    EOS default is 35006.
+                    """
                     vrf: str | None
-                    """VRF name of the GRE tunnel."""
+                    """VRF name of the GRE tunnel. EOS default is "default"."""
 
                     if TYPE_CHECKING:
 
@@ -33338,10 +33341,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 source: Source IP address of GRE tunnel.
                                 destination: Destination IP address of GRE tunnel.
-                                dscp: DSCP of the GRE tunnel.
-                                ttl: TTL range.
-                                protocol: Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
-                                vrf: VRF name of the GRE tunnel.
+                                dscp: DSCP of the GRE tunnel. EOS default is 0.
+                                ttl: TTL range. EOS default is 128.
+                                protocol:
+                                   Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                                   EOS default is 35006.
+                                vrf: VRF name of the GRE tunnel. EOS default is "default".
 
                             """
 

@@ -27,10 +27,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_mode_gre</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.source") | String | Required |  |  | Source IP address of GRE tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.destination") | String | Required |  |  | Destination IP address of GRE tunnel. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp") | Integer |  |  | Min: 0<br>Max: 63 | DSCP of the GRE tunnel. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl") | Integer |  |  | Min: 1<br>Max: 255 | TTL range. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.protocol") | String |  |  |  | Protocol type in GRE header. Protocol range - 0x0000-0xFFFF. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp") | Integer |  |  | Min: 0<br>Max: 63 | DSCP of the GRE tunnel. EOS default is 0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl") | Integer |  |  | Min: 1<br>Max: 255 | TTL range. EOS default is 128. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.protocol") | String |  |  |  | Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.<br>EOS default is 35006. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. EOS default is "default". |
 
 === "YAML"
 
@@ -82,15 +82,16 @@
             # Destination IP address of GRE tunnel.
             destination: <str; required>
 
-            # DSCP of the GRE tunnel.
+            # DSCP of the GRE tunnel. EOS default is 0.
             dscp: <int; 0-63>
 
-            # TTL range.
+            # TTL range. EOS default is 128.
             ttl: <int; 1-255>
 
             # Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+            # EOS default is 35006.
             protocol: <str>
 
-            # VRF name of the GRE tunnel.
+            # VRF name of the GRE tunnel. EOS default is "default".
             vrf: <str>
     ```

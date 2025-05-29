@@ -92,17 +92,19 @@ keys:
                       - str
                     min: 0
                     max: 63
-                    description: DSCP of the GRE tunnel.
+                    description: DSCP of the GRE tunnel. EOS default is 0.
                   ttl:
                     type: int
                     convert_types:
                       - str
                     min: 1
                     max: 255
-                    description: TTL range.
+                    description: TTL range. EOS default is 128.
                   protocol:
                     type: str
-                    description: Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                    description: |-
+                      Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                      EOS default is 35006.
                   vrf:
                     type: str
-                    description: VRF name of the GRE tunnel.
+                    description: VRF name of the GRE tunnel. EOS default is "default".
