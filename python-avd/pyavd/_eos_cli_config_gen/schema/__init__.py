@@ -25692,6 +25692,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Mmu(AvdModel):
                 """Subclass of AvdModel."""
 
+                class HeadroomPoolLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
+                    bytes: int | None
+                    """Specify the headroom pool limit (in bytes)."""
+                    cells: int | None
+                    """Specify the headroom pool limit (in cells)."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            HeadroomPoolLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                bytes: Specify the headroom pool limit (in bytes).
+                                cells: Specify the headroom pool limit (in cells).
+
+                            """
+
                 class QueueProfilesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -25907,16 +25931,31 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 QueueProfiles._item_type = QueueProfilesItem
 
-                _fields: ClassVar[dict] = {"active_profile": {"type": str}, "queue_profiles": {"type": QueueProfiles}}
+                _fields: ClassVar[dict] = {
+                    "active_profile": {"type": str},
+                    "headroom_pool_limit": {"type": HeadroomPoolLimit},
+                    "queue_profiles": {"type": QueueProfiles},
+                }
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
+                headroom_pool_limit: HeadroomPoolLimit
+                """
+                Headroom Pool Limit.
+                Max limit on headroom pool size.
+
+                Subclass of AvdModel.
+                """
                 queue_profiles: QueueProfiles
                 """Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`)."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, active_profile: str | None | UndefinedType = Undefined, queue_profiles: QueueProfiles | UndefinedType = Undefined
+                        self,
+                        *,
+                        active_profile: str | None | UndefinedType = Undefined,
+                        headroom_pool_limit: HeadroomPoolLimit | UndefinedType = Undefined,
+                        queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Mmu.
@@ -25926,6 +25965,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
+                            headroom_pool_limit:
+                               Headroom Pool Limit.
+                               Max limit on headroom pool size.
+
+                               Subclass of AvdModel.
                             queue_profiles: Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`).
 
                         """
