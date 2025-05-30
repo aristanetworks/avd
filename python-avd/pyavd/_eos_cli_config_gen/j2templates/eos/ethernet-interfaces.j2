@@ -1215,7 +1215,7 @@ interface {{ ethernet_interface.name }}
 {%             if vrid.ipv6.address is arista.avd.defined %}
    vrrp {{ vrid.id }} ipv6 {{ vrid.ipv6.address }}
 {%             endif %}
-{%             if vrid.peer_authentication is arista.avd.defined() %}
+{%             if vrid.peer_authentication is arista.avd.defined %}
 {%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
 {%                 if vrid.peer_authentication.mode is arista.avd.defined("ietf-md5") %}
 {%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
