@@ -5,6 +5,9 @@
 
 router_path_selection:
   peer_dynamic_source: stun
+  mtu_discovery:
+    enabled: true
+    interval: 100
   path_groups:
     # Out of order to test sorting
     - name: PG-2

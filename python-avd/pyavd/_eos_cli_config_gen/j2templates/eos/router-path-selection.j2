@@ -17,6 +17,12 @@ router path-selection
 {%         endif %}
    {{ tcp_mss_ceiling_cli }} {{ router_path_selection.tcp_mss_ceiling.direction | arista.avd.default("ingress") }}
 {%     endif %}
+{%     if router_path_selection.mtu_discovery.interval is arista.avd.defined %}
+   mtu discovery interval {{ router_path_selection.mtu_discovery.interval }} seconds
+{%     endif %}
+{%     if router_path_selection.mtu_discovery.enabled is arista.avd.defined(true) %}
+   mtu discovery hosts
+{%     endif %}
 {%     for interface_data in router_path_selection.interfaces | arista.avd.natural_sort('name') %}
    !
    interface {{ interface_data.name }}

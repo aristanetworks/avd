@@ -11518,6 +11518,8 @@ router segment-security
 router path-selection
    peer dynamic source stun
    tcp mss ceiling ipv4 200 ingress
+   mtu discovery interval 100 seconds
+   mtu discovery hosts
    !
    interface Ethernet1
       metric bandwidth receive 100 Mbps

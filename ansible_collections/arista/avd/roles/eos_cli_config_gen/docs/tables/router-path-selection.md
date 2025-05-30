@@ -9,6 +9,9 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_path_selection</samp>](## "router_path_selection") | Dictionary |  |  |  | Dynamic path selection configuration. |
     | [<samp>&nbsp;&nbsp;peer_dynamic_source</samp>](## "router_path_selection.peer_dynamic_source") | String |  |  | Valid Values:<br>- <code>stun</code> | Source of dynamic peer discovery. |
+    | [<samp>&nbsp;&nbsp;mtu_discovery</samp>](## "router_path_selection.mtu_discovery") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_path_selection.mtu_discovery.enabled") | Boolean |  |  |  | Enable MTU discovery for hosts. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_path_selection.mtu_discovery.interval") | Integer |  |  | Min: 60<br>Max: 600 | MTU discovery interval in seconds. |
     | [<samp>&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.path_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.path_groups.[].name") | String | Required, Unique |  |  | Path group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_path_selection.path_groups.[].id") | Integer |  |  | Min: 1<br>Max: 65535 | Path group ID. |
@@ -76,6 +79,13 @@
 
       # Source of dynamic peer discovery.
       peer_dynamic_source: <str; "stun">
+      mtu_discovery:
+
+        # Enable MTU discovery for hosts.
+        enabled: <bool>
+
+        # MTU discovery interval in seconds.
+        interval: <int; 60-600>
       path_groups:
 
           # Path group name.
