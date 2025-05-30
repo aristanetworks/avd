@@ -1,0 +1,6 @@
+underlay_routing_protocol: isis-sr-ldp
+
+# ISIS params - testing protection not define case
+isis_ti_lfa:
+  enabled: true
+  local_convergence_delay: 15000

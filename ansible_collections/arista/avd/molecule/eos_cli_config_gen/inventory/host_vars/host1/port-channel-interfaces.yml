@@ -556,6 +556,7 @@ port_channel_interfaces:
         sparse_mode: true
         bfd: true
         bidirectional: true
+        neighbor_filter: Test_Filter_PortChannel
         hello:
           count: 4.5
           interval: 15

@@ -285,6 +285,10 @@ metadata:
           name: SITE1
           location:
             address: Copenhagen, Denmark
+        - id: 102
+          name: SITE4
+          location:
+            address: Stockholm, Sweden
     - id: 2
       name: REGION2
       zones:

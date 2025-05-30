@@ -2,12 +2,6 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
-  skip:
-    # pre-commit.ci doesn't have Rust installed
-    - fmt
-    - cargo-check
-    - cargo-deny
-    - clippy
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -97,30 +91,9 @@ repos:
           - --comment-style
           - "//"
 
-  - repo: https://github.com/doublify/pre-commit-rust
-    rev: v1.0
-    hooks:
-      - id: fmt
-        name: Lint Rust files using fmt
-        files: ^rust/
-      - id: cargo-check
-        name: Lint Rust files using cargo check
-        files: ^rust/
-      - id: clippy
-        name: Lint Rust files using clippy
-        args: ["--all-targets", "--all-features"]
-        files: ^rust/
-
-  - repo: https://github.com/EmbarkStudios/cargo-deny
-    rev: 0.18.1
-    hooks:
-      # Check licenses of Rust dependencies
-      - id: cargo-deny
-        files: ^rust/
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     # Ruff version.
-    rev: v0.11.8
+    rev: v0.11.11
     hooks:
       # Run the linter.
       - id: ruff
@@ -257,7 +230,8 @@ repos:
         additional_dependencies: ['Jinja2>=3.0.0', 'cryptography>=38.0.4', 'deepmerge>=1.1.0']
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.17.2
+    # Keep v0.18.0 for now as pre-commit.ci fails on v0.18.1
+    rev: v0.18.1
     hooks:
       - id: markdownlint-cli2
         name: Check for Linting errors on Markdown files with settings defined in `.github/.markdownlint.yaml`.

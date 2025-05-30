@@ -34,7 +34,7 @@ class DeviceTestContext:
 
     hostname: str
     structured_config: EosCliConfigGen
-    structured_configs: dict[str, MinimalStructuredConfig]
+    minimal_structured_configs: dict[str, MinimalStructuredConfig]
     input_factory_settings: InputFactorySettings
 
     @cached_property
@@ -56,7 +56,7 @@ class DeviceTestContext:
 
         # Skip VRF processing if disabled
         if not self.input_factory_settings.allow_bgp_vrfs:
-            LOGGER.debug("<%s>: skipped BGP VRF peers - VRF processing disabled", self.hostname)
+            LOGGER.debug("<%s> Skipped BGP VRF peers - VRF processing disabled", self.hostname)
             return neighbors
 
         # Add VRF neighbors to the list
@@ -84,7 +84,7 @@ class DeviceTestContext:
 
         # Skip neighbors that are shutdown
         if neighbor.shutdown is True:
-            LOGGER.debug("<%s>: skipped BGP peer %s - shutdown", self.hostname, identifier)
+            LOGGER.debug("<%s> Skipped BGP peer %s - Shutdown", self.hostname, identifier)
             return None
 
         # Skip neighbors in shutdown peer groups
@@ -93,22 +93,22 @@ class DeviceTestContext:
             and neighbor.peer_group in self.structured_config.router_bgp.peer_groups
             and self.structured_config.router_bgp.peer_groups[neighbor.peer_group].shutdown is True
         ):
-            LOGGER.debug("<%s>: skipped BGP peer %s - peer group %s shutdown", self.hostname, identifier, neighbor.peer_group)
+            LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor.peer_group)
             return None
 
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
             isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborsItem)
             and neighbor.peer
-            and (neighbor.peer not in self.structured_configs or not self.structured_configs[neighbor.peer].is_deployed)
+            and (neighbor.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.peer].is_deployed)
         ):
-            LOGGER.debug("<%s>: skipped BGP peer %s - peer not in fabric or not deployed", self.hostname, identifier)
+            LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
         # TODO: IPv6 neighbors are not supported in ANTA yet
         ip_address = ip_interface(neighbor.ip_address).ip
         if isinstance(ip_address, IPv6Address):
-            LOGGER.debug("<%s>: skipped BGP peer %s - IPv6 not supported", self.hostname, identifier)
+            LOGGER.debug("<%s> Skipped BGP peer %s - IPv6 not supported", self.hostname, identifier)
             return None
 
         update_source = neighbor.update_source or (

@@ -1543,9 +1543,9 @@ keys:
               will skip every other /31\xB9 subnet making it less space efficient
               than `odd_id`.\n  - odd_id: `(odd_id - 1) / 2`. Requires the node_group
               to have a node with an odd ID and a node with an even ID.\n  - same_subnet:
-              the offset will always be zero.\n    This allocation method will cause
-              every MLAG link to be addressed with the same /31\xB9 subnet.\n\xB9
-              The prefix length is configurable with a default of /31."
+              the offset will always be zero.\n    This allocation method will use
+              the first /31\xB9 subnet from the pool for all MLAG links.\n\xB9 The
+              prefix length is configurable with a default of /31."
             valid_values:
             - first_id
             - odd_id
@@ -7033,6 +7033,11 @@ $defs:
                       items:
                         type: str
                         description: IPv4_address/Mask.
+                    static_routes:
+                      type: list
+                      $ref: eos_designs#/$defs/static_routes
+                      description: Static routes to be configured on every device
+                        when this interface is configured.
                     nodes:
                       type: list
                       items:
@@ -7271,6 +7276,11 @@ $defs:
                       type: str
                       convert_types:
                       - int
+                    static_routes:
+                      type: list
+                      description: Static routes to be configured on the device when
+                        this Port-channel is configured.
+                      $ref: eos_designs#/$defs/static_routes
                     ospf:
                       type: dict
                       description: OSPF interface configuration.
@@ -7395,6 +7405,7 @@ $defs:
                         '
               static_routes:
                 type: list
+                $ref: eos_designs#/$defs/static_routes
                 description: 'List of static routes for v4 and/or v6.
 
                   This will create static routes inside the tenant VRF.
@@ -7419,9 +7430,6 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: prefix
-                    prefix:
-                      type: str
-                      description: Destination prefix.
                     gateway:
                       type: str
                       description: IPv4_address.
@@ -7429,41 +7437,13 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    next_hop:
-                      type: str
-                      description: Next-hop IPv4 address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
                     nodes:
                       type: list
                       items:
                         type: str
               ipv6_static_routes:
                 type: list
+                $ref: eos_designs#/$defs/static_routes
                 items:
                   type: dict
                   keys:
@@ -7474,44 +7454,12 @@ $defs:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: prefix
-                    prefix:
-                      type: str
-                      description: Destination prefix.
                     gateway:
                       type: str
                       deprecation:
                         warning: true
                         remove_in_version: 6.0.0
                         new_key: next_hop
-                    next_hop:
-                      type: str
-                      description: Next-hop IPv6 address.
-                    track_bfd:
-                      type: bool
-                      description: Track next-hop using BFD.
-                    distance:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 1
-                      max: 255
-                    tag:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    name:
-                      type: str
-                      description: description.
-                    metric:
-                      type: int
-                      convert_types:
-                      - str
-                      min: 0
-                      max: 4294967295
-                    interface:
-                      type: str
                     nodes:
                       type: list
                       items:
@@ -7667,6 +7615,9 @@ $defs:
                       max: 65535
                     bfd:
                       type: bool
+                    bfd_timers:
+                      type: dict
+                      $ref: eos_cli_config_gen#/keys/router_bgp/keys/vrfs/items/keys/neighbors/items/keys/bfd_timers
                     shutdown:
                       type: bool
               bgp:
@@ -8075,6 +8026,41 @@ $defs:
                       description: Subinterface number.
                       convert_types:
                       - str
+                    port_channel:
+                      type: dict
+                      description: Settings to be applied to the Port-Channel subinterface.
+                      keys:
+                        structured_config:
+                          type: dict
+                          relaxed_validation: true
+                          description: 'Custom structured config added on the Port-Channel
+                            subinterface for eos_cli_config_gen.
+
+                            '
+                          documentation_options:
+                            hide_keys: true
+                          $ref: eos_cli_config_gen#/keys/port_channel_interfaces/items
+                        raw_eos_cli:
+                          type: str
+                          description: 'EOS cli commands rendered on the Port-Channel
+                            subinterface.
+
+                            '
+                    structured_config:
+                      type: dict
+                      relaxed_validation: true
+                      description: 'Custom structured config added on the Ethernet
+                        subinterface for eos_cli_config_gen.
+
+                        '
+                      documentation_options:
+                        hide_keys: true
+                      $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+                    raw_eos_cli:
+                      type: str
+                      description: 'EOS cli commands rendered on the Ethernet subinterface.
+
+                        '
               endpoints:
                 type: list
                 description: Pseudowire terminating endpoints. Must have exactly two
@@ -10719,6 +10705,41 @@ $defs:
         valid_values:
         - shared
         - exclusive
+  static_routes:
+    type: list
+    items:
+      type: dict
+      keys:
+        prefix:
+          type: str
+        next_hop:
+          type: str
+        track_bfd:
+          type: bool
+          description: Track next-hop using BFD.
+        distance:
+          type: int
+          convert_types:
+          - str
+          min: 1
+          max: 255
+        tag:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        name:
+          type: str
+          description: description.
+        metric:
+          type: int
+          convert_types:
+          - str
+          min: 0
+          max: 4294967295
+        interface:
+          type: str
   svi:
     type: dict
     $ref: eos_designs#/$defs/svi_settings
@@ -10862,6 +10883,11 @@ $defs:
                 not set, EOS uses the VRF on the SVI.
               convert_types:
               - int
+      static_routes:
+        type: list
+        $ref: eos_designs#/$defs/static_routes
+        description: Static routes to be configured on every device where the SVI
+          is configured.
       vni_override:
         type: int
         convert_types:
@@ -11139,6 +11165,12 @@ $defs:
           loss_rate:
             type: str
             $ref: eos_cli_config_gen#/keys/router_path_selection/keys/load_balance_policies/items/keys/loss_rate
+      outlier_elimination:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/outlier_elimination
+      metric_order:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/router_adaptive_virtual_topology/keys/profiles/items/keys/metric_order
       path_groups:
         type: list
         min_length: 1
