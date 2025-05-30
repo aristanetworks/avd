@@ -35,8 +35,8 @@ ethernet_interfaces:
       session_tracker: ST1
     ip_verify_unicast_source_reachable_via: rx
     tcp_mss_ceiling:
-      ipv4_segment_size: 70
-      ipv6_segment_size: 75
+      ipv4: 70
+      ipv6: 75
       direction: egress
     # test for switchport settings
     switchport:
@@ -168,7 +168,7 @@ ethernet_interfaces:
       testing multi line comments with |
       connection to server in pod02
     tcp_mss_ceiling:
-      ipv4_segment_size: 70
+      ipv4: 70
       direction: ingress
     multicast:
       ipv4:
@@ -255,7 +255,7 @@ ethernet_interfaces:
       enabled: false
       count: 10
     tcp_mss_ceiling:
-      ipv6_segment_size: 65
+      ipv6: 65
     # test for switchport settings
     switchport:
       enabled: false
@@ -316,7 +316,7 @@ ethernet_interfaces:
       count: 10
       interval: 15
     tcp_mss_ceiling:
-      ipv4_segment_size: 65
+      ipv4: 65
     multicast:
       ipv4:
         static: true

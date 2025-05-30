@@ -513,12 +513,16 @@ interface {{ ethernet_interface.name }}
    {{ ipv6_nd_prefix_cli }}
 {%         endfor %}
 {%     endif %}
-{%     if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%     if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined or ethernet_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling" %}
-{%         if ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ ethernet_interface.tcp_mss_ceiling.ipv4 %}
+{%         elif ethernet_interface.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv4 " ~ ethernet_interface.tcp_mss_ceiling.ipv4_segment_size %}
 {%         endif %}
-{%         if ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
+{%         if ethernet_interface.tcp_mss_ceiling.ipv6 is arista.avd.defined %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6 %}
+{%         elif ethernet_interface.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " ipv6 " ~ ethernet_interface.tcp_mss_ceiling.ipv6_segment_size %}
 {%         endif %}
 {%         if ethernet_interface.tcp_mss_ceiling.direction is arista.avd.defined %}
