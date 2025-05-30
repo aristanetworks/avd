@@ -7,12 +7,14 @@ from __future__ import annotations
 
 from .avt import VerifyAVTRoleInputFactory, VerifyAVTSpecificPathInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
+from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
 from .interfaces import VerifyInterfacesStatusInputFactory
 from .mlag import VerifyMlagDualPrimaryInputFactory, VerifyMlagReloadDelayInputFactory
 from .router_path_selection import VerifySpecificPathInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
 from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInputFactory
+from .services import VerifyDNSServersInputFactory
 from .stun import VerifyStunClientTranslationInputFactory
 from .system import VerifyReloadCauseInputFactory
 
@@ -21,6 +23,9 @@ __all__ = [
     "VerifyAVTRoleInputFactory",
     "VerifyAVTSpecificPathInputFactory",
     "VerifyBGPPeerSessionInputFactory",
+    "VerifyDNSServersInputFactory",
+    "VerifyEnvironmentCoolingInputFactory",
+    "VerifyEnvironmentPowerInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyMlagDualPrimaryInputFactory",

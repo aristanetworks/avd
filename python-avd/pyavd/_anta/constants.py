@@ -24,6 +24,7 @@ class StructuredConfigKey(Enum):
     ROUTER_AVT_VRFS = "router_adaptive_virtual_topology.vrfs"
     ROUTER_PATH_SELECTION = "router_path_selection"
     ROUTER_PATH_SELECTION_PATH_GROUPS = "router_path_selection.path_groups"
+    IP_NAME_SERVERS = "ip_name_servers"
 
     @classmethod
     def to_string_list(cls, keys: list[StructuredConfigKey]) -> list[str]:
