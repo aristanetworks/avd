@@ -1222,7 +1222,7 @@ interface {{ ethernet_interface.name }}
 {%                 else %}
 {%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
 {%                 endif %}
-{%                 if vrid.peer_authentication.key_type is arista.avd.defined() %}
+{%                 if vrid.peer_authentication.key_type is arista.avd.defined %}
 {%                     set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key_type %}
 {%                 endif %}
 {%                 set peer_auth_cli = peer_auth_cli ~ " " ~ vrid.peer_authentication.key %}
