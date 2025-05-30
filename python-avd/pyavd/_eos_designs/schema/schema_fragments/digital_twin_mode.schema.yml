@@ -11,6 +11,6 @@ keys:
       table: digital-twin-configuration
     type: bool
     description: |-
-      PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described behavior.
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
     default: false

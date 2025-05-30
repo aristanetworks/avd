@@ -514,6 +514,13 @@ $defs:
       validate_lldp:
         type: bool
         description: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+      digital_twin:
+        type: bool
+        description: |-
+          PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+          Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.
+          In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration.
+        default: true
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

@@ -66,8 +66,3 @@ keys:
         endpoint:
           type: str
           description: Name or description of the endpoints connected to these ports.
-        digital_twin:
-          type: bool
-          description: |-
-            Setting this flag to `false` will exclude associated network ports from the generated structured and rendered EOS configuration.
-          default: true

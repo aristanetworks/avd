@@ -153,24 +153,21 @@ keys:
         digital_twin:
           type: dict
           description: |-
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
             Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform.
           keys:
-            casted_avd_platform:
+            platform:
               type: str
               description: |-
                 Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode.
-            digital_twin_platform:
-              type: dict
+            act_node_type:
+              type: str
               description: |-
-                Digital Twin platform (may vary depending on the Digital Twin environment).
-                Should only be set for `platform_settings` items that are used by the casted platform types.
-              keys:
-                act:
-                  type: str
-                  valid_values:
-                    - veos
-                    - cloudeos
-                    - generic
+                ACT node type.
+              valid_values:
+                - veos
+                - cloudeos
+                - generic
         structured_config:
           type: dict
           relaxed_validation: true
@@ -195,7 +192,7 @@ keys:
           mlag: 300
           non_mlag: 330
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7050X3
         feature_support:
@@ -205,7 +202,7 @@ keys:
           non_mlag: 330
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 720XP
         feature_support:
@@ -216,7 +213,7 @@ keys:
           non_mlag: 330
         trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared 22000
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - '750'
           - '755'
@@ -229,7 +226,7 @@ keys:
           mlag: 300
           non_mlag: 330
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 720DP
           - 722XP
@@ -241,7 +238,7 @@ keys:
           mlag: 300
           non_mlag: 330
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7010TX
         feature_support:
@@ -251,7 +248,7 @@ keys:
           mlag: 300
           non_mlag: 330
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7280R
           - 7280R2
@@ -262,7 +259,7 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7280R3
         reload_delay:
@@ -272,7 +269,7 @@ keys:
         feature_support:
           evpn_gateway_all_active_multihoming: true
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7500R
           - 7500R2
@@ -283,7 +280,7 @@ keys:
           non_mlag: 1020
         tcam_profile: vxlan-routing
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7500R3
           - 7800R3
@@ -295,7 +292,7 @@ keys:
         feature_support:
           evpn_gateway_all_active_multihoming: true
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7358X4
         management_interface: Management1/1
@@ -308,7 +305,7 @@ keys:
           bgp_update_wait_for_convergence: true
           bgp_update_wait_install: false
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7368X4
         management_interface: Management0
@@ -316,7 +313,7 @@ keys:
           mlag: 300
           non_mlag: 330
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - 7300X3
         management_interface: Management0
@@ -325,7 +322,7 @@ keys:
           non_mlag: 1320
         trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared 131072
         digital_twin:
-          casted_avd_platform: vEOS
+          platform: vEOS-lab
       - platforms:
           - VEOS
           - VEOS-LAB
@@ -385,7 +382,7 @@ keys:
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
         digital_twin:
-          casted_avd_platform: CloudEOS
+          platform: CloudEOS
       - platforms:
           - AWE-5510
           - AWE-7250R
@@ -400,7 +397,7 @@ keys:
         management_interface: Management1/1
         p2p_uplinks_mtu: 9194
         digital_twin:
-          casted_avd_platform: CloudEOS
+          platform: CloudEOS
       - platforms:
           - AWE-7220R
         feature_support:
@@ -412,4 +409,4 @@ keys:
         management_interface: Management1
         p2p_uplinks_mtu: 9194
         digital_twin:
-          casted_avd_platform: CloudEOS
+          platform: CloudEOS

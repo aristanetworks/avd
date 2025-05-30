@@ -10,9 +10,8 @@
     | [<samp>&lt;connected_endpoints_keys.key&gt;</samp>](## "<connected_endpoints_keys.key>") | List, items: Dictionary |  |  |  | This should be applied to group_vars or host_vars where endpoints are connecting.<br>`connected_endpoints_keys.key` is one of the keys under "connected_endpoints_keys".<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "<connected_endpoints_keys.key>.[].name") | String | Required, Unique |  |  | Endpoint name will be used in the switchport description. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rack</samp>](## "<connected_endpoints_keys.key>.[].rack") | String |  |  |  | Rack is used for documentation purposes only. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<connected_endpoints_keys.key>.[].digital_twin") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].digital_twin.enabled") | Boolean |  | `True` |  | Setting this flag to `false` will exclude the endpoint and all its associated adapters from the:<br>  - generated Digital Twin topology file.<br>  - generated structured and rendered EOS configuration.<br>This setting overrides global `digital_twin.endpoints.enabled` flag. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;generate_port_names</samp>](## "<connected_endpoints_keys.key>.[].digital_twin.generate_port_names") | Boolean |  | `False` |  | Setting this flag to `true` will force all port names of the associated endpoint to be renamed using the `EthX` pattern.<br>This may be necessary in environments where the Digital Twin enforces specific port naming conventions. For example, ACT only supports<br>port names matching `Et\d+`, `Eth\d+`, `Ethernet\d+`, `Ma\d+` or `Management\d+` patterns. Attempting to generate topology data for connected<br>endpoints with port names like `iLO` or `eno.*` will result in an invalid topology file. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<connected_endpoints_keys.key>.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<connected_endpoints_keys.key>.[].digital_twin.enabled") | Boolean |  | `True` |  | Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:<br>  - generated Digital Twin topology file.<br>  - generated structured and rendered EOS configuration.<br>This setting overrides global `digital_twin.endpoints.enabled` flag. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;adapters</samp>](## "<connected_endpoints_keys.key>.[].adapters") | List, items: Dictionary |  |  |  | A list of adapters, group by adapters leveraging the same port-profile. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;switch_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports") | List, items: String | Required |  |  | List of switch interfaces.<br>The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same length.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].switch_ports.[]") | String |  |  |  | Switchport interface. |
@@ -21,7 +20,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;endpoint_ports</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports") | List, items: String |  |  |  | Endpoint ports is used for description, required unless `description` or `descriptions` is set.<br>The lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.<br>Each list item is one switchport.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].endpoint_ports.[]") | String |  |  |  | Port name on the endpoint. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;descriptions</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].descriptions") | List |  |  |  | Unique description per port. When set, takes priority over description.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br>  - `port_channel_id`: The port-channel number for the switch. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].digital_twin") | Boolean |  | `True` |  | Setting this flag to `false` will exclude adapter from the:<br>  - generated Digital Twin topology.<br>  - generated structured and rendered EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].speed") | String |  |  |  | Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.<br>  - `endpoint` - The name of the connected endpoint<br>  - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.<br><br>The default description is set by `default_connected_endpoints_description`.<br>By default the description is templated from the type, name and port of the endpoint if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
@@ -190,6 +188,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.short_esi") <span style="color:red">removed</span> | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].digital_twin") | Boolean |  | `True` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.<br>In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
 
@@ -205,19 +204,15 @@
 
         # Rack is used for documentation purposes only.
         rack: <str>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
         digital_twin:
 
-          # Setting this flag to `false` will exclude the endpoint and all its associated adapters from the:
+          # Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:
           #   - generated Digital Twin topology file.
           #   - generated structured and rendered EOS configuration.
           # This setting overrides global `digital_twin.endpoints.enabled` flag.
           enabled: <bool; default=True>
-
-          # Setting this flag to `true` will force all port names of the associated endpoint to be renamed using the `EthX` pattern.
-          # This may be necessary in environments where the Digital Twin enforces specific port naming conventions. For example, ACT only supports
-          # port names matching `Et\d+`, `Eth\d+`, `Ethernet\d+`, `Ma\d+` or `Management\d+` patterns. Attempting to generate topology data for connected
-          # endpoints with port names like `iLO` or `eno.*` will result in an invalid topology file.
-          generate_port_names: <bool; default=False>
 
         # A list of adapters, group by adapters leveraging the same port-profile.
         adapters:
@@ -252,11 +247,6 @@
             #   - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.
             #   - `port_channel_id`: The port-channel number for the switch.
             descriptions: <list>
-
-            # Setting this flag to `false` will exclude adapter from the:
-            #   - generated Digital Twin topology.
-            #   - generated structured and rendered EOS configuration.
-            digital_twin: <bool; default=True>
 
             # Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
             # If not specified speed will be auto.
@@ -706,6 +696,11 @@
 
             # Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
             validate_lldp: <bool>
+
+            # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+            # Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.
+            # In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration.
+            digital_twin: <bool; default=True>
 
             # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
             raw_eos_cli: <str>

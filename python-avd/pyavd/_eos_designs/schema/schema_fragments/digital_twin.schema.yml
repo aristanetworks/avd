@@ -11,7 +11,7 @@ keys:
       table: digital-twin-configuration
     type: dict
     description: |-
-      PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described behavior.
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Global settings to configure the Digital Twin of the Fabric.
     keys:
       environment:
@@ -25,60 +25,68 @@ keys:
         type: dict
         description: |-
           Global Digital Twin settings related to the configuration of fabric nodes.
+        required: true
         keys:
+          # TODO: Enforce (in code) to be set (here or under node_config)
           os_version:
             type: str
             description: |-
               Desired Digital Twin OS version for fabric nodes.
-          mgmt_ipv4_pool:
-            type: str
-            description: |-
-              IPv4 address pool to automatically generate MGMT IPv4 addresses for digital twins of the Fabric nodes.
-              Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-            format: ipv4_pool
+          # mgmt_ipv4_pool:
+          #   type: str
+          #   description: |-
+          #     IPv4 address pool to automatically generate MGMT IPv4 addresses for digital twins of the Fabric nodes.
+          #     Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+          #   format: ipv4_pool
           username:
             type: str
             description: |-
               Desired Digital Twin username for fabric nodes.
+            required: true
           password:
             type: str
             description: |-
               Desired Digital Twin clear-text password for fabric nodes.
-      endpoints:
-        type: dict
-        description: |-
-          Global Digital Twin settings related to the configuration of the endpoints.
-        keys:
-          enabled:
-            type: bool
-            description: |-
-              Setting this flag to `true` will include all `connected_endpoints` in the generated Digital Twin topology data.
-              Specific endpoints may be suppressed by setiing `<connected_endpoints_keys.key>.digital_twin.enabled` to `false`.
-            default: false
-          platform:
-            type: str
-            description: |-
-              Desired Digital Twin virtual platform for endpoints.
-            valid_values:
-              - veos
-              - cloudeos
-              - generic
-            default: generic
-          os_version:
-            type: str
-            description: |-
-              Desired Digital Twin OS version for endpoints.
-          mgmt_ipv4_pool:
-            type: str
-            description: |-
-              IPv4 address pool to automatically generate MGMT IPv4 addresses for Digital Twin endpoints.
-              Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-            format: ipv4_pool
-          username:
-            type: str
-            description: |-
-              Desired Digital Twin username for endpoints.
-          password:
-            type: str
-            description: |-
-              Desired Digital Twin clear-text password for endpoints.
+            required: true
+      # endpoints:
+      #   type: dict
+      #   description: |-
+      #     Global Digital Twin settings related to the configuration of the endpoints.
+      #   keys:
+      #     enabled:
+      #       type: bool
+      #       description: |-
+      #         Setting this flag to `true` will include all `connected_endpoints` in the generated Digital Twin topology data.
+      #         Specific endpoints may be suppressed by setiing `<connected_endpoints_keys.key>.digital_twin.enabled` to `false`.
+      #       default: false
+      #     act_node_type:
+      #       type: str
+      #       description: |-
+      #         Desired node_type for ACT Digital Twin endpoints.
+      #       valid_values:
+      #         - veos
+      #         - cloudeos
+      #         - generic
+      #       default: generic
+      #     act_os_version:
+      #       type: str
+      #       description: |-
+      #         Desired Digital Twin OS version for endpoints.
+      #       required: true
+      #     mgmt_ipv4_pool:
+      #       type: str
+      #       description: |-
+      #         IPv4 address pool to automatically generate MGMT IPv4 addresses for Digital Twin endpoints.
+      #         Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+      #       format: ipv4_pool
+      #       required: true
+      #     username:
+      #       type: str
+      #       description: |-
+      #         Desired Digital Twin username for endpoints.
+      #         Is not required if the selected Digital Twin platform for endpoints matches the Digital Twin platform used by any of the fabric nodes.
+      #     password:
+      #       type: str
+      #       description: |-
+      #         Desired Digital Twin clear-text password for endpoints.
+      #         Is not required if the selected Digital Twin platform for endpoints matches the Digital Twin platform used by any of the fabric nodes.

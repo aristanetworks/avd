@@ -16,7 +16,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "network_ports.[].switch_ports.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "network_ports.[].description") | String |  |  |  | Description or description template to be used on all ports.<br>This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.<br>The available template fields are:<br>  - `endpoint_type` - always set to `network_port`.<br>  - `endpoint` - content of the `endpoint` key if set.<br>  - `port_channel_id`: The port-channel number for the switch.<br><br>The default description is set by `default_network_ports_description`.<br>By default the description is templated from the `endpoint` key if set. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;endpoint</samp>](## "network_ports.[].endpoint") | String |  |  |  | Name or description of the endpoints connected to these ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "network_ports.[].digital_twin") | Boolean |  | `True` |  | Setting this flag to `false` will exclude associated network ports from the generated structured and rendered EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;speed</samp>](## "network_ports.[].speed") | String |  |  |  | Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.<br>If not specified speed will be auto.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "network_ports.[].profile") | String |  |  |  | Port-profile name to inherit configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "network_ports.[].enabled") | Boolean |  | `True` |  | Administrative state, setting to false will set the port to 'shutdown' in the intended configuration.<br> |
@@ -184,6 +183,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.short_esi") <span style="color:red">removed</span> | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "network_ports.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "network_ports.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "network_ports.[].digital_twin") | Boolean |  | `True` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.<br>In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
 
@@ -235,9 +235,6 @@
 
         # Name or description of the endpoints connected to these ports.
         endpoint: <str>
-
-        # Setting this flag to `false` will exclude associated network ports from the generated structured and rendered EOS configuration.
-        digital_twin: <bool; default=True>
 
         # Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto <interface_speed>`.
         # If not specified speed will be auto.
@@ -676,6 +673,11 @@
 
         # Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
         validate_lldp: <bool>
+
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+        # Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.
+        # In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration.
+        digital_twin: <bool; default=True>
 
         # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
         raw_eos_cli: <str>

@@ -23,23 +23,17 @@ $defs:
           description: Rack is used for documentation purposes only.
         digital_twin:
           type: dict
+          description: |-
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
           keys:
             enabled:
               type: bool
               description: |-
-                Setting this flag to `false` will exclude the endpoint and all its associated adapters from the:
+                Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:
                   - generated Digital Twin topology file.
                   - generated structured and rendered EOS configuration.
                 This setting overrides global `digital_twin.endpoints.enabled` flag.
               default: true
-            generate_port_names:
-              type: bool
-              description: |-
-                Setting this flag to `true` will force all port names of the associated endpoint to be renamed using the `EthX` pattern.
-                This may be necessary in environments where the Digital Twin enforces specific port naming conventions. For example, ACT only supports
-                port names matching `Et\d+`, `Eth\d+`, `Ethernet\d+`, `Ma\d+` or `Management\d+` patterns. Attempting to generate topology data for connected
-                endpoints with port names like `iLO` or `eno.*` will result in an invalid topology file.
-              default: false
         adapters:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.
@@ -84,10 +78,3 @@ $defs:
                     - `endpoint` - The name of the connected endpoint
                     - `endpoint_port` - The value from `endpoint_ports` for this switch port if set.
                     - `port_channel_id`: The port-channel number for the switch.
-              digital_twin:
-                type: bool
-                description: |-
-                  Setting this flag to `false` will exclude adapter from the:
-                    - generated Digital Twin topology.
-                    - generated structured and rendered EOS configuration.
-                default: true

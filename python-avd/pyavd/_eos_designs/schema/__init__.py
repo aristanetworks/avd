@@ -2698,18 +2698,12 @@ class EosDesigns(EosDesignsRootModel):
         class Fabric(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ipv4_pool": {"type": str}, "username": {"type": str}, "password": {"type": str}}
+            _fields: ClassVar[dict] = {"os_version": {"type": str}, "username": {"type": str}, "password": {"type": str}}
             os_version: str | None
             """Desired Digital Twin OS version for fabric nodes."""
-            mgmt_ipv4_pool: str | None
-            """
-            IPv4 address pool to automatically generate MGMT IPv4 addresses for digital twins of the Fabric
-            nodes.
-            Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-            """
-            username: str | None
+            username: str
             """Desired Digital Twin username for fabric nodes."""
-            password: str | None
+            password: str
             """Desired Digital Twin clear-text password for fabric nodes."""
 
             if TYPE_CHECKING:
@@ -2718,9 +2712,8 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     os_version: str | None | UndefinedType = Undefined,
-                    mgmt_ipv4_pool: str | None | UndefinedType = Undefined,
-                    username: str | None | UndefinedType = Undefined,
-                    password: str | None | UndefinedType = Undefined,
+                    username: str | UndefinedType = Undefined,
+                    password: str | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Fabric.
@@ -2730,90 +2723,12 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         os_version: Desired Digital Twin OS version for fabric nodes.
-                        mgmt_ipv4_pool:
-                           IPv4 address pool to automatically generate MGMT IPv4 addresses for digital twins of the Fabric
-                           nodes.
-                           Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                         username: Desired Digital Twin username for fabric nodes.
                         password: Desired Digital Twin clear-text password for fabric nodes.
 
                     """
 
-        class Endpoints(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {
-                "enabled": {"type": bool, "default": False},
-                "platform": {"type": str, "default": "generic"},
-                "os_version": {"type": str},
-                "mgmt_ipv4_pool": {"type": str},
-                "username": {"type": str},
-                "password": {"type": str},
-            }
-            enabled: bool
-            """
-            Setting this flag to `true` will include all `connected_endpoints` in the generated Digital Twin
-            topology data.
-            Specific endpoints may be suppressed by setiing
-            `<connected_endpoints_keys.key>.digital_twin.enabled` to `false`.
-
-            Default value: `False`
-            """
-            platform: Literal["veos", "cloudeos", "generic"]
-            """
-            Desired Digital Twin virtual platform for endpoints.
-
-            Default value: `"generic"`
-            """
-            os_version: str | None
-            """Desired Digital Twin OS version for endpoints."""
-            mgmt_ipv4_pool: str | None
-            """
-            IPv4 address pool to automatically generate MGMT IPv4 addresses for Digital Twin endpoints.
-            Comma
-            separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-            """
-            username: str | None
-            """Desired Digital Twin username for endpoints."""
-            password: str | None
-            """Desired Digital Twin clear-text password for endpoints."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    enabled: bool | UndefinedType = Undefined,
-                    platform: Literal["veos", "cloudeos", "generic"] | UndefinedType = Undefined,
-                    os_version: str | None | UndefinedType = Undefined,
-                    mgmt_ipv4_pool: str | None | UndefinedType = Undefined,
-                    username: str | None | UndefinedType = Undefined,
-                    password: str | None | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Endpoints.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        enabled:
-                           Setting this flag to `true` will include all `connected_endpoints` in the generated Digital Twin
-                           topology data.
-                           Specific endpoints may be suppressed by setiing
-                           `<connected_endpoints_keys.key>.digital_twin.enabled` to `false`.
-                        platform: Desired Digital Twin virtual platform for endpoints.
-                        os_version: Desired Digital Twin OS version for endpoints.
-                        mgmt_ipv4_pool:
-                           IPv4 address pool to automatically generate MGMT IPv4 addresses for Digital Twin endpoints.
-                           Comma
-                           separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-                        username: Desired Digital Twin username for endpoints.
-                        password: Desired Digital Twin clear-text password for endpoints.
-
-                    """
-
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}, "endpoints": {"type": Endpoints}}
+        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
         environment: Literal["act"]
         """
         Targeted Digital Twin environment.
@@ -2826,22 +2741,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        endpoints: Endpoints
-        """
-        Global Digital Twin settings related to the configuration of the endpoints.
-
-        Subclass of AvdModel.
-        """
 
         if TYPE_CHECKING:
 
-            def __init__(
-                self,
-                *,
-                environment: Literal["act"] | UndefinedType = Undefined,
-                fabric: Fabric | UndefinedType = Undefined,
-                endpoints: Endpoints | UndefinedType = Undefined,
-            ) -> None:
+            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
                 """
                 DigitalTwin.
 
@@ -2854,17 +2757,8 @@ class EosDesigns(EosDesignsRootModel):
                        Global Digital Twin settings related to the configuration of fabric nodes.
 
                        Subclass of AvdModel.
-                    endpoints:
-                       Global Digital Twin settings related to the configuration of the endpoints.
-
-                       Subclass of AvdModel.
 
                 """
-
-    class DigitalTwinCustomStructuredConfigurationPrefix(AvdList[str]):
-        """Subclass of AvdList with `str` items."""
-
-    DigitalTwinCustomStructuredConfigurationPrefix._item_type = str
 
     class EosDesignsCustomTemplatesItem(AvdModel):
         """Subclass of AvdModel."""
@@ -7910,7 +7804,6 @@ class EosDesigns(EosDesignsRootModel):
             "switch_ports": {"type": SwitchPorts},
             "description": {"type": str},
             "endpoint": {"type": str},
-            "digital_twin": {"type": bool, "default": True},
             "speed": {"type": str},
             "profile": {"type": str},
             "enabled": {"type": bool, "default": True},
@@ -7941,6 +7834,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
+            "digital_twin": {"type": bool, "default": True},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -8012,13 +7906,6 @@ class EosDesigns(EosDesignsRootModel):
         """
         endpoint: str | None
         """Name or description of the endpoints connected to these ports."""
-        digital_twin: bool
-        """
-        Setting this flag to `false` will exclude associated network ports from the generated structured and
-        rendered EOS configuration.
-
-        Default value: `True`
-        """
         speed: str | None
         """
         Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
@@ -8144,6 +8031,19 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        digital_twin: bool
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Setting this flag to `false` will exclude adapter (of the connected endpoint)
+        from the generated Digital Twin topology. The associated switch ports will also be removed from the
+        generated structured and rendered EOS configuration.
+        In the case of a network port, this will only
+        leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
+        configuration.
+
+        Default value: `True`
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -8159,7 +8059,6 @@ class EosDesigns(EosDesignsRootModel):
                 switch_ports: SwitchPorts | UndefinedType = Undefined,
                 description: str | None | UndefinedType = Undefined,
                 endpoint: str | None | UndefinedType = Undefined,
-                digital_twin: bool | UndefinedType = Undefined,
                 speed: str | None | UndefinedType = Undefined,
                 profile: str | None | UndefinedType = Undefined,
                 enabled: bool | UndefinedType = Undefined,
@@ -8190,6 +8089,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
+                digital_twin: bool | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -8259,9 +8159,6 @@ class EosDesigns(EosDesignsRootModel):
                        By default the description is templated from the `endpoint`
                        key if set.
                     endpoint: Name or description of the endpoints connected to these ports.
-                    digital_twin:
-                       Setting this flag to `false` will exclude associated network ports from the generated structured and
-                       rendered EOS configuration.
                     speed:
                        Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                        <interface_speed>`.
@@ -8345,6 +8242,15 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                    digital_twin:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Setting this flag to `false` will exclude adapter (of the connected endpoint)
+                       from the generated Digital Twin topology. The associated switch ports will also be removed from the
+                       generated structured and rendered EOS configuration.
+                       In the case of a network port, this will only
+                       leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
+                       configuration.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -10081,45 +9987,22 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            class DigitalTwinPlatform(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"act": {"type": str}}
-                act: Literal["veos", "cloudeos", "generic"] | None
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, act: Literal["veos", "cloudeos", "generic"] | None | UndefinedType = Undefined) -> None:
-                        """
-                        DigitalTwinPlatform.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            act: act
-
-                        """
-
-            _fields: ClassVar[dict] = {"casted_avd_platform": {"type": str}, "digital_twin_platform": {"type": DigitalTwinPlatform}}
-            casted_avd_platform: str | None
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
+            platform: str | None
             """
             Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
             during AVD execution in Digital Twin mode.
             """
-            digital_twin_platform: DigitalTwinPlatform
-            """
-            Digital Twin platform (may vary depending on the Digital Twin environment).
-            Should only be set for
-            `platform_settings` items that are used by the casted platform types.
-
-            Subclass of AvdModel.
-            """
+            act_node_type: Literal["veos", "cloudeos", "generic"] | None
+            """ACT node type."""
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, casted_avd_platform: str | None | UndefinedType = Undefined, digital_twin_platform: DigitalTwinPlatform | UndefinedType = Undefined
+                    self,
+                    *,
+                    platform: str | None | UndefinedType = Undefined,
+                    act_node_type: Literal["veos", "cloudeos", "generic"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -10128,15 +10011,10 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        casted_avd_platform:
+                        platform:
                            Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
                            during AVD execution in Digital Twin mode.
-                        digital_twin_platform:
-                           Digital Twin platform (may vary depending on the Digital Twin environment).
-                           Should only be set for
-                           `platform_settings` items that are used by the casted platform types.
-
-                           Subclass of AvdModel.
+                        act_node_type: ACT node type.
 
                     """
 
@@ -10186,8 +10064,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         digital_twin: DigitalTwin
         """
-        Data model that controls the selection of the casted AVD platform as well as the selection of the
-        Digital Twin virtual platform.
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Data model that controls the selection of the casted AVD platform as well as the
+        selection of the Digital Twin virtual platform.
 
         Subclass of AvdModel.
         """
@@ -10241,8 +10121,10 @@ class EosDesigns(EosDesignsRootModel):
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
                        Subclass of AvdModel.
                     digital_twin:
-                       Data model that controls the selection of the casted AVD platform as well as the selection of the
-                       Digital Twin virtual platform.
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Data model that controls the selection of the casted AVD platform as well as the
+                       selection of the Digital Twin virtual platform.
 
                        Subclass of AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
@@ -10474,45 +10356,22 @@ class EosDesigns(EosDesignsRootModel):
         class DigitalTwin(AvdModel):
             """Subclass of AvdModel."""
 
-            class DigitalTwinPlatform(AvdModel):
-                """Subclass of AvdModel."""
-
-                _fields: ClassVar[dict] = {"act": {"type": str}}
-                act: Literal["veos", "cloudeos", "generic"] | None
-
-                if TYPE_CHECKING:
-
-                    def __init__(self, *, act: Literal["veos", "cloudeos", "generic"] | None | UndefinedType = Undefined) -> None:
-                        """
-                        DigitalTwinPlatform.
-
-
-                        Subclass of AvdModel.
-
-                        Args:
-                            act: act
-
-                        """
-
-            _fields: ClassVar[dict] = {"casted_avd_platform": {"type": str}, "digital_twin_platform": {"type": DigitalTwinPlatform}}
-            casted_avd_platform: str | None
+            _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
+            platform: str | None
             """
             Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
             during AVD execution in Digital Twin mode.
             """
-            digital_twin_platform: DigitalTwinPlatform
-            """
-            Digital Twin platform (may vary depending on the Digital Twin environment).
-            Should only be set for
-            `platform_settings` items that are used by the casted platform types.
-
-            Subclass of AvdModel.
-            """
+            act_node_type: Literal["veos", "cloudeos", "generic"] | None
+            """ACT node type."""
 
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, casted_avd_platform: str | None | UndefinedType = Undefined, digital_twin_platform: DigitalTwinPlatform | UndefinedType = Undefined
+                    self,
+                    *,
+                    platform: str | None | UndefinedType = Undefined,
+                    act_node_type: Literal["veos", "cloudeos", "generic"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -10521,15 +10380,10 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        casted_avd_platform:
+                        platform:
                            Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
                            during AVD execution in Digital Twin mode.
-                        digital_twin_platform:
-                           Digital Twin platform (may vary depending on the Digital Twin environment).
-                           Should only be set for
-                           `platform_settings` items that are used by the casted platform types.
-
-                           Subclass of AvdModel.
+                        act_node_type: ACT node type.
 
                     """
 
@@ -10579,8 +10433,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         digital_twin: DigitalTwin
         """
-        Data model that controls the selection of the casted AVD platform as well as the selection of the
-        Digital Twin virtual platform.
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Data model that controls the selection of the casted AVD platform as well as the
+        selection of the Digital Twin virtual platform.
 
         Subclass of AvdModel.
         """
@@ -10634,8 +10490,10 @@ class EosDesigns(EosDesignsRootModel):
                        Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys.
                        Subclass of AvdModel.
                     digital_twin:
-                       Data model that controls the selection of the casted AVD platform as well as the selection of the
-                       Digital Twin virtual platform.
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Data model that controls the selection of the casted AVD platform as well as the
+                       selection of the Digital Twin virtual platform.
 
                        Subclass of AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
@@ -11785,6 +11643,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
+            "digital_twin": {"type": bool, "default": True},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -11938,6 +11797,19 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        digital_twin: bool
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Setting this flag to `false` will exclude adapter (of the connected endpoint)
+        from the generated Digital Twin topology. The associated switch ports will also be removed from the
+        generated structured and rendered EOS configuration.
+        In the case of a network port, this will only
+        leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
+        configuration.
+
+        Default value: `True`
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -11980,6 +11852,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
+                digital_twin: bool | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -12094,6 +11967,15 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                    digital_twin:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Setting this flag to `false` will exclude adapter (of the connected endpoint)
+                       from the generated Digital Twin topology. The associated switch ports will also be removed from the
+                       generated structured and rendered EOS configuration.
+                       In the case of a network port, this will only
+                       leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
+                       configuration.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -17198,10 +17080,10 @@ class EosDesigns(EosDesignsRootModel):
                 class DigitalTwin(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}, "generate_port_names": {"type": bool, "default": False}}
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": True}}
                     enabled: bool
                     """
-                    Setting this flag to `false` will exclude the endpoint and all its associated adapters from the:
+                    Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:
                       -
                     generated Digital Twin topology file.
                       - generated structured and rendered EOS configuration.
@@ -17210,24 +17092,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     Default value: `True`
                     """
-                    generate_port_names: bool
-                    r"""
-                    Setting this flag to `true` will force all port names of the associated endpoint to be renamed using
-                    the `EthX` pattern.
-                    This may be necessary in environments where the Digital Twin enforces specific
-                    port naming conventions. For example, ACT only supports
-                    port names matching `Et\d+`, `Eth\d+`,
-                    `Ethernet\d+`, `Ma\d+` or `Management\d+` patterns. Attempting to generate topology data for
-                    connected
-                    endpoints with port names like `iLO` or `eno.*` will result in an invalid topology file.
-
-                    Default value: `False`
-                    """
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, generate_port_names: bool | UndefinedType = Undefined) -> None:
-                            r"""
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined) -> None:
+                            """
                             DigitalTwin.
 
 
@@ -17235,21 +17104,12 @@ class EosDesigns(EosDesignsRootModel):
 
                             Args:
                                 enabled:
-                                   Setting this flag to `false` will exclude the endpoint and all its associated adapters from the:
+                                   Setting this flag to `false` will exclude the endpoint and all associated switch ports from the:
                                      -
                                    generated Digital Twin topology file.
                                      - generated structured and rendered EOS configuration.
                                    This
                                    setting overrides global `digital_twin.endpoints.enabled` flag.
-                                generate_port_names:
-                                   Setting this flag to `true` will force all port names of the associated endpoint to be renamed using
-                                   the `EthX` pattern.
-                                   This may be necessary in environments where the Digital Twin enforces specific
-                                   port naming conventions. For example, ACT only supports
-                                   port names matching `Et\d+`, `Eth\d+`,
-                                   `Ethernet\d+`, `Ma\d+` or `Management\d+` patterns. Attempting to generate topology data for
-                                   connected
-                                   endpoints with port names like `iLO` or `eno.*` will result in an invalid topology file.
 
                             """
 
@@ -18333,7 +18193,6 @@ class EosDesigns(EosDesignsRootModel):
                         "switches": {"type": Switches},
                         "endpoint_ports": {"type": EndpointPorts},
                         "descriptions": {"type": Descriptions},
-                        "digital_twin": {"type": bool, "default": True},
                         "speed": {"type": str},
                         "description": {"type": str},
                         "profile": {"type": str},
@@ -18365,6 +18224,7 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
+                        "digital_twin": {"type": bool, "default": True},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                     }
@@ -18413,15 +18273,6 @@ class EosDesigns(EosDesignsRootModel):
                     switch.
 
                     Subclass of AvdList with `Any` items.
-                    """
-                    digital_twin: bool
-                    """
-                    Setting this flag to `false` will exclude adapter from the:
-                      - generated Digital Twin topology.
-                      -
-                    generated structured and rendered EOS configuration.
-
-                    Default value: `True`
                     """
                     speed: str | None
                     """
@@ -18567,6 +18418,19 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    digital_twin: bool
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Setting this flag to `false` will exclude adapter (of the connected endpoint)
+                    from the generated Digital Twin topology. The associated switch ports will also be removed from the
+                    generated structured and rendered EOS configuration.
+                    In the case of a network port, this will only
+                    leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
+                    configuration.
+
+                    Default value: `True`
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -18581,7 +18445,6 @@ class EosDesigns(EosDesignsRootModel):
                             switches: Switches | UndefinedType = Undefined,
                             endpoint_ports: EndpointPorts | UndefinedType = Undefined,
                             descriptions: Descriptions | UndefinedType = Undefined,
-                            digital_twin: bool | UndefinedType = Undefined,
                             speed: str | None | UndefinedType = Undefined,
                             description: str | None | UndefinedType = Undefined,
                             profile: str | None | UndefinedType = Undefined,
@@ -18613,6 +18476,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
+                            digital_twin: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -18661,11 +18525,6 @@ class EosDesigns(EosDesignsRootModel):
                                    switch.
 
                                    Subclass of AvdList with `Any` items.
-                                digital_twin:
-                                   Setting this flag to `false` will exclude adapter from the:
-                                     - generated Digital Twin topology.
-                                     -
-                                   generated structured and rendered EOS configuration.
                                 speed:
                                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                    <interface_speed>`.
@@ -18766,6 +18625,15 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                digital_twin:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Setting this flag to `false` will exclude adapter (of the connected endpoint)
+                                   from the generated Digital Twin topology. The associated switch ports will also be removed from the
+                                   generated structured and rendered EOS configuration.
+                                   In the case of a network port, this will only
+                                   leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
+                                   configuration.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -18782,7 +18650,12 @@ class EosDesigns(EosDesignsRootModel):
                 rack: str | None
                 """Rack is used for documentation purposes only."""
                 digital_twin: DigitalTwin
-                """Subclass of AvdModel."""
+                """
+                PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                change at any time.
+
+                Subclass of AvdModel.
+                """
                 adapters: Adapters
                 """
                 A list of adapters, group by adapters leveraging the same port-profile.
@@ -18810,7 +18683,11 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             name: Endpoint name will be used in the switchport description.
                             rack: Rack is used for documentation purposes only.
-                            digital_twin: Subclass of AvdModel.
+                            digital_twin:
+                               PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                               change at any time.
+
+                               Subclass of AvdModel.
                             adapters:
                                A list of adapters, group by adapters leveraging the same port-profile.
 
@@ -22231,7 +22108,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     digital_twin: DigitalTwin
                     """
-                    Set the OS version and management IP address for the digital twin of the associated node(s).
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
                     Subclass of AvdModel.
                     """
 
@@ -22905,7 +22786,11 @@ class EosDesigns(EosDesignsRootModel):
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 digital_twin:
-                                   Set the OS version and management IP address for the digital twin of the associated node(s).
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
                                    Subclass of AvdModel.
 
                             """
@@ -26378,7 +26263,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         digital_twin: DigitalTwin
                         """
-                        Set the OS version and management IP address for the digital twin of the associated node(s).
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Set the OS version and management IP address for the digital twin of the
+                        associated node(s).
+
                         Subclass of AvdModel.
                         """
 
@@ -27061,7 +26950,11 @@ class EosDesigns(EosDesignsRootModel):
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
                                     digital_twin:
-                                       Set the OS version and management IP address for the digital twin of the associated node(s).
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Set the OS version and management IP address for the digital twin of the
+                                       associated node(s).
+
                                        Subclass of AvdModel.
 
                                 """
@@ -30460,7 +30353,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     digital_twin: DigitalTwin
                     """
-                    Set the OS version and management IP address for the digital twin of the associated node(s).
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
                     Subclass of AvdModel.
                     """
 
@@ -31145,7 +31042,11 @@ class EosDesigns(EosDesignsRootModel):
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 digital_twin:
-                                   Set the OS version and management IP address for the digital twin of the associated node(s).
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
                                    Subclass of AvdModel.
 
                             """
@@ -34600,7 +34501,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     digital_twin: DigitalTwin
                     """
-                    Set the OS version and management IP address for the digital twin of the associated node(s).
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
                     Subclass of AvdModel.
                     """
 
@@ -35283,7 +35188,11 @@ class EosDesigns(EosDesignsRootModel):
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 digital_twin:
-                                   Set the OS version and management IP address for the digital twin of the associated node(s).
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
                                    Subclass of AvdModel.
 
                             """
@@ -45826,7 +45735,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     digital_twin: DigitalTwin
                     """
-                    Set the OS version and management IP address for the digital twin of the associated node(s).
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
                     Subclass of AvdModel.
                     """
 
@@ -46500,7 +46413,11 @@ class EosDesigns(EosDesignsRootModel):
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 digital_twin:
-                                   Set the OS version and management IP address for the digital twin of the associated node(s).
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
                                    Subclass of AvdModel.
 
                             """
@@ -49973,7 +49890,11 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         digital_twin: DigitalTwin
                         """
-                        Set the OS version and management IP address for the digital twin of the associated node(s).
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Set the OS version and management IP address for the digital twin of the
+                        associated node(s).
+
                         Subclass of AvdModel.
                         """
 
@@ -50656,7 +50577,11 @@ class EosDesigns(EosDesignsRootModel):
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
                                     digital_twin:
-                                       Set the OS version and management IP address for the digital twin of the associated node(s).
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Set the OS version and management IP address for the digital twin of the
+                                       associated node(s).
+
                                        Subclass of AvdModel.
 
                                 """
@@ -54055,7 +53980,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     digital_twin: DigitalTwin
                     """
-                    Set the OS version and management IP address for the digital twin of the associated node(s).
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
                     Subclass of AvdModel.
                     """
 
@@ -54740,7 +54669,11 @@ class EosDesigns(EosDesignsRootModel):
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 digital_twin:
-                                   Set the OS version and management IP address for the digital twin of the associated node(s).
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
                                    Subclass of AvdModel.
 
                             """
@@ -58195,7 +58128,11 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     digital_twin: DigitalTwin
                     """
-                    Set the OS version and management IP address for the digital twin of the associated node(s).
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Set the OS version and management IP address for the digital twin of the
+                    associated node(s).
+
                     Subclass of AvdModel.
                     """
 
@@ -58878,7 +58815,11 @@ class EosDesigns(EosDesignsRootModel):
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
                                 digital_twin:
-                                   Set the OS version and management IP address for the digital twin of the associated node(s).
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Set the OS version and management IP address for the digital twin of the
+                                   associated node(s).
+
                                    Subclass of AvdModel.
 
                             """
@@ -59085,10 +59026,6 @@ class EosDesigns(EosDesignsRootModel):
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
-        "digital_twin_custom_structured_configuration_prefix": {
-            "type": DigitalTwinCustomStructuredConfigurationPrefix,
-            "default": lambda cls: coerce_type(["digital_twin_custom_structured_configuration_"], target_type=cls),
-        },
         "digital_twin_mode": {"type": bool, "default": False},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
@@ -59186,54 +59123,54 @@ class EosDesigns(EosDesignsRootModel):
                         "platforms": ["default"],
                         "feature_support": {"queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7050X3"],
                         "feature_support": {"queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720XP"],
                         "feature_support": {"poe": True, "queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
                         "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000",
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["750", "755", "758"],
                         "management_interface": "Management0",
                         "feature_support": {"poe": True, "queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["720DP", "722XP", "710P"],
                         "feature_support": {"poe": True, "queue_monitor_length_notify": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7010TX"],
                         "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False},
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7280R", "7280R2", "7020R"],
                         "lag_hardware_only": True,
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7280R3"],
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"evpn_gateway_all_active_multihoming": True},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7500R", "7500R2"],
@@ -59241,7 +59178,7 @@ class EosDesigns(EosDesignsRootModel):
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7500R3", "7800R3"],
@@ -59249,7 +59186,7 @@ class EosDesigns(EosDesignsRootModel):
                         "reload_delay": {"mlag": 900, "non_mlag": 1020},
                         "tcam_profile": "vxlan-routing",
                         "feature_support": {"evpn_gateway_all_active_multihoming": True},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7358X4"],
@@ -59261,20 +59198,20 @@ class EosDesigns(EosDesignsRootModel):
                             "bgp_update_wait_for_convergence": True,
                             "bgp_update_wait_install": False,
                         },
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7368X4"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 300, "non_mlag": 330},
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["7300X3"],
                         "management_interface": "Management0",
                         "reload_delay": {"mlag": 1200, "non_mlag": 1320},
                         "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072",
-                        "digital_twin": {"casted_avd_platform": "vEOS"},
+                        "digital_twin": {"platform": "vEOS-lab"},
                     },
                     {
                         "platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"],
@@ -59318,7 +59255,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
-                        "digital_twin": {"casted_avd_platform": "CloudEOS"},
+                        "digital_twin": {"platform": "CloudEOS"},
                     },
                     {
                         "platforms": ["AWE-5510", "AWE-7250R"],
@@ -59331,7 +59268,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management1/1",
                         "p2p_uplinks_mtu": 9194,
-                        "digital_twin": {"casted_avd_platform": "CloudEOS"},
+                        "digital_twin": {"platform": "CloudEOS"},
                     },
                     {
                         "platforms": ["AWE-7220R"],
@@ -59344,7 +59281,7 @@ class EosDesigns(EosDesignsRootModel):
                         },
                         "management_interface": "Management1",
                         "p2p_uplinks_mtu": 9194,
-                        "digital_twin": {"casted_avd_platform": "CloudEOS"},
+                        "digital_twin": {"platform": "CloudEOS"},
                     },
                 ],
                 target_type=cls,
@@ -59965,30 +59902,19 @@ class EosDesigns(EosDesignsRootModel):
     """Subclass of AvdModel."""
     digital_twin: DigitalTwin
     """
-    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-    behavior.
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
     Global settings to configure the Digital Twin of the Fabric.
 
-    Subclass of AvdModel.
-    """
-    digital_twin_custom_structured_configuration_prefix: DigitalTwinCustomStructuredConfigurationPrefix
-    """
-    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-    behavior.
-    Custom EOS Structured Configuration keys that will be only applied to the fabric nodes in
-    the Digital Twin mode.
-
-
-    Subclass of AvdList with `str` items.
-
-    Default value: `lambda cls: coerce_type(["digital_twin_custom_structured_configuration_"], target_type=cls)`
+    Subclass of
+    AvdModel.
     """
     digital_twin_mode: bool
     """
-    PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-    behavior.
-    Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
-    adjusted configuration, etc.).
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
+    Enable generation of the Digital Twin version of the fabric (Digital Twin
+    topology, adjusted configuration, etc.).
 
     Default value: `False`
     """
@@ -60764,7 +60690,7 @@ class EosDesigns(EosDesignsRootModel):
     `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`.
     Subclass of AvdList with `PlatformSettingsItem` items.
 
-    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"casted_avd_platform": "vEOS"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"digital_twin_platform": {"act": "veos"}}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"digital_twin_platform": {"act": "veos"}}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"digital_twin_platform": {"act": "cloudeos"}}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"casted_avd_platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"casted_avd_platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"casted_avd_platform": "CloudEOS"}}], target_type=cls)`
+    Default value: `lambda cls: coerce_type([{"platforms": ["default"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7050X3"], "feature_support": {"queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720XP"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "trident_forwarding_table_partition": "flexible exact-match 16000 l2-shared 18000 l3-shared 22000", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["750", "755", "758"], "management_interface": "Management0", "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["720DP", "722XP", "710P"], "feature_support": {"poe": True, "queue_monitor_length_notify": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7010TX"], "feature_support": {"queue_monitor_length_notify": False, "per_interface_mtu": False}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R", "7280R2", "7020R"], "lag_hardware_only": True, "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7280R3"], "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R", "7500R2"], "lag_hardware_only": True, "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7500R3", "7800R3"], "management_interface": "Management0", "reload_delay": {"mlag": 900, "non_mlag": 1020}, "tcam_profile": "vxlan-routing", "feature_support": {"evpn_gateway_all_active_multihoming": True}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7358X4"], "management_interface": "Management1/1", "reload_delay": {"mlag": 300, "non_mlag": 330}, "feature_support": {"queue_monitor_length_notify": False, "interface_storm_control": True, "bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7368X4"], "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["7300X3"], "management_interface": "Management0", "reload_delay": {"mlag": 1200, "non_mlag": 1320}, "trident_forwarding_table_partition": "flexible exact-match 16384 l2-shared 98304 l3-shared 131072", "digital_twin": {"platform": "vEOS-lab"}}, {"platforms": ["VEOS", "VEOS-LAB", "vEOS", "vEOS-lab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"digital_twin_platform": {"act": "veos"}}}, {"platforms": ["CEOS", "cEOS", "ceos", "cEOSLab"], "feature_support": {"bgp_update_wait_for_convergence": False, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "evpn_gateway_all_active_multihoming": True}, "management_interface": "Management0", "reload_delay": {"mlag": 300, "non_mlag": 330}, "digital_twin": {"digital_twin_platform": {"act": "veos"}}}, {"platforms": ["CloudEOS"], "feature_support": {"bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False}, "p2p_uplinks_mtu": 9194, "digital_twin": {"digital_twin_platform": {"act": "cloudeos"}}}, {"platforms": ["AWE-5310", "AWE-7230R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 6}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-5510", "AWE-7250R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "platform_sfe_interface_profile": {"supported": True, "max_rx_queues": 16}}, "management_interface": "Management1/1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}, {"platforms": ["AWE-7220R"], "feature_support": {"bgp_update_wait_for_convergence": True, "bgp_update_wait_install": False, "interface_storm_control": False, "queue_monitor_length_notify": False, "poe": True}, "management_interface": "Management1", "p2p_uplinks_mtu": 9194, "digital_twin": {"platform": "CloudEOS"}}], target_type=cls)`
     """
     platform_speed_groups: PlatformSpeedGroups
     """
@@ -61330,7 +61256,6 @@ class EosDesigns(EosDesignsRootModel):
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
             design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
-            digital_twin_custom_structured_configuration_prefix: DigitalTwinCustomStructuredConfigurationPrefix | UndefinedType = Undefined,
             digital_twin_mode: bool | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
@@ -61886,24 +61811,17 @@ class EosDesigns(EosDesignsRootModel):
                    templated from the VRF name.
                 design: Subclass of AvdModel.
                 digital_twin:
-                   PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-                   behavior.
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
                    Global settings to configure the Digital Twin of the Fabric.
 
-                   Subclass of AvdModel.
-                digital_twin_custom_structured_configuration_prefix:
-                   PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-                   behavior.
-                   Custom EOS Structured Configuration keys that will be only applied to the fabric nodes in
-                   the Digital Twin mode.
-
-
-                   Subclass of AvdList with `str` items.
+                   Subclass of
+                   AvdModel.
                 digital_twin_mode:
-                   PREVIEW: This option is marked as "preview", while we refactor the code to conform to the described
-                   behavior.
-                   Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
-                   adjusted configuration, etc.).
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
+                   Enable generation of the Digital Twin version of the fabric (Digital Twin
+                   topology, adjusted configuration, etc.).
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group

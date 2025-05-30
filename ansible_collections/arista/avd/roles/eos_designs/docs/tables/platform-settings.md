@@ -35,10 +35,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "custom_platform_settings.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu_jitter</samp>](## "custom_platform_settings.[].security_entropy_sources.cpu_jitter") | Boolean |  |  |  | Use the Jitter RNG algorithm of a CPU based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_exclusive</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware_exclusive") | Boolean |  |  |  | Only use entropy from the hardware source. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;casted_avd_platform</samp>](## "custom_platform_settings.[].digital_twin.casted_avd_platform") | String |  |  |  | Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin_platform</samp>](## "custom_platform_settings.[].digital_twin.digital_twin_platform") | Dictionary |  |  |  | Digital Twin platform (may vary depending on the Digital Twin environment).<br>Should only be set for `platform_settings` items that are used by the casted platform types. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act</samp>](## "custom_platform_settings.[].digital_twin.digital_twin_platform.act") | String |  |  | Valid Values:<br>- <code>veos</code><br>- <code>cloudeos</code><br>- <code>generic</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "custom_platform_settings.[].digital_twin.platform") | String |  |  |  | Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>veos</code><br>- <code>cloudeos</code><br>- <code>generic</code> | ACT node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
@@ -69,10 +68,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "platform_settings.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu_jitter</samp>](## "platform_settings.[].security_entropy_sources.cpu_jitter") | Boolean |  |  |  | Use the Jitter RNG algorithm of a CPU based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_exclusive</samp>](## "platform_settings.[].security_entropy_sources.hardware_exclusive") | Boolean |  |  |  | Only use entropy from the hardware source. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;casted_avd_platform</samp>](## "platform_settings.[].digital_twin.casted_avd_platform") | String |  |  |  | Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin_platform</samp>](## "platform_settings.[].digital_twin.digital_twin_platform") | Dictionary |  |  |  | Digital Twin platform (may vary depending on the Digital Twin environment).<br>Should only be set for `platform_settings` items that are used by the casted platform types. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act</samp>](## "platform_settings.[].digital_twin.digital_twin_platform.act") | String |  |  | Valid Values:<br>- <code>veos</code><br>- <code>cloudeos</code><br>- <code>generic</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "platform_settings.[].digital_twin.platform") | String |  |  |  | Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>veos</code><br>- <code>cloudeos</code><br>- <code>generic</code> | ACT node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_speed_groups</samp>](## "platform_speed_groups") | List, items: Dictionary |  |  |  | Set Hardware Speed Groups per Platform. |
@@ -157,16 +155,15 @@
           # Only use entropy from the hardware source.
           hardware_exclusive: <bool>
 
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
         # Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform.
         digital_twin:
 
           # Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode.
-          casted_avd_platform: <str>
+          platform: <str>
 
-          # Digital Twin platform (may vary depending on the Digital Twin environment).
-          # Should only be set for `platform_settings` items that are used by the casted platform types.
-          digital_twin_platform:
-            act: <str; "veos" | "cloudeos" | "generic">
+          # ACT node type.
+          act_node_type: <str; "veos" | "cloudeos" | "generic">
 
         # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
@@ -246,16 +243,15 @@
           # Only use entropy from the hardware source.
           hardware_exclusive: <bool>
 
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
         # Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform.
         digital_twin:
 
           # Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode.
-          casted_avd_platform: <str>
+          platform: <str>
 
-          # Digital Twin platform (may vary depending on the Digital Twin environment).
-          # Should only be set for `platform_settings` items that are used by the casted platform types.
-          digital_twin_platform:
-            act: <str; "veos" | "cloudeos" | "generic">
+          # ACT node type.
+          act_node_type: <str; "veos" | "cloudeos" | "generic">
 
         # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
@@ -277,7 +273,7 @@
         ```yaml
         platform_settings:
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             queue_monitor_length_notify: false
           platforms:
@@ -286,7 +282,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             queue_monitor_length_notify: false
           platforms:
@@ -297,7 +293,7 @@
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             poe: true
             queue_monitor_length_notify: false
@@ -309,7 +305,7 @@
           trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared
             22000
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             poe: true
             queue_monitor_length_notify: false
@@ -322,7 +318,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             poe: true
             queue_monitor_length_notify: false
@@ -334,7 +330,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             per_interface_mtu: false
             queue_monitor_length_notify: false
@@ -344,7 +340,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           lag_hardware_only: true
           platforms:
           - 7280R
@@ -355,7 +351,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             evpn_gateway_all_active_multihoming: true
           platforms:
@@ -365,7 +361,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           lag_hardware_only: true
           management_interface: Management0
           platforms:
@@ -376,7 +372,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             evpn_gateway_all_active_multihoming: true
           management_interface: Management0
@@ -388,7 +384,7 @@
             non_mlag: 1020
           tcam_profile: vxlan-routing
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
@@ -401,7 +397,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           management_interface: Management0
           platforms:
           - 7368X4
@@ -409,7 +405,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            casted_avd_platform: vEOS
+            platform: vEOS-lab
           management_interface: Management0
           platforms:
           - 7300X3
@@ -464,7 +460,7 @@
           platforms:
           - CloudEOS
         - digital_twin:
-            casted_avd_platform: CloudEOS
+            platform: CloudEOS
           feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
@@ -479,7 +475,7 @@
           - AWE-5310
           - AWE-7230R
         - digital_twin:
-            casted_avd_platform: CloudEOS
+            platform: CloudEOS
           feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
@@ -494,7 +490,7 @@
           - AWE-5510
           - AWE-7250R
         - digital_twin:
-            casted_avd_platform: CloudEOS
+            platform: CloudEOS
           feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false
