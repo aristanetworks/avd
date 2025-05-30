@@ -4965,6 +4965,70 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+      mirror_on_drop:
+        type: dict
+        $ref: eos_cli_config_gen#/$defs/flow_tracking
+        keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                type: bool
+              mpls:
+                type: bool
+          sample:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          sample_limit:
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                record_export:
+                  type: dict
+                  keys:
+                    mpls:
+                      type: bool
+                      description: Export MPLS forwarding information.
+                exporters:
+                  type: list
+                  primary_key: name
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Exporter Name.
+                      collector:
+                        type: dict
+                        keys:
+                          sflow:
+                            type: dict
+                            keys:
+                              enabled:
+                                type: bool
+                                required: true
+                              port:
+                                type: int
+                                min: 1
+                                max: 65535
+                                convert_types:
+                                - str
+                      format:
+                        type: dict
+                        keys:
+                          sflow:
+                            type: bool
   flow_trackings:
     documentation_options:
       table: flow-tracking

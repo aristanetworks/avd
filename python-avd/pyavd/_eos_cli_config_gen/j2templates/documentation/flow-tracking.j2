@@ -128,6 +128,70 @@ Software export of IPFIX data records enabled.
 {%             endfor %}
 {%         endif %}
 {%     endif %}
+{%     if flow_tracking.mirror_on_drop is arista.avd.defined %}
+
+#### Flow Tracking mirror-on-drop
+
+| Sample Size | Sample Limit Size | Encapsulations |
+| ----------- | ----------------- | -------------- |
+{%         set sample_size = flow_tracking.mirror_on_drop.sample | arista.avd.default("default") %}
+{%         set sample_limit_size = flow_tracking.mirror_on_drop.sample_limit | arista.avd.default("default") %}
+{%         set encapsulations_list = [] %}
+{%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
+{%             do encapsulations_list.append('ipv4') %}
+{%             do encapsulations_list.append('ipv6') %}
+{%             if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
+{%                 do encapsulations_list.append('mpls') %}
+{%             endif %}
+{%         endif %}
+{%         set encapsulations = (encapsulations_list or ["-"]) | join(", ") %}
+| {{ sample_size }} | {{ sample_limit_size }} | {{ encapsulations }} |
+{%         if flow_tracking.mirror_on_drop.trackers is arista.avd.defined %}
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- |
+{%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
+{%                 set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
+{%                 set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
+{%                 set mpls = tracker.record_export.mpls | arista.avd.default("-") %}
+{%                 set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
+{%                 set applied_on = [] %}
+{%                 for dps_interface in dps_interfaces | arista.avd.default([]) %}
+{%                     if dps_interface.flow_tracker.mirror_on_drop is arista.avd.defined(tracker.name) %}
+{%                         do applied_on.append(dps_interface.name) %}
+{%                     endif %}
+{%                 endfor %}
+{%                 for ethernet_interface in ethernet_interfaces | arista.avd.default([]) %}
+{%                     if ethernet_interface.flow_tracker.mirror_on_drop is arista.avd.defined(tracker.name) %}
+{%                         do applied_on.append(ethernet_interface.name) %}
+{%                     endif %}
+{%                 endfor %}
+{%                 for port_channel_interface in port_channel_interfaces | arista.avd.default([]) %}
+{%                     if port_channel_interface.flow_tracker.mirror_on_drop is arista.avd.defined(tracker.name) %}
+{%                         do applied_on.append(port_channel_interface.name) %}
+{%                     endif %}
+{%                 endfor %}
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ mpls }} | {{ count_exporter }} | {{ applied_on | join("<br>") }} |
+{%             endfor %}
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port |  Collector Sflow | Collector Sflow Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | ---------------- | -------------------- | --------------- |
+{%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
+{%                 for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
+{%                     set host = exporter.collector.host | arista.avd.default("-") %}
+{%                     set port = exporter.collector.port | arista.avd.default("-") %}
+{%                     set sflow = exporter.collector.sflow.enabled | arista.avd.default("-") %}
+{%                     set sflow_port = exporter.collector.sflow.port | arista.avd.default("-") %}
+{%                     set local_interface = exporter.local_interface | arista.avd.default("No local interface") %}
+| {{ tracker.name }} | {{ exporter.name }} | {{ host }} | {{ port }} | {{ sflow }} | {{ sflow_port }} | {{ local_interface }} |
+{%                 endfor %}
+{%             endfor %}
+{%         endif %}
+{%     endif %}
 
 #### Flow Tracking Device Configuration
 

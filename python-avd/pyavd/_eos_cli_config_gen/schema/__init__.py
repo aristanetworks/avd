@@ -13054,15 +13054,296 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"sampled": {"type": Sampled}, "hardware": {"type": Hardware}}
+        class MirrorOnDrop(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Encapsulation(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ipv4_ipv6": {"type": bool}, "mpls": {"type": bool}}
+                ipv4_ipv6: bool | None
+                mpls: bool | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4_ipv6: bool | None | UndefinedType = Undefined, mpls: bool | None | UndefinedType = Undefined) -> None:
+                        """
+                        Encapsulation.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4_ipv6: ipv4_ipv6
+                            mpls: mpls
+
+                        """
+
+            class TrackersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class RecordExport(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"mpls": {"type": bool}, "on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
+                    mpls: bool | None
+                    """Export MPLS forwarding information."""
+                    on_inactive_timeout: int | None
+                    """Flow record inactive export timeout in milliseconds."""
+                    on_interval: int | None
+                    """Flow record export interval in milliseconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            mpls: bool | None | UndefinedType = Undefined,
+                            on_inactive_timeout: int | None | UndefinedType = Undefined,
+                            on_interval: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            RecordExport.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                mpls: Export MPLS forwarding information.
+                                on_inactive_timeout: Flow record inactive export timeout in milliseconds.
+                                on_interval: Flow record export interval in milliseconds.
+
+                            """
+
+                class ExportersItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Collector(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Sflow(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "port": {"type": int}}
+                            enabled: bool
+                            port: int | None
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                                    """
+                                    Sflow.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        enabled: enabled
+                                        port: port
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"sflow": {"type": Sflow}, "host": {"type": str}, "port": {"type": int}}
+                        sflow: Sflow
+                        """Subclass of AvdModel."""
+                        host: str | None
+                        """Collector IPv4 address or IPv6 address or fully qualified domain name."""
+                        port: int | None
+                        """Collector Port Number."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                sflow: Sflow | UndefinedType = Undefined,
+                                host: str | None | UndefinedType = Undefined,
+                                port: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Collector.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    sflow: Subclass of AvdModel.
+                                    host: Collector IPv4 address or IPv6 address or fully qualified domain name.
+                                    port: Collector Port Number.
+
+                                """
+
+                    class Format(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"sflow": {"type": bool}, "ipfix_version": {"type": int}}
+                        sflow: bool | None
+                        ipfix_version: int | None
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, sflow: bool | None | UndefinedType = Undefined, ipfix_version: int | None | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                Format.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    sflow: sflow
+                                    ipfix_version: ipfix_version
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "collector": {"type": Collector},
+                        "format": {"type": Format},
+                        "local_interface": {"type": str},
+                        "template_interval": {"type": int},
+                    }
+                    name: str
+                    """Exporter Name."""
+                    collector: Collector
+                    """Subclass of AvdModel."""
+                    format: Format
+                    """Subclass of AvdModel."""
+                    local_interface: str | None
+                    """Local Source Interface."""
+                    template_interval: int | None
+                    """Template interval in milliseconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            name: str | UndefinedType = Undefined,
+                            collector: Collector | UndefinedType = Undefined,
+                            format: Format | UndefinedType = Undefined,
+                            local_interface: str | None | UndefinedType = Undefined,
+                            template_interval: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            ExportersItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                name: Exporter Name.
+                                collector: Subclass of AvdModel.
+                                format: Subclass of AvdModel.
+                                local_interface: Local Source Interface.
+                                template_interval: Template interval in milliseconds.
+
+                            """
+
+                class Exporters(AvdIndexedList[str, ExportersItem]):
+                    """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
+
+                    _primary_key: ClassVar[str] = "name"
+
+                Exporters._item_type = ExportersItem
+
+                _fields: ClassVar[dict] = {"record_export": {"type": RecordExport}, "exporters": {"type": Exporters}, "name": {"type": str}}
+                record_export: RecordExport
+                """Subclass of AvdModel."""
+                exporters: Exporters
+                """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
+                name: str
+                """Tracker Name."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        record_export: RecordExport | UndefinedType = Undefined,
+                        exporters: Exporters | UndefinedType = Undefined,
+                        name: str | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        TrackersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            record_export: Subclass of AvdModel.
+                            exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
+                            name: Tracker Name.
+
+                        """
+
+            class Trackers(AvdIndexedList[str, TrackersItem]):
+                """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Trackers._item_type = TrackersItem
+
+            _fields: ClassVar[dict] = {
+                "encapsulation": {"type": Encapsulation},
+                "sample": {"type": int},
+                "sample_limit": {"type": int},
+                "trackers": {"type": Trackers},
+                "shutdown": {"type": bool, "default": False},
+            }
+            encapsulation: Encapsulation
+            """Subclass of AvdModel."""
+            sample: int | None
+            sample_limit: int | None
+            trackers: Trackers
+            """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
+            shutdown: bool
+            """Default value: `False`"""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    encapsulation: Encapsulation | UndefinedType = Undefined,
+                    sample: int | None | UndefinedType = Undefined,
+                    sample_limit: int | None | UndefinedType = Undefined,
+                    trackers: Trackers | UndefinedType = Undefined,
+                    shutdown: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    MirrorOnDrop.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        encapsulation: Subclass of AvdModel.
+                        sample: sample
+                        sample_limit: sample_limit
+                        trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
+                        shutdown: shutdown
+
+                    """
+
+        _fields: ClassVar[dict] = {"sampled": {"type": Sampled}, "hardware": {"type": Hardware}, "mirror_on_drop": {"type": MirrorOnDrop}}
         sampled: Sampled
         """Subclass of AvdModel."""
         hardware: Hardware
         """Subclass of AvdModel."""
+        mirror_on_drop: MirrorOnDrop
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
-            def __init__(self, *, sampled: Sampled | UndefinedType = Undefined, hardware: Hardware | UndefinedType = Undefined) -> None:
+            def __init__(
+                self,
+                *,
+                sampled: Sampled | UndefinedType = Undefined,
+                hardware: Hardware | UndefinedType = Undefined,
+                mirror_on_drop: MirrorOnDrop | UndefinedType = Undefined,
+            ) -> None:
                 """
                 FlowTracking.
 
@@ -13072,6 +13353,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     sampled: Subclass of AvdModel.
                     hardware: Subclass of AvdModel.
+                    mirror_on_drop: Subclass of AvdModel.
 
                 """
 

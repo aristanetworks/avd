@@ -2744,6 +2744,30 @@ Software export of IPFIX data records enabled.
 | T3 | T3-E3 | - | - | Management1 |
 | T3 | T3-E4 | - | - | No local interface |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Size | Sample Limit Size | Encapsulations |
+| ----------- | ----------------- | -------------- |
+| 666 | 777 | ipv4, ipv6, mpls |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | MPLS | Number of Exporters | Applied On |
+| ------------ | --------------------------------- | ------------------------- | ---- | ------------------- | ---------- |
+| T1 | 3666 | 5666 | True | 0 |  |
+| T2 | - | - | - | 1 |  |
+| T3 | - | - | - | 4 |  |
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name | Collector IP/Host | Collector Port |  Collector Sflow | Collector Sflow Port | Local Interface |
+| ------------ | ------------- | ----------------- | -------------- | ---------------- | -------------------- | --------------- |
+| T2 | T2-E1 | 42.42.42.42 | - | - | - | No local interface |
+| T3 | T3-E1 | - | 666 | - | - | No local interface |
+| T3 | T3-E2 | 10.10.10.10 | 777 | True | 1000 | No local interface |
+| T3 | T3-E3 | this.is.my.awesome.collector.dns.name | 888 | - | - | Management1 |
+| T3 | T3-E4 | dead:beef::cafe | - | - | - | No local interface |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -2799,6 +2823,36 @@ flow tracking sampled
       exporter T3-E3
          collector this.is.my.awesome.collector.dns.name port 888
          format ipfix version 10
+         local interface Management1
+         template interval 424242
+      !
+      exporter T3-E4
+         collector dead:beef::cafe
+   no shutdown
+!
+flow tracking mirror-on-drop
+   encapsulation ipv4 ipv6 mpls
+   sample 666
+   sample limit 777 pps
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
+      record export mpls
+   !
+   tracker T2
+      exporter T2-E1
+         collector 42.42.42.42
+   !
+   tracker T3
+      exporter T3-E1
+      !
+      exporter T3-E2
+         collector sflow port 1000
+         collector 10.10.10.10 port 777
+      !
+      exporter T3-E3
+         format ipfix version 10
+         collector this.is.my.awesome.collector.dns.name port 888
          local interface Management1
          template interval 424242
       !
