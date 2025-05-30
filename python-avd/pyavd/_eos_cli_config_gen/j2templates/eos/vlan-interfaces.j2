@@ -322,6 +322,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.pim.ipv4.dr_priority is arista.avd.defined %}
    pim ipv4 dr-priority {{ vlan_interface.pim.ipv4.dr_priority }}
 {%     endif %}
+{%     if vlan_interface.pim.ipv4.neighbor_filter is arista.avd.defined %}
+   pim ipv4 neighbor filter {{ vlan_interface.pim.ipv4.neighbor_filter }}
+{%     endif %}
 {%     if vlan_interface.pim.ipv4.bfd is arista.avd.defined(true) %}
    pim ipv4 bfd
 {%     endif %}
