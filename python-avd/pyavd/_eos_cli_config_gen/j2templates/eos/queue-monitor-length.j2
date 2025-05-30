@@ -50,18 +50,19 @@ queue-monitor length mirror destination Cpu
 queue-monitor length mirror destination {{ queue_monitor_length.mirror.destination.ethernet_interfaces }}
 {%         endif %}
 {%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
-{%             set tunnel_config = "queue-monitor length mirror destination tunnel mode gre source " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.source ~ " destination " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.destination %}
-{%             if queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl is arista.avd.defined %}
-{%                 set tunnel_config = tunnel_config ~ " ttl " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl %}
+{%             set tunnel_mode_gre = queue_monitor_length.mirror.destination.tunnel_mode_gre %}
+{%             set tunnel_config = "queue-monitor length mirror destination tunnel mode gre source " ~ tunnel_mode_gre.source ~ " destination " ~ tunnel_mode_gre.destination %}
+{%             if tunnel_mode_gre.ttl is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " ttl " ~ tunnel_mode_gre.ttl %}
 {%             endif %}
-{%             if queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp is arista.avd.defined %}
-{%                 set tunnel_config = tunnel_config ~ " dscp " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp %}
+{%             if tunnel_mode_gre.dscp is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " dscp " ~ tunnel_mode_gre.dscp %}
 {%             endif %}
-{%             if queue_monitor_length.mirror.destination.tunnel_mode_gre.protocol is arista.avd.defined %}
-{%                 set tunnel_config = tunnel_config ~ " protocol " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.protocol %}
+{%             if tunnel_mode_gre.protocol is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " protocol " ~ tunnel_mode_gre.protocol %}
 {%             endif %}
-{%             if queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf is arista.avd.defined %}
-{%                 set tunnel_config = tunnel_config ~ " vrf " ~ queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf %}
+{%             if tunnel_mode_gre.vrf is arista.avd.defined %}
+{%                 set tunnel_config = tunnel_config ~ " vrf " ~ tunnel_mode_gre.vrf %}
 {%             endif %}
 {{ tunnel_config }}
 {%         endif %}
