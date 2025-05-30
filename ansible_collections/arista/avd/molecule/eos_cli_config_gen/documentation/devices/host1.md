@@ -11392,6 +11392,11 @@ router segment-security
 | ----------------- | --------- |
 | 200 | ingress |
 
+#### MTU Discovery Summary
+
+- MTU discovery for hosts is enabled.
+- MTU discovery interval is 100 seconds.
+
 #### Interfaces Metric Bandwidth
 
 | Interface name | Transmit Bandwidth (Mbps) | Receive Bandwidth (Mbps) |
