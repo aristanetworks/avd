@@ -36,6 +36,7 @@ ethernet_interfaces:
   peer_type: server
   switchport:
     enabled: true
+hardware_counters: null
 hostname: HARDWARE_FEATURES_CLOUDEOS
 ip_igmp_snooping:
   globally_enabled: true
@@ -71,6 +72,8 @@ prefix_lists:
     action: permit 10.10.10.0/24 eq 32
   - sequence: 20
     action: permit 10.10.20.0/24 eq 32
+queue_monitor_length: null
+queue_monitor_streaming: null
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:

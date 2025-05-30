@@ -170,7 +170,11 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
           - hardware_counters.features variable.
           - platform_settings.feature_support.hardware_counter fact.
         """
-        if not (self.inputs.hardware_counters and self.shared_utils.platform_settings.feature_support.hardware_counter.supported):
+        if not self.inputs.hardware_counters:
+            return
+        # Avoid collision with eos_cli_config_gen
+        if not self.shared_utils.platform_settings.feature_support.hardware_counter.supported:
+            self.custom_structured_configs.root.append(EosCliConfigGen._from_dict({"hardware_counters": None}))
             return
         hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
 
@@ -331,7 +335,11 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
           - platform_settings.feature_support.queue_monitor fact
           - platform_settings.feature_support.queue_monitor_length_notify fact.
         """
-        if not (self.shared_utils.platform_settings.feature_support.queue_monitor and self.inputs.queue_monitor_length):
+        if not self.inputs.queue_monitor_length:
+            return
+        # Avoid collision with eos_cli_config_gen
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor:
+            self.custom_structured_configs.root.append(EosCliConfigGen._from_dict({"queue_monitor_length": None}))
             return
 
         # Remove notifying key if not supported by the platform settings.
@@ -453,7 +461,11 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
     @structured_config_contributor
     def queue_monitor_streaming(self) -> None:
         """queue_monitor_streaming set based on queue_monitor_streaming data-model and platform_settings.feature_support.queue_monitor fact."""
-        if not (self.shared_utils.platform_settings.feature_support.queue_monitor and self.inputs.queue_monitor_streaming):
+        if not self.inputs.queue_monitor_streaming:
+            return
+        # Avoid collision with eos_cli_config_gen
+        if not self.shared_utils.platform_settings.feature_support.queue_monitor:
+            self.custom_structured_configs.root.append(EosCliConfigGen._from_dict({"queue_monitor_streaming": None}))
             return
         self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
 
