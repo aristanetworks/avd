@@ -12,6 +12,7 @@
     | [<samp>&nbsp;&nbsp;mtu_discovery</samp>](## "router_path_selection.mtu_discovery") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_path_selection.mtu_discovery.enabled") | Boolean |  |  |  | Enable MTU discovery for hosts. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "router_path_selection.mtu_discovery.interval") | Integer |  |  | Min: 60<br>Max: 600 | MTU discovery interval in seconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragmentation_needed_rate_limit</samp>](## "router_path_selection.mtu_discovery.fragmentation_needed_rate_limit") | Integer |  |  | Min: 1<br>Max: 500 | Maximum rate of ICMP packet generation per CPU core(packets per second). |
     | [<samp>&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.path_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.path_groups.[].name") | String | Required, Unique |  |  | Path group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_path_selection.path_groups.[].id") | Integer |  |  | Min: 1<br>Max: 65535 | Path group ID. |
@@ -86,6 +87,9 @@
 
         # MTU discovery interval in seconds.
         interval: <int; 60-600>
+
+        # Maximum rate of ICMP packet generation per CPU core(packets per second).
+        fragmentation_needed_rate_limit: <int; 1-500>
       path_groups:
 
           # Path group name.

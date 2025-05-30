@@ -11394,7 +11394,7 @@ router segment-security
 
 #### MTU Discovery Summary
 
-- MTU discovery for hosts is enabled.
+- MTU discovery for hosts is enabled with fragmentation-needed rate-limit of 100 packets-per-second.
 - MTU discovery interval is 100 seconds.
 
 #### Interfaces Metric Bandwidth
@@ -11524,7 +11524,7 @@ router path-selection
    peer dynamic source stun
    tcp mss ceiling ipv4 200 ingress
    mtu discovery interval 100 seconds
-   mtu discovery hosts
+   mtu discovery hosts fragmentation-needed rate-limit 100 packets-per-second
    !
    interface Ethernet1
       metric bandwidth receive 100 Mbps

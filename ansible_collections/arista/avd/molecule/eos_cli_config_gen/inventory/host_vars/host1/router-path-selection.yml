@@ -8,6 +8,7 @@ router_path_selection:
   mtu_discovery:
     enabled: true
     interval: 100
+    fragmentation_needed_rate_limit: 100
   path_groups:
     # Out of order to test sorting
     - name: PG-2

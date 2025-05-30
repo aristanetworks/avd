@@ -21,7 +21,11 @@ router path-selection
    mtu discovery interval {{ router_path_selection.mtu_discovery.interval }} seconds
 {%     endif %}
 {%     if router_path_selection.mtu_discovery.enabled is arista.avd.defined(true) %}
-   mtu discovery hosts
+{%         set mtud_cli = "mtu discovery hosts" %}
+{%         if router_path_selection.mtu_discovery.fragmentation_needed_rate_limit is arista.avd.defined %}
+{%             set mtud_cli = mtud_cli ~ " fragmentation-needed rate-limit " ~ router_path_selection.mtu_discovery.fragmentation_needed_rate_limit ~ " packets-per-second" %}
+{%         endif %}
+   {{ mtud_cli }}
 {%     endif %}
 {%     for interface_data in router_path_selection.interfaces | arista.avd.natural_sort('name') %}
    !

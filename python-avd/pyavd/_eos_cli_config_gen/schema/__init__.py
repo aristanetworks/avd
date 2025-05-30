@@ -55545,15 +55545,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class MtuDiscovery(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}}
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "interval": {"type": int}, "fragmentation_needed_rate_limit": {"type": int}}
             enabled: bool | None
             """Enable MTU discovery for hosts."""
             interval: int | None
             """MTU discovery interval in seconds."""
+            fragmentation_needed_rate_limit: int | None
+            """Maximum rate of ICMP packet generation per CPU core(packets per second)."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, interval: int | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    enabled: bool | None | UndefinedType = Undefined,
+                    interval: int | None | UndefinedType = Undefined,
+                    fragmentation_needed_rate_limit: int | None | UndefinedType = Undefined,
+                ) -> None:
                     """
                     MtuDiscovery.
 
@@ -55563,6 +55571,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         enabled: Enable MTU discovery for hosts.
                         interval: MTU discovery interval in seconds.
+                        fragmentation_needed_rate_limit: Maximum rate of ICMP packet generation per CPU core(packets per second).
 
                     """
 

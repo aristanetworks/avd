@@ -28,6 +28,11 @@ keys:
             max: 600
             convert_types:
               - str
+          fragmentation_needed_rate_limit:
+            type: int
+            description: Maximum rate of ICMP packet generation per CPU core(packets per second).
+            min: 1
+            max: 500
       path_groups:
         type: list
         primary_key: name
