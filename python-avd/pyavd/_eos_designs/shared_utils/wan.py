@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
@@ -54,27 +54,12 @@ class WanMixin(Protocol):
         return self.inputs.bgp_peer_groups.wan_overlay_peers.listen_range_prefixes
 
     @cached_property
-    def cv_pathfinder_transit_mode(self: SharedUtilsProtocol) -> Literal["region", "zone"] | None:
-        """When wan_mode is CV Pathfinder, return the transit mode "region", "zone" or None."""
-        # TODO: The expected 'wan_role' for this node is 'server', but this method is called within 'cv_pathfinder_role'.
-        # Within 'cv_pathfinder_role', if the 'wan_role' is 'server', the function returns 'pathfinder',
-        # so this condition will never occur under the current logic.
-        if not self.is_cv_pathfinder_client:
-            return None
-
-        return self.node_config.cv_pathfinder_transit_mode
-
-    @cached_property
     def wan_interfaces(self: SharedUtilsProtocol) -> EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3Interfaces:
         """
         Returns the list of the device L3 interfaces (not including port-channels) which are WAN interfaces.
 
         Interfaces under node config l3_interfaces where wan_carrier is set are considered as WAN interfaces.
         """
-        # TODO: As we are calling the method 'wan_interfaces' within the WAN settings context, this condition can be removed.
-        if not self.is_wan_router:
-            return EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3Interfaces()
-
         return EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3Interfaces(
             [interface for interface in self.l3_interfaces if interface.wan_carrier]
         )
@@ -86,10 +71,6 @@ class WanMixin(Protocol):
 
         Interfaces under node config l3_port_channels where wan_carrier is set are considered as WAN interfaces.
         """
-        # TODO: As we are calling the method 'wan_port_channels' within the WAN settings context, this condition can be removed.
-        if not self.is_wan_router:
-            return EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannels()
-
         return EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3PortChannels(
             [port_channel for port_channel in self.node_config.l3_port_channels if port_channel.wan_carrier]
         )
@@ -103,10 +84,6 @@ class WanMixin(Protocol):
               - name: ...
                 ip: ... (for route-servers the IP may come from wan_route_servers).
         """
-        # TODO: As we are calling the method 'wan_local_carriers' within the WAN settings context, this condition can be removed.
-        if not self.is_wan_router:
-            return []
-
         # Combining WAN carrier information from both L3 Interfaces and L3 Port-Channels configured as WAN interfaces.
         if not self.wan_interfaces and not self.wan_port_channels:
             msg = (
@@ -171,9 +148,6 @@ class WanMixin(Protocol):
                 public_ip: ...
         """
         local_path_groups = EosDesigns.WanPathGroups()
-        # TODO: As we are calling the method 'wan_local_path_groups' within the WAN settings context, this condition can be removed.
-        if not self.is_wan_router:
-            return local_path_groups
 
         for carrier in self.wan_local_carriers:
             path_group_name: str = get(carrier, "path_group", required=True)
@@ -197,8 +171,8 @@ class WanMixin(Protocol):
     @cached_property
     def wan_ha_peer_path_groups(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol.WanPathGroups:
         """List of WAN HA peer path-groups coming from facts."""
-        # TODO: As we are calling the method 'wan_ha_peer_path_groups' within the WAN settings context, this condition can be removed.
-        if not self.is_wan_router or not self.wan_ha_peer:
+        # This condition is not reachable.
+        if not self.wan_ha_peer:
             return EosDesignsFactsProtocol.WanPathGroups()
         peer_facts = self.get_peer_facts(self.wan_ha_peer)
         return peer_facts.wan_path_groups
@@ -448,7 +422,7 @@ class WanMixin(Protocol):
             return "pathfinder"
 
         # Transit
-        if (transit_mode := self.cv_pathfinder_transit_mode) is not None:
+        if (transit_mode := self.node_config.cv_pathfinder_transit_mode) is not None:
             return f"transit {transit_mode}"
 
         # Edge
@@ -491,7 +465,7 @@ class WanMixin(Protocol):
 
         if self.node_group_is_primary_and_peer_hostname is not None:
             return self.node_group_is_primary_and_peer_hostname[1]
-        # TODO: Unable to reach this condition. Need to discuss with maintainers.
+        # This error is unreachable.
         msg = "Unable to find WAN HA peer within same node group"
         raise AristaAvdError(msg)
 
@@ -584,7 +558,9 @@ class WanMixin(Protocol):
             interfaces = set(self.node_config.wan_ha.ha_interfaces)
             for uplink in vrf_default_peer_uplinks:
                 if not interfaces or uplink.interface in interfaces:
-                    # TODO: Need help to get this condition.
+                    # TODO: This condition appears to conflict with `self.use_uplinks_for_wan_ha`.
+                    # If `self.use_uplinks_for_wan_ha` is true, `use_port_channel_for_direct_ha` returns false,
+                    # which then permits IP address allocation on the uplink Ethernet interface.
                     if not uplink.ip_address:
                         msg = f"The uplink interface {uplink.interface} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address."
                         raise AristaAvdInvalidInputsError(msg)
