@@ -3671,8 +3671,7 @@ keys:
         mlag: 300
         non_mlag: 330
       digital_twin:
-        digital_twin_platform:
-          act: veos
+        act_node_type: veos
     - platforms:
       - CEOS
       - cEOS
@@ -3689,8 +3688,7 @@ keys:
         mlag: 300
         non_mlag: 330
       digital_twin:
-        digital_twin_platform:
-          act: veos
+        act_node_type: veos
     - platforms:
       - CloudEOS
       feature_support:
@@ -3699,8 +3697,7 @@ keys:
         queue_monitor_length_notify: false
       p2p_uplinks_mtu: 9194
       digital_twin:
-        digital_twin_platform:
-          act: cloudeos
+        act_node_type: cloudeos
     - platforms:
       - AWE-5310
       - AWE-7230R

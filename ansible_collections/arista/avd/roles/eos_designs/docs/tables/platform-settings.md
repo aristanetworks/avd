@@ -415,8 +415,7 @@
           trident_forwarding_table_partition: flexible exact-match 16384 l2-shared 98304 l3-shared
             131072
         - digital_twin:
-            digital_twin_platform:
-              act: veos
+            act_node_type: veos
           feature_support:
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
@@ -432,8 +431,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            digital_twin_platform:
-              act: veos
+            act_node_type: veos
           feature_support:
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
@@ -450,8 +448,7 @@
             mlag: 300
             non_mlag: 330
         - digital_twin:
-            digital_twin_platform:
-              act: cloudeos
+            act_node_type: cloudeos
           feature_support:
             bgp_update_wait_install: false
             interface_storm_control: false
