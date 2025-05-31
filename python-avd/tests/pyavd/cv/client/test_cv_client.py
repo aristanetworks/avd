@@ -10,17 +10,13 @@ from os import environ
 from typing import TYPE_CHECKING, Any
 from unittest.mock import patch
 
-import aristaproto
 import pytest
-import pytest_asyncio
 
-from pyavd._cv.client import CVClient
 from pyavd._cv.client.exceptions import CVResourceInvalidState, CVWorkspaceBuildFailed, CVWorkspaceSubmitFailed, CVWorkspaceSubmitFailedInactiveDevices
 from pyavd._cv.workflows.create_workspace_on_cv import create_workspace_on_cv
 from pyavd._cv.workflows.finalize_workspace_on_cv import finalize_workspace_on_cv
 from pyavd._cv.workflows.models import CVDevice, CVWorkspace, DeployToCvResult
-from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory
-from pyavd._utils import get_v2
+from pyavd._cv.workflows.verify_devices_on_cv import verify_devices_in_cloudvision_inventory, verify_devices_on_cv
 from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_DESCRIPTION,
     MOCKED_WORKSPACE_ID,
@@ -33,20 +29,11 @@ from tests.pyavd.cv.constants import (
     MOCKED_WORKSPACE_REQUEST_ID_SUBMIT_SUCCESS,
     MOCKED_WORKSPACE_REQUESTED_STATE_SUBMITTED,
 )
-from tests.pyavd.cv.mockery import (
-    mocked_cv_client_aenter,
-    playback_static_recording_unary_stream,
-    playback_static_recording_unary_unary,
-    playback_unary_stream,
-    playback_unary_unary,
-    recording_unary_stream,
-    recording_unary_unary,
-)
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncGenerator
-
     from _pytest.python_api import RaisesContext
+
+    from pyavd._cv.client import CVClient
 
 
 LOGGER = getLogger(__name__)
@@ -56,57 +43,6 @@ LOGGER = getLogger(__name__)
 CV_SERVER = environ.get("CV_SERVER") or "www.cv-prod-us-central1-c.arista.io"
 CV_TOKEN = environ.get("CV_ACCESS_TOKEN")
 RECORDING = environ.get("RECORDING")
-
-
-@pytest_asyncio.fixture
-async def cv_client(request: pytest.FixtureRequest) -> AsyncGenerator[CVClient, None]:
-    """
-    Instance of CVClient.
-
-    If CV_ACCESS_TOKEN environment variable is set, but RECORDING environment variable is not set,
-    this will return a proper instance of CVClient connected to CloudVision with the token.
-
-    If CV_ACCESS_TOKEN environment variable is set, but RECORDING environment variable is set,
-    this will return an instance of CVClient connected to CloudVision with the token where all API calls will be recorded.
-
-    Otherwise this will return an instance of CVClient where API calls are mocked using previously recorded API messages.
-    """
-    static_recording = get_v2(request, "param.static_recording")
-    if CV_SERVER and CV_TOKEN:
-        LOGGER.info("Running in online mode connecting to %s.", CV_SERVER)
-        if RECORDING:
-            LOGGER.info("Mocking ServiceStub to RecordingServiceStub")
-            aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._unary_stream
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = recording_unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = recording_unary_stream
-            async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
-                yield cv_client
-
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
-
-        else:
-            async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
-                yield cv_client
-
-    else:
-        LOGGER.info("Mocking ServiceStub to MockedServiceStub")
-        aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._unary_unary
-        aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._unary_stream
-        if static_recording:
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = playback_static_recording_unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = playback_static_recording_unary_stream
-        else:
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = playback_unary_unary
-            aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = playback_unary_stream
-        with patch("pyavd._cv.client.CVClient.__aenter__", new=mocked_cv_client_aenter):
-            async with CVClient(servers=CV_SERVER, token=CV_TOKEN) as cv_client:
-                yield cv_client
-
-        aristaproto.grpc.grpclib_client.ServiceStub._unary_unary = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_unary
-        aristaproto.grpc.grpclib_client.ServiceStub._unary_stream = aristaproto.grpc.grpclib_client.ServiceStub._org_unary_stream
-        return
 
 
 def _mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | None = None) -> list[CVDevice]:
@@ -202,6 +138,12 @@ async def test_get_inventory_devices_with_filter(cv_client: CVClient) -> None:
     assert len(result) == 1
     assert hasattr(result[0], "hostname")
     assert result[0].hostname == "avd-ci-spine1"
+
+
+@pytest.mark.asyncio
+async def test_verify_devices_on_cv_no_devices(cv_client: CVClient) -> None:
+    result = await verify_devices_on_cv(devices=[], workspace_id="", skip_missing_devices=False, warnings=[], cv_client=cv_client)
+    assert len(result) == 0
 
 
 @pytest.mark.asyncio
@@ -429,6 +371,46 @@ async def test_create_workspace_on_cv_get_success(
 
     assert result.workspace.id == workspace_id
     assert result.workspace.state == workspace_state
+
+
+@pytest.mark.asyncio
+@pytest.mark.parametrize("cv_client", [{"static_recording": True}], ids=["CV_CLIENT_STATIC_RECORDINGS"], indirect=True)
+@pytest.mark.parametrize(
+    ("input_devices"),
+    [
+        # mocked API response: tests/pyavd/cv/mocked_api_recordings/arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/\\
+        # 76601a85f4ab2a9e434ec80eaeea2efc8dc02d71.json
+        # mocked request: DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id='B51AA89B6E51E89E1422107EDE3A9438'), hostname=None, \\
+        # system_mac_address=None)]
+        pytest.param([CVDevice(hostname="avd-ci-leaf2", serial_number="B51AA89B6E51E89E1422107EDE3A9438")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SERIAL"),
+        # mocked API response: tests/pyavd/cv/mocked_api_recordings/arista.inventory.v1.DeviceService/GetAll/www.cv-prod-us-central1-c.arista.io/\\
+        # 396119d5076221da87045ff93ab5041f30e9d9e0.json
+        # mocked request: DeviceStreamRequest(partial_eq_filter=[Device(key=DeviceKey(device_id=None), hostname=None, system_mac_address='50:00:00:d5:5d:c0')]
+        pytest.param([CVDevice(hostname="avd-ci-leaf2", system_mac_address="50:00:00:d5:5d:c0")], id="SINGLE_STREAMING_DEVICE_SET_HOSTNAME_SYSTEM_MAC"),
+    ],
+)
+async def test_verify_devices_in_cloudvision_inventory(
+    caplog: pytest.LogCaptureFixture,
+    cv_client: CVClient,
+    input_devices: list[CVDevice],
+) -> None:
+    expected_result = [
+        CVDevice(
+            hostname="avd-ci-leaf2",
+            serial_number="B51AA89B6E51E89E1422107EDE3A9438",
+            system_mac_address="50:00:00:d5:5d:c0",
+            _exists_on_cv=True,
+            _streaming=True,
+        )
+    ]
+    with caplog.at_level(INFO):
+        result = await verify_devices_in_cloudvision_inventory(
+            devices=input_devices,
+            skip_missing_devices=False,
+            warnings=[],
+            cv_client=cv_client,
+        )
+    assert result == expected_result
 
 
 # Targeting streaming device(s) without and with forcing
