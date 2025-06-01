@@ -27,6 +27,13 @@ management security
 {%     if management_security.password.encryption_key_common is arista.avd.defined(true) %}
    password encryption-key common
 {%     endif %}
+{%     if management_security.signature_verification.enabled is arista.avd.defined(true) %}
+{%         if management_security.signature_verification.ssl_profile is arista.avd.defined %}
+   signature-verification extension ssl profile {{ management_security.signature_verification.ssl_profile }}
+{%         else %}
+   signature-verification extension
+{%         endif %}
+{%     endif %}
 {%     if management_security.password.encryption_reversible is arista.avd.defined() %}
    password encryption reversible {{ management_security.password.encryption_reversible }}
 {%     endif %}

@@ -1586,6 +1586,7 @@ address locking
 | Common password encryption key | True |
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |
+| Signature verification | Enabled |
 
 ### Management Security SSL Profiles
 
@@ -1662,6 +1663,7 @@ management security
    entropy source hardware exclusive
    password minimum length 17
    password encryption-key common
+   signature-verification extension
    password encryption reversible aes-256-gcm
    !
    password policy AVD_POLICY
