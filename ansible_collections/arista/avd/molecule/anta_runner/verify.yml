@@ -1,0 +1,41 @@
+---
+- name: Verify
+  hosts: localhost
+  connection: local
+  gather_facts: false
+  vars:
+    root_dir: "{{ playbook_dir }}"
+  tasks:
+    - name: Find all generated Markdown reports
+      ansible.builtin.find:
+        paths: "{{ root_dir }}/anta/reports"
+        patterns: '*.md'
+        recurse: true
+      register: found_md_reports
+
+    - name: Normalize 'Start Time' in reports
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^(\s*-\s*\*\*Start Time:\*\*\s*)(?!\[START_TIME\]).*$'
+        replace: '\1[START_TIME]'
+      loop: "{{ found_md_reports.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"
+
+    - name: Normalize 'End Time' in reports
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^(\s*-\s*\*\*End Time:\*\*\s*)(?!\[END_TIME\]).*$'
+        replace: '\1[END_TIME]'
+      loop: "{{ found_md_reports.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"
+
+    - name: Normalize 'Duration' in reports
+      ansible.builtin.replace:
+        path: "{{ item.path }}"
+        regexp: '^(\s*-\s*\*\*Duration:\*\*\s*)(?!\[DURATION\]).*$'
+        replace: '\1[DURATION]'
+      loop: "{{ found_md_reports.files }}"
+      loop_control:
+        label: "{{ item.path | basename }}"

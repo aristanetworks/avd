@@ -9,6 +9,37 @@
     - [Summary Totals Per Category](#summary-totals-per-category)
   - [Test Results](#test-results)
 
+## Run Overview
+
+- **ANTA Version:** v1.4.0
+- **Dry Run:** True
+- **Start Time:** [START_TIME]
+- **End Time:** [END_TIME]
+- **Duration:** [DURATION]
+- **Total Devices In Inventory:** 21
+- **Devices Filtered At Setup:**
+  - dc1-leaf1a
+  - dc1-leaf1b
+  - dc1-leaf1c
+  - dc1-leaf2c
+  - dc1-spine1
+  - dc1-spine2
+  - dc1-svc-leaf1a
+  - dc1-svc-leaf1b
+  - dc1-wan1
+  - dc1-wan2
+  - dc2-leaf1a
+  - dc2-leaf1b
+  - dc2-leaf1c
+  - dc2-leaf2c
+  - dc2-leaf3a.arista.com
+  - dc2-leaf3b.arista.com
+  - dc2-spine1
+  - dc2-spine2
+- **Devices Unreachable At Setup:** None
+- **Tags Applied:**
+  - border_leaf
+
 ## Test Results Summary
 
 ### Summary Totals

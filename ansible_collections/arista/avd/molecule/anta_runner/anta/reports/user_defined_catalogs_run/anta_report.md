@@ -9,6 +9,18 @@
     - [Summary Totals Per Category](#summary-totals-per-category)
   - [Test Results](#test-results)
 
+## Run Overview
+
+- **ANTA Version:** v1.4.0
+- **Dry Run:** True
+- **Start Time:** [START_TIME]
+- **End Time:** [END_TIME]
+- **Duration:** [DURATION]
+- **Total Devices In Inventory:** 21
+- **Devices Filtered At Setup:** None
+- **Devices Unreachable At Setup:** None
+- **Tags Applied:** None
+
 ## Test Results Summary
 
 ### Summary Totals
