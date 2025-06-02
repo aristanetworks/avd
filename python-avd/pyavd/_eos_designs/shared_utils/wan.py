@@ -558,9 +558,6 @@ class WanMixin(Protocol):
             interfaces = set(self.node_config.wan_ha.ha_interfaces)
             for uplink in vrf_default_peer_uplinks:
                 if not interfaces or uplink.interface in interfaces:
-                    # TODO: This condition appears to conflict with `self.use_uplinks_for_wan_ha`.
-                    # If `self.use_uplinks_for_wan_ha` is true, `use_port_channel_for_direct_ha` returns false,
-                    # which then permits IP address allocation on the uplink Ethernet interface.
                     if not uplink.ip_address:
                         msg = f"The uplink interface {uplink.interface} used as WAN LAN HA on the remote peer {self.wan_ha_peer} does not have an IP address."
                         raise AristaAvdInvalidInputsError(msg)
