@@ -850,7 +850,7 @@ router_path_selection:
     - name: MPLS
     - name: LAN_HA
   tcp_mss_ceiling:
-    ipv4_segment_size: auto
+    ipv4: auto
 router_service_insertion:
   enabled: true
   connections:
