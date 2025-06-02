@@ -7,7 +7,7 @@ import json
 import logging
 import os
 import sys
-from asyncio import run
+from asyncio import run as asyncio_run
 from concurrent.futures import ProcessPoolExecutor
 from logging.handlers import QueueHandler, QueueListener
 from multiprocessing import Queue, get_context
@@ -29,7 +29,17 @@ if TYPE_CHECKING:
 PLUGIN_NAME = "arista.avd.anta_workflow"
 
 try:
-    from pyavd._anta.lib import AntaCatalog, AntaInventory, AsyncEOSDevice, MDReportGenerator, ReportCsv, ResultManager, anta_runner
+    from pyavd._anta.lib import (
+        AntaCatalog,
+        AntaInventory,
+        AntaRunFilters,
+        AntaRunner,
+        AsyncEOSDevice,
+        MDReportGenerator,
+        ReportCsv,
+        ResultManager,
+        anta_version,
+    )
     from pyavd._utils import default, get, strip_empties_from_dict
     from pyavd.api._anta import AvdCatalogGenerationSettings, InputFactorySettings, get_minimal_structured_configs
     from pyavd.get_device_test_catalog import get_device_test_catalog
@@ -195,12 +205,12 @@ class ActionModule(ActionBase):
             with ProcessPoolExecutor(max_workers=max((ansible_forks - 1), 1), mp_context=get_context("fork")) as executor:
                 batch_size = get(PLUGIN_ARGS, "runner.batch_size")
                 batches = [deployed_devices[i : i + batch_size] for i in range(0, len(deployed_devices), batch_size)]
-                batch_results = executor.map(run_anta, batches)
+                run_iterator = executor.map(run_anta, batches)
 
             # Build the ANTA reports and summary
-            anta_tests_summary = build_reports(batch_results, report_settings=get(PLUGIN_ARGS, "report"))
+            anta_summary = build_summary_and_reports(run_iterator)
 
-            result = update_ansible_result(result, anta_tests_summary, has_errors_ref)
+            result = update_ansible_result(result, anta_summary, had_errors=has_errors_ref[0])
 
         except Exception as error:
             # Recast errors as AnsibleActionFail
@@ -213,70 +223,172 @@ class ActionModule(ActionBase):
         return result
 
 
-def run_anta(devices: list[str]) -> ResultManager:
-    """Run ANTA."""
+def run_anta(devices: list[str]) -> dict[str, Any]:
+    """
+    Execute a single ANTA run for a specific batch of devices.
+
+    This function is designed to be the target of a ProcessPoolExecutor, running
+    in a separate child process. It handles its own logging setup and returns a
+    dictionary containing the results and metadata of the run.
+
+    Args:
+      devices: A list of device names to be included in this ANTA run.
+
+    Returns:
+      dict: A dictionary with run metadata and test results for the batch.
+    """
     # Generate a unique ID for this child process run
     unique_id = f"anta-run-{str(uuid4())[:8]}"
 
     # Setup child process logging
     setup_child_process_logging(LOG_QUEUE, display.verbosity, unique_id)
 
-    # Build the objects required to run ANTA
-    result_manager, inventory, catalog = build_anta_runner_objects(devices)
+    # Gather configuration from plugin arguments
     tags = set(get(PLUGIN_ARGS, "runner.tags", default=[])) or None
     dry_run = get(PLUGIN_ARGS, "runner.dry_run")
+
+    # Build the objects required to run ANTA
+    inventory, catalog = build_anta_runner_objects(devices)
+    filters = AntaRunFilters(tags=tags)
+    runner = AntaRunner()
+
+    # Prepare variables for logging
+    joined_devices = ", ".join(devices)
     run_mode = "dry-run" if dry_run else "run"
 
     # Run ANTA
-    joined_devices = ", ".join(devices)
     LOGGER.info("Starting ANTA %s for devices: %s", run_mode, joined_devices)
-    run(anta_runner(result_manager, inventory, catalog, tags=tags, dry_run=dry_run))
-
+    run_context = asyncio_run(runner.run(inventory, catalog, filters=filters, dry_run=dry_run))
     LOGGER.info("ANTA %s completed for devices: %s", run_mode, joined_devices)
-    return result_manager
+
+    # run_context (AntaRunContext) is unpickable, returning a plain dict
+    return {
+        "dry_run": run_context.dry_run,
+        "start_time": run_context.start_time,
+        "end_time": run_context.end_time,
+        "total_devices_in_inventory": run_context.total_devices_in_inventory,
+        "devices_filtered_at_setup": run_context.devices_filtered_at_setup,
+        "devices_unreachable_at_setup": run_context.devices_unreachable_at_setup,
+        "tags_applied": run_context.filters.tags,
+        "test_results": run_context.manager.results,
+    }
 
 
-def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[str, Any]) -> dict[str, Any]:
-    """Build the ANTA reports from the batch results and return a summary dictionary containing ANTA test statistics."""
-    hide_statuses = get(report_settings, "filters.hide_statuses")
-    csv_output_path = get(report_settings, "csv_output")
-    md_output_path = get(report_settings, "md_output")
-    json_output_path = get(report_settings, "json_output")
+def merge_run_data(run_iterator: Iterator[dict[str, Any]]) -> dict[str, Any]:
+    """
+    Aggregate results from multiple ANTA runs into a single dictionary.
 
-    # Merge all results
+    Args:
+      run_iterator: An iterator yielding a result dictionary, returned by `run_anta`, from each ANTA batch.
+
+    Returns:
+      dict: A dictionary summarizing the entire run, including combined test results and metadata.
+    """
+    # Initialize the structure for the final merged dictionary
+    anta_summary = {
+        "anta_version": anta_version,
+        "dry_run": False,
+        "start_time": None,
+        "end_time": None,
+        "duration": None,
+        "total_devices_in_inventory": 0,
+        "devices_filtered_at_setup": set(),
+        "devices_unreachable_at_setup": set(),
+        "tags_applied": set(),
+        "test_results": [],
+    }
+
+    first_run = True
+    for run_data in run_iterator:
+        if first_run:
+            # Set initial start_time and end_time from the first run_data
+            anta_summary["start_time"] = run_data["start_time"]
+            anta_summary["end_time"] = run_data["end_time"]
+
+            # Dry-run and tags are common for all runs
+            anta_summary["dry_run"] = run_data["dry_run"]
+            if run_data["tags_applied"]:
+                anta_summary["tags_applied"].update(run_data["tags_applied"])
+            first_run = False
+        else:
+            # Update start_time to the earliest and end_time to the latest
+            anta_summary["start_time"] = min(anta_summary["start_time"], run_data["start_time"])
+            anta_summary["end_time"] = max(anta_summary["end_time"], run_data["end_time"])
+
+        # Sum up the total devices in inventory
+        anta_summary["total_devices_in_inventory"] += run_data["total_devices_in_inventory"]
+
+        # Combine filtered and unreachable devices
+        anta_summary["devices_filtered_at_setup"].update(run_data["devices_filtered_at_setup"])
+        anta_summary["devices_unreachable_at_setup"].update(run_data["devices_unreachable_at_setup"])
+
+        # Concatenate all test results
+        anta_summary["test_results"].extend(run_data["test_results"])
+
+    # Finalize data types for presentation
+    if anta_summary["start_time"] and anta_summary["end_time"]:
+        anta_summary["duration"] = anta_summary["end_time"] - anta_summary["start_time"]
+    anta_summary["devices_filtered_at_setup"] = sorted(anta_summary["devices_filtered_at_setup"])
+    anta_summary["devices_unreachable_at_setup"] = sorted(anta_summary["devices_unreachable_at_setup"])
+    anta_summary["tags_applied"] = sorted(anta_summary["tags_applied"])
+
+    return anta_summary
+
+
+def build_summary_and_reports(run_iterator: Iterator[dict[str, Any]]) -> dict[str, Any]:
+    """
+    Process ANTA results to generate reports and a final summary object.
+
+    Args:
+      run_iterator: An iterator yielding a result dictionary, returned by `run_anta`, from each ANTA batch.
+
+    Returns:
+      dict: A summary dictionary with run metadata and a nested `tests_summary` of statistics.
+    """
+    # Merge all run data into a single dictionary
+    anta_summary = merge_run_data(run_iterator)
+
+    # Populate the ResultManager from the merged test results
     result_manager = ResultManager()
-    for manager in batch_results:
-        for result in manager.results:
-            result_manager.add(result)
+    for test_result in anta_summary.pop("test_results"):
+        result_manager.add(test_result)
 
-    # Filter the results based on the hide_statuses if provided
+    # Create a filtered manager for reports, leaving the original for full statistics
+    filtered_result_manager = result_manager
+    hide_statuses = get(PLUGIN_ARGS, "report.filters.hide_statuses")
     if hide_statuses:
-        result_manager = result_manager.filter(hide=set(hide_statuses))
+        filtered_result_manager = result_manager.filter(hide=set(hide_statuses))
+    filtered_result_manager.sort(sort_by=["name", "categories", "test", "description", "result"])
 
-    # Sort the result manager
-    result_manager.sort(sort_by=["name", "categories", "test", "description", "result"])
-
+    # Generate the reports
     # TODO: Consider using multiprocessing to generate reports in parallel
+    csv_output_path = get(PLUGIN_ARGS, "report.csv_output")
     if csv_output_path:
         LOGGER.info("Generating CSV report at %s", csv_output_path)
         path = Path(csv_output_path)
         report_csv = ReportCsv()
-        report_csv.generate(result_manager, path)
+        report_csv.generate(filtered_result_manager, path)
 
+    md_output_path = get(PLUGIN_ARGS, "report.md_output")
     if md_output_path:
         LOGGER.info("Generating Markdown report at %s", md_output_path)
         path = Path(md_output_path)
-        md_report = MDReportGenerator()
-        md_report.generate(result_manager, path)
+        sections = [
+            (section, filtered_result_manager) if section.__name__ == "TestResults" else (section, result_manager)
+            for section in MDReportGenerator.DEFAULT_SECTIONS
+        ]
+        md_report_generator = MDReportGenerator()
+        md_report_generator.generate_sections(sections, path, anta_summary)
 
+    json_output_path = get(PLUGIN_ARGS, "report.json_output")
     if json_output_path:
         LOGGER.info("Generating JSON report at %s", json_output_path)
         path = Path(json_output_path)
         with path.open("w", encoding="UTF-8") as file:
-            file.write(result_manager.json)
+            file.write(filtered_result_manager.json)
 
-    # Build a summary with ANTA test stats
-    tests_summary = {
+    # Build the final test statistics and nest them within the anta_summary dict
+    anta_summary["tests_summary"] = {
         "total_tests": result_manager.get_total_results(),
         "tests_passed": result_manager.get_total_results({"success"}),
         "tests_failed": result_manager.get_total_results({"failure"}),
@@ -288,16 +400,16 @@ def build_reports(batch_results: Iterator[ResultManager], report_settings: dict[
     }
     for device, stat in result_manager.device_stats.items():
         if stat.tests_failure_count:
-            tests_summary["devices_with_test_failures"].append(device)
+            anta_summary["tests_summary"]["devices_with_test_failures"].append(device)
         if stat.tests_error_count:
-            tests_summary["devices_with_test_errors"].append(device)
+            anta_summary["tests_summary"]["devices_with_test_errors"].append(device)
 
-    return tests_summary
+    return anta_summary
 
 
-def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, Any], has_errors_ref: list[bool]) -> dict[str, Any]:
+def update_ansible_result(result: dict[str, Any], anta_summary: dict[str, Any], *, had_errors: bool) -> dict[str, Any]:
     """
-    Update the Ansible result dictionary from aggregated ANTA test results and workflow log errors.
+    Update the Ansible result dictionary from the provided ANTA summary.
 
     Ansible task is set to `failed` if any of the following occurs:
         - No tests ran (outside of a dry run)
@@ -306,8 +418,8 @@ def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, 
 
     Args:
         result: The Ansible result dictionary to update.
-        anta_tests_summary: The dictionary created from `build_reports` containing aggregated test statistics.
-        has_errors_ref: The boolean list passed to the AntaWorkflowHandler to keep track of error logs.
+        anta_summary: The dictionary created from `build_summary_and_reports` containing the run metadata and test statistics.
+        had_errors: Flag to determine if errors were logged when running the plugin.
 
     Returns:
         dict: The updated Ansible result dictionary.
@@ -316,35 +428,35 @@ def update_ansible_result(result: dict[str, Any], anta_tests_summary: dict[str, 
     test_result_msg = ""
 
     # Process workflow errors first
-    failed_by_logs = has_errors_ref[0]
-    if failed_by_logs:
+    if had_errors:
         workflow_log_msg = "Errors detected during ANTA workflow execution."
         result["failed"] = True
 
     # Intermediate flags for test outcomes
-    has_test_issues = anta_tests_summary["tests_failed"] > 0 or anta_tests_summary["tests_error"] > 0
-    no_tests_run = anta_tests_summary["total_tests"] == 0
+    tests_summary = anta_summary["tests_summary"]
+    dry_run = anta_summary["dry_run"]
+    has_test_issues = tests_summary["tests_failed"] > 0 or tests_summary["tests_error"] > 0
+    no_tests_run = tests_summary["total_tests"] == 0 and not dry_run
 
-    # Fail the task if no tests were run
+    # Fail the task if no tests were run (outside of a dry run)
     if no_tests_run:
         test_result_msg = "No ANTA tests were run."
         result["failed"] = True
     # Fail the task if tests have issues
     elif has_test_issues:
-        test_result_msg = "Task failed due to ANTA test failures/errors." if not failed_by_logs else "ANTA tests reported failures/errors."
+        test_result_msg = "Task failed due to ANTA test failures/errors." if not had_errors else "ANTA tests also reported failures/errors."
         result["failed"] = True
-
     # Tests ran, no issues found, and no log errors
-    elif not failed_by_logs:
-        test_result_msg = "ANTA tests completed without reported failures/errors."
+    elif not had_errors:
+        test_result_msg = f"ANTA {'dry run' if dry_run else 'run'} completed successfully."
 
     # Combine messages
     final_msg = " ".join(filter(None, [workflow_log_msg, test_result_msg]))
     if final_msg:
         result["msg"] = final_msg
 
-    # Populate final result dictionary directly from summary
-    result["anta_tests_summary"] = anta_tests_summary
+    # Populate final result dictionary with the test statistics
+    result["anta_tests_summary"] = tests_summary
 
     return result
 
@@ -371,10 +483,8 @@ def get_ansible_vars(device_list: list[str], action_plugin_vars: ActionPluginVar
     return ansible_vars
 
 
-def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaInventory, AntaCatalog]:
+def build_anta_runner_objects(devices: list[str]) -> tuple[AntaInventory, AntaCatalog]:
     """Build the ANTA objects required to run an ANTA batch."""
-    # Create the ANTA objects
-    result_manager = ResultManager()
     inventory = AntaInventory()
     catalogs = []
 
@@ -405,7 +515,7 @@ def build_anta_runner_objects(devices: list[str]) -> tuple[ResultManager, AntaIn
 
     catalog = AntaCatalog.merge_catalogs(catalogs)
 
-    return result_manager, inventory, catalog
+    return inventory, catalog
 
 
 def get_device_catalog_filters(device: str, avd_catalogs_filters: list[dict[str, list[str]]]) -> dict[str, list[str]]:
