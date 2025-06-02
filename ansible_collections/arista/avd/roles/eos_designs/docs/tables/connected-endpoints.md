@@ -188,7 +188,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].port_channel.short_esi") <span style="color:red">removed</span> | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].digital_twin") | Boolean |  | `True` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.<br>In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].digital_twin") | Boolean |  | `True` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Setting this flag to `true` includes the interfaces in "Digital Twin" mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<connected_endpoints_keys.key>.[].adapters.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
 
@@ -698,8 +698,7 @@
             validate_lldp: <bool>
 
             # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-            # Setting this flag to `false` will exclude adapter (of the connected endpoint) from the generated Digital Twin topology. The associated switch ports will also be removed from the generated structured and rendered EOS configuration.
-            # In the case of a network port, this will only leed to the exclusion of the associated switch ports from the generated structured and rendered EOS configuration.
+            # Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
             digital_twin: <bool; default=True>
 
             # EOS CLI rendered directly on the ethernet interface in the final EOS configuration.

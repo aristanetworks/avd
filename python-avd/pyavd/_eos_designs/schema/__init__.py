@@ -8035,12 +8035,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Setting this flag to `false` will exclude adapter (of the connected endpoint)
-        from the generated Digital Twin topology. The associated switch ports will also be removed from the
-        generated structured and rendered EOS configuration.
-        In the case of a network port, this will only
-        leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
-        configuration.
+        Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
 
         Default value: `True`
         """
@@ -8245,12 +8240,7 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Setting this flag to `false` will exclude adapter (of the connected endpoint)
-                       from the generated Digital Twin topology. The associated switch ports will also be removed from the
-                       generated structured and rendered EOS configuration.
-                       In the case of a network port, this will only
-                       leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
-                       configuration.
+                       Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -11801,12 +11791,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Setting this flag to `false` will exclude adapter (of the connected endpoint)
-        from the generated Digital Twin topology. The associated switch ports will also be removed from the
-        generated structured and rendered EOS configuration.
-        In the case of a network port, this will only
-        leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
-        configuration.
+        Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
 
         Default value: `True`
         """
@@ -11970,12 +11955,7 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Setting this flag to `false` will exclude adapter (of the connected endpoint)
-                       from the generated Digital Twin topology. The associated switch ports will also be removed from the
-                       generated structured and rendered EOS configuration.
-                       In the case of a network port, this will only
-                       leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
-                       configuration.
+                       Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -18422,12 +18402,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Setting this flag to `false` will exclude adapter (of the connected endpoint)
-                    from the generated Digital Twin topology. The associated switch ports will also be removed from the
-                    generated structured and rendered EOS configuration.
-                    In the case of a network port, this will only
-                    leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
-                    configuration.
+                    Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
 
                     Default value: `True`
                     """
@@ -18628,12 +18603,7 @@ class EosDesigns(EosDesignsRootModel):
                                 digital_twin:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Setting this flag to `false` will exclude adapter (of the connected endpoint)
-                                   from the generated Digital Twin topology. The associated switch ports will also be removed from the
-                                   generated structured and rendered EOS configuration.
-                                   In the case of a network port, this will only
-                                   leed to the exclusion of the associated switch ports from the generated structured and rendered EOS
-                                   configuration.
+                                   Setting this flag to `true` includes the interfaces in "Digital Twin" mode.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -21176,7 +21146,13 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        enabled: bool
+                        """
+                        When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                        Default value: `False`
+                        """
                         os_version: str | None
                         """
                         Desired OS version.
@@ -21191,7 +21167,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -21199,6 +21181,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
@@ -25317,7 +25300,13 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            enabled: bool
+                            """
+                            When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                            Default value: `False`
+                            """
                             os_version: str | None
                             """
                             Desired OS version.
@@ -25333,7 +25322,11 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -25342,6 +25335,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
+                                        enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                         os_version:
                                            Desired OS version.
                                            Overrides global `digital_twin.fabric.os_version` flag.
@@ -29406,7 +29400,13 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        enabled: bool
+                        """
+                        When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                        Default value: `False`
+                        """
                         os_version: str | None
                         """
                         Desired OS version.
@@ -29421,7 +29421,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -29429,6 +29435,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
@@ -33557,7 +33564,13 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        enabled: bool
+                        """
+                        When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                        Default value: `False`
+                        """
                         os_version: str | None
                         """
                         Desired OS version.
@@ -33572,7 +33585,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -33580,6 +33599,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
@@ -44803,7 +44823,13 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        enabled: bool
+                        """
+                        When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                        Default value: `False`
+                        """
                         os_version: str | None
                         """
                         Desired OS version.
@@ -44818,7 +44844,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -44826,6 +44858,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
@@ -48944,7 +48977,13 @@ class EosDesigns(EosDesignsRootModel):
                         class DigitalTwin(AvdModel):
                             """Subclass of AvdModel."""
 
-                            _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                            enabled: bool
+                            """
+                            When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                            Default value: `False`
+                            """
                             os_version: str | None
                             """
                             Desired OS version.
@@ -48960,7 +48999,11 @@ class EosDesigns(EosDesignsRootModel):
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined
+                                    self,
+                                    *,
+                                    enabled: bool | UndefinedType = Undefined,
+                                    os_version: str | None | UndefinedType = Undefined,
+                                    mgmt_ip: str | None | UndefinedType = Undefined,
                                 ) -> None:
                                     """
                                     DigitalTwin.
@@ -48969,6 +49012,7 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
+                                        enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                         os_version:
                                            Desired OS version.
                                            Overrides global `digital_twin.fabric.os_version` flag.
@@ -53033,7 +53077,13 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        enabled: bool
+                        """
+                        When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                        Default value: `False`
+                        """
                         os_version: str | None
                         """
                         Desired OS version.
@@ -53048,7 +53098,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -53056,6 +53112,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
@@ -57184,7 +57241,13 @@ class EosDesigns(EosDesignsRootModel):
                     class DigitalTwin(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "os_version": {"type": str}, "mgmt_ip": {"type": str}}
+                        enabled: bool
+                        """
+                        When set to `true`, includes the node(s) in the Digital Twin metadata.
+
+                        Default value: `False`
+                        """
                         os_version: str | None
                         """
                         Desired OS version.
@@ -57199,7 +57262,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, os_version: str | None | UndefinedType = Undefined, mgmt_ip: str | None | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                os_version: str | None | UndefinedType = Undefined,
+                                mgmt_ip: str | None | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 DigitalTwin.
 
@@ -57207,6 +57276,7 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
+                                    enabled: When set to `true`, includes the node(s) in the Digital Twin metadata.
                                     os_version:
                                        Desired OS version.
                                        Overrides global `digital_twin.fabric.os_version` flag.
@@ -59915,6 +59985,10 @@ class EosDesigns(EosDesignsRootModel):
     change at any time.
     Enable generation of the Digital Twin version of the fabric (Digital Twin
     topology, adjusted configuration, etc.).
+    `digital_twin.enabled` must also be set to `true` under the
+    nodes that are to be included in Digital Twin metadata.
+    Devices that are not enabled will be
+    configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown.
 
     Default value: `False`
     """
@@ -61822,6 +61896,10 @@ class EosDesigns(EosDesignsRootModel):
                    change at any time.
                    Enable generation of the Digital Twin version of the fabric (Digital Twin
                    topology, adjusted configuration, etc.).
+                   `digital_twin.enabled` must also be set to `true` under the
+                   nodes that are to be included in Digital Twin metadata.
+                   Devices that are not enabled will be
+                   configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group

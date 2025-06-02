@@ -13,4 +13,6 @@ keys:
     description: |-
       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
+      `digital_twin.enabled` must also be set to `true` under the nodes that are to be included in Digital Twin metadata.
+      Devices that are not enabled will be configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown.
     default: false

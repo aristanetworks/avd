@@ -72,6 +72,9 @@ keys:
       #       type: str
       #       description: |-
       #         Desired Digital Twin OS version for endpoints.
+      #         For `veos` and `cloudeos` ACT `node_type`s - use the standard EOS software release naming convention (e.g., `4.33.0F`).
+      #         For the `generic` ACT `node_type`, use the ACT-specific naming convention (e.g., `ubuntu-2204-lts`).
+      #         Refer to the ACT online documentation for the complete list of supported versions for each node_type.
       #       required: true
       #     mgmt_ipv4_pool:
       #       type: str

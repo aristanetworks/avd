@@ -1210,7 +1210,13 @@ keys:
       or generated configuration can change at any time.
 
       Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
-      adjusted configuration, etc.).'
+      adjusted configuration, etc.).
+
+      `digital_twin.enabled` must also be set to `true` under the nodes that are to
+      be included in Digital Twin metadata.
+
+      Devices that are not enabled will be configured as `is_deployed: false` to ensure
+      all interfaces and peerings towards them are shutdown.'
     default: false
   enable_trunk_groups:
     documentation_options:
@@ -6034,12 +6040,7 @@ $defs:
         description: 'PREVIEW: This option is marked as "preview", meaning the data
           models or generated configuration can change at any time.
 
-          Setting this flag to `false` will exclude adapter (of the connected endpoint)
-          from the generated Digital Twin topology. The associated switch ports will
-          also be removed from the generated structured and rendered EOS configuration.
-
-          In the case of a network port, this will only leed to the exclusion of the
-          associated switch ports from the generated structured and rendered EOS configuration.'
+          Setting this flag to `true` includes the interfaces in "Digital Twin" mode.'
         default: true
       raw_eos_cli:
         type: str
@@ -10059,6 +10060,11 @@ $defs:
               the associated node(s).'
             type: dict
             keys:
+              enabled:
+                type: bool
+                description: When set to `true`, includes the node(s) in the Digital
+                  Twin metadata.
+                default: false
               os_version:
                 type: str
                 description: 'Desired OS version.
