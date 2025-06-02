@@ -63560,6 +63560,37 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         TrunkGroups._item_type = str
 
+        class ETree(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"leaf_role": {"type": bool}, "remote_leaf_host_drop": {"type": bool}}
+            leaf_role: bool | None
+            """Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role."""
+            remote_leaf_host_drop: bool | None
+            """
+            Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+            only applicable for VLANs operating in the 'Leaf' role.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, leaf_role: bool | None | UndefinedType = Undefined, remote_leaf_host_drop: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    ETree.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        leaf_role: Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role.
+                        remote_leaf_host_drop:
+                           Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+                           only applicable for VLANs operating in the 'Leaf' role.
+
+                    """
+
         class PrivateVlan(AvdModel):
             """Subclass of AvdModel."""
 
@@ -63591,6 +63622,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "state": {"type": str},
             "address_locking": {"type": AddressLocking},
             "trunk_groups": {"type": TrunkGroups},
+            "e_tree": {"type": ETree},
             "private_vlan": {"type": PrivateVlan},
             "tenant": {"type": str},
         }
@@ -63603,6 +63635,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         trunk_groups: TrunkGroups
         """Subclass of AvdList with `str` items."""
+        e_tree: ETree
+        """Subclass of AvdModel."""
         private_vlan: PrivateVlan
         """Subclass of AvdModel."""
         tenant: str | None
@@ -63618,6 +63652,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 state: Literal["active", "suspend"] | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                e_tree: ETree | UndefinedType = Undefined,
                 private_vlan: PrivateVlan | UndefinedType = Undefined,
                 tenant: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -63633,6 +63668,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     state: state
                     address_locking: Subclass of AvdModel.
                     trunk_groups: Subclass of AvdList with `str` items.
+                    e_tree: Subclass of AvdModel.
                     private_vlan: Subclass of AvdModel.
                     tenant: Key only used for documentation or validation purposes.
 
