@@ -6,6 +6,7 @@ from __future__ import annotations
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import StructuredConfigGenerator, structured_config_contributor
 from pyavd._utils import AvdStringFormatter, default
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import list_compress
 
@@ -113,10 +114,20 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
 
     def _set_mlag_l3_vlan_interface(self, vlan_interface: EosCliConfigGen.VlanInterfacesItem) -> None:
         if self.shared_utils.underlay_routing_protocol == "ospf":
-            vlan_interface._update(
-                ospf_network_point_to_point=True,
-                ospf_area=self.inputs.underlay_ospf_area,
-            )
+            vlan_interface._update(ospf_network_point_to_point=True, ospf_area=self.inputs.underlay_ospf_area)
+            if self.inputs.underlay_ospf_authentication.enabled:
+                vlan_interface.ospf_authentication = "message-digest"
+                for ospf_key in self.inputs.underlay_ospf_authentication.message_digest_keys:
+                    vlan_interface.ospf_message_digest_keys.append_new(
+                        id=ospf_key.id,
+                        hash_algorithm=ospf_key.hash_algorithm,
+                        key=ospf_message_digest_encrypt(
+                            password=ospf_key.key,
+                            key=vlan_interface.name,
+                            hash_algorithm=ospf_key.hash_algorithm,
+                            key_id=str(ospf_key.id),
+                        ),
+                    )
 
         elif self.shared_utils.underlay_routing_protocol == "isis":
             vlan_interface._update(

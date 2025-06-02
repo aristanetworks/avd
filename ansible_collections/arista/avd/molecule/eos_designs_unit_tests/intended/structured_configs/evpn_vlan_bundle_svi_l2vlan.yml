@@ -77,7 +77,7 @@ router_bgp:
       - 303:333
     redistribute_routes:
     - learned
-    vlan: 90,100,1008-1009
+    vlan: 90,100,1008-1009,1011
   vlans:
   - id: 1010
     tenant: SIT
@@ -85,14 +85,6 @@ router_bgp:
     route_targets:
       both:
       - 21010:21010
-    redistribute_routes:
-    - learned
-  - id: 10
-    tenant: SIT
-    rd: 10.10.0.3:20010
-    route_targets:
-      both:
-      - 20010:20010
     redistribute_routes:
     - learned
   - id: 20
@@ -153,6 +145,13 @@ vlan_interfaces:
   tenant: SIT
   tags:
   - sit
+- name: Vlan1011
+  description: SVI_4
+  shutdown: false
+  vrf: VRF_ID_VNI_NONE
+  tenant: SIT
+  tags:
+  - sit
 vlan_internal_order:
   allocation: ascending
   range:
@@ -167,6 +166,9 @@ vlans:
   tenant: SIT
 - id: 1010
   name: SVI_3
+  tenant: SIT
+- id: 1011
+  name: SVI_4
   tenant: SIT
 - id: 10
   name: storage_prod
@@ -186,6 +188,9 @@ vrfs:
 - name: SIT_VRF
   ip_routing: true
   tenant: SIT
+- name: VRF_ID_VNI_NONE
+  ip_routing: true
+  tenant: SIT
 vxlan_interface:
   vxlan1:
     description: evpn_vlan_bundle_svi_l2vlan_VTEP
@@ -199,8 +204,8 @@ vxlan_interface:
         vni: 21009
       - id: 1010
         vni: 21010
-      - id: 10
-        vni: 20010
+      - id: 1011
+        vni: 21011
       - id: 20
         vni: 20020
       - id: 90
