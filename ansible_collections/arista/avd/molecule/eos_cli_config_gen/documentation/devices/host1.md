@@ -3492,10 +3492,6 @@ vlan 3012
 !
 mac address-table aging-time 100
 !
-mac address-table notification host-flap logging
-mac address-table notification host-flap detection window 10
-mac address-table notification host-flap detection moves 2
-!
 mac address-table static 000a.000a.000a vlan 10 interface Ethernet1
 mac address-table static 000c.000c.000c vlan 10 drop
 mac address-table static 000d.000d.000d vlan 10 interface Ethernet2
@@ -3504,6 +3500,10 @@ mac address-table static 000b.000b.000b vlan 20 interface Port-Channel1 eligibil
 mac address-table static 0001.0001.0001 vlan 20 interface Ethernet2
 mac address-table static 0002.0002.0002 vlan 20 drop
 mac address-table static 000c.000c.000c vlan 30 drop
+!
+mac address-table notification host-flap logging
+mac address-table notification host-flap detection window 10
+mac address-table notification host-flap detection moves 2
 ```
 
 ## IP Security
