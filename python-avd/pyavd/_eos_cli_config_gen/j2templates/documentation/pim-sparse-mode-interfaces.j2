@@ -9,14 +9,15 @@
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface | Neighbor Filter |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- | --------------- |
 {%     for interface in pim_interfaces %}
 {%         set vrf = interface.vrf | arista.avd.default('-') %}
 {%         set ip_version = "IPv4" %}
 {%         set border_router = interface.pim.ipv4.border_router | arista.avd.default('-') %}
 {%         set dr_priority = interface.pim.ipv4.dr_priority | arista.avd.default('-') %}
 {%         set local_interface = interface.pim.ipv4.local_interface | arista.avd.default('-') %}
-| {{ interface.name }} | {{ vrf }} | {{ ip_version }} | {{ border_router }} | {{ dr_priority }} | {{ local_interface }} |
+{%         set neighbor_filter = interface.pim.ipv4.neighbor_filter | arista.avd.default('-') %}
+| {{ interface.name }} | {{ vrf }} | {{ ip_version }} | {{ border_router }} | {{ dr_priority }} | {{ local_interface }} | {{ neighbor_filter }} |
 {%     endfor %}
 {% endif %}

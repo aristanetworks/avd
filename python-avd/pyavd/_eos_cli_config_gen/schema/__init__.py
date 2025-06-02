@@ -6785,6 +6785,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "sparse_mode": {"type": bool},
                     "bfd": {"type": bool},
                     "bidirectional": {"type": bool},
+                    "neighbor_filter": {"type": str},
                     "hello": {"type": Hello},
                 }
                 border_router: bool | None
@@ -6794,6 +6795,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd: bool | None
                 """Set the default for whether Bidirectional Forwarding Detection is enabled for PIM."""
                 bidirectional: bool | None
+                neighbor_filter: str | None
+                """Standard access list name."""
                 hello: Hello
                 """Subclass of AvdModel."""
 
@@ -6807,6 +6810,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         sparse_mode: bool | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -6821,6 +6825,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             sparse_mode: sparse_mode
                             bfd: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                             bidirectional: bidirectional
+                            neighbor_filter: Standard access list name.
                             hello: Subclass of AvdModel.
 
                         """
@@ -6866,9 +6871,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": int}, "ipv6_segment_size": {"type": int}, "direction": {"type": str}}
+            _fields: ClassVar[dict] = {
+                "ipv4_segment_size": {"type": int},
+                "ipv4": {"type": int},
+                "ipv6_segment_size": {"type": int},
+                "ipv6": {"type": int},
+                "direction": {"type": str},
+            }
             ipv4_segment_size: int | None
+            ipv4: int | None
             ipv6_segment_size: int | None
+            ipv6: int | None
             direction: Literal["egress", "ingress"] | None
 
             if TYPE_CHECKING:
@@ -6877,7 +6890,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     ipv4_segment_size: int | None | UndefinedType = Undefined,
+                    ipv4: int | None | UndefinedType = Undefined,
                     ipv6_segment_size: int | None | UndefinedType = Undefined,
+                    ipv6: int | None | UndefinedType = Undefined,
                     direction: Literal["egress", "ingress"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -6888,7 +6903,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         ipv4_segment_size: ipv4_segment_size
+                        ipv4: ipv4
                         ipv6_segment_size: ipv6_segment_size
+                        ipv6: ipv6
                         direction: direction
 
                     """
@@ -14326,13 +14343,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}}
+            class LoadBalanceDistribution(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Dynamic(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "flow_set_size": {"type": int}}
+                    enabled: bool
+                    """Enable dynamic load balancing."""
+                    flow_set_size: int | None
+                    """
+                    Set flow set size. Requires `enabled` key to be set to `true`.
+                    1: Allow up to 128 ECMP groups of 256
+                    entries each.
+                    2: Allow up to 64 ECMP groups of 512 entries each.
+                    3: Allow up to 32 ECMP groups of
+                    1024 entries each.
+                    4: Allow up to 16 ECMP groups of 2048 entries each.
+                    5: Allow up to 8 ECMP groups
+                    of 4096 entries each.
+                    6: Allow up to 4 ECMP groups of 8192 entries each.
+                    7: Allow up to 2 ECMP
+                    groups of 16384 entries each.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Dynamic.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable dynamic load balancing.
+                                flow_set_size:
+                                   Set flow set size. Requires `enabled` key to be set to `true`.
+                                   1: Allow up to 128 ECMP groups of 256
+                                   entries each.
+                                   2: Allow up to 64 ECMP groups of 512 entries each.
+                                   3: Allow up to 32 ECMP groups of
+                                   1024 entries each.
+                                   4: Allow up to 16 ECMP groups of 2048 entries each.
+                                   5: Allow up to 8 ECMP groups
+                                   of 4096 entries each.
+                                   6: Allow up to 4 ECMP groups of 8192 entries each.
+                                   7: Allow up to 2 ECMP
+                                   groups of 16384 entries each.
+
+                            """
+
+                _fields: ClassVar[dict] = {"dynamic": {"type": Dynamic}}
+                dynamic: Dynamic
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, dynamic: Dynamic | UndefinedType = Undefined) -> None:
+                        """
+                        LoadBalanceDistribution.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}, "load_balance_distribution": {"type": LoadBalanceDistribution}}
             optimize: Optimize
+            """Subclass of AvdModel."""
+            load_balance_distribution: LoadBalanceDistribution
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, optimize: Optimize | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, optimize: Optimize | UndefinedType = Undefined, load_balance_distribution: LoadBalanceDistribution | UndefinedType = Undefined
+                ) -> None:
                     """
                     Fib.
 
@@ -14341,6 +14432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         optimize: Subclass of AvdModel.
+                        load_balance_distribution: Subclass of AvdModel.
 
                     """
 
@@ -15604,7 +15696,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """IKE lifetime in hours."""
             encryption: Literal["3des", "aes128", "aes256"] | None
             """IKE encryption algorithm."""
-            dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None
+            dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None
             """Diffie-Hellman group for the key exchange."""
             integrity: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None
             """Integrity algorithm."""
@@ -15619,7 +15711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     local_id_fqdn: str | None | UndefinedType = Undefined,
                     ike_lifetime: int | None | UndefinedType = Undefined,
                     encryption: Literal["3des", "aes128", "aes256"] | None | UndefinedType = Undefined,
-                    dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None | UndefinedType = Undefined,
+                    dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None | UndefinedType = Undefined,
                     integrity: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -15736,7 +15828,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             esp: Esp
             """Subclass of AvdModel."""
-            pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None
+            pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None
 
             if TYPE_CHECKING:
 
@@ -15746,7 +15838,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     sa_lifetime: SaLifetime | UndefinedType = Undefined,
                     esp: Esp | UndefinedType = Undefined,
-                    pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None | UndefinedType = Undefined,
+                    pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SaPoliciesItem.
@@ -29010,6 +29102,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "sparse_mode": {"type": bool},
                     "bfd": {"type": bool},
                     "bidirectional": {"type": bool},
+                    "neighbor_filter": {"type": str},
                     "hello": {"type": Hello},
                 }
                 border_router: bool | None
@@ -29019,6 +29112,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd: bool | None
                 """Set the default for whether Bidirectional Forwarding Detection is enabled for PIM."""
                 bidirectional: bool | None
+                neighbor_filter: str | None
+                """Standard access list name."""
                 hello: Hello
                 """Subclass of AvdModel."""
 
@@ -29032,6 +29127,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         sparse_mode: bool | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -29046,6 +29142,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             sparse_mode: sparse_mode
                             bfd: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                             bidirectional: bidirectional
+                            neighbor_filter: Standard access list name.
                             hello: Subclass of AvdModel.
 
                         """
@@ -51995,13 +52092,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"name": {"type": str}, "leak_routes": {"type": LeakRoutes}, "routes": {"type": Routes}}
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "leak_routes": {"type": LeakRoutes},
+                "routes": {"type": Routes},
+                "software_forwarding_hardware_offload_mtu": {"type": int},
+            }
             name: str
             """Destination-VRF."""
             leak_routes: LeakRoutes
             """Subclass of AvdList with `LeakRoutesItem` items."""
             routes: Routes
             """Subclass of AvdModel."""
+            software_forwarding_hardware_offload_mtu: int | None
+            """
+            MTU value for software-forwarded packets within a specific VRF that use hardware offload.
+            This
+            setting overrides the global config for a specific vrf.
+            """
 
             if TYPE_CHECKING:
 
@@ -52011,6 +52119,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     leak_routes: LeakRoutes | UndefinedType = Undefined,
                     routes: Routes | UndefinedType = Undefined,
+                    software_forwarding_hardware_offload_mtu: int | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrfsItem.
@@ -52022,6 +52131,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: Destination-VRF.
                         leak_routes: Subclass of AvdList with `LeakRoutesItem` items.
                         routes: Subclass of AvdModel.
+                        software_forwarding_hardware_offload_mtu:
+                           MTU value for software-forwarded packets within a specific VRF that use hardware offload.
+                           This
+                           setting overrides the global config for a specific vrf.
 
                     """
 
@@ -52100,6 +52213,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {
             "router_id": {"type": RouterId},
             "nexthop_fast_failover": {"type": bool, "default": False},
+            "software_forwarding_hardware_offload_mtu": {"type": int},
             "vrfs": {"type": Vrfs},
             "control_functions": {"type": ControlFunctions},
         }
@@ -52107,6 +52221,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         nexthop_fast_failover: bool
         """Default value: `False`"""
+        software_forwarding_hardware_offload_mtu: int | None
+        """MTU value for software-forwarded packets across all vrfs that use hardware offload."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         control_functions: ControlFunctions
@@ -52129,6 +52245,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 *,
                 router_id: RouterId | UndefinedType = Undefined,
                 nexthop_fast_failover: bool | UndefinedType = Undefined,
+                software_forwarding_hardware_offload_mtu: int | None | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 control_functions: ControlFunctions | UndefinedType = Undefined,
             ) -> None:
@@ -52141,6 +52258,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     router_id: Subclass of AvdModel.
                     nexthop_fast_failover: nexthop_fast_failover
+                    software_forwarding_hardware_offload_mtu: MTU value for software-forwarded packets across all vrfs that use hardware offload.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     control_functions:
                        Routing control functions (RCF) used to filter and update routes from a peer or during
@@ -56104,8 +56222,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         class TcpMssCeiling(AvdModel):
             """Subclass of AvdModel."""
 
-            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": str}, "direction": {"type": str, "default": "ingress"}}
+            _fields: ClassVar[dict] = {"ipv4_segment_size": {"type": str}, "ipv4": {"type": str}, "direction": {"type": str, "default": "ingress"}}
             ipv4_segment_size: str | None
+            """
+            Segment Size for IPv4.
+            Can be an integer in the range 64-65515 or "auto".
+            "auto" will enable auto-
+            discovery which clamps the TCP MSS value to the minimum of all the direct paths
+            and multi-hop path
+            MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
+            """
+            ipv4: str | None
             """
             Segment Size for IPv4.
             Can be an integer in the range 64-65515 or "auto".
@@ -56126,7 +56253,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             if TYPE_CHECKING:
 
                 def __init__(
-                    self, *, ipv4_segment_size: str | None | UndefinedType = Undefined, direction: Literal["ingress"] | UndefinedType = Undefined
+                    self,
+                    *,
+                    ipv4_segment_size: str | None | UndefinedType = Undefined,
+                    ipv4: str | None | UndefinedType = Undefined,
+                    direction: Literal["ingress"] | UndefinedType = Undefined,
                 ) -> None:
                     """
                     TcpMssCeiling.
@@ -56136,6 +56267,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         ipv4_segment_size:
+                           Segment Size for IPv4.
+                           Can be an integer in the range 64-65515 or "auto".
+                           "auto" will enable auto-
+                           discovery which clamps the TCP MSS value to the minimum of all the direct paths
+                           and multi-hop path
+                           MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
+                        ipv4:
                            Segment Size for IPv4.
                            Can be an integer in the range 64-65515 or "auto".
                            "auto" will enable auto-
@@ -60614,6 +60752,40 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class Transceiver(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"dom_threshold_file": {"type": str}}
+        dom_threshold_file: str | None
+        """
+        CSV file path for DOM threshold values.
+        eg. `dom_threshold_file: flash:/dom_threshold.csv`
+        Note: Set
+        `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+        eg.
+        `dom_threshold_file: default`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, dom_threshold_file: str | None | UndefinedType = Undefined) -> None:
+                """
+                Transceiver.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    dom_threshold_file:
+                       CSV file path for DOM threshold values.
+                       eg. `dom_threshold_file: flash:/dom_threshold.csv`
+                       Note: Set
+                       `dom_threshold_file` to `default` for default Arista-standardized thresholds.
+                       eg.
+                       `dom_threshold_file: default`
+
+                """
+
     class TunnelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -60667,6 +60839,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "tcp_mss_ceiling": {"type": TcpMssCeiling},
             "tunnel_mode": {"type": str},
             "source_interface": {"type": str},
+            "source": {"type": str},
             "destination": {"type": str},
             "path_mtu_discovery": {"type": bool},
             "ipsec_profile": {"type": str},
@@ -60705,7 +60878,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         encapsulation.
         """
         source_interface: str | None
-        """Tunnel Source Interface Name."""
+        """
+        Tunnel Source Interface Name.
+        Mutually exclusive with `source`, if both are defined
+        `source_interface` takes precedence.
+        """
+        source: str | None
+        """
+        Tunnel Source IPv4/IPv6 address.
+        Mutually exclusive with `source_interface`, if both are defined
+        `source_interface` takes precedence.
+        """
         destination: str | None
         """IPv4 or IPv6 Address Tunnel Destination."""
         path_mtu_discovery: bool | None
@@ -60744,6 +60927,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 tcp_mss_ceiling: TcpMssCeiling | UndefinedType = Undefined,
                 tunnel_mode: Literal["gre", "ipsec"] | None | UndefinedType = Undefined,
                 source_interface: str | None | UndefinedType = Undefined,
+                source: str | None | UndefinedType = Undefined,
                 destination: str | None | UndefinedType = Undefined,
                 path_mtu_discovery: bool | None | UndefinedType = Undefined,
                 ipsec_profile: str | None | UndefinedType = Undefined,
@@ -60776,7 +60960,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        `gre`: Generic route encapsulation protocol,
                        `ipsec`: IPsec-over-IP
                        encapsulation.
-                    source_interface: Tunnel Source Interface Name.
+                    source_interface:
+                       Tunnel Source Interface Name.
+                       Mutually exclusive with `source`, if both are defined
+                       `source_interface` takes precedence.
+                    source:
+                       Tunnel Source IPv4/IPv6 address.
+                       Mutually exclusive with `source_interface`, if both are defined
+                       `source_interface` takes precedence.
                     destination: IPv4 or IPv6 Address Tunnel Destination.
                     path_mtu_discovery: Enable Path MTU Discovery On Tunnel.
                     ipsec_profile:
@@ -61898,6 +62089,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "local_interface": {"type": str},
                     "bfd": {"type": bool},
                     "bidirectional": {"type": bool},
+                    "neighbor_filter": {"type": str},
                     "hello": {"type": Hello},
                 }
                 border_router: bool | None
@@ -61908,6 +62100,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 bfd: bool | None
                 """Set the default for whether Bidirectional Forwarding Detection is enabled for PIM."""
                 bidirectional: bool | None
+                neighbor_filter: str | None
+                """Standard access list name."""
                 hello: Hello
                 """Subclass of AvdModel."""
 
@@ -61922,6 +62116,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         local_interface: str | None | UndefinedType = Undefined,
                         bfd: bool | None | UndefinedType = Undefined,
                         bidirectional: bool | None | UndefinedType = Undefined,
+                        neighbor_filter: str | None | UndefinedType = Undefined,
                         hello: Hello | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -61937,6 +62132,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             local_interface: local_interface
                             bfd: Set the default for whether Bidirectional Forwarding Detection is enabled for PIM.
                             bidirectional: bidirectional
+                            neighbor_filter: Standard access list name.
                             hello: Subclass of AvdModel.
 
                         """
@@ -63439,6 +63635,37 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         TrunkGroups._item_type = str
 
+        class ETree(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"leaf_role": {"type": bool}, "remote_leaf_host_drop": {"type": bool}}
+            leaf_role: bool | None
+            """Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role."""
+            remote_leaf_host_drop: bool | None
+            """
+            Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+            only applicable for VLANs operating in the 'Leaf' role.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, leaf_role: bool | None | UndefinedType = Undefined, remote_leaf_host_drop: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    ETree.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        leaf_role: Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role.
+                        remote_leaf_host_drop:
+                           Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+                           only applicable for VLANs operating in the 'Leaf' role.
+
+                    """
+
         class PrivateVlan(AvdModel):
             """Subclass of AvdModel."""
 
@@ -63470,6 +63697,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "state": {"type": str},
             "address_locking": {"type": AddressLocking},
             "trunk_groups": {"type": TrunkGroups},
+            "e_tree": {"type": ETree},
             "private_vlan": {"type": PrivateVlan},
             "tenant": {"type": str},
         }
@@ -63482,6 +63710,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         trunk_groups: TrunkGroups
         """Subclass of AvdList with `str` items."""
+        e_tree: ETree
+        """Subclass of AvdModel."""
         private_vlan: PrivateVlan
         """Subclass of AvdModel."""
         tenant: str | None
@@ -63497,6 +63727,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 state: Literal["active", "suspend"] | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                e_tree: ETree | UndefinedType = Undefined,
                 private_vlan: PrivateVlan | UndefinedType = Undefined,
                 tenant: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -63512,6 +63743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     state: state
                     address_locking: Subclass of AvdModel.
                     trunk_groups: Subclass of AvdList with `str` items.
+                    e_tree: Subclass of AvdModel.
                     private_vlan: Subclass of AvdModel.
                     tenant: Key only used for documentation or validation purposes.
 
@@ -64694,6 +64926,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "terminal": {"type": Terminal},
         "trackers": {"type": Trackers},
         "traffic_policies": {"type": TrafficPolicies},
+        "transceiver": {"type": Transceiver},
         "transceiver_qsfp_default_mode_4x10": {"type": bool, "default": True},
         "tunnel_interfaces": {"type": TunnelInterfaces},
         "virtual_source_nat_vrfs": {"type": VirtualSourceNatVrfs},
@@ -65237,6 +65470,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
     traffic_policies: TrafficPolicies
     """Subclass of AvdModel."""
+    transceiver: Transceiver
+    """Subclass of AvdModel."""
     transceiver_qsfp_default_mode_4x10: bool
     """
     On all front panel ports which support this feature, the following global configuration command
@@ -65452,6 +65687,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             terminal: Terminal | UndefinedType = Undefined,
             trackers: Trackers | UndefinedType = Undefined,
             traffic_policies: TrafficPolicies | UndefinedType = Undefined,
+            transceiver: Transceiver | UndefinedType = Undefined,
             transceiver_qsfp_default_mode_4x10: bool | UndefinedType = Undefined,
             tunnel_interfaces: TunnelInterfaces | UndefinedType = Undefined,
             virtual_source_nat_vrfs: VirtualSourceNatVrfs | UndefinedType = Undefined,
@@ -65792,6 +66028,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 terminal: Subclass of AvdModel.
                 trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
                 traffic_policies: Subclass of AvdModel.
+                transceiver: Subclass of AvdModel.
                 transceiver_qsfp_default_mode_4x10:
                    On all front panel ports which support this feature, the following global configuration command
                    changes the QSFP mode from 40G to 4x10G (default). When set to false the command reverts the default

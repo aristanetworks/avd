@@ -88,6 +88,7 @@
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
   - [Monitor TWAMP](#monitor-twamp)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [VRF Configuration](#vrf-configuration)
@@ -249,6 +250,9 @@
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Hardware FIB](#ip-hardware-fib)
+  - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
+  - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -2966,6 +2970,10 @@ monitor twamp
       sender profile test-profile2
 ```
 
+### Transceiver
+
+Transceiver dom-threshold file: flash:/dom_threshold.csv
+
 ## Monitor Connectivity
 
 ### Global Configuration
@@ -3411,16 +3419,29 @@ vlan internal order ascending range 10 40
 | 110 | PR01-DMZ | - |
 | 111 | PRIVATE_VLAN_COMMUNITY | - |
 | 112 | PRIVATE_VLAN_ISOLATED | - |
+| 201 | ETREE_LEAF | - |
 | 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3 |
 | 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP |
 | 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP |
 
 #### Private VLANs
 
-| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| Primary VLAN ID | Secondary VLAN ID | Private VLAN Type |
 | --------------- | ----------------- | ----------------- |
 | community | 111 | 110 |
 | isolated | 112 | 110 |
+
+#### E-Tree Role
+
+| VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
+| ------- | --------- | ---- | --------------------- |
+| 110 | PR01-DMZ | Root | - |
+| 111 | PRIVATE_VLAN_COMMUNITY | Root | - |
+| 112 | PRIVATE_VLAN_ISOLATED | Root | - |
+| 201 | ETREE_LEAF | Leaf | True |
+| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | Root | - |
+| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | Root | - |
+| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | Root | - |
 
 ### VLANs Device Configuration
 
@@ -3443,6 +3464,12 @@ vlan 111
 vlan 112
    name PRIVATE_VLAN_ISOLATED
    private-vlan isolated primary vlan 110
+!
+vlan 201
+   name ETREE_LEAF
+   !
+   e-tree role leaf
+      remote leaf host drop
 !
 vlan 3010
    name MLAG_iBGP_TENANT_A_PROJECT01
@@ -4262,6 +4289,7 @@ interface Ethernet5
    pim ipv4 hello interval 10
    pim ipv4 hello count 2.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Ethernet
    pim ipv4 bfd
    isis enable ISIS_TEST
    isis bfd
@@ -5562,6 +5590,7 @@ interface Port-Channel99
    pim ipv4 hello interval 15
    pim ipv4 hello count 4.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_PortChannel
    pim ipv4 bfd
 !
 interface Port-Channel100
@@ -6034,12 +6063,12 @@ interface Loopback100
 
 #### Tunnel Interfaces Summary
 
-| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
 | Tunnel1 | test ipv4 only | Tunnel-VRF | Underlay-VRF | 1500 | False | - | ipsec | Ethernet42 | 6.6.6.6 | True | - |
 | Tunnel2 | test ipv6 only | default | default | - | True | NAT-PROFILE-NO-VRF-2 | gre | Ethernet42 | dead:beef::1 | False | Profile-2 |
 | Tunnel3 | test dual stack | default | default | 1500 | - | - | ipsec | Ethernet42 | 1.1.1.1 | - | Profile-3 |
-| Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | Ethernet42 | 1.1.1.1 | - | - |
+| Tunnel4 | test no tcp_mss | default | default | 1500 | - | NAT-PROFILE-NO-VRF-1 | - | 10.10.10.10 | 1.1.1.1 | - | - |
 
 ##### IPv4
 
@@ -6113,7 +6142,7 @@ interface Tunnel4
    ipv6 enable
    ipv6 address beef::64/64
    ip nat service-profile NAT-PROFILE-NO-VRF-1
-   tunnel source interface Ethernet42
+   tunnel source 10.10.10.10
    tunnel destination 1.1.1.1
 ```
 
@@ -6675,6 +6704,7 @@ interface Vlan4094
    pim ipv4 hello interval 10
    pim ipv4 hello count 3.5
    pim ipv4 dr-priority 200
+   pim ipv4 neighbor filter Test_Filter_Vlan
    pim ipv4 bfd
    isis enable EVPN_UNDERLAY
    isis authentication mode sha key-id 5 rx-disabled level-1
@@ -6839,6 +6869,8 @@ ip virtual-router mac-address mlag-peer
 !
 ip routing ipv6 interfaces
 ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
@@ -7104,12 +7136,21 @@ router adaptive-virtual-topology
 
 - Nexthop fast fail-over is enabled.
 
+- Software Forwarding Hardware Offload MTU: 78
+
+#### VRF Software Forwarding Hardware Offload MTU
+
+| VRF | MTU |
+|-----|-----|
+| BLUE-C2 | 98 |
+
 #### VRF Route leaking
 
 | VRF | Source VRF | Route Map Policy |
 |-----|------------|------------------|
 | BLUE-C2 | BLUE-C1 | RM-BLUE-LEAKING |
 | BLUE-C2 | BLUE-C3 | RM-BLUE-LEAKING |
+| BLUE3 | BLUE-C1 | RM-BLUE-LEAKING |
 
 #### VRF Routes Dynamic Prefix-lists
 
@@ -7125,9 +7166,15 @@ router adaptive-virtual-topology
 router general
    router-id ipv4 10.1.2.3
    router-id ipv6 2001:beef:cafe::1
+   software forwarding hardware offload mtu 78
    hardware next-hop fast-failover
    !
+   vrf BLUE3
+      leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
+      exit
+   !
    vrf BLUE-C2
+      software forwarding hardware offload mtu 98
       leak routes source-vrf BLUE-C1 subscribe-policy RM-BLUE-LEAKING
       leak routes source-vrf BLUE-C3 subscribe-policy RM-BLUE-LEAKING
       routes dynamic prefix-list DYNAMIC_TEST_PREFIX_LIST_1
@@ -9958,12 +10005,12 @@ router pim sparse-mode
 
 #### PIM Sparse Mode Enabled Interfaces
 
-| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface |
-| -------------- | -------- | ---------- | ------------- | ----------- | --------------- |
-| Ethernet5 | - | IPv4 | True | 200 | - |
-| Port-Channel99 | - | IPv4 | - | 200 | - |
-| Vlan89 | - | IPv4 | - | - | Loopback0 |
-| Vlan4094 | - | IPv4 | - | 200 | - |
+| Interface Name | VRF Name | IP Version | Border Router | DR Priority | Local Interface | Neighbor Filter |
+| -------------- | -------- | ---------- | ------------- | ----------- | --------------- | --------------- |
+| Ethernet5 | - | IPv4 | True | 200 | - | Test_Filter_Ethernet |
+| Port-Channel99 | - | IPv4 | - | 200 | - | Test_Filter_PortChannel |
+| Vlan89 | - | IPv4 | - | - | Loopback0 | - |
+| Vlan4094 | - | IPv4 | - | 200 | - | Test_Filter_Vlan |
 
 ### Router MSDP
 
@@ -11935,6 +11982,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Hardware FIB
+
+### IP Hardware FIB Summary
+
+IP hardware FIB optimize prefixes profile: urpf-internet
+IP hardware FIB dynamic load balancing: Enabled
+IP hardware FIB dynamic load balancing flow-set-size: 4
+
+### IP Hardware FIB Configuration
+
+```eos
+ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 ```
 
 ## Errdisable
