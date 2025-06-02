@@ -28,11 +28,22 @@
 
 - Size of the flap detection time window: {{ mac_address_table.notification_host_flap.detection.window }} seconds
 {%     endif %}
+{%     if mac_address_table.static_entries is arista.avd.defined %}
+
+### Static MAC Address Entries
+
+| MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
+|-------------|------|--------------|-----------|------------------------|
+{%         for static_entry in mac_address_table.static_entries | sort(attribute='mac_address') | arista.avd.natural_sort('vlan') %}
+| {{ static_entry.mac_address }} | {{ static_entry.vlan }} | {{ static_entry.drop | arista.avd.default("-") }} | {{ static_entry.interface | arista.avd.default("-") }} | {{ static_entry.eligibility_forwarding | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
 
 ### MAC Address Table Device Configuration
 
 ```eos
 {%     include 'eos/mac-address-table-aging-time.j2' %}
+{%     include 'eos/mac-address-table-static-entries.j2' %}
 {%     include 'eos/mac-address-table-notification.j2' %}
 ```
 {% endif %}
