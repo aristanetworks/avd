@@ -11394,8 +11394,9 @@ router segment-security
 
 #### MTU Discovery Summary
 
-- MTU discovery for hosts is enabled with fragmentation-needed rate-limit of 100 packets-per-second.
-- MTU discovery interval is 100 seconds.
+- MTU discovery interval: 100 seconds.
+- MTU discovery for hosts on the LAN: Enabled
+- Maximum rate of ICMP packet generation per CPU core: 100 pps
 
 #### Interfaces Metric Bandwidth
 

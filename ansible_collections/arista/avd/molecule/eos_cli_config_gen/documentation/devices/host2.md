@@ -1473,7 +1473,7 @@ application traffic recognition
 
 #### MTU Discovery Summary
 
-- MTU discovery for hosts is enabled.
+- MTU discovery for hosts on the LAN: Enabled
 
 #### Router Path-selection Device Configuration
 
