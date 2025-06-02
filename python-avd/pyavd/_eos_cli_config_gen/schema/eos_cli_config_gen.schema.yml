@@ -5693,6 +5693,38 @@ keys:
                     valid_values:
                     - internet
                     - urpf-internet
+          load_balance_distribution:
+            type: dict
+            keys:
+              dynamic:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable dynamic load balancing.
+                    required: true
+                  flow_set_size:
+                    description: 'Set flow set size. Requires `enabled` key to be
+                      set to `true`.
+
+                      1: Allow up to 128 ECMP groups of 256 entries each.
+
+                      2: Allow up to 64 ECMP groups of 512 entries each.
+
+                      3: Allow up to 32 ECMP groups of 1024 entries each.
+
+                      4: Allow up to 16 ECMP groups of 2048 entries each.
+
+                      5: Allow up to 8 ECMP groups of 4096 entries each.
+
+                      6: Allow up to 4 ECMP groups of 8192 entries each.
+
+                      7: Allow up to 2 ECMP groups of 16384 entries each.'
+                    type: int
+                    min: 1
+                    max: 7
+                    convert_types:
+                    - str
   ip_http_client_source_interfaces:
     type: list
     items:

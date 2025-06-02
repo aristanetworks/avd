@@ -14343,13 +14343,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}}
+            class LoadBalanceDistribution(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Dynamic(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "flow_set_size": {"type": int}}
+                    enabled: bool
+                    """Enable dynamic load balancing."""
+                    flow_set_size: int | None
+                    """
+                    Set flow set size. Requires `enabled` key to be set to `true`.
+                    1: Allow up to 128 ECMP groups of 256
+                    entries each.
+                    2: Allow up to 64 ECMP groups of 512 entries each.
+                    3: Allow up to 32 ECMP groups of
+                    1024 entries each.
+                    4: Allow up to 16 ECMP groups of 2048 entries each.
+                    5: Allow up to 8 ECMP groups
+                    of 4096 entries each.
+                    6: Allow up to 4 ECMP groups of 8192 entries each.
+                    7: Allow up to 2 ECMP
+                    groups of 16384 entries each.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Dynamic.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable dynamic load balancing.
+                                flow_set_size:
+                                   Set flow set size. Requires `enabled` key to be set to `true`.
+                                   1: Allow up to 128 ECMP groups of 256
+                                   entries each.
+                                   2: Allow up to 64 ECMP groups of 512 entries each.
+                                   3: Allow up to 32 ECMP groups of
+                                   1024 entries each.
+                                   4: Allow up to 16 ECMP groups of 2048 entries each.
+                                   5: Allow up to 8 ECMP groups
+                                   of 4096 entries each.
+                                   6: Allow up to 4 ECMP groups of 8192 entries each.
+                                   7: Allow up to 2 ECMP
+                                   groups of 16384 entries each.
+
+                            """
+
+                _fields: ClassVar[dict] = {"dynamic": {"type": Dynamic}}
+                dynamic: Dynamic
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, dynamic: Dynamic | UndefinedType = Undefined) -> None:
+                        """
+                        LoadBalanceDistribution.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}, "load_balance_distribution": {"type": LoadBalanceDistribution}}
             optimize: Optimize
+            """Subclass of AvdModel."""
+            load_balance_distribution: LoadBalanceDistribution
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, optimize: Optimize | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, optimize: Optimize | UndefinedType = Undefined, load_balance_distribution: LoadBalanceDistribution | UndefinedType = Undefined
+                ) -> None:
                     """
                     Fib.
 
@@ -14358,6 +14432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         optimize: Subclass of AvdModel.
+                        load_balance_distribution: Subclass of AvdModel.
 
                     """
 
