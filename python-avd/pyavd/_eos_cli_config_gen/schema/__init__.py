@@ -26368,7 +26368,49 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"trident": {"type": Trident}, "sand": {"type": Sand}, "sfe": {"type": Sfe}}
+        class Fap(AvdModel):
+            """Subclass of AvdModel."""
+
+            class BufferingEgress(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"profile": {"type": str}}
+                profile: Literal["unicast", "balanced"] | None
+                """Preferred traffic profile."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, profile: Literal["unicast", "balanced"] | None | UndefinedType = Undefined) -> None:
+                        """
+                        BufferingEgress.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            profile: Preferred traffic profile.
+
+                        """
+
+            _fields: ClassVar[dict] = {"buffering_egress": {"type": BufferingEgress}}
+            buffering_egress: BufferingEgress
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, buffering_egress: BufferingEgress | UndefinedType = Undefined) -> None:
+                    """
+                    Fap.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        buffering_egress: Subclass of AvdModel.
+
+                    """
+
+        _fields: ClassVar[dict] = {"trident": {"type": Trident}, "sand": {"type": Sand}, "sfe": {"type": Sfe}, "fap": {"type": Fap}}
         trident: Trident
         """Subclass of AvdModel."""
         sand: Sand
@@ -26383,11 +26425,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         Subclass of AvdModel.
         """
+        fap: Fap
+        """Subclass of AvdModel."""
 
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, trident: Trident | UndefinedType = Undefined, sand: Sand | UndefinedType = Undefined, sfe: Sfe | UndefinedType = Undefined
+                self,
+                *,
+                trident: Trident | UndefinedType = Undefined,
+                sand: Sand | UndefinedType = Undefined,
+                sfe: Sfe | UndefinedType = Undefined,
+                fap: Fap | UndefinedType = Undefined,
             ) -> None:
                 """
                 Platform.
@@ -26405,6 +26454,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Sfe (Software Forwarding Engine) settings.
 
                        Subclass of AvdModel.
+                    fap: Subclass of AvdModel.
 
                 """
 

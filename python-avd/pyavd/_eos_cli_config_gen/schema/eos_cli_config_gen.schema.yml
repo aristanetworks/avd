@@ -10397,6 +10397,18 @@ keys:
                 description: 'RSS interface profile name to apply for the platform.
 
                   Needs system reload or Sfe agent restart for change to take effect.'
+      fap:
+        type: dict
+        keys:
+          buffering_egress:
+            type: dict
+            keys:
+              profile:
+                description: Preferred traffic profile.
+                type: str
+                valid_values:
+                - unicast
+                - balanced
   poe:
     type: dict
     keys:

@@ -1,0 +1,5 @@
+platform:
+  fap:
+    buffering_egress:
+      profile: balanced
+  

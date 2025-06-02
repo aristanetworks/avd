@@ -11052,6 +11052,12 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### TestProfile3
 
+#### Platform Fap Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | unicast |
+
 ### Platform Device Configuration
 
 ```eos
@@ -11061,6 +11067,7 @@ platform trident forwarding-table partition 2
 platform sand forwarding mode arad
 platform sand lag mode 512x32
 platform sand lag hardware-only
+platform fap buffering egress profile unicast
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15

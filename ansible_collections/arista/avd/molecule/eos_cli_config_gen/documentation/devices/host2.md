@@ -96,6 +96,9 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [Platform](#platform)
+  - [Platform Summary](#platform-summary)
+  - [Platform Device Configuration](#platform-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
@@ -1432,6 +1435,23 @@ router pim sparse-mode
 | Service type | Framed MTU |
 | ------------ | ---------- |
 | True | 1500 |
+
+## Platform
+
+### Platform Summary
+
+#### Platform Fap Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | balanced |
+
+### Platform Device Configuration
+
+```eos
+!
+platform fap buffering egress profile balanced
+```
 
 ## Application Traffic Recognition
 
