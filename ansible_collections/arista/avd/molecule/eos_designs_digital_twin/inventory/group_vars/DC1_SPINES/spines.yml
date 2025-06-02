@@ -1,0 +1,22 @@
+---
+
+type: spine
+
+spine:
+  defaults:
+    loopback_ipv4_pool: 10.255.0.0/27
+    bgp_as: 65100
+    digital_twin:
+      os_version: "4.33.1.1F"
+  nodes:
+    - name: dc1-spine1
+      platform: 7280R2
+      id: 1
+      mgmt_ip: 172.16.1.11/24
+
+    - name: dc1-spine2
+      platform: CUSTOM-PLATFORM
+      id: 2
+      mgmt_ip: 172.16.1.12/24
+      digital_twin:
+        mgmt_ip: 172.16.1.202/24

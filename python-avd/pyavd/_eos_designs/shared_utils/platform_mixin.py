@@ -24,7 +24,30 @@ class PlatformMixin(Protocol):
 
     @cached_property
     def platform(self: SharedUtilsProtocol) -> str | None:
+        if self.inputs.digital_twin_mode:
+            return self.digital_twin_casted_platform
         return default(self.node_config.platform, self.cv_topology_platform)
+
+    @cached_property
+    def digital_twin_casted_platform(self: SharedUtilsProtocol) -> str | None:
+        if self.inputs.digital_twin_mode:
+            original_platform = default(self.node_config.platform, self.cv_topology_platform)
+
+            if original_platform is not None:
+                for platform_setting in self.inputs.custom_platform_settings:
+                    if original_platform in platform_setting.platforms:
+                        return default(platform_setting.digital_twin.platform, original_platform)
+                for platform_setting in self.inputs.platform_settings:
+                    if original_platform in platform_setting.platforms:
+                        return default(platform_setting.digital_twin.platform, original_platform)
+
+            for platform_setting in self.inputs.custom_platform_settings:
+                if "default" in platform_setting.platforms:
+                    return default(platform_setting.digital_twin.platform, original_platform)
+            for platform_setting in self.inputs.platform_settings:
+                if "default" in platform_setting.platforms:
+                    return default(platform_setting.digital_twin.platform, original_platform)
+        return None
 
     @cached_property
     def platform_settings(self: SharedUtilsProtocol) -> EosDesigns.PlatformSettingsItem | EosDesigns.CustomPlatformSettingsItem:

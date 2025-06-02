@@ -1,0 +1,130 @@
+---
+
+servers:
+  # Test endpoints where individual adapters will be included/excluded
+  # All even ports between 10 and 19 are excluded from Digital Twin topology
+  - name: DC1-LEAF1-SERVER1
+    adapters:
+      # Standalone interfaces to stay
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet11, Ethernet11]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+
+      # Standalone interfaces to be filtered out
+      - endpoint_ports: [Eth3, Eth4]
+        switch_ports: [Ethernet12, Ethernet12]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        description: EXCLUDED CONNECTED_ENDPOINT ADAPTER
+        # digital_twin: false
+
+  - name: DC1-LEAF1-SERVER2
+    adapters:
+      # Dual-homed PO interface to stay
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet13, Ethernet13]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        port_channel:
+          mode: active
+
+      # Dual-homed PO interface to be filtered out
+      - endpoint_ports: [Eth3, Eth4]
+        switch_ports: [Ethernet14, Ethernet14]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        port_channel:
+          mode: active
+          description: EXCLUDED CONNECTED_ENDPOINT ADAPTER PO
+        description: EXCLUDED CONNECTED_ENDPOINT ADAPTER PO
+        # digital_twin: false
+
+  - name: DC1-LEAF1-SERVER3
+    # digital_twin:
+    #   generate_port_names: true
+    adapters:
+      # Single-homed PO interface to stay
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet15, Ethernet17]
+        switches: [dc1-leaf1a, dc1-leaf1a]
+        port_channel:
+          mode: active
+
+      # Single-homed PO interface to be filtered out
+      - endpoint_ports: [Eth3, Eth4]
+        switch_ports: [Ethernet16, Ethernet18]
+        switches: [dc1-leaf1a, dc1-leaf1a]
+        port_channel:
+          mode: active
+          description: EXCLUDED CONNECTED_ENDPOINT ADAPTER PO
+        description: EXCLUDED CONNECTED_ENDPOINT ADAPTER PO
+        # digital_twin: false
+
+      # Single standalone interfaces to stay
+      - endpoint_ports: [Eth5]
+        switch_ports: [Ethernet11]
+        switches: [dc1-leaf1c]
+        poe:
+          reboot:
+            action: maintain
+
+      # Single standalone interfaces to be filytered out
+      - endpoint_ports: [iLO]
+        switch_ports: [Ethernet12]
+        switches: [dc1-leaf1c]
+        poe:
+          reboot:
+            action: maintain
+        description: EXCLUDED CONNECTED_ENDPOINT ADAPTER
+        # digital_twin: false
+
+  # Test endpoint filtered out from Digital Twin topology
+  - name: DC1-LEAF1-SERVER4
+    # digital_twin:
+    #   enabled: false
+    adapters:
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet20, Ethernet20]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        description: EXCLUDED CONNECTED_ENDPOINT
+
+      - endpoint_ports: [Eth3, Eth4]
+        switch_ports: [Ethernet22, Ethernet22]
+        switches: [dc1-leaf1a, dc1-leaf1b]
+        port_channel:
+          mode: active
+          description: EXCLUDED CONNECTED_ENDPOINT
+        description: EXCLUDED CONNECTED_ENDPOINT
+
+      - endpoint_ports: [Eth5, Eth6]
+        switch_ports: [Ethernet24, Ethernet26]
+        switches: [dc1-leaf1a, dc1-leaf1a]
+        port_channel:
+          mode: active
+          description: EXCLUDED CONNECTED_ENDPOINT
+        description: EXCLUDED CONNECTED_ENDPOINT
+
+      - endpoint_ports: [iLO]
+        switch_ports: [Ethernet22]
+        switches: [dc1-leaf1c]
+        poe:
+          reboot:
+            action: maintain
+        description: EXCLUDED CONNECTED_ENDPOINT
+
+  # Test endpoint which will be excluded from Digital Twin topology due to the filtering of the parent switches
+  - name: DC1-LEAF2-SERVER1
+    adapters:
+      - endpoint_ports: [Eth1, Eth2]
+        switch_ports: [Ethernet12, Ethernet12]
+        switches: [dc1-leaf2a, dc1-leaf2b]
+
+      - endpoint_ports: [Eth3, Eth4]
+        switch_ports: [Ethernet14, Ethernet14]
+        switches: [dc1-leaf2a, dc1-leaf2b]
+        port_channel:
+          mode: active
+
+      - endpoint_ports: [iLO]
+        switch_ports: [Ethernet12]
+        switches: [dc1-leaf2c]
+        poe:
+          reboot:
+            action: maintain

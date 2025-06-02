@@ -1,0 +1,49 @@
+---
+
+fabric_name: FABRIC
+
+eos_designs_documentation:
+  topology_csv: true
+  p2p_links_csv: true
+
+custom_structured_configuration_prefix:
+  - 'custom_structured_configuration_'
+  - 'hw_custom_structured_configuration_'
+
+digital_twin_custom_structured_configuration_prefix:
+  - 'custom_structured_configuration_'
+  - 'digital_twin_custom_structured_configuration_'
+
+custom_structured_configuration_prompt: "virtual_friendly_prompt"
+
+hw_custom_structured_configuration_terminal:
+  length: 100
+  width: 100
+
+digital_twin_custom_structured_configuration_ntp:
+  servers:
+    - name: ntp_server_for_virtual_nodes_only.ntp.org
+
+custom_platform_settings:
+  - platforms:
+      - CUSTOM-PLATFORM
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+    tcam_profile: vxlan-routing
+    digital_twin:
+      platform: CloudEOS
+
+digital_twin:
+  environment: act
+  fabric:
+    username: act_user
+    password: act_pass
+  # endpoints:
+  #   enabled: true
+  #   platform: generic
+  #   os_version: ubuntu-2404-lts-amd64
+  #   mgmt_ipv4_pool: 10.10.10.0/24
+  #   username: act_endpoint_user
+  #   password: act_endpoint_password

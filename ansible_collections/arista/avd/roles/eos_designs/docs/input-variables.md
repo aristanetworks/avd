@@ -707,6 +707,12 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-wan-confi
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-ptp-configuration.md
 --8<--
 
+### Node type Digital Twin configuration
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/node-type-digital-twin-configuration.md
+--8<--
+
 ## Default interface settings
 
 - Set default uplink, downlink, and MLAG interfaces, which will be used if these interfaces are not defined on a device (either directly or through inheritance).
@@ -1655,4 +1661,10 @@ This feature currently provides the following configurations based on the given 
 
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
+--8<--
+
+## Digital Twin settings
+
+--8<--
+ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
 --8<--

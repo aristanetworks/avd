@@ -6035,13 +6035,6 @@ $defs:
         type: bool
         description: Set to false to disable the LLDP topology validation performed
           by the `eos_validate_state` role.
-      digital_twin:
-        type: bool
-        description: 'PREVIEW: This option is marked as "preview", meaning the data
-          models or generated configuration can change at any time.
-
-          Setting this flag to `true` includes the interfaces in "Digital Twin" mode.'
-        default: true
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -6072,18 +6065,6 @@ $defs:
         rack:
           type: str
           description: Rack is used for documentation purposes only.
-        digital_twin:
-          type: dict
-          description: 'PREVIEW: This option is marked as "preview", meaning the data
-            models or generated configuration can change at any time.'
-          keys:
-            enabled:
-              type: bool
-              description: "Setting this flag to `false` will exclude the endpoint
-                and all associated switch ports from the:\n  - generated Digital Twin
-                topology file.\n  - generated structured and rendered EOS configuration.\nThis
-                setting overrides global `digital_twin.endpoints.enabled` flag."
-              default: true
         adapters:
           type: list
           description: A list of adapters, group by adapters leveraging the same port-profile.
@@ -10060,11 +10041,6 @@ $defs:
               the associated node(s).'
             type: dict
             keys:
-              enabled:
-                type: bool
-                description: When set to `true`, includes the node(s) in the Digital
-                  Twin metadata.
-                default: false
               os_version:
                 type: str
                 description: 'Desired OS version.

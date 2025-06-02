@@ -53,6 +53,7 @@
   when: eos_designs_documentation.enable | arista.avd.default(true)
         or eos_designs_documentation.topology_csv | arista.avd.default(false)
         or eos_designs_documentation.p2p_links_csv | arista.avd.default(false)
+        or digital_twin_mode | arista.avd.default(false)
   arista.avd.eos_designs_documentation:
     structured_config_dir: "{{ structured_dir }}"
     structured_config_suffix: "{{ avd_structured_config_file_format }}"
@@ -64,6 +65,8 @@
     p2p_links_csv_file: "{{ fabric_dir }}/{{ fabric_name }}-p2p-links.csv"
     p2p_links_csv: "{{ eos_designs_documentation.p2p_links_csv | arista.avd.default(false) }}"
     toc: "{{ eos_designs_documentation.toc | arista.avd.default(true) }}"
+    digital_twin_file: "{{ root_dir }}/{{ fabric_name }}-topology.yml"
+    digital_twin: "{{ digital_twin_mode | arista.avd.default(false) }}"
     mode: "0o664"
   delegate_to: localhost
   check_mode: false

@@ -1,6 +1,9 @@
 # Copyright (c) 2024-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
+from typing import ClassVar
+
+
 class FabricDocumentation:
     """
     Object containing the requested documentation.
@@ -14,3 +17,4 @@ class FabricDocumentation:
     fabric_documentation: str = ""
     topology_csv: str = ""
     p2p_links_csv: str = ""
+    digital_twin: ClassVar[dict] = {}

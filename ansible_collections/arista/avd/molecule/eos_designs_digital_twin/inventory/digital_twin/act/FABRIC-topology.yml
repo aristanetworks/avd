@@ -1,0 +1,88 @@
+cloudeos:
+  username: act_user
+  password: act_pass
+veos:
+  username: act_user
+  password: act_pass
+nodes:
+- dc1-leaf1a:
+    node_type: veos
+    ip_addr: 172.16.1.101/24
+    version: 4.33.1.1F
+- dc1-leaf1b:
+    node_type: veos
+    ip_addr: 172.16.1.102/24
+    version: 4.33.1.1F
+- dc1-leaf1c:
+    node_type: veos
+    ip_addr: 172.16.1.151/24
+    version: 4.33.2F
+- dc1-leaf2a:
+    node_type: veos
+    ip_addr: 172.16.1.103/24
+    version: 4.33.1.1F
+- dc1-leaf2b:
+    node_type: veos
+    ip_addr: 172.16.1.104/24
+    version: 4.33.1.1F
+- dc1-leaf2c:
+    node_type: veos
+    ip_addr: 172.16.1.152/24
+    version: 4.33.2F
+- dc1-spine1:
+    node_type: veos
+    ip_addr: 172.16.1.11/24
+    version: 4.33.1.1F
+- dc1-spine2:
+    node_type: cloudeos
+    ip_addr: 172.16.1.202/24
+    version: 4.33.1.1F
+links:
+- connection:
+  - dc1-leaf1a:Ethernet1
+  - dc1-spine1:Ethernet1
+- connection:
+  - dc1-leaf1a:Ethernet2
+  - dc1-spine2:Ethernet1
+- connection:
+  - dc1-leaf1a:Ethernet8
+  - dc1-leaf1c:Ethernet1
+- connection:
+  - dc1-leaf1a:Ethernet9
+  - dc1-leaf1b:Ethernet9
+- connection:
+  - dc1-leaf1a:Ethernet10
+  - dc1-leaf1b:Ethernet10
+- connection:
+  - dc1-leaf1b:Ethernet1
+  - dc1-spine1:Ethernet2
+- connection:
+  - dc1-leaf1b:Ethernet2
+  - dc1-spine2:Ethernet2
+- connection:
+  - dc1-leaf1b:Ethernet8
+  - dc1-leaf1c:Ethernet2
+- connection:
+  - dc1-leaf2a:Ethernet1
+  - dc1-spine1:Ethernet3
+- connection:
+  - dc1-leaf2a:Ethernet2
+  - dc1-spine2:Ethernet3
+- connection:
+  - dc1-leaf2a:Ethernet8
+  - dc1-leaf2c:Ethernet1
+- connection:
+  - dc1-leaf2a:Ethernet9
+  - dc1-leaf2b:Ethernet9
+- connection:
+  - dc1-leaf2a:Ethernet10
+  - dc1-leaf2b:Ethernet10
+- connection:
+  - dc1-leaf2b:Ethernet1
+  - dc1-spine1:Ethernet4
+- connection:
+  - dc1-leaf2b:Ethernet2
+  - dc1-spine2:Ethernet4
+- connection:
+  - dc1-leaf2b:Ethernet8
+  - dc1-leaf2c:Ethernet2

@@ -5,6 +5,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from pyavd._errors import AristaAvdInvalidInputsError
+from pyavd._utils import get
 from pyavd.api.fabric_documentation import FabricDocumentation
 
 if TYPE_CHECKING:
@@ -21,6 +23,8 @@ def get_fabric_documentation(
     topology_csv: bool = False,
     p2p_links_csv: bool = False,
     toc: bool = True,
+    digital_twin: bool = False,
+    digital_twin_global_config: dict | None = None,
 ) -> FabricDocumentation:
     """
     Build and return the AVD fabric documentation.
@@ -39,6 +43,8 @@ def get_fabric_documentation(
         topology_csv: Returns topology CSV when set to True.
         p2p_links_csv: Returns P2P links CSV when set to True.
         toc: Skip TOC when set to False.
+        digital_twin: Returns Digital Twin topology when set to True.
+        digital_twin_global_config: Digital Twin global configuration.
 
     Returns:
         FabricDocumentation object containing the requested documentation areas.
@@ -66,6 +72,11 @@ def get_fabric_documentation(
         result.topology_csv = _get_topology_csv(fabric_documentation_facts)
     if p2p_links_csv:
         result.p2p_links_csv = _get_p2p_links_csv(fabric_documentation_facts)
+    if digital_twin:
+        if digital_twin_global_config is None:
+            digital_twin_global_config = {}
+        result.digital_twin = _get_digital_twin(fabric_documentation_facts, digital_twin_global_config)
+
     return result
 
 
@@ -108,3 +119,67 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     )
     csv_content.seek(0)
     return csv_content.read()
+
+
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts, digital_twin_global_config: dict) -> dict:
+    match get(digital_twin_global_config, "environment"):
+        case "act":
+            return _get_digital_twin_act(fabric_documentation_facts)
+        case _:
+            return {}
+
+
+def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> dict:
+    digital_twin_topology = {}
+    device_list = list(fabric_documentation_facts.avd_facts.keys())
+
+    digital_twin_node_types = set()
+    digital_twin_fabric_username = set()
+    digital_twin_fabric_password = set()
+    digital_twin_devices = []
+
+    for device in sorted(device_list):
+        if (x := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")) is not None:
+            digital_twin_node_types.add(x)
+        if (x := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.username")) is not None:
+            digital_twin_fabric_username.add(x)
+        if (x := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.password")) is not None:
+            digital_twin_fabric_password.add(x)
+
+        digital_twin_devices.append(
+            {
+                device: {
+                    "node_type": get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type"),
+                    "ip_addr": get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.ip_addr"),
+                    "version": get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.version"),
+                }
+            }
+        )
+
+    if len(digital_twin_fabric_username) != 1:
+        msg = f"Digital Twin username for ACT must match for all fabric nodes: {digital_twin_fabric_username}."
+        raise AristaAvdInvalidInputsError(msg)
+    if len(digital_twin_fabric_password) != 1:
+        msg = f"Digital Twin password for ACT must match for all fabric nodes: {digital_twin_fabric_username}."
+        raise AristaAvdInvalidInputsError(msg)
+
+    for digital_twin_node_type in sorted(digital_twin_node_types):
+        digital_twin_topology[digital_twin_node_type] = {
+            "username": next(iter(digital_twin_fabric_username)),
+            "password": next(iter(digital_twin_fabric_password)),
+        }
+
+    # Render nodes
+    digital_twin_topology["nodes"] = digital_twin_devices
+    # Render links
+    digital_twin_topology["links"] = [
+        {
+            "connection": [
+                topology_link["node"] + ":" + topology_link["node_interface"],
+                topology_link["peer"] + ":" + topology_link["peer_interface"],
+            ]
+        }
+        for topology_link in fabric_documentation_facts.topology_links
+    ]
+
+    return dict(digital_twin_topology)
