@@ -443,7 +443,6 @@ aaa accounting commands 0 default none
 | -------- | ----- |
 | Reversible password encryption | aes-256-gcm |
 | Signature verification | Enabled |
-| Signature verification SSL profile | cipher-v1.0-v1.3 |
 
 ### Management Security SSL Profiles
 
@@ -456,7 +455,7 @@ aaa accounting commands 0 default none
 ```eos
 !
 management security
-   signature-verification extension ssl profile cipher-v1.0-v1.3
+   signature-verification extension
    password encryption reversible aes-256-gcm
    !
    ssl profile cipher-v1.0-v1.3

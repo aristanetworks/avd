@@ -20722,7 +20722,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         Subclass of AvdModel.
         """
         signature_verification: SignatureVerification
-        """Subclass of AvdModel."""
+        """
+        Verify the SWIX signatures.
+
+        Subclass of AvdModel.
+        """
         password: Password
         """Subclass of AvdModel."""
         ssl_profiles: SslProfiles
@@ -20752,7 +20756,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Source of entropy.
 
                        Subclass of AvdModel.
-                    signature_verification: Subclass of AvdModel.
+                    signature_verification:
+                       Verify the SWIX signatures.
+
+                       Subclass of AvdModel.
                     password: Subclass of AvdModel.
                     ssl_profiles: Subclass of AvdList with `SslProfilesItem` items.
                     shared_secret_profiles: Subclass of AvdIndexedList with `SharedSecretProfilesItem` items. Primary key is `profile` (`str`).

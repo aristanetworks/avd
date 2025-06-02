@@ -7962,6 +7962,7 @@ keys:
             description: Only use entropy from the hardware source.
       signature_verification:
         type: dict
+        description: Verify the SWIX signatures.
         keys:
           enabled:
             type: bool
