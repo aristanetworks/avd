@@ -58,7 +58,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.mirror.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination") | Dictionary |  |  |  | Mirror destination. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.mirror.destination.cpu") | Boolean |  |  |  | CPU ports. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_interfaces</samp>](## "queue_monitor_length.mirror.destination.ethernet_interfaces") | String |  |  |  | Hardware Ethernet interface name.<br>Example - Ethernet4<br>        Ethernet4-6<br>        Ethernet3,4 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_interfaces</samp>](## "queue_monitor_length.mirror.destination.ethernet_interfaces") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "queue_monitor_length.mirror.destination.ethernet_interfaces.[]") | String |  |  |  | Hardware Ethernet interface name.<br>Example - Ethernet4 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_mode_gre</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.source") | String | Required |  |  | Source IP address of GRE tunnel. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.destination") | String | Required |  |  | Destination IP address of GRE tunnel. |
@@ -245,12 +246,11 @@
 
           # CPU ports.
           cpu: <bool>
+          ethernet_interfaces:
 
-          # Hardware Ethernet interface name.
-          # Example - Ethernet4
-          #         Ethernet4-6
-          #         Ethernet3,4
-          ethernet_interfaces: <str>
+              # Hardware Ethernet interface name.
+              # Example - Ethernet4
+            - <str>
           tunnel_mode_gre:
 
             # Source IP address of GRE tunnel.

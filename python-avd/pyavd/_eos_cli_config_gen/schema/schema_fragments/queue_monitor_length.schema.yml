@@ -69,12 +69,12 @@ keys:
                 type: bool
                 description: CPU ports.
               ethernet_interfaces:
-                type: str
-                description: |-
-                  Hardware Ethernet interface name.
-                  Example - Ethernet4
-                          Ethernet4-6
-                          Ethernet3,4
+                type: list
+                items:
+                  type: str
+                  description: |-
+                    Hardware Ethernet interface name.
+                    Example - Ethernet4
               tunnel_mode_gre:
                 type: dict
                 keys:

@@ -33293,6 +33293,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Destination(AvdModel):
                 """Subclass of AvdModel."""
 
+                class EthernetInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                EthernetInterfaces._item_type = str
+
                 class TunnelModeGre(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -33350,16 +33355,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
-                _fields: ClassVar[dict] = {"cpu": {"type": bool}, "ethernet_interfaces": {"type": str}, "tunnel_mode_gre": {"type": TunnelModeGre}}
+                _fields: ClassVar[dict] = {
+                    "cpu": {"type": bool},
+                    "ethernet_interfaces": {"type": EthernetInterfaces},
+                    "tunnel_mode_gre": {"type": TunnelModeGre},
+                }
                 cpu: bool | None
                 """CPU ports."""
-                ethernet_interfaces: str | None
-                """
-                Hardware Ethernet interface name.
-                Example - Ethernet4
-                        Ethernet4-6
-                        Ethernet3,4
-                """
+                ethernet_interfaces: EthernetInterfaces
+                """Subclass of AvdList with `str` items."""
                 tunnel_mode_gre: TunnelModeGre
                 """Subclass of AvdModel."""
 
@@ -33369,7 +33373,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         cpu: bool | None | UndefinedType = Undefined,
-                        ethernet_interfaces: str | None | UndefinedType = Undefined,
+                        ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
                         tunnel_mode_gre: TunnelModeGre | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -33380,11 +33384,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             cpu: CPU ports.
-                            ethernet_interfaces:
-                               Hardware Ethernet interface name.
-                               Example - Ethernet4
-                                       Ethernet4-6
-                                       Ethernet3,4
+                            ethernet_interfaces: Subclass of AvdList with `str` items.
                             tunnel_mode_gre: Subclass of AvdModel.
 
                         """

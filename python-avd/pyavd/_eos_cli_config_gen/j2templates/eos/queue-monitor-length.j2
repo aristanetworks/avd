@@ -46,9 +46,9 @@ queue-monitor length mirror
 {%         if queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) %}
 queue-monitor length mirror destination Cpu
 {%         endif %}
-{%         if queue_monitor_length.mirror.destination.ethernet_interfaces is arista.avd.defined %}
-queue-monitor length mirror destination {{ queue_monitor_length.mirror.destination.ethernet_interfaces }}
-{%         endif %}
+{%         for ethernet_interface in queue_monitor_length.mirror.destination.ethernet_interfaces | arista.avd.natural_sort %}
+queue-monitor length mirror destination {{ ethernet_interface }}
+{%         endfor %}
 {%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
 {%             set tunnel_mode_gre = queue_monitor_length.mirror.destination.tunnel_mode_gre %}
 {%             set tunnel_config = "queue-monitor length mirror destination tunnel mode gre source " ~ tunnel_mode_gre.source ~ " destination " ~ tunnel_mode_gre.destination %}
