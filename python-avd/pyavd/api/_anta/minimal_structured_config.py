@@ -50,7 +50,7 @@ def get_minimal_structured_configs(structured_configs: dict[str, dict]) -> dict[
         minimal_ethernet_interfaces = [
             MinimalEthernetInterface(name=intf["name"], ip_address=intf_ip)
             for intf in get(structured_config, "ethernet_interfaces", default=[])
-            if (intf_ip := get(intf, "ip_address")) and intf_ip != "dhcp" and get(intf, "switchport.enabled") is False
+            if (intf_ip := get(intf, "ip_address")) and get(intf, "switchport.enabled") is False
         ]
 
         # Create the minimal structured configuration

@@ -12,8 +12,8 @@
 
 {%     set tunnel_interfaces_ipv4 = [] %}
 {%     set tunnel_interfaces_ipv6 = [] %}
-| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source Interface | Destination | PMTU-Discovery | IPsec Profile |
-| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ---------------- | ----------- | -------------- | ------------- |
+| Interface | Description | VRF | Underlay VRF | MTU | Shutdown | NAT Profile | Mode | Source | Destination | PMTU-Discovery | IPsec Profile |
+| --------- | ----------- | --- | ------------ | --- | -------- | ----------- | ---- | ------ | ----------- | -------------- | ------------- |
 {%     for tunnel_interface in tunnel_interfaces | arista.avd.natural_sort('name') %}
 {%         if tunnel_interface.ipv6_address is arista.avd.defined %}
 {%             do tunnel_interfaces_ipv6.append(tunnel_interface) %}
@@ -28,11 +28,11 @@
 {%         set shutdown = tunnel_interface.shutdown | arista.avd.default('-') %}
 {%         set nat_profile = tunnel_interface.nat_profile | arista.avd.default('-') %}
 {%         set tunnel_mode = tunnel_interface.tunnel_mode | arista.avd.default("-") %}
-{%         set row_source_interface = tunnel_interface.source_interface | arista.avd.default("-") %}
+{%         set row_source = tunnel_interface.source_interface | default(tunnel_interface.source, "-") %}
 {%         set row_destination = tunnel_interface.destination | arista.avd.default("-") %}
 {%         set row_pmtu = tunnel_interface.path_mtu_discovery | arista.avd.default("-") %}
 {%         set ipsec_profile = tunnel_interface.ipsec_profile | arista.avd.default("-") %}
-| {{ tunnel_interface.name }} | {{ description }} | {{ vrf }} | {{ underlay_vrf }} | {{ mtu }} | {{ shutdown }} | {{ nat_profile }} | {{ tunnel_mode }} | {{ row_source_interface }} | {{ row_destination }} | {{ row_pmtu }} | {{ ipsec_profile }} |
+| {{ tunnel_interface.name }} | {{ description }} | {{ vrf }} | {{ underlay_vrf }} | {{ mtu }} | {{ shutdown }} | {{ nat_profile }} | {{ tunnel_mode }} | {{ row_source }} | {{ row_destination }} | {{ row_pmtu }} | {{ ipsec_profile }} |
 {%     endfor %}
 {# IPv4 #}
 {%     if tunnel_interfaces_ipv4 | length > 0 %}
