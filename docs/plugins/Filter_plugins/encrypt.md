@@ -19,7 +19,7 @@ Encrypt supported EOS passwords
 
 The filter encrypts a clear text password into EOS passwords.
 To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
-Note - For now this filter only supports encryption from type `7` and not type `8a` for OSPF, BGP and Tacacs passwords.
+Note - For now this filter only supports encryption from type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
 
 ## Parameters
 
