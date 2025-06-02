@@ -14343,13 +14343,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}}
+            class LoadBalanceDistribution(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Dynamic(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "flow_set_size": {"type": int}}
+                    enabled: bool
+                    """Enable dynamic load balancing."""
+                    flow_set_size: int | None
+                    """
+                    Set flow set size. Requires `enabled` key to be set to `true`.
+                    1: Allow up to 128 ECMP groups of 256
+                    entries each.
+                    2: Allow up to 64 ECMP groups of 512 entries each.
+                    3: Allow up to 32 ECMP groups of
+                    1024 entries each.
+                    4: Allow up to 16 ECMP groups of 2048 entries each.
+                    5: Allow up to 8 ECMP groups
+                    of 4096 entries each.
+                    6: Allow up to 4 ECMP groups of 8192 entries each.
+                    7: Allow up to 2 ECMP
+                    groups of 16384 entries each.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Dynamic.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable dynamic load balancing.
+                                flow_set_size:
+                                   Set flow set size. Requires `enabled` key to be set to `true`.
+                                   1: Allow up to 128 ECMP groups of 256
+                                   entries each.
+                                   2: Allow up to 64 ECMP groups of 512 entries each.
+                                   3: Allow up to 32 ECMP groups of
+                                   1024 entries each.
+                                   4: Allow up to 16 ECMP groups of 2048 entries each.
+                                   5: Allow up to 8 ECMP groups
+                                   of 4096 entries each.
+                                   6: Allow up to 4 ECMP groups of 8192 entries each.
+                                   7: Allow up to 2 ECMP
+                                   groups of 16384 entries each.
+
+                            """
+
+                _fields: ClassVar[dict] = {"dynamic": {"type": Dynamic}}
+                dynamic: Dynamic
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, dynamic: Dynamic | UndefinedType = Undefined) -> None:
+                        """
+                        LoadBalanceDistribution.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}, "load_balance_distribution": {"type": LoadBalanceDistribution}}
             optimize: Optimize
+            """Subclass of AvdModel."""
+            load_balance_distribution: LoadBalanceDistribution
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, optimize: Optimize | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, optimize: Optimize | UndefinedType = Undefined, load_balance_distribution: LoadBalanceDistribution | UndefinedType = Undefined
+                ) -> None:
                     """
                     Fib.
 
@@ -14358,6 +14432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         optimize: Subclass of AvdModel.
+                        load_balance_distribution: Subclass of AvdModel.
 
                     """
 
@@ -15621,7 +15696,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """IKE lifetime in hours."""
             encryption: Literal["3des", "aes128", "aes256"] | None
             """IKE encryption algorithm."""
-            dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None
+            dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None
             """Diffie-Hellman group for the key exchange."""
             integrity: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None
             """Integrity algorithm."""
@@ -15636,7 +15711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     local_id_fqdn: str | None | UndefinedType = Undefined,
                     ike_lifetime: int | None | UndefinedType = Undefined,
                     encryption: Literal["3des", "aes128", "aes256"] | None | UndefinedType = Undefined,
-                    dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None | UndefinedType = Undefined,
+                    dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None | UndefinedType = Undefined,
                     integrity: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -15753,7 +15828,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             esp: Esp
             """Subclass of AvdModel."""
-            pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None
+            pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None
 
             if TYPE_CHECKING:
 
@@ -15763,7 +15838,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str | UndefinedType = Undefined,
                     sa_lifetime: SaLifetime | UndefinedType = Undefined,
                     esp: Esp | UndefinedType = Undefined,
-                    pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 20, 21, 24] | None | UndefinedType = Undefined,
+                    pfs_dh_group: Literal[1, 2, 5, 14, 15, 16, 17, 19, 20, 21, 24] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     SaPoliciesItem.
@@ -63560,6 +63635,37 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         TrunkGroups._item_type = str
 
+        class ETree(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"leaf_role": {"type": bool}, "remote_leaf_host_drop": {"type": bool}}
+            leaf_role: bool | None
+            """Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role."""
+            remote_leaf_host_drop: bool | None
+            """
+            Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+            only applicable for VLANs operating in the 'Leaf' role.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, leaf_role: bool | None | UndefinedType = Undefined, remote_leaf_host_drop: bool | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    ETree.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        leaf_role: Set the VLAN into the E-Tree leaf role. By default all VLANs are in root role.
+                        remote_leaf_host_drop:
+                           Enables remote leaf hosts to instead be installed as explicit drop routes in the local FDB. This is
+                           only applicable for VLANs operating in the 'Leaf' role.
+
+                    """
+
         class PrivateVlan(AvdModel):
             """Subclass of AvdModel."""
 
@@ -63591,6 +63697,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "state": {"type": str},
             "address_locking": {"type": AddressLocking},
             "trunk_groups": {"type": TrunkGroups},
+            "e_tree": {"type": ETree},
             "private_vlan": {"type": PrivateVlan},
             "tenant": {"type": str},
         }
@@ -63603,6 +63710,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         trunk_groups: TrunkGroups
         """Subclass of AvdList with `str` items."""
+        e_tree: ETree
+        """Subclass of AvdModel."""
         private_vlan: PrivateVlan
         """Subclass of AvdModel."""
         tenant: str | None
@@ -63618,6 +63727,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 state: Literal["active", "suspend"] | None | UndefinedType = Undefined,
                 address_locking: AddressLocking | UndefinedType = Undefined,
                 trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                e_tree: ETree | UndefinedType = Undefined,
                 private_vlan: PrivateVlan | UndefinedType = Undefined,
                 tenant: str | None | UndefinedType = Undefined,
             ) -> None:
@@ -63633,6 +63743,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     state: state
                     address_locking: Subclass of AvdModel.
                     trunk_groups: Subclass of AvdList with `str` items.
+                    e_tree: Subclass of AvdModel.
                     private_vlan: Subclass of AvdModel.
                     tenant: Key only used for documentation or validation purposes.
 
