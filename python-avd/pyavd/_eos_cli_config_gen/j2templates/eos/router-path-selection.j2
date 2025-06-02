@@ -10,9 +10,11 @@ router path-selection
 {%     if router_path_selection.peer_dynamic_source is arista.avd.defined %}
    peer dynamic source {{ router_path_selection.peer_dynamic_source }}
 {%     endif %}
-{%     if router_path_selection.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
+{%     if router_path_selection.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined or router_path_selection.tcp_mss_ceiling.ipv4 is arista.avd.defined %}
 {%         set tcp_mss_ceiling_cli = "tcp mss ceiling ipv4" %}
-{%         if router_path_selection.tcp_mss_ceiling.ipv4_segment_size != "auto" %}
+{%         if router_path_selection.tcp_mss_ceiling.ipv4 is arista.avd.defined and router_path_selection.tcp_mss_ceiling.ipv4 != "auto" %}
+{%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ router_path_selection.tcp_mss_ceiling.ipv4 %}
+{%         elif router_path_selection.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined and router_path_selection.tcp_mss_ceiling.ipv4_segment_size != "auto" %}
 {%             set tcp_mss_ceiling_cli = tcp_mss_ceiling_cli ~ " " ~ router_path_selection.tcp_mss_ceiling.ipv4_segment_size %}
 {%         endif %}
    {{ tcp_mss_ceiling_cli }} {{ router_path_selection.tcp_mss_ceiling.direction | arista.avd.default("ingress") }}
