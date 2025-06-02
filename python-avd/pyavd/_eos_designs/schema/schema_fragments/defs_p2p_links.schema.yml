@@ -164,9 +164,9 @@ $defs:
             remove_in_version: 6.0.0
         multicast_pim_sm:
           type: bool
-          description: Enable/Disable Protocol Independent Multicast sparse mode. Requires the global `underlay_multicast_pim_sm` to be `true`.
+          description: Enable/Disable Protocol Independent Multicast sparse mode. Requires the global `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
         multicast_static:
-          description: Enable/Disable static Protocol Independent Multicast. Requires the global `underlay_multicast_static` to be `true`.
+          description: Enable/Disable static Protocol Independent Multicast. Requires the global `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
           type: bool
         flow_tracking:
           type: dict
