@@ -2896,6 +2896,11 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -2935,7 +2940,27 @@ keys:
               - str
               min: 64
               max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv4:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
             ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
+            ipv6:
               type: int
               convert_types:
               - str
@@ -6140,6 +6165,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -6221,6 +6247,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -11543,6 +11570,11 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  convert_types:
+                  - int
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -19432,6 +19464,14 @@ keys:
       nexthop_fast_failover:
         type: bool
         default: false
+      software_forwarding_hardware_offload_mtu:
+        description: MTU value for software-forwarded packets across all vrfs that
+          use hardware offload.
+        type: int
+        convert_types:
+        - str
+        min: 68
+        max: 65535
       vrfs:
         type: list
         primary_key: name
@@ -19466,6 +19506,16 @@ keys:
                       name:
                         type: str
                         description: Dynamic Prefix List Name.
+            software_forwarding_hardware_offload_mtu:
+              description: 'MTU value for software-forwarded packets within a specific
+                VRF that use hardware offload.
+
+                This setting overrides the global config for a specific vrf.'
+              type: int
+              convert_types:
+              - str
+              min: 68
+              max: 65535
       control_functions:
         type: dict
         description: 'Routing control functions (RCF) used to filter and update routes
@@ -20951,6 +21001,23 @@ keys:
         type: dict
         keys:
           ipv4_segment_size:
+            type: str
+            description: 'Segment Size for IPv4.
+
+              Can be an integer in the range 64-65515 or "auto".
+
+              "auto" will enable auto-discovery which clamps the TCP MSS value to
+              the minimum of all the direct paths
+
+              and multi-hop path MTU towards a remote VTEP (minus 40bytes to account
+              for IP + TCP header).'
+            convert_types:
+            - int
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: ipv4
+          ipv4:
             type: str
             description: 'Segment Size for IPv4.
 
@@ -22733,6 +22800,19 @@ keys:
                     log:
                       type: bool
                       description: Only supported when action is set to drop.
+  transceiver:
+    type: dict
+    keys:
+      dom_threshold_file:
+        type: str
+        description: 'CSV file path for DOM threshold values.
+
+          eg. `dom_threshold_file: flash:/dom_threshold.csv`
+
+          Note: Set `dom_threshold_file` to `default` for default Arista-standardized
+          thresholds.
+
+          eg. `dom_threshold_file: default`'
   transceiver_qsfp_default_mode_4x10:
     type: bool
     default: true
@@ -22830,7 +22910,16 @@ keys:
             `ipsec`: IPsec-over-IP encapsulation.'
         source_interface:
           type: str
-          description: Tunnel Source Interface Name.
+          description: 'Tunnel Source Interface Name.
+
+            Mutually exclusive with `source`, if both are defined `source_interface`
+            takes precedence.'
+        source:
+          type: str
+          description: 'Tunnel Source IPv4/IPv6 address.
+
+            Mutually exclusive with `source_interface`, if both are defined `source_interface`
+            takes precedence.'
         destination:
           type: str
           description: IPv4 or IPv6 Address Tunnel Destination.
@@ -23296,6 +23385,9 @@ keys:
                     Detection is enabled for PIM.
                 bidirectional:
                   type: bool
+                neighbor_filter:
+                  type: str
+                  description: Standard access list name.
                 hello:
                   type: dict
                   keys:
@@ -23615,6 +23707,18 @@ keys:
           items:
             type: str
             description: Trunk Group Name.
+        e_tree:
+          type: dict
+          keys:
+            leaf_role:
+              type: bool
+              description: Set the VLAN into the E-Tree leaf role. By default all
+                VLANs are in root role.
+            remote_leaf_host_drop:
+              type: bool
+              description: Enables remote leaf hosts to instead be installed as explicit
+                drop routes in the local FDB. This is only applicable for VLANs operating
+                in the 'Leaf' role.
         private_vlan:
           type: dict
           keys:
@@ -23757,6 +23861,13 @@ keys:
                       '
                   map_dscp_to_traffic_class_decapsulation:
                     type: bool
+                  dscp_ecn:
+                    type: dict
+                    keys:
+                      rewrite_bridged_enabled:
+                        type: bool
+                        description: Enable DSCP and ECN rewrite for VXLAN bridged
+                          packets.
               vlan_range:
                 type: dict
                 description: 'Set VNI on range of VLANs. Number of VLANs must equal
