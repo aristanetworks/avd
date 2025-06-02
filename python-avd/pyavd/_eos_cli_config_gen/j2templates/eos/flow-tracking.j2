@@ -139,9 +139,9 @@ flow tracking mirror-on-drop
 {%         set encapsulation = "encapsulation" %}
 {%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
 {%             set  encapsulation =  encapsulation ~ ' ipv4 ipv6' %}
-{%             if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
-{%                 set  encapsulation =  encapsulation ~ ' mpls' %}
-{%             endif %}
+{%         endif %}
+{%         if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
+{%             set  encapsulation =  encapsulation ~ ' mpls' %}
 {%         endif %}
    {{ encapsulation }}
 {%     endif %}
