@@ -22,6 +22,12 @@ vlans:
     private_vlan:
       type: isolated
       primary_vlan: 110
+  - id: 201
+    tenant: Tenant_B
+    name: ETREE_LEAF
+    e_tree:
+      leaf_role: true
+      remote_leaf_host_drop: true
   - id: 3010
     tenant: Tenant_A
     name: MLAG_iBGP_TENANT_A_PROJECT01
