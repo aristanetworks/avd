@@ -1696,7 +1696,7 @@ keys:
                     required: true
                     description: Authentication key.
                     convert_types:
-                    - int
+                      - int
                   key_type:
                     type: str
                     description: Authentication key type. EOS default is "7".
