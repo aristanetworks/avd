@@ -11969,9 +11969,9 @@ ip nat synchronization
 
 ### IP Hardware FIB Summary
 
-IP hardware fib optimize prefixes profile: urpf-internet
-IP hardware fib dynamic load balancing: Enabled
-IP hardware fib dynamic load balancing flow-set-size: 4
+IP hardware FIB optimize prefixes profile: urpf-internet
+IP hardware FIB dynamic load balancing: Enabled
+IP hardware FIB dynamic load balancing flow-set-size: 4
 
 ### IP Hardware FIB Configuration
 
