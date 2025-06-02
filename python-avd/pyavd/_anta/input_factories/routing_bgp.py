@@ -15,11 +15,11 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
     """
     Input factory class for the `VerifyBGPPeerSession` test.
 
-    This factory generates test inputs for IPv4 BGP peer session verification.
+    This factory generates test inputs for BGP peer session verification.
 
-    It collects BGP IPv4 neighbors that are not directly shutdown or not in shutdown
-    peer groups from the default VRF. If `allow_bgp_vrfs` is enabled in the input factory
-    settings, it will also include IPv4 BGP neighbors in VRFs.
+    It collects BGP neighbors and neighbor interfaces (RFC5549) that are not directly
+    shutdown or not in shutdown peer groups from the default VRF. If `allow_bgp_vrfs`
+    is enabled in the input factory settings, it will also include BGP neighbors in VRFs.
 
     When a fabric `peer` is provided in the neighbor structured config, the factory verifies
     that the peer is available (`is_deployed: true`) before including it in the test inputs.
@@ -34,4 +34,18 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
             )
             for neighbor in self.device.bgp_neighbors
         ]
-        return [VerifyBGPPeerSession.Input(bgp_peers=natural_sort(bgp_peers, sort_key="peer_address"))] if bgp_peers else None
+
+        # Build the RFC5549 peers
+        bgp_rfc5549_peers = [
+            BgpPeer(
+                interface=neighbor_intf.interface,
+                vrf=neighbor_intf.vrf,
+            )
+            for neighbor_intf in self.device.bgp_neighbor_interfaces
+        ]
+
+        return (
+            [VerifyBGPPeerSession.Input(bgp_peers=natural_sort(bgp_peers, sort_key="peer_address") + natural_sort(bgp_rfc5549_peers, sort_key="interface"))]
+            if bgp_peers
+            else None
+        )
