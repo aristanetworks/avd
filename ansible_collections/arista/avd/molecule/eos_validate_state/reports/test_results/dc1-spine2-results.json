@@ -336,7 +336,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies the power supplies state and input voltage."
   },
   {
     "name": "dc1-spine2",
@@ -344,7 +344,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies status.",
+    "description": "Verifies the power supplies state and input voltage.",
     "custom_field": "Accepted States: 'ok'"
   },
   {
@@ -402,7 +402,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies there are no illegal LACP packets in all port channels."
+    "description": "Verifies there are no illegal LACP packets in port channels."
   },
   {
     "name": "dc1-spine2",
@@ -545,7 +545,7 @@
     "categories": [
       "interfaces"
     ],
-    "description": "Verifies there are no inactive ports in all port channels."
+    "description": "Verifies there are no inactive ports in port channels."
   },
   {
     "name": "dc1-spine2",

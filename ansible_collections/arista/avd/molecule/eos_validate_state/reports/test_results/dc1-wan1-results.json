@@ -349,7 +349,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies status."
+    "description": "Verifies the power supplies state and input voltage."
   },
   {
     "name": "dc1-wan1",
@@ -357,7 +357,7 @@
     "categories": [
       "hardware"
     ],
-    "description": "Verifies the power supplies status.",
+    "description": "Verifies the power supplies state and input voltage.",
     "custom_field": "Accepted States: 'ok'"
   },
   {
