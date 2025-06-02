@@ -3503,10 +3503,10 @@ vlan 3012
 | 000a.000a.000a | 10 | - | Ethernet1 | - |
 | 000c.000c.000c | 10 | True | - | - |
 | 000d.000d.000d | 10 | - | Ethernet2 | - |
-| 000a.000a.000a | 20 | - | Ethernet1 | - |
-| 000b.000b.000b | 20 | - | Port-Channel1 | True |
 | 0001.0001.0001 | 20 | - | Ethernet2 | - |
 | 0002.0002.0002 | 20 | True | - | - |
+| 000a.000a.000a | 20 | - | Ethernet1 | - |
+| 000b.000b.000b | 20 | - | Port-Channel1 | True |
 | 000c.000c.000c | 30 | True | - | - |
 | 000e.000e.000e | 40 | - | - | - |
 
@@ -3519,10 +3519,10 @@ mac address-table aging-time 100
 mac address-table static 000a.000a.000a vlan 10 interface Ethernet1
 mac address-table static 000c.000c.000c vlan 10 drop
 mac address-table static 000d.000d.000d vlan 10 interface Ethernet2
-mac address-table static 000a.000a.000a vlan 20 interface Ethernet1
-mac address-table static 000b.000b.000b vlan 20 interface Port-Channel1 eligibility forwarding
 mac address-table static 0001.0001.0001 vlan 20 interface Ethernet2
 mac address-table static 0002.0002.0002 vlan 20 drop
+mac address-table static 000a.000a.000a vlan 20 interface Ethernet1
+mac address-table static 000b.000b.000b vlan 20 interface Port-Channel1 eligibility forwarding
 mac address-table static 000c.000c.000c vlan 30 drop
 !
 mac address-table notification host-flap logging
