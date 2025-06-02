@@ -23,6 +23,7 @@ management_security:
           sequential: 7
   signature_verification:
     enabled: true
+    ssl_profile: cipher-v1.0-v1.3
   ssl_profiles:
     - name: SSL_PROFILE
       fips_restrictions: true
