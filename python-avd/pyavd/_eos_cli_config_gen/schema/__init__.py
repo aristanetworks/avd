@@ -14343,13 +14343,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}}
+            class LoadBalanceDistribution(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Dynamic(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "flow_set_size": {"type": int}}
+                    enabled: bool
+                    """Enable dynamic load balancing."""
+                    flow_set_size: int | None
+                    """
+                    Set flow set size. Requires `enabled` key to be set to `true`.
+                    1: Allow up to 128 ECMP groups of 256
+                    entries each.
+                    2: Allow up to 64 ECMP groups of 512 entries each.
+                    3: Allow up to 32 ECMP groups of
+                    1024 entries each.
+                    4: Allow up to 16 ECMP groups of 2048 entries each.
+                    5: Allow up to 8 ECMP groups
+                    of 4096 entries each.
+                    6: Allow up to 4 ECMP groups of 8192 entries each.
+                    7: Allow up to 2 ECMP
+                    groups of 16384 entries each.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, enabled: bool | UndefinedType = Undefined, flow_set_size: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            Dynamic.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                enabled: Enable dynamic load balancing.
+                                flow_set_size:
+                                   Set flow set size. Requires `enabled` key to be set to `true`.
+                                   1: Allow up to 128 ECMP groups of 256
+                                   entries each.
+                                   2: Allow up to 64 ECMP groups of 512 entries each.
+                                   3: Allow up to 32 ECMP groups of
+                                   1024 entries each.
+                                   4: Allow up to 16 ECMP groups of 2048 entries each.
+                                   5: Allow up to 8 ECMP groups
+                                   of 4096 entries each.
+                                   6: Allow up to 4 ECMP groups of 8192 entries each.
+                                   7: Allow up to 2 ECMP
+                                   groups of 16384 entries each.
+
+                            """
+
+                _fields: ClassVar[dict] = {"dynamic": {"type": Dynamic}}
+                dynamic: Dynamic
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, dynamic: Dynamic | UndefinedType = Undefined) -> None:
+                        """
+                        LoadBalanceDistribution.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            dynamic: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"optimize": {"type": Optimize}, "load_balance_distribution": {"type": LoadBalanceDistribution}}
             optimize: Optimize
+            """Subclass of AvdModel."""
+            load_balance_distribution: LoadBalanceDistribution
             """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, optimize: Optimize | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, optimize: Optimize | UndefinedType = Undefined, load_balance_distribution: LoadBalanceDistribution | UndefinedType = Undefined
+                ) -> None:
                     """
                     Fib.
 
@@ -14358,6 +14432,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         optimize: Subclass of AvdModel.
+                        load_balance_distribution: Subclass of AvdModel.
 
                     """
 
@@ -18521,7 +18596,91 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"aging_time": {"type": int}, "notification_host_flap": {"type": NotificationHostFlap}}
+        class StaticEntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "mac_address": {"type": str},
+                "vlan": {"type": int},
+                "drop": {"type": bool},
+                "interface": {"type": str},
+                "eligibility_forwarding": {"type": bool},
+            }
+            mac_address: str
+            """
+            The static MAC address to configure.
+            The combination of 'mac_address' and 'vlan' must be unique
+            across all static entries.
+            """
+            vlan: int
+            """The VLAN ID associated with the MAC address."""
+            drop: bool | None
+            """
+            If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+            This option is
+            mutually exclusive with 'interface' and takes precedence if both are defined.
+            """
+            interface: str | None
+            """
+            The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
+            this MAC address and VLAN.
+            This option is mutually exclusive with 'drop'.
+            """
+            eligibility_forwarding: bool | None
+            """
+            Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+            This
+            option is only applicable when 'interface' is defined.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    mac_address: str | UndefinedType = Undefined,
+                    vlan: int | UndefinedType = Undefined,
+                    drop: bool | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                    eligibility_forwarding: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    StaticEntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        mac_address:
+                           The static MAC address to configure.
+                           The combination of 'mac_address' and 'vlan' must be unique
+                           across all static entries.
+                        vlan: The VLAN ID associated with the MAC address.
+                        drop:
+                           If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+                           This option is
+                           mutually exclusive with 'interface' and takes precedence if both are defined.
+                        interface:
+                           The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
+                           this MAC address and VLAN.
+                           This option is mutually exclusive with 'drop'.
+                        eligibility_forwarding:
+                           Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+                           This
+                           option is only applicable when 'interface' is defined.
+
+                    """
+
+        class StaticEntries(AvdList[StaticEntriesItem]):
+            """Subclass of AvdList with `StaticEntriesItem` items."""
+
+        StaticEntries._item_type = StaticEntriesItem
+
+        _fields: ClassVar[dict] = {
+            "aging_time": {"type": int},
+            "notification_host_flap": {"type": NotificationHostFlap},
+            "static_entries": {"type": StaticEntries},
+        }
         aging_time: int | None
         """
         Aging time in seconds 10-1000000.
@@ -18529,11 +18688,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         notification_host_flap: NotificationHostFlap
         """Subclass of AvdModel."""
+        static_entries: StaticEntries
+        """
+        Add static MAC address entries.
+
+        Subclass of AvdList with `StaticEntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, aging_time: int | None | UndefinedType = Undefined, notification_host_flap: NotificationHostFlap | UndefinedType = Undefined
+                self,
+                *,
+                aging_time: int | None | UndefinedType = Undefined,
+                notification_host_flap: NotificationHostFlap | UndefinedType = Undefined,
+                static_entries: StaticEntries | UndefinedType = Undefined,
             ) -> None:
                 """
                 MacAddressTable.
@@ -18546,6 +18715,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Aging time in seconds 10-1000000.
                        Enter 0 to disable aging.
                     notification_host_flap: Subclass of AvdModel.
+                    static_entries:
+                       Add static MAC address entries.
+
+                       Subclass of AvdList with `StaticEntriesItem` items.
 
                 """
 
