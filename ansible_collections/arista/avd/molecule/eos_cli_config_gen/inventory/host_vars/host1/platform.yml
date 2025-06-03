@@ -8,6 +8,14 @@ platform:
       active_profile: mc_example_profile
       queue_profiles:
         - name: mc_example_profile
+          ingress:
+            priority_groups:
+              - id: 2
+                threshold: 1/32
+                reserved:
+                  bytes: 3
+              - id: 1
+                threshold: 1
           multicast_queues:
             - id: 0
               reserved: 0
@@ -31,6 +39,15 @@ platform:
               unit: cells
               reserved: 0
         - name: unused_profile
+          ingress:
+            priority_groups:
+              - id: 5
+                threshold: 1/32
+                reserved:
+                  cells: 34
+              - id: 2
+                reserved:
+                  bytes: 55
           multicast_queues:
             - id: 0
               reserved: 0

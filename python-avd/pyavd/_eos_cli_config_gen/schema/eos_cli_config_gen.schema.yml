@@ -10106,6 +10106,57 @@ keys:
                   keys:
                     name:
                       type: str
+                    ingress:
+                      type: dict
+                      keys:
+                        priority_groups:
+                          type: list
+                          items:
+                            type: dict
+                            keys:
+                              id:
+                                type: int
+                                required: true
+                                valid_values:
+                                - 0
+                                - 1
+                                - 2
+                                - 3
+                                - 4
+                                - 5
+                                - 6
+                                - 7
+                              threshold:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '1'
+                                - 1/128
+                                - 1/16
+                                - 1/2
+                                - 1/32
+                                - 1/4
+                                - 1/64
+                                - 1/8
+                                - '2'
+                                - '4'
+                                - '8'
+                              reserved:
+                                type: dict
+                                keys:
+                                  bytes:
+                                    type: int
+                                    min: 1
+                                    max: 2097152
+                                    convert_types:
+                                    - str
+                                  cells:
+                                    type: int
+                                    min: 1
+                                    max: 8192
+                                    convert_types:
+                                    - str
                     multicast_queues:
                       type: list
                       primary_key: id

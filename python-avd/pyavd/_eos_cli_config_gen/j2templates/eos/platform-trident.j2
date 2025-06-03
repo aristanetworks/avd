@@ -8,6 +8,16 @@
 {%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 !
 platform trident mmu queue profile {{ profile.name }}
+{%         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%             if priority_group.reserved.bytes is arista.avd.defined %}
+    ingress priority-group {{ priority_group.id }} reserved {{ priority_group.reserved.bytes }}
+{%             elif priority_group.reserved.cells is arista.avd.defined %}
+    ingress priority-group {{ priority_group.id }} reserved {{ priority_group.reserved.cells }}
+{%             endif %}
+{%             if priority_group.threshold is arista.avd.defined %}
+    ingress priority-group {{ priority_group.id }} threshold {{ priority_group.threshold }}
+{%             endif %}
+{%         endfor %}
 {%         for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
 {%             if queue.reserved is arista.avd.defined %}
 {%                 set reserved_cli = "egress unicast queue " ~ queue.id ~ " reserved" %}

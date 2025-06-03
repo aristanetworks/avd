@@ -10966,23 +10966,27 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### mc_example_profile
 
-| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
-| ---- | ------------ | --------- | -------- | --------------- |
-| Unicast | 1 | - | 0 bytes | - |
-| Unicast | 2 | 1/8 | 0 cells | - |
-| Multicast | 0 | - | 0 bytes | - |
-| Multicast | 1 | 1/64 | 0 cells | - |
-| Multicast | 7 | 1/64 | 0 cells | - |
+| Type | Queue ID | Queue Parameter | Threshold | Reserved | Drop-Precedence |
+| ---- | -------- | --------------- | --------- | -------- | --------------- |
+| Unicast | 1 | Egress | - | 0 bytes | - |
+| Unicast | 2 | Egress | 1/8 | 0 cells | - |
+| Multicast | 0 | Egress | - | 0 bytes | - |
+| Multicast | 1 | Egress | 1/64 | 0 cells | - |
+| Multicast | 7 | Egress | 1/64 | 0 cells | - |
+| Priority Group | 1 | Ingress | 1 | - | - |
+| Priority Group | 2 | Ingress | 1/32 | 3 bytes| - |
 
 ##### unused_profile
 
-| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
-| ---- | ------------ | --------- | -------- | --------------- |
-| Unicast | 1 | - | 0 bytes | - |
-| Unicast | 2 | 1/8 | 0 cells | - |
-| Unicast | 7 | - | - bytes | - |
-| Multicast | 0 | - | 0 bytes | - |
-| Multicast | 1 | 8 | 0 cells | - |
+| Type | Queue ID | Queue Parameter | Threshold | Reserved | Drop-Precedence |
+| ---- | -------- | --------------- | --------- | -------- | --------------- |
+| Unicast | 1 | Egress | - | 0 bytes | - |
+| Unicast | 2 | Egress | 1/8 | 0 cells | - |
+| Unicast | 7 | Egress | - | - bytes | - |
+| Multicast | 0 | Egress | - | 0 bytes | - |
+| Multicast | 1 | Egress | 8 | 0 cells | - |
+| Priority Group | 2 | Ingress | - | 55 bytes| - |
+| Priority Group | 5 | Ingress | 1/32 | 34 cells| - |
 
 #### Platform Sand Summary
 

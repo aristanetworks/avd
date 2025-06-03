@@ -25695,6 +25695,87 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class QueueProfilesItem(AvdModel):
                     """Subclass of AvdModel."""
 
+                    class Ingress(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PriorityGroupsItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Reserved(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
+                                bytes: int | None
+                                cells: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        Reserved.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            bytes: bytes
+                                            cells: cells
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"id": {"type": int}, "threshold": {"type": str}, "reserved": {"type": Reserved}}
+                            id: Literal[0, 1, 2, 3, 4, 5, 6, 7]
+                            threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                            reserved: Reserved
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    id: Literal[0, 1, 2, 3, 4, 5, 6, 7] | UndefinedType = Undefined,
+                                    threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+                                    | None
+                                    | UndefinedType = Undefined,
+                                    reserved: Reserved | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PriorityGroupsItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        id: id
+                                        threshold: threshold
+                                        reserved: Subclass of AvdModel.
+
+                                    """
+
+                        class PriorityGroups(AvdList[PriorityGroupsItem]):
+                            """Subclass of AvdList with `PriorityGroupsItem` items."""
+
+                        PriorityGroups._item_type = PriorityGroupsItem
+
+                        _fields: ClassVar[dict] = {"priority_groups": {"type": PriorityGroups}}
+                        priority_groups: PriorityGroups
+                        """Subclass of AvdList with `PriorityGroupsItem` items."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, priority_groups: PriorityGroups | UndefinedType = Undefined) -> None:
+                                """
+                                Ingress.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    priority_groups: Subclass of AvdList with `PriorityGroupsItem` items.
+
+                                """
+
                     class MulticastQueuesItem(AvdModel):
                         """Subclass of AvdModel."""
 
@@ -25871,8 +25952,15 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     UnicastQueues._item_type = UnicastQueuesItem
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "multicast_queues": {"type": MulticastQueues}, "unicast_queues": {"type": UnicastQueues}}
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "ingress": {"type": Ingress},
+                        "multicast_queues": {"type": MulticastQueues},
+                        "unicast_queues": {"type": UnicastQueues},
+                    }
                     name: str
+                    ingress: Ingress
+                    """Subclass of AvdModel."""
                     multicast_queues: MulticastQueues
                     """Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`)."""
                     unicast_queues: UnicastQueues
@@ -25884,6 +25972,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
+                            ingress: Ingress | UndefinedType = Undefined,
                             multicast_queues: MulticastQueues | UndefinedType = Undefined,
                             unicast_queues: UnicastQueues | UndefinedType = Undefined,
                         ) -> None:
@@ -25895,6 +25984,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 name: name
+                                ingress: Subclass of AvdModel.
                                 multicast_queues: Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`).
                                 unicast_queues: Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`).
 
