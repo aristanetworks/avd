@@ -42,7 +42,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
         # Add Ethernet interfaces, considering `validate_state` knob and interface defaults
         for intf in self.structured_config.ethernet_interfaces:
             if intf.validate_state is False:
-                self.logger.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
             status = "adminDown" if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown) else "up"
             interfaces.append(InterfaceState(name=intf.name, status=status))
@@ -50,7 +50,7 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
         # Add Port-Channel interfaces, considering `validate_state` knob
         for intf in self.structured_config.port_channel_interfaces:
             if intf.validate_state is False:
-                self.logger.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, caller=intf.name)
+                self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
             interfaces.append(InterfaceState(name=intf.name, status="adminDown" if intf.shutdown else "up"))
 

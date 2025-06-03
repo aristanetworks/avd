@@ -3,11 +3,12 @@
 # that can be found in the LICENSE file.
 """Fixtures for testing the utils modules."""
 
-from pathlib import Path
-
 import logging
-import pytest
+from pathlib import Path
+from unittest.mock import Mock
 
+import pytest
+from ansible.cli import Display
 from ansible.inventory.manager import InventoryManager
 from ansible.parsing.dataloader import DataLoader
 from ansible.playbook.block import Block
@@ -35,7 +36,8 @@ class MinimalActionPlugin:
 
 @pytest.fixture
 def ansible_task(request: pytest.FixtureRequest) -> Task:
-    """Build a dummy Ansible task with parametrized data.
+    """
+    Build a dummy Ansible task with parametrized data.
 
     Parameters can be specified using indirect parametrization:
 
@@ -63,43 +65,25 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
     return Task.load(task_data, block, variable_manager=variable_manager, loader=loader)
 
 
-@pytest.fixture
-def anta_record() -> logging.LogRecord:
-    """Create a log record from an ANTA library."""
-    return logging.LogRecord(
-        name="anta.runner",
-        level=logging.INFO,
-        pathname="",
-        lineno=0,
-        msg="Hello from ANTA",
-        args=(),
-        exc_info=None
+def create_log_record(name: str, level: int, msg: str, unique_id: str | None = None, args: tuple = ()) -> logging.LogRecord:
+    """Helper function to create a LogRecord, optionally adding unique_id."""
+    record = logging.LogRecord(
+        name=name,
+        level=level,
+        pathname="dummy_path",
+        lineno=123,
+        msg=msg,
+        args=args,
+        exc_info=None,
+        func="dummy_func",
     )
-
-
-@pytest.fixture
-def non_anta_record() -> logging.LogRecord:
-    """Create a log record from a non-ANTA library."""
-    return logging.LogRecord(
-        name="pyavd",
-        level=logging.INFO,
-        pathname="",
-        lineno=0,
-        msg="Hello from PyAVD",
-        args=(),
-        exc_info=None
-    )
+    # Simulate the filter adding the unique_id *before* it reaches the handler
+    if unique_id:
+        record.unique_id = unique_id
+    return record
 
 
 @pytest.fixture
-def warning_record() -> logging.LogRecord:
-    """Create a warning log record from an ANTA library."""
-    return logging.LogRecord(
-        name="anta.runner",
-        level=logging.WARNING,
-        pathname="",
-        lineno=0,
-        msg="Warning from ANTA",
-        args=(),
-        exc_info=None
-    )
+def mock_display() -> Mock:
+    """Fixture for creating a mock Ansible Display object."""
+    return Mock(spec=Display)
