@@ -27,25 +27,29 @@ class VerifyBGPPeerSessionInputFactory(AntaTestInputFactory):
 
     def create(self) -> list[VerifyBGPPeerSession.Input] | None:
         """Create a list of inputs for the `VerifyBGPPeerSession` test."""
-        bgp_peers = [
-            BgpPeer(
-                peer_address=neighbor.ip_address,
-                vrf=neighbor.vrf,
-            )
-            for neighbor in self.device.bgp_neighbors
-        ]
-
-        # Build the RFC5549 peers
-        bgp_rfc5549_peers = [
-            BgpPeer(
-                interface=neighbor_intf.interface,
-                vrf=neighbor_intf.vrf,
-            )
-            for neighbor_intf in self.device.bgp_neighbor_interfaces
-        ]
-
-        return (
-            [VerifyBGPPeerSession.Input(bgp_peers=natural_sort(bgp_peers, sort_key="peer_address") + natural_sort(bgp_rfc5549_peers, sort_key="interface"))]
-            if bgp_peers
-            else None
+        bgp_peers = natural_sort(
+            [
+                BgpPeer(
+                    peer_address=neighbor.ip_address,
+                    vrf=neighbor.vrf,
+                )
+                for neighbor in self.device.bgp_neighbors
+            ],
+            sort_key="peer_address",
         )
+
+        # Add the RFC5549 peers
+        bgp_peers.extend(
+            natural_sort(
+                [
+                    BgpPeer(
+                        interface=neighbor_intf.interface,
+                        vrf=neighbor_intf.vrf,
+                    )
+                    for neighbor_intf in self.device.bgp_neighbor_interfaces
+                ],
+                sort_key="interface",
+            )
+        )
+
+        return [VerifyBGPPeerSession.Input(bgp_peers=bgp_peers)] if bgp_peers else None

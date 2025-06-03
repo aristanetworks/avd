@@ -102,38 +102,38 @@ class DeviceTestContext:
         return neighbor_interfaces
 
     def _process_bgp_neighbor_interface(
-        self, neighbor: EosCliConfigGen.RouterBgp.NeighborInterfacesItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborInterfacesItem, vrf: str
+        self, neighbor_interface: EosCliConfigGen.RouterBgp.NeighborInterfacesItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborInterfacesItem, vrf: str
     ) -> BgpNeighborInterface | None:
         """
-        Process a BGP neighbor interface (RFC5549) from the structured configuration and return a `BgpNeighbor` object.
+        Process a BGP neighbor interface (RFC5549) from the structured configuration and return a `BgpNeighborInterface` object.
 
-        Returns `None` if the neighbor should be skipped.
+        Returns `None` if the neighbor interface should be skipped.
         """
-        from_default_vrf = isinstance(neighbor, EosCliConfigGen.RouterBgp.NeighborInterfacesItem)
+        from_default_vrf = isinstance(neighbor_interface, EosCliConfigGen.RouterBgp.NeighborInterfacesItem)
         if from_default_vrf:
-            identifier = f"{neighbor.name}" if neighbor.peer is None else f"{neighbor.peer} ({neighbor.name})"
+            identifier = f"{neighbor_interface.name}" if neighbor_interface.peer is None else f"{neighbor_interface.peer} ({neighbor_interface.name})"
         else:
-            identifier = f"{neighbor.name} (VRF {vrf})"
+            identifier = f"{neighbor_interface.name} (VRF {vrf})"
 
-        # Skip neighbors in shutdown peer groups
+        # Skip neighbor interfaces in shutdown peer groups
         if (
-            neighbor.peer_group
-            and neighbor.peer_group in self.structured_config.router_bgp.peer_groups
-            and self.structured_config.router_bgp.peer_groups[neighbor.peer_group].shutdown is True
+            neighbor_interface.peer_group
+            and neighbor_interface.peer_group in self.structured_config.router_bgp.peer_groups
+            and self.structured_config.router_bgp.peer_groups[neighbor_interface.peer_group].shutdown is True
         ):
-            LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor.peer_group)
+            LOGGER.debug("<%s> Skipped BGP peer %s - Peer group %s shutdown", self.hostname, identifier, neighbor_interface.peer_group)
             return None
 
         # When peer field is set, check if the peer device is in the fabric and deployed
         if (
             from_default_vrf
-            and neighbor.peer
-            and (neighbor.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor.peer].is_deployed)
+            and neighbor_interface.peer
+            and (neighbor_interface.peer not in self.minimal_structured_configs or not self.minimal_structured_configs[neighbor_interface.peer].is_deployed)
         ):
             LOGGER.debug("<%s> Skipped BGP peer %s - Peer not in fabric or not deployed", self.hostname, identifier)
             return None
 
-        return BgpNeighborInterface(interface=neighbor.name, vrf=vrf)
+        return BgpNeighborInterface(interface=neighbor_interface.name, vrf=vrf)
 
     def _process_bgp_neighbor(
         self, neighbor: EosCliConfigGen.RouterBgp.NeighborsItem | EosCliConfigGen.RouterBgp.VrfsItem.NeighborsItem, vrf: str
