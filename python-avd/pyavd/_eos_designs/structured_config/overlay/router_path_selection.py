@@ -28,7 +28,7 @@ class RouterPathSelectionMixin(Protocol):
         if not self.shared_utils.is_wan_router:
             return
 
-        self.structured_config.router_path_selection.tcp_mss_ceiling.ipv4_segment_size = self.shared_utils.node_config.dps_mss_ipv4
+        self.structured_config.router_path_selection.tcp_mss_ceiling.ipv4 = self.shared_utils.node_config.dps_mss_ipv4
         self._set_path_groups()
 
         if self.shared_utils.is_wan_server:

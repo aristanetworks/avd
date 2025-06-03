@@ -1430,7 +1430,7 @@ $defs:
             documentation_options:
               table: node-type-wan-configuration
             type: str
-            $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4_segment_size"
+            $ref: "eos_cli_config_gen#/keys/router_path_selection/keys/tcp_mss_ceiling/keys/ipv4"
             description: IPv4 MSS value configured under "router path-selection" on WAN Devices.
             default: "auto"
           l3_interfaces:

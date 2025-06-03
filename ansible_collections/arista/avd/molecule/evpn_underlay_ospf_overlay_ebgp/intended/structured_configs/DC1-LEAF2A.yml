@@ -345,6 +345,11 @@ vlan_interfaces:
   ip_address: 10.255.251.2/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha256
+    key: mgvsvKEM7qbVF/bKX6s8yWx3xQ8DPNth
   mtu: 1500
 - name: Vlan4094
   description: MLAG
