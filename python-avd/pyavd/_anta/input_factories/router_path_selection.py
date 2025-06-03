@@ -38,18 +38,18 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
             if not path_group.static_peers:
                 self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
+
             static_peers: list[EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem] = []
-            for peers_data in path_group.static_peers:
-                if not peers_data.router_ip:
-                    self.logger_adapter.debug(LogMessage.PATH_GROUP_STATIC_PEER_NO_ROUTER_IP, wan_router_server=peers_data.name)
+            for static_peer in path_group.static_peers:
+                if not static_peer.ipv4_addresses:
+                    self.logger_adapter.debug(LogMessage.PATH_GROUP_STATIC_PEER_NO_IPV4_ADDRESSES, path_group.name, wan_router_server=static_peer.name)
                     continue
-                if not peers_data.ipv4_addresses:
-                    self.logger_adapter.debug(LogMessage.PATH_GROUP_STATIC_PEER_NO_IPV4_ADDRESSES, wan_router_server=peers_data.name)
-                    continue
-                static_peers.append(peers_data)
+                static_peers.append(static_peer)
+
             if not static_peers:
                 self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
                 continue
+
             for interface in path_group.local_interfaces:
                 # Get the source IP address for the local interface
                 ip_address = (
@@ -57,9 +57,6 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
                     if interface.name in self.structured_config.ethernet_interfaces
                     else None
                 )
-                if ip_address is None:
-                    self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface)
-                    continue
                 if ip_address == "dhcp":
                     self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface)
                     continue
@@ -72,4 +69,4 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
                         )
                         all_dps_paths.append(dps_path)
 
-        return [VerifySpecificPath.Input(paths=natural_sort(all_dps_paths))] if all_dps_paths else None
+        return [VerifySpecificPath.Input(paths=natural_sort(all_dps_paths, sort_key="peer"))] if all_dps_paths else None

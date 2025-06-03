@@ -21,17 +21,13 @@ AVD_TEST_INDEX: list[TestSpec] = [
         input_factory=VerifyAPIHttpsSSLInputFactory,
     ),
     TestSpec(
-        test_class=VerifyAVTPathHealth,
-        conditional_keys=[StructuredConfigKey.ROUTER_AVT],
-    ),
-    TestSpec(
         test_class=VerifyAVTRole,
         conditional_keys=[StructuredConfigKey.ROUTER_AVT],
         input_factory=VerifyAVTRoleInputFactory,
     ),
     TestSpec(
         test_class=VerifyAVTSpecificPath,
-        conditional_keys=[StructuredConfigKey.ROUTER_AVT_VRFS, StructuredConfigKey.ROUTER_PATH_SELECTION_PATH_GROUPS],
+        conditional_keys=[StructuredConfigKey.ROUTER_AVT, StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifyAVTSpecificPathInputFactory,
     ),
     TestSpec(
@@ -124,12 +120,8 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyNTP,
     ),
     TestSpec(
-        test_class=VerifyPathsHealth,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
-    ),
-    TestSpec(
         test_class=VerifySpecificPath,
-        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION_PATH_GROUPS],
+        conditional_keys=[StructuredConfigKey.ROUTER_PATH_SELECTION],
         input_factory=VerifySpecificPathInputFactory,
     ),
     TestSpec(

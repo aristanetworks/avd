@@ -21,9 +21,7 @@ class StructuredConfigKey(Enum):
     ROUTER_BGP = "router_bgp"
     SERVICE_ROUTING_PROTOCOLS_MODEL = "service_routing_protocols_model"
     ROUTER_AVT = "router_adaptive_virtual_topology"
-    ROUTER_AVT_VRFS = "router_adaptive_virtual_topology.vrfs"
     ROUTER_PATH_SELECTION = "router_path_selection"
-    ROUTER_PATH_SELECTION_PATH_GROUPS = "router_path_selection.path_groups"
     IP_NAME_SERVERS = "ip_name_servers"
 
     @classmethod

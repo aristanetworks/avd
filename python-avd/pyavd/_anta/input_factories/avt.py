@@ -35,11 +35,11 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
     Input factory class for the `VerifyAVTSpecificPath` test.
 
     It constructs a list of static peer addresses for each device by searching through
-    router_path_selection.path_groups.static_peers.
+    `router_path_selection.path_groups.static_peers`.
     """
 
     def create(self) -> list[VerifyAVTSpecificPath.Input] | None:
-        """Create a list of inputs for the `VerifyAVTRole` test."""
+        """Create a list of inputs for the `VerifyAVTSpecificPath` test."""
         avt_vrfs = self.structured_config.router_adaptive_virtual_topology.vrfs
         path_groups = self.structured_config.router_path_selection.path_groups
         static_peers: set[str] = set()
@@ -48,11 +48,9 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
             if not path_group.static_peers:
                 self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
-            for peers_data in path_group.static_peers:
-                if not peers_data.router_ip:
-                    self.logger_adapter.debug(LogMessage.PATH_GROUP_STATIC_PEER_NO_ROUTER_IP, wan_router_server=peers_data.name)
-                    continue
-                static_peers.add(peers_data.router_ip)
+            for static_peer in path_group.static_peers:
+                static_peers.add(static_peer.router_ip)
+
         if not static_peers:
             self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
             return None
@@ -61,7 +59,8 @@ class VerifyAVTSpecificPathInputFactory(AntaTestInputFactory):
             AVTPath(avt_name=avt_profile.name, vrf=vrf.name, destination=dst_address, next_hop=dst_address)
             for vrf in avt_vrfs
             for avt_profile in vrf.profiles
+            if avt_profile.name
             for dst_address in static_peers
         ]
 
-        return [VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths))] if avt_paths else None
+        return [VerifyAVTSpecificPath.Input(avt_paths=natural_sort(avt_paths, sort_key="avt_name"))] if avt_paths else None
