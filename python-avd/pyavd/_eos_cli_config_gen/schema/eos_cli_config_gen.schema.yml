@@ -5693,6 +5693,38 @@ keys:
                     valid_values:
                     - internet
                     - urpf-internet
+          load_balance_distribution:
+            type: dict
+            keys:
+              dynamic:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable dynamic load balancing.
+                    required: true
+                  flow_set_size:
+                    description: 'Set flow set size. Requires `enabled` key to be
+                      set to `true`.
+
+                      1: Allow up to 128 ECMP groups of 256 entries each.
+
+                      2: Allow up to 64 ECMP groups of 512 entries each.
+
+                      3: Allow up to 32 ECMP groups of 1024 entries each.
+
+                      4: Allow up to 16 ECMP groups of 2048 entries each.
+
+                      5: Allow up to 8 ECMP groups of 4096 entries each.
+
+                      6: Allow up to 4 ECMP groups of 8192 entries each.
+
+                      7: Allow up to 2 ECMP groups of 16384 entries each.'
+                    type: int
+                    min: 1
+                    max: 7
+                    convert_types:
+                    - str
   ip_http_client_source_interfaces:
     type: list
     items:
@@ -6165,6 +6197,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -6246,6 +6279,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -7392,6 +7426,45 @@ keys:
                 max: 10
                 convert_types:
                 - str
+      static_entries:
+        type: list
+        description: Add static MAC address entries.
+        items:
+          type: dict
+          keys:
+            mac_address:
+              type: str
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              description: 'The static MAC address to configure.
+
+                The combination of ''mac_address'' and ''vlan'' must be unique across
+                all static entries.'
+            vlan:
+              type: int
+              required: true
+              convert_types:
+              - str
+              description: The VLAN ID associated with the MAC address.
+            drop:
+              type: bool
+              description: 'If true, traffic destined for this MAC address on the
+                specified VLAN will be dropped.
+
+                This option is mutually exclusive with ''interface'' and takes precedence
+                if both are defined.'
+            interface:
+              type: str
+              description: 'The allowed hardware Ethernet interface, LAG interface,
+                or VXLAN tunnel interface associated with this MAC address and VLAN.
+
+                This option is mutually exclusive with ''drop''.'
+            eligibility_forwarding:
+              type: bool
+              description: 'Enable the ability to forward traffic on the specified
+                interface and VLAN for this MAC address.
+
+                This option is only applicable when ''interface'' is defined.'
   mac_security:
     type: dict
     display_name: MAC Security (MACsec)
@@ -23666,6 +23739,18 @@ keys:
           items:
             type: str
             description: Trunk Group Name.
+        e_tree:
+          type: dict
+          keys:
+            leaf_role:
+              type: bool
+              description: Set the VLAN into the E-Tree leaf role. By default all
+                VLANs are in root role.
+            remote_leaf_host_drop:
+              type: bool
+              description: Enables remote leaf hosts to instead be installed as explicit
+                drop routes in the local FDB. This is only applicable for VLANs operating
+                in the 'Leaf' role.
         private_vlan:
           type: dict
           keys:
