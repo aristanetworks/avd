@@ -7426,6 +7426,45 @@ keys:
                 max: 10
                 convert_types:
                 - str
+      static_entries:
+        type: list
+        description: Add static MAC address entries.
+        items:
+          type: dict
+          keys:
+            mac_address:
+              type: str
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              description: 'The static MAC address to configure.
+
+                The combination of ''mac_address'' and ''vlan'' must be unique across
+                all static entries.'
+            vlan:
+              type: int
+              required: true
+              convert_types:
+              - str
+              description: The VLAN ID associated with the MAC address.
+            drop:
+              type: bool
+              description: 'If true, traffic destined for this MAC address on the
+                specified VLAN will be dropped.
+
+                This option is mutually exclusive with ''interface'' and takes precedence
+                if both are defined.'
+            interface:
+              type: str
+              description: 'The allowed hardware Ethernet interface, LAG interface,
+                or VXLAN tunnel interface associated with this MAC address and VLAN.
+
+                This option is mutually exclusive with ''drop''.'
+            eligibility_forwarding:
+              type: bool
+              description: 'Enable the ability to forward traffic on the specified
+                interface and VLAN for this MAC address.
+
+                This option is only applicable when ''interface'' is defined.'
   mac_security:
     type: dict
     display_name: MAC Security (MACsec)
