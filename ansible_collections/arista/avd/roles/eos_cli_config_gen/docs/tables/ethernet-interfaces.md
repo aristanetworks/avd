@@ -202,8 +202,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "ethernet_interfaces.[].mac_security.profile") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ntp_serve</samp>](## "ethernet_interfaces.[].ntp_serve") | Boolean |  |  |  | Enable/disable serving NTP to clients. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;tcp_mss_ceiling</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling") | Dictionary |  |  |  | The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header<br>of TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv4_segment_size") | Integer |  |  | Min: 64<br>Max: 65475 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv6_segment_size") | Integer |  |  | Min: 64<br>Max: 65475 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv4_segment_size") <span style="color:red">deprecated</span> | Integer |  |  | Min: 64<br>Max: 65475 | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ipv4</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv4") | Integer |  |  | Min: 64<br>Max: 65475 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_segment_size</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv6_segment_size") <span style="color:red">deprecated</span> | Integer |  |  | Min: 64<br>Max: 65475 | <span style="color:red">This key is deprecated. Support will be removed in AVD version 6.0.0. Use <samp>ipv6</samp> instead.</span> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.ipv6") | Integer |  |  | Min: 64<br>Max: 65475 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;direction</samp>](## "ethernet_interfaces.[].tcp_mss_ceiling.direction") | String |  |  | Valid Values:<br>- <code>egress</code><br>- <code>ingress</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;channel_group</samp>](## "ethernet_interfaces.[].channel_group") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "ethernet_interfaces.[].channel_group.id") | Integer |  |  |  |  |
@@ -1062,8 +1064,16 @@
         # The TCP MSS clamping feature involves clamping the maximum segment size (MSS) in the TCP header
         # of TCP SYN packets if it exceeds the configured MSS ceiling limit for the interface.
         tcp_mss_ceiling:
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>ipv4</samp> instead.
           ipv4_segment_size: <int; 64-65475>
+          ipv4: <int; 64-65475>
+          # This key is deprecated.
+          # Support will be removed in AVD version 6.0.0.
+          # Use <samp>ipv6</samp> instead.
           ipv6_segment_size: <int; 64-65475>
+          ipv6: <int; 64-65475>
           direction: <str; "egress" | "ingress">
         channel_group:
           id: <int>

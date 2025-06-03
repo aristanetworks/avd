@@ -8591,11 +8591,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+        cv_tags_topology_type: str | None
         """
-        PREVIEW: This key is currently not supported
-        Type that CloudVision should use when generating the
-        Topology.
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+        "edge".
         """
 
         if TYPE_CHECKING:
@@ -8624,7 +8623,7 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+                cv_tags_topology_type: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 CustomNodeTypeKeysItem.
@@ -8707,9 +8706,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       PREVIEW: This key is currently not supported
-                       Type that CloudVision should use when generating the
-                       Topology.
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+                       "edge".
 
                 """
 
@@ -9115,11 +9113,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+        cv_tags_topology_type: str | None
         """
-        PREVIEW: This key is currently not supported
-        Type that CloudVision should use when generating the
-        Topology.
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+        "edge".
         """
 
         if TYPE_CHECKING:
@@ -9148,7 +9145,7 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+                cv_tags_topology_type: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 NodeTypeKeysItem.
@@ -9231,9 +9228,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       PREVIEW: This key is currently not supported
-                       Type that CloudVision should use when generating the
-                       Topology.
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+                       "edge".
 
                 """
 
@@ -21856,6 +21852,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
                         "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -22399,6 +22396,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
                     """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -22757,6 +22756,8 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -23142,6 +23143,7 @@ class EosDesigns(EosDesignsRootModel):
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
                                 spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -25945,6 +25947,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_priority": {"type": int, "default": 32768},
                             "spanning_tree_root_super": {"type": bool, "default": False},
                             "spanning_tree_mst_pvst_boundary": {"type": bool},
+                            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                             "virtual_router_mac_address": {"type": str},
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -26498,6 +26501,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Default value: `False`"""
                         spanning_tree_mst_pvst_boundary: bool | None
                         """Enable MST PVST border ports."""
+                        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                        """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
                         """Virtual router mac address for anycast gateway."""
                         inband_mgmt_interface: str | None
@@ -26858,6 +26863,8 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
                                 spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                                | UndefinedType = Undefined,
                                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -27250,6 +27257,7 @@ class EosDesigns(EosDesignsRootModel):
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
                                     spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
                                        Pointer to interface used for inband management.
@@ -29978,6 +29986,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
                         "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -30534,6 +30543,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
                     """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -30894,6 +30905,8 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -31288,6 +31301,7 @@ class EosDesigns(EosDesignsRootModel):
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
                                 spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -34075,6 +34089,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
                         "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -34628,6 +34643,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
                     """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -34988,6 +35005,8 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -35380,6 +35399,7 @@ class EosDesigns(EosDesignsRootModel):
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
                                 spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -45265,6 +45285,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
                         "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -45808,6 +45829,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
                     """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -46166,6 +46189,8 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -46551,6 +46576,7 @@ class EosDesigns(EosDesignsRootModel):
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
                                 spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -49354,6 +49380,7 @@ class EosDesigns(EosDesignsRootModel):
                             "spanning_tree_priority": {"type": int, "default": 32768},
                             "spanning_tree_root_super": {"type": bool, "default": False},
                             "spanning_tree_mst_pvst_boundary": {"type": bool},
+                            "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                             "virtual_router_mac_address": {"type": str},
                             "inband_mgmt_interface": {"type": str},
                             "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -49907,6 +49934,8 @@ class EosDesigns(EosDesignsRootModel):
                         """Default value: `False`"""
                         spanning_tree_mst_pvst_boundary: bool | None
                         """Enable MST PVST border ports."""
+                        spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                        """Specify range of port-ids to reserve for port-channels."""
                         virtual_router_mac_address: str | None
                         """Virtual router mac address for anycast gateway."""
                         inband_mgmt_interface: str | None
@@ -50267,6 +50296,8 @@ class EosDesigns(EosDesignsRootModel):
                                 spanning_tree_priority: int | UndefinedType = Undefined,
                                 spanning_tree_root_super: bool | UndefinedType = Undefined,
                                 spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                                spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                                | UndefinedType = Undefined,
                                 virtual_router_mac_address: str | None | UndefinedType = Undefined,
                                 inband_mgmt_interface: str | None | UndefinedType = Undefined,
                                 inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -50659,6 +50690,7 @@ class EosDesigns(EosDesignsRootModel):
                                        set per VLAN under network services.
                                     spanning_tree_root_super: spanning_tree_root_super
                                     spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                    spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                     virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                     inband_mgmt_interface:
                                        Pointer to interface used for inband management.
@@ -53387,6 +53419,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
                         "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -53943,6 +53976,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
                     """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -54303,6 +54338,8 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -54697,6 +54734,7 @@ class EosDesigns(EosDesignsRootModel):
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
                                 spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -57484,6 +57522,7 @@ class EosDesigns(EosDesignsRootModel):
                         "spanning_tree_priority": {"type": int, "default": 32768},
                         "spanning_tree_root_super": {"type": bool, "default": False},
                         "spanning_tree_mst_pvst_boundary": {"type": bool},
+                        "spanning_tree_port_id_allocation_port_channel_range": {"type": EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange},
                         "virtual_router_mac_address": {"type": str},
                         "inband_mgmt_interface": {"type": str},
                         "inband_mgmt_vlan": {"type": int, "default": 4092},
@@ -58037,6 +58076,8 @@ class EosDesigns(EosDesignsRootModel):
                     """Default value: `False`"""
                     spanning_tree_mst_pvst_boundary: bool | None
                     """Enable MST PVST border ports."""
+                    spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                    """Specify range of port-ids to reserve for port-channels."""
                     virtual_router_mac_address: str | None
                     """Virtual router mac address for anycast gateway."""
                     inband_mgmt_interface: str | None
@@ -58397,6 +58438,8 @@ class EosDesigns(EosDesignsRootModel):
                             spanning_tree_priority: int | UndefinedType = Undefined,
                             spanning_tree_root_super: bool | UndefinedType = Undefined,
                             spanning_tree_mst_pvst_boundary: bool | None | UndefinedType = Undefined,
+                            spanning_tree_port_id_allocation_port_channel_range: EosCliConfigGen.SpanningTree.PortIdAllocationPortChannelRange
+                            | UndefinedType = Undefined,
                             virtual_router_mac_address: str | None | UndefinedType = Undefined,
                             inband_mgmt_interface: str | None | UndefinedType = Undefined,
                             inband_mgmt_vlan: int | UndefinedType = Undefined,
@@ -58789,6 +58832,7 @@ class EosDesigns(EosDesignsRootModel):
                                    set per VLAN under network services.
                                 spanning_tree_root_super: spanning_tree_root_super
                                 spanning_tree_mst_pvst_boundary: Enable MST PVST border ports.
+                                spanning_tree_port_id_allocation_port_channel_range: Specify range of port-ids to reserve for port-channels.
                                 virtual_router_mac_address: Virtual router mac address for anycast gateway.
                                 inband_mgmt_interface:
                                    Pointer to interface used for inband management.
@@ -59840,11 +59884,10 @@ class EosDesigns(EosDesignsRootModel):
     Make sure to set it in a
     common group_vars file.
     """
-    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+    cv_tags_topology_type: str | None
     """
-    PREVIEW: This key is currently not supported
-    Device type that CloudVision should use when generating
-    the Topology. Defaults to the setting under node_type_keys.
+    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+    "edge". Defaults to the setting under node_type_keys.
     """
     cv_token: str | None
     """
@@ -60279,11 +60322,9 @@ class EosDesigns(EosDesignsRootModel):
     """
     generate_cv_tags: GenerateCvTags
     """
-    PREVIEW: This key is currently not supported
     Generate CloudVision Tags based on AVD data.
 
-    Subclass
-    of AvdModel.
+    Subclass of AvdModel.
     """
     hardware_counters: EosCliConfigGen.HardwareCounters
     inband_ztp_bootstrap_file: str | None
@@ -61425,7 +61466,7 @@ class EosDesigns(EosDesignsRootModel):
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
             cv_server: str | None | UndefinedType = Undefined,
-            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+            cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
             cvp_ingestauth_key: str | None | UndefinedType = Undefined,
@@ -61789,9 +61830,8 @@ class EosDesigns(EosDesignsRootModel):
                    Make sure to set it in a
                    common group_vars file.
                 cv_tags_topology_type:
-                   PREVIEW: This key is currently not supported
-                   Device type that CloudVision should use when generating
-                   the Topology. Defaults to the setting under node_type_keys.
+                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+                   "edge". Defaults to the setting under node_type_keys.
                 cv_token:
                    PREVIEW: These keys are in preview mode.
 
@@ -62111,11 +62151,9 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 generate_cv_tags:
-                   PREVIEW: This key is currently not supported
                    Generate CloudVision Tags based on AVD data.
 
-                   Subclass
-                   of AvdModel.
+                   Subclass of AvdModel.
                 hardware_counters: hardware_counters
                 inband_ztp_bootstrap_file:
                    Bootstrap URL configured in DHCP to use for inband ZTP.

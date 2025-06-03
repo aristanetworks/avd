@@ -4,3 +4,7 @@ ip_hardware:
     optimize:
       prefixes:
         profile: urpf-internet
+    load_balance_distribution:
+      dynamic:
+        enabled: true
+        flow_set_size: 4
