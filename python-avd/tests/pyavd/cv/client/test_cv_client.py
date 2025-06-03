@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import re
+from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from logging import INFO, getLogger
 from os import environ
@@ -31,8 +32,6 @@ from tests.pyavd.cv.constants import (
 )
 
 if TYPE_CHECKING:
-    from _pytest.python_api import RaisesContext
-
     from pyavd._cv.client import CVClient
 
 
@@ -43,6 +42,8 @@ LOGGER = getLogger(__name__)
 CV_SERVER = environ.get("CV_SERVER") or "www.cv-prod-us-central1-c.arista.io"
 CV_TOKEN = environ.get("CV_ACCESS_TOKEN")
 RECORDING = environ.get("RECORDING")
+
+ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 
 def _mocked_cvdevices(hostnames: list[str] | None = None, device_count: int | None = None) -> list[CVDevice]:
@@ -160,7 +161,7 @@ async def test_verify_devices_on_cv_no_devices(cv_client: CVClient) -> None:
     ],
 )
 async def test_create_existing_workspace_on_cv(
-    caplog: pytest.LogCaptureFixture, cv_client: CVClient, workspace_id: str, workspace_state: str | None, expected_exception: does_not_raise | RaisesContext
+    caplog: pytest.LogCaptureFixture, cv_client: CVClient, workspace_id: str, workspace_state: str | None, expected_exception: ExpectedExceptionContext
 ) -> None:
     with caplog.at_level(INFO), expected_exception:
         result = DeployToCvResult(
@@ -303,7 +304,7 @@ async def test_finalize_workspace_on_cv_build_failure(
     workspace_state: str,
     workspace_abandon_id: str,
     logs_patterns: str,
-    expected_exception: does_not_raise | RaisesContext,
+    expected_exception: ExpectedExceptionContext,
 ) -> None:
     """
     Test Workspace with failing build.
@@ -359,7 +360,7 @@ async def test_finalize_workspace_on_cv_build_failure(
     ],
 )
 async def test_create_workspace_on_cv_get_success(
-    caplog: pytest.LogCaptureFixture, cv_client: CVClient, workspace_id: str, workspace_state: str | None, expected_exception: does_not_raise | RaisesContext
+    caplog: pytest.LogCaptureFixture, cv_client: CVClient, workspace_id: str, workspace_state: str | None, expected_exception: ExpectedExceptionContext
 ) -> None:
     with caplog.at_level(INFO), expected_exception:
         result = DeployToCvResult(
