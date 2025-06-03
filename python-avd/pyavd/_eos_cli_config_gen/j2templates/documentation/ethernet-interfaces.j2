@@ -279,12 +279,8 @@
 | --------- | ----------------- | ----------------- | --------- |
 {%         for tcp_mss_clamping in tcp_mss_clampings | arista.avd.natural_sort('name') %}
 {%             set interface = tcp_mss_clamping.name %}
-{%             if tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size is arista.avd.defined %}
-{%                 set ipv4_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size %}
-{%             endif %}
-{%             if tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size is arista.avd.defined %}
-{%                 set ipv6_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size %}
-{%             endif %}
+{%             set ipv4_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv4 | arista.avd.default(tcp_mss_clamping.tcp_mss_ceiling.ipv4_segment_size) %}
+{%             set ipv6_segment_size = tcp_mss_clamping.tcp_mss_ceiling.ipv6 | arista.avd.default(tcp_mss_clamping.tcp_mss_ceiling.ipv6_segment_size) %}
 | {{ interface }} | {{ ipv4_segment_size | arista.avd.default("-") }} | {{ ipv6_segment_size | arista.avd.default("-") }} | {{ tcp_mss_clamping.tcp_mss_ceiling.direction | arista.avd.default("-") }} |
 {%         endfor %}
 {%     endif %}
