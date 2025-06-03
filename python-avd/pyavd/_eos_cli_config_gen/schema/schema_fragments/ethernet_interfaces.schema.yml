@@ -1699,7 +1699,7 @@ keys:
                       - int
                   key_type:
                     type: str
-                    description: Authentication key type. EOS default is "7".
+                    description: Authentication key type.
                     valid_values:
                       - "0"
                       - "7"
