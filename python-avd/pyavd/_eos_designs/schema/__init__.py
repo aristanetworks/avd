@@ -1311,12 +1311,12 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` to be `true`.
+            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
-            `underlay_multicast_static` to be `true`.
+            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
             """
             flow_tracking: FlowTracking
             """
@@ -1456,10 +1456,10 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` to be `true`.
+                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
-                           `underlay_multicast_static` to be `true`.
+                           `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -1902,12 +1902,12 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` to be `true`.
+            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
-            `underlay_multicast_static` to be `true`.
+            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
             """
             flow_tracking: FlowTracking
             """
@@ -2047,10 +2047,10 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` to be `true`.
+                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
-                           `underlay_multicast_static` to be `true`.
+                           `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -5311,12 +5311,12 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` to be `true`.
+            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
-            `underlay_multicast_static` to be `true`.
+            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
             """
             flow_tracking: FlowTracking
             """
@@ -5456,10 +5456,10 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` to be `true`.
+                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
-                           `underlay_multicast_static` to be `true`.
+                           `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -5902,12 +5902,12 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` to be `true`.
+            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
             Enable/Disable static Protocol Independent Multicast. Requires the global
-            `underlay_multicast_static` to be `true`.
+            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
             """
             flow_tracking: FlowTracking
             """
@@ -6047,10 +6047,10 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` to be `true`.
+                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
-                           `underlay_multicast_static` to be `true`.
+                           `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
