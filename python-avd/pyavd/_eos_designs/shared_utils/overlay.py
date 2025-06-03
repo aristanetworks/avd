@@ -116,6 +116,9 @@ class OverlayMixin(Protocol):
             if not self.is_cv_pathfinder_client:
                 return f"{self.router_id}:0"
 
+            # This condition in unreachable.
+            # The self.wan_site could be None only when 'cv_pathfinder_site' is not defined and 'self.is_cv_pathfinder_client' is false.
+            # it will return from line 116.
             if self.wan_site is None:
                 # Should never happen but just in case.
                 msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate evpn_soo."
@@ -132,6 +135,8 @@ class OverlayMixin(Protocol):
         if self.overlay_vtep:
             return f"{self.vtep_ip}:1"
 
+        # This is unreachable.
+        # we are already checking either 'self.overlay_vtep' or 'self.is_wan_router' before calling this method.
         return f"{self.router_id}:1"
 
     @cached_property
@@ -191,6 +196,8 @@ class OverlayMixin(Protocol):
 
     @cached_property
     def overlay_peering_address(self: SharedUtilsProtocol) -> str | None:
+        # This is unreachable.
+        # We are already checking 'if self.underlay_router' before calling this method
         if not self.underlay_router:
             return None
 
