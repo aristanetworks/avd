@@ -58,6 +58,27 @@ ethernet_interfaces:
   peer_interface: Ethernet16
   switchport:
     enabled: false
+- name: Ethernet17
+  description: Test_ip_unnumbered_interface_connectivity
+  ip_address: unnumbered Loopback0
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet17
+  switchport:
+    enabled: false
+- name: Ethernet18
+  description: Test_peer_dhcp_interface_connectivity
+  ip_address: dhcp
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet18
+  switchport:
+    enabled: false
+- name: Ethernet19
+  description: Test_peer_ip_unnumbered_interface_connectivity
+  ip_address: unnumbered Loopback0
+  peer: dc2-leaf3a.arista.com
+  peer_interface: Ethernet19
+  switchport:
+    enabled: false
 hostname: dc2-leaf3b.arista.com
 interface_defaults:
   ethernet:

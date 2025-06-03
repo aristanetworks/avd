@@ -8591,11 +8591,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+        cv_tags_topology_type: str | None
         """
-        PREVIEW: This key is currently not supported
-        Type that CloudVision should use when generating the
-        Topology.
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+        "edge".
         """
 
         if TYPE_CHECKING:
@@ -8624,7 +8623,7 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+                cv_tags_topology_type: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 CustomNodeTypeKeysItem.
@@ -8707,9 +8706,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       PREVIEW: This key is currently not supported
-                       Type that CloudVision should use when generating the
-                       Topology.
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+                       "edge".
 
                 """
 
@@ -9115,11 +9113,10 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+        cv_tags_topology_type: str | None
         """
-        PREVIEW: This key is currently not supported
-        Type that CloudVision should use when generating the
-        Topology.
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+        "edge".
         """
 
         if TYPE_CHECKING:
@@ -9148,7 +9145,7 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+                cv_tags_topology_type: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
                 NodeTypeKeysItem.
@@ -9231,9 +9228,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       PREVIEW: This key is currently not supported
-                       Type that CloudVision should use when generating the
-                       Topology.
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+                       "edge".
 
                 """
 
@@ -58874,11 +58870,10 @@ class EosDesigns(EosDesignsRootModel):
     Make sure to set it in a
     common group_vars file.
     """
-    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None
+    cv_tags_topology_type: str | None
     """
-    PREVIEW: This key is currently not supported
-    Device type that CloudVision should use when generating
-    the Topology. Defaults to the setting under node_type_keys.
+    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+    "edge". Defaults to the setting under node_type_keys.
     """
     cv_token: str | None
     """
@@ -59313,11 +59308,9 @@ class EosDesigns(EosDesignsRootModel):
     """
     generate_cv_tags: GenerateCvTags
     """
-    PREVIEW: This key is currently not supported
     Generate CloudVision Tags based on AVD data.
 
-    Subclass
-    of AvdModel.
+    Subclass of AvdModel.
     """
     hardware_counters: EosCliConfigGen.HardwareCounters
     inband_ztp_bootstrap_file: str | None
@@ -60459,7 +60452,7 @@ class EosDesigns(EosDesignsRootModel):
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
             cv_server: str | None | UndefinedType = Undefined,
-            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge"] | None | UndefinedType = Undefined,
+            cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
             cvp_ingestauth_key: str | None | UndefinedType = Undefined,
@@ -60823,9 +60816,8 @@ class EosDesigns(EosDesignsRootModel):
                    Make sure to set it in a
                    common group_vars file.
                 cv_tags_topology_type:
-                   PREVIEW: This key is currently not supported
-                   Device type that CloudVision should use when generating
-                   the Topology. Defaults to the setting under node_type_keys.
+                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
+                   "edge". Defaults to the setting under node_type_keys.
                 cv_token:
                    PREVIEW: These keys are in preview mode.
 
@@ -61145,11 +61137,9 @@ class EosDesigns(EosDesignsRootModel):
 
                    Subclass of AvdModel.
                 generate_cv_tags:
-                   PREVIEW: This key is currently not supported
                    Generate CloudVision Tags based on AVD data.
 
-                   Subclass
-                   of AvdModel.
+                   Subclass of AvdModel.
                 hardware_counters: hardware_counters
                 inband_ztp_bootstrap_file:
                    Bootstrap URL configured in DHCP to use for inband ZTP.
