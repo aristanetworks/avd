@@ -667,6 +667,7 @@ sflow interface egress enable default
 
 | Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port |
 | ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- |
+
 #### Flow Tracking Device Configuration
 
 ```eos
