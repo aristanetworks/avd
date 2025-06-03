@@ -4025,6 +4025,8 @@ keys:
                     - int
                   key_type:
                     type: str
+                    convert_types:
+                    - int
                     description: Authentication key type.
                     valid_values:
                     - '0'
