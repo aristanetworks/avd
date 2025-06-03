@@ -25,8 +25,8 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.8.0"
 short_description: Decrypt supported EOS passwords.
 description: |-
-  The filter is used to decrypt supported EOS passwords into clear text.
-  Note - For now this filter only supports decryption from type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
+  - The filter is used to decrypt supported EOS passwords into clear text.
+  - The filter only supports decryption from type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
 positional: _input
 options:
   _input:

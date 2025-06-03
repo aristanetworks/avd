@@ -17,8 +17,8 @@ Decrypt supported EOS passwords.
 
 ## Synopsis
 
-The filter is used to decrypt supported EOS passwords into clear text.
-Note - For now this filter only supports decryption from type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
+- The filter is used to decrypt supported EOS passwords into clear text.
+- The filter only supports decryption from type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
 
 ## Parameters
 
