@@ -8594,7 +8594,7 @@ class EosDesigns(EosDesignsRootModel):
         cv_tags_topology_type: str | None
         """
         Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-        "edge"
+        "edge".
         """
 
         if TYPE_CHECKING:
@@ -8707,7 +8707,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     cv_tags_topology_type:
                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                       "edge"
+                       "edge".
 
                 """
 
@@ -9116,7 +9116,7 @@ class EosDesigns(EosDesignsRootModel):
         cv_tags_topology_type: str | None
         """
         Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-        "edge"
+        "edge".
         """
 
         if TYPE_CHECKING:
@@ -9229,7 +9229,7 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
                     cv_tags_topology_type:
                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                       "edge"
+                       "edge".
 
                 """
 
