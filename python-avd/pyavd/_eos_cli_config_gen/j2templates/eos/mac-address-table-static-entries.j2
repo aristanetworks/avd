@@ -1,0 +1,30 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - mac address table static entries #}
+{% set ns = namespace(has_valid_entry=false) %}
+{% for static_entry in mac_address_table.static_entries | arista.avd.natural_sort %}
+{%     if static_entry.drop is arista.avd.defined(true) or static_entry.interface is arista.avd.defined %}
+{%         set ns.has_valid_entry = true %}
+{%         break %} {# Exit the loop as soon as we find one valid entry #}
+{%     endif %}
+{% endfor %}
+{% if ns.has_valid_entry %}
+!
+{# Note: To ensure the configuration order matches EOS, MAC addresses use the sort filter, and VLANs use the natural_sort filter. #}
+{%     for static_entry in mac_address_table.static_entries | sort(attribute='mac_address') | arista.avd.natural_sort('vlan') %}
+{%         if static_entry.drop is arista.avd.defined(true) or static_entry.interface is arista.avd.defined %}
+{%             set mac_entry_base = "mac address-table static " ~ static_entry.mac_address ~ " vlan " ~ static_entry.vlan ~ " " %}
+{%             if static_entry.drop is arista.avd.defined(true) %}
+{%                 set mac_entry_base = mac_entry_base ~ "drop" %}
+{%             elif static_entry.eligibility_forwarding is arista.avd.defined(true) %}
+{%                 set mac_entry_base = mac_entry_base ~ "interface " ~ static_entry.interface ~ " eligibility forwarding" %}
+{%             else %}
+{%                 set mac_entry_base = mac_entry_base ~ "interface " ~ static_entry.interface %}
+{%             endif %}
+{{ mac_entry_base }}
+{%         endif %}
+{%     endfor %}
+{% endif %}

@@ -7,3 +7,36 @@ mac_address_table:
     detection:
       window: 10
       moves: 2
+  static_entries:
+    # Entries with different VLANs and MACs to test sorting order
+    - mac_address: 000c.000c.000c
+      vlan: 30
+      drop: true
+    - mac_address: 000a.000a.000a
+      vlan: 10
+      interface: Ethernet1
+    - mac_address: 000b.000b.000b
+      vlan: 20
+      interface: Port-Channel1
+      eligibility_forwarding: true
+    - mac_address: 000a.000a.000a # Same MAC as above, different VLAN
+      vlan: 20
+      interface: Ethernet1
+    - mac_address: 000d.000d.000d
+      vlan: 10
+      interface: Ethernet2
+    - mac_address: 000c.000c.000c # Same MAC as first, different VLAN
+      vlan: 10
+      drop: true
+    - mac_address: 0001.0001.0001
+      vlan: 20
+      interface: Ethernet2
+
+    # An entry that will be skipped (neither drop nor interface)
+    - mac_address: 000e.000e.000e
+      vlan: 40
+
+    # Another entry to further test sorting within the same VLAN
+    - mac_address: 0002.0002.0002
+      vlan: 20
+      drop: true
