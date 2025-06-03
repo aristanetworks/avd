@@ -9864,7 +9864,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 key: str
                 """Authentication key."""
                 key_type: Literal["0", "7", "8a"] | None
-                """Authentication key type. EOS default is "7"."""
+                """Authentication key type."""
 
                 if TYPE_CHECKING:
 
@@ -9884,7 +9884,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             mode: Authentication mode.
                             key: Authentication key.
-                            key_type: Authentication key type. EOS default is "7".
+                            key_type: Authentication key type.
 
                         """
 
