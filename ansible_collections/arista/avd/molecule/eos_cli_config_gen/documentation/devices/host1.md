@@ -123,6 +123,7 @@
   - [VLANs Device Configuration](#vlans-device-configuration)
 - [MAC Address Table](#mac-address-table)
   - [MAC Address Table Summary](#mac-address-table-summary)
+  - [Static MAC Address Entries](#static-mac-address-entries)
   - [MAC Address Table Device Configuration](#mac-address-table-device-configuration)
 - [IP Security](#ip-security)
   - [IKE policies](#ike-policies)
@@ -250,6 +251,9 @@
   - [NAT Synchronization](#nat-synchronization)
   - [NAT Translation Settings](#nat-translation-settings)
   - [IP NAT Device Configuration](#ip-nat-device-configuration)
+- [IP Hardware FIB](#ip-hardware-fib)
+  - [IP Hardware FIB Summary](#ip-hardware-fib-summary)
+  - [IP Hardware FIB Configuration](#ip-hardware-fib-configuration)
 - [Errdisable](#errdisable)
   - [Errdisable Summary](#errdisable-summary)
 - [MACsec](#macsec)
@@ -3466,16 +3470,29 @@ vlan internal order ascending range 10 40
 | 110 | PR01-DMZ | - |
 | 111 | PRIVATE_VLAN_COMMUNITY | - |
 | 112 | PRIVATE_VLAN_ISOLATED | - |
+| 201 | ETREE_LEAF | - |
 | 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | LEAF_PEER_L3 |
 | 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | MY_TRUNK_GROUP |
 | 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | MY_TRUNK_GROUP |
 
 #### Private VLANs
 
-| Primary Vlan ID | Secondary VLAN ID | Private Vlan Type |
+| Primary VLAN ID | Secondary VLAN ID | Private VLAN Type |
 | --------------- | ----------------- | ----------------- |
 | community | 111 | 110 |
 | isolated | 112 | 110 |
+
+#### E-Tree Role
+
+| VLAN ID | VLAN Name | Role | Remote Leaf Host Drop |
+| ------- | --------- | ---- | --------------------- |
+| 110 | PR01-DMZ | Root | - |
+| 111 | PRIVATE_VLAN_COMMUNITY | Root | - |
+| 112 | PRIVATE_VLAN_ISOLATED | Root | - |
+| 201 | ETREE_LEAF | Leaf | True |
+| 3010 | MLAG_iBGP_TENANT_A_PROJECT01 | Root | - |
+| 3011 | MLAG_iBGP_TENANT_A_PROJECT02 | Root | - |
+| 3012 | MLAG_iBGP_TENANT_A_PROJECT03 | Root | - |
 
 ### VLANs Device Configuration
 
@@ -3498,6 +3515,12 @@ vlan 111
 vlan 112
    name PRIVATE_VLAN_ISOLATED
    private-vlan isolated primary vlan 110
+!
+vlan 201
+   name ETREE_LEAF
+   !
+   e-tree role leaf
+      remote leaf host drop
 !
 vlan 3010
    name MLAG_iBGP_TENANT_A_PROJECT01
@@ -3526,11 +3549,34 @@ vlan 3012
 
 - Size of the flap detection time window: 10 seconds
 
+### Static MAC Address Entries
+
+| MAC Address | VLAN | DROP Traffic | Interface | Eligibility Forwarding |
+|-------------|------|--------------|-----------|------------------------|
+| 000a.000a.000a | 10 | - | Ethernet1 | - |
+| 000c.000c.000c | 10 | True | - | - |
+| 000d.000d.000d | 10 | - | Ethernet2 | - |
+| 0001.0001.0001 | 20 | - | Ethernet2 | - |
+| 0002.0002.0002 | 20 | True | - | - |
+| 000a.000a.000a | 20 | - | Ethernet1 | - |
+| 000b.000b.000b | 20 | - | Port-Channel1 | True |
+| 000c.000c.000c | 30 | True | - | - |
+| 000e.000e.000e | 40 | - | - | - |
+
 ### MAC Address Table Device Configuration
 
 ```eos
 !
 mac address-table aging-time 100
+!
+mac address-table static 000a.000a.000a vlan 10 interface Ethernet1
+mac address-table static 000c.000c.000c vlan 10 drop
+mac address-table static 000d.000d.000d vlan 10 interface Ethernet2
+mac address-table static 0001.0001.0001 vlan 20 interface Ethernet2
+mac address-table static 0002.0002.0002 vlan 20 drop
+mac address-table static 000a.000a.000a vlan 20 interface Ethernet1
+mac address-table static 000b.000b.000b vlan 20 interface Port-Channel1 eligibility forwarding
+mac address-table static 000c.000c.000c vlan 30 drop
 !
 mac address-table notification host-flap logging
 mac address-table notification host-flap detection window 10
@@ -6897,6 +6943,8 @@ ip virtual-router mac-address mlag-peer
 !
 ip routing ipv6 interfaces
 ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 no ip routing vrf MGMT
 ip routing vrf TENANT_A_PROJECT01
 ip routing vrf TENANT_A_PROJECT02
@@ -12008,6 +12056,22 @@ ip nat synchronization
    local-interface Ethernet1
    port-range 1024 65535
    port-range split disabled
+```
+
+## IP Hardware FIB
+
+### IP Hardware FIB Summary
+
+IP hardware FIB optimize prefixes profile: urpf-internet
+IP hardware FIB dynamic load balancing: Enabled
+IP hardware FIB dynamic load balancing flow-set-size: 4
+
+### IP Hardware FIB Configuration
+
+```eos
+ip hardware fib optimize prefixes profile urpf-internet
+ip hardware fib load-balance distribution dynamic
+ip hardware fib load-balance distribution dynamic flow-set-size 4
 ```
 
 ## Errdisable
