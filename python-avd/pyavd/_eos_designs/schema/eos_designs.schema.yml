@@ -815,16 +815,9 @@ keys:
   cv_tags_topology_type:
     documentation_options:
       table: cloudvision-tags
-    description: 'PREVIEW: This key is currently not supported
-
-      Device type that CloudVision should use when generating the Topology. Defaults
-      to the setting under node_type_keys.'
+    description: Device type that CloudVision should use when generating the Topology
+      like "leaf", "spine", "core" or "edge". Defaults to the setting under node_type_keys.
     type: str
-    valid_values:
-    - leaf
-    - spine
-    - core
-    - edge
   cv_token:
     documentation_options:
       table: wan-cv-pathfinder-zscaler-integration
@@ -1823,9 +1816,7 @@ keys:
     documentation_options:
       table: cloudvision-tags
     type: dict
-    description: 'PREVIEW: This key is currently not supported
-
-      Generate CloudVision Tags based on AVD data.'
+    description: Generate CloudVision Tags based on AVD data.
     keys:
       topology_hints:
         type: bool
@@ -2811,15 +2802,9 @@ keys:
         cv_tags_topology_type:
           documentation_options:
             table: cloudvision-tags
-          description: 'PREVIEW: This key is currently not supported
-
-            Type that CloudVision should use when generating the Topology.'
+          description: Device type that CloudVision should use when generating the
+            Topology like "leaf", "spine", "core" or "edge".
           type: str
-          valid_values:
-          - leaf
-          - spine
-          - core
-          - edge
   ntp_settings:
     documentation_options:
       table: management-settings

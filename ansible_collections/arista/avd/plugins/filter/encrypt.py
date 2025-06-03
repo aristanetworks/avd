@@ -25,9 +25,9 @@ author: Arista Ansible Team (@aristanetworks)
 version_added: "3.8.0"
 short_description: Encrypt supported EOS passwords
 description: |-
-  The filter encrypts a clear text password into EOS passwords.
-  To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
-  Note - For now this filter only supports encryption from type `7` and not type `8a` for OSPF and BGP passwords.
+  - The filter encrypts a clear text password into EOS passwords.
+  - It is intended to be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+  - The filter only supports encryption for type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
 positional: _input
 options:
   _input:
@@ -41,6 +41,7 @@ options:
       `bgp` and `ospf_simple` requires the `password` and `key` inputs.
       `ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.
       `isis` requires the `password`, `key` and `isis_mode` inputs.
+      `tacacs` requires the `password` and `salt` inputs.
     choices: ["bgp", "ospf_simple", "ospf_message_digest", "isis"]
     required: true
   key:
@@ -66,6 +67,12 @@ options:
     type: string
     description: ISIS encryption mode (`none`, `text`, `md5`, `sha`) or shared-secret algorithm (`sha-1`, `sha-224`, `sha-256`, `sha-384`, `sha1-512`).
     choices: ["none", "text", "md5", "sha", "sha-1", "sha-224", "sha-256", "sha-384", "sha1-512"]
+  salt:
+    type: integer
+    description: |-
+      Salt used for simple type-7 obfuscation. Required for `passwd_type: tacacs`.
+    min: 0
+    max: 15
 """
 
 EXAMPLES = r"""
