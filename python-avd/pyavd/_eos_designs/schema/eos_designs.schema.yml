@@ -6777,6 +6777,69 @@ $defs:
                       route_map:
                         type: str
                         description: Route-map name.
+                  authentication:
+                    type: str
+                    valid_values:
+                    - simple
+                    - message-digest
+                    description: 'Configure OSPF authentication at the VRF level.
+
+                      Configuration at the interface level under `l3_interfaces` or
+                      `l3_port_channels` takes precedence.'
+                  simple_auth_key:
+                    type: str
+                    min_length: 1
+                    max_length: 8
+                    description: 'Password used with simple authentication.
+
+                      Only plaintext passwords are supported here as `eos_designs`
+                      will encrypt the password for each individual `l3_interface`
+                      or `l3_port_channel`.
+
+                      To protect the password at rest it is strongly recommended to
+                      make use of Ansible Vault or similar.
+
+                      Configuration at the interface level under `l3_interfaces` or
+                      `l3_port_channels` takes precedence.'
+                  message_digest_keys:
+                    type: list
+                    primary_key: id
+                    min_length: 1
+                    max_length: 2
+                    items:
+                      type: dict
+                      keys:
+                        id:
+                          type: int
+                          convert_types:
+                          - str
+                        hash_algorithm:
+                          type: str
+                          valid_values:
+                          - md5
+                          - sha1
+                          - sha256
+                          - sha384
+                          - sha512
+                          default: sha512
+                        key:
+                          type: str
+                          required: true
+                          max_length: 16
+                          min_length: 1
+                          convert_types:
+                          - int
+                          description: 'Key password.
+
+                            Only plaintext passwords are supported here as `eos_designs`
+                            will encrypt the password for each individual `l3_interface`
+                            or `l3_port_channel`.
+
+                            To protect the password at rest it is strongly recommended
+                            to make use of Ansible Vault or similar.
+
+                            Configuration at the interface level under `l3_interfaces`
+                            or `l3_port_channels` takes precedence.'
                   nodes:
                     type: list
                     items:
@@ -7079,7 +7142,18 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: 'Password used with simple authentication using
+                            `simple_auth_key_type`.
+
+                            Maximum 8 characters for cleartext password.'
+                        simple_auth_key_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          default: '7'
                         message_digest_keys:
                           type: list
                           items:
@@ -7100,7 +7174,17 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: 'Key password using `key_type`.
+
+                                  Maximum 16 characters for cleartext password.'
+                              key_type:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '0'
+                                - '7'
+                                default: '7'
                     pim:
                       type: dict
                       description: 'Enable PIM sparse-mode on the interface; requires
@@ -7293,7 +7377,18 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: Password used with simple authentication.
+                          description: 'Password used with simple authentication using
+                            `simple_auth_key_type`.
+
+                            Maximum 8 characters for cleartext password.'
+                        simple_auth_key_type:
+                          type: str
+                          convert_types:
+                          - int
+                          valid_values:
+                          - '0'
+                          - '7'
+                          default: '7'
                         message_digest_keys:
                           type: list
                           items:
@@ -7314,7 +7409,17 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: Key password.
+                                description: 'Key password using `key_type`.
+
+                                  Maximum 16 characters for cleartext password.'
+                              key_type:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '0'
+                                - '7'
+                                default: '7'
                     flow_tracking:
                       type: dict
                       $ref: eos_designs#/$defs/flow_tracking_link
@@ -11044,7 +11149,15 @@ $defs:
             - message-digest
           simple_auth_key:
             type: str
-            description: Password used with simple authentication.
+            description: Password used with simple authentication using `simple_auth_key_type`.
+          simple_auth_key_type:
+            type: str
+            convert_types:
+            - int
+            valid_values:
+            - '0'
+            - '7'
+            default: '7'
           message_digest_keys:
             type: list
             items:
@@ -11063,9 +11176,17 @@ $defs:
                   - sha384
                   - sha512
                   default: sha512
+                key_type:
+                  type: str
+                  convert_types:
+                  - int
+                  valid_values:
+                  - '0'
+                  - '7'
+                  default: '7'
                 key:
                   type: str
-                  description: Type 7 encrypted key.
+                  description: Key password using `key_type`.
       bgp:
         type: dict
         keys:

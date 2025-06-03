@@ -135,7 +135,7 @@ ethernet_interfaces:
     key: AQQvKeimxJu+uGQ/yYvv9w==
   - id: 2
     hash_algorithm: sha512
-    key: AQQvKeimxJu+uGQ/yYvv9w==
+    key: 77a3qHKOAkJUjy4rPnlxzA==
   peer_type: l3_interface
   switchport:
     enabled: false

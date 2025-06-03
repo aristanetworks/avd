@@ -125,6 +125,17 @@ ethernet_interfaces:
   mtu: 9000
   vrf: Tenant_A_WAN_Zone
   ip_address: 10.10.20.20/24
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_cost: 100
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha1
+    key: pXKLnQ5+ANkOUOyRIhMpOA==
+  - id: 2
+    hash_algorithm: sha512
+    key: 77a3qHKOAkJUjy4rPnlxzA==
   peer_type: l3_interface
   switchport:
     enabled: false
@@ -611,6 +622,7 @@ router_ospf:
     vrf: Tenant_A_WAN_Zone
     passive_interface_default: true
     no_passive_interfaces:
+    - Ethernet7
     - Vlan150
     max_lsa: 15000
     redistribute:

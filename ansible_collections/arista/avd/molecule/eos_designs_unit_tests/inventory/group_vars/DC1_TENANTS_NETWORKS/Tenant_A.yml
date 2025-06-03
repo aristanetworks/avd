@@ -14,9 +14,9 @@ tenant_a:
         redistribute_mlag_ibgp_peering_vrfs: false
         svis:
           # SVI as string
-          - id: '110'
+          - id: "110"
             name: Tenant_A_OP_Zone_1
-            tags: ['opzone']
+            tags: ["opzone"]
             enabled: true
             ipv4_acl_in: TEST-IPV4-ACL-WITH-IP-FIELDS-IN
             ipv4_acl_out: TEST-IPV4-ACL-WITH-IP-FIELDS-OUT
@@ -25,7 +25,7 @@ tenant_a:
           - id: 111
             vni_override: 50111 # 10111 would be the calculated value.
             name: Tenant_A_OP_Zone_2
-            tags: ['opzone']
+            tags: ["opzone"]
             enabled: true
             ip_address_virtual: 10.1.11.1/24
             ip_helpers:
@@ -36,12 +36,12 @@ tenant_a:
           - id: 112
             name: Tenant_A_OP_Zone_3
             profile: DERIVED_DHCP
-            tags: ['opzone']
+            tags: ["opzone"]
             enabled: true
-          # test ospf authentication on vlan interface
+          # test ospf authentication on vlan interface overwriting authentication from VRF.
           - id: 113
             name: Tenant_A_OP_Zone_4
-            tags: [ DC1_LEAF1 ]
+            tags: [DC1_LEAF1]
             enabled: true
             ospf:
               enabled: true
@@ -55,9 +55,19 @@ tenant_a:
                   key: "AQQvKeimxJu+uGQ/yYvv9w=="
                 - id: 2
                   key: "AQQvKeimxJu+uGQ/yYvv9w=="
+          # test ospf authentication inherited from VRF vlan interface
+          - id: 114
+            name: Tenant_A_OP_Zone_4
+            tags: [DC1_LEAF1]
+            enabled: true
+            ospf:
+              enabled: true
+              point_to_point: true
         ospf:
           enabled: true
           router_id: 10.10.10.10
+          authentication: simple
+          simple_auth_key: ClearText
           nodes:
             - DC1-LEAF1A
       - name: Tenant_A_WEB_Zone
@@ -67,7 +77,7 @@ tenant_a:
         svis:
           - id: 120
             name: Tenant_A_WEB_Zone_1
-            tags: ['web', 'erp1']
+            tags: ["web", "erp1"]
             profile: WITH_DHCP_AND_SNOOPING
             ip_address_virtual: 10.1.20.1/24
             ip_address_virtual_secondaries:
@@ -75,7 +85,7 @@ tenant_a:
               - 10.2.21.1/24
           - id: 121
             name: Tenant_A_WEBZone_2
-            tags: ['web']
+            tags: ["web"]
             profile: GENERIC_FULL
       - name: Tenant_A_ERP_Zone
         vrf_vni: 17
@@ -84,7 +94,7 @@ tenant_a:
         svis:
           - id: 122
             name: Tenant_A_ERP_Zone_1
-            tags: ['erp3']
+            tags: ["erp3"]
             profile: WITH_DHCP_AND_SNOOPING
             ip_address_virtual: 10.1.30.1/24
             ip_address_virtual_secondaries:
@@ -95,17 +105,17 @@ tenant_a:
         svis:
           - id: 130
             name: Tenant_A_APP_Zone_1
-            tags: ['app', 'erp1']
+            tags: ["app", "erp1"]
             profile: WITH_NO_MTU
             ip_address_virtual: 10.1.30.1/24
           - id: 131
             name: Tenant_A_APP_Zone_2
-            tags: ['app']
+            tags: ["app"]
             enabled: true
             ip_address_virtual: 10.1.31.1/24
           - id: 132
             name: Tenant_A_APP_Zone_3
-            tags: ['erp2']
+            tags: ["erp2"]
             enabled: true
             nodes:
               - node: DC1-LEAF1A
@@ -124,12 +134,12 @@ tenant_a:
         svis:
           - id: 140
             name: Tenant_A_DB_BZone_1
-            tags: ['db', 'erp1']
+            tags: ["db", "erp1"]
             enabled: true
             ip_address_virtual: 10.1.40.1/24
           - id: 141
             name: Tenant_A_DB_Zone_2
-            tags: ['db']
+            tags: ["db"]
             enabled: true
             ip_address_virtual: 10.1.41.1/24
         bgp:
@@ -149,6 +159,14 @@ tenant_a:
           nodes:
             - DC1-BL1A
             - DC1-BL1B
+          authentication: message-digest
+          # Making sure the keys are encrypted per interface.
+          message_digest_keys:
+            - id: 1
+              hash_algorithm: sha1
+              key: ClearText
+            - id: 2
+              key: ClearText
         l3_interfaces:
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.10.10/24]
@@ -161,18 +179,26 @@ tenant_a:
               cost: 100
               authentication: message-digest
               point_to_point: true
+              # overwritingkeys from VRF
               message_digest_keys:
                 - id: 1
                   hash_algorithm: sha1
                   key: "AQQvKeimxJu+uGQ/yYvv9w=="
                 - id: 2
-                  key: "AQQvKeimxJu+uGQ/yYvv9w=="
+                  key_type: 0
+                  # Testing eos_designs encryption at interface level.
+                  key: ClearText
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.20.20/24]
             nodes: [DC1-BL1B]
             mtu: 9000
             enabled: true
             description: "test"
+            # Inheriting authentication from VRF
+            ospf:
+              enabled: true
+              cost: 100
+              point_to_point: true
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4
@@ -226,7 +252,7 @@ tenant_a:
         svis:
           - id: 150
             name: Tenant_A_WAN_Zone_1
-            tags: ['wan']
+            tags: ["wan"]
             enabled: true
             ip_address_virtual: 10.1.40.1/24
             ospf:
@@ -252,25 +278,26 @@ tenant_a:
         additional_route_targets:
           - type: import
             address_family: vpn-ipv4
-            route_target: '65000:123'
-            nodes: [ DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B ]
+            route_target: "65000:123"
+            nodes: [DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B]
           - type: export
             address_family: vpn-ipv4
-            route_target: '65000:123'
-            nodes: [ DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B ]
+            route_target: "65000:123"
+            nodes: [DC1-BL1A, DC1-BL1B, DC1-BL2A, DC1-BL2B]
           - type: import
             address_family: evpn
-            route_target: '65000:456'
+            route_target: "65000:456"
             # nodes not set - so all devices should get this additional route target
           - type: export
             address_family: evpn
-            route_target: '65000:789'
+            route_target: "65000:789"
             # nodes not set - so all devices should get this additional route target
       - name: Tenant_A_L3_VRF_Zone
         vrf_vni: 15
         l3_interfaces:
           - interfaces: [Ethernet8, Ethernet9, Ethernet8, Ethernet9]
-            ip_addresses: [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24]
+            ip_addresses:
+              [10.10.10.10/24, 10.10.20.20/24, 10.10.30.10/24, 10.10.40.20/24]
             nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
             mtu: 9000
             enabled: true
@@ -287,9 +314,14 @@ tenant_a:
             mtu: 9000
             enabled: true
             description: "Single description"
-            descriptions: ["DC1-BL1A descriptions preferred over single description", "DC1-BL1B descriptions preferred over single description"]
+            descriptions:
+              [
+                "DC1-BL1A descriptions preferred over single description",
+                "DC1-BL1B descriptions preferred over single description",
+              ]
           - interfaces: [Ethernet12, Ethernet13.10, Ethernet12, Ethernet13.10]
-            ip_addresses: [10.10.40.10/24, 10.10.40.20/24, 10.10.50.10/24, 10.10.50.20/24]
+            ip_addresses:
+              [10.10.40.10/24, 10.10.40.20/24, 10.10.50.10/24, 10.10.50.20/24]
             nodes: [DC1-BL1A, DC1-BL1A, DC1-BL1B, DC1-BL1B]
             mtu: 9000
             enabled: true
@@ -346,13 +378,13 @@ tenant_a:
           hardware_forwarding: true
     l2vlans:
       # L2 vlan as string
-      - id: '160'
+      - id: "160"
         name: Tenant_A_VMOTION
-        tags: ['opzone']
+        tags: ["opzone"]
       # L2 vlan as integer
       - id: 161
         name: Tenant_A_NFS
-        tags: ['opzone']
+        tags: ["opzone"]
       - id: 162
         name: l2vlan_with_no_tags
         # No "tags" defined - should render on switches with tag "all" or no tags

@@ -7,8 +7,9 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
 from pyavd._eos_designs.schema import EosDesigns
-from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
+from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, unique
+from pyavd._utils.password_utils.password import ospf_message_digest_encrypt, ospf_simple_encrypt
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
@@ -435,18 +436,103 @@ class FilteredTenantsMixin(Protocol):
                 ospf_network_point_to_point=svi.ospf.point_to_point,
                 ospf_cost=svi.ospf.cost,
             )
-            ospf_authentication = svi.ospf.authentication
-            if ospf_authentication == "simple" and (ospf_simple_auth_key := svi.ospf.simple_auth_key) is not None:
-                config._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
-            elif ospf_authentication == "message-digest" and (ospf_message_digest_keys := svi.ospf.message_digest_keys):
-                for ospf_key in ospf_message_digest_keys:
-                    if not (ospf_key.id and ospf_key.key):
-                        continue
+            FilteredTenantsMixin.update_ospf_authentication(config, svi, vrf)
 
-                    config.ospf_message_digest_keys.append_new(id=ospf_key.id, hash_algorithm=ospf_key.hash_algorithm, key=ospf_key.key)
+    @staticmethod
+    def update_ospf_authentication(
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
+        network_services_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+    ) -> None:
+        """
+        Handle OSPF authentication for l3_interfaces, l3_port_channels and SVIs.
 
-                if config.ospf_message_digest_keys:
-                    config.ospf_authentication = ospf_authentication
+        Work for both simple and message_digest authentication method. If encryption by AVD is required, handles this as well.
+
+        Interface level configuration always takes precedence over VRF level configuration.
+
+        Args:
+            interface: The EosCliConfigGen interface to update with authentication.
+            network_services_interface: The l3_interface, l3_port_channel_interface or SVI input.
+            vrf: The VRF object containing OSPF/BGP and vtep_diagnostic details.
+
+        Raises:
+            AristaAvdMissingVariableError: If key is missing.
+        """
+        # Handle OSPF authentication
+        ospf_authentication = network_services_interface.ospf.authentication or vrf.ospf.authentication
+        if not ospf_authentication:
+            return
+
+        if ospf_authentication == "simple":
+            if network_services_interface.ospf.simple_auth_key is not None:
+                if network_services_interface.ospf.simple_auth_key_type == "0":
+                    ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.simple_auth_key, interface.name)
+                else:
+                    ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
+            elif vrf.ospf.simple_auth_key is not None:
+                ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
+            else:
+                # TODO: path maybe be misleading for port-channels
+                msg = f"`vrf.ospf.simple_auth_key` or `l3_interfaces[name={interface.name}].ospf.simple_auth_key`"
+                raise AristaAvdMissingVariableError(msg)
+
+            interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
+
+        elif ospf_authentication == "message-digest":
+            # The full list of keys is EITHER taken from the network_services_interface or from the VRF
+            # TODO: consider merging the two lists if the `id` are not clashing?
+            if network_services_interface.ospf.message_digest_keys:
+                for ospf_key in network_services_interface.ospf.message_digest_keys:
+                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface)
+
+            elif vrf.ospf.message_digest_keys:
+                for ospf_key in vrf.ospf.message_digest_keys:
+                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface)
+            if interface.ospf_message_digest_keys:
+                interface.ospf_authentication = ospf_authentication
+
+    @staticmethod
+    def update_message_digest_key(
+        ospf_key: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.Ospf.MessageDigestKeysItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem.Ospf.MessageDigestKeysItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem
+        | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ospf.MessageDigestKeysItem,
+        interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
+    ) -> None:
+        """
+        Handle OSPF authentication for one message digest key.
+
+        TODO: expand
+        """
+        if not (ospf_key.id and ospf_key.key):
+            return
+        # TODO: not great as the key_type is only available at interface level and not VRF level. Need to refactor this.
+        if hasattr(ospf_key, "key_type"):
+            if ospf_key.key_type == "0":
+                key = ospf_message_digest_encrypt(
+                    password=ospf_key.key,
+                    key=interface.name,
+                    hash_algorithm=ospf_key.hash_algorithm,
+                    key_id=str(ospf_key.id),
+                )
+            else:
+                key = ospf_key.key
+        else:
+            key = ospf_message_digest_encrypt(
+                password=ospf_key.key,
+                key=interface.name,
+                hash_algorithm=ospf_key.hash_algorithm,
+                key_id=str(ospf_key.id),
+            )
+
+        interface.ospf_message_digest_keys.append_new(
+            id=ospf_key.id,
+            hash_algorithm=ospf_key.hash_algorithm,
+            key=key,
+        )
 
     @cached_property
     def bgp_in_network_services(self: SharedUtilsProtocol) -> bool:

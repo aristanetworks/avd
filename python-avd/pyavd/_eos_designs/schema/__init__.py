@@ -13376,12 +13376,19 @@ class EosDesigns(EosDesignsRootModel):
                 class MessageDigestKeysItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                    _fields: ClassVar[dict] = {
+                        "id": {"type": int},
+                        "hash_algorithm": {"type": str, "default": "sha512"},
+                        "key_type": {"type": str, "default": "7"},
+                        "key": {"type": str},
+                    }
                     id: int | None
                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                     """Default value: `"sha512"`"""
+                    key_type: Literal["0", "7"]
+                    """Default value: `"7"`"""
                     key: str | None
-                    """Type 7 encrypted key."""
+                    """Key password using `key_type`."""
 
                     if TYPE_CHECKING:
 
@@ -13390,6 +13397,7 @@ class EosDesigns(EosDesignsRootModel):
                             *,
                             id: int | None | UndefinedType = Undefined,
                             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                            key_type: Literal["0", "7"] | UndefinedType = Undefined,
                             key: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
@@ -13401,7 +13409,8 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 id: id
                                 hash_algorithm: hash_algorithm
-                                key: Type 7 encrypted key.
+                                key_type: key_type
+                                key: Key password using `key_type`.
 
                             """
 
@@ -13417,6 +13426,7 @@ class EosDesigns(EosDesignsRootModel):
                     "cost": {"type": int},
                     "authentication": {"type": str},
                     "simple_auth_key": {"type": str},
+                    "simple_auth_key_type": {"type": str, "default": "7"},
                     "message_digest_keys": {"type": MessageDigestKeys},
                 }
                 enabled: bool | None
@@ -13432,7 +13442,9 @@ class EosDesigns(EosDesignsRootModel):
                 """OSPF link cost."""
                 authentication: Literal["simple", "message-digest"] | None
                 simple_auth_key: str | None
-                """Password used with simple authentication."""
+                """Password used with simple authentication using `simple_auth_key_type`."""
+                simple_auth_key_type: Literal["0", "7"]
+                """Default value: `"7"`"""
                 message_digest_keys: MessageDigestKeys
                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -13447,6 +13459,7 @@ class EosDesigns(EosDesignsRootModel):
                         cost: int | None | UndefinedType = Undefined,
                         authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                         simple_auth_key: str | None | UndefinedType = Undefined,
+                        simple_auth_key_type: Literal["0", "7"] | UndefinedType = Undefined,
                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -13461,7 +13474,8 @@ class EosDesigns(EosDesignsRootModel):
                             area: OSPF area ID.
                             cost: OSPF link cost.
                             authentication: authentication
-                            simple_auth_key: Password used with simple authentication.
+                            simple_auth_key: Password used with simple authentication using `simple_auth_key_type`.
+                            simple_auth_key_type: simple_auth_key_type
                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                         """
@@ -14145,12 +14159,19 @@ class EosDesigns(EosDesignsRootModel):
             class MessageDigestKeysItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                _fields: ClassVar[dict] = {
+                    "id": {"type": int},
+                    "hash_algorithm": {"type": str, "default": "sha512"},
+                    "key_type": {"type": str, "default": "7"},
+                    "key": {"type": str},
+                }
                 id: int | None
                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                 """Default value: `"sha512"`"""
+                key_type: Literal["0", "7"]
+                """Default value: `"7"`"""
                 key: str | None
-                """Type 7 encrypted key."""
+                """Key password using `key_type`."""
 
                 if TYPE_CHECKING:
 
@@ -14159,6 +14180,7 @@ class EosDesigns(EosDesignsRootModel):
                         *,
                         id: int | None | UndefinedType = Undefined,
                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                        key_type: Literal["0", "7"] | UndefinedType = Undefined,
                         key: str | None | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -14170,7 +14192,8 @@ class EosDesigns(EosDesignsRootModel):
                         Args:
                             id: id
                             hash_algorithm: hash_algorithm
-                            key: Type 7 encrypted key.
+                            key_type: key_type
+                            key: Key password using `key_type`.
 
                         """
 
@@ -14186,6 +14209,7 @@ class EosDesigns(EosDesignsRootModel):
                 "cost": {"type": int},
                 "authentication": {"type": str},
                 "simple_auth_key": {"type": str},
+                "simple_auth_key_type": {"type": str, "default": "7"},
                 "message_digest_keys": {"type": MessageDigestKeys},
             }
             enabled: bool | None
@@ -14201,7 +14225,9 @@ class EosDesigns(EosDesignsRootModel):
             """OSPF link cost."""
             authentication: Literal["simple", "message-digest"] | None
             simple_auth_key: str | None
-            """Password used with simple authentication."""
+            """Password used with simple authentication using `simple_auth_key_type`."""
+            simple_auth_key_type: Literal["0", "7"]
+            """Default value: `"7"`"""
             message_digest_keys: MessageDigestKeys
             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -14216,6 +14242,7 @@ class EosDesigns(EosDesignsRootModel):
                     cost: int | None | UndefinedType = Undefined,
                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                     simple_auth_key: str | None | UndefinedType = Undefined,
+                    simple_auth_key_type: Literal["0", "7"] | UndefinedType = Undefined,
                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -14230,7 +14257,8 @@ class EosDesigns(EosDesignsRootModel):
                         area: OSPF area ID.
                         cost: OSPF link cost.
                         authentication: authentication
-                        simple_auth_key: Password used with simple authentication.
+                        simple_auth_key: Password used with simple authentication using `simple_auth_key_type`.
+                        simple_auth_key_type: simple_auth_key_type
                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                     """
@@ -36129,6 +36157,60 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class MessageDigestKeysItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                            id: int
+                            hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+                            """Default value: `"sha512"`"""
+                            key: str
+                            """
+                            Key password.
+                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password
+                            for each individual `l3_interface` or `l3_port_channel`.
+                            To protect the password at rest it is
+                            strongly recommended to make use of Ansible Vault or similar.
+                            Configuration at the interface level
+                            under `l3_interfaces` or `l3_port_channels` takes precedence.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    id: int | UndefinedType = Undefined,
+                                    hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                    key: str | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    MessageDigestKeysItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        id: id
+                                        hash_algorithm: hash_algorithm
+                                        key:
+                                           Key password.
+                                           Only plaintext passwords are supported here as `eos_designs` will encrypt the password
+                                           for each individual `l3_interface` or `l3_port_channel`.
+                                           To protect the password at rest it is
+                                           strongly recommended to make use of Ansible Vault or similar.
+                                           Configuration at the interface level
+                                           under `l3_interfaces` or `l3_port_channels` takes precedence.
+
+                                    """
+
+                        class MessageDigestKeys(AvdIndexedList[int, MessageDigestKeysItem]):
+                            """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "id"
+
+                        MessageDigestKeys._item_type = MessageDigestKeysItem
+
                         class Nodes(AvdList[str]):
                             """Subclass of AvdList with `str` items."""
 
@@ -36142,6 +36224,9 @@ class EosDesigns(EosDesignsRootModel):
                             "bfd": {"type": bool, "default": False},
                             "redistribute_bgp": {"type": RedistributeBgp},
                             "redistribute_connected": {"type": RedistributeConnected},
+                            "authentication": {"type": str},
+                            "simple_auth_key": {"type": str},
+                            "message_digest_keys": {"type": MessageDigestKeys},
                             "nodes": {"type": Nodes},
                             "structured_config": {"type": EosCliConfigGen.RouterOspf.ProcessIdsItem},
                         }
@@ -36169,6 +36254,23 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         redistribute_connected: RedistributeConnected
                         """Subclass of AvdModel."""
+                        authentication: Literal["simple", "message-digest"] | None
+                        """
+                        Configure OSPF authentication at the VRF level.
+                        Configuration at the interface level under
+                        `l3_interfaces` or `l3_port_channels` takes precedence.
+                        """
+                        simple_auth_key: str | None
+                        """
+                        Password used with simple authentication.
+                        Only plaintext passwords are supported here as
+                        `eos_designs` will encrypt the password for each individual `l3_interface` or `l3_port_channel`.
+                        To
+                        protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
+                        Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
+                        """
+                        message_digest_keys: MessageDigestKeys
+                        """Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`)."""
                         nodes: Nodes
                         """Subclass of AvdList with `str` items."""
                         structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem
@@ -36189,6 +36291,9 @@ class EosDesigns(EosDesignsRootModel):
                                 bfd: bool | UndefinedType = Undefined,
                                 redistribute_bgp: RedistributeBgp | UndefinedType = Undefined,
                                 redistribute_connected: RedistributeConnected | UndefinedType = Undefined,
+                                authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
+                                simple_auth_key: str | None | UndefinedType = Undefined,
+                                message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.RouterOspf.ProcessIdsItem | UndefinedType = Undefined,
                             ) -> None:
@@ -36215,6 +36320,18 @@ class EosDesigns(EosDesignsRootModel):
                                     bfd: bfd
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
+                                    authentication:
+                                       Configure OSPF authentication at the VRF level.
+                                       Configuration at the interface level under
+                                       `l3_interfaces` or `l3_port_channels` takes precedence.
+                                    simple_auth_key:
+                                       Password used with simple authentication.
+                                       Only plaintext passwords are supported here as
+                                       `eos_designs` will encrypt the password for each individual `l3_interface` or `l3_port_channel`.
+                                       To
+                                       protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
+                                       Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
+                                    message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
                                     nodes: Subclass of AvdList with `str` items.
                                     structured_config:
                                        Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for
@@ -36672,12 +36789,19 @@ class EosDesigns(EosDesignsRootModel):
                                 class MessageDigestKeysItem(AvdModel):
                                     """Subclass of AvdModel."""
 
-                                    _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                    _fields: ClassVar[dict] = {
+                                        "id": {"type": int},
+                                        "hash_algorithm": {"type": str, "default": "sha512"},
+                                        "key_type": {"type": str, "default": "7"},
+                                        "key": {"type": str},
+                                    }
                                     id: int | None
                                     hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                     """Default value: `"sha512"`"""
+                                    key_type: Literal["0", "7"]
+                                    """Default value: `"7"`"""
                                     key: str | None
-                                    """Type 7 encrypted key."""
+                                    """Key password using `key_type`."""
 
                                     if TYPE_CHECKING:
 
@@ -36686,6 +36810,7 @@ class EosDesigns(EosDesignsRootModel):
                                             *,
                                             id: int | None | UndefinedType = Undefined,
                                             hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                            key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                             key: str | None | UndefinedType = Undefined,
                                         ) -> None:
                                             """
@@ -36697,7 +36822,8 @@ class EosDesigns(EosDesignsRootModel):
                                             Args:
                                                 id: id
                                                 hash_algorithm: hash_algorithm
-                                                key: Type 7 encrypted key.
+                                                key_type: key_type
+                                                key: Key password using `key_type`.
 
                                             """
 
@@ -36713,6 +36839,7 @@ class EosDesigns(EosDesignsRootModel):
                                     "cost": {"type": int},
                                     "authentication": {"type": str},
                                     "simple_auth_key": {"type": str},
+                                    "simple_auth_key_type": {"type": str, "default": "7"},
                                     "message_digest_keys": {"type": MessageDigestKeys},
                                 }
                                 enabled: bool | None
@@ -36728,7 +36855,9 @@ class EosDesigns(EosDesignsRootModel):
                                 """OSPF link cost."""
                                 authentication: Literal["simple", "message-digest"] | None
                                 simple_auth_key: str | None
-                                """Password used with simple authentication."""
+                                """Password used with simple authentication using `simple_auth_key_type`."""
+                                simple_auth_key_type: Literal["0", "7"]
+                                """Default value: `"7"`"""
                                 message_digest_keys: MessageDigestKeys
                                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -36743,6 +36872,7 @@ class EosDesigns(EosDesignsRootModel):
                                         cost: int | None | UndefinedType = Undefined,
                                         authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                         simple_auth_key: str | None | UndefinedType = Undefined,
+                                        simple_auth_key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                         message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -36757,7 +36887,8 @@ class EosDesigns(EosDesignsRootModel):
                                             area: OSPF area ID.
                                             cost: OSPF link cost.
                                             authentication: authentication
-                                            simple_auth_key: Password used with simple authentication.
+                                            simple_auth_key: Password used with simple authentication using `simple_auth_key_type`.
+                                            simple_auth_key_type: simple_auth_key_type
                                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                         """
@@ -37464,12 +37595,19 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key_type": {"type": str, "default": "7"},
+                                    "key": {"type": str},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
+                                key_type: Literal["0", "7"]
+                                """Default value: `"7"`"""
                                 key: str | None
-                                """Type 7 encrypted key."""
+                                """Key password using `key_type`."""
 
                                 if TYPE_CHECKING:
 
@@ -37478,6 +37616,7 @@ class EosDesigns(EosDesignsRootModel):
                                         *,
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
+                                        key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
@@ -37489,7 +37628,8 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Type 7 encrypted key.
+                                            key_type: key_type
+                                            key: Key password using `key_type`.
 
                                         """
 
@@ -37505,6 +37645,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "simple_auth_key_type": {"type": str, "default": "7"},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -37520,7 +37661,9 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """Password used with simple authentication using `simple_auth_key_type`."""
+                            simple_auth_key_type: Literal["0", "7"]
+                            """Default value: `"7"`"""
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -37535,6 +37678,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    simple_auth_key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -37549,7 +37693,8 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key: Password used with simple authentication using `simple_auth_key_type`.
+                                        simple_auth_key_type: simple_auth_key_type
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -38154,12 +38299,22 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "key_type": {"type": str, "default": "7"},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Key password."""
+                                """
+                                Key password using `key_type`.
+                                Maximum 16 characters for cleartext password.
+                                """
+                                key_type: Literal["0", "7"]
+                                """Default value: `"7"`"""
 
                                 if TYPE_CHECKING:
 
@@ -38169,6 +38324,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -38179,7 +38335,10 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Key password.
+                                            key:
+                                               Key password using `key_type`.
+                                               Maximum 16 characters for cleartext password.
+                                            key_type: key_type
 
                                         """
 
@@ -38195,6 +38354,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "simple_auth_key_type": {"type": str, "default": "7"},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -38210,7 +38370,13 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Password used with simple authentication using `simple_auth_key_type`.
+                            Maximum 8 characters for
+                            cleartext password.
+                            """
+                            simple_auth_key_type: Literal["0", "7"]
+                            """Default value: `"7"`"""
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -38225,6 +38391,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    simple_auth_key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -38239,7 +38406,11 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Password used with simple authentication using `simple_auth_key_type`.
+                                           Maximum 8 characters for
+                                           cleartext password.
+                                        simple_auth_key_type: simple_auth_key_type
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -38598,12 +38769,22 @@ class EosDesigns(EosDesignsRootModel):
                             class MessageDigestKeysItem(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"id": {"type": int}, "hash_algorithm": {"type": str, "default": "sha512"}, "key": {"type": str}}
+                                _fields: ClassVar[dict] = {
+                                    "id": {"type": int},
+                                    "hash_algorithm": {"type": str, "default": "sha512"},
+                                    "key": {"type": str},
+                                    "key_type": {"type": str, "default": "7"},
+                                }
                                 id: int | None
                                 hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
                                 """Default value: `"sha512"`"""
                                 key: str | None
-                                """Key password."""
+                                """
+                                Key password using `key_type`.
+                                Maximum 16 characters for cleartext password.
+                                """
+                                key_type: Literal["0", "7"]
+                                """Default value: `"7"`"""
 
                                 if TYPE_CHECKING:
 
@@ -38613,6 +38794,7 @@ class EosDesigns(EosDesignsRootModel):
                                         id: int | None | UndefinedType = Undefined,
                                         hash_algorithm: Literal["md5", "sha1", "sha256", "sha384", "sha512"] | UndefinedType = Undefined,
                                         key: str | None | UndefinedType = Undefined,
+                                        key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         MessageDigestKeysItem.
@@ -38623,7 +38805,10 @@ class EosDesigns(EosDesignsRootModel):
                                         Args:
                                             id: id
                                             hash_algorithm: hash_algorithm
-                                            key: Key password.
+                                            key:
+                                               Key password using `key_type`.
+                                               Maximum 16 characters for cleartext password.
+                                            key_type: key_type
 
                                         """
 
@@ -38639,6 +38824,7 @@ class EosDesigns(EosDesignsRootModel):
                                 "cost": {"type": int},
                                 "authentication": {"type": str},
                                 "simple_auth_key": {"type": str},
+                                "simple_auth_key_type": {"type": str, "default": "7"},
                                 "message_digest_keys": {"type": MessageDigestKeys},
                             }
                             enabled: bool | None
@@ -38654,7 +38840,13 @@ class EosDesigns(EosDesignsRootModel):
                             """OSPF link cost."""
                             authentication: Literal["simple", "message-digest"] | None
                             simple_auth_key: str | None
-                            """Password used with simple authentication."""
+                            """
+                            Password used with simple authentication using `simple_auth_key_type`.
+                            Maximum 8 characters for
+                            cleartext password.
+                            """
+                            simple_auth_key_type: Literal["0", "7"]
+                            """Default value: `"7"`"""
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
 
@@ -38669,6 +38861,7 @@ class EosDesigns(EosDesignsRootModel):
                                     cost: int | None | UndefinedType = Undefined,
                                     authentication: Literal["simple", "message-digest"] | None | UndefinedType = Undefined,
                                     simple_auth_key: str | None | UndefinedType = Undefined,
+                                    simple_auth_key_type: Literal["0", "7"] | UndefinedType = Undefined,
                                     message_digest_keys: MessageDigestKeys | UndefinedType = Undefined,
                                 ) -> None:
                                     """
@@ -38683,7 +38876,11 @@ class EosDesigns(EosDesignsRootModel):
                                         area: OSPF area ID.
                                         cost: OSPF link cost.
                                         authentication: authentication
-                                        simple_auth_key: Password used with simple authentication.
+                                        simple_auth_key:
+                                           Password used with simple authentication using `simple_auth_key_type`.
+                                           Maximum 8 characters for
+                                           cleartext password.
+                                        simple_auth_key_type: simple_auth_key_type
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """

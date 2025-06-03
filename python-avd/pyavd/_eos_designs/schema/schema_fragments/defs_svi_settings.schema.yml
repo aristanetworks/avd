@@ -249,7 +249,13 @@ $defs:
               - "message-digest"
           simple_auth_key:
             type: str
-            description: Password used with simple authentication.
+            description: Password used with simple authentication using `simple_auth_key_type`.
+          simple_auth_key_type:
+            type: str
+            convert_types:
+              - int
+            valid_values: ["0", "7"]
+            default: "7"
           message_digest_keys:
             type: list
             items:
@@ -268,9 +274,15 @@ $defs:
                     - sha384
                     - sha512
                   default: sha512
+                key_type:
+                  type: str
+                  convert_types:
+                    - int
+                  valid_values: ["0", "7"]
+                  default: "7"
                 key:
                   type: str
-                  description: Type 7 encrypted key.
+                  description: Key password using `key_type`.
       bgp:
         type: dict
         keys:
