@@ -651,6 +651,22 @@ sflow interface egress enable default
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+| default | - |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
+| ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
+| T1 | 3666 | 5666 | 0 | - |
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port |
+| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- |
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -662,6 +678,11 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
+!
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy

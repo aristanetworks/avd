@@ -12750,17 +12750,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 _fields: ClassVar[dict] = {
                     "table_size": {"type": int},
                     "record_export": {"type": RecordExport},
-                    "name": {"type": str},
                     "exporters": {"type": Exporters},
+                    "name": {"type": str},
                 }
                 table_size: int | None
                 """Maximum number of entries in flow table."""
                 record_export: RecordExport
                 """Subclass of AvdModel."""
-                name: str
-                """Tracker Name."""
                 exporters: Exporters
                 """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
+                name: str
+                """Tracker Name."""
 
                 if TYPE_CHECKING:
 
@@ -12769,8 +12769,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         *,
                         table_size: int | None | UndefinedType = Undefined,
                         record_export: RecordExport | UndefinedType = Undefined,
-                        name: str | UndefinedType = Undefined,
                         exporters: Exporters | UndefinedType = Undefined,
+                        name: str | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrackersItem.
@@ -12781,8 +12781,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             table_size: Maximum number of entries in flow table.
                             record_export: Subclass of AvdModel.
-                            name: Tracker Name.
                             exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
+                            name: Tracker Name.
 
                         """
 
@@ -12862,32 +12862,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             class TrackersItem(AvdModel):
                 """Subclass of AvdModel."""
-
-                class RecordExport(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
-                    on_inactive_timeout: int | None
-                    """Flow record inactive export timeout in milliseconds."""
-                    on_interval: int | None
-                    """Flow record export interval in milliseconds."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
-                        ) -> None:
-                            """
-                            RecordExport.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                on_inactive_timeout: Flow record inactive export timeout in milliseconds.
-                                on_interval: Flow record export interval in milliseconds.
-
-                            """
 
                 class ExportersItem(AvdModel):
                     """Subclass of AvdModel."""
@@ -12987,22 +12961,48 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Exporters._item_type = ExportersItem
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "record_export": {"type": RecordExport}, "exporters": {"type": Exporters}}
+                class RecordExport(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
+                    on_inactive_timeout: int | None
+                    """Flow record inactive export timeout in milliseconds."""
+                    on_interval: int | None
+                    """Flow record export interval in milliseconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RecordExport.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                on_inactive_timeout: Flow record inactive export timeout in milliseconds.
+                                on_interval: Flow record export interval in milliseconds.
+
+                            """
+
+                _fields: ClassVar[dict] = {"exporters": {"type": Exporters}, "name": {"type": str}, "record_export": {"type": RecordExport}}
+                exporters: Exporters
+                """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
                 name: str
                 """Tracker Name."""
                 record_export: RecordExport
                 """Subclass of AvdModel."""
-                exporters: Exporters
-                """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
+                        exporters: Exporters | UndefinedType = Undefined,
                         name: str | UndefinedType = Undefined,
                         record_export: RecordExport | UndefinedType = Undefined,
-                        exporters: Exporters | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrackersItem.
@@ -13011,9 +13011,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
+                            exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
                             name: Tracker Name.
                             record_export: Subclass of AvdModel.
-                            exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
 
                         """
 
@@ -13082,109 +13082,55 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class TrackersItem(AvdModel):
                 """Subclass of AvdModel."""
 
-                class RecordExport(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {"mpls": {"type": bool}, "on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
-                    mpls: bool | None
-                    """Export MPLS forwarding information."""
-                    on_inactive_timeout: int | None
-                    """Flow record inactive export timeout in milliseconds."""
-                    on_interval: int | None
-                    """Flow record export interval in milliseconds."""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            mpls: bool | None | UndefinedType = Undefined,
-                            on_inactive_timeout: int | None | UndefinedType = Undefined,
-                            on_interval: int | None | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            RecordExport.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                mpls: Export MPLS forwarding information.
-                                on_inactive_timeout: Flow record inactive export timeout in milliseconds.
-                                on_interval: Flow record export interval in milliseconds.
-
-                            """
-
                 class ExportersItem(AvdModel):
                     """Subclass of AvdModel."""
 
-                    class Collector(AvdModel):
+                    class CollectorItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        class Sflow(AvdModel):
-                            """Subclass of AvdModel."""
-
-                            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "port": {"type": int}}
-                            enabled: bool
-                            port: int | None
-
-                            if TYPE_CHECKING:
-
-                                def __init__(self, *, enabled: bool | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
-                                    """
-                                    Sflow.
-
-
-                                    Subclass of AvdModel.
-
-                                    Args:
-                                        enabled: enabled
-                                        port: port
-
-                                    """
-
-                        _fields: ClassVar[dict] = {"sflow": {"type": Sflow}, "host": {"type": str}, "port": {"type": int}}
-                        sflow: Sflow
-                        """Subclass of AvdModel."""
-                        host: str | None
-                        """Collector IPv4 address or IPv6 address or fully qualified domain name."""
+                        _fields: ClassVar[dict] = {"name": {"type": str}, "port": {"type": int}}
+                        name: str
+                        """
+                        Flow collector name.
+                        It can be and IPv4 address or IPv6 address or fully qualified domain name or
+                        sflow.
+                        """
                         port: int | None
-                        """Collector Port Number."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self,
-                                *,
-                                sflow: Sflow | UndefinedType = Undefined,
-                                host: str | None | UndefinedType = Undefined,
-                                port: int | None | UndefinedType = Undefined,
-                            ) -> None:
+                            def __init__(self, *, name: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                                 """
-                                Collector.
+                                CollectorItem.
 
 
                                 Subclass of AvdModel.
 
                                 Args:
-                                    sflow: Subclass of AvdModel.
-                                    host: Collector IPv4 address or IPv6 address or fully qualified domain name.
-                                    port: Collector Port Number.
+                                    name:
+                                       Flow collector name.
+                                       It can be and IPv4 address or IPv6 address or fully qualified domain name or
+                                       sflow.
+                                    port: port
 
                                 """
+
+                    class Collector(AvdIndexedList[str, CollectorItem]):
+                        """Subclass of AvdIndexedList with `CollectorItem` items. Primary key is `name` (`str`)."""
+
+                        _primary_key: ClassVar[str] = "name"
+
+                    Collector._item_type = CollectorItem
 
                     class Format(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"sflow": {"type": bool}, "ipfix_version": {"type": int}}
+                        _fields: ClassVar[dict] = {"sflow": {"type": bool}}
                         sflow: bool | None
-                        ipfix_version: int | None
 
                         if TYPE_CHECKING:
 
-                            def __init__(
-                                self, *, sflow: bool | None | UndefinedType = Undefined, ipfix_version: int | None | UndefinedType = Undefined
-                            ) -> None:
+                            def __init__(self, *, sflow: bool | None | UndefinedType = Undefined) -> None:
                                 """
                                 Format.
 
@@ -13193,7 +13139,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     sflow: sflow
-                                    ipfix_version: ipfix_version
 
                                 """
 
@@ -13207,7 +13152,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str
                     """Exporter Name."""
                     collector: Collector
-                    """Subclass of AvdModel."""
+                    """Subclass of AvdIndexedList with `CollectorItem` items. Primary key is `name` (`str`)."""
                     format: Format
                     """Subclass of AvdModel."""
                     local_interface: str | None
@@ -13234,7 +13179,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 name: Exporter Name.
-                                collector: Subclass of AvdModel.
+                                collector: Subclass of AvdIndexedList with `CollectorItem` items. Primary key is `name` (`str`).
                                 format: Subclass of AvdModel.
                                 local_interface: Local Source Interface.
                                 template_interval: Template interval in milliseconds.
@@ -13248,22 +13193,48 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Exporters._item_type = ExportersItem
 
-                _fields: ClassVar[dict] = {"record_export": {"type": RecordExport}, "exporters": {"type": Exporters}, "name": {"type": str}}
-                record_export: RecordExport
-                """Subclass of AvdModel."""
+                class RecordExport(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"on_inactive_timeout": {"type": int}, "on_interval": {"type": int}}
+                    on_inactive_timeout: int | None
+                    """Flow record inactive export timeout in milliseconds."""
+                    on_interval: int | None
+                    """Flow record export interval in milliseconds."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self, *, on_inactive_timeout: int | None | UndefinedType = Undefined, on_interval: int | None | UndefinedType = Undefined
+                        ) -> None:
+                            """
+                            RecordExport.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                on_inactive_timeout: Flow record inactive export timeout in milliseconds.
+                                on_interval: Flow record export interval in milliseconds.
+
+                            """
+
+                _fields: ClassVar[dict] = {"exporters": {"type": Exporters}, "name": {"type": str}, "record_export": {"type": RecordExport}}
                 exporters: Exporters
                 """Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`)."""
                 name: str
                 """Tracker Name."""
+                record_export: RecordExport
+                """Subclass of AvdModel."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        record_export: RecordExport | UndefinedType = Undefined,
                         exporters: Exporters | UndefinedType = Undefined,
                         name: str | UndefinedType = Undefined,
+                        record_export: RecordExport | UndefinedType = Undefined,
                     ) -> None:
                         """
                         TrackersItem.
@@ -13272,9 +13243,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            record_export: Subclass of AvdModel.
                             exporters: Subclass of AvdIndexedList with `ExportersItem` items. Primary key is `name` (`str`).
                             name: Tracker Name.
+                            record_export: Subclass of AvdModel.
 
                         """
 
@@ -13287,14 +13258,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {
                 "encapsulation": {"type": Encapsulation},
-                "sample": {"type": int},
                 "sample_limit": {"type": int},
                 "trackers": {"type": Trackers},
                 "shutdown": {"type": bool, "default": False},
             }
             encapsulation: Encapsulation
             """Subclass of AvdModel."""
-            sample: int | None
             sample_limit: int | None
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
@@ -13307,7 +13276,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     self,
                     *,
                     encapsulation: Encapsulation | UndefinedType = Undefined,
-                    sample: int | None | UndefinedType = Undefined,
                     sample_limit: int | None | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
                     shutdown: bool | UndefinedType = Undefined,
@@ -13320,7 +13288,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         encapsulation: Subclass of AvdModel.
-                        sample: sample
                         sample_limit: sample_limit
                         trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
                         shutdown: shutdown
