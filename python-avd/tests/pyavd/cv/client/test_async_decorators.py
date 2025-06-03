@@ -6,6 +6,7 @@ import re
 from asyncio.exceptions import InvalidStateError as AsyncioInvalidStateError
 from asyncio.exceptions import TimeoutError as AsyncioTimeoutError
 from collections import defaultdict
+from contextlib import AbstractContextManager
 from contextlib import nullcontext as does_not_raise
 from hashlib import sha256
 from itertools import pairwise
@@ -13,7 +14,6 @@ from typing import Any
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from _pytest.python_api import RaisesContext
 from grpclib import Status
 from grpclib.exceptions import GRPCError
 
@@ -22,6 +22,8 @@ from pyavd._cv.client.exceptions import CVClientException, CVGRPCStatusUnavailab
 from pyavd._cv.client.versioning import CVAAS_VERSION_STRING, CvVersion
 
 LOGGER = logging.getLogger(__name__)
+
+ExpectedExceptionContext = AbstractContextManager[pytest.ExceptionInfo | None]
 
 INVALID_VERSION_TESTS = [
     # version , expected_exception
@@ -297,7 +299,7 @@ async def test_grpc_request_handler_failures(
     failures: int,
     async_sleep_calls: int,
     log_patterns: list[str],
-    outer_exception: RaisesContext | does_not_raise,
+    outer_exception: ExpectedExceptionContext,
     grpc_method: str,
     extra_args: dict[str, list[int]],
 ) -> None:
@@ -590,7 +592,7 @@ async def test_grpc_request_handler_exceptions(
     caplog: pytest.LogCaptureFixture,
     log_patterns: list[str],
     inner_exception: Exception | None,
-    outer_exception: RaisesContext | does_not_raise,
+    outer_exception: ExpectedExceptionContext,
     grpc_method: str,
     extra_args: dict[str, list[int]],
 ) -> None:
