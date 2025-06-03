@@ -213,6 +213,14 @@ vlan_interfaces:
   ip_address: 10.10.255.6/31
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: 0E6UCAn15dG7ENbaNlkv0SDlXMaoCEeJ
+  - id: 2
+    hash_algorithm: sha512
+    key: Z3lX3tpY1Ksv/Kum/NwDj2aiiJ2LKpFj
   mtu: 1500
   no_autostate: true
 vlan_internal_order:

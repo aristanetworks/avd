@@ -97,6 +97,11 @@ tenant_c:
             description: test_description
             nodes: [ DC1-BL2B ]
             set_ipv4_next_hop: 1.1.1.1
+            bfd: true
+            bfd_timers:
+              interval: 100
+              min_rx: 100
+              multiplier: 3
           - ip_address: BEBA::C0CA:C07A
             peer_group: Tenant_C_WAN_Zone_BGP_PEER_GROUP
             nodes: [ DC1-BL2B ]

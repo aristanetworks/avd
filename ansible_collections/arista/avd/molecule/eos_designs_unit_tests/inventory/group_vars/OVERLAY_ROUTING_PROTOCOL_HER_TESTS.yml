@@ -24,6 +24,13 @@ l3leaf:
       id: 2
       filter:
         tags: ["leaf2"]
+    - name: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF4
+      uplink_switches: [ OVERLAY_ROUTING_PROTOCOL_CVX_L3LEAF1 ]
+      uplink_switch_interfaces: [ Ethernet5 ]
+      bgp_as: 65002
+      id: 5
+      filter:
+        tags: ["leaf4"]
   node_groups:
     # Testing MLAG in combination with HER to ensure no EVPN artifacts are generated
     - group: OVERLAY_ROUTING_PROTOCOL_HER_L3LEAF3
