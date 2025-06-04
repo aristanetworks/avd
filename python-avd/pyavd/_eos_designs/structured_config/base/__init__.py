@@ -331,6 +331,9 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if self.shared_utils.node_config.spanning_tree_mst_pvst_boundary:
             self.structured_config.spanning_tree.mst.pvst_border = True
 
+        if stp_po_range := self.shared_utils.node_config.spanning_tree_port_id_allocation_port_channel_range:
+            self.structured_config.spanning_tree.port_id_allocation_port_channel_range = stp_po_range
+
         if spanning_tree_mode is not None:
             self.structured_config.spanning_tree.mode = spanning_tree_mode
             priority = self.shared_utils.node_config.spanning_tree_priority
