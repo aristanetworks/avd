@@ -73,8 +73,7 @@ keys:
                 items:
                   type: str
                   description: |-
-                    Hardware Ethernet interface name.
-                    Example - Ethernet4
+                    Ethernet interface name.
               tunnel_mode_gre:
                 type: dict
                 keys:
@@ -104,7 +103,7 @@ keys:
                     type: str
                     description: |-
                       Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
-                      EOS default is 35006.
+                      EOS default is 0x88BE.
                   vrf:
                     type: str
                     description: VRF name of the GRE tunnel. EOS default is "default".
