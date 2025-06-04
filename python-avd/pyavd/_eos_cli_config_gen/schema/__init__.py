@@ -20180,6 +20180,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class SignatureVerification(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "ssl_profile": {"type": str}}
+            enabled: bool
+            ssl_profile: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, ssl_profile: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    SignatureVerification.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        ssl_profile: ssl_profile
+
+                    """
+
         class Password(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20861,6 +20883,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "entropy_sources": {"type": EntropySources},
+            "signature_verification": {"type": SignatureVerification},
             "password": {"type": Password},
             "ssl_profiles": {"type": SslProfiles},
             "shared_secret_profiles": {"type": SharedSecretProfiles},
@@ -20868,6 +20891,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         entropy_sources: EntropySources
         """
         Source of entropy.
+
+        Subclass of AvdModel.
+        """
+        signature_verification: SignatureVerification
+        """
+        Verify the SWIX signatures.
 
         Subclass of AvdModel.
         """
@@ -20884,6 +20913,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 entropy_sources: EntropySources | UndefinedType = Undefined,
+                signature_verification: SignatureVerification | UndefinedType = Undefined,
                 password: Password | UndefinedType = Undefined,
                 ssl_profiles: SslProfiles | UndefinedType = Undefined,
                 shared_secret_profiles: SharedSecretProfiles | UndefinedType = Undefined,
@@ -20897,6 +20927,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     entropy_sources:
                        Source of entropy.
+
+                       Subclass of AvdModel.
+                    signature_verification:
+                       Verify the SWIX signatures.
 
                        Subclass of AvdModel.
                     password: Subclass of AvdModel.
