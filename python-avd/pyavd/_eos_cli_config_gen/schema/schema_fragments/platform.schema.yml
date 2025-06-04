@@ -43,7 +43,7 @@ keys:
                     type: int
                     min: 1
                     max: 33554432
-                    description: Specify the headroom pool limit (in bytes).
+                    description: Headroom pool limit in bytes.
                   cells:
                     type: int
                     min: 1
