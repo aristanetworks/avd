@@ -26159,7 +26159,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """The queue profile to be applied to the platform."""
                 headroom_pool_limit: HeadroomPoolLimit
                 """
-                Headroom Pool Limit.
                 Max limit on headroom pool size.
 
                 Subclass of AvdModel.
@@ -26185,7 +26184,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             active_profile: The queue profile to be applied to the platform.
                             headroom_pool_limit:
-                               Headroom Pool Limit.
                                Max limit on headroom pool size.
 
                                Subclass of AvdModel.
