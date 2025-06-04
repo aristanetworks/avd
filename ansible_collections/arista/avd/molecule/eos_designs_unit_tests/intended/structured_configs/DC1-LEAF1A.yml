@@ -501,7 +501,7 @@ vlan_interfaces:
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   ospf_authentication: simple
-  ospf_authentication_key: 0vZOQ+C+tcpffJCsxfPv8w==
+  ospf_authentication_key: 9e3ZbKYR3B0VeSpVywafWA==
   tenant: Tenant_A
   tags:
   - DC1_LEAF1

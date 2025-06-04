@@ -67,7 +67,7 @@ tenant_a:
           enabled: true
           router_id: 10.10.10.10
           authentication: simple
-          simple_auth_key: ClearText
+          simple_auth_key: password
           nodes:
             - DC1-LEAF1A
       - name: Tenant_A_WEB_Zone
