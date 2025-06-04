@@ -23,6 +23,9 @@ spanning_tree:
     priority: 32768
   - id: 1-10,13-20,23-4093
     priority: 8192
+  port_id_allocation_port_channel_range:
+    minimum: 201
+    maximum: 2001
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
