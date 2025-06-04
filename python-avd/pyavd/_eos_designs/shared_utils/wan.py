@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.eos_designs_facts.schema.protocol import EosDesignsFactsProtocol
@@ -416,7 +416,7 @@ class WanMixin(Protocol):
         return self.is_cv_pathfinder_router and self.is_wan_server
 
     @cached_property
-    def cv_pathfinder_role(self: SharedUtilsProtocol) -> Literal[edge, pathfinder, "transit region", "transit zone"] | None:
+    def cv_pathfinder_role(self: SharedUtilsProtocol) -> Literal["edge", "pathfinder", "transit region", "transit zone"] | None:
         if self.is_cv_pathfinder_server:
             return "pathfinder"
 
