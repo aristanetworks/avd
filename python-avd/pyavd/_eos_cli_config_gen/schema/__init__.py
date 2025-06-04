@@ -25943,7 +25943,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                         """
 
                             _fields: ClassVar[dict] = {"id": {"type": int}, "threshold": {"type": str}, "reserved": {"type": Reserved}}
-                            id: Literal[0, 1, 2, 3, 4, 5, 6, 7]
+                            id: int
+                            """Priority-group group number."""
                             threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                             reserved: Reserved
                             """Subclass of AvdModel."""
@@ -25953,7 +25954,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    id: Literal[0, 1, 2, 3, 4, 5, 6, 7] | UndefinedType = Undefined,
+                                    id: int | UndefinedType = Undefined,
                                     threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
                                     | None
                                     | UndefinedType = Undefined,
@@ -25966,7 +25967,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        id: id
+                                        id: Priority-group group number.
                                         threshold: threshold
                                         reserved: Subclass of AvdModel.
 
