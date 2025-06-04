@@ -8010,6 +8010,74 @@ keys:
               convert_types:
               - str
               description: ZTP vlan number.
+        redundancy:
+          type: dict
+          keys:
+            fallback_delay:
+              type: str
+              description: 'Fallback delay to the higher priority interface.
+
+                It accept the range of 0-3600 second and string infinity for don''t
+                ever fallback.'
+              convert_types:
+              - int
+            monitor:
+              type: dict
+              keys:
+                link_state:
+                  type: bool
+                  description: 'Link state of interface.
+
+                    `neighbor` and `link_state` are mutually exclusive and link_state
+                    take precedence.'
+                neighbor:
+                  type: dict
+                  description: 'To configure IPv6 redundancy neighbor fallback_delay
+                    should be set as infinity.
+
+                    `neighbor` and `link_state` are mutually exclusive and link_state
+                    take precedence.'
+                  keys:
+                    enabled:
+                      type: bool
+                      description: Enable/disable IPv6 neighbor redundancy.
+                      required: true
+                    ipv6_address:
+                      type: str
+                    interval:
+                      type: int
+                      description: Interval between neighbor probes in milliseconds.
+                      min: 1
+                      max: 300000
+                    multiplier:
+                      type: int
+                      description: Number of missed neighbor replies after which it
+                        is timed out.
+                      min: 1
+                      max: 100
+            supervisor:
+              type: list
+              items:
+                type: dict
+                keys:
+                  number:
+                    type: int
+                    description: Supervisor number.
+                    required: true
+                  primary_management_interface:
+                    type: str
+                    description: 'Primary redundant management interface.
+
+                      Ex: Management1/1, Management1/2'
+                    required: true
+                  backup_management_interfaces:
+                    type: list
+                    description: 'Backup redundant management interface.
+
+                      Ex: Management1/1, Management1/2'
+                    required: true
+                    items:
+                      type: str
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
