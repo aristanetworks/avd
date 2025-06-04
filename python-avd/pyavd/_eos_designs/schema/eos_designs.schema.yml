@@ -845,12 +845,6 @@ keys:
     description: Device type that CloudVision should use when generating the Topology
       like "leaf", "spine", "core" or "edge". Defaults to the setting under node_type_keys.
     type: str
-    valid_values:
-    - leaf
-    - spine
-    - core
-    - edge
-    - member-leaf
   cv_token:
     documentation_options:
       table: wan-cv-pathfinder-zscaler-integration
@@ -2843,12 +2837,6 @@ keys:
           description: Device type that CloudVision should use when generating the
             Topology like "leaf", "spine", "core" or "edge".
           type: str
-          valid_values:
-          - leaf
-          - spine
-          - core
-          - edge
-          - member-leaf
   ntp_settings:
     documentation_options:
       table: management-settings

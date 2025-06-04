@@ -8600,7 +8600,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
         cv_tags_topology_type: str | None
         """
         Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
@@ -8633,7 +8632,6 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -9124,7 +9122,6 @@ class EosDesigns(EosDesignsRootModel):
 
         Subclass of AvdModel.
         """
-        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
         cv_tags_topology_type: str | None
         """
         Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
@@ -9157,7 +9154,6 @@ class EosDesigns(EosDesignsRootModel):
                 mpls_lsr: bool | UndefinedType = Undefined,
                 ip_addressing: IpAddressing | UndefinedType = Undefined,
                 interface_descriptions: InterfaceDescriptions | UndefinedType = Undefined,
-                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
                 cv_tags_topology_type: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -59165,7 +59161,6 @@ class EosDesigns(EosDesignsRootModel):
     Make sure to set it in a
     common group_vars file.
     """
-    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
     cv_tags_topology_type: str | None
     """
     Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
@@ -60751,7 +60746,6 @@ class EosDesigns(EosDesignsRootModel):
             cv_pathfinder_internet_exit_policies: CvPathfinderInternetExitPolicies | UndefinedType = Undefined,
             cv_pathfinder_regions: CvPathfinderRegions | UndefinedType = Undefined,
             cv_server: str | None | UndefinedType = Undefined,
-            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
             cv_tags_topology_type: str | None | UndefinedType = Undefined,
             cv_token: str | None | UndefinedType = Undefined,
             cv_topology: CvTopology | UndefinedType = Undefined,
