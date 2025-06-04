@@ -83,9 +83,10 @@ keys:
                                     convert_types: [str]
                                   cells:
                                     type: int
-                                    min: 1
+                                    convert_types:
+                                      - str
+                                    min: 0
                                     max: 8192
-                                    convert_types: [str]
                     multicast_queues:
                       type: list
                       primary_key: id
