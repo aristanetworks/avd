@@ -4857,10 +4857,10 @@ interface Ethernet65
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
-   vrrp 1 ipv4 192.0.2.1
    vrrp 1 peer authentication ietf-md5 key-string 0 <removed>
-   vrrp 2 ipv6 2001:db8::1
+   vrrp 1 ipv4 192.0.2.1
    vrrp 2 peer authentication text <removed>
+   vrrp 2 ipv6 2001:db8::1
 !
 interface Ethernet66
    description Multiple VRIDs and tracking
@@ -4873,12 +4873,12 @@ interface Ethernet66
    vrrp 1 priority-level 105
    vrrp 1 advertisement interval 2
    vrrp 1 preempt delay minimum 30 reload 800
-   vrrp 1 ipv4 192.0.2.1
    vrrp 1 peer authentication ietf-md5 key-string <removed>
+   vrrp 1 ipv4 192.0.2.1
    vrrp 1 tracked-object ID1TrackedObjectDecrement decrement 5
    vrrp 1 tracked-object ID1TrackedObjectShutdown shutdown
-   vrrp 2 ipv6 2001:db8::1
    vrrp 2 peer authentication text 0 <removed>
+   vrrp 2 ipv6 2001:db8::1
    vrrp 2 tracked-object ID2TrackedObjectDecrement decrement 10
    vrrp 2 tracked-object ID2TrackedObjectShutdown shutdown
    no vrrp 3 preempt
