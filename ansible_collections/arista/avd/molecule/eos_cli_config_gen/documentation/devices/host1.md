@@ -1590,6 +1590,8 @@ address locking
 | Common password encryption key | True |
 | Reversible password encryption | aes-256-gcm |
 | Minimum password length | 17 |
+| Signature verification | Enabled |
+| Signature verification SSL profile | cipher-v1.0-v1.3 |
 
 ### Management Security SSL Profiles
 
@@ -1666,6 +1668,7 @@ management security
    entropy source hardware exclusive
    password minimum length 17
    password encryption-key common
+   signature-verification extension ssl profile cipher-v1.0-v1.3
    password encryption reversible aes-256-gcm
    !
    password policy AVD_POLICY
