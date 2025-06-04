@@ -10,7 +10,7 @@ node_type_keys:
     network_services:
       l3: true
     interface_descriptions:
-      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/port-channel-interfaces.j2'
+      underlay_port_channel_interfaces: 'custom_templates/interface_descriptions/underlay/port-channel-interfaces.j2'
 
 type: wan_router
 
