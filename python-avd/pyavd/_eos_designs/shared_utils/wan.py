@@ -416,7 +416,7 @@ class WanMixin(Protocol):
         return self.is_cv_pathfinder_router and self.is_wan_server
 
     @cached_property
-    def cv_pathfinder_role(self: SharedUtilsProtocol) -> Literal["edge", "pathfinder", "transit region", "transit zone"] | None:
+    def cv_pathfinder_role(self: SharedUtilsProtocol) -> Literal[edge, pathfinder, "transit region", "transit zone"] | None:
         if self.is_cv_pathfinder_server:
             return "pathfinder"
 
