@@ -12036,7 +12036,7 @@ class EosDesigns(EosDesignsRootModel):
                     protocol: str | None
                     """
                     Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
-                    EOS default is 35006.
+                    EOS default is 0x88BE.
                     """
                     vrf: str | None
                     """VRF name of the GRE tunnel. EOS default is "default"."""
@@ -12066,7 +12066,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ttl: TTL range. EOS default is 128.
                                 protocol:
                                    Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
-                                   EOS default is 35006.
+                                   EOS default is 0x88BE.
                                 vrf: VRF name of the GRE tunnel. EOS default is "default".
 
                             """
