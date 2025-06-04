@@ -166,3 +166,6 @@ asyncio_default_fixture_loop_scope = "function"
 [tool.pyright]
 # Pyright stops at the first parent pyproject.toml it finds so as documented adding base config
 extends = "../pyproject.toml"
+
+[tool.ruff.lint.pylint]
+max-args = 20
