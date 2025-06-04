@@ -146,6 +146,7 @@ Software export of IPFIX data records enabled.
 {%         set encapsulations = (encapsulations_list or ["-"]) | join(", ") %}
 | {{ sample_limit_size }} | {{ encapsulations }} |
 {%         if flow_tracking.mirror_on_drop.trackers is arista.avd.defined %}
+{%             set ns_count_exporter = namespace(count_exporter = 0) %}
 
 ##### Trackers Summary
 
@@ -154,7 +155,7 @@ Software export of IPFIX data records enabled.
 {%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
 {%                 set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
 {%                 set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
-{%                 set count_exporter = tracker.exporters | arista.avd.default([]) | length %}
+{%                 set ns_count_exporter.count_exporter = tracker.exporters | arista.avd.default([]) | length %}
 {%                 set applied_on = [] %}
 {%                 for dps_interface in dps_interfaces | arista.avd.default([]) %}
 {%                     if dps_interface.flow_tracker.mirror_on_drop is arista.avd.defined(tracker.name) %}
@@ -176,26 +177,29 @@ Software export of IPFIX data records enabled.
 {%                 else %}
 {%                     set interfaces = "-" %}
 {%                 endif %}
-| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ count_exporter }} | {{ interfaces }} |
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ ns_count_exporter.count_exporter }} | {{ interfaces }} |
 {%             endfor %}
+{%             if ns_count_exporter.count_exporter > 0 %}
 
 ##### Exporters Summary
 
 | Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port |
 | ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- |
-{%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
-{%                 for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                     set current_exporter_collector_hosts = [] %}
-{%                     set current_exporter_collector_ports = [] %}
-{%                     for collector in exporter.collector | arista.avd.natural_sort %}
-{%                         do current_exporter_collector_hosts.append(collector.name) %}
-{%                         do current_exporter_collector_ports.append(collector.port | arista.avd.default("-")) %}
-{%                     endfor %}
+{%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
+{%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
+{%                         set current_exporter_collector_hosts = [] %}
+{%                         set current_exporter_collector_ports = [] %}
+{%                         for collector in exporter.collectors | arista.avd.natural_sort %}
+{%                             do current_exporter_collector_hosts.append(collector.name) %}
+{%                             do current_exporter_collector_ports.append(collector.port | arista.avd.default("-")) %}
+{%                         endfor %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ exporter.local_interface | arista.avd.default("-") }} | {{ exporter.template_interval | arista.avd.default("-") }} | {{ current_exporter_collector_hosts | join('<br>') }} | {{ current_exporter_collector_ports | join('<br>') }} |
+{%                     endfor %}
 {%                 endfor %}
-{%             endfor %}
+{%             endif %}
 {%         endif %}
 {%     endif %}
+
 #### Flow Tracking Device Configuration
 
 ```eos

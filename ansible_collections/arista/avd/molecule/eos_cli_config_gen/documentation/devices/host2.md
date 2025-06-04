@@ -663,11 +663,6 @@ sflow interface egress enable default
 | ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
 | T1 | 3666 | 5666 | 0 | - |
 
-##### Exporters Summary
-
-| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port |
-| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- |
-
 #### Flow Tracking Device Configuration
 
 ```eos

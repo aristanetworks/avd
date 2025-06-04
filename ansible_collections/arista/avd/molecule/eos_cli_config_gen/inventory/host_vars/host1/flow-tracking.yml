@@ -107,7 +107,7 @@ flow_tracking:
       - name: T2
         exporters:
           - name: T2-E1
-            collector:
+            collectors:
               - name: 42.42.42.42
               - name: sflow
                 port: 666
@@ -120,7 +120,7 @@ flow_tracking:
       - name: T3
         exporters:
           - name: T3-E3
-            collector:
+            collectors:
               - name: sflow
               - name: collector.with.port
                 port: 111
@@ -129,6 +129,6 @@ flow_tracking:
             local_interface: Management1
             template_interval: 424242
           - name: T3-E4
-            collector:
+            collectors:
               - name: dead:beef::cafe
     shutdown: false
