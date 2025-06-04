@@ -35,9 +35,7 @@ keys:
                   The queue profile to be applied to the platform.
               headroom_pool_limit:
                 type: dict
-                description: |-
-                  Headroom Pool Limit.
-                  Max limit on headroom pool size.
+                description: Max limit on headroom pool size.
                 keys:
                   bytes:
                     type: int
