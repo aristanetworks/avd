@@ -575,7 +575,7 @@ class InterfaceDescriptionData:
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
-        main_port_channel_wan_carrier: str | None = None
+        main_port_channel_wan_carrier: str | None = None,
     ) -> None:
         self._shared_utils = shared_utils
         self.description = description

@@ -148,7 +148,9 @@ class PortChannelInterfacesMixin(Protocol):
         for l3_port_channel in self.shared_utils.node_config.l3_port_channels:
             if "." in l3_port_channel.name:
                 parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
-                l3_port_channel._internal_data.main_port_channel_wan_carrier = self.shared_utils.node_config.l3_port_channels.get(parent_port_channel_name).wan_carrier
+                l3_port_channel._internal_data.main_port_channel_wan_carrier = self.shared_utils.node_config.l3_port_channels.get(
+                    parent_port_channel_name
+                ).wan_carrier
             else:
                 l3_port_channel._internal_data.main_port_channel_wan_carrier = None
             self._set_l3_port_channel(l3_port_channel)
@@ -173,7 +175,7 @@ class PortChannelInterfacesMixin(Protocol):
                     peer_interface=l3_port_channel.peer_port_channel,
                     wan_carrier=l3_port_channel.wan_carrier,
                     wan_circuit_id=l3_port_channel.wan_circuit_id,
-                    main_port_channel_wan_carrier = l3_port_channel._internal_data.main_port_channel_wan_carrier
+                    main_port_channel_wan_carrier=l3_port_channel._internal_data.main_port_channel_wan_carrier,
                 ),
             )
         interface._update(
