@@ -1212,7 +1212,7 @@ interface {{ ethernet_interface.name }}
 {%             endif %}
 {%             if vrid.peer_authentication is arista.avd.defined %}
 {%                 set peer_auth_cli = "vrrp " ~ vrid.id ~ " peer authentication" %}
-{%                 if vrid.peer_authentication.mode is arista.avd.defined("ietf-md5") %}
+{%                 if vrid.peer_authentication.mode == "ietf-md5" %}
 {%                     set peer_auth_cli = peer_auth_cli ~ " ietf-md5 key-string" %}
 {%                 else %}
 {%                     set peer_auth_cli = peer_auth_cli ~ " text" %}
