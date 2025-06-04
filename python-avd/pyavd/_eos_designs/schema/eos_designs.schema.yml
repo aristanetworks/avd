@@ -9209,6 +9209,11 @@ $defs:
               table: node-type-l2-mlag-configuration
             type: bool
             description: Enable MST PVST border ports.
+          spanning_tree_port_id_allocation_port_channel_range:
+            type: dict
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            $ref: eos_cli_config_gen#/keys/spanning_tree/keys/port_id_allocation_port_channel_range
           virtual_router_mac_address:
             documentation_options:
               table: node-type-l2-mlag-configuration
