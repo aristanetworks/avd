@@ -18596,7 +18596,91 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
-        _fields: ClassVar[dict] = {"aging_time": {"type": int}, "notification_host_flap": {"type": NotificationHostFlap}}
+        class StaticEntriesItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "mac_address": {"type": str},
+                "vlan": {"type": int},
+                "drop": {"type": bool},
+                "interface": {"type": str},
+                "eligibility_forwarding": {"type": bool},
+            }
+            mac_address: str
+            """
+            The static MAC address to configure.
+            The combination of 'mac_address' and 'vlan' must be unique
+            across all static entries.
+            """
+            vlan: int
+            """The VLAN ID associated with the MAC address."""
+            drop: bool | None
+            """
+            If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+            This option is
+            mutually exclusive with 'interface' and takes precedence if both are defined.
+            """
+            interface: str | None
+            """
+            The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
+            this MAC address and VLAN.
+            This option is mutually exclusive with 'drop'.
+            """
+            eligibility_forwarding: bool | None
+            """
+            Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+            This
+            option is only applicable when 'interface' is defined.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    mac_address: str | UndefinedType = Undefined,
+                    vlan: int | UndefinedType = Undefined,
+                    drop: bool | None | UndefinedType = Undefined,
+                    interface: str | None | UndefinedType = Undefined,
+                    eligibility_forwarding: bool | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    StaticEntriesItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        mac_address:
+                           The static MAC address to configure.
+                           The combination of 'mac_address' and 'vlan' must be unique
+                           across all static entries.
+                        vlan: The VLAN ID associated with the MAC address.
+                        drop:
+                           If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+                           This option is
+                           mutually exclusive with 'interface' and takes precedence if both are defined.
+                        interface:
+                           The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with
+                           this MAC address and VLAN.
+                           This option is mutually exclusive with 'drop'.
+                        eligibility_forwarding:
+                           Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+                           This
+                           option is only applicable when 'interface' is defined.
+
+                    """
+
+        class StaticEntries(AvdList[StaticEntriesItem]):
+            """Subclass of AvdList with `StaticEntriesItem` items."""
+
+        StaticEntries._item_type = StaticEntriesItem
+
+        _fields: ClassVar[dict] = {
+            "aging_time": {"type": int},
+            "notification_host_flap": {"type": NotificationHostFlap},
+            "static_entries": {"type": StaticEntries},
+        }
         aging_time: int | None
         """
         Aging time in seconds 10-1000000.
@@ -18604,11 +18688,21 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         notification_host_flap: NotificationHostFlap
         """Subclass of AvdModel."""
+        static_entries: StaticEntries
+        """
+        Add static MAC address entries.
+
+        Subclass of AvdList with `StaticEntriesItem` items.
+        """
 
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, aging_time: int | None | UndefinedType = Undefined, notification_host_flap: NotificationHostFlap | UndefinedType = Undefined
+                self,
+                *,
+                aging_time: int | None | UndefinedType = Undefined,
+                notification_host_flap: NotificationHostFlap | UndefinedType = Undefined,
+                static_entries: StaticEntries | UndefinedType = Undefined,
             ) -> None:
                 """
                 MacAddressTable.
@@ -18621,6 +18715,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Aging time in seconds 10-1000000.
                        Enter 0 to disable aging.
                     notification_host_flap: Subclass of AvdModel.
+                    static_entries:
+                       Add static MAC address entries.
+
+                       Subclass of AvdList with `StaticEntriesItem` items.
 
                 """
 
@@ -20082,6 +20180,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class SignatureVerification(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "ssl_profile": {"type": str}}
+            enabled: bool
+            ssl_profile: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, ssl_profile: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    SignatureVerification.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        ssl_profile: ssl_profile
+
+                    """
+
         class Password(AvdModel):
             """Subclass of AvdModel."""
 
@@ -20763,6 +20883,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "entropy_sources": {"type": EntropySources},
+            "signature_verification": {"type": SignatureVerification},
             "password": {"type": Password},
             "ssl_profiles": {"type": SslProfiles},
             "shared_secret_profiles": {"type": SharedSecretProfiles},
@@ -20770,6 +20891,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         entropy_sources: EntropySources
         """
         Source of entropy.
+
+        Subclass of AvdModel.
+        """
+        signature_verification: SignatureVerification
+        """
+        Verify the SWIX signatures.
 
         Subclass of AvdModel.
         """
@@ -20786,6 +20913,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 entropy_sources: EntropySources | UndefinedType = Undefined,
+                signature_verification: SignatureVerification | UndefinedType = Undefined,
                 password: Password | UndefinedType = Undefined,
                 ssl_profiles: SslProfiles | UndefinedType = Undefined,
                 shared_secret_profiles: SharedSecretProfiles | UndefinedType = Undefined,
@@ -20799,6 +20927,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 Args:
                     entropy_sources:
                        Source of entropy.
+
+                       Subclass of AvdModel.
+                    signature_verification:
+                       Verify the SWIX signatures.
 
                        Subclass of AvdModel.
                     password: Subclass of AvdModel.
