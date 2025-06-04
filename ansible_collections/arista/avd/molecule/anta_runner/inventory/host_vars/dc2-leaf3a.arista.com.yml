@@ -1,6 +1,6 @@
 ---
 # Custom interface structured_config with shutdown key missing to make sure the defaults are handled properly
-# Keeping test for deprecated data-models to ensure tests are still generated for them
+# Keeping tests for deprecated data models to ensure tests are still generated for them
 # Deprecated keys: type, mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone
 custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet11
@@ -45,19 +45,48 @@ custom_structured_configuration_ethernet_interfaces:
     peer: dc2-leaf2b
     peer_interface: Ethernet2
     shutdown: false
-    # Test to skip the VerifyLLDPNeighbors testcase
+
+    # Test to skip the VerifyLLDPNeighbors test case via `validate_state` key
   - name: Ethernet3
     validate_state: false
 
-    # Test to skip the VerifyLLDPNeighbors testcase via `validate_lldp` key
+    # Test to skip the VerifyLLDPNeighbors test case via `validate_lldp` key
   - name: Ethernet4
     validate_lldp: false
 
+    # Test to skip the VerifyReachability test case for DHCP interface
   - name: Ethernet16
     description: Test_dhcp_interface_connectivity
     ip_address: dhcp
     peer: dc2-leaf3b.arista.com
     peer_interface: Ethernet16
+    switchport:
+      enabled: false
+
+    # Test to skip the VerifyReachability test case for IP unnumbered interface
+  - name: Ethernet17
+    description: Test_ip_unnumbered_interface_connectivity
+    ip_address: unnumbered Loopback0
+    peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet17
+    switchport:
+      enabled: false
+
+    # Test to skip the VerifyReachability test case for a peer with DHCP interface
+  - name: Ethernet18
+    description: Test_peer_dhcp_interface_connectivity
+    ip_address: 10.18.18.0/31
+    peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet18
+    switchport:
+      enabled: false
+
+    # Test to skip the VerifyReachability test case for a peer with IP unnumbered interface
+  - name: Ethernet19
+    description: Test_peer_ip_unnumbered_interface_connectivity
+    ip_address: 10.19.19.0/31
+    peer: dc2-leaf3b.arista.com
+    peer_interface: Ethernet19
     switchport:
       enabled: false
 

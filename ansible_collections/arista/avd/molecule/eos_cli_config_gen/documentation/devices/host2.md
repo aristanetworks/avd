@@ -40,6 +40,7 @@
   - [Flow Tracking](#flow-tracking)
   - [Monitor Telemetry Postcard Policy](#monitor-telemetry-postcard-policy)
   - [Monitor Server Radius Summary](#monitor-server-radius-summary)
+  - [Transceiver](#transceiver)
 - [Monitor Connectivity](#monitor-connectivity)
   - [Global Configuration](#global-configuration)
   - [Monitor Connectivity Device Configuration](#monitor-connectivity-device-configuration)
@@ -441,6 +442,7 @@ aaa accounting commands 0 default none
 | Settings | Value |
 | -------- | ----- |
 | Reversible password encryption | aes-256-gcm |
+| Signature verification | Enabled |
 
 ### Management Security SSL Profiles
 
@@ -453,6 +455,7 @@ aaa accounting commands 0 default none
 ```eos
 !
 management security
+   signature-verification extension
    password encryption reversible aes-256-gcm
    !
    ssl profile cipher-v1.0-v1.3
@@ -691,6 +694,10 @@ monitor telemetry postcard policy
 monitor server radius
    probe method status-server
 ```
+
+### Transceiver
+
+Transceiver dom-threshold file: default
 
 ## Monitor Connectivity
 
