@@ -151,6 +151,8 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer_channel_group_id": data.peer_channel_group_id,
                     "channel_description": data.port_channel_description,
                     "peer_node_group": data.peer_node_group,
+                    "wan_carrier": data.wan_carrier,
+                    "main_port_channel_wan_carrier": data.main_port_channel_wan_carrier,
                 },
             )
 
@@ -553,6 +555,8 @@ class InterfaceDescriptionData:
     """The WAN Carrier this interface is connected to"""
     wan_circuit_id: str | None
     """The WAN Circuit ID for this interface."""
+    main_port_channel_wan_carrier: str | None
+    """ WAN carrier of parent port-channel interface"""
 
     def __init__(
         self,
@@ -571,6 +575,7 @@ class InterfaceDescriptionData:
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
+        main_port_channel_wan_carrier: str | None = None
     ) -> None:
         self._shared_utils = shared_utils
         self.description = description
@@ -587,6 +592,7 @@ class InterfaceDescriptionData:
         self.vrf = vrf
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
+        self.main_port_channel_wan_carrier = main_port_channel_wan_carrier
 
     @property
     def mpls_overlay_role(self) -> str | None:

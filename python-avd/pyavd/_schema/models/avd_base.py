@@ -25,6 +25,7 @@ class InternalData:
         "interfaces",
         "pim_rp_addresses",
         "type",
+        "main_port_channel_wan_carrier"
     )
 
     context: str
@@ -35,7 +36,7 @@ class InternalData:
     interfaces: list
     pim_rp_addresses: list[dict]
     type: str | None
-
+    main_port_channel_wan_carrier: str | None
 
 class AvdBase(ABC):
     """Base class used for schema-based data classes holding data loaded from AVD inputs."""
