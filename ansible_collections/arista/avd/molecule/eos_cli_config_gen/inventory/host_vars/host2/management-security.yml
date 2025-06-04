@@ -4,6 +4,8 @@
 management_security:
   password:
     encryption_reversible: aes-256-gcm
+  signature_verification:
+    enabled: true
   ssl_profiles:
     # test for ciphers for EOS versions 4.32.0F and later.
     - name: cipher-v1.0-v1.3
