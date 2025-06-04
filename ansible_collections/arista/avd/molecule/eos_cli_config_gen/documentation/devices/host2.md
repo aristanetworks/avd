@@ -1444,7 +1444,7 @@ router pim sparse-mode
 
 | Settings | Value |
 | -------- | ----- |
-| MMU Headroom-pool Limit | 557 |
+| MMU Headroom-pool Limit | 557 bytes |
 
 ### Platform Device Configuration
 
