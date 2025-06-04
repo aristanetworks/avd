@@ -461,7 +461,7 @@ class AvdModel(AvdBase):
 
     def _combine(self, other: Self) -> None:
         """
-        Update instance by combinining the other instance in.
+        Update instance by combining the other instance in.
 
         Combining is different from merging in the sense that it will raise if there is a conflict
         between one of our elements and the other elements.
@@ -510,7 +510,7 @@ class AvdModel(AvdBase):
                 # Should maybe collect all the problematic fields
                 raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
-        # TODO check the two next lines
+        # TODO: check the two next lines
         if other._created_from_null:
             # Inherit the _created_from_null attribute to make sure we output null values instead of empty dicts.
             self._created_from_null = True
@@ -518,7 +518,6 @@ class AvdModel(AvdBase):
             # We merged into a "null" class, but since we now have proper data, we clear the flag.
             self._created_from_null = False
 
-        # TODO: Handle clashing custom data when combining?
+        # TODO: Handle clashing custom data when combining - for now hardcoding list_merge"
         if other._custom_data:
-            legacy_list_merge = list_merge.replace("_unique", "_rp")
-            merge(self._custom_data, deepcopy(other._custom_data), list_merge=legacy_list_merge)
+            merge(self._custom_data, deepcopy(other._custom_data), list_merge="append_rp")
