@@ -2,6 +2,7 @@
 # See https://pre-commit.com/hooks.html for more hooks
 ci:
   autoupdate_commit_msg: "CI: pre-commit autoupdate"
+  skip: [pyright]
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
