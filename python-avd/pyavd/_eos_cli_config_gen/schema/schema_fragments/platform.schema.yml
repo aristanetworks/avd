@@ -51,8 +51,12 @@ keys:
                             keys:
                               id:
                                 type: int
+                                convert_types:
+                                  - str
+                                description: Priority-group group number.
                                 required: true
-                                valid_values: [0, 1, 2, 3, 4, 5, 6, 7]
+                                min: 0
+                                max: 7
                               threshold:
                                 type: str
                                 convert_types:
