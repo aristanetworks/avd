@@ -17,6 +17,7 @@ if TYPE_CHECKING:
 
 class InternalData:
     __slots__ = (
+        "campus_egress",
         "context",
         "evpn_l3_multicast_enabled",
         "evpn_l3_multicast_evpn_peg_transit",
@@ -35,6 +36,7 @@ class InternalData:
     interfaces: list
     pim_rp_addresses: list[dict]
     type: str | None
+    campus_egress: bool | None
 
 
 class AvdBase(ABC):

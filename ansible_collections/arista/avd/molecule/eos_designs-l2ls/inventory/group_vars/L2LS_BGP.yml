@@ -65,6 +65,15 @@ network_ports:
     phone_trunk_mode: untagged
     mode: trunk phone
     description: IP Phone with no native VLAN
+  - switches:
+      - "BGP-SPINE[1-2]"
+    switch_ports:
+      - "Ethernet10"
+    campus_egress: true
+  - switches:
+      - "BGP-SPINE[1-2]"
+    switch_ports:
+      - "Ethernet11"
 core_interfaces:
   p2p_links:
     - subnet: 192.168.253.4/31
@@ -75,6 +84,28 @@ core_interfaces:
       nodes: [ BGP-SPINE2, DUMMY-CORE ]
       interfaces: [ Ethernet5, Ethernet1/4 ]
       as: [ 65001, 65000 ]
+
+firewalls:
+  - name: CAMPUS_EGRESS_FW_1
+    adapters:
+      - endpoint_ports: [ Eth0, Eth1 ]
+        switch_ports: [Ethernet7, Ethernet7]
+        switches: [BGP-SPINE1, BGP-SPINE2]
+        port_channel:
+          mode: active
+        campus_egress: true
+      - endpoint_ports: [ Eth2, Eth3 ]
+        switch_ports: [Ethernet8, Ethernet8]
+        switches: [BGP-SPINE1, BGP-SPINE2]
+        port_channel:
+          mode: active
+      - endpoint_ports: [ Eth4 ]
+        switch_ports: [Ethernet9]
+        switches: [BGP-SPINE1]
+        campus_egress: true
+      - endpoint_ports: [ Eth5 ]
+        switch_ports: [Ethernet9]
+        switches: [BGP-SPINE2]
 
 generate_cv_tags:
   topology_hints: true

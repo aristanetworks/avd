@@ -289,7 +289,7 @@ class CvTagsMixin(Protocol):
             tags.append_new(name="Link-Type", value="Uplink")
         elif interface_peer in self.facts.downlink_switches:
             tags.append_new(name="Link-Type", value="Downlink")
-        elif generic_interface.peer_type in ["other", "l3_interface"]:
+        elif generic_interface.peer_type in ["other", "l3_interface"] or get_v2(generic_interface._internal_data, "campus_egress"):
             tags.append_new(name="Link-Type", value="Egress")
 
         return tags

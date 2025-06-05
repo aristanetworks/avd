@@ -34,6 +34,9 @@ if TYPE_CHECKING:
         "T_EvpnEthernetSegment", EosCliConfigGen.EthernetInterfacesItem.EvpnEthernetSegment, EosCliConfigGen.PortChannelInterfacesItem.EvpnEthernetSegment
     )
     T_Phone = TypeVar("T_Phone", EosCliConfigGen.EthernetInterfacesItem.Switchport.Phone, EosCliConfigGen.PortChannelInterfacesItem.Switchport.Phone)
+    ADAPTER_SETTINGS = TypeVar(
+        "ADAPTER_SETTINGS", EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, EosDesigns.NetworkPortsItem
+    )
 
 
 class UtilsMixin(Protocol):
@@ -58,6 +61,9 @@ class UtilsMixin(Protocol):
                 filtered_adapters = EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.Adapters()
                 for adapter_index, adapter in enumerate(connected_endpoint.adapters):
                     adapter._internal_data.context = f"{connected_endpoints_key.key}[name={connected_endpoint.name}].adapters[{adapter_index}]"
+                    # Identify Egress interfaces of the Campus fabric
+                    if self.shared_utils.is_campus_device:
+                        adapter._internal_data.campus_egress = self._campus_egress_adapter(adapter)
                     adapter_settings = self.shared_utils.get_merged_adapter_settings(adapter)
                     if not adapter_settings.switches or self.shared_utils.hostname not in adapter_settings.switches:
                         continue
@@ -90,6 +96,9 @@ class UtilsMixin(Protocol):
         filtered_network_ports = EosDesigns.NetworkPorts()
         for index, network_port in enumerate(self.inputs.network_ports):
             network_port._internal_data.context = f"network_ports[{index}]"
+            # Identify Egress interfaces of the Campus fabric
+            if self.shared_utils.is_campus_device:
+                network_port._internal_data.campus_egress = self._campus_egress_adapter(network_port)
             network_port_settings = self.shared_utils.get_merged_adapter_settings(network_port)
 
             if not network_port_settings.switches and not network_port_settings.platforms:
@@ -112,6 +121,13 @@ class UtilsMixin(Protocol):
         Regex must match the full value to pass.
         """
         return any(re.fullmatch(regex, value) for regex in regexes)
+
+    def _campus_egress_adapter(
+        self: AvdStructuredConfigConnectedEndpointsProtocol,
+        adapter: ADAPTER_SETTINGS,
+    ) -> bool:
+        """Return True if device is a campus device and adapter is explicitly labeled as campus_egress."""
+        return bool(self.shared_utils.is_campus_device and adapter.campus_egress)
 
     def _get_short_esi(
         self: AvdStructuredConfigConnectedEndpointsProtocol,

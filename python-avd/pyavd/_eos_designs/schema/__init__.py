@@ -7816,6 +7816,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
+            "campus_egress": {"type": bool, "default": False},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -8012,6 +8013,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        campus_egress: bool
+        """
+        Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
+        These
+        interfaces will be tagged with `Link-Type: Egress`.
+        This tag can later be used in the CloudVision
+        Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+
+        Default value: `False`
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -8057,6 +8068,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
+                campus_egress: bool | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -8209,6 +8221,12 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                    campus_egress:
+                       Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
+                       These
+                       interfaces will be tagged with `Link-Type: Egress`.
+                       This tag can later be used in the CloudVision
+                       Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -11493,6 +11511,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
+            "campus_egress": {"type": bool, "default": False},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -11646,6 +11665,16 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+        campus_egress: bool
+        """
+        Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
+        These
+        interfaces will be tagged with `Link-Type: Egress`.
+        This tag can later be used in the CloudVision
+        Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+
+        Default value: `False`
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -11688,6 +11717,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
+                campus_egress: bool | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -11802,6 +11832,12 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                    campus_egress:
+                       Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
+                       These
+                       interfaces will be tagged with `Link-Type: Egress`.
+                       This tag can later be used in the CloudVision
+                       Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -18014,6 +18050,7 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
+                        "campus_egress": {"type": bool, "default": False},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                     }
@@ -18207,6 +18244,16 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    campus_egress: bool
+                    """
+                    Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
+                    These
+                    interfaces will be tagged with `Link-Type: Egress`.
+                    This tag can later be used in the CloudVision
+                    Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+
+                    Default value: `False`
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -18252,6 +18299,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
+                            campus_egress: bool | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -18400,6 +18448,12 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                campus_egress:
+                                   Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
+                                   These
+                                   interfaces will be tagged with `Link-Type: Egress`.
+                                   This tag can later be used in the CloudVision
+                                   Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 

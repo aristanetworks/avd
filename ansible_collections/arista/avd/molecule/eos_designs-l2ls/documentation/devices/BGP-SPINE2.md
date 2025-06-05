@@ -178,6 +178,11 @@ vlan 4094
 | Ethernet2 | L2_BGP-LEAF2_Ethernet2 | *trunk | *1,100,200,4092 | *- | *- | 1 |
 | Ethernet3 | MLAG_BGP-SPINE1_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_BGP-SPINE1_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
+| Ethernet7 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth1 | *- | *- | *- | *- | 7 |
+| Ethernet8 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth3 | *- | *- | *- | *- | 8 |
+| Ethernet9 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth5 | - | - | - | - | - |
+| Ethernet10 | - | - | - | - | - | - |
+| Ethernet11 | - | - | - | - | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -223,6 +228,29 @@ interface Ethernet6
    no shutdown
    no switchport
    ip address 10.0.1.2/31
+!
+interface Ethernet7
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth1
+   no shutdown
+   channel-group 7 mode active
+!
+interface Ethernet8
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth3
+   no shutdown
+   channel-group 8 mode active
+!
+interface Ethernet9
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth5
+   no shutdown
+   switchport
+!
+interface Ethernet10
+   no shutdown
+   switchport
+!
+interface Ethernet11
+   no shutdown
+   switchport
 ```
 
 ### Port-Channel Interfaces
@@ -235,6 +263,8 @@ interface Ethernet6
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_BGP-LEAFS_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_BGP-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
+| Port-Channel7 | FIREWALL_CAMPUS_EGRESS_FW_1 | - | - | - | - | - | - | 7 | - |
+| Port-Channel8 | FIREWALL_CAMPUS_EGRESS_FW_1 | - | - | - | - | - | - | 8 | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -254,6 +284,18 @@ interface Port-Channel3
    switchport mode trunk
    switchport trunk group MLAG
    switchport
+!
+interface Port-Channel7
+   description FIREWALL_CAMPUS_EGRESS_FW_1
+   no shutdown
+   switchport
+   mlag 7
+!
+interface Port-Channel8
+   description FIREWALL_CAMPUS_EGRESS_FW_1
+   no shutdown
+   switchport
+   mlag 8
 ```
 
 ### Loopback Interfaces

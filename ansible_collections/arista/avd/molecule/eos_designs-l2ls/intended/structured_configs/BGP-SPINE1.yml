@@ -56,6 +56,42 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet7
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth0
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth0
+  peer_type: firewall
+- name: Ethernet8
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth2
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth2
+  peer_type: firewall
+- name: Ethernet9
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth4
+  shutdown: false
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth4
+  peer_type: firewall
+  switchport:
+    enabled: true
+- name: Ethernet10
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
+- name: Ethernet11
+  shutdown: false
+  peer_type: network_port
+  switchport:
+    enabled: true
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true
@@ -131,6 +167,32 @@ metadata:
         value: AVD-Managed
       - name: Link-Type
         value: Egress
+    - interface: Ethernet7
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet8
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+    - interface: Ethernet9
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet10
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet11
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094
@@ -157,6 +219,18 @@ port_channel_interfaces:
     mode: trunk
     trunk:
       allowed_vlan: 1,100,200,4092
+- name: Port-Channel7
+  description: FIREWALL_CAMPUS_EGRESS_FW_1
+  shutdown: false
+  mlag: 7
+  switchport:
+    enabled: true
+- name: Port-Channel8
+  description: FIREWALL_CAMPUS_EGRESS_FW_1
+  shutdown: false
+  mlag: 8
+  switchport:
+    enabled: true
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
