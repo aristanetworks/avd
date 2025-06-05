@@ -8,7 +8,15 @@ from __future__ import annotations
 from .avt import VerifyAVTRoleInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
 from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
-from .interfaces import VerifyInterfacesStatusInputFactory
+from .interfaces import (
+    VerifyIllegalLACPInputFactory,
+    VerifyInterfaceDiscardsInputFactory,
+    VerifyInterfaceErrorsInputFactory,
+    VerifyInterfacesStatusInputFactory,
+    VerifyInterfaceUtilizationInputFactory,
+    VerifyPortChannelsInputFactory,
+    VerifyStormControlDropsInputFactory,
+)
 from .mlag import VerifyMlagDualPrimaryInputFactory, VerifyMlagReloadDelayInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
@@ -24,13 +32,19 @@ __all__ = [
     "VerifyDNSServersInputFactory",
     "VerifyEnvironmentCoolingInputFactory",
     "VerifyEnvironmentPowerInputFactory",
+    "VerifyIllegalLACPInputFactory",
+    "VerifyInterfaceDiscardsInputFactory",
+    "VerifyInterfaceErrorsInputFactory",
+    "VerifyInterfaceUtilizationInputFactory",
     "VerifyInterfacesStatusInputFactory",
     "VerifyLLDPNeighborsInputFactory",
     "VerifyMlagDualPrimaryInputFactory",
     "VerifyMlagReloadDelayInputFactory",
+    "VerifyPortChannelsInputFactory",
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
     "VerifyRoutingProtocolModelInputFactory",
     "VerifySpecificIPSecConnInputFactory",
+    "VerifyStormControlDropsInputFactory",
     "VerifyStunClientTranslationInputFactory",
 ]

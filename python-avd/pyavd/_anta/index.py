@@ -55,18 +55,22 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyIllegalLACP,
         conditional_keys=[StructuredConfigKey.PORT_CHANNEL_INTERFACES],
+        input_factory=VerifyIllegalLACPInputFactory,
     ),
     TestSpec(
         test_class=VerifyInterfaceDiscards,
+        input_factory=VerifyInterfaceDiscardsInputFactory,
     ),
     TestSpec(
         test_class=VerifyInterfaceErrDisabled,
     ),
     TestSpec(
         test_class=VerifyInterfaceErrors,
+        input_factory=VerifyInterfaceErrorsInputFactory,
     ),
     TestSpec(
         test_class=VerifyInterfaceUtilization,
+        input_factory=VerifyInterfaceUtilizationInputFactory,
     ),
     TestSpec(
         test_class=VerifyInterfacesStatus,
@@ -75,12 +79,14 @@ AVD_TEST_INDEX: list[TestSpec] = [
     TestSpec(
         test_class=VerifyPortChannels,
         conditional_keys=[StructuredConfigKey.PORT_CHANNEL_INTERFACES],
+        input_factory=VerifyPortChannelsInputFactory,
     ),
     TestSpec(
         test_class=VerifyRunningConfigDiffs,
     ),
     TestSpec(
         test_class=VerifyStormControlDrops,
+        input_factory=VerifyStormControlDropsInputFactory,
     ),
     TestSpec(
         test_class=VerifyLLDPNeighbors,

@@ -6,7 +6,15 @@ from __future__ import annotations
 from itertools import chain
 
 from anta.input_models.interfaces import InterfaceState
-from anta.tests.interfaces import VerifyInterfacesStatus
+from anta.tests.interfaces import (
+    VerifyIllegalLACP,
+    VerifyInterfaceDiscards,
+    VerifyInterfaceErrors,
+    VerifyInterfacesStatus,
+    VerifyInterfaceUtilization,
+    VerifyPortChannels,
+    VerifyStormControlDrops,
+)
 
 from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
@@ -67,3 +75,83 @@ class VerifyInterfacesStatusInputFactory(AntaTestInputFactory):
             interfaces.append(InterfaceState(name="Vxlan1", status="up"))
 
         return [VerifyInterfacesStatus.Input(interfaces=natural_sort(interfaces, sort_key="name"))] if interfaces else None
+
+
+class VerifyInterfaceDiscardsInputFactory(AntaTestInputFactory):
+    """Input factory class for the `VerifyInterfaceDiscards` test."""
+
+    def create(self) -> list[VerifyInterfaceDiscards.Input] | None:
+        """Create a list of inputs for the `VerifyInterfaceDiscards` test."""
+        interfaces = [
+            intf.name
+            for intf in self.device.filtered_ethernet_interfaces
+            if "." not in intf.name  # Subinterfaces do not contain discard info
+        ]
+
+        return [VerifyInterfaceDiscards.Input(interfaces=natural_sort(interfaces))] if interfaces else None
+
+
+class VerifyInterfaceErrorsInputFactory(AntaTestInputFactory):
+    """Input factory class for the `VerifyInterfaceErrors` test."""
+
+    def create(self) -> list[VerifyInterfaceErrors.Input] | None:
+        """Create a list of inputs for the `VerifyInterfaceErrors` test."""
+        interfaces = [
+            intf.name
+            for intf in self.device.filtered_ethernet_interfaces
+            if "." not in intf.name  # Subinterfaces do not contain error info
+        ]
+
+        return [VerifyInterfaceErrors.Input(interfaces=natural_sort(interfaces))] if interfaces else None
+
+
+class VerifyInterfaceUtilizationInputFactory(AntaTestInputFactory):
+    """Input factory class for the `VerifyInterfaceUtilization` test."""
+
+    def create(self) -> list[VerifyInterfaceUtilization.Input] | None:
+        """Create a list of inputs for the `VerifyInterfaceUtilization` test."""
+        interfaces = [
+            intf.name
+            for intf in self.device.filtered_ethernet_interfaces
+            if "." not in intf.name  # Subinterfaces do not contain rates info
+        ]
+
+        return [VerifyInterfaceUtilization.Input(interfaces=natural_sort(interfaces))] if interfaces else None
+
+
+class VerifyPortChannelsInputFactory(AntaTestInputFactory):
+    """Input factory class for the `VerifyPortChannels` test."""
+
+    def create(self) -> list[VerifyPortChannels.Input] | None:
+        """Create a list of inputs for the `VerifyPortChannels` test."""
+        interfaces = [
+            intf.name
+            for intf in self.device.filtered_port_channel_interfaces
+            if "." not in intf.name  # Only parent port-channels are needed
+        ]
+
+        return [VerifyPortChannels.Input(interfaces=natural_sort(interfaces))] if interfaces else None
+
+
+class VerifyIllegalLACPInputFactory(AntaTestInputFactory):
+    """Input factory class for the `VerifyIllegalLACP` test."""
+
+    def create(self) -> list[VerifyIllegalLACP.Input] | None:
+        """Create a list of inputs for the `VerifyIllegalLACP` test."""
+        interfaces = [
+            intf.name
+            for intf in self.device.filtered_port_channel_interfaces
+            if "." not in intf.name  # Only parent port-channels are needed
+        ]
+
+        return [VerifyIllegalLACP.Input(interfaces=natural_sort(interfaces))] if interfaces else None
+
+
+class VerifyStormControlDropsInputFactory(AntaTestInputFactory):
+    """Input factory class for the `VerifyStormControlDrops` test."""
+
+    def create(self) -> list[VerifyStormControlDrops.Input] | None:
+        """Create a list of inputs for the `VerifyStormControlDrops` test."""
+        interfaces = [intf.name for intf in chain(self.device.filtered_ethernet_interfaces, self.device.filtered_port_channel_interfaces) if intf.storm_control]
+
+        return [VerifyStormControlDrops.Input(interfaces=natural_sort(interfaces))] if interfaces else None

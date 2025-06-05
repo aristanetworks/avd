@@ -33,17 +33,13 @@ class VerifyLLDPNeighborsInputFactory(AntaTestInputFactory):
     def create(self) -> list[VerifyLLDPNeighbors.Input] | None:
         """Create a list of inputs for the `VerifyLLDPNeighbors` test."""
         neighbors = []
-        for intf in self.structured_config.ethernet_interfaces:
-            if intf.validate_state is False or intf.validate_lldp is False:
+        for intf in self.device.filtered_ethernet_interfaces:
+            if intf.validate_lldp is False:
                 self.logger_adapter.debug(LogMessage.INTERFACE_VALIDATION_DISABLED, interface=intf.name)
                 continue
 
             if "." in intf.name:
                 self.logger_adapter.debug(LogMessage.INTERFACE_IS_SUBINTERFACE, interface=intf.name)
-                continue
-
-            if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
-                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
                 continue
 
             if not intf.peer or not intf.peer_interface:
@@ -109,11 +105,7 @@ class VerifyReachabilityInputFactory(AntaTestInputFactory):
         description = "Verifies point-to-point reachability between Ethernet interfaces."
         hosts = []
 
-        for intf in self.structured_config.ethernet_interfaces:
-            if intf.shutdown or (intf.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
-                self.logger_adapter.debug(LogMessage.INTERFACE_SHUTDOWN, interface=intf.name)
-                continue
-
+        for intf in self.device.filtered_ethernet_interfaces:
             if not intf.ip_address or not intf.peer or not intf.peer_interface:
                 self.logger_adapter.debug(LogMessage.INPUT_MISSING_FIELDS, identity=intf.name, fields="ip_address, peer, peer_interface")
                 continue

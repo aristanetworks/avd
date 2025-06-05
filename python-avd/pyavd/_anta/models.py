@@ -48,6 +48,34 @@ class DeviceTestContext:
         return self.is_vtep and "Dps" in self.structured_config.vxlan_interface.vxlan1.vxlan.source_interface
 
     @cached_property
+    def filtered_ethernet_interfaces(self) -> EosCliConfigGen.EthernetInterfaces:
+        """Return Ethernet interfaces from structured config that are enabled and marked for validation."""
+        ethernet_interfaces = EosCliConfigGen.EthernetInterfaces()
+        for item in self.structured_config.ethernet_interfaces:
+            if item.validate_state is False:
+                LOGGER.debug("<%s> Skipped interface %s - validate_state is False", self.hostname, item.name)
+                continue
+            if item.shutdown or (item.shutdown is None and self.structured_config.interface_defaults.ethernet.shutdown):
+                LOGGER.debug("<%s> Skipped interface %s - Shutdown")
+                continue
+            ethernet_interfaces.append(item)
+        return ethernet_interfaces
+
+    @cached_property
+    def filtered_port_channel_interfaces(self) -> EosCliConfigGen.PortChannelInterfaces:
+        """Return Port-Channel interfaces from structured config that are enabled and marked for validation."""
+        port_channel_interfaces = EosCliConfigGen.PortChannelInterfaces()
+        for item in self.structured_config.port_channel_interfaces:
+            if item.validate_state is False:
+                LOGGER.debug("<%s> Skipped interface %s - validate_state is False", self.hostname, item.name)
+                continue
+            if item.shutdown:
+                LOGGER.debug("<%s> Skipped interface %s - Shutdown")
+                continue
+            port_channel_interfaces.append(item)
+        return port_channel_interfaces
+
+    @cached_property
     def bgp_neighbors(self) -> list[BgpNeighbor]:
         """Generate a list of BGP neighbors for the device."""
         neighbors = [
