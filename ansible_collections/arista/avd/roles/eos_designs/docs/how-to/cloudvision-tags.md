@@ -140,9 +140,9 @@ The CloudVision Campus Dashboard provides an overview of the Campus network stat
 
 ![Campus Fabric Egress](../../../../../../../docs/_media/cloudvision_campus_fabric_dashboard_egress.png)
 
-The Dashboard identifies a fabric’s egress interfaces by the presence of the `Link-Type: Egress` interface-level tag.
+The Dashboard identifies a fabric's egress interfaces by the presence of the `Link-Type: Egress` interface-level tag.
 For standard Arista Universal Cloud Network (UCN) designs like `L3LS` and `L2LS`, AVD automatically tags all L3 interfaces provisioned via `l3_interfaces` or `core_interfaces` data models with `Link-Type: Egress` tag.
-In `L2 Only` Arista UCN design (where L2 egress links of the Spines are connected to external devices for inter-VLAN routingd), use `campus_egress: true` flag available within `connected_endpoints` and `network_ports` AVD data models to explicitly force AVD to label such interfaces with `Link-Type: Egress`.
+In `L2 Only` Arista UCN design (where L2 egress links of the Spines are connected to external devices for inter-VLAN routing), use `campus_egress: true` flag available within `connected_endpoints` and `network_ports` AVD data models to explicitly force AVD to label such interfaces with `Link-Type: Egress` tag.
 
 ## CloudVision Custom Tags
 
