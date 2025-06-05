@@ -68,9 +68,9 @@ Once the generation of Campus Topology tags is globally enabled, assign the foll
 - `campus`
 - `campus_pod`
 - `campus_access_pod` (should not be assigned to Spines)
-- `cv_tags_topology_type` (valid values for Campus deployments are: `spine`, `leaf` or `member-leaf`)
+- `cv_tags_topology_type` (valid values for Campus deployments: `spine`, `leaf` or `member-leaf`)
 
-![Campus Fabric](../../../../../../../docs/_media/cloudvision_campus_fabric_reference_desing.png)
+![Campus Fabric](../../../../../../../docs/_media/cloudvision_campus_fabric_reference_design.png)
 
 !!! note
     Please note that generating Campus-related tags for a specific device disables the generation of DC-related tags for that device.
@@ -123,20 +123,16 @@ Providing these input variables will lead to the automatic generation of the fol
 | Campus Tag Name             | Tag type  | Description                                                                          | Source of information |
 | --------------------------- | --------- | ------------------------------------------------------------------------------------ | --------------------- |
 | `topology_hint_network_type`| Device    | Identifies associated CloudVision Topology hierarchy type.                           | Always set to `campusV2`. |
-| `topology_hint_type`        | Device    | Identifies role of the device in CloudVision Campus Topology.                        | `cv_tags_topology_type`, else `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
-| `Role`                      | Device    | Identifies role of the device in CloudVision Campus Topology. Used in CV Dashboards. | `cv_tags_topology_type`, else `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
-| `Campus`                    | Device    | Identifies Campus fabric.                                                            | `campus`, else `<node_type_keys.key>.nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].campus`, else `<node_type_keys.key>.defaults.campus`. |
-| `Campus-Pod`                | Device    | Identifies Campus pod (spine devices and associated access pods).                    | `campus_pod`, else `<node_type_keys.key>.nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].campus_pod`, else `<node_type_keys.key>.defaults.campus_pod`. |
-| `Access-Pod`                | Device    | Identifies Campus access pod (Leaf and Member-Leaf devices).                         | `campus_access_pod`, else `<node_type_keys.key>.nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].campus_access_pod`, else `<node_type_keys.key>.defaults.campus_access_pod`. |
+| `topology_hint_type`        | Device    | Identifies role of the device in CloudVision Campus Topology.                        | `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
+| `Role`                      | Device    | Identifies role of the device in CloudVision Campus Topology. Used in CV Dashboards. | `<node_type_keys.key>.nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].nodes.[].cv_tags_topology_type`, else `<node_type_keys.key>.node_groups.[].cv_tags_topology_type`, else `<node_type_keys.key>.defaults.cv_tags_topology_type`, else `cv_tags_topology_type`, else `custom_node_type_keys.[].cv_tags_topology_type`, else `node_type_keys.[].cv_tags_topology_type`. |
+| `Campus`                    | Device    | Identifies Campus fabric.                                                            | `<node_type_keys.key>.nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus`, else `<node_type_keys.key>.node_groups.[].campus`, else `<node_type_keys.key>.defaults.campus`, else `campus`. |
+| `Campus-Pod`                | Device    | Identifies Campus pod (spine devices and associated access pods).                    | `<node_type_keys.key>.nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_pod`, else `<node_type_keys.key>.node_groups.[].campus_pod`, else `<node_type_keys.key>.defaults.campus_pod`, else `campus_pod`. |
+| `Access-Pod`                | Device    | Identifies Campus access pod (Leaf and Member-Leaf devices).                         | `<node_type_keys.key>.nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].nodes.[].campus_access_pod`, else `<node_type_keys.key>.node_groups.[].campus_access_pod`, else `<node_type_keys.key>.defaults.campus_access_pod`, else `campus_access_pod`. |
 | `Link-Type`                 | Interface | Identifies system responsible for managing interface (AVD/Studio) and it's purpose (fabric/edge/endpoint/etc.). | `ethernet_interfaces.[].peer_type`. |
 
 !!! warning
     If `cv_deploy` is targeting Campus devices that are not yet registered with CloudVision `Inventory and Topology` studio - `cv_deploy` will currently register those devices skipping their `Model` and `Interfaces`. This will by default not allow `Quick Actions` feature of the `Access Interface Configuration` CloudVision Studio to manage such devices until all `Network Updates` related to these devices are `Accepted` in CloudVision UI.
     This limitation will be addressed in AVD once CloudVision 2025.2.1 is released. After this release, automatic registration of new devices by `cv_deploy` in CloudVision `Inventory and Topology` studio will automatically include `Model` and `Interfaces`.
-
-!!! warning
-    Generation of the `Link-Type: Uplink` and `Link-Type: Downlink` tags for fabric uplink and downlink interfaces may fail when node type settings for different `node_type_keys.key` values are defined at different levels of the group variable hierarchy. For example, if the `l2leaf` node type settings are defined at the group level for Leaf devices, Spine nodes will not be able to resolve them, resulting in the inability to correctly label interfaces between Leaf and Spine devices as `Uplink` or `Downlink`.
-    To avoid this issue, define node type settings for all `node_type_keys.key` values at a group level that is common to all relevant hosts, ensuring the settings are accessible to all fabric nodes that require them.
 
 ## CloudVision Custom Tags
 

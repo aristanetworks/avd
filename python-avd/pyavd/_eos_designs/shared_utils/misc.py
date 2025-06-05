@@ -389,5 +389,5 @@ class MiscMixin(Protocol):
 
     @cached_property
     def is_campus_device(self: SharedUtilsProtocol) -> bool:
-        """Return True is the current device is a Campus device."""
-        return bool(default(self.node_config.campus, self.inputs.campus))
+        """Return True if generation of the Campus tags is globally enabled and current device is a Campus device."""
+        return bool(self.inputs.generate_cv_tags.campus_fabric and default(self.node_config.campus, self.inputs.campus))

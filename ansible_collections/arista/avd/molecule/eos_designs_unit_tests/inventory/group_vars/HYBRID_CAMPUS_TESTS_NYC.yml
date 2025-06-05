@@ -1,8 +1,0 @@
----
-### group_vars/HYBRID_CAMPUS_TESTS_NYC.yml
-
-fabric_name: HYBRID_CAMPUS_TESTS_NYC_FABRIC
-
-generate_cv_tags:
-  topology_hints: true
-  campus_fabric: true

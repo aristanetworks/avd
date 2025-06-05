@@ -175,7 +175,7 @@ vlan 4094
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | Channel-Group |
 | --------- | ----------- | ---- | ----- | ----------- | ----------- | ------------- |
 | Ethernet1 | L2_BGP-LEAF1_Ethernet2 | *trunk | *1,100,200,4092 | *- | *- | 1 |
-| Ethernet2 | L2_BGP-LEAF2_Ethernet2 | *trunk | *100,4092 | *- | *- | 2 |
+| Ethernet2 | L2_BGP-LEAF2_Ethernet2 | *trunk | *1,100,200,4092 | *- | *- | 1 |
 | Ethernet3 | MLAG_BGP-SPINE1_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_BGP-SPINE1_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
 
@@ -186,6 +186,7 @@ vlan 4094
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet5 | P2P_DUMMY-CORE_Ethernet1/4 | - | 192.168.253.6/31 | default | 9214 | False | - | - |
+| Ethernet6 | - | - | 10.0.1.2/31 | default | - | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -199,7 +200,7 @@ interface Ethernet1
 interface Ethernet2
    description L2_BGP-LEAF2_Ethernet2
    no shutdown
-   channel-group 2 mode active
+   channel-group 1 mode active
 !
 interface Ethernet3
    description MLAG_BGP-SPINE1_Ethernet3
@@ -217,6 +218,11 @@ interface Ethernet5
    mtu 9214
    no switchport
    ip address 192.168.253.6/31
+!
+interface Ethernet6
+   no shutdown
+   no switchport
+   ip address 10.0.1.2/31
 ```
 
 ### Port-Channel Interfaces
@@ -227,8 +233,7 @@ interface Ethernet5
 
 | Interface | Description | Mode | VLANs | Native VLAN | Trunk Group | LACP Fallback Timeout | LACP Fallback Mode | MLAG ID | EVPN ESI |
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
-| Port-Channel1 | L2_BGP-LEAF1_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
-| Port-Channel2 | L2_BGP-LEAF2_Port-Channel1 | trunk | 100,4092 | - | - | - | - | 2 | - |
+| Port-Channel1 | L2_BGP-LEAFS_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_BGP-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
 
 #### Port-Channel Interfaces Device Configuration
@@ -236,20 +241,12 @@ interface Ethernet5
 ```eos
 !
 interface Port-Channel1
-   description L2_BGP-LEAF1_Port-Channel1
+   description L2_BGP-LEAFS_Port-Channel1
    no shutdown
    switchport trunk allowed vlan 1,100,200,4092
    switchport mode trunk
    switchport
    mlag 1
-!
-interface Port-Channel2
-   description L2_BGP-LEAF2_Port-Channel1
-   no shutdown
-   switchport trunk allowed vlan 100,4092
-   switchport mode trunk
-   switchport
-   mlag 2
 !
 interface Port-Channel3
    description MLAG_BGP-SPINE1_Port-Channel3

@@ -13,8 +13,6 @@ if TYPE_CHECKING:
 
 LOGGER = getLogger(__name__)
 
-MANAGED_BY = {"AVD": {"label": "Link-Type", "value": "AVD-Managed"}}
-
 
 async def deploy_tags_to_cv(
     tags: list[CVDeviceTag | CVInterfaceTag],

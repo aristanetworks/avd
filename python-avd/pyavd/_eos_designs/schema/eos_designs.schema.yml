@@ -531,29 +531,33 @@ keys:
   campus:
     documentation_options:
       table: fabric-topology
-    description: 'Name of the Campus fabric.
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
 
-      Used to generate CloudVision device Topology tags.
+      Name of the Campus fabric.
 
-      '
+      Used to generate CloudVision device Topology tags with the `generate_cv_tags`
+      feature.'
     type: str
   campus_access_pod:
     documentation_options:
       table: fabric-topology
-    description: 'Name of the Campus access pod.
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
 
-      Used to generate CloudVision device Topology tags.
+      Name of the Campus access pod.
 
-      '
+      Used to generate CloudVision device Topology tags.'
     type: str
   campus_pod:
     documentation_options:
       table: fabric-topology
-    description: 'Name of the Campus pod.
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
 
-      Used to generate CloudVision device Topology tags.
+      Name of the Campus pod.
 
-      '
+      Used to generate CloudVision device Topology tags.'
     type: str
   connected_endpoints_keys:
     documentation_options:
@@ -843,7 +847,8 @@ keys:
     documentation_options:
       table: cloudvision-tags
     description: Device type that CloudVision should use when generating the Topology
-      like "leaf", "spine", "core" or "edge". Defaults to the setting under node_type_keys.
+      like "leaf", "spine", "core", "edge" or "member-leaf". Defaults to the setting
+      under node_type_keys.
     type: str
   cv_token:
     documentation_options:
@@ -1852,8 +1857,19 @@ keys:
       campus_fabric:
         type: bool
         default: false
-        description: Generate CloudVision device and interface Topology Tags for Campus
-          fabric devices.
+        description: "PREVIEW: This option is marked as \"preview\", meaning the data
+          models or generated configuration can change at any time.\nGenerate CloudVision
+          device and interface Topology Tags for Campus fabric devices.\nDevice is
+          treated as a Campus fabric device if:\n  - The `campus` variable is assigned,
+          either as native Ansible variable or as part of the `<node_type_keys.key>`
+          AVD data construct.\n  - The `generate_cv_tags.campus_fabric` variable is
+          set to `True`.\nWhen campus-related tags are generated for a device, generation
+          of the DC-related tags is automatically disabled for that device.\nAVD generates
+          the following device tags for the Campus fabric devices based on the provided
+          Campus-related input variables:\n  - `Campus`\n  - `Campus-Pod`\n  - `Access-Pod`\n
+          \ - `topology_hint_type`\n  - `Role`\nThese tags are later used by CloudVision
+          to render the correct network layout in the Topology view (`campusV2` network
+          hierarchy) and Campus dashboards."
       interface_tags:
         description: List of interface tags that should be generated.
         type: list
@@ -2835,7 +2851,7 @@ keys:
           documentation_options:
             table: cloudvision-tags
           description: Device type that CloudVision should use when generating the
-            Topology like "leaf", "spine", "core" or "edge".
+            Topology like "leaf", "spine", "core", "edge" or "member-leaf".
           type: str
   ntp_settings:
     documentation_options:
@@ -9950,31 +9966,33 @@ $defs:
           campus:
             documentation_options:
               table: node-type-common-configuration
-            description: Name of the campus.
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Name of the campus.'
             type: str
           campus_pod:
             documentation_options:
               table: node-type-common-configuration
-            description: Name of the campus pod.
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Name of the campus pod.'
             type: str
           campus_access_pod:
             documentation_options:
               table: node-type-common-configuration
-            description: Name of the campus access pod.
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
+
+              Name of the campus access pod.'
             type: str
           cv_tags_topology_type:
             documentation_options:
               table: node-type-common-configuration
-            description: 'PREVIEW: This key is currently not supported
-
-              Type that CloudVision should use when generating the Topology.'
+            description: Device type that CloudVision should use when generating the
+              Topology like "leaf", "spine", "core", "edge" or "member-leaf".
             type: str
-            valid_values:
-            - leaf
-            - spine
-            - core
-            - edge
-            - member-leaf
       node_groups:
         type: list
         description: Define variables related to all nodes part of this group.

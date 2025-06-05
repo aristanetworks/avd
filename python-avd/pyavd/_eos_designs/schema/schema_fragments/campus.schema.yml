@@ -9,7 +9,8 @@ keys:
   campus:
     documentation_options:
       table: fabric-topology
-    description: |
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Name of the Campus fabric.
-      Used to generate CloudVision device Topology tags.
+      Used to generate CloudVision device Topology tags with the `generate_cv_tags` feature.
     type: str

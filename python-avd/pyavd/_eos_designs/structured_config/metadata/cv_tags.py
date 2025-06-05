@@ -77,7 +77,7 @@ class CvTagsMixin(Protocol):
         if not self.inputs.generate_cv_tags.topology_hints:
             return
 
-        if self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device:
+        if self.shared_utils.is_campus_device:
             self._set_topology_hints_for_campus()
             return
 
@@ -98,8 +98,8 @@ class CvTagsMixin(Protocol):
             ("topology_hint_network_type", CAMPUS_TOPOLOGY_NETWORK_TYPE),
             ("topology_hint_type", self.shared_utils.campus_hint_type),
             ("Role", self.shared_utils.campus_hint_type),
-            ("Campus", default(self.inputs.campus, self.shared_utils.node_config.campus)),
-            ("Campus-Pod", default(self.inputs.campus_pod, self.shared_utils.node_config.campus_pod)),
+            ("Campus", default(self.shared_utils.node_config.campus, self.inputs.campus)),
+            ("Campus-Pod", default(self.shared_utils.node_config.campus_pod, self.inputs.campus_pod)),
             (
                 "Access-Pod",
                 None
@@ -177,7 +177,7 @@ class CvTagsMixin(Protocol):
         if (
             not (tags_to_generate := self.inputs.generate_cv_tags.interface_tags)
             and not self.shared_utils.is_cv_pathfinder_router
-            and not (self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device)
+            and not self.shared_utils.is_campus_device
         ):
             return
 
@@ -206,14 +206,14 @@ class CvTagsMixin(Protocol):
             if self.shared_utils.is_cv_pathfinder_router:
                 tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
 
-            if self.inputs.generate_cv_tags.topology_hints and self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device:
+            if self.inputs.generate_cv_tags.topology_hints and self.shared_utils.is_campus_device:
                 tags.extend(self._get_campus_interface_tags(ethernet_interface))
 
             if tags:
                 self.structured_config.metadata.cv_tags.interface_tags.append_new(interface=ethernet_interface.name, tags=tags)
 
         # Handle tags for management interface
-        if self.inputs.generate_cv_tags.topology_hints and self.inputs.generate_cv_tags.campus_fabric and self.shared_utils.is_campus_device:
+        if self.inputs.generate_cv_tags.topology_hints and self.shared_utils.is_campus_device:
             for management_interface in self.structured_config.management_interfaces:
                 tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
                 tags.append_new(name="Link-Type", value="AVD-Managed")
@@ -276,18 +276,19 @@ class CvTagsMixin(Protocol):
     ) -> EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags:
         """Return list of Campus interface tags for a given interface of a Campus device."""
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
-        tags.append_new(name="Link-Type", value="AVD-Managed")
-        fabric_peer_types = list(self.inputs._dynamic_keys.custom_node_types.keys()) + list(self.inputs._dynamic_keys.node_types.keys())
+        interface_peer = generic_interface.peer
 
-        if generic_interface.peer_type == "mlag_peer":
+        tags.append_new(name="Link-Type", value="AVD-Managed")
+
+        if interface_peer in self.shared_utils.all_fabric_devices:
             tags.append_new(name="Link-Type", value="Fabric")
+
+        if generic_interface.peer_type == "mlag_peer" and interface_peer == self.facts.mlag_peer:
             tags.append_new(name="Link-Type", value="MLAG")
-        elif generic_interface.peer_type in fabric_peer_types:
-            tags.append_new(name="Link-Type", value="Fabric")
-            if (interface_peer := generic_interface.peer) and interface_peer in self.shared_utils.uplink_switches:
-                tags.append_new(name="Link-Type", value="Uplink")
-            else:
-                tags.append_new(name="Link-Type", value="Downlink")
+        elif interface_peer in self.facts.uplink_peers:
+            tags.append_new(name="Link-Type", value="Uplink")
+        elif interface_peer in self.facts.downlink_switches:
+            tags.append_new(name="Link-Type", value="Downlink")
         elif generic_interface.peer_type in ["other", "l3_interface"]:
             tags.append_new(name="Link-Type", value="Egress")
 

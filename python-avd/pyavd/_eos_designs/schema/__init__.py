@@ -4317,7 +4317,27 @@ class EosDesigns(EosDesignsRootModel):
         """
         campus_fabric: bool
         """
-        Generate CloudVision device and interface Topology Tags for Campus fabric devices.
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Generate CloudVision device and interface Topology Tags for Campus fabric
+        devices.
+        Device is treated as a Campus fabric device if:
+          - The `campus` variable is assigned,
+        either as native Ansible variable or as part of the `<node_type_keys.key>` AVD data construct.
+          -
+        The `generate_cv_tags.campus_fabric` variable is set to `True`.
+        When campus-related tags are
+        generated for a device, generation of the DC-related tags is automatically disabled for that device.
+        AVD generates the following device tags for the Campus fabric devices based on the provided Campus-
+        related input variables:
+          - `Campus`
+          - `Campus-Pod`
+          - `Access-Pod`
+          - `topology_hint_type`
+          -
+        `Role`
+        These tags are later used by CloudVision to render the correct network layout in the Topology
+        view (`campusV2` network hierarchy) and Campus dashboards.
 
         Default value: `False`
         """
@@ -4353,7 +4373,28 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     topology_hints: Enable the generation of CloudVision Topology Tags (hints).
-                    campus_fabric: Generate CloudVision device and interface Topology Tags for Campus fabric devices.
+                    campus_fabric:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Generate CloudVision device and interface Topology Tags for Campus fabric
+                       devices.
+                       Device is treated as a Campus fabric device if:
+                         - The `campus` variable is assigned,
+                       either as native Ansible variable or as part of the `<node_type_keys.key>` AVD data construct.
+                         -
+                       The `generate_cv_tags.campus_fabric` variable is set to `True`.
+                       When campus-related tags are
+                       generated for a device, generation of the DC-related tags is automatically disabled for that device.
+                       AVD generates the following device tags for the Campus fabric devices based on the provided Campus-
+                       related input variables:
+                         - `Campus`
+                         - `Campus-Pod`
+                         - `Access-Pod`
+                         - `topology_hint_type`
+                         -
+                       `Role`
+                       These tags are later used by CloudVision to render the correct network layout in the Topology
+                       view (`campusV2` network hierarchy) and Campus dashboards.
                     interface_tags:
                        List of interface tags that should be generated.
 
@@ -8602,8 +8643,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         cv_tags_topology_type: str | None
         """
-        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-        "edge".
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+        "edge" or "member-leaf".
         """
 
         if TYPE_CHECKING:
@@ -8715,8 +8756,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                       "edge".
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                       "edge" or "member-leaf".
 
                 """
 
@@ -9124,8 +9165,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         cv_tags_topology_type: str | None
         """
-        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-        "edge".
+        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+        "edge" or "member-leaf".
         """
 
         if TYPE_CHECKING:
@@ -9237,8 +9278,8 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdModel.
                     cv_tags_topology_type:
-                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                       "edge".
+                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                       "edge" or "member-leaf".
 
                 """
 
@@ -21789,16 +21830,27 @@ class EosDesigns(EosDesignsRootModel):
                     `default_flow_tracker_type` default value is `sampled`.
                     """
                     campus: str | None
-                    """Name of the campus."""
-                    campus_pod: str | None
-                    """Name of the campus pod."""
-                    campus_access_pod: str | None
-                    """Name of the campus access pod."""
-                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                     """
-                    PREVIEW: This key is currently not supported
-                    Type that CloudVision should use when generating the
-                    Topology.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
                     """
 
                     if TYPE_CHECKING:
@@ -21918,7 +21970,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
-                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -22476,13 +22528,21 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
-                                campus: Name of the campus.
-                                campus_pod: Name of the campus pod.
-                                campus_access_pod: Name of the campus access pod.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod.
                                 cv_tags_topology_type:
-                                   PREVIEW: This key is currently not supported
-                                   Type that CloudVision should use when generating the
-                                   Topology.
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -25921,16 +25981,27 @@ class EosDesigns(EosDesignsRootModel):
                         `default_flow_tracker_type` default value is `sampled`.
                         """
                         campus: str | None
-                        """Name of the campus."""
-                        campus_pod: str | None
-                        """Name of the campus pod."""
-                        campus_access_pod: str | None
-                        """Name of the campus access pod."""
-                        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                         """
-                        PREVIEW: This key is currently not supported
-                        Type that CloudVision should use when generating the
-                        Topology.
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus.
+                        """
+                        campus_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus pod.
+                        """
+                        campus_access_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus access pod.
+                        """
+                        cv_tags_topology_type: str | None
+                        """
+                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                        "edge" or "member-leaf".
                         """
 
                         if TYPE_CHECKING:
@@ -26052,7 +26123,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
-                                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                                cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -26617,13 +26688,21 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
-                                    campus: Name of the campus.
-                                    campus_pod: Name of the campus pod.
-                                    campus_access_pod: Name of the campus access pod.
+                                    campus:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus.
+                                    campus_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus pod.
+                                    campus_access_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus access pod.
                                     cv_tags_topology_type:
-                                       PREVIEW: This key is currently not supported
-                                       Type that CloudVision should use when generating the
-                                       Topology.
+                                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                       "edge" or "member-leaf".
 
                                 """
 
@@ -29990,16 +30069,27 @@ class EosDesigns(EosDesignsRootModel):
                     `default_flow_tracker_type` default value is `sampled`.
                     """
                     campus: str | None
-                    """Name of the campus."""
-                    campus_pod: str | None
-                    """Name of the campus pod."""
-                    campus_access_pod: str | None
-                    """Name of the campus access pod."""
-                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                     """
-                    PREVIEW: This key is currently not supported
-                    Type that CloudVision should use when generating the
-                    Topology.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
                     """
 
                     if TYPE_CHECKING:
@@ -30121,7 +30211,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
-                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -30688,13 +30778,21 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
-                                campus: Name of the campus.
-                                campus_pod: Name of the campus pod.
-                                campus_access_pod: Name of the campus access pod.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod.
                                 cv_tags_topology_type:
-                                   PREVIEW: This key is currently not supported
-                                   Type that CloudVision should use when generating the
-                                   Topology.
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -34117,16 +34215,27 @@ class EosDesigns(EosDesignsRootModel):
                     `default_flow_tracker_type` default value is `sampled`.
                     """
                     campus: str | None
-                    """Name of the campus."""
-                    campus_pod: str | None
-                    """Name of the campus pod."""
-                    campus_access_pod: str | None
-                    """Name of the campus access pod."""
-                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                     """
-                    PREVIEW: This key is currently not supported
-                    Type that CloudVision should use when generating the
-                    Topology.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
                     """
 
                     if TYPE_CHECKING:
@@ -34248,7 +34357,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
-                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -34813,13 +34922,21 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
-                                campus: Name of the campus.
-                                campus_pod: Name of the campus pod.
-                                campus_access_pod: Name of the campus access pod.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod.
                                 cv_tags_topology_type:
-                                   PREVIEW: This key is currently not supported
-                                   Type that CloudVision should use when generating the
-                                   Topology.
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -45330,16 +45447,27 @@ class EosDesigns(EosDesignsRootModel):
                     `default_flow_tracker_type` default value is `sampled`.
                     """
                     campus: str | None
-                    """Name of the campus."""
-                    campus_pod: str | None
-                    """Name of the campus pod."""
-                    campus_access_pod: str | None
-                    """Name of the campus access pod."""
-                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                     """
-                    PREVIEW: This key is currently not supported
-                    Type that CloudVision should use when generating the
-                    Topology.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
                     """
 
                     if TYPE_CHECKING:
@@ -45459,7 +45587,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
-                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             Defaults.
@@ -46017,13 +46145,21 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
-                                campus: Name of the campus.
-                                campus_pod: Name of the campus pod.
-                                campus_access_pod: Name of the campus access pod.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod.
                                 cv_tags_topology_type:
-                                   PREVIEW: This key is currently not supported
-                                   Type that CloudVision should use when generating the
-                                   Topology.
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -49462,16 +49598,27 @@ class EosDesigns(EosDesignsRootModel):
                         `default_flow_tracker_type` default value is `sampled`.
                         """
                         campus: str | None
-                        """Name of the campus."""
-                        campus_pod: str | None
-                        """Name of the campus pod."""
-                        campus_access_pod: str | None
-                        """Name of the campus access pod."""
-                        cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                         """
-                        PREVIEW: This key is currently not supported
-                        Type that CloudVision should use when generating the
-                        Topology.
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus.
+                        """
+                        campus_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus pod.
+                        """
+                        campus_access_pod: str | None
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Name of the campus access pod.
+                        """
+                        cv_tags_topology_type: str | None
+                        """
+                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                        "edge" or "member-leaf".
                         """
 
                         if TYPE_CHECKING:
@@ -49593,7 +49740,7 @@ class EosDesigns(EosDesignsRootModel):
                                 campus: str | None | UndefinedType = Undefined,
                                 campus_pod: str | None | UndefinedType = Undefined,
                                 campus_access_pod: str | None | UndefinedType = Undefined,
-                                cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                                cv_tags_topology_type: str | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 NodesItem.
@@ -50158,13 +50305,21 @@ class EosDesigns(EosDesignsRootModel):
                                        Override the `default_flow_tracker_type`` set at the `node_type_key`
                                        level.
                                        `default_flow_tracker_type` default value is `sampled`.
-                                    campus: Name of the campus.
-                                    campus_pod: Name of the campus pod.
-                                    campus_access_pod: Name of the campus access pod.
+                                    campus:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus.
+                                    campus_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus pod.
+                                    campus_access_pod:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Name of the campus access pod.
                                     cv_tags_topology_type:
-                                       PREVIEW: This key is currently not supported
-                                       Type that CloudVision should use when generating the
-                                       Topology.
+                                       Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                       "edge" or "member-leaf".
 
                                 """
 
@@ -53531,16 +53686,27 @@ class EosDesigns(EosDesignsRootModel):
                     `default_flow_tracker_type` default value is `sampled`.
                     """
                     campus: str | None
-                    """Name of the campus."""
-                    campus_pod: str | None
-                    """Name of the campus pod."""
-                    campus_access_pod: str | None
-                    """Name of the campus access pod."""
-                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                     """
-                    PREVIEW: This key is currently not supported
-                    Type that CloudVision should use when generating the
-                    Topology.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
                     """
 
                     if TYPE_CHECKING:
@@ -53662,7 +53828,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
-                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodeGroupsItem.
@@ -54229,13 +54395,21 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
-                                campus: Name of the campus.
-                                campus_pod: Name of the campus pod.
-                                campus_access_pod: Name of the campus access pod.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod.
                                 cv_tags_topology_type:
-                                   PREVIEW: This key is currently not supported
-                                   Type that CloudVision should use when generating the
-                                   Topology.
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -57658,16 +57832,27 @@ class EosDesigns(EosDesignsRootModel):
                     `default_flow_tracker_type` default value is `sampled`.
                     """
                     campus: str | None
-                    """Name of the campus."""
-                    campus_pod: str | None
-                    """Name of the campus pod."""
-                    campus_access_pod: str | None
-                    """Name of the campus access pod."""
-                    cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None
                     """
-                    PREVIEW: This key is currently not supported
-                    Type that CloudVision should use when generating the
-                    Topology.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus.
+                    """
+                    campus_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus pod.
+                    """
+                    campus_access_pod: str | None
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Name of the campus access pod.
+                    """
+                    cv_tags_topology_type: str | None
+                    """
+                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                    "edge" or "member-leaf".
                     """
 
                     if TYPE_CHECKING:
@@ -57789,7 +57974,7 @@ class EosDesigns(EosDesignsRootModel):
                             campus: str | None | UndefinedType = Undefined,
                             campus_pod: str | None | UndefinedType = Undefined,
                             campus_access_pod: str | None | UndefinedType = Undefined,
-                            cv_tags_topology_type: Literal["leaf", "spine", "core", "edge", "member-leaf"] | None | UndefinedType = Undefined,
+                            cv_tags_topology_type: str | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             NodesItem.
@@ -58354,13 +58539,21 @@ class EosDesigns(EosDesignsRootModel):
                                    Override the `default_flow_tracker_type`` set at the `node_type_key`
                                    level.
                                    `default_flow_tracker_type` default value is `sampled`.
-                                campus: Name of the campus.
-                                campus_pod: Name of the campus pod.
-                                campus_access_pod: Name of the campus access pod.
+                                campus:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus.
+                                campus_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus pod.
+                                campus_access_pod:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Name of the campus access pod.
                                 cv_tags_topology_type:
-                                   PREVIEW: This key is currently not supported
-                                   Type that CloudVision should use when generating the
-                                   Topology.
+                                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                                   "edge" or "member-leaf".
 
                             """
 
@@ -59024,16 +59217,24 @@ class EosDesigns(EosDesignsRootModel):
     """
     campus: str | None
     """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
     Name of the Campus fabric.
-    Used to generate CloudVision device Topology tags.
+    Used to generate CloudVision device Topology tags
+    with the `generate_cv_tags` feature.
     """
     campus_access_pod: str | None
     """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
     Name of the Campus access pod.
-    Used to generate CloudVision device Topology tags.
+    Used to generate CloudVision device Topology
+    tags.
     """
     campus_pod: str | None
     """
+    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+    change at any time.
     Name of the Campus pod.
     Used to generate CloudVision device Topology tags.
     """
@@ -59163,8 +59364,8 @@ class EosDesigns(EosDesignsRootModel):
     """
     cv_tags_topology_type: str | None
     """
-    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-    "edge". Defaults to the setting under node_type_keys.
+    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+    "edge" or "member-leaf". Defaults to the setting under node_type_keys.
     """
     cv_token: str | None
     """
@@ -61007,12 +61208,20 @@ class EosDesigns(EosDesignsRootModel):
                    Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                    convergence state is reached.
                 campus:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
                    Name of the Campus fabric.
-                   Used to generate CloudVision device Topology tags.
+                   Used to generate CloudVision device Topology tags
+                   with the `generate_cv_tags` feature.
                 campus_access_pod:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
                    Name of the Campus access pod.
-                   Used to generate CloudVision device Topology tags.
+                   Used to generate CloudVision device Topology
+                   tags.
                 campus_pod:
+                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                   change at any time.
                    Name of the Campus pod.
                    Used to generate CloudVision device Topology tags.
                 connected_endpoints_keys:
@@ -61119,8 +61328,8 @@ class EosDesigns(EosDesignsRootModel):
                    Make sure to set it in a
                    common group_vars file.
                 cv_tags_topology_type:
-                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core" or
-                   "edge". Defaults to the setting under node_type_keys.
+                   Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
+                   "edge" or "member-leaf". Defaults to the setting under node_type_keys.
                 cv_token:
                    PREVIEW: These keys are in preview mode.
 

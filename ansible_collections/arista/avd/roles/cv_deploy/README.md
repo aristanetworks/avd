@@ -22,7 +22,6 @@ Depending on the configured options, the role supports multiple operations:
 - Creates, builds, submits Workspaces.
 - Creates, approves, starts Change Controls.
 - Deploys special metadata for CV Pathfinder solution.
-- Deploys special metadata for CV Campus fabrics.
 
 Devices will be identified using `serial_number`, `system_mac_address` or `hostname` (in prioritized order).
 The available identification depends on the configured AVD variables.
