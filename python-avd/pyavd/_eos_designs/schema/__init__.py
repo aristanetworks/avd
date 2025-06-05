@@ -9764,7 +9764,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Allow/disallow MTU configuration under sub-interfaces.
             When this key is set to False, MTU is not
-            rendered under the sub-interface even though it is set in the inputs.
+            rendered under sub-interfaces even if it is set in the inputs.
 
             Default value: `True`
             """
@@ -9838,7 +9838,7 @@ class EosDesigns(EosDesignsRootModel):
                         subinterface_mtu:
                            Allow/disallow MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
-                           rendered under the sub-interface even though it is set in the inputs.
+                           rendered under sub-interfaces even if it is set in the inputs.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -10095,7 +10095,7 @@ class EosDesigns(EosDesignsRootModel):
             """
             Allow/disallow MTU configuration under sub-interfaces.
             When this key is set to False, MTU is not
-            rendered under the sub-interface even though it is set in the inputs.
+            rendered under sub-interfaces even if it is set in the inputs.
 
             Default value: `True`
             """
@@ -10169,7 +10169,7 @@ class EosDesigns(EosDesignsRootModel):
                         subinterface_mtu:
                            Allow/disallow MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
-                           rendered under the sub-interface even though it is set in the inputs.
+                           rendered under sub-interfaces even if it is set in the inputs.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
