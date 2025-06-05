@@ -183,7 +183,7 @@ nav:
               - Custom descriptions and names: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.md
               - Custom Structured Configuration: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-structured-configuration.md
               - Custom Templates: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-templates.md
-              - Generate CloudVision Tags Preview: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags-preview.md
+              - Generate CloudVision Tags: ansible_collections/arista/avd/roles/eos_designs/docs/how-to/cloudvision-tags.md
       - eos_cli_config_gen:
           - Overview: ansible_collections/arista/avd/roles/eos_cli_config_gen/README.md
           - Role Configuration: ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/role-configuration.md

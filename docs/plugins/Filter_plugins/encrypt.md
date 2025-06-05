@@ -17,20 +17,21 @@ Encrypt supported EOS passwords
 
 ## Synopsis
 
-The filter encrypts a clear text password into EOS passwords.
-To be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
-Note - For now this filter only supports encryption from type `7` and not type `8a` for OSPF and BGP passwords.
+- The filter encrypts a clear text password into EOS passwords.
+- It is intended to be used with Ansible Vault to load a password and have it encrypted on the fly by AVD in `eos_designs`.
+- The filter only supports encryption for type `7` and not type `8a` for OSPF, BGP and TACACS+ passwords.
 
 ## Parameters
 
 | Argument | Type | Required | Default | Value Restrictions | Description |
 | -------- | ---- | -------- | ------- | ------------------ | ----------- |
 | <samp>_input</samp> | string | True | None |  | Clear text password to be encrypted. |
-| <samp>passwd_type</samp> | string | True | None | Valid values:<br>- <code>bgp</code><br>- <code>ospf_simple</code><br>- <code>ospf_message_digest</code><br>- <code>isis</code> | Type of password to encrypt.<br>`bgp` and `ospf_simple` requires the `password` and `key` inputs.<br>`ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.<br>`isis` requires the `password`, `key` and `isis_mode` inputs. |
+| <samp>passwd_type</samp> | string | True | None | Valid values:<br>- <code>bgp</code><br>- <code>ospf_simple</code><br>- <code>ospf_message_digest</code><br>- <code>isis</code> | Type of password to encrypt.<br>`bgp` and `ospf_simple` requires the `password` and `key` inputs.<br>`ospf_message_digest` requires the `password`, `key`, `hash_algorithm`, `key_id` inputs.<br>`isis` requires the `password`, `key` and `isis_mode` inputs.<br>`tacacs` requires the `password` and `salt` inputs. |
 | <samp>key</samp> | string | True | None |  | Encryption key. The value depends on the type of password.<br>For BGP passwords, the key is the Neighbor IP or the BGP Peer Group Name in EOS.<br>For OSPF passwords, the key is the interface name (e.g., `Ethernet1`).<br>For ISIS passwords the key is the ISIS instance name (from `router isis &lt;instance name&gt;` or `isis enable &lt;instance name&gt;`). |
 | <samp>hash_algorithm</samp> | string | optional | None | Valid values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> | Hash algorithm to use with `passwd_type=ospf_message_digest`. |
 | <samp>key_id</samp> | integer | optional | None | Min value: <code>1</code><br>Max value: <code>255</code> | Key ID to use with `passwd_type=ospf_message_digest`. |
 | <samp>isis_mode</samp> | string | optional | None | Valid values:<br>- <code>none</code><br>- <code>text</code><br>- <code>md5</code><br>- <code>sha</code><br>- <code>sha-1</code><br>- <code>sha-224</code><br>- <code>sha-256</code><br>- <code>sha-384</code><br>- <code>sha1-512</code> | ISIS encryption mode (`none`, `text`, `md5`, `sha`) or shared-secret algorithm (`sha-1`, `sha-224`, `sha-256`, `sha-384`, `sha1-512`). |
+| <samp>salt</samp> | integer | optional | None | Max value: <code>15</code> | Salt used for simple type-7 obfuscation. Required for `passwd_type: tacacs`. |
 
 ## Examples
 
