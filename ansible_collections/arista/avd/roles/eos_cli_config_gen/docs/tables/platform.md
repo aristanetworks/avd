@@ -15,8 +15,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mmu</samp>](## "platform.trident.mmu") | Dictionary |  |  |  | Memory Management Unit settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;active_profile</samp>](## "platform.trident.mmu.active_profile") | String |  |  |  | The queue profile to be applied to the platform.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom_pool_limit</samp>](## "platform.trident.mmu.headroom_pool_limit") | Dictionary |  |  |  | Max limit on headroom pool size. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes</samp>](## "platform.trident.mmu.headroom_pool_limit.bytes") | Integer |  |  | Min: 1<br>Max: 33554432 | Headroom pool limit in bytes. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cells</samp>](## "platform.trident.mmu.headroom_pool_limit.cells") | Integer |  |  | Min: 1<br>Max: 131072 | Headroom pool limit in cells. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes</samp>](## "platform.trident.mmu.headroom_pool_limit.bytes") | Integer |  |  |  | Headroom pool limit in bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cells</samp>](## "platform.trident.mmu.headroom_pool_limit.cells") | Integer |  |  |  | Headroom pool limit in cells. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_profiles</samp>](## "platform.trident.mmu.queue_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "platform.trident.mmu.queue_profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_queues</samp>](## "platform.trident.mmu.queue_profiles.[].multicast_queues") | List, items: Dictionary |  |  |  |  |
@@ -81,10 +81,10 @@
           headroom_pool_limit:
 
             # Headroom pool limit in bytes.
-            bytes: <int; 1-33554432>
+            bytes: <int>
 
             # Headroom pool limit in cells.
-            cells: <int; 1-131072>
+            cells: <int>
           queue_profiles:
             - name: <str; required; unique>
               multicast_queues:

@@ -10206,13 +10206,13 @@ keys:
                 keys:
                   bytes:
                     type: int
-                    min: 1
-                    max: 33554432
+                    convert_types:
+                    - str
                     description: Headroom pool limit in bytes.
                   cells:
                     type: int
-                    min: 1
-                    max: 131072
+                    convert_types:
+                    - str
                     description: Headroom pool limit in cells.
               queue_profiles:
                 type: list
