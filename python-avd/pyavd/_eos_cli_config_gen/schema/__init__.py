@@ -25973,14 +25973,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                     """
 
-                        class PriorityGroups(AvdList[PriorityGroupsItem]):
-                            """Subclass of AvdList with `PriorityGroupsItem` items."""
+                        class PriorityGroups(AvdIndexedList[int, PriorityGroupsItem]):
+                            """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "id"
 
                         PriorityGroups._item_type = PriorityGroupsItem
 
                         _fields: ClassVar[dict] = {"priority_groups": {"type": PriorityGroups}}
                         priority_groups: PriorityGroups
-                        """Subclass of AvdList with `PriorityGroupsItem` items."""
+                        """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
 
                         if TYPE_CHECKING:
 
@@ -25992,7 +25994,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    priority_groups: Subclass of AvdList with `PriorityGroupsItem` items.
+                                    priority_groups: Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`).
 
                                 """
 
@@ -26182,9 +26184,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ingress: Ingress
                     """Subclass of AvdModel."""
                     multicast_queues: MulticastQueues
-                    """Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`)."""
+                    """
+                    Egress multicast queues.
+
+                    Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key
+                    is `id` (`int`).
+                    """
                     unicast_queues: UnicastQueues
-                    """Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`)."""
+                    """
+                    Egress unicast queues.
+
+                    Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is
+                    `id` (`int`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -26205,8 +26217,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: name
                                 ingress: Subclass of AvdModel.
-                                multicast_queues: Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`).
-                                unicast_queues: Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`).
+                                multicast_queues:
+                                   Egress multicast queues.
+
+                                   Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key
+                                   is `id` (`int`).
+                                unicast_queues:
+                                   Egress unicast queues.
+
+                                   Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is
+                                   `id` (`int`).
 
                             """
 

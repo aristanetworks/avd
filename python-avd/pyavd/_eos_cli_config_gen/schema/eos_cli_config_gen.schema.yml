@@ -10213,6 +10213,7 @@ keys:
                       keys:
                         priority_groups:
                           type: list
+                          primary_key: id
                           items:
                             type: dict
                             keys:
@@ -10221,7 +10222,6 @@ keys:
                                 convert_types:
                                 - str
                                 description: Priority-group group number.
-                                required: true
                                 min: 0
                                 max: 7
                               threshold:
@@ -10245,19 +10245,16 @@ keys:
                                 keys:
                                   bytes:
                                     type: int
-                                    min: 1
-                                    max: 2097152
                                     convert_types:
                                     - str
                                   cells:
                                     type: int
                                     convert_types:
                                     - str
-                                    min: 0
-                                    max: 8192
                     multicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress multicast queues.
                       items:
                         type: dict
                         keys:
@@ -10317,6 +10314,7 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress unicast queues.
                       items:
                         type: dict
                         keys:
