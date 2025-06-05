@@ -13062,6 +13062,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"ipv4_ipv6": {"type": bool}, "mpls": {"type": bool}}
                 ipv4_ipv6: bool | None
+                """
+                Set IPv4 and IPv6 encapsulations.
+                Both IPv4 and IPv6 encapsulations must be set together.
+                """
                 mpls: bool | None
 
                 if TYPE_CHECKING:
@@ -13074,7 +13078,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            ipv4_ipv6: ipv4_ipv6
+                            ipv4_ipv6:
+                               Set IPv4 and IPv6 encapsulations.
+                               Both IPv4 and IPv6 encapsulations must be set together.
                             mpls: mpls
 
                         """
@@ -13118,8 +13124,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str
                         """
                         Flow collector name.
-                        It can be and IPv4 address or IPv6 address or fully qualified domain name or
-                        sflow.
+                        It can be IPv4 address, IPv6 address, fully qualified domain name and sflow.
                         """
                         port: int | None
 
@@ -13135,8 +13140,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     name:
                                        Flow collector name.
-                                       It can be and IPv4 address or IPv6 address or fully qualified domain name or
-                                       sflow.
+                                       It can be IPv4 address, IPv6 address, fully qualified domain name and sflow.
                                     port: port
 
                                 """
@@ -13153,6 +13157,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"sflow": {"type": bool}}
                         sflow: bool | None
+                        """Use sFlow for export."""
 
                         if TYPE_CHECKING:
 
@@ -13164,7 +13169,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    sflow: sflow
+                                    sflow: Use sFlow for export.
 
                                 """
 
@@ -13265,6 +13270,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             encapsulation: Encapsulation
             """Subclass of AvdModel."""
             sample_limit: int | None
+            """Limit the number of packets sampled."""
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
             shutdown: bool
@@ -13288,7 +13294,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         encapsulation: Subclass of AvdModel.
-                        sample_limit: sample_limit
+                        sample_limit: Limit the number of packets sampled.
                         trackers: Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`).
                         shutdown: shutdown
 

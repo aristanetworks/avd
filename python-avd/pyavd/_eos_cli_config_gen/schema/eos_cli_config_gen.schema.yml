@@ -4972,10 +4972,14 @@ keys:
             type: dict
             keys:
               ipv4_ipv6:
+                description: 'Set IPv4 and IPv6 encapsulations.
+
+                  Both IPv4 and IPv6 encapsulations must be set together.'
                 type: bool
               mpls:
                 type: bool
           sample_limit:
+            description: Limit the number of packets sampled.
             type: int
             convert_types:
             - str
@@ -5012,8 +5016,8 @@ keys:
                               type: str
                               description: 'Flow collector name.
 
-                                It can be and IPv4 address or IPv6 address or fully
-                                qualified domain name or sflow.'
+                                It can be IPv4 address, IPv6 address, fully qualified
+                                domain name and sflow.'
                             port:
                               type: int
                               min: 1
@@ -5024,6 +5028,7 @@ keys:
                         type: dict
                         keys:
                           sflow:
+                            description: Use sFlow for export.
                             type: bool
                       local_interface:
                         type: str

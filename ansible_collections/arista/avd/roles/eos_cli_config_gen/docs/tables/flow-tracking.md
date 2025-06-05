@@ -54,9 +54,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.hardware.shutdown") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;mirror_on_drop</samp>](## "flow_tracking.mirror_on_drop") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "flow_tracking.mirror_on_drop.encapsulation") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6</samp>](## "flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6</samp>](## "flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6") | Boolean |  |  |  | Set IPv4 and IPv6 encapsulations.<br>Both IPv4 and IPv6 encapsulations must be set together. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls</samp>](## "flow_tracking.mirror_on_drop.encapsulation.mpls") | Boolean |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample_limit</samp>](## "flow_tracking.mirror_on_drop.sample_limit") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample_limit</samp>](## "flow_tracking.mirror_on_drop.sample_limit") | Integer |  |  | Min: 1<br>Max: 4294967295 | Limit the number of packets sampled. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;trackers</samp>](## "flow_tracking.mirror_on_drop.trackers") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].name") | String | Required, Unique |  |  | Tracker Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;record_export</samp>](## "flow_tracking.mirror_on_drop.trackers.[].record_export") | Dictionary |  |  |  |  |
@@ -65,10 +65,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exporters</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].name") | String | Required, Unique |  |  | Exporter Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].name") | String | Required, Unique |  |  | Flow collector name.<br>It can be and IPv4 address or IPv6 address or fully qualified domain name or sflow. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].name") | String | Required, Unique |  |  | Flow collector name.<br>It can be IPv4 address, IPv6 address, fully qualified domain name and sflow. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].format") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].format.sflow") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].format.sflow") | Boolean |  |  |  | Use sFlow for export. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].local_interface") | String |  |  |  | Local Source Interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.mirror_on_drop.shutdown") | Boolean |  | `False` |  |  |
@@ -187,8 +187,13 @@
         shutdown: <bool; default=False>
       mirror_on_drop:
         encapsulation:
+
+          # Set IPv4 and IPv6 encapsulations.
+          # Both IPv4 and IPv6 encapsulations must be set together.
           ipv4_ipv6: <bool>
           mpls: <bool>
+
+        # Limit the number of packets sampled.
         sample_limit: <int; 1-4294967295>
         trackers:
 
@@ -208,10 +213,12 @@
                 collectors:
 
                     # Flow collector name.
-                    # It can be and IPv4 address or IPv6 address or fully qualified domain name or sflow.
+                    # It can be IPv4 address, IPv6 address, fully qualified domain name and sflow.
                   - name: <str; required; unique>
                     port: <int; 1-65535>
                 format:
+
+                  # Use sFlow for export.
                   sflow: <bool>
 
                 # Local Source Interface.
