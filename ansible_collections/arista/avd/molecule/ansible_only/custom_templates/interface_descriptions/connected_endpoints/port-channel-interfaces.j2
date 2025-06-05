@@ -1,1 +1,5 @@
+{% if endpoint_port_channel is arista.avd.defined %}
+{{ peer }}-{{ endpoint_port_channel }}
+{% else %}
 {{ description_prefix }}_{{ peer }}_{{ adapter_description }}_{{ adapter_port_channel_description }}_{{ adapter_port_channel_id }}
+{% endif %}

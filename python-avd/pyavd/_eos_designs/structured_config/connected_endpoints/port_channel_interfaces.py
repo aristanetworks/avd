@@ -154,6 +154,7 @@ class PortChannelInterfacesMixin(Protocol):
                     description=adapter_description,
                     port_channel_id=channel_group_id,
                     port_channel_description=port_channel_description,
+                    endpoint_port_channel=adapter.port_channel.endpoint_port_channel,
                 )
             )
             or None,
