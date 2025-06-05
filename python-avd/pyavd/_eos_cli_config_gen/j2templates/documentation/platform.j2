@@ -28,9 +28,11 @@
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
 #### Trident MMU QUEUE PROFILES
+
+##### Egress
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
-##### {{ profile.name }}
+###### {{ profile.name }}
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -41,6 +43,26 @@
 | Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
 {%                     endfor %}
 {%                 endfor %}
+{%                 if platform.trident.mmu.queue_profiles | arista.avd.default([]) | selectattr('ingress','arista.avd.defined') | list %}
+
+##### Ingress
+{%                     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') | selectattr('ingress') %}
+
+###### {{ profile.name }}
+
+| Type | Ingress Queue | Threshold | Reserved |
+| ---- | ------------- | --------- | -------- |
+{%                         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%                             set unit = "" %}
+{%                             if priority_group.reserved.bytes is arista.avd.defined %}
+{%                                 set unit = "bytes" %}
+{%                             elif priority_group.reserved.cells is arista.avd.defined %}
+{%                                 set unit = "cells" %}
+{%                             endif %}
+| Priority Group | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ priority_group.reserved.bytes | default(priority_group.reserved.cells | arista.avd.default('-')) }} {{ unit }} |
+{%                         endfor %}
+{%                     endfor %}
+{%                 endif %}
 {%             endif %}
 {%         endif %}
 {%         if platform.sand is arista.avd.defined %}

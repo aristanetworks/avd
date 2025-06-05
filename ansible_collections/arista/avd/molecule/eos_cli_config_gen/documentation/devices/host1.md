@@ -11015,7 +11015,9 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 #### Trident MMU QUEUE PROFILES
 
-##### mc_example_profile
+##### Egress
+
+###### mc_example_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -11025,7 +11027,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Multicast | 1 | 1/64 | 0 cells | - |
 | Multicast | 7 | 1/64 | 0 cells | - |
 
-##### unused_profile
+###### unused_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -11034,6 +11036,22 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Unicast | 7 | - | - bytes | - |
 | Multicast | 0 | - | 0 bytes | - |
 | Multicast | 1 | 8 | 0 cells | - |
+
+##### Ingress
+
+###### mc_example_profile
+
+| Type | Ingress Queue | Threshold | Reserved |
+| ---- | ------------- | --------- | -------- |
+| Priority Group | 1 | 1 | -  |
+| Priority Group | 2 | 1/32 | 3 bytes |
+
+###### unused_profile
+
+| Type | Ingress Queue | Threshold | Reserved |
+| ---- | ------------- | --------- | -------- |
+| Priority Group | 2 | - | 55 bytes |
+| Priority Group | 5 | 1/32 | 34 cells |
 
 #### Platform Sand Summary
 
