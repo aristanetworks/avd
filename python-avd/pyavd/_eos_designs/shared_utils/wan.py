@@ -422,7 +422,7 @@ class WanMixin(Protocol):
 
         # Transit
         if (transit_mode := self.node_config.cv_pathfinder_transit_mode) is not None:
-            return f"transit {transit_mode}"
+            return "transit region" if transit_mode == "region" else "transit zone"
 
         # Edge
         return "edge"
