@@ -8015,11 +8015,14 @@ class EosDesigns(EosDesignsRootModel):
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
         campus_egress: bool
         """
-        Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
-        These
-        interfaces will be tagged with `Link-Type: Egress`.
-        This tag can later be used in the CloudVision
-        Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Flag used to identify one or more adapters as egress interfaces of the Arista
+        Campus fabric.
+        These interfaces will be tagged with `Link-Type: Egress`.
+        This tag can later be used
+        in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their
+        bandwidth utilization.
 
         Default value: `False`
         """
@@ -8222,11 +8225,14 @@ class EosDesigns(EosDesignsRootModel):
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
                     campus_egress:
-                       Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
-                       These
-                       interfaces will be tagged with `Link-Type: Egress`.
-                       This tag can later be used in the CloudVision
-                       Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Flag used to identify one or more adapters as egress interfaces of the Arista
+                       Campus fabric.
+                       These interfaces will be tagged with `Link-Type: Egress`.
+                       This tag can later be used
+                       in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their
+                       bandwidth utilization.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -11667,11 +11673,14 @@ class EosDesigns(EosDesignsRootModel):
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
         campus_egress: bool
         """
-        Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
-        These
-        interfaces will be tagged with `Link-Type: Egress`.
-        This tag can later be used in the CloudVision
-        Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Flag used to identify one or more adapters as egress interfaces of the Arista
+        Campus fabric.
+        These interfaces will be tagged with `Link-Type: Egress`.
+        This tag can later be used
+        in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their
+        bandwidth utilization.
 
         Default value: `False`
         """
@@ -11833,11 +11842,14 @@ class EosDesigns(EosDesignsRootModel):
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
                     campus_egress:
-                       Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
-                       These
-                       interfaces will be tagged with `Link-Type: Egress`.
-                       This tag can later be used in the CloudVision
-                       Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Flag used to identify one or more adapters as egress interfaces of the Arista
+                       Campus fabric.
+                       These interfaces will be tagged with `Link-Type: Egress`.
+                       This tag can later be used
+                       in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their
+                       bandwidth utilization.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -18246,11 +18258,14 @@ class EosDesigns(EosDesignsRootModel):
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
                     campus_egress: bool
                     """
-                    Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
-                    These
-                    interfaces will be tagged with `Link-Type: Egress`.
-                    This tag can later be used in the CloudVision
-                    Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Flag used to identify one or more adapters as egress interfaces of the Arista
+                    Campus fabric.
+                    These interfaces will be tagged with `Link-Type: Egress`.
+                    This tag can later be used
+                    in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their
+                    bandwidth utilization.
 
                     Default value: `False`
                     """
@@ -18449,11 +18464,14 @@ class EosDesigns(EosDesignsRootModel):
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
                                 campus_egress:
-                                   Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
-                                   These
-                                   interfaces will be tagged with `Link-Type: Egress`.
-                                   This tag can later be used in the CloudVision
-                                   Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Flag used to identify one or more adapters as egress interfaces of the Arista
+                                   Campus fabric.
+                                   These interfaces will be tagged with `Link-Type: Egress`.
+                                   This tag can later be used
+                                   in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their
+                                   bandwidth utilization.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 

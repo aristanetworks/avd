@@ -517,6 +517,7 @@ $defs:
       campus_egress:
         type: bool
         description: |-
+          PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
           Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
           These interfaces will be tagged with `Link-Type: Egress`.
           This tag can later be used in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.

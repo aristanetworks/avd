@@ -183,7 +183,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;short_esi</samp>](## "network_ports.[].port_channel.short_esi") <span style="color:red">removed</span> | String |  |  |  | In format xxxx:xxxx:xxxx or "auto".<span style="color:red">This key was removed. Support was removed in AVD version 5.0.0. Use <samp>ethernet_segment.short_esi</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_state</samp>](## "network_ports.[].validate_state") | Boolean |  |  |  | Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;validate_lldp</samp>](## "network_ports.[].validate_lldp") | Boolean |  |  |  | Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_egress</samp>](## "network_ports.[].campus_egress") | Boolean |  | `False` |  | Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.<br>These interfaces will be tagged with `Link-Type: Egress`.<br>This tag can later be used in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;campus_egress</samp>](## "network_ports.[].campus_egress") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.<br>These interfaces will be tagged with `Link-Type: Egress`.<br>This tag can later be used in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "network_ports.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the ethernet interface in the final EOS configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "network_ports.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
 
@@ -674,6 +674,7 @@
         # Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
         validate_lldp: <bool>
 
+        # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
         # Flag used to identify one or more adapters as egress interfaces of the Arista Campus fabric.
         # These interfaces will be tagged with `Link-Type: Egress`.
         # This tag can later be used in the CloudVision Campus Dashboard to correctly identify egress interfaces and calculate their bandwidth utilization.
