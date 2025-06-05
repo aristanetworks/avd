@@ -73,6 +73,7 @@ class OverlayMixin(Protocol):
 
         if admin_subfield == "switch_id":
             if self.id is None:
+                # Should never happen but just in case.
                 msg = f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'"
                 raise AristaAvdInvalidInputsError(msg)
             return self.id + admin_subfield_offset
@@ -116,11 +117,10 @@ class OverlayMixin(Protocol):
             if not self.is_cv_pathfinder_client:
                 return f"{self.router_id}:0"
 
-            # This condition in unreachable.
-            # The self.wan_site could be None only when 'cv_pathfinder_site' is not defined and 'self.is_cv_pathfinder_client' is false.
-            # it will return from line 116.
             if self.wan_site is None:
                 # Should never happen but just in case.
+                # The self.wan_site could be None only when 'cv_pathfinder_site' is not defined and 'self.is_cv_pathfinder_client' is false.
+                # it will return from line 116.
                 msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate evpn_soo."
                 raise AristaAvdInvalidInputsError(msg)
 
@@ -196,11 +196,6 @@ class OverlayMixin(Protocol):
 
     @cached_property
     def overlay_peering_address(self: SharedUtilsProtocol) -> str | None:
-        # This is unreachable.
-        # We are already checking 'if self.underlay_router' before calling this method
-        if not self.underlay_router:
-            return None
-
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
 
