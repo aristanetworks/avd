@@ -52,11 +52,17 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
 
             for interface in path_group.local_interfaces:
                 # Get the source IP address for the local interface
-                ip_address = (
-                    self.structured_config.ethernet_interfaces[interface.name].ip_address
-                    if interface.name in self.structured_config.ethernet_interfaces
-                    else None
-                )
+                if interface.name.startswith("Ethernet") and interface.name in self.structured_config.ethernet_interfaces:
+                    ip_address = self.structured_config.ethernet_interfaces[interface.name].ip_address
+                elif interface.name.startswith("Port-Channel") and interface.name in self.structured_config.port_channel_interfaces:
+                    ip_address = self.structured_config.port_channel_interfaces[interface.name].ip_address
+                else:
+                    ip_address = None
+
+                if ip_address is None:
+                    self.logger_adapter.debug(LogMessage.INTERFACE_NO_IP, interface=interface)
+                    continue
+
                 if ip_address == "dhcp":
                     self.logger_adapter.debug(LogMessage.INTERFACE_USING_DHCP, interface=interface)
                     continue

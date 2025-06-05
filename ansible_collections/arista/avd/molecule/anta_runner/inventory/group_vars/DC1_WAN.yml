@@ -47,6 +47,15 @@ wan_router:
           id: 2
           mgmt_ip: 172.16.1.16/24
           uplink_switch_interfaces: [Ethernet7, Ethernet7]
+          # Test for collect the source ip_address for local interface from port_channel_interfaces
+          l3_port_channels:
+            - name: Port-Channel1
+              ip_address: 170.18.4.2/24
+              wan_carrier: mpls-sp-1
+              wan_circuit_id: DC1-MPLS-4
+              peer_ip: 170.18.4.1
+              static_routes:
+                - prefix: 170.18.0.0/16
           l3_interfaces:
             - name: Ethernet3
               ip_address: 172.18.4.2/24

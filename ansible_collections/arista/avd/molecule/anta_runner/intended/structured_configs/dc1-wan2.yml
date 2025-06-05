@@ -223,6 +223,14 @@ metadata:
         value: Phone
       - name: Circuit
         value: DC1-INET-4
+    - interface: Port-Channel1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: mpls-sp-1
+      - name: Circuit
+        value: DC1-MPLS-4
   cv_pathfinder:
     role: edge
     region: Global
@@ -238,6 +246,10 @@ metadata:
       carrier: mpls-sp-1
       circuit_id: DC1-MPLS-4
       pathgroup: mpls
+    - name: Port-Channel1
+      carrier: mpls-sp-1
+      circuit_id: DC1-MPLS-4
+      pathgroup: mpls
     - name: Ethernet4
       carrier: isp-1
       circuit_id: DC1-INET-4
@@ -246,6 +258,14 @@ metadata:
       carrier: Phone
       circuit_id: DC1-INET-4
       pathgroup: Phone
+port_channel_interfaces:
+- name: Port-Channel1
+  description: mpls-sp-1_DC1-MPLS-4
+  shutdown: false
+  ip_address: 170.18.4.2/24
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -511,6 +531,11 @@ router_path_selection:
         server_profiles:
         - mpls-dc1-leaf1a-Ethernet6
         - mpls-dc1-leaf1b-Ethernet6
+    - name: Port-Channel1
+      stun:
+        server_profiles:
+        - mpls-dc1-leaf1a-Ethernet6
+        - mpls-dc1-leaf1b-Ethernet6
     dynamic_peers:
       enabled: true
     static_peers:
@@ -600,6 +625,8 @@ static_routes:
   next_hop: 100.64.4.1
 - prefix: 100.64.0.0/16
   next_hop: 100.64.5.1
+- prefix: 170.18.0.0/16
+  next_hop: 170.18.4.1
 stun:
   client:
     server_profiles:
