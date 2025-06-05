@@ -300,7 +300,7 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
 
     def _combine(self, other: Self) -> None:
         """
-        Update instance by combinining the other instance in.
+        Update instance by combining the other instance in.
 
         Combining is different from merging in the sense that it will raise if there is a conflict
         between one of our elements and the other elements.
@@ -318,13 +318,11 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
 
-        if self._created_from_null or self._block_inheritance:
-            # Null always wins, so no combining.
-            return
-
-        if other._created_from_null:
-            # Nothing to combine, and we set the special block flag to prevent combining with something else later.
-            self._block_inheritance = True
+        if self._created_from_null or other._created_from_null:
+            # Set the flag to the value of other and overwrite with data from other.
+            self._created_from_null = other._created_from_null
+            # Replace with the "other" list.
+            self._items = other._items.copy()
             return
 
         for item in other:

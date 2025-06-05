@@ -155,7 +155,7 @@ class AvdBase(ABC):
     @abstractmethod
     def _combine(self, other: Self) -> None:
         """
-        Update instance by combinining the other instance in.
+        Update instance by combining the other instance in.
 
         Combining is different from merging in the sense that it will raise if there is a conflict
         between one of our elements and the other elements.

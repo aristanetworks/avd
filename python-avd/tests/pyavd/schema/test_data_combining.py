@@ -53,6 +53,7 @@ UNIQUE_A_AND_B_INDEXED_LISTS = {
 }
 
 A_DICT = {"some_dict": {"some_nested_key": "blah"}}
+B_DICT = {"some_dict": {"some_nested_key": "blah"}}
 C_DICT = {"some_dict": {"some_nested_key": "plop"}}
 
 A = {"some_key": 42}
@@ -119,3 +120,57 @@ def test_data_combining_wrong_type(
     c = 42
     with pytest.raises(TypeError, match="Unable to combine type '<class 'int'>' into '"):
         getattr(a, key)._combine(c)
+
+
+@pytest.mark.parametrize(
+    ("a_data", "key", "b_data", "expected"),
+    [
+        # Testing AvdList
+        pytest.param(A_LIST, "some_list", B_LIST, B_LIST, id="list"),
+        # Testing AvdIndexedList
+        pytest.param(A_INDEXED_LIST, "some_indexed_list", B_INDEXED_LIST, B_INDEXED_LIST, id="indexed_list"),
+        # Testing AvdModel
+        pytest.param({"some_dict": None}, "some_dict", B_DICT, B_DICT, id="dict"),
+    ],
+)
+def test_data_combining_valid_a_from_null(
+    a_data: dict,
+    key: str,
+    b_data: dict,
+    expected: dict,
+    data_merging_schema_class: DataMergingTestSchema,
+) -> None:
+    a = data_merging_schema_class._from_dict(a_data)
+    getattr(a, key)._created_from_null = True
+    b = data_merging_schema_class._from_dict(b_data)
+    a._combine(b)
+    assert a._as_dict() == expected
+    assert getattr(a, key)._created_from_null == getattr(b, key)._created_from_null
+
+
+# TODO: I am not sure this is something we want below - I would rather if b was created from null that we
+# keep whatever is in a as we are "combining" - thoughts?
+@pytest.mark.parametrize(
+    ("a_data", "key", "b_data", "expected"),
+    [
+        # Testing AvdList
+        pytest.param(A_LIST, "some_list", B_LIST, {"some_list": None}, id="list"),
+        # Testing AvdIndexedList
+        pytest.param(A_INDEXED_LIST, "some_indexed_list", B_INDEXED_LIST, {"some_indexed_list": None}, id="indexed_list"),
+        # Testing AvdModel
+        pytest.param(A_DICT, "some_dict", B_DICT, {"some_dict": None}, id="dict"),
+    ],
+)
+def test_data_combining_valid_b_from_null(
+    a_data: dict,
+    key: str,
+    b_data: dict,
+    expected: dict,
+    data_merging_schema_class: DataMergingTestSchema,
+) -> None:
+    a = data_merging_schema_class._from_dict(a_data)
+    b = data_merging_schema_class._from_dict(b_data)
+    getattr(b, key)._created_from_null = True
+    a._combine(b)
+    assert a._as_dict() == expected
+    assert getattr(a, key)._created_from_null == getattr(b, key)._created_from_null
