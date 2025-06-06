@@ -160,7 +160,7 @@ keys:
               type: bool
               default: false
               description: Support for all-active EVPN gateway redundancy.
-            hardware_counter:
+            hardware_counters:
               type: dict
               description: |-
                 Support for enabling counters for features using programmable hardware counter resources.
@@ -502,7 +502,7 @@ keys:
           queue_monitor: false
           queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
-          hardware_counter:
+          hardware_counters:
             feature:
               decap_group: false
               directflow: false
@@ -544,7 +544,7 @@ keys:
           queue_monitor: false
           queue_monitor_length_notify: false
           evpn_gateway_all_active_multihoming: true
-          hardware_counter:
+          hardware_counters:
             feature:
               decap_group: false
               directflow: false
@@ -580,7 +580,7 @@ keys:
           - CloudEOS
           - cloudEOS
         feature_support:
-          hardware_counter:
+          hardware_counters:
             supported: false
           bgp_update_wait_install: false
           interface_storm_control: false

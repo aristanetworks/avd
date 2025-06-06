@@ -168,33 +168,36 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
         Contributing data sources:
           - hardware_counters.features variable.
-          - platform_settings.feature_support.hardware_counter fact.
+          - platform_settings.feature_support.hardware_counters fact.
         """
         if not self.inputs.hardware_counters:
             return
         # Avoid collision with eos_cli_config_gen
-        if not self.shared_utils.platform_settings.feature_support.hardware_counter.supported:
-            self.custom_structured_configs.root.append(EosCliConfigGen._from_dict({"hardware_counters": None}))
+        if not self.shared_utils.platform_settings.feature_support.hardware_counters.supported:
+            self.custom_structured_configs.nested.hardware_counters = EosCliConfigGen.HardwareCounters._from_null()
             return
         hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
 
         # Filter different hardware counter features basedon the platform supportability
-        if self.shared_utils.platform_settings.feature_support.hardware_counter.feature.supported:
+        if self.shared_utils.platform_settings.feature_support.hardware_counters.feature.supported:
             hardware_counters.features = hardware_counters.features._filtered(
-                lambda x: (
-                    x.name != "mpls lfib"
+                lambda feature: (
+                    feature.name != "mpls lfib"
                     and get_v2(
-                        self.shared_utils.platform_settings.feature_support.hardware_counter.feature,
-                        x.name.replace(" ", "_").replace("-", "_"),
+                        self.shared_utils.platform_settings.feature_support.hardware_counters.feature,
+                        feature.name.replace(" ", "_").replace("-", "_"),
                         # Assume all uncovered/new features are supported
                         default=True,
                     )
                 )
                 or (
-                    x.name == "mpls lfib"
+                    feature.name == "mpls lfib"
                     and (
-                        not get_v2(x, "units_packets")
-                        or (get_v2(x, "units_packets") and self.shared_utils.platform_settings.feature_support.hardware_counter.feature.mpls_lfib_units_packets)
+                        not get_v2(feature, "units_packets")
+                        or (
+                            get_v2(feature, "units_packets")
+                            and self.shared_utils.platform_settings.feature_support.hardware_counters.feature.mpls_lfib_units_packets
+                        )
                     )
                 )
             )
@@ -339,7 +342,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             return
         # Avoid collision with eos_cli_config_gen
         if not self.shared_utils.platform_settings.feature_support.queue_monitor:
-            self.custom_structured_configs.root.append(EosCliConfigGen._from_dict({"queue_monitor_length": None}))
+            self.custom_structured_configs.nested.queue_monitor_length = EosCliConfigGen.QueueMonitorLength._from_null()
             return
 
         # Remove notifying key if not supported by the platform settings.
@@ -468,7 +471,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             return
         # Avoid collision with eos_cli_config_gen
         if not self.shared_utils.platform_settings.feature_support.queue_monitor:
-            self.custom_structured_configs.root.append(EosCliConfigGen._from_dict({"queue_monitor_streaming": None}))
+            self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
         self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming
 
