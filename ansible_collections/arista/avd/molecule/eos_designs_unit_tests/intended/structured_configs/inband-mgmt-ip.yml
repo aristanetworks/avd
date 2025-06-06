@@ -33,13 +33,17 @@ ethernet_interfaces:
   peer_interface: Ethernet23
   peer_type: l3leaf
 hostname: inband-mgmt-ip
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan103
+    vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
 - ip_address: 1.1.1.1
-  vrf: MGMT
+  vrf: INBANDMGMT
 - ip_address: 8.8.8.8
-  vrf: MGMT
+  vrf: INBANDMGMT
 is_deployed: true
 management_api_http:
   enable_https: true
@@ -48,10 +52,15 @@ management_api_http:
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
+  local_interface:
+    name: Vlan103
+    vrf: INBANDMGMT
   servers:
   - name: 2.2.2.55
     preferred: true
+    vrf: INBANDMGMT
   - name: pool.ntp.org
+    vrf: INBANDMGMT
 port_channel_interfaces:
 - name: Port-Channel1
   description: INBAND-MGMT-PARENT_Po23

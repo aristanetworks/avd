@@ -33,13 +33,16 @@ ethernet_interfaces:
   peer_interface: Ethernet24
   peer_type: l3leaf
 hostname: inband-mgmt-dualstack-subnets
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan104
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
 - ip_address: 1.1.1.1
-  vrf: MGMT
+  vrf: default
 - ip_address: 8.8.8.8
-  vrf: MGMT
+  vrf: default
 ipv6_static_routes:
 - prefix: ::/0
   next_hop: 2a00:104::1
@@ -51,10 +54,15 @@ management_api_http:
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 ntp:
+  local_interface:
+    name: Vlan104
+    vrf: default
   servers:
   - name: 2.2.2.55
     preferred: true
+    vrf: default
   - name: pool.ntp.org
+    vrf: default
 port_channel_interfaces:
 - name: Port-Channel1
   description: inband-mgmt-parents-dualstack_Po24

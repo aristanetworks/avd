@@ -2692,6 +2692,142 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class DnsSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ServersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf": {"type": str}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str | None
+            """
+            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+            The
+            value of `vrf` will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+            DNS lookup source-interface.
+              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+            configured for the device.
+            - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+              An
+            error will be raised if inband management is not configured for the device.
+            - Any other string will
+            be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
+            needed.
+            """
+            ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
+            priority: int | None
+            """Priority value (lower is first)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    vrf: str | None | UndefinedType = Undefined,
+                    ip_address: str | UndefinedType = Undefined,
+                    priority: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf:
+                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                           The
+                           value of `vrf` will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+                           DNS lookup source-interface.
+                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+                           configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+                           with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           - Any other string will
+                           be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
+                           needed.
+                        ip_address: IPv4 or IPv6 address for DNS server.
+                        priority: Priority value (lower is first).
+
+                    """
+
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
+
+        Servers._item_type = ServersItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """VRF name."""
+            source_interface: str | None
+            """
+            Source interface to use for DNS lookups in this VRF.
+            If set for the VRFs defined by
+            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        source_interface:
+                           Source interface to use for DNS lookups in this VRF.
+                           If set for the VRFs defined by
+                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {"domain": {"type": str}, "servers": {"type": Servers}, "vrfs": {"type": Vrfs}}
+        domain: str | None
+        """DNS domain name like 'fabric.local'"""
+        servers: Servers
+        """Subclass of AvdList with `ServersItem` items."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self, *, domain: str | None | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined
+            ) -> None:
+                """
+                DnsSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    domain: DNS domain name like 'fabric.local'
+                    servers: Subclass of AvdList with `ServersItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+
+                """
+
     class EosDesignsCustomTemplatesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -58340,6 +58476,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
+        "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -59185,6 +59322,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     design: Design
     """Subclass of AvdModel."""
+    dns_settings: DnsSettings
+    """
+    DNS settings
+    For DNS source-interfaces see "source_interfaces.domain_lookup"
+
+    Subclass of AvdModel.
+    """
     enable_trunk_groups: bool
     """
     Enable Trunk Group support across eos_designs.
@@ -60520,6 +60664,7 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
             design: Design | UndefinedType = Undefined,
+            dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -61072,6 +61217,11 @@ class EosDesigns(EosDesignsRootModel):
                    By default the description is
                    templated from the VRF name.
                 design: Subclass of AvdModel.
+                dns_settings:
+                   DNS settings
+                   For DNS source-interfaces see "source_interfaces.domain_lookup"
+
+                   Subclass of AvdModel.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group

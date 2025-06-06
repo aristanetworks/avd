@@ -25,14 +25,15 @@ default_interfaces:
     mlag_interfaces: [ Ethernet11-20 ]
     downlink_interfaces: [ Ethernet21-30 ]
 
-default_mgmt_method: none
+default_mgmt_method: inband
 
 cvp_instance_ips:
   - apiserver.arista.io
 
-name_servers:
-  - 1.1.1.1
-  - 8.8.8.8
+dns_settings:
+  servers:
+    - ip_address: 1.1.1.1
+    - ip_address: 8.8.8.8
 
 ntp_settings:
   servers:
@@ -43,6 +44,8 @@ spine:
   defaults:
     loopback_ipv4_pool: 10.0.254.0/24
     bgp_as: 64999
+    # Dummy IP to avoid errors being raised because of dns_settings for device with oob management.
+    mgmt_ip: 192.168.100.10/24
   nodes:
     - name: inband-mgmt-spine1-ztp
       id: 1
@@ -58,6 +61,8 @@ l3leaf:
     filter:
       # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
       only_vlans_in_use: true
+    # Dummy IP to avoid errors being raised because of dns_settings for device with oob management.
+    mgmt_ip: 192.168.100.10/24
   nodes:
     - name: inband-mgmt-parent
       id: 1
