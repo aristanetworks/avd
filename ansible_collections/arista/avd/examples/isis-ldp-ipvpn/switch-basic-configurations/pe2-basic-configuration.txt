@@ -5,7 +5,7 @@
 hostname pe2
 !
 ! Configures username and password for the ansible user
-username ansible privilege 15 role network-admin secret sha512 $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+username arista privilege 15 role network-admin secret sha512 $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 !
 ! Defines the VRF for MGMT
 vrf instance MGMT
