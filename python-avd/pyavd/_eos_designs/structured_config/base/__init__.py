@@ -178,27 +178,14 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             return
         hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
 
-        # Filter different hardware counter features basedon the platform supportability
+        # Filter different hardware counter features based on the platform supportability
         if self.shared_utils.platform_settings.feature_support.hardware_counters.feature.supported:
             hardware_counters.features = hardware_counters.features._filtered(
-                lambda feature: (
-                    feature.name != "mpls lfib"
-                    and get_v2(
-                        self.shared_utils.platform_settings.feature_support.hardware_counters.feature,
-                        feature.name.replace(" ", "_").replace("-", "_"),
-                        # Assume all uncovered/new features are supported
-                        default=True,
-                    )
-                )
-                or (
-                    feature.name == "mpls lfib"
-                    and (
-                        not get_v2(feature, "units_packets")
-                        or (
-                            get_v2(feature, "units_packets")
-                            and self.shared_utils.platform_settings.feature_support.hardware_counters.feature.mpls_lfib_units_packets
-                        )
-                    )
+                lambda feature: get_v2(
+                    self.shared_utils.platform_settings.feature_support.hardware_counters.feature,
+                    feature.name.replace(" ", "_").replace("-", "_"),
+                    # Assume all uncovered/new features are supported
+                    default=True,
                 )
             )
         elif hasattr(hardware_counters, "features"):

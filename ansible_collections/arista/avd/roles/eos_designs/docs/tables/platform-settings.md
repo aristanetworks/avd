@@ -33,40 +33,39 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "custom_platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "custom_platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counters</samp>](## "custom_platform_settings.[].feature_support.hardware_counters") | Dictionary |  |  |  | Support for enabling counters for features using programmable hardware counter resources.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.supported") | Boolean |  | `True` |  | General supportability of the `hardware counter` feature.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.supported") | Boolean |  | `True` |  | General support for the `hardware counter` CLI.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feature</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.supported") | Boolean |  | `True` |  | General supportability of the `hardware counter feature` feature.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.acl") | Boolean |  | `True` |  | Supportability of the hardware counter for the `acl` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decap_group</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.decap_group") | Boolean |  | `True` |  | Supportability of the hardware counter for the `decap-group` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directflow</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.directflow") | Boolean |  | `True` |  | Supportability of the hardware counter for the `directflow` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.ecn") | Boolean |  | `True` |  | Supportability of the hardware counter for the `ecn` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_spec</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.flow_spec") | Boolean |  | `True` |  | Supportability of the hardware counter for the `flow-spec` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre_tunnel_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.gre_tunnel_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `gre tunnel interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.ip") | Boolean |  | `True` |  | Supportability of the hardware counter for the `ip` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_lfib</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_lfib") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls lfib` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_lfib_units_packets</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_lfib_units_packets") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls lfib` feature with `units packets` enabled. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_tunnel</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_tunnel") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls tunnel` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.multicast") | Boolean |  | `True` |  | Supportability of the hardware counter for the `multicast` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.nexthop") | Boolean |  | `True` |  | Supportability of the hardware counter for the `nexthop` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pbr</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.pbr") | Boolean |  | `True` |  | Supportability of the hardware counter for the `pbr` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pdp</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.pdp") | Boolean |  | `True` |  | Supportability of the hardware counter for the `pdp` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policing_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.policing_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `policing interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.qos") | Boolean |  | `True` |  | Supportability of the hardware counter for the `qos` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_dual_rate_policer</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.qos_dual_rate_policer") | Boolean |  | `True` |  | Supportability of the hardware counter for the `qos dual-rate-policer` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.route") | Boolean |  | `True` |  | Supportability of the hardware counter for the `route` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routed_port</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.routed_port") | Boolean |  | `True` |  | Supportability of the hardware counter for the `routed-port` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_security</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.segment_security") | Boolean |  | `True` |  | Supportability of the hardware counter for the `segment-security` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.subinterface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `subinterface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.tapagg") | Boolean |  | `True` |  | Supportability of the hardware counter for the `tapagg` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.traffic_class") | Boolean |  | `True` |  | Supportability of the hardware counter for the `traffic-class` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.traffic_policy") | Boolean |  | `True` |  | Supportability of the hardware counter for the `traffic-policy` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vlan") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vlan` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vlan_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vlan-interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_decap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vni_decap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vni decap` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_encap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vni_encap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vni encap` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_decap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vtep_decap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vtep decap` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_encap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vtep_encap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vtep encap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.supported") | Boolean |  | `True` |  | General support for the `hardware counter feature` CLI.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.acl") | Boolean |  | `True` |  | Support for the hardware counter for the `acl` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decap_group</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.decap_group") | Boolean |  | `True` |  | Support for the hardware counter for the `decap-group` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directflow</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.directflow") | Boolean |  | `True` |  | Support for the hardware counter for the `directflow` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.ecn") | Boolean |  | `True` |  | Support for the hardware counter for the `ecn` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_spec</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.flow_spec") | Boolean |  | `True` |  | Support for the hardware counter for the `flow-spec` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre_tunnel_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.gre_tunnel_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `gre tunnel interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.ip") | Boolean |  | `True` |  | Support for the hardware counter for the `ip` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `mpls interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_lfib</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_lfib") | Boolean |  | `True` |  | Support for the hardware counter for the `mpls lfib` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_tunnel</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.mpls_tunnel") | Boolean |  | `True` |  | Support for the hardware counter for the `mpls tunnel` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.multicast") | Boolean |  | `True` |  | Support for the hardware counter for the `multicast` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.nexthop") | Boolean |  | `True` |  | Support for the hardware counter for the `nexthop` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pbr</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.pbr") | Boolean |  | `True` |  | Support for the hardware counter for the `pbr` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pdp</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.pdp") | Boolean |  | `True` |  | Support for the hardware counter for the `pdp` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policing_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.policing_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `policing interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.qos") | Boolean |  | `True` |  | Support for the hardware counter for the `qos` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_dual_rate_policer</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.qos_dual_rate_policer") | Boolean |  | `True` |  | Support for the hardware counter for the `qos dual-rate-policer` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.route") | Boolean |  | `True` |  | Support for the hardware counter for the `route` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routed_port</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.routed_port") | Boolean |  | `True` |  | Support for the hardware counter for the `routed-port` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_security</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.segment_security") | Boolean |  | `True` |  | Support for the hardware counter for the `segment-security` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.subinterface") | Boolean |  | `True` |  | Support for the hardware counter for the `subinterface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.tapagg") | Boolean |  | `True` |  | Support for the hardware counter for the `tapagg` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.traffic_class") | Boolean |  | `True` |  | Support for the hardware counter for the `traffic-class` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.traffic_policy") | Boolean |  | `True` |  | Support for the hardware counter for the `traffic-policy` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vlan") | Boolean |  | `True` |  | Support for the hardware counter for the `vlan` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_interface</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vlan_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `vlan-interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_decap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vni_decap") | Boolean |  | `True` |  | Support for the hardware counter for the `vni decap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_encap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vni_encap") | Boolean |  | `True` |  | Support for the hardware counter for the `vni encap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_decap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vtep_decap") | Boolean |  | `True` |  | Support for the hardware counter for the `vtep decap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_encap</samp>](## "custom_platform_settings.[].feature_support.hardware_counters.feature.vtep_encap") | Boolean |  | `True` |  | Support for the hardware counter for the `vtep encap` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "custom_platform_settings.[].feature_support.hardware_speed_group") | Boolean |  | `True` |  | Support for configurable speeds per speed-group.<br>Feature will be ignored on unsupported platforms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "custom_platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "custom_platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
@@ -102,40 +101,39 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;max_rx_queues</samp>](## "platform_settings.[].feature_support.platform_sfe_interface_profile.max_rx_queues") | Integer |  | `6` |  | Maximum rx_queue count supported on any interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;evpn_gateway_all_active_multihoming</samp>](## "platform_settings.[].feature_support.evpn_gateway_all_active_multihoming") | Boolean |  | `False` |  | Support for all-active EVPN gateway redundancy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_counters</samp>](## "platform_settings.[].feature_support.hardware_counters") | Dictionary |  |  |  | Support for enabling counters for features using programmable hardware counter resources.<br>Feature will be ignored on unsupported platforms. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.hardware_counters.supported") | Boolean |  | `True` |  | General supportability of the `hardware counter` feature.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.hardware_counters.supported") | Boolean |  | `True` |  | General support for the `hardware counter` CLI.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;feature</samp>](## "platform_settings.[].feature_support.hardware_counters.feature") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.supported") | Boolean |  | `True` |  | General supportability of the `hardware counter feature` feature.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.acl") | Boolean |  | `True` |  | Supportability of the hardware counter for the `acl` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decap_group</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.decap_group") | Boolean |  | `True` |  | Supportability of the hardware counter for the `decap-group` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directflow</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.directflow") | Boolean |  | `True` |  | Supportability of the hardware counter for the `directflow` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.ecn") | Boolean |  | `True` |  | Supportability of the hardware counter for the `ecn` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_spec</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.flow_spec") | Boolean |  | `True` |  | Supportability of the hardware counter for the `flow-spec` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre_tunnel_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.gre_tunnel_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `gre tunnel interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.ip") | Boolean |  | `True` |  | Supportability of the hardware counter for the `ip` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_lfib</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_lfib") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls lfib` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_lfib_units_packets</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_lfib_units_packets") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls lfib` feature with `units packets` enabled. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_tunnel</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_tunnel") | Boolean |  | `True` |  | Supportability of the hardware counter for the `mpls tunnel` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.multicast") | Boolean |  | `True` |  | Supportability of the hardware counter for the `multicast` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.nexthop") | Boolean |  | `True` |  | Supportability of the hardware counter for the `nexthop` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pbr</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.pbr") | Boolean |  | `True` |  | Supportability of the hardware counter for the `pbr` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pdp</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.pdp") | Boolean |  | `True` |  | Supportability of the hardware counter for the `pdp` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policing_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.policing_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `policing interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.qos") | Boolean |  | `True` |  | Supportability of the hardware counter for the `qos` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_dual_rate_policer</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.qos_dual_rate_policer") | Boolean |  | `True` |  | Supportability of the hardware counter for the `qos dual-rate-policer` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.route") | Boolean |  | `True` |  | Supportability of the hardware counter for the `route` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routed_port</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.routed_port") | Boolean |  | `True` |  | Supportability of the hardware counter for the `routed-port` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_security</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.segment_security") | Boolean |  | `True` |  | Supportability of the hardware counter for the `segment-security` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.subinterface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `subinterface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.tapagg") | Boolean |  | `True` |  | Supportability of the hardware counter for the `tapagg` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.traffic_class") | Boolean |  | `True` |  | Supportability of the hardware counter for the `traffic-class` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.traffic_policy") | Boolean |  | `True` |  | Supportability of the hardware counter for the `traffic-policy` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vlan") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vlan` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vlan_interface") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vlan-interface` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_decap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vni_decap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vni decap` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_encap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vni_encap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vni encap` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_decap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vtep_decap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vtep decap` feature. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_encap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vtep_encap") | Boolean |  | `True` |  | Supportability of the hardware counter for the `vtep encap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supported</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.supported") | Boolean |  | `True` |  | General support for the `hardware counter feature` CLI.<br>Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acl</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.acl") | Boolean |  | `True` |  | Support for the hardware counter for the `acl` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;decap_group</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.decap_group") | Boolean |  | `True` |  | Support for the hardware counter for the `decap-group` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;directflow</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.directflow") | Boolean |  | `True` |  | Support for the hardware counter for the `directflow` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ecn</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.ecn") | Boolean |  | `True` |  | Support for the hardware counter for the `ecn` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_spec</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.flow_spec") | Boolean |  | `True` |  | Support for the hardware counter for the `flow-spec` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;gre_tunnel_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.gre_tunnel_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `gre tunnel interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.ip") | Boolean |  | `True` |  | Support for the hardware counter for the `ip` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `mpls interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_lfib</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_lfib") | Boolean |  | `True` |  | Support for the hardware counter for the `mpls lfib` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mpls_tunnel</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.mpls_tunnel") | Boolean |  | `True` |  | Support for the hardware counter for the `mpls tunnel` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.multicast") | Boolean |  | `True` |  | Support for the hardware counter for the `multicast` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nexthop</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.nexthop") | Boolean |  | `True` |  | Support for the hardware counter for the `nexthop` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pbr</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.pbr") | Boolean |  | `True` |  | Support for the hardware counter for the `pbr` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pdp</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.pdp") | Boolean |  | `True` |  | Support for the hardware counter for the `pdp` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;policing_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.policing_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `policing interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.qos") | Boolean |  | `True` |  | Support for the hardware counter for the `qos` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;qos_dual_rate_policer</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.qos_dual_rate_policer") | Boolean |  | `True` |  | Support for the hardware counter for the `qos dual-rate-policer` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.route") | Boolean |  | `True` |  | Support for the hardware counter for the `route` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routed_port</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.routed_port") | Boolean |  | `True` |  | Support for the hardware counter for the `routed-port` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;segment_security</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.segment_security") | Boolean |  | `True` |  | Support for the hardware counter for the `segment-security` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.subinterface") | Boolean |  | `True` |  | Support for the hardware counter for the `subinterface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tapagg</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.tapagg") | Boolean |  | `True` |  | Support for the hardware counter for the `tapagg` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_class</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.traffic_class") | Boolean |  | `True` |  | Support for the hardware counter for the `traffic-class` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;traffic_policy</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.traffic_policy") | Boolean |  | `True` |  | Support for the hardware counter for the `traffic-policy` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vlan") | Boolean |  | `True` |  | Support for the hardware counter for the `vlan` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan_interface</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vlan_interface") | Boolean |  | `True` |  | Support for the hardware counter for the `vlan-interface` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_decap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vni_decap") | Boolean |  | `True` |  | Support for the hardware counter for the `vni decap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vni_encap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vni_encap") | Boolean |  | `True` |  | Support for the hardware counter for the `vni encap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_decap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vtep_decap") | Boolean |  | `True` |  | Support for the hardware counter for the `vtep decap` feature. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vtep_encap</samp>](## "platform_settings.[].feature_support.hardware_counters.feature.vtep_encap") | Boolean |  | `True` |  | Support for the hardware counter for the `vtep encap` feature. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_speed_group</samp>](## "platform_settings.[].feature_support.hardware_speed_group") | Boolean |  | `True` |  | Support for configurable speeds per speed-group.<br>Feature will be ignored on unsupported platforms. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;management_interface</samp>](## "platform_settings.[].management_interface") | String |  | `Management1` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;security_entropy_sources</samp>](## "platform_settings.[].security_entropy_sources") | Dictionary |  |  |  | Entropy source improves the randomness of the numbers used to generate MACsec's cryptographic keys. |
@@ -238,106 +236,103 @@
           # Feature will be ignored on unsupported platforms.
           hardware_counters:
 
-            # General supportability of the `hardware counter` feature.
+            # General support for the `hardware counter` CLI.
             # Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform.
             supported: <bool; default=True>
             feature:
 
-              # General supportability of the `hardware counter feature` feature.
+              # General support for the `hardware counter feature` CLI.
               # Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform.
               supported: <bool; default=True>
 
-              # Supportability of the hardware counter for the `acl` feature.
+              # Support for the hardware counter for the `acl` feature.
               acl: <bool; default=True>
 
-              # Supportability of the hardware counter for the `decap-group` feature.
+              # Support for the hardware counter for the `decap-group` feature.
               decap_group: <bool; default=True>
 
-              # Supportability of the hardware counter for the `directflow` feature.
+              # Support for the hardware counter for the `directflow` feature.
               directflow: <bool; default=True>
 
-              # Supportability of the hardware counter for the `ecn` feature.
+              # Support for the hardware counter for the `ecn` feature.
               ecn: <bool; default=True>
 
-              # Supportability of the hardware counter for the `flow-spec` feature.
+              # Support for the hardware counter for the `flow-spec` feature.
               flow_spec: <bool; default=True>
 
-              # Supportability of the hardware counter for the `gre tunnel interface` feature.
+              # Support for the hardware counter for the `gre tunnel interface` feature.
               gre_tunnel_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `ip` feature.
+              # Support for the hardware counter for the `ip` feature.
               ip: <bool; default=True>
 
-              # Supportability of the hardware counter for the `mpls interface` feature.
+              # Support for the hardware counter for the `mpls interface` feature.
               mpls_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `mpls lfib` feature.
+              # Support for the hardware counter for the `mpls lfib` feature.
               mpls_lfib: <bool; default=True>
 
-              # Supportability of the hardware counter for the `mpls lfib` feature with `units packets` enabled.
-              mpls_lfib_units_packets: <bool; default=True>
-
-              # Supportability of the hardware counter for the `mpls tunnel` feature.
+              # Support for the hardware counter for the `mpls tunnel` feature.
               mpls_tunnel: <bool; default=True>
 
-              # Supportability of the hardware counter for the `multicast` feature.
+              # Support for the hardware counter for the `multicast` feature.
               multicast: <bool; default=True>
 
-              # Supportability of the hardware counter for the `nexthop` feature.
+              # Support for the hardware counter for the `nexthop` feature.
               nexthop: <bool; default=True>
 
-              # Supportability of the hardware counter for the `pbr` feature.
+              # Support for the hardware counter for the `pbr` feature.
               pbr: <bool; default=True>
 
-              # Supportability of the hardware counter for the `pdp` feature.
+              # Support for the hardware counter for the `pdp` feature.
               pdp: <bool; default=True>
 
-              # Supportability of the hardware counter for the `policing interface` feature.
+              # Support for the hardware counter for the `policing interface` feature.
               policing_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `qos` feature.
+              # Support for the hardware counter for the `qos` feature.
               qos: <bool; default=True>
 
-              # Supportability of the hardware counter for the `qos dual-rate-policer` feature.
+              # Support for the hardware counter for the `qos dual-rate-policer` feature.
               qos_dual_rate_policer: <bool; default=True>
 
-              # Supportability of the hardware counter for the `route` feature.
+              # Support for the hardware counter for the `route` feature.
               route: <bool; default=True>
 
-              # Supportability of the hardware counter for the `routed-port` feature.
+              # Support for the hardware counter for the `routed-port` feature.
               routed_port: <bool; default=True>
 
-              # Supportability of the hardware counter for the `segment-security` feature.
+              # Support for the hardware counter for the `segment-security` feature.
               segment_security: <bool; default=True>
 
-              # Supportability of the hardware counter for the `subinterface` feature.
+              # Support for the hardware counter for the `subinterface` feature.
               subinterface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `tapagg` feature.
+              # Support for the hardware counter for the `tapagg` feature.
               tapagg: <bool; default=True>
 
-              # Supportability of the hardware counter for the `traffic-class` feature.
+              # Support for the hardware counter for the `traffic-class` feature.
               traffic_class: <bool; default=True>
 
-              # Supportability of the hardware counter for the `traffic-policy` feature.
+              # Support for the hardware counter for the `traffic-policy` feature.
               traffic_policy: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vlan` feature.
+              # Support for the hardware counter for the `vlan` feature.
               vlan: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vlan-interface` feature.
+              # Support for the hardware counter for the `vlan-interface` feature.
               vlan_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vni decap` feature.
+              # Support for the hardware counter for the `vni decap` feature.
               vni_decap: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vni encap` feature.
+              # Support for the hardware counter for the `vni encap` feature.
               vni_encap: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vtep decap` feature.
+              # Support for the hardware counter for the `vtep decap` feature.
               vtep_decap: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vtep encap` feature.
+              # Support for the hardware counter for the `vtep encap` feature.
               vtep_encap: <bool; default=True>
 
           # Support for configurable speeds per speed-group.
@@ -449,106 +444,103 @@
           # Feature will be ignored on unsupported platforms.
           hardware_counters:
 
-            # General supportability of the `hardware counter` feature.
+            # General support for the `hardware counter` CLI.
             # Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform.
             supported: <bool; default=True>
             feature:
 
-              # General supportability of the `hardware counter feature` feature.
+              # General support for the `hardware counter feature` CLI.
               # Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform.
               supported: <bool; default=True>
 
-              # Supportability of the hardware counter for the `acl` feature.
+              # Support for the hardware counter for the `acl` feature.
               acl: <bool; default=True>
 
-              # Supportability of the hardware counter for the `decap-group` feature.
+              # Support for the hardware counter for the `decap-group` feature.
               decap_group: <bool; default=True>
 
-              # Supportability of the hardware counter for the `directflow` feature.
+              # Support for the hardware counter for the `directflow` feature.
               directflow: <bool; default=True>
 
-              # Supportability of the hardware counter for the `ecn` feature.
+              # Support for the hardware counter for the `ecn` feature.
               ecn: <bool; default=True>
 
-              # Supportability of the hardware counter for the `flow-spec` feature.
+              # Support for the hardware counter for the `flow-spec` feature.
               flow_spec: <bool; default=True>
 
-              # Supportability of the hardware counter for the `gre tunnel interface` feature.
+              # Support for the hardware counter for the `gre tunnel interface` feature.
               gre_tunnel_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `ip` feature.
+              # Support for the hardware counter for the `ip` feature.
               ip: <bool; default=True>
 
-              # Supportability of the hardware counter for the `mpls interface` feature.
+              # Support for the hardware counter for the `mpls interface` feature.
               mpls_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `mpls lfib` feature.
+              # Support for the hardware counter for the `mpls lfib` feature.
               mpls_lfib: <bool; default=True>
 
-              # Supportability of the hardware counter for the `mpls lfib` feature with `units packets` enabled.
-              mpls_lfib_units_packets: <bool; default=True>
-
-              # Supportability of the hardware counter for the `mpls tunnel` feature.
+              # Support for the hardware counter for the `mpls tunnel` feature.
               mpls_tunnel: <bool; default=True>
 
-              # Supportability of the hardware counter for the `multicast` feature.
+              # Support for the hardware counter for the `multicast` feature.
               multicast: <bool; default=True>
 
-              # Supportability of the hardware counter for the `nexthop` feature.
+              # Support for the hardware counter for the `nexthop` feature.
               nexthop: <bool; default=True>
 
-              # Supportability of the hardware counter for the `pbr` feature.
+              # Support for the hardware counter for the `pbr` feature.
               pbr: <bool; default=True>
 
-              # Supportability of the hardware counter for the `pdp` feature.
+              # Support for the hardware counter for the `pdp` feature.
               pdp: <bool; default=True>
 
-              # Supportability of the hardware counter for the `policing interface` feature.
+              # Support for the hardware counter for the `policing interface` feature.
               policing_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `qos` feature.
+              # Support for the hardware counter for the `qos` feature.
               qos: <bool; default=True>
 
-              # Supportability of the hardware counter for the `qos dual-rate-policer` feature.
+              # Support for the hardware counter for the `qos dual-rate-policer` feature.
               qos_dual_rate_policer: <bool; default=True>
 
-              # Supportability of the hardware counter for the `route` feature.
+              # Support for the hardware counter for the `route` feature.
               route: <bool; default=True>
 
-              # Supportability of the hardware counter for the `routed-port` feature.
+              # Support for the hardware counter for the `routed-port` feature.
               routed_port: <bool; default=True>
 
-              # Supportability of the hardware counter for the `segment-security` feature.
+              # Support for the hardware counter for the `segment-security` feature.
               segment_security: <bool; default=True>
 
-              # Supportability of the hardware counter for the `subinterface` feature.
+              # Support for the hardware counter for the `subinterface` feature.
               subinterface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `tapagg` feature.
+              # Support for the hardware counter for the `tapagg` feature.
               tapagg: <bool; default=True>
 
-              # Supportability of the hardware counter for the `traffic-class` feature.
+              # Support for the hardware counter for the `traffic-class` feature.
               traffic_class: <bool; default=True>
 
-              # Supportability of the hardware counter for the `traffic-policy` feature.
+              # Support for the hardware counter for the `traffic-policy` feature.
               traffic_policy: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vlan` feature.
+              # Support for the hardware counter for the `vlan` feature.
               vlan: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vlan-interface` feature.
+              # Support for the hardware counter for the `vlan-interface` feature.
               vlan_interface: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vni decap` feature.
+              # Support for the hardware counter for the `vni decap` feature.
               vni_decap: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vni encap` feature.
+              # Support for the hardware counter for the `vni encap` feature.
               vni_encap: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vtep decap` feature.
+              # Support for the hardware counter for the `vtep decap` feature.
               vtep_decap: <bool; default=True>
 
-              # Supportability of the hardware counter for the `vtep encap` feature.
+              # Support for the hardware counter for the `vtep encap` feature.
               vtep_encap: <bool; default=True>
 
           # Support for configurable speeds per speed-group.
@@ -710,35 +702,7 @@
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
             evpn_gateway_all_active_multihoming: true
-            hardware_counters:
-              feature:
-                decap_group: false
-                directflow: false
-                ecn: false
-                flow_spec: false
-                gre_tunnel_interface: false
-                ip: false
-                mpls_interface: false
-                mpls_lfib_units_packets: false
-                multicast: false
-                pdp: false
-                policing_interface: false
-                qos: false
-                qos_dual_rate_policer: false
-                route: false
-                routed_port: false
-                segment_security: false
-                subinterface: false
-                tapagg: false
-                traffic_class: false
-                traffic_policy: false
-                vlan: false
-                vlan_interface: false
-            hardware_speed_group: false
             interface_storm_control: false
-            per_interface_l2_mru: false
-            per_interface_l2_mtu: false
-            queue_monitor: false
             queue_monitor_length_notify: false
           platforms:
           - VEOS
@@ -752,35 +716,7 @@
             bgp_update_wait_for_convergence: false
             bgp_update_wait_install: false
             evpn_gateway_all_active_multihoming: true
-            hardware_counters:
-              feature:
-                decap_group: false
-                directflow: false
-                ecn: false
-                flow_spec: false
-                gre_tunnel_interface: false
-                ip: false
-                mpls_interface: false
-                mpls_lfib_units_packets: false
-                multicast: false
-                pdp: false
-                policing_interface: false
-                qos: false
-                qos_dual_rate_policer: false
-                route: false
-                routed_port: false
-                segment_security: false
-                subinterface: false
-                tapagg: false
-                traffic_class: false
-                traffic_policy: false
-                vlan: false
-                vlan_interface: false
-            hardware_speed_group: false
             interface_storm_control: false
-            per_interface_l2_mru: false
-            per_interface_l2_mtu: false
-            queue_monitor: false
             queue_monitor_length_notify: false
           management_interface: Management0
           platforms:
@@ -793,18 +729,11 @@
             non_mlag: 330
         - feature_support:
             bgp_update_wait_install: false
-            hardware_counters:
-              supported: false
-            hardware_speed_group: false
             interface_storm_control: false
-            per_interface_l2_mru: false
-            queue_monitor: false
             queue_monitor_length_notify: false
           p2p_uplinks_mtu: 9194
           platforms:
-          - CLOUDEOS
           - CloudEOS
-          - cloudEOS
         - feature_support:
             bgp_update_wait_for_convergence: true
             bgp_update_wait_install: false

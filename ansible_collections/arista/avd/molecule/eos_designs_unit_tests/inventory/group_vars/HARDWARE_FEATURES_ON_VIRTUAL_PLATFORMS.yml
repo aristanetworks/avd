@@ -1,5 +1,122 @@
 ---
 
+custom_platform_settings:
+  - platforms:
+      - 720XP
+    feature_support:
+      poe: true
+      queue_monitor_length_notify: false
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+    trident_forwarding_table_partition: flexible exact-match 16000 l2-shared 18000 l3-shared 22000
+  - platforms:
+      - 7280R
+      - 7280R2
+      - 7020R
+    lag_hardware_only: true
+    reload_delay:
+      mlag: 900
+      non_mlag: 1020
+    tcam_profile: vxlan-routing
+  - platforms:
+      - VEOS
+      - VEOS-LAB
+      - vEOS
+      - vEOS-lab
+    feature_support:
+      bgp_update_wait_for_convergence: false
+      bgp_update_wait_install: false
+      interface_storm_control: false
+      queue_monitor: false
+      queue_monitor_length_notify: false
+      evpn_gateway_all_active_multihoming: true
+      hardware_counters:
+        feature:
+          decap_group: false
+          directflow: false
+          ecn: false
+          flow_spec: false
+          gre_tunnel_interface: false
+          ip: false
+          mpls_interface: false
+          multicast: false
+          pdp: false
+          policing_interface: false
+          qos: false
+          qos_dual_rate_policer: false
+          route: false
+          routed_port: false
+          segment_security: false
+          subinterface: false
+          tapagg: false
+          traffic_class: false
+          traffic_policy: false
+          vlan: false
+          vlan_interface: false
+      hardware_speed_group: false
+      per_interface_l2_mtu: false
+      per_interface_l2_mru: false
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms:
+      - CEOS
+      - cEOS
+      - ceos
+      - cEOSLab
+    feature_support:
+      bgp_update_wait_for_convergence: false
+      bgp_update_wait_install: false
+      interface_storm_control: false
+      queue_monitor: false
+      queue_monitor_length_notify: false
+      evpn_gateway_all_active_multihoming: true
+      hardware_counters:
+        feature:
+          decap_group: false
+          directflow: false
+          ecn: false
+          flow_spec: false
+          gre_tunnel_interface: false
+          ip: false
+          mpls_interface: false
+          multicast: false
+          pdp: false
+          policing_interface: false
+          qos: false
+          qos_dual_rate_policer: false
+          route: false
+          routed_port: false
+          segment_security: false
+          subinterface: false
+          tapagg: false
+          traffic_class: false
+          traffic_policy: false
+          vlan: false
+          vlan_interface: false
+      hardware_speed_group: false
+      per_interface_l2_mtu: false
+      per_interface_l2_mru: false
+    management_interface: Management0
+    reload_delay:
+      mlag: 300
+      non_mlag: 330
+  - platforms:
+      - CLOUDEOS
+      - CloudEOS
+      - cloudEOS
+    feature_support:
+      hardware_counters:
+        supported: false
+      bgp_update_wait_install: false
+      interface_storm_control: false
+      queue_monitor: false
+      queue_monitor_length_notify: false
+      hardware_speed_group: false
+      per_interface_l2_mru: false
+    p2p_uplinks_mtu: 9194
+
 type: l3leaf
 
 l3leaf:
@@ -210,7 +327,7 @@ hardware_counters:
     - name: ip
     # Expected to be filtered out for virtual platforms
     - name: mpls interface
-    # Expected to be filtered out for virtual platforms
+    # Is not accepted by CLI of the [cv]EOS devices but is permitted by AVD to simplify schema
     - name: mpls lfib
       units_packets: true
       direction: out

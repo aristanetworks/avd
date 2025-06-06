@@ -41,6 +41,9 @@ hardware_counters:
     direction: out
     address_type: mac
   - name: mpls lfib
+    direction: out
+    units_packets: true
+  - name: mpls lfib
     direction: in
     units_packets: false
   - name: mpls tunnel
