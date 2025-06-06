@@ -8,7 +8,7 @@
 !
 {%     if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
 platform trident mmu headroom-pool limit {{ platform.trident.mmu.headroom_pool_limit.bytes }}
-{%     elif platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
+{%     else %}
 platform trident mmu headroom-pool limit cells {{ platform.trident.mmu.headroom_pool_limit.cells }}
 {%     endif %}
 {% endif %}
