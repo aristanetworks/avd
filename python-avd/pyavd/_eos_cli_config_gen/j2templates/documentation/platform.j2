@@ -50,16 +50,25 @@
 
 ###### {{ profile.name }}
 
-| Type | Ingress Queue | Threshold | Reserved |
-| ---- | ------------- | --------- | -------- |
+| Settings | Value |
+| -------- | ----- |
+{%                         if profile.ingress.headroom.memory is arista.avd.defined %}
+| Headroom | {{ profile.ingress.headroom.memory }} {{ profile.ingress.headroom.unit | arista.avd.default('bytes') }} |
+{%                         endif %}
+| Threshold | {{ profile.ingress.threshold | arista.avd.default('-') }} |
+{%                         if profile.ingress.headroom.memory is arista.avd.defined %}
+| Reserved | {{ profile.ingress.reserved.memory }} {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} |
+{%                         endif %}
+
+| Type | Group Number | Threshold | Reserved |
+| ---- | ------------ | --------- | -------- |
 {%                         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
-{%                             set unit = "" %}
-{%                             if priority_group.reserved.bytes is arista.avd.defined %}
-{%                                 set unit = "bytes" %}
-{%                             elif priority_group.reserved.cells is arista.avd.defined %}
-{%                                 set unit = "cells" %}
+{%                             if priority_group.reserved.memory is arista.avd.defined %}
+{%                                 set reserved = priority_group.reserved.memory ~ ' ' ~ (priority_group.reserved.unit | arista.avd.default('bytes')) %}
+{%                             else %}
+{%                                 set reserved = '-' %}
 {%                             endif %}
-| Priority Group | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ priority_group.reserved.bytes | default(priority_group.reserved.cells | arista.avd.default('-')) }} {{ unit }} |
+| Priority Group | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
 {%                         endfor %}
 {%                     endfor %}
 {%                 endif %}

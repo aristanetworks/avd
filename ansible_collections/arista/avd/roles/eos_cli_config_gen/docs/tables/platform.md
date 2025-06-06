@@ -21,8 +21,15 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].id") | Integer | Required, Unique |  | Min: 0<br>Max: 7 | Priority-group group number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].threshold") | String |  |  | Valid Values:<br>- <code>1</code><br>- <code>1/128</code><br>- <code>1/16</code><br>- <code>1/2</code><br>- <code>1/32</code><br>- <code>1/4</code><br>- <code>1/64</code><br>- <code>1/8</code><br>- <code>2</code><br>- <code>4</code><br>- <code>8</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reserved</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].reserved") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].reserved.bytes") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cells</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].reserved.cells") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].reserved.unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the `priority_groups` `reserved` value.<br>If not specified, default is bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.priority_groups.[].reserved.memory") | Integer |  |  |  | Specify the amount of memory that should be reserved. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;threshold</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.threshold") | String |  |  | Valid Values:<br>- <code>1</code><br>- <code>1/128</code><br>- <code>1/16</code><br>- <code>1/2</code><br>- <code>1/32</code><br>- <code>1/4</code><br>- <code>1/64</code><br>- <code>1/8</code><br>- <code>2</code><br>- <code>4</code><br>- <code>8</code> | Specify the dynamic shared memory threshold. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;reserved</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.reserved") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.reserved.unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the `reserved` value.<br>If not specified, default is bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.reserved.memory") | Integer |  |  |  | Specify the amount of memory that should be reserved. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.headroom") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.headroom.unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the headroom value.<br>If not specified, default is bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;memory</samp>](## "platform.trident.mmu.queue_profiles.[].ingress.headroom.memory") | Integer |  |  |  | Specify the amount of memory that should be reserved. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_queues</samp>](## "platform.trident.mmu.queue_profiles.[].multicast_queues") | List, items: Dictionary |  |  |  | Egress multicast queues. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "platform.trident.mmu.queue_profiles.[].multicast_queues.[].id") | Integer | Required, Unique |  | Min: 0<br>Max: 7 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.queue_profiles.[].multicast_queues.[].unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the reservation value. If not specified, default is bytes.<br> |
@@ -89,8 +96,32 @@
                   - id: <int; 0-7; required; unique>
                     threshold: <str; "1" | "1/128" | "1/16" | "1/2" | "1/32" | "1/4" | "1/64" | "1/8" | "2" | "4" | "8">
                     reserved:
-                      bytes: <int>
-                      cells: <int>
+
+                      # Unit to be used for the `priority_groups` `reserved` value.
+                      # If not specified, default is bytes.
+                      unit: <str; "bytes" | "cells">
+
+                      # Specify the amount of memory that should be reserved.
+                      memory: <int>
+
+                # Specify the dynamic shared memory threshold.
+                threshold: <str; "1" | "1/128" | "1/16" | "1/2" | "1/32" | "1/4" | "1/64" | "1/8" | "2" | "4" | "8">
+                reserved:
+
+                  # Unit to be used for the `reserved` value.
+                  # If not specified, default is bytes.
+                  unit: <str; "bytes" | "cells">
+
+                  # Specify the amount of memory that should be reserved.
+                  memory: <int>
+                headroom:
+
+                  # Unit to be used for the headroom value.
+                  # If not specified, default is bytes.
+                  unit: <str; "bytes" | "cells">
+
+                  # Specify the amount of memory that should be reserved.
+                  memory: <int>
 
               # Egress multicast queues.
               multicast_queues:

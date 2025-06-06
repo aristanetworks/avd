@@ -25923,13 +25923,23 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             class Reserved(AvdModel):
                                 """Subclass of AvdModel."""
 
-                                _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
-                                bytes: int | None
-                                cells: int | None
+                                _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                                unit: Literal["bytes", "cells"] | None
+                                """
+                                Unit to be used for the `priority_groups` `reserved` value.
+                                If not specified, default is bytes.
+                                """
+                                memory: int | None
+                                """Specify the amount of memory that should be reserved."""
 
                                 if TYPE_CHECKING:
 
-                                    def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                                    def __init__(
+                                        self,
+                                        *,
+                                        unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
+                                        memory: int | None | UndefinedType = Undefined,
+                                    ) -> None:
                                         """
                                         Reserved.
 
@@ -25937,8 +25947,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            bytes: bytes
-                                            cells: cells
+                                            unit:
+                                               Unit to be used for the `priority_groups` `reserved` value.
+                                               If not specified, default is bytes.
+                                            memory: Specify the amount of memory that should be reserved.
 
                                         """
 
@@ -25980,13 +25992,93 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         PriorityGroups._item_type = PriorityGroupsItem
 
-                        _fields: ClassVar[dict] = {"priority_groups": {"type": PriorityGroups}}
+                        class Reserved(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                            unit: Literal["bytes", "cells"] | None
+                            """
+                            Unit to be used for the `reserved` value.
+                            If not specified, default is bytes.
+                            """
+                            memory: int | None
+                            """Specify the amount of memory that should be reserved."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Reserved.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unit:
+                                           Unit to be used for the `reserved` value.
+                                           If not specified, default is bytes.
+                                        memory: Specify the amount of memory that should be reserved.
+
+                                    """
+
+                        class Headroom(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                            unit: Literal["bytes", "cells"] | None
+                            """
+                            Unit to be used for the headroom value.
+                            If not specified, default is bytes.
+                            """
+                            memory: int | None
+                            """Specify the amount of memory that should be reserved."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Headroom.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unit:
+                                           Unit to be used for the headroom value.
+                                           If not specified, default is bytes.
+                                        memory: Specify the amount of memory that should be reserved.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "priority_groups": {"type": PriorityGroups},
+                            "threshold": {"type": str},
+                            "reserved": {"type": Reserved},
+                            "headroom": {"type": Headroom},
+                        }
                         priority_groups: PriorityGroups
                         """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                        """Specify the dynamic shared memory threshold."""
+                        reserved: Reserved
+                        """Subclass of AvdModel."""
+                        headroom: Headroom
+                        """Subclass of AvdModel."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, priority_groups: PriorityGroups | UndefinedType = Undefined) -> None:
+                            def __init__(
+                                self,
+                                *,
+                                priority_groups: PriorityGroups | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
+                                reserved: Reserved | UndefinedType = Undefined,
+                                headroom: Headroom | UndefinedType = Undefined,
+                            ) -> None:
                                 """
                                 Ingress.
 
@@ -25995,6 +26087,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     priority_groups: Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`).
+                                    threshold: Specify the dynamic shared memory threshold.
+                                    reserved: Subclass of AvdModel.
+                                    headroom: Subclass of AvdModel.
 
                                 """
 

@@ -76,13 +76,62 @@ keys:
                               reserved:
                                 type: dict
                                 keys:
-                                  bytes:
-                                    type: int
-                                    convert_types: [str]
-                                  cells:
+                                  unit:
+                                    type: str
+                                    valid_values: ["bytes", "cells"]
+                                    description: |-
+                                      Unit to be used for the `priority_groups` `reserved` value.
+                                      If not specified, default is bytes.
+                                  memory:
                                     type: int
                                     convert_types:
                                       - str
+                                    description: Specify the amount of memory that should be reserved.
+                        threshold:
+                          type: str
+                          convert_types:
+                            - int
+                          description: Specify the dynamic shared memory threshold.
+                          valid_values:
+                            - "1"      # alpha1
+                            - "1/128"  # alphaDiv128
+                            - "1/16"   # alphaDiv16
+                            - "1/2"    # alphaDiv2
+                            - "1/32"   # alphaDiv32
+                            - "1/4"    # alphaDiv4
+                            - "1/64"   # alphaDiv64
+                            - "1/8"    # alphaDiv8
+                            - "2"      # alpha2
+                            - "4"      # alpha4
+                            - "8"      # alpha8
+                        reserved:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values: ["bytes", "cells"]
+                              description: |-
+                                Unit to be used for the `reserved` value.
+                                If not specified, default is bytes.
+                            memory:
+                              type: int
+                              convert_types:
+                                - str
+                              description: Specify the amount of memory that should be reserved.
+                        headroom:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values: ["bytes", "cells"]
+                              description: |-
+                                Unit to be used for the headroom value.
+                                If not specified, default is bytes.
+                            memory:
+                              type: int
+                              convert_types:
+                                - str
+                              description: Specify the amount of memory that should be reserved.
                     multicast_queues:
                       type: list
                       primary_key: id

@@ -11041,15 +11041,27 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ###### mc_example_profile
 
-| Type | Ingress Queue | Threshold | Reserved |
-| ---- | ------------- | --------- | -------- |
-| Priority Group | 1 | 1 | -  |
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 12 bytes |
+| Threshold | 1/32 |
+| Reserved | 23 cells |
+
+| Type | Group Number | Threshold | Reserved |
+| ---- | ------------ | --------- | -------- |
+| Priority Group | 1 | 1 | - |
 | Priority Group | 2 | 1/32 | 3 bytes |
 
 ###### unused_profile
 
-| Type | Ingress Queue | Threshold | Reserved |
-| ---- | ------------- | --------- | -------- |
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 121 cells |
+| Threshold | - |
+| Reserved | 232 bytes |
+
+| Type | Group Number | Threshold | Reserved |
+| ---- | ------------ | --------- | -------- |
 | Priority Group | 2 | - | 55 bytes |
 | Priority Group | 5 | 1/32 | 34 cells |
 

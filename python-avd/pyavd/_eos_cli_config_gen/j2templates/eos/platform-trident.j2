@@ -8,11 +8,18 @@
 {%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 !
 platform trident mmu queue profile {{ profile.name }}
+{%         if profile.ingress.headroom.memory is arista.avd.defined %}
+    ingress reserved {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} {{ profile.ingress.reserved.memory }}
+{%         endif %}
+{%         if profile.ingress.threshold is arista.avd.defined %}
+    ingress threshold {{ profile.ingress.threshold }}
+{%         endif %}
+{%         if profile.ingress.headroom.memory is arista.avd.defined %}
+    ingress headroom {{ profile.ingress.headroom.unit | arista.avd.default('bytes') }} {{ profile.ingress.headroom.memory }}
+{%         endif %}
 {%         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
-{%             if priority_group.reserved.bytes is arista.avd.defined %}
-    ingress priority-group {{ priority_group.id }} reserved {{ priority_group.reserved.bytes }}
-{%             elif priority_group.reserved.cells is arista.avd.defined %}
-    ingress priority-group {{ priority_group.id }} reserved {{ priority_group.reserved.cells }}
+{%             if priority_group.reserved.memory is arista.avd.defined %}
+    ingress priority-group {{ priority_group.id }} reserved {{ priority_group.reserved.unit | arista.avd.default('bytes') }} {{ priority_group.reserved.memory }}
 {%             endif %}
 {%             if priority_group.threshold is arista.avd.defined %}
     ingress priority-group {{ priority_group.id }} threshold {{ priority_group.threshold }}

@@ -9,11 +9,17 @@ platform:
       queue_profiles:
         - name: mc_example_profile
           ingress:
+            headroom:
+              memory: 12
+            threshold: 1/32
+            reserved:
+              unit: cells
+              memory: 23
             priority_groups:
               - id: 2
                 threshold: 1/32
                 reserved:
-                  bytes: 3
+                  memory: 3
               - id: 1
                 threshold: 1
           multicast_queues:
@@ -40,14 +46,20 @@ platform:
               reserved: 0
         - name: unused_profile
           ingress:
+            headroom:
+              memory: 121
+              unit: cells
+            reserved:
+              memory: 232
             priority_groups:
               - id: 5
                 threshold: 1/32
                 reserved:
-                  cells: 34
+                  memory: 34
+                  unit: cells
               - id: 2
                 reserved:
-                  bytes: 55
+                  memory: 55
           multicast_queues:
             - id: 0
               reserved: 0
