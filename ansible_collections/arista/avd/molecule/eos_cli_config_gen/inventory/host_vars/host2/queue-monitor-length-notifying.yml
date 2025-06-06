@@ -6,3 +6,12 @@ queue_monitor_length:
   # test with only the high threshold set
   default_thresholds:
     high: 100
+  mirror:
+    destination:
+      tunnel_mode_gre:
+        source: 1.1.1.1
+        destination: 3.3.3.3
+        dscp: 45
+        ttl: 200
+        protocol: "0xFFFF"
+        vrf: VRF10
