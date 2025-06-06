@@ -15,6 +15,7 @@ platform:
             reserved:
               unit: cells
               memory: 23
+            resume: 33
             priority_groups:
               - id: 2
                 threshold: 1/32

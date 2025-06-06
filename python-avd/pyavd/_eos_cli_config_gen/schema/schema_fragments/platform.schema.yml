@@ -132,6 +132,11 @@ keys:
                               convert_types:
                                 - str
                               description: Specify the amount of memory that should be reserved.
+                        resume:
+                          type: int
+                          convert_types:
+                            - str
+                          description: Amount of memory that should be reserved (in bytes)
                     multicast_queues:
                       type: list
                       primary_key: id

@@ -8,7 +8,7 @@
 {%     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 !
 platform trident mmu queue profile {{ profile.name }}
-{%         if profile.ingress.headroom.memory is arista.avd.defined %}
+{%         if profile.ingress.reserved.memory is arista.avd.defined %}
     ingress reserved {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} {{ profile.ingress.reserved.memory }}
 {%         endif %}
 {%         if profile.ingress.threshold is arista.avd.defined %}
@@ -16,6 +16,9 @@ platform trident mmu queue profile {{ profile.name }}
 {%         endif %}
 {%         if profile.ingress.headroom.memory is arista.avd.defined %}
     ingress headroom {{ profile.ingress.headroom.unit | arista.avd.default('bytes') }} {{ profile.ingress.headroom.memory }}
+{%         endif %}
+{%         if profile.ingress.resume is arista.avd.defined %}
+    ingress resume {{ profile.ingress.resume }}
 {%         endif %}
 {%         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
 {%             if priority_group.reserved.memory is arista.avd.defined %}

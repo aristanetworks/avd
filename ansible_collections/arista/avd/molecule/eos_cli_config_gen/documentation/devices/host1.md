@@ -11045,6 +11045,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | -------- | ----- |
 | Headroom | 12 bytes |
 | Threshold | 1/32 |
+| Resume | 33 |
 | Reserved | 23 cells |
 
 | Type | Group Number | Threshold | Reserved |
@@ -11058,6 +11059,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | -------- | ----- |
 | Headroom | 121 cells |
 | Threshold | - |
+| Resume | - |
 | Reserved | 232 bytes |
 
 | Type | Group Number | Threshold | Reserved |

@@ -26059,6 +26059,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             "threshold": {"type": str},
                             "reserved": {"type": Reserved},
                             "headroom": {"type": Headroom},
+                            "resume": {"type": int},
                         }
                         priority_groups: PriorityGroups
                         """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
@@ -26068,6 +26069,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         """Subclass of AvdModel."""
                         headroom: Headroom
                         """Subclass of AvdModel."""
+                        resume: int | None
+                        """Amount of memory that should be reserved (in bytes)"""
 
                         if TYPE_CHECKING:
 
@@ -26078,6 +26081,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 reserved: Reserved | UndefinedType = Undefined,
                                 headroom: Headroom | UndefinedType = Undefined,
+                                resume: int | None | UndefinedType = Undefined,
                             ) -> None:
                                 """
                                 Ingress.
@@ -26090,6 +26094,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     threshold: Specify the dynamic shared memory threshold.
                                     reserved: Subclass of AvdModel.
                                     headroom: Subclass of AvdModel.
+                                    resume: Amount of memory that should be reserved (in bytes)
 
                                 """
 

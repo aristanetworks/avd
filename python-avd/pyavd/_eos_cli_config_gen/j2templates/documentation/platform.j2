@@ -56,7 +56,8 @@
 | Headroom | {{ profile.ingress.headroom.memory }} {{ profile.ingress.headroom.unit | arista.avd.default('bytes') }} |
 {%                         endif %}
 | Threshold | {{ profile.ingress.threshold | arista.avd.default('-') }} |
-{%                         if profile.ingress.headroom.memory is arista.avd.defined %}
+| Resume | {{ profile.ingress.resume | arista.avd.default('-') }} |
+{%                         if profile.ingress.reserved.memory is arista.avd.defined %}
 | Reserved | {{ profile.ingress.reserved.memory }} {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} |
 {%                         endif %}
 
