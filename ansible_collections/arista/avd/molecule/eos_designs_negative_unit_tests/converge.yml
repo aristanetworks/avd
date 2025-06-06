@@ -634,7 +634,7 @@
               - ansible_failed_result.msg == expected_error_message
 
 - name: Converge Negative tests for 'eos_designs_facts'
-  hosts: FAILURE_OVERLAY_ROUTING_PROTOCOL_IPV6
+  hosts: FAILURE_OVERLAY_ROUTING_PROTOCOL_ADDRESS_FAMILY_IPV6
   connection: local
   tasks:
     - name: Run failure scenario Test
