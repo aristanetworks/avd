@@ -139,12 +139,13 @@ jobs:
   # --------------------------------------- #
   # Python linting not covered in pre-commit
   # --------------------------------------- #
-  python_linting:
-    name: Python Linting not covered in pre-commit
-    runs-on: ubuntu-latest
-    steps:
-      - name: PyRight static type checker
-        uses: jakebailey/pyright-action@v2
+  # TODO: Pending action to be allowed.
+  # python_linting:
+  #   name: Python Linting not covered in pre-commit
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: PyRight static type checker
+  #       uses: jakebailey/pyright-action@v2
 
   # ----------------------------------- #
   # Test Requirements
