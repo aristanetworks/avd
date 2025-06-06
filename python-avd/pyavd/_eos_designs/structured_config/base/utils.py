@@ -85,7 +85,7 @@ class UtilsMixin(Protocol):
         return source_interfaces
 
     def _get_vrf_and_source_interface(
-        self: AvdStructuredConfigBaseProtocol, vrf_input: str | None, vrfs: T_ProtocolVrfs, context: str
+        self: AvdStructuredConfigBaseProtocol, vrf_input: str | None, vrfs: T_ProtocolVrfs, set_source_interfaces: bool, context: str
     ) -> tuple[str, str | None]:
         """
         Helper function to interpret the VRF field for a management protocol.
@@ -101,6 +101,7 @@ class UtilsMixin(Protocol):
         Args:
             vrf_input: The VRF input value for one server.
             vrfs: The 'vrfs' input list with potential source interface overrides.
+            set_source_interfaces: Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
             context: The variable path for the vrf input used for error messages.
 
         Returns:
@@ -126,16 +127,18 @@ class UtilsMixin(Protocol):
                     raise AristaAvdInvalidInputsError(msg)
 
                 vrf = self.inputs.mgmt_interface_vrf
-                # source_interface may be overridden below if given in the 'vrfs'
-                source_interface = self.shared_utils.mgmt_interface
+                if set_source_interfaces:
+                    # source_interface may be overridden below if given in the 'vrfs'
+                    source_interface = self.shared_utils.mgmt_interface
             case "use_inband_mgmt_vrf":
                 if self.shared_utils.inband_mgmt_interface is None:
                     msg = f"'{context}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management"
                     raise AristaAvdInvalidInputsError(msg)
 
                 vrf = self.shared_utils.inband_mgmt_vrf or "default"
-                # source_interface may be overridden below if given in the 'vrfs'
-                source_interface = self.shared_utils.inband_mgmt_interface
+                if set_source_interfaces:
+                    # source_interface may be overridden below if given in the 'vrfs'
+                    source_interface = self.shared_utils.inband_mgmt_interface
             case _:
                 vrf = vrf_input
 

@@ -1215,6 +1215,14 @@ keys:
 
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
                 this setting will take precedence.'
+      set_source_interfaces:
+        type: bool
+        default: true
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`
+          and `use_inband_mgmt_vrf`.
+
+          Can be set to `false` to avoid changes when migrating from old `name_servers`
+          model.'
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings

@@ -33,10 +33,6 @@ ethernet_interfaces:
   peer_interface: Ethernet23
   peer_type: l3leaf
 hostname: inband-mgmt-ip
-ip_domain_lookup:
-  source_interfaces:
-  - name: Vlan103
-    vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:

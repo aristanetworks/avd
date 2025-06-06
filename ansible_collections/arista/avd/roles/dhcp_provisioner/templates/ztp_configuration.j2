@@ -31,7 +31,11 @@
                              selectattr("vrf", "arista.avd.defined", mgmt_interface_vrf) | map(attribute="ip_address")
                      ) + (
                          hostvars[groups[fabric_group][0]].dns_settings.servers | arista.avd.default([]) |
-                             selectattr("use_mgmt_interface_vrf", "arista.avd.defined", true) | map(attribute="ip_address")
+                             selectattr("vrf", "arista.avd.defined", "use_mgmt_interface_vrf") | map(attribute="ip_address")
+                     ) + (
+                         hostvars[groups[fabric_group][0]].dns_settings.servers | arista.avd.default([]) |
+                             rejectattr("vrf", "arista.avd.defined") | map(attribute="ip_address")
+                             if default_mgmt_method | arista.avd.default("oob") == "oob" else []
                      ) | unique %}
 {# DHCP YAML configuration rendering #}
 ---

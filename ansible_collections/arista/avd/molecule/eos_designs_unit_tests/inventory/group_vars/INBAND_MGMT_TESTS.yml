@@ -34,6 +34,7 @@ dns_settings:
   servers:
     - ip_address: 1.1.1.1
     - ip_address: 8.8.8.8
+  set_source_interfaces: false
 
 ntp_settings:
   servers:

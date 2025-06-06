@@ -72,6 +72,7 @@ dns_settings:
     - ip_address: 8.8.8.8
     - ip_address: 2001:db8::1
     - ip_address: 2001:db8::2
+  set_source_interfaces: false
 
 # Management api-http
 management_eapi:

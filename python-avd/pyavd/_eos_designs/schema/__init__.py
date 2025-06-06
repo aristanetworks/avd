@@ -2802,18 +2802,37 @@ class EosDesigns(EosDesignsRootModel):
 
         Vrfs._item_type = VrfsItem
 
-        _fields: ClassVar[dict] = {"domain": {"type": str}, "servers": {"type": Servers}, "vrfs": {"type": Vrfs}}
+        _fields: ClassVar[dict] = {
+            "domain": {"type": str},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
+            "set_source_interfaces": {"type": bool, "default": True},
+        }
         domain: str | None
         """DNS domain name like 'fabric.local'"""
         servers: Servers
         """Subclass of AvdList with `ServersItem` items."""
         vrfs: Vrfs
         """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        set_source_interfaces: bool
+        """
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
+        `use_inband_mgmt_vrf`.
+        Can be set to `false` to avoid changes when migrating from old `name_servers`
+        model.
+
+        Default value: `True`
+        """
 
         if TYPE_CHECKING:
 
             def __init__(
-                self, *, domain: str | None | UndefinedType = Undefined, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined
+                self,
+                *,
+                domain: str | None | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                set_source_interfaces: bool | UndefinedType = Undefined,
             ) -> None:
                 """
                 DnsSettings.
@@ -2825,6 +2844,11 @@ class EosDesigns(EosDesignsRootModel):
                     domain: DNS domain name like 'fabric.local'
                     servers: Subclass of AvdList with `ServersItem` items.
                     vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    set_source_interfaces:
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
+                       `use_inband_mgmt_vrf`.
+                       Can be set to `false` to avoid changes when migrating from old `name_servers`
+                       model.
 
                 """
 

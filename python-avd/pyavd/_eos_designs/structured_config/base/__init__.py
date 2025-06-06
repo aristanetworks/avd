@@ -313,7 +313,10 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         vrfs = self.inputs.dns_settings.vrfs
         for server in self.inputs.dns_settings.servers:
             server_vrf, source_interface = self._get_vrf_and_source_interface(
-                server.vrf, vrfs, context=f"dns_settings.servers[ip_address={server.ip_address}].vrf"
+                vrf_input=server.vrf,
+                vrfs=vrfs,
+                set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
+                context=f"dns_settings.servers[ip_address={server.ip_address}].vrf",
             )
             if source_interface:
                 self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)

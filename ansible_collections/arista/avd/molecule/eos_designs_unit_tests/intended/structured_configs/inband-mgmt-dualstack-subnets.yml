@@ -33,9 +33,6 @@ ethernet_interfaces:
   peer_interface: Ethernet24
   peer_type: l3leaf
 hostname: inband-mgmt-dualstack-subnets
-ip_domain_lookup:
-  source_interfaces:
-  - name: Vlan104
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
