@@ -24,7 +24,7 @@ management_interfaces:
         link_state: true
         neighbor:
           enabled: false
-      supervisor:
+      supervisors:
         - number: 2
           primary_management_interface: Management2/1
           backup_management_interfaces:

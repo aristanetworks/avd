@@ -72,7 +72,7 @@ interface {{ management_interface.name }}
 {%     elif management_interface.redundancy.monitor.neighbor.enabled is arista.avd.defined(false) %}
    no redundancy monitor neighbor ipv6
 {%     endif %}
-{%     for supervisor in management_interface.redundancy.supervisor | arista.avd.natural_sort('number') %}
+{%     for supervisor in management_interface.redundancy.supervisors | arista.avd.natural_sort('number') %}
    redundancy supervisor {{ supervisor.number }} interface primary {{ supervisor.primary_management_interface }} backup {{ " ".join(supervisor.backup_management_interfaces) }}
 {%     endfor %}
 {%     if management_interface.eos_cli is arista.avd.defined %}

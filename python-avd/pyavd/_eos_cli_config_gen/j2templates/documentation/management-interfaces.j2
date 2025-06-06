@@ -38,8 +38,7 @@
 {%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
 
 ##### Interface Redundancy
-{%         for mgmt_intf in management_interfaces | arista.avd.natural_sort('name') %}
-{%             if mgmt_intf.redundancy is arista.avd.defined %}
+{%         for mgmt_intf in management_interfaces | selectattr('redundancy', 'arista.avd.defined') | arista.avd.natural_sort('name') %}
 
 ###### {{mgmt_intf.name}}
 
@@ -51,11 +50,10 @@
 | Monitor Neighbor IPv6 Address | {{ mgmt_intf.redundancy.monitor.neighbor.ipv6_address | arista.avd.default("-") }} |
 | Monitor Neighbor Interval | {{ mgmt_intf.redundancy.monitor.neighbor.interval | arista.avd.default("-") }} |
 | Monitor Neighbor Multiplier | {{ mgmt_intf.redundancy.monitor.neighbor.multiplier | arista.avd.default("-") }} |
-{%                 for supervisor in mgmt_intf.redundancy.supervisor | arista.avd.natural_sort('number')  %}
+{%             for supervisor in mgmt_intf.redundancy.supervisors | arista.avd.natural_sort('number')  %}
 | Supervisor {{ supervisor.number }} Primary Interface | {{ supervisor.primary_management_interface }} |
 | Supervisor {{ supervisor.number }} Backup Interfaces | {{ ", ".join(supervisor.backup_management_interfaces) }} |
-{%                 endfor %}
-{%             endif %}
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 

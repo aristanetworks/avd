@@ -20110,7 +20110,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class SupervisorItem(AvdModel):
+            class SupervisorsItem(AvdModel):
                 """Subclass of AvdModel."""
 
                 class BackupManagementInterfaces(AvdList[str]):
@@ -20149,7 +20149,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         backup_management_interfaces: BackupManagementInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        SupervisorItem.
+                        SupervisorsItem.
 
 
                         Subclass of AvdModel.
@@ -20168,22 +20168,22 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
-            class Supervisor(AvdList[SupervisorItem]):
-                """Subclass of AvdList with `SupervisorItem` items."""
+            class Supervisors(AvdList[SupervisorsItem]):
+                """Subclass of AvdList with `SupervisorsItem` items."""
 
-            Supervisor._item_type = SupervisorItem
+            Supervisors._item_type = SupervisorsItem
 
-            _fields: ClassVar[dict] = {"fallback_delay": {"type": str}, "monitor": {"type": Monitor}, "supervisor": {"type": Supervisor}}
+            _fields: ClassVar[dict] = {"fallback_delay": {"type": str}, "monitor": {"type": Monitor}, "supervisors": {"type": Supervisors}}
             fallback_delay: str | None
             """
-            Fallback delay to the higher priority interface.
-            It accept the range of 0-3600 second and string
-            infinity for don't ever fallback.
+            The duration to wait before falling back to the higher-priority interface.
+            It accepts a range of 0
+            to 3600 seconds, or the string `infinity` to indicate that fallback should never occur.
             """
             monitor: Monitor
             """Subclass of AvdModel."""
-            supervisor: Supervisor
-            """Subclass of AvdList with `SupervisorItem` items."""
+            supervisors: Supervisors
+            """Subclass of AvdList with `SupervisorsItem` items."""
 
             if TYPE_CHECKING:
 
@@ -20192,7 +20192,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     fallback_delay: str | None | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
-                    supervisor: Supervisor | UndefinedType = Undefined,
+                    supervisors: Supervisors | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Redundancy.
@@ -20202,11 +20202,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         fallback_delay:
-                           Fallback delay to the higher priority interface.
-                           It accept the range of 0-3600 second and string
-                           infinity for don't ever fallback.
+                           The duration to wait before falling back to the higher-priority interface.
+                           It accepts a range of 0
+                           to 3600 seconds, or the string `infinity` to indicate that fallback should never occur.
                         monitor: Subclass of AvdModel.
-                        supervisor: Subclass of AvdList with `SupervisorItem` items.
+                        supervisors: Subclass of AvdList with `SupervisorsItem` items.
 
                     """
 

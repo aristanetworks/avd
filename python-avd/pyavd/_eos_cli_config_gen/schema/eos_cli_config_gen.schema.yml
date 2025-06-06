@@ -8015,10 +8015,11 @@ keys:
           keys:
             fallback_delay:
               type: str
-              description: 'Fallback delay to the higher priority interface.
+              description: 'The duration to wait before falling back to the higher-priority
+                interface.
 
-                It accept the range of 0-3600 second and string infinity for don''t
-                ever fallback.'
+                It accepts a range of 0 to 3600 seconds, or the string `infinity`
+                to indicate that fallback should never occur.'
               convert_types:
               - int
             monitor:
@@ -8055,7 +8056,7 @@ keys:
                         is timed out.
                       min: 1
                       max: 100
-            supervisor:
+            supervisors:
               type: list
               items:
                 type: dict
