@@ -13179,6 +13179,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         "format": {"type": Format},
                         "local_interface": {"type": str},
                         "template_interval": {"type": int},
+                        "dscp": {"type": int},
                     }
                     name: str
                     """Exporter Name."""
@@ -13190,6 +13191,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Local Source Interface."""
                     template_interval: int | None
                     """Template interval in milliseconds."""
+                    dscp: int | None
 
                     if TYPE_CHECKING:
 
@@ -13201,6 +13203,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             format: Format | UndefinedType = Undefined,
                             local_interface: str | None | UndefinedType = Undefined,
                             template_interval: int | None | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
                         ) -> None:
                             """
                             ExportersItem.
@@ -13214,6 +13217,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 format: Subclass of AvdModel.
                                 local_interface: Local Source Interface.
                                 template_interval: Template interval in milliseconds.
+                                dscp: dscp
 
                             """
 

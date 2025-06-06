@@ -183,8 +183,8 @@ Software export of IPFIX data records enabled.
 
 ##### Exporters Summary
 
-| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port |
-| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- |
+| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value |
+| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- |
 {%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
 {%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
 {%                         set current_exporter_collector_hosts = [] %}
@@ -193,7 +193,7 @@ Software export of IPFIX data records enabled.
 {%                             do current_exporter_collector_hosts.append(collector.name) %}
 {%                             do current_exporter_collector_ports.append(collector.port | arista.avd.default("-")) %}
 {%                         endfor %}
-| {{ tracker.name }} | {{ exporter.name }} | {{ exporter.local_interface | arista.avd.default("-") }} | {{ exporter.template_interval | arista.avd.default("-") }} | {{ current_exporter_collector_hosts | join('<br>') }} | {{ current_exporter_collector_ports | join('<br>') }} |
+| {{ tracker.name }} | {{ exporter.name }} | {{ exporter.local_interface | arista.avd.default("-") }} | {{ exporter.template_interval | arista.avd.default("-") }} | {{ current_exporter_collector_hosts | join('<br>') }} | {{ current_exporter_collector_ports | join('<br>') }} | {{ exporter.dscp | arista.avd.default("-") }} |
 {%                     endfor %}
 {%                 endfor %}
 {%             endif %}

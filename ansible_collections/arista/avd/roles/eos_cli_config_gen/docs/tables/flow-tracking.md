@@ -71,6 +71,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;sflow</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].format.sflow") | Boolean |  |  |  | Use sFlow for export. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].local_interface") | String |  |  |  | Local Source Interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.mirror_on_drop.shutdown") | Boolean |  | `False` |  |  |
     | [<samp>flow_trackings</samp>](## "flow_trackings") <span style="color:red">removed</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>flow_tracking</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;-&nbsp;type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- <code>sampled</code> | Flow Tracking Type - only 'sampled' supported for now. |
@@ -226,5 +227,6 @@
 
                 # Template interval in milliseconds.
                 template_interval: <int; 5000-3600000>
+                dscp: <int; 0-63>
         shutdown: <bool; default=False>
     ```

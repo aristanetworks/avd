@@ -146,6 +146,10 @@ keys:
                         min: 5000
                         max: 3600000
                         description: Template interval in milliseconds.
+                      dscp:
+                        type: int
+                        min: 0
+                        max: 63
           shutdown:
             type: bool
             default: false

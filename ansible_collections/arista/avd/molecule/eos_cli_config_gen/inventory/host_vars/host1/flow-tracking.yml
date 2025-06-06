@@ -117,6 +117,7 @@ flow_tracking:
                 port: 888
               - name: dead:beef::cafe
               - name: collector.without.port
+            dscp: 50
       - name: T3
         exporters:
           - name: T3-E3
