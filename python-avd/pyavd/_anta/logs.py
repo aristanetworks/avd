@@ -93,7 +93,7 @@ class LogMessage(Enum):
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
     PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
-    PATH_GROUP_STATIC_PEER_NO_IPV4_ADDRESSES = "path group {path_group} static peer {static_peer} skipped - No ipv4 addresses configured"
+    PATH_GROUP_STATIC_PEER_NO_IPV4_ADDRESSES = "path group {path_group} static peer {static_peer} skipped - No IPv4 addresses configured"
     NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
 
     # Input generation messages
