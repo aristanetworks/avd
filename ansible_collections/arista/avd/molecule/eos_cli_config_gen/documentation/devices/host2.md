@@ -1452,7 +1452,6 @@ router pim sparse-mode
 
 ```eos
 !
-!
 platform trident mmu headroom-pool limit 557
 ```
 
