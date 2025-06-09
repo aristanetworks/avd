@@ -13,7 +13,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;os_version</samp>](## "digital_twin.fabric.os_version") | String |  |  |  | Desired Digital Twin OS version for fabric nodes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;username</samp>](## "digital_twin.fabric.username") | String | Required |  |  | Desired Digital Twin username for fabric nodes. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "digital_twin.fabric.password") | String | Required |  |  | Desired Digital Twin clear-text password for fabric nodes. |
-    | [<samp>digital_twin_mode</samp>](## "digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).<br>`digital_twin.enabled` must also be set to `true` under the nodes that are to be included in Digital Twin metadata.<br>Devices that are not enabled will be configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown. |
+    | [<samp>digital_twin_mode</samp>](## "digital_twin_mode") | Boolean |  | `False` |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.). |
 
 === "YAML"
 
@@ -39,7 +39,5 @@
 
     # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
     # Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
-    # `digital_twin.enabled` must also be set to `true` under the nodes that are to be included in Digital Twin metadata.
-    # Devices that are not enabled will be configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown.
     digital_twin_mode: <bool; default=False>
     ```

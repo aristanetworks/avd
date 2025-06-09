@@ -32,12 +32,6 @@ keys:
             type: str
             description: |-
               Desired Digital Twin OS version for fabric nodes.
-          # mgmt_ipv4_pool:
-          #   type: str
-          #   description: |-
-          #     IPv4 address pool to automatically generate MGMT IPv4 addresses for digital twins of the Fabric nodes.
-          #     Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
-          #   format: ipv4_pool
           username:
             type: str
             description: |-

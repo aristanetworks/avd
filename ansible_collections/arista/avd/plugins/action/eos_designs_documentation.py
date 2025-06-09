@@ -8,9 +8,7 @@ import logging
 from pathlib import Path
 from typing import Any
 
-import yaml
 from ansible.errors import AnsibleActionFail
-from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
@@ -46,7 +44,7 @@ ARGUMENT_SPEC = {
     "p2p_links_csv_file": {"type": "str", "required": True},
     "p2p_links_csv": {"type": "bool", "default": False},
     "toc": {"type": "bool", "default": True},
-    "digital_twin_file": {"type": "str", "default": "TOPOLOGY.yml"},
+    "digital_twin_file": {"type": "str", "required": True},
     "digital_twin": {"type": "bool", "default": False},
 }
 
@@ -86,7 +84,6 @@ class ActionModule(ActionBase):
             structured_config_suffix=validated_args["structured_config_suffix"],
         )
         fabric_name = get(task_vars, "fabric_name", required=True)
-        digital_twin_global_config = get(task_vars, "digital_twin", {})
         output = get_fabric_documentation(
             avd_facts=all_facts,
             structured_configs=structured_configs,
@@ -97,7 +94,6 @@ class ActionModule(ActionBase):
             p2p_links_csv=validated_args["p2p_links_csv"],
             toc=validated_args["toc"],
             digital_twin=validated_args["digital_twin"],
-            digital_twin_global_config=digital_twin_global_config,
         )
         if output.fabric_documentation:
             result["changed"] = write_file(
@@ -123,7 +119,7 @@ class ActionModule(ActionBase):
 
         if output.digital_twin:
             changed = write_file(
-                content=yaml.dump(output.digital_twin, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
+                content=output.digital_twin,
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )

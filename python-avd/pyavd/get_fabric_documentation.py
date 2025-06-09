@@ -3,9 +3,10 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
-from pyavd._errors import AristaAvdInvalidInputsError
+import yaml
+
 from pyavd._utils import get
 from pyavd.api.fabric_documentation import FabricDocumentation
 
@@ -24,7 +25,6 @@ def get_fabric_documentation(
     p2p_links_csv: bool = False,
     toc: bool = True,
     digital_twin: bool = False,
-    digital_twin_global_config: dict | None = None,
 ) -> FabricDocumentation:
     """
     Build and return the AVD fabric documentation.
@@ -44,7 +44,6 @@ def get_fabric_documentation(
         p2p_links_csv: Returns P2P links CSV when set to True.
         toc: Skip TOC when set to False.
         digital_twin: Returns Digital Twin topology when set to True.
-        digital_twin_global_config: Digital Twin global configuration.
 
     Returns:
         FabricDocumentation object containing the requested documentation areas.
@@ -73,9 +72,7 @@ def get_fabric_documentation(
     if p2p_links_csv:
         result.p2p_links_csv = _get_p2p_links_csv(fabric_documentation_facts)
     if digital_twin:
-        if digital_twin_global_config is None:
-            digital_twin_global_config = {}
-        result.digital_twin = _get_digital_twin(fabric_documentation_facts, digital_twin_global_config)
+        result.digital_twin = _get_digital_twin(fabric_documentation_facts)
 
     return result
 
@@ -121,52 +118,71 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts, digital_twin_global_config: dict) -> dict:
-    match get(digital_twin_global_config, "environment"):
+def _strip_unsafe(potentially_unsafe_string: str) -> str | None:
+    """Convert AnsibleUnsafeText to plain str if needed."""
+    if hasattr(potentially_unsafe_string, "_strip_unsafe"):
+        return potentially_unsafe_string._strip_unsafe()
+    return potentially_unsafe_string
+
+
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> str:
+    digital_twin_env = next(
+        (
+            _strip_unsafe(environment)
+            for device_structurude_config in fabric_documentation_facts.structured_configs.values()
+            if (environment := get(device_structurude_config, "metadata.digital_twin.environment")) is not None
+        ),
+        None,
+    )
+    match digital_twin_env:
         case "act":
             return _get_digital_twin_act(fabric_documentation_facts)
         case _:
-            return {}
+            return ""
 
 
-def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> dict:
-    digital_twin_topology = {}
-    device_list = list(fabric_documentation_facts.avd_facts.keys())
+def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> str:
+    digital_twin_topology: dict[str, Any] = {}
+    digital_twin_node_types: set[str] = set()
+    digital_twin_fabric_username: str | None = next(
+        (
+            _strip_unsafe(username)
+            for device_structurude_config in fabric_documentation_facts.structured_configs.values()
+            if (username := get(device_structurude_config, "metadata.digital_twin.username")) is not None
+        ),
+        None,
+    )
+    digital_twin_fabric_password: str | None = next(
+        (
+            _strip_unsafe(password)
+            for device_structurude_config in fabric_documentation_facts.structured_configs.values()
+            if (password := get(device_structurude_config, "metadata.digital_twin.password")) is not None
+        ),
+        None,
+    )
+    digital_twin_devices: list[dict[str, Any] | None] = []
 
-    digital_twin_node_types = set()
-    digital_twin_fabric_username = set()
-    digital_twin_fabric_password = set()
-    digital_twin_devices = []
-
+    device_list: list[str | None] = [_strip_unsafe(device) for device in fabric_documentation_facts.avd_facts]
     for device in sorted(device_list):
-        if (x := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")) is not None:
-            digital_twin_node_types.add(x)
-        if (x := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.username")) is not None:
-            digital_twin_fabric_username.add(x)
-        if (x := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.password")) is not None:
-            digital_twin_fabric_password.add(x)
+        if (
+            digital_twin_node_type := _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type"))
+        ) is not None:
+            digital_twin_node_types.add(digital_twin_node_type)
 
         digital_twin_devices.append(
             {
                 device: {
-                    "node_type": get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type"),
-                    "ip_addr": get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.ip_addr"),
-                    "version": get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.version"),
+                    "node_type": _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")),
+                    "ip_addr": _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.ip_addr")),
+                    "version": _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.version")),
                 }
             }
         )
 
-    if len(digital_twin_fabric_username) != 1:
-        msg = f"Digital Twin username for ACT must match for all fabric nodes: {digital_twin_fabric_username}."
-        raise AristaAvdInvalidInputsError(msg)
-    if len(digital_twin_fabric_password) != 1:
-        msg = f"Digital Twin password for ACT must match for all fabric nodes: {digital_twin_fabric_username}."
-        raise AristaAvdInvalidInputsError(msg)
-
     for digital_twin_node_type in sorted(digital_twin_node_types):
         digital_twin_topology[digital_twin_node_type] = {
-            "username": next(iter(digital_twin_fabric_username)),
-            "password": next(iter(digital_twin_fabric_password)),
+            "username": digital_twin_fabric_username,
+            "password": digital_twin_fabric_password,
         }
 
     # Render nodes
@@ -175,11 +191,11 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     digital_twin_topology["links"] = [
         {
             "connection": [
-                topology_link["node"] + ":" + topology_link["node_interface"],
-                topology_link["peer"] + ":" + topology_link["peer_interface"],
+                f"{_strip_unsafe(topology_link['node'])}:{_strip_unsafe(topology_link['node_interface'])}",
+                f"{_strip_unsafe(topology_link['peer'])}:{_strip_unsafe(topology_link['peer_interface'])}",
             ]
         }
         for topology_link in fabric_documentation_facts.topology_links
     ]
 
-    return dict(digital_twin_topology)
+    return yaml.dump(digital_twin_topology, Dumper=yaml.CSafeDumper, default_flow_style=False, indent=2, sort_keys=False, width=130)

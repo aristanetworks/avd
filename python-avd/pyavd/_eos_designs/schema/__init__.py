@@ -59837,10 +59837,6 @@ class EosDesigns(EosDesignsRootModel):
     change at any time.
     Enable generation of the Digital Twin version of the fabric (Digital Twin
     topology, adjusted configuration, etc.).
-    `digital_twin.enabled` must also be set to `true` under the
-    nodes that are to be included in Digital Twin metadata.
-    Devices that are not enabled will be
-    configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown.
 
     Default value: `False`
     """
@@ -61745,10 +61741,6 @@ class EosDesigns(EosDesignsRootModel):
                    change at any time.
                    Enable generation of the Digital Twin version of the fabric (Digital Twin
                    topology, adjusted configuration, etc.).
-                   `digital_twin.enabled` must also be set to `true` under the
-                   nodes that are to be included in Digital Twin metadata.
-                   Devices that are not enabled will be
-                   configured as `is_deployed: false` to ensure all interfaces and peerings towards them are shutdown.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group

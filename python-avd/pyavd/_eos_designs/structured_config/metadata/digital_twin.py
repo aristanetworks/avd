@@ -26,15 +26,18 @@ class DigitalTwinMixin(Protocol):
         Only relevant to the use cases where generation of the Digital Twin infrastructure is globally enabled.
         """
         environment = self.inputs.digital_twin.environment
-        if digital_twin_node_type := get_v2(self.shared_utils.platform_settings.digital_twin, environment + "_node_type"):
-            self.structured_config.metadata.digital_twin._update(
-                environment=environment,
-                node_type=digital_twin_node_type,
-                ip_addr=default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip),
-                version=default(self.shared_utils.node_config.digital_twin.os_version, self.inputs.digital_twin.fabric.os_version),
-                username=default(self.inputs.digital_twin.fabric.username),
-                password=default(self.inputs.digital_twin.fabric.password),
-            )
-            return
-        msg = f"'digital_twin.{environment}_node_type' key must be set in 'platform_settings' item used by platform '{self.shared_utils.platform}'."
-        raise AristaAvdInvalidInputsError(msg)
+        match environment:
+            case "act":
+                digital_twin_node_type = get_v2(self.shared_utils.platform_settings.digital_twin, "act_node_type")
+                self.structured_config.metadata.digital_twin._update(
+                    environment=environment,
+                    node_type=digital_twin_node_type,
+                    ip_addr=default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip),
+                    version=default(self.shared_utils.node_config.digital_twin.os_version, self.inputs.digital_twin.fabric.os_version),
+                    username=self.inputs.digital_twin.fabric.username,
+                    password=self.inputs.digital_twin.fabric.password,
+                )
+                return
+            case _:
+                msg = f"'digital_twin.{environment}_node_type' key must be set in 'platform_settings' item used by platform '{self.shared_utils.platform}'."
+                raise AristaAvdInvalidInputsError(msg)

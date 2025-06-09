@@ -1504,11 +1504,6 @@ $defs:
               Set the OS version and management IP address for the digital twin of the associated node(s).
             type: dict
             keys:
-              # enabled:
-              #   type: bool
-              #   description: |-
-              #     When set to `true`, includes the node(s) in the Digital Twin metadata.
-              #   default: false
               os_version:
                 type: str
                 description: |-
