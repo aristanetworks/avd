@@ -1,0 +1,65 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  port_channel:
+    type: dict
+    keys:
+      load_balance_trident:
+        description: Trident chip load balancing.
+        type: dict
+        keys:
+          udf_eth_type:
+            type: dict
+            keys:
+              ipv4:
+                type: dict
+                keys:
+                  header:
+                    type: dict
+                    keys:
+                      inner:
+                        type: dict
+                        keys:
+                          l3:
+                            description: L3 header from the packet.
+                            type: list
+                            items:
+                              type: dict
+                              keys:
+                                offset:
+                                  type: int
+                                  convert_types:
+                                    - str
+                                  required: true
+                                  description: Offset starting from selected header in the packet.
+                                mask:
+                                  type:
+                                    str
+                                  description: Mask of the offset. Range - 0x01-0xFF.
+                          l4:
+                            description: L4 header from the packet.
+                            type: list
+                            $ref: "eos_cli_config_gen#/keys/port_channel/keys/load_balance_trident/keys/udf_eth_type/keys/ipv4/keys/header/keys/inner/keys/l3"
+                      outer:
+                        type: dict
+                        keys:
+                          l2:
+                            description: L2 header from the packet.
+                            type: list
+                            $ref: "eos_cli_config_gen#/keys/port_channel/keys/load_balance_trident/keys/udf_eth_type/keys/ipv4/keys/header/keys/inner/keys/l3"
+                          l3:
+                            description: L3 header from the packet.
+                            type: list
+                            $ref: "eos_cli_config_gen#/keys/port_channel/keys/load_balance_trident/keys/udf_eth_type/keys/ipv4/keys/header/keys/inner/keys/l3"
+                          l4:
+                            description: L4 header from the packet.
+                            type: list
+                            $ref: "eos_cli_config_gen#/keys/port_channel/keys/load_balance_trident/keys/udf_eth_type/keys/ipv4/keys/header/keys/inner/keys/l3"
+              ipv6:
+                type: dict
+                $ref: "eos_cli_config_gen#/keys/port_channel/keys/load_balance_trident/keys/udf_eth_type/keys/ipv4"

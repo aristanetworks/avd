@@ -1,0 +1,53 @@
+port_channel:
+  load_balance_trident:
+    udf_eth_type:
+      ipv4:
+        header:
+          inner:
+            l3:
+              - offset: 30
+                mask: "0x01"
+              - offset: 10
+                mask: "0xff"
+            l4:
+              - offset: 20
+                mask: "0x02"
+          outer:
+            l2:
+              - offset: 2
+                mask: "0xff"
+              - offset: 5
+                mask: "0x02"
+            l3:
+              - offset: 3
+                mask: "0x01"
+            l4:
+              - offset: 50
+                mask: "0x04"
+              - offset: 30
+                mask: "0xff"
+      ipv6:
+        header:
+          inner:
+            l3:
+              - offset: 30
+                mask: "0x01"
+              - offset: 10
+                mask: "0xff"
+            l4:
+              - offset: 20
+                mask: "0x02"
+          outer:
+            l2:
+              - offset: 2
+                mask: "0xff"
+              - offset: 5
+                mask: "0x02"
+            l3:
+              - offset: 3
+                mask: "0x01"
+            l4:
+              - offset: 50
+                mask: "0x04"
+              - offset: 30
+                mask: "0xff"

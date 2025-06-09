@@ -27075,6 +27075,635 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class PortChannel(AvdModel):
+        """Subclass of AvdModel."""
+
+        class LoadBalanceTrident(AvdModel):
+            """Subclass of AvdModel."""
+
+            class UdfEthType(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Ipv4(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Header(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Inner(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class L3Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L3Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L3(AvdList[L3Item]):
+                                """Subclass of AvdList with `L3Item` items."""
+
+                            L3._item_type = L3Item
+
+                            class L4Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L4Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L4(AvdList[L4Item]):
+                                """Subclass of AvdList with `L4Item` items."""
+
+                            L4._item_type = L4Item
+
+                            _fields: ClassVar[dict] = {"l3": {"type": L3}, "l4": {"type": L4}}
+                            l3: L3
+                            """
+                            L3 header from the packet.
+
+                            Subclass of AvdList with `L3Item` items.
+                            """
+                            l4: L4
+                            """
+                            L4 header from the packet.
+
+                            Subclass of AvdList with `L4Item` items.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, l3: L3 | UndefinedType = Undefined, l4: L4 | UndefinedType = Undefined) -> None:
+                                    """
+                                    Inner.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        l3:
+                                           L3 header from the packet.
+
+                                           Subclass of AvdList with `L3Item` items.
+                                        l4:
+                                           L4 header from the packet.
+
+                                           Subclass of AvdList with `L4Item` items.
+
+                                    """
+
+                        class Outer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class L2Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L2Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L2(AvdList[L2Item]):
+                                """Subclass of AvdList with `L2Item` items."""
+
+                            L2._item_type = L2Item
+
+                            class L3Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L3Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L3(AvdList[L3Item]):
+                                """Subclass of AvdList with `L3Item` items."""
+
+                            L3._item_type = L3Item
+
+                            class L4Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L4Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L4(AvdList[L4Item]):
+                                """Subclass of AvdList with `L4Item` items."""
+
+                            L4._item_type = L4Item
+
+                            _fields: ClassVar[dict] = {"l2": {"type": L2}, "l3": {"type": L3}, "l4": {"type": L4}}
+                            l2: L2
+                            """
+                            L2 header from the packet.
+
+                            Subclass of AvdList with `L2Item` items.
+                            """
+                            l3: L3
+                            """
+                            L3 header from the packet.
+
+                            Subclass of AvdList with `L3Item` items.
+                            """
+                            l4: L4
+                            """
+                            L4 header from the packet.
+
+                            Subclass of AvdList with `L4Item` items.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, l2: L2 | UndefinedType = Undefined, l3: L3 | UndefinedType = Undefined, l4: L4 | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Outer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        l2:
+                                           L2 header from the packet.
+
+                                           Subclass of AvdList with `L2Item` items.
+                                        l3:
+                                           L3 header from the packet.
+
+                                           Subclass of AvdList with `L3Item` items.
+                                        l4:
+                                           L4 header from the packet.
+
+                                           Subclass of AvdList with `L4Item` items.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"inner": {"type": Inner}, "outer": {"type": Outer}}
+                        inner: Inner
+                        """Subclass of AvdModel."""
+                        outer: Outer
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, inner: Inner | UndefinedType = Undefined, outer: Outer | UndefinedType = Undefined) -> None:
+                                """
+                                Header.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    inner: Subclass of AvdModel.
+                                    outer: Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"header": {"type": Header}}
+                    header: Header
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, header: Header | UndefinedType = Undefined) -> None:
+                            """
+                            Ipv4.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                header: Subclass of AvdModel.
+
+                            """
+
+                class Ipv6(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class Header(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class Inner(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class L3Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L3Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L3(AvdList[L3Item]):
+                                """Subclass of AvdList with `L3Item` items."""
+
+                            L3._item_type = L3Item
+
+                            class L4Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L4Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L4(AvdList[L4Item]):
+                                """Subclass of AvdList with `L4Item` items."""
+
+                            L4._item_type = L4Item
+
+                            _fields: ClassVar[dict] = {"l3": {"type": L3}, "l4": {"type": L4}}
+                            l3: L3
+                            """
+                            L3 header from the packet.
+
+                            Subclass of AvdList with `L3Item` items.
+                            """
+                            l4: L4
+                            """
+                            L4 header from the packet.
+
+                            Subclass of AvdList with `L4Item` items.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(self, *, l3: L3 | UndefinedType = Undefined, l4: L4 | UndefinedType = Undefined) -> None:
+                                    """
+                                    Inner.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        l3:
+                                           L3 header from the packet.
+
+                                           Subclass of AvdList with `L3Item` items.
+                                        l4:
+                                           L4 header from the packet.
+
+                                           Subclass of AvdList with `L4Item` items.
+
+                                    """
+
+                        class Outer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class L2Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L2Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L2(AvdList[L2Item]):
+                                """Subclass of AvdList with `L2Item` items."""
+
+                            L2._item_type = L2Item
+
+                            class L3Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L3Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L3(AvdList[L3Item]):
+                                """Subclass of AvdList with `L3Item` items."""
+
+                            L3._item_type = L3Item
+
+                            class L4Item(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"offset": {"type": int}, "mask": {"type": str}}
+                                offset: int
+                                """Offset starting from selected header in the packet."""
+                                mask: str | None
+                                """Mask of the offset. Range - 0x01-0xFF."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, offset: int | UndefinedType = Undefined, mask: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        L4Item.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            offset: Offset starting from selected header in the packet.
+                                            mask: Mask of the offset. Range - 0x01-0xFF.
+
+                                        """
+
+                            class L4(AvdList[L4Item]):
+                                """Subclass of AvdList with `L4Item` items."""
+
+                            L4._item_type = L4Item
+
+                            _fields: ClassVar[dict] = {"l2": {"type": L2}, "l3": {"type": L3}, "l4": {"type": L4}}
+                            l2: L2
+                            """
+                            L2 header from the packet.
+
+                            Subclass of AvdList with `L2Item` items.
+                            """
+                            l3: L3
+                            """
+                            L3 header from the packet.
+
+                            Subclass of AvdList with `L3Item` items.
+                            """
+                            l4: L4
+                            """
+                            L4 header from the packet.
+
+                            Subclass of AvdList with `L4Item` items.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, l2: L2 | UndefinedType = Undefined, l3: L3 | UndefinedType = Undefined, l4: L4 | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Outer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        l2:
+                                           L2 header from the packet.
+
+                                           Subclass of AvdList with `L2Item` items.
+                                        l3:
+                                           L3 header from the packet.
+
+                                           Subclass of AvdList with `L3Item` items.
+                                        l4:
+                                           L4 header from the packet.
+
+                                           Subclass of AvdList with `L4Item` items.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {"inner": {"type": Inner}, "outer": {"type": Outer}}
+                        inner: Inner
+                        """Subclass of AvdModel."""
+                        outer: Outer
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, inner: Inner | UndefinedType = Undefined, outer: Outer | UndefinedType = Undefined) -> None:
+                                """
+                                Header.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    inner: Subclass of AvdModel.
+                                    outer: Subclass of AvdModel.
+
+                                """
+
+                    _fields: ClassVar[dict] = {"header": {"type": Header}}
+                    header: Header
+                    """Subclass of AvdModel."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, header: Header | UndefinedType = Undefined) -> None:
+                            """
+                            Ipv6.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                header: Subclass of AvdModel.
+
+                            """
+
+                _fields: ClassVar[dict] = {"ipv4": {"type": Ipv4}, "ipv6": {"type": Ipv6}}
+                ipv4: Ipv4
+                """Subclass of AvdModel."""
+                ipv6: Ipv6
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ipv4: Ipv4 | UndefinedType = Undefined, ipv6: Ipv6 | UndefinedType = Undefined) -> None:
+                        """
+                        UdfEthType.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ipv4: Subclass of AvdModel.
+                            ipv6: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"udf_eth_type": {"type": UdfEthType}}
+            udf_eth_type: UdfEthType
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, udf_eth_type: UdfEthType | UndefinedType = Undefined) -> None:
+                    """
+                    LoadBalanceTrident.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        udf_eth_type: Subclass of AvdModel.
+
+                    """
+
+        _fields: ClassVar[dict] = {"load_balance_trident": {"type": LoadBalanceTrident}}
+        load_balance_trident: LoadBalanceTrident
+        """
+        Trident chip load balancing.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, load_balance_trident: LoadBalanceTrident | UndefinedType = Undefined) -> None:
+                """
+                PortChannel.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    load_balance_trident:
+                       Trident chip load balancing.
+
+                       Subclass of AvdModel.
+
+                """
+
     class PortChannelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -65150,6 +65779,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "platform": {"type": Platform},
         "poe": {"type": Poe},
         "policy_maps": {"type": PolicyMaps},
+        "port_channel": {"type": PortChannel},
         "port_channel_interfaces": {"type": PortChannelInterfaces},
         "prefix_lists": {"type": PrefixLists},
         "priority_flow_control": {"type": PriorityFlowControl},
@@ -65617,6 +66247,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     policy_maps: PolicyMaps
     """Subclass of AvdModel."""
+    port_channel: PortChannel
+    """Subclass of AvdModel."""
     port_channel_interfaces: PortChannelInterfaces
     """Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`)."""
     prefix_lists: PrefixLists
@@ -65911,6 +66543,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             platform: Platform | UndefinedType = Undefined,
             poe: Poe | UndefinedType = Undefined,
             policy_maps: PolicyMaps | UndefinedType = Undefined,
+            port_channel: PortChannel | UndefinedType = Undefined,
             port_channel_interfaces: PortChannelInterfaces | UndefinedType = Undefined,
             prefix_lists: PrefixLists | UndefinedType = Undefined,
             priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
@@ -66229,6 +66862,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 poe: Subclass of AvdModel.
                 policy_maps: Subclass of AvdModel.
+                port_channel: Subclass of AvdModel.
                 port_channel_interfaces: Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`).
                 prefix_lists: Subclass of AvdIndexedList with `PrefixListsItem` items. Primary key is `name` (`str`).
                 priority_flow_control:
