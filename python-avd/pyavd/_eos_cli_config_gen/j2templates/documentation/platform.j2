@@ -60,17 +60,21 @@
 {%                         if profile.ingress.reserved.memory is arista.avd.defined %}
 | Reserved | {{ profile.ingress.reserved.memory }} {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} |
 {%                         endif %}
+{%                         if profile.ingress.priority_groups is arista.avd.defined %}
 
-| Type | Group Number | Threshold | Reserved |
-| ---- | ------------ | --------- | -------- |
-{%                         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
-{%                             if priority_group.reserved.memory is arista.avd.defined %}
-{%                                 set reserved = priority_group.reserved.memory ~ ' ' ~ (priority_group.reserved.unit | arista.avd.default('bytes')) %}
-{%                             else %}
-{%                                 set reserved = '-' %}
-{%                             endif %}
-| Priority Group | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
-{%                         endfor %}
+####### Priority Group
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+{%                             for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%                                 if priority_group.reserved.memory is arista.avd.defined %}
+{%                                     set reserved = priority_group.reserved.memory ~ ' ' ~ (priority_group.reserved.unit | arista.avd.default('bytes')) %}
+{%                                 else %}
+{%                                     set reserved = '-' %}
+{%                                 endif %}
+| {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
+{%                             endfor %}
+{%                         endif %}
 {%                     endfor %}
 {%                 endif %}
 {%             endif %}
