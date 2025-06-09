@@ -18,10 +18,24 @@
 {%         set tx_latency = 'enabled' if queue_monitor_length.tx_latency is arista.avd.defined(true) else 'disabled' %}
 {%         set cpu_high = queue_monitor_length.cpu.thresholds.high | arista.avd.default('-') %}
 {%         set cpu_low = queue_monitor_length.cpu.thresholds.low | arista.avd.default('-') %}
+{%         set mirror = queue_monitor_length.mirror.enabled | arista.avd.default('-') %}
+{%         set mirror_destination = [] %}
+{%         if queue_monitor_length.mirror.destination.cpu is arista.avd.defined(true) %}
+{%             do mirror_destination.append("Cpu") %}
+{%         endif %}
+{%         if queue_monitor_length.mirror.destination.tunnel_mode_gre is arista.avd.defined %}
+{%             do mirror_destination.append("Tunnel") %}
+{%         endif %}
+{%         if queue_monitor_length.mirror.destination.ethernet_interfaces is arista.avd.defined %}
+{%             do mirror_destination.extend(queue_monitor_length.mirror.destination.ethernet_interfaces) %}
+{%         endif %}
+{%         if mirror_destination | length == 0 %}
+{%             set mirror_destination = ["-"] %}
+{%         endif %}
 
-| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
-| {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
+| {{ enabled }} | {{ log }} | {{ default_high }} | {{ default_low }} | {{ notifying }} | {{ tx_latency }} | {{ cpu_high }} | {{ cpu_low }} | {{ mirror }} | {{ mirror_destination | join(", ") }} |
 {%     endif %}
 {%     if queue_monitor_streaming is arista.avd.defined %}
 

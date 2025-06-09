@@ -12,3 +12,13 @@ queue_monitor_length:
       # "high" threshold is mandatory
       high: 200000
       low: 100000
+  mirror:
+    enabled: true
+    destination:
+      cpu: true
+      ethernet_interfaces:
+        - Ethernet1
+        - Ethernet4
+      tunnel_mode_gre:
+        source: 1.1.1.1
+        destination: 3.3.3.3
