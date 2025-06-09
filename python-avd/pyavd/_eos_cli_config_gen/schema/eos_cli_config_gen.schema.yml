@@ -8018,8 +8018,8 @@ keys:
               description: 'The duration to wait before falling back to the higher-priority
                 interface.
 
-                It accepts a range of 0 to 3600 seconds, or the string `infinity`
-                to indicate that fallback should never occur.'
+                Accepts a value between 0 and 3600 seconds, or the string `infinity`
+                to disable fallback.'
               convert_types:
               - int
             monitor:
@@ -8073,7 +8073,7 @@ keys:
                     required: true
                   backup_management_interfaces:
                     type: list
-                    description: 'Backup redundant management interface.
+                    description: 'A list of backup redundant management interfaces.
 
                       Ex: Management1/1, Management1/2'
                     required: true

@@ -20132,11 +20132,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 backup_management_interfaces: BackupManagementInterfaces
                 """
-                Backup redundant management interface.
+                A list of backup redundant management interfaces.
                 Ex: Management1/1, Management1/2
 
-                Subclass of AvdList with
-                `str` items.
+                Subclass of
+                AvdList with `str` items.
                 """
 
                 if TYPE_CHECKING:
@@ -20160,11 +20160,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Primary redundant management interface.
                                Ex: Management1/1, Management1/2
                             backup_management_interfaces:
-                               Backup redundant management interface.
+                               A list of backup redundant management interfaces.
                                Ex: Management1/1, Management1/2
 
-                               Subclass of AvdList with
-                               `str` items.
+                               Subclass of
+                               AvdList with `str` items.
 
                         """
 
@@ -20177,8 +20177,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             fallback_delay: str | None
             """
             The duration to wait before falling back to the higher-priority interface.
-            It accepts a range of 0
-            to 3600 seconds, or the string `infinity` to indicate that fallback should never occur.
+            Accepts a value between 0
+            and 3600 seconds, or the string `infinity` to disable fallback.
             """
             monitor: Monitor
             """Subclass of AvdModel."""
@@ -20203,8 +20203,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Args:
                         fallback_delay:
                            The duration to wait before falling back to the higher-priority interface.
-                           It accepts a range of 0
-                           to 3600 seconds, or the string `infinity` to indicate that fallback should never occur.
+                           Accepts a value between 0
+                           and 3600 seconds, or the string `infinity` to disable fallback.
                         monitor: Subclass of AvdModel.
                         supervisors: Subclass of AvdList with `SupervisorsItem` items.
 
