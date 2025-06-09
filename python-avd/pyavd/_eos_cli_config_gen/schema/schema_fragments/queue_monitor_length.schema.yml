@@ -55,3 +55,55 @@ keys:
       tx_latency:
         type: bool
         description: "Enable tx-latency mode."
+      mirror:
+        description: Enable frame mirroring during congestion.
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          destination:
+            description: Mirror destination.
+            type: dict
+            keys:
+              cpu:
+                type: bool
+                description: CPU ports.
+              ethernet_interfaces:
+                type: list
+                items:
+                  type: str
+                  description: |-
+                    Ethernet interface name.
+              tunnel_mode_gre:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    required: true
+                    description: Source IP address of GRE tunnel.
+                  destination:
+                    type: str
+                    required: true
+                    description: Destination IP address of GRE tunnel.
+                  dscp:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 0
+                    max: 63
+                    description: DSCP of the GRE tunnel. EOS default is 0.
+                  ttl:
+                    type: int
+                    convert_types:
+                      - str
+                    min: 1
+                    max: 255
+                    description: TTL range. EOS default is 128.
+                  protocol:
+                    type: str
+                    description: |-
+                      Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                      EOS default is 0x88BE.
+                  vrf:
+                    type: str
+                    description: VRF name of the GRE tunnel. EOS default is "default".
