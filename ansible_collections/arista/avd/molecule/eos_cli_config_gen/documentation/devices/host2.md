@@ -1440,7 +1440,7 @@ router pim sparse-mode
 
 ### Platform Summary
 
-#### Platform Fap Summary
+#### Platform FAP Summary
 
 | Settings | Value |
 | -------- | ----- |

@@ -11052,7 +11052,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### TestProfile3
 
-#### Platform Fap Summary
+#### Platform FAP Summary
 
 | Settings | Value |
 | -------- | ----- |
