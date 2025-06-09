@@ -135,7 +135,9 @@ flow tracking sampled
 {% if flow_tracking.mirror_on_drop is arista.avd.defined %}
 !
 flow tracking mirror-on-drop
+{%     set tracker_ns = namespace(tracker_exclamation=false) %}
 {%     if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) or low_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
+{%         set tracker_ns.tracker_exclamation = true %}
 {%         set encapsulation = "encapsulation" %}
 {%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
 {%             set  encapsulation =  encapsulation ~ ' ipv4 ipv6' %}
@@ -146,21 +148,25 @@ flow tracking mirror-on-drop
    {{ encapsulation }}
 {%     endif %}
 {%     if flow_tracking.mirror_on_drop.sample_limit is arista.avd.defined %}
+{%         set tracker_ns.tracker_exclamation = true %}
    sample limit {{ flow_tracking.mirror_on_drop.sample_limit }} pps
 {%     endif %}
 {%     for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort %}
-{%         if not loop.first %}
+{%         if not loop.first or tracker_ns.tracker_exclamation == true %}
    !
 {%         endif %}
+{%         set exporter_ns = namespace(exporter_exclamation=false) %}
    tracker {{ tracker.name }}
 {%         if tracker.record_export.on_inactive_timeout is arista.avd.defined %}
+{%             set exporter_ns.exporter_exclamation = true %}
       record export on inactive timeout {{ tracker.record_export.on_inactive_timeout }}
 {%         endif %}
 {%         if tracker.record_export.on_interval is arista.avd.defined %}
+{%             set exporter_ns.exporter_exclamation = true %}
       record export on interval {{ tracker.record_export.on_interval }}
 {%         endif %}
 {%         for exporter in tracker.exporters | arista.avd.natural_sort("name") %}
-{%             if not loop.first %}
+{%             if not loop.first or exporter_ns.exporter_exclamation == true %}
       !
 {%             endif %}
       exporter {{ exporter.name }}

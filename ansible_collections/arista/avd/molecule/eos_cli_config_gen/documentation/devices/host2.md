@@ -657,7 +657,7 @@ sflow interface egress enable default
 
 | Sample Limit Size | Encapsulations |
 | ----------------- | -------------- |
-| default | - |
+| default | mpls |
 
 ##### Trackers Summary
 

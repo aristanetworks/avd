@@ -2838,6 +2838,7 @@ flow tracking sampled
 flow tracking mirror-on-drop
    encapsulation ipv4 ipv6 mpls
    sample limit 777 pps
+   !
    tracker T1
       record export on inactive timeout 3666
       record export on interval 5666

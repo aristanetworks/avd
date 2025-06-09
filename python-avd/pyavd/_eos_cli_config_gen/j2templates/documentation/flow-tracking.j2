@@ -137,8 +137,7 @@ Software export of IPFIX data records enabled.
 {%         set sample_limit_size = flow_tracking.mirror_on_drop.sample_limit | arista.avd.default("default") %}
 {%         set encapsulations_list = [] %}
 {%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
-{%             do encapsulations_list.append('ipv4') %}
-{%             do encapsulations_list.append('ipv6') %}
+{%             do encapsulations_list.append('ipv4, ipv6') %}
 {%         endif %}
 {%         if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
 {%             do encapsulations_list.append('mpls') %}
