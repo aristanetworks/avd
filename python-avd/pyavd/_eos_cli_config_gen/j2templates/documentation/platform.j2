@@ -27,12 +27,10 @@
 {%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
-#### Trident MMU QUEUE PROFILES
-
-##### Egress
+#### Trident MMU Egress QUEUE PROFILES
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
-###### {{ profile.name }}
+##### {{ profile.name }}
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -45,10 +43,10 @@
 {%                 endfor %}
 {%                 if platform.trident.mmu.queue_profiles | arista.avd.default([]) | selectattr('ingress','arista.avd.defined') | list %}
 
-##### Ingress
+#### Trident MMU Ingress QUEUE PROFILES
 {%                     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') | selectattr('ingress') %}
 
-###### {{ profile.name }}
+##### {{ profile.name }}
 
 | Settings | Value |
 | -------- | ----- |
@@ -62,7 +60,7 @@
 {%                         endif %}
 {%                         if profile.ingress.priority_groups is arista.avd.defined %}
 
-####### Priority Group
+###### Priority Group
 
 | Group Number | Threshold | Reserved |
 | ------------ | --------- | -------- |

@@ -11019,11 +11019,9 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Forwarding Table Partition | 2 |
 | MMU Applied Profile | mc_example_profile |
 
-#### Trident MMU QUEUE PROFILES
+#### Trident MMU Egress QUEUE PROFILES
 
-##### Egress
-
-###### mc_example_profile
+##### mc_example_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -11033,7 +11031,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Multicast | 1 | 1/64 | 0 cells | - |
 | Multicast | 7 | 1/64 | 0 cells | - |
 
-###### unused_profile
+##### unused_profile
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -11043,9 +11041,9 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Multicast | 0 | - | 0 bytes | - |
 | Multicast | 1 | 8 | 0 cells | - |
 
-##### Ingress
+#### Trident MMU Ingress QUEUE PROFILES
 
-###### mc_example_profile
+##### mc_example_profile
 
 | Settings | Value |
 | -------- | ----- |
@@ -11054,14 +11052,14 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Resume | 33 |
 | Reserved | 23 cells |
 
-####### Priority Group
+###### Priority Group
 
 | Group Number | Threshold | Reserved |
 | ------------ | --------- | -------- |
 | 1 | 1 | - |
 | 2 | 1/32 | 3 bytes |
 
-###### unused_profile
+##### unused_profile
 
 | Settings | Value |
 | -------- | ----- |
@@ -11070,7 +11068,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Resume | - |
 | Reserved | 232 bytes |
 
-####### Priority Group
+###### Priority Group
 
 | Group Number | Threshold | Reserved |
 | ------------ | --------- | -------- |
