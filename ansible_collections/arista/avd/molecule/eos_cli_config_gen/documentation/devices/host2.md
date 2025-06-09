@@ -445,6 +445,7 @@ aaa accounting commands 0 default none
 | Settings | Value |
 | -------- | ----- |
 | Reversible password encryption | aes-256-gcm |
+| Signature verification | Enabled |
 
 ### Management Security SSL Profiles
 
@@ -457,6 +458,7 @@ aaa accounting commands 0 default none
 ```eos
 !
 management security
+   signature-verification extension
    password encryption reversible aes-256-gcm
    !
    ssl profile cipher-v1.0-v1.3
@@ -1305,9 +1307,9 @@ mpls rsvp
 
 ### Queue Monitor Length
 
-| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
+| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 
@@ -1322,6 +1324,8 @@ mpls rsvp
 queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
+!
+queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VRF10
 !
 queue-monitor streaming
    shutdown
