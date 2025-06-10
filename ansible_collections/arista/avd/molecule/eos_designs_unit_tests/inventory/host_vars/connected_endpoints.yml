@@ -29,7 +29,8 @@ Testing_1:
         switches: [ connected_endpoints ]
         trunk_groups: [ TG_NOT_MATCHING_ANY_VLANS ]
 
-# This should not impact structured config since connected_endpoints_keys are defined in this test file.
+# This should not impact structured config since `connected_endpoints_keys` 
+# is overwritten in this file and so `firewall` is not a valid connected endpoint key.
 firewalls:
   - name: FIREWALL01
     rack: RackB
