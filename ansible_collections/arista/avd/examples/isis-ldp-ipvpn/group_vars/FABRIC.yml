@@ -5,8 +5,8 @@ ansible_connection: ansible.netcommon.httpapi
 # Specifies that we are indeed using Arista EOS
 ansible_network_os: arista.eos.eos
 # This user/password must exist on the switches to enable Ansible access
-ansible_user: ansible
-ansible_password: ansible
+ansible_user: arista
+ansible_password: arista
 # User escalation (to enter enable mode)
 ansible_become: true
 ansible_become_method: enable
@@ -29,16 +29,17 @@ overlay_routing_protocol: ibgp
 
 # Local users
 local_users:
-  # Define a new user, which is called "ansible"
-  - name: ansible
-    privilege: 15
-    role: network-admin
-    # Password set to "ansible". Same string as the device generates when configuring a username.
-    sha512_password: $6$QJUtFkyu9yoecsq.$ysGzlb2YXaIMvezqGEna7RE8CMALJHnv7Q1i.27VygyKUtSeX.n2xRTyOtCR8eOAl.4imBLyhXFc4o97P5n071
+  # Username with no password configured
   - name: admin
     privilege: 15
     role: network-admin
     no_password: true
+
+  # Username with a password
+  - name: arista
+    privilege: 15
+    role: network-admin
+    sha512_password: "$6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1."
 
 # BGP peer groups passwords
 bgp_peer_groups:
