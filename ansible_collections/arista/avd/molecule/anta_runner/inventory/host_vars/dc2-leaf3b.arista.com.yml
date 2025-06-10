@@ -1,6 +1,6 @@
 ---
 # Custom interface structured_config with shutdown key missing to make sure the defaults are handled properly
-# Keeping test for deprecated data-models to ensure tests are still generated for them
+# Keeping tests for deprecated data models to ensure tests are still generated for them
 # Deprecated keys: type, mode, vlans, native_vlan, native_vlan_tag, trunk_groups, phone
 custom_structured_configuration_ethernet_interfaces:
   - name: Ethernet11
@@ -18,6 +18,27 @@ custom_structured_configuration_ethernet_interfaces:
     ip_address: dhcp
     peer: dc2-leaf3a.arista.com
     peer_interface: Ethernet16
+    switchport:
+      enabled: false
+  - name: Ethernet17
+    description: Test_ip_unnumbered_interface_connectivity
+    ip_address: unnumbered Loopback0
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet17
+    switchport:
+      enabled: false
+  - name: Ethernet18
+    description: Test_peer_dhcp_interface_connectivity
+    ip_address: dhcp
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet18
+    switchport:
+      enabled: false
+  - name: Ethernet19
+    description: Test_peer_ip_unnumbered_interface_connectivity
+    ip_address: unnumbered Loopback0
+    peer: dc2-leaf3a.arista.com
+    peer_interface: Ethernet19
     switchport:
       enabled: false
 
