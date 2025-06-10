@@ -41,12 +41,16 @@ keys:
                     type: int
                     convert_types:
                       - str
-                    description: Headroom pool limit in bytes.
+                    description: |-
+                      Headroom pool limit in bytes.
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
                   cells:
                     type: int
                     convert_types:
                       - str
-                    description: Headroom pool limit in cells.
+                    description: |-
+                      Headroom pool limit in cells.
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
               queue_profiles:
                 type: list
                 primary_key: name
