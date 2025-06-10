@@ -13124,7 +13124,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         name: str
                         """
                         Flow collector name.
-                        It can be IPv4 address, IPv6 address, fully qualified domain name and sflow.
+                        It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
                         """
                         port: int | None
 
@@ -13140,7 +13140,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Args:
                                     name:
                                        Flow collector name.
-                                       It can be IPv4 address, IPv6 address, fully qualified domain name and sflow.
+                                       It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
                                     port: port
 
                                 """
@@ -13152,31 +13152,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Collectors._item_type = CollectorsItem
 
-                    class Format(AvdModel):
-                        """Subclass of AvdModel."""
-
-                        _fields: ClassVar[dict] = {"sflow": {"type": bool}}
-                        sflow: bool | None
-                        """Use sFlow for export."""
-
-                        if TYPE_CHECKING:
-
-                            def __init__(self, *, sflow: bool | None | UndefinedType = Undefined) -> None:
-                                """
-                                Format.
-
-
-                                Subclass of AvdModel.
-
-                                Args:
-                                    sflow: Use sFlow for export.
-
-                                """
-
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "collectors": {"type": Collectors},
-                        "format": {"type": Format},
+                        "format": {"type": str},
                         "local_interface": {"type": str},
                         "template_interval": {"type": int},
                         "dscp": {"type": int},
@@ -13185,8 +13164,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     """Exporter Name."""
                     collectors: Collectors
                     """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `name` (`str`)."""
-                    format: Format
-                    """Subclass of AvdModel."""
+                    format: Literal["sflow", "drop-report"] | None
+                    """Configure flow export format. Valid values are platform dependent."""
                     local_interface: str | None
                     """Local Source Interface."""
                     template_interval: int | None
@@ -13200,7 +13179,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             *,
                             name: str | UndefinedType = Undefined,
                             collectors: Collectors | UndefinedType = Undefined,
-                            format: Format | UndefinedType = Undefined,
+                            format: Literal["sflow", "drop-report"] | None | UndefinedType = Undefined,
                             local_interface: str | None | UndefinedType = Undefined,
                             template_interval: int | None | UndefinedType = Undefined,
                             dscp: int | None | UndefinedType = Undefined,
@@ -13214,7 +13193,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Args:
                                 name: Exporter Name.
                                 collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `name` (`str`).
-                                format: Subclass of AvdModel.
+                                format: Configure flow export format. Valid values are platform dependent.
                                 local_interface: Local Source Interface.
                                 template_interval: Template interval in milliseconds.
                                 dscp: dscp

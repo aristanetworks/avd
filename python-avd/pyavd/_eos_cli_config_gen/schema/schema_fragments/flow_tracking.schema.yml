@@ -123,7 +123,7 @@ keys:
                               type: str
                               description: |-
                                 Flow collector name.
-                                It can be IPv4 address, IPv6 address, fully qualified domain name and sflow.
+                                It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
                             port:
                               type: int
                               min: 1
@@ -131,11 +131,12 @@ keys:
                               convert_types:
                                 - str
                       format:
-                        type: dict
-                        keys:
-                          sflow:
-                            description: Use sFlow for export.
-                            type: bool
+                        type: str
+                        description: |-
+                          Configure flow export format. Valid values are platform dependent.
+                        valid_values:
+                          - sflow
+                          - drop-report
                       local_interface:
                         type: str
                         description: Local Source Interface.
@@ -150,6 +151,8 @@ keys:
                         type: int
                         min: 0
                         max: 63
+                        convert_types:
+                          - str
           shutdown:
             type: bool
             default: false

@@ -170,8 +170,8 @@ flow tracking mirror-on-drop
       !
 {%             endif %}
       exporter {{ exporter.name }}
-{%             if exporter.format.sflow is arista.avd.defined(true) %}
-         format sflow
+{%             if exporter.format is arista.avd.defined %}
+         format {{ exporter.format }}
 {%             endif %}
 {%             for collector in exporter.collectors | arista.avd.natural_sort %}
 {%                 set collector_cli = "collector " ~ collector.name %}

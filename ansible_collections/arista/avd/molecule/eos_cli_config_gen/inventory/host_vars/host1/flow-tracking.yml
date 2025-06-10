@@ -125,8 +125,7 @@ flow_tracking:
               - name: sflow
               - name: collector.with.port
                 port: 111
-            format:
-              sflow: true
+            format: sflow
             local_interface: Management1
             template_interval: 424242
           - name: T3-E4
