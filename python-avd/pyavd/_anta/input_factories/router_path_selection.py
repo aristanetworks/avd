@@ -42,7 +42,6 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
             static_peers: list[EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem] = []
             for static_peer in path_group.static_peers:
                 if not static_peer.ipv4_addresses:
-                    self.logger_adapter.debug(LogMessage.PATH_GROUP_STATIC_PEER_NO_IPV4_ADDRESSES, path_group.name, static_peer=static_peer.name)
                     continue
                 static_peers.append(static_peer)
 
