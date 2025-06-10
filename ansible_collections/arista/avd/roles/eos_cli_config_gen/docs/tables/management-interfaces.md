@@ -28,17 +28,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redundancy</samp>](## "management_interfaces.[].redundancy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback_delay</samp>](## "management_interfaces.[].redundancy.fallback_delay") | String |  |  |  | The duration to wait before falling back to the higher-priority interface.<br>Accepts a value between 0 and 3600 seconds, or the string `infinity` to disable fallback. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor</samp>](## "management_interfaces.[].redundancy.monitor") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_state</samp>](## "management_interfaces.[].redundancy.monitor.link_state") | Boolean |  |  |  | Link state of interface.<br>`neighbor` and `link_state` are mutually exclusive and link_state take precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor</samp>](## "management_interfaces.[].redundancy.monitor.neighbor") | Dictionary |  |  |  | To configure IPv6 redundancy neighbor fallback_delay should be set as infinity.<br>`neighbor` and `link_state` are mutually exclusive and link_state take precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.enabled") | Boolean | Required |  |  | Enable/disable IPv6 neighbor redundancy. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.ipv6_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_state</samp>](## "management_interfaces.[].redundancy.monitor.link_state") | Boolean |  |  |  | Link state of interface.<br>`neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor</samp>](## "management_interfaces.[].redundancy.monitor.neighbor") | Dictionary |  |  |  | To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.<br>`neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.ipv6_address") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.interval") | Integer |  |  | Min: 1<br>Max: 300000 | Interval between neighbor probes in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.multiplier") | Integer |  |  | Min: 1<br>Max: 100 | Number of missed neighbor replies after which it is timed out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisors</samp>](## "management_interfaces.[].redundancy.supervisors") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "management_interfaces.[].redundancy.supervisors.[].number") | Integer | Required |  |  | Supervisor number. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisors.[].primary_management_interface") | String | Required |  |  | Primary redundant management interface.<br>Ex: Management1/1, Management1/2 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisors.[].backup_management_interfaces") | List, items: String | Required |  |  | A list of backup redundant management interfaces.<br>Ex:<br>- Management1/1<br>- Management1/2 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisors.[].backup_management_interfaces.[]") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_1</samp>](## "management_interfaces.[].redundancy.supervisor_1") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisor_1.primary_management_interface") | String | Required |  |  | Primary management interface name like 'Management1/1'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisor_1.backup_management_interfaces") | List, items: String | Required |  | Min Length: 1 | Backup management interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisor_1.backup_management_interfaces.[]") | String |  |  |  | Management interface name like 'Management2/1'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_2</samp>](## "management_interfaces.[].redundancy.supervisor_2") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisor_2.primary_management_interface") | String | Required |  |  | Primary management interface name like 'Management1/1'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisor_2.backup_management_interfaces") | List, items: String | Required |  | Min Length: 1 | Backup management interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisor_2.backup_management_interfaces.[]") | String |  |  |  | Management interface name like 'Management2/1'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "management_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the management interface in the final EOS configuration. |
 
 === "YAML"
@@ -90,37 +92,39 @@
           monitor:
 
             # Link state of interface.
-            # `neighbor` and `link_state` are mutually exclusive and link_state take precedence.
+            # `neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence.
             link_state: <bool>
 
-            # To configure IPv6 redundancy neighbor fallback_delay should be set as infinity.
-            # `neighbor` and `link_state` are mutually exclusive and link_state take precedence.
+            # To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
+            # `neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence.
             neighbor:
-
-              # Enable/disable IPv6 neighbor redundancy.
-              enabled: <bool; required>
-              ipv6_address: <str>
+              ipv6_address: <str; required>
 
               # Interval between neighbor probes in milliseconds.
               interval: <int; 1-300000>
 
               # Number of missed neighbor replies after which it is timed out.
               multiplier: <int; 1-100>
-          supervisors:
+          supervisor_1:
 
-              # Supervisor number.
-            - number: <int; required>
+            # Primary management interface name like 'Management1/1'.
+            primary_management_interface: <str; required>
 
-              # Primary redundant management interface.
-              # Ex: Management1/1, Management1/2
-              primary_management_interface: <str; required>
+            # Backup management interfaces.
+            backup_management_interfaces: # >=1 items; required
 
-              # A list of backup redundant management interfaces.
-              # Ex:
-              # - Management1/1
-              # - Management1/2
-              backup_management_interfaces: # required
-                - <str>
+                # Management interface name like 'Management2/1'.
+              - <str>
+          supervisor_2:
+
+            # Primary management interface name like 'Management1/1'.
+            primary_management_interface: <str; required>
+
+            # Backup management interfaces.
+            backup_management_interfaces: # >=1 items; required
+
+                # Management interface name like 'Management2/1'.
+              - <str>
 
         # Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
         eos_cli: <str>

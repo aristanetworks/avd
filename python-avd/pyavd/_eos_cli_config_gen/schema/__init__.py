@@ -20038,10 +20038,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 class Neighbor(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"enabled": {"type": bool}, "ipv6_address": {"type": str}, "interval": {"type": int}, "multiplier": {"type": int}}
-                    enabled: bool
-                    """Enable/disable IPv6 neighbor redundancy."""
-                    ipv6_address: str | None
+                    _fields: ClassVar[dict] = {"ipv6_address": {"type": str}, "interval": {"type": int}, "multiplier": {"type": int}}
+                    ipv6_address: str
                     interval: int | None
                     """Interval between neighbor probes in milliseconds."""
                     multiplier: int | None
@@ -20052,8 +20050,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         def __init__(
                             self,
                             *,
-                            enabled: bool | UndefinedType = Undefined,
-                            ipv6_address: str | None | UndefinedType = Undefined,
+                            ipv6_address: str | UndefinedType = Undefined,
                             interval: int | None | UndefinedType = Undefined,
                             multiplier: int | None | UndefinedType = Undefined,
                         ) -> None:
@@ -20064,7 +20061,6 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: Enable/disable IPv6 neighbor redundancy.
                                 ipv6_address: ipv6_address
                                 interval: Interval between neighbor probes in milliseconds.
                                 multiplier: Number of missed neighbor replies after which it is timed out.
@@ -20075,14 +20071,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 link_state: bool | None
                 """
                 Link state of interface.
-                `neighbor` and `link_state` are mutually exclusive and link_state take
+                `neighbor` and `link_state` are mutually exclusive and `link_state` takes
                 precedence.
                 """
                 neighbor: Neighbor
                 """
-                To configure IPv6 redundancy neighbor fallback_delay should be set as infinity.
+                To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
                 `neighbor` and
-                `link_state` are mutually exclusive and link_state take precedence.
+                `link_state` are mutually exclusive and `link_state` takes precedence.
 
                 Subclass of AvdModel.
                 """
@@ -20099,18 +20095,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Args:
                             link_state:
                                Link state of interface.
-                               `neighbor` and `link_state` are mutually exclusive and link_state take
+                               `neighbor` and `link_state` are mutually exclusive and `link_state` takes
                                precedence.
                             neighbor:
-                               To configure IPv6 redundancy neighbor fallback_delay should be set as infinity.
+                               To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
                                `neighbor` and
-                               `link_state` are mutually exclusive and link_state take precedence.
+                               `link_state` are mutually exclusive and `link_state` takes precedence.
 
                                Subclass of AvdModel.
 
                         """
 
-            class SupervisorsItem(AvdModel):
+            class Supervisor1(AvdModel):
                 """Subclass of AvdModel."""
 
                 class BackupManagementInterfaces(AvdList[str]):
@@ -20118,27 +20114,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 BackupManagementInterfaces._item_type = str
 
-                _fields: ClassVar[dict] = {
-                    "number": {"type": int},
-                    "primary_management_interface": {"type": str},
-                    "backup_management_interfaces": {"type": BackupManagementInterfaces},
-                }
-                number: int
-                """Supervisor number."""
+                _fields: ClassVar[dict] = {"primary_management_interface": {"type": str}, "backup_management_interfaces": {"type": BackupManagementInterfaces}}
                 primary_management_interface: str
-                """
-                Primary redundant management interface.
-                Ex: Management1/1, Management1/2
-                """
+                """Primary management interface name like 'Management1/1'."""
                 backup_management_interfaces: BackupManagementInterfaces
                 """
-                A list of backup redundant management interfaces.
-                Ex:
-                - Management1/1
-                - Management1/2
+                Backup management interfaces.
 
-                Subclass of
-                AvdList with `str` items.
+                Subclass of AvdList with `str` items.
                 """
 
                 if TYPE_CHECKING:
@@ -20146,38 +20129,71 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     def __init__(
                         self,
                         *,
-                        number: int | UndefinedType = Undefined,
                         primary_management_interface: str | UndefinedType = Undefined,
                         backup_management_interfaces: BackupManagementInterfaces | UndefinedType = Undefined,
                     ) -> None:
                         """
-                        SupervisorsItem.
+                        Supervisor1.
 
 
                         Subclass of AvdModel.
 
                         Args:
-                            number: Supervisor number.
-                            primary_management_interface:
-                               Primary redundant management interface.
-                               Ex: Management1/1, Management1/2
+                            primary_management_interface: Primary management interface name like 'Management1/1'.
                             backup_management_interfaces:
-                               A list of backup redundant management interfaces.
-                               Ex:
-                               - Management1/1
-                               - Management1/2
+                               Backup management interfaces.
 
-                               Subclass of
-                               AvdList with `str` items.
+                               Subclass of AvdList with `str` items.
 
                         """
 
-            class Supervisors(AvdList[SupervisorsItem]):
-                """Subclass of AvdList with `SupervisorsItem` items."""
+            class Supervisor2(AvdModel):
+                """Subclass of AvdModel."""
 
-            Supervisors._item_type = SupervisorsItem
+                class BackupManagementInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
 
-            _fields: ClassVar[dict] = {"fallback_delay": {"type": str}, "monitor": {"type": Monitor}, "supervisors": {"type": Supervisors}}
+                BackupManagementInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"primary_management_interface": {"type": str}, "backup_management_interfaces": {"type": BackupManagementInterfaces}}
+                primary_management_interface: str
+                """Primary management interface name like 'Management1/1'."""
+                backup_management_interfaces: BackupManagementInterfaces
+                """
+                Backup management interfaces.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        primary_management_interface: str | UndefinedType = Undefined,
+                        backup_management_interfaces: BackupManagementInterfaces | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Supervisor2.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            primary_management_interface: Primary management interface name like 'Management1/1'.
+                            backup_management_interfaces:
+                               Backup management interfaces.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "fallback_delay": {"type": str},
+                "monitor": {"type": Monitor},
+                "supervisor_1": {"type": Supervisor1},
+                "supervisor_2": {"type": Supervisor2},
+            }
             fallback_delay: str | None
             """
             The duration to wait before falling back to the higher-priority interface.
@@ -20186,8 +20202,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             monitor: Monitor
             """Subclass of AvdModel."""
-            supervisors: Supervisors
-            """Subclass of AvdList with `SupervisorsItem` items."""
+            supervisor_1: Supervisor1
+            """Subclass of AvdModel."""
+            supervisor_2: Supervisor2
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -20196,7 +20214,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     fallback_delay: str | None | UndefinedType = Undefined,
                     monitor: Monitor | UndefinedType = Undefined,
-                    supervisors: Supervisors | UndefinedType = Undefined,
+                    supervisor_1: Supervisor1 | UndefinedType = Undefined,
+                    supervisor_2: Supervisor2 | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Redundancy.
@@ -20210,7 +20229,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Accepts a value between 0
                            and 3600 seconds, or the string `infinity` to disable fallback.
                         monitor: Subclass of AvdModel.
-                        supervisors: Subclass of AvdList with `SupervisorsItem` items.
+                        supervisor_1: Subclass of AvdModel.
+                        supervisor_2: Subclass of AvdModel.
 
                     """
 

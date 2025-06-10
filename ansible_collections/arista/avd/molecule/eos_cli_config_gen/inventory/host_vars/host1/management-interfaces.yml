@@ -9,9 +9,7 @@ management_interfaces:
     redundancy:
       fallback_delay: infinity
       monitor:
-        link_state: false
         neighbor:
-          enabled: true
           ipv6_address: "1:1:1:1:1:1:1:1"
           interval: 101
           multiplier: 3
@@ -22,15 +20,12 @@ management_interfaces:
       fallback_delay: 100
       monitor:
         link_state: true
-        neighbor:
-          enabled: false
-      supervisors:
-        - number: 2
+      supervisor_2:
           primary_management_interface: Management2/1
           backup_management_interfaces:
             - Management2/2
             - Management1/1
-        - number: 1
+      supervisor_1:
           primary_management_interface: Management1/1
           backup_management_interfaces:
             - Management1/2
@@ -54,5 +49,4 @@ management_interfaces:
       fallback_delay: infinity
       monitor:
         neighbor:
-          enabled: true
           ipv6_address: "1:1:1:1:1:1:1:1"

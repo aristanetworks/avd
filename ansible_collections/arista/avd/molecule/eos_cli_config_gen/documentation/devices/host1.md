@@ -381,10 +381,6 @@ agent KernelFib shutdown supervisor standby
 | -------- | ----- |
 | Fallback Delay | 100 |
 | Monitor Link State | True |
-| Monitor Neighbor | False |
-| Monitor Neighbor IPv6 Address | - |
-| Monitor Neighbor Interval | - |
-| Monitor Neighbor Multiplier | - |
 | Supervisor 1 Primary Interface | Management1/1 |
 | Supervisor 1 Backup Interfaces | Management1/2, Management2/1 |
 | Supervisor 2 Primary Interface | Management2/1 |
@@ -395,8 +391,6 @@ agent KernelFib shutdown supervisor standby
 | Settings | Value |
 | -------- | ----- |
 | Fallback Delay | infinity |
-| Monitor Link State | False |
-| Monitor Neighbor | True |
 | Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
 | Monitor Neighbor Interval | 101 |
 | Monitor Neighbor Multiplier | 3 |
@@ -406,8 +400,6 @@ agent KernelFib shutdown supervisor standby
 | Settings | Value |
 | -------- | ----- |
 | Fallback Delay | infinity |
-| Monitor Link State | - |
-| Monitor Neighbor | True |
 | Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
 | Monitor Neighbor Interval | - |
 | Monitor Neighbor Multiplier | - |
@@ -421,7 +413,6 @@ interface Management0
    ip address 10.1.1.1
    redundancy fallback-delay 100 seconds
    redundancy monitor link-state
-   no redundancy monitor neighbor ipv6
    redundancy supervisor 1 interface primary Management1/1 backup Management1/2 Management2/1
    redundancy supervisor 2 interface primary Management2/1 backup Management2/2 Management1/1
 !
@@ -430,7 +421,6 @@ interface Management1
    vrf MGMT
    ip address 10.73.255.122/24
    redundancy fallback-delay infinity
-   no redundancy monitor link-state
    redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !
 interface Management42

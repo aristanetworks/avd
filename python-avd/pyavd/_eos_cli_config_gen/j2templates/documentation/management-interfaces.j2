@@ -44,16 +44,25 @@
 
 | Settings | Value |
 | -------- | ----- |
-| Fallback Delay | {{ mgmt_intf.redundancy.fallback_delay | arista.avd.default("-") }} |
-| Monitor Link State | {{ mgmt_intf.redundancy.monitor.link_state | arista.avd.default("-") }} |
-| Monitor Neighbor | {{ mgmt_intf.redundancy.monitor.neighbor.enabled | arista.avd.default("-") }} |
-| Monitor Neighbor IPv6 Address | {{ mgmt_intf.redundancy.monitor.neighbor.ipv6_address | arista.avd.default("-") }} |
+{%             if mgmt_intf.redundancy.fallback_delay is arista.avd.defined %}
+| Fallback Delay | {{ mgmt_intf.redundancy.fallback_delay }} |
+{%             endif %}
+{%             if mgmt_intf.redundancy.monitor.link_state is arista.avd.defined %}
+| Monitor Link State | {{ mgmt_intf.redundancy.monitor.link_state }} |
+{%             endif %}
+{%             if mgmt_intf.redundancy.monitor.neighbor is arista.avd.defined %}
+| Monitor Neighbor IPv6 Address | {{ mgmt_intf.redundancy.monitor.neighbor.ipv6_address }} |
 | Monitor Neighbor Interval | {{ mgmt_intf.redundancy.monitor.neighbor.interval | arista.avd.default("-") }} |
 | Monitor Neighbor Multiplier | {{ mgmt_intf.redundancy.monitor.neighbor.multiplier | arista.avd.default("-") }} |
-{%             for supervisor in mgmt_intf.redundancy.supervisors | arista.avd.natural_sort('number')  %}
-| Supervisor {{ supervisor.number }} Primary Interface | {{ supervisor.primary_management_interface }} |
-| Supervisor {{ supervisor.number }} Backup Interfaces | {{ ", ".join(supervisor.backup_management_interfaces) }} |
-{%             endfor %}
+{%             endif %}
+{%             if mgmt_intf.redundancy.supervisor_1 is arista.avd.defined %}
+| Supervisor 1 Primary Interface | {{ mgmt_intf.redundancy.supervisor_1.primary_management_interface }} |
+| Supervisor 1 Backup Interfaces | {{ ", ".join(mgmt_intf.redundancy.supervisor_1.backup_management_interfaces) }} |
+{%             endif %}
+{%             if mgmt_intf.redundancy.supervisor_2 is arista.avd.defined %}
+| Supervisor 2 Primary Interface | {{ mgmt_intf.redundancy.supervisor_2.primary_management_interface }} |
+| Supervisor 2 Backup Interfaces | {{ ", ".join(mgmt_intf.redundancy.supervisor_2.backup_management_interfaces) }} |
+{%             endif %}
 {%         endfor %}
 {%     endif %}
 
