@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 import ipaddress
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -513,7 +513,7 @@ class RouterBgpMixin(Protocol):
                 raise AristaAvdError(msg)
             for wan_route_server in self.shared_utils.filtered_wan_route_servers:
                 neighbor = self._create_neighbor(
-                    wan_route_server.vtep_ip,
+                    cast("str", wan_route_server.vtep_ip),
                     wan_route_server.hostname,
                     self.inputs.bgp_peer_groups.wan_overlay_peers.name,
                     overlay_peering_interface=self.shared_utils.vtep_loopback,
@@ -537,7 +537,7 @@ class RouterBgpMixin(Protocol):
             # No neighbor configured on the `wan_overlay_peers` peer group as it is covered by listen ranges
             for wan_route_server in self.shared_utils.filtered_wan_route_servers:
                 neighbor = self._create_neighbor(
-                    wan_route_server.vtep_ip,
+                    cast("str", wan_route_server.vtep_ip),
                     wan_route_server.hostname,
                     self.inputs.bgp_peer_groups.wan_rr_overlay_peers.name,
                     overlay_peering_interface=self.shared_utils.vtep_loopback,
