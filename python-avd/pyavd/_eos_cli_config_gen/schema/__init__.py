@@ -25954,9 +25954,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
                     bytes: int | None
-                    """Headroom pool limit in bytes."""
+                    """
+                    Headroom pool limit in bytes.
+                    `bytes` and `cells` are mutually exclusive with `bytes` taking
+                    precedence.
+                    """
                     cells: int | None
-                    """Headroom pool limit in cells."""
+                    """
+                    Headroom pool limit in cells.
+                    `bytes` and `cells` are mutually exclusive with `bytes` taking
+                    precedence.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -25968,8 +25976,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                bytes: Headroom pool limit in bytes.
-                                cells: Headroom pool limit in cells.
+                                bytes:
+                                   Headroom pool limit in bytes.
+                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
+                                   precedence.
+                                cells:
+                                   Headroom pool limit in cells.
+                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
+                                   precedence.
 
                             """
 
