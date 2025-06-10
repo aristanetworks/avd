@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
@@ -143,7 +143,8 @@ class UtilsMixin(Protocol):
         return stun_server_profiles
 
     def _wan_ha_peer_vtep_ip(self: AvdStructuredConfigOverlayProtocol) -> str:
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer)
+        """Should only be called when wan_ha is enabled."""
+        peer_facts = self.shared_utils.get_peer_facts(cast("str", self.shared_utils.wan_ha_peer))
         if not peer_facts.vtep_ip:
             msg = f"'vtep_ip' for host {self.shared_utils.wan_ha_peer}"
             raise AristaAvdMissingVariableError(msg)

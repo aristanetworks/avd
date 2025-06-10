@@ -12037,6 +12037,135 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class Mirror(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Destination(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EthernetInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                EthernetInterfaces._item_type = str
+
+                class TunnelModeGre(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "source": {"type": str},
+                        "destination": {"type": str},
+                        "dscp": {"type": int},
+                        "ttl": {"type": int},
+                        "protocol": {"type": str},
+                        "vrf": {"type": str},
+                    }
+                    source: str
+                    """Source IP address of GRE tunnel."""
+                    destination: str
+                    """Destination IP address of GRE tunnel."""
+                    dscp: int | None
+                    """DSCP of the GRE tunnel. EOS default is 0."""
+                    ttl: int | None
+                    """TTL range. EOS default is 128."""
+                    protocol: str | None
+                    """
+                    Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                    EOS default is 0x88BE.
+                    """
+                    vrf: str | None
+                    """VRF name of the GRE tunnel. EOS default is "default"."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            source: str | UndefinedType = Undefined,
+                            destination: str | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            ttl: int | None | UndefinedType = Undefined,
+                            protocol: str | None | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            TunnelModeGre.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                source: Source IP address of GRE tunnel.
+                                destination: Destination IP address of GRE tunnel.
+                                dscp: DSCP of the GRE tunnel. EOS default is 0.
+                                ttl: TTL range. EOS default is 128.
+                                protocol:
+                                   Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                                   EOS default is 0x88BE.
+                                vrf: VRF name of the GRE tunnel. EOS default is "default".
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "cpu": {"type": bool},
+                    "ethernet_interfaces": {"type": EthernetInterfaces},
+                    "tunnel_mode_gre": {"type": TunnelModeGre},
+                }
+                cpu: bool | None
+                """CPU ports."""
+                ethernet_interfaces: EthernetInterfaces
+                """Subclass of AvdList with `str` items."""
+                tunnel_mode_gre: TunnelModeGre
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        cpu: bool | None | UndefinedType = Undefined,
+                        ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
+                        tunnel_mode_gre: TunnelModeGre | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Destination.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            cpu: CPU ports.
+                            ethernet_interfaces: Subclass of AvdList with `str` items.
+                            tunnel_mode_gre: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "destination": {"type": Destination}}
+            enabled: bool | None
+            destination: Destination
+            """
+            Mirror destination.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, destination: Destination | UndefinedType = Undefined) -> None:
+                    """
+                    Mirror.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        destination:
+                           Mirror destination.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool},
             "notifying": {"type": bool},
@@ -12044,6 +12173,7 @@ class EosDesigns(EosDesignsRootModel):
             "log": {"type": int},
             "cpu": {"type": Cpu},
             "tx_latency": {"type": bool},
+            "mirror": {"type": Mirror},
         }
         enabled: bool
         notifying: bool | None
@@ -12059,6 +12189,12 @@ class EosDesigns(EosDesignsRootModel):
         """Subclass of AvdModel."""
         tx_latency: bool | None
         """Enable tx-latency mode."""
+        mirror: Mirror
+        """
+        Enable frame mirroring during congestion.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -12071,6 +12207,7 @@ class EosDesigns(EosDesignsRootModel):
                 log: int | None | UndefinedType = Undefined,
                 cpu: Cpu | UndefinedType = Undefined,
                 tx_latency: bool | None | UndefinedType = Undefined,
+                mirror: Mirror | UndefinedType = Undefined,
             ) -> None:
                 """
                 QueueMonitorLength.
@@ -12087,6 +12224,10 @@ class EosDesigns(EosDesignsRootModel):
                     log: Logging interval in seconds.
                     cpu: Subclass of AvdModel.
                     tx_latency: Enable tx-latency mode.
+                    mirror:
+                       Enable frame mirroring during congestion.
+
+                       Subclass of AvdModel.
 
                 """
 
@@ -20067,7 +20208,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -20078,7 +20219,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -20095,8 +20236,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -20113,8 +20256,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -20136,8 +20279,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -24143,7 +24286,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                                name: str | None
+                                name: str
                                 """Tracking group name."""
                                 recovery_delay: int | None
                                 """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -24154,7 +24297,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        name: str | None | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         recovery_delay: int | None | UndefinedType = Undefined,
                                         links_minimum: int | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -24171,8 +24314,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class Groups(AvdList[GroupsItem]):
-                                """Subclass of AvdList with `GroupsItem` items."""
+                            class Groups(AvdIndexedList[str, GroupsItem]):
+                                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "name"
 
                             Groups._item_type = GroupsItem
 
@@ -24189,8 +24334,8 @@ class EosDesigns(EosDesignsRootModel):
                             Any groups defined under "groups" will replace the default.
 
 
-                            Subclass of AvdList with `GroupsItem`
-                            items.
+                            Subclass of AvdIndexedList with
+                            `GroupsItem` items. Primary key is `name` (`str`).
 
                             Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                             """
@@ -24212,8 +24357,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Any groups defined under "groups" will replace the default.
 
 
-                                           Subclass of AvdList with `GroupsItem`
-                                           items.
+                                           Subclass of AvdIndexedList with
+                                           `GroupsItem` items. Primary key is `name` (`str`).
 
                                     """
 
@@ -28199,7 +28344,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -28210,7 +28355,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -28227,8 +28372,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -28245,8 +28392,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -28268,8 +28415,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -32302,7 +32449,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -32313,7 +32460,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -32330,8 +32477,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -32348,8 +32497,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -32371,8 +32520,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -43500,7 +43649,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -43511,7 +43660,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -43528,8 +43677,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -43546,8 +43697,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -43569,8 +43720,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -47576,7 +47727,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                                name: str | None
+                                name: str
                                 """Tracking group name."""
                                 recovery_delay: int | None
                                 """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -47587,7 +47738,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        name: str | None | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         recovery_delay: int | None | UndefinedType = Undefined,
                                         links_minimum: int | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -47604,8 +47755,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class Groups(AvdList[GroupsItem]):
-                                """Subclass of AvdList with `GroupsItem` items."""
+                            class Groups(AvdIndexedList[str, GroupsItem]):
+                                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "name"
 
                             Groups._item_type = GroupsItem
 
@@ -47622,8 +47775,8 @@ class EosDesigns(EosDesignsRootModel):
                             Any groups defined under "groups" will replace the default.
 
 
-                            Subclass of AvdList with `GroupsItem`
-                            items.
+                            Subclass of AvdIndexedList with
+                            `GroupsItem` items. Primary key is `name` (`str`).
 
                             Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                             """
@@ -47645,8 +47798,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Any groups defined under "groups" will replace the default.
 
 
-                                           Subclass of AvdList with `GroupsItem`
-                                           items.
+                                           Subclass of AvdIndexedList with
+                                           `GroupsItem` items. Primary key is `name` (`str`).
 
                                     """
 
@@ -51632,7 +51785,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -51643,7 +51796,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -51660,8 +51813,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -51678,8 +51833,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -51701,8 +51856,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -55735,7 +55890,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -55746,7 +55901,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -55763,8 +55918,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -55781,8 +55938,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -55804,8 +55961,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 

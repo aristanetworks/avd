@@ -9,8 +9,8 @@ ansible_connection: ansible.netcommon.httpapi
 # Specifies that we are indeed using Arista EOS
 ansible_network_os: arista.eos.eos
 # This user/password must exist on the switches to enable Ansible access
-ansible_user: admin
-ansible_password: admin
+ansible_user: arista
+ansible_password: arista
 # User escalation (to enter enable mode)
 ansible_become: true
 ansible_become_method: enable
