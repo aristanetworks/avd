@@ -4,15 +4,13 @@ force-exclude = '''.*'''
 
 [tool.isort]
 # Isort has been replaced with Ruff.
-skip_glob = [
-  "**/*"
-]
+skip_glob = ["**/*"]
 
 [tool.ruff]
 line-length = 160
 extend-exclude = [
   "python-avd/pyavd/_cv/api/**/*",
-  "python-avd/tests/pyavd/schema/data_merging_schema_class.py",  # File is generated during pytest
+  "python-avd/tests/pyavd/schema/data_merging_schema_class.py", # File is generated during pytest
   "ansible_collections/arista/avd/tests/**/*",
 ]
 target-version = "py310"
@@ -21,32 +19,32 @@ target-version = "py310"
 # D213 is forced here since it will be removed by pydocstyle.convention = 'google' even when we have ALL here.
 extend-select = ["ALL", "D213"]
 ignore = [
-  "D203",    # Ignoring conflicting D* warnings - one-blank-line-before-class
-  "D212",    # Ignoring conflicting D* warnings - multi-line-summary-first-line
-  "COM812",  # Ignoring conflicting rules that may cause conflicts when used with the formatter
-  "ISC001",  # Ignoring conflicting rules that may cause conflicts when used with the formatter
-  "TD002",   # We don't have require authors in TODO
-  "TD003",   # We don't have an issue link for all TODOs today
-  "FIX002",  # Line contains TODO - ignoring for ruff for now
-  "SLF001",  # Accessing private members - TODO: Improve code
-  "D100",    # Missing docstring in public module - TODO: Improve code
-  "D101",    # Missing docstring in public class - TODO: Improve code
-  "D102",    # Missing docstring in public method - TODO: Improve code
-  "D103",    # Missing docstring in public function - TODO: Improve code
-  "D104",    # Missing docstring in public package
-  "D105",    # Missing docstring in magic method - TODO: Improve code
-  "D106",    # Missing docstring in public nested class - TODO: Improve code
-  "D107",    # Missing docstring in `__init__` - TODO: Improve code
-  "ANN401",  # Dynamically typed expressions (typing.Any) are disallowed - TODO: Improve code
-  "C901",    # complex-structure - TODO: Improve code
-  "FBT001",  # Boolean-typed positional argument in function definition - TODO: Improve code
-  "FBT002",  # Boolean default positional argument in function definition - TODO: Improve code
-  "PD011",   # Use numpy instead of .values - False positive
-  "BLE001",  # Do not catch blind exception: `Exception - TODO: Improve code
-  "PLR2004", # Magic value used in comparison - TODO: Evaluate
-  "DTZ005",  # `datetime.datetime.now()` called without a `tz` argument - TODO: Improve code
-  "UP038",   # UP038 Use `X | Y` in `isinstance` call instead of `(X, Y)` - Why would I? It impacts performance.
-  "ASYNC109",# async-function-with-timeout: Our async functions call several other async functions and we need each of those calls to be governed by the configurable timeout.
+  "D203",     # Ignoring conflicting D* warnings - one-blank-line-before-class
+  "D212",     # Ignoring conflicting D* warnings - multi-line-summary-first-line
+  "COM812",   # Ignoring conflicting rules that may cause conflicts when used with the formatter
+  "ISC001",   # Ignoring conflicting rules that may cause conflicts when used with the formatter
+  "TD002",    # We don't have require authors in TODO
+  "TD003",    # We don't have an issue link for all TODOs today
+  "FIX002",   # Line contains TODO - ignoring for ruff for now
+  "SLF001",   # Accessing private members - TODO: Improve code
+  "D100",     # Missing docstring in public module - TODO: Improve code
+  "D101",     # Missing docstring in public class - TODO: Improve code
+  "D102",     # Missing docstring in public method - TODO: Improve code
+  "D103",     # Missing docstring in public function - TODO: Improve code
+  "D104",     # Missing docstring in public package
+  "D105",     # Missing docstring in magic method - TODO: Improve code
+  "D106",     # Missing docstring in public nested class - TODO: Improve code
+  "D107",     # Missing docstring in `__init__` - TODO: Improve code
+  "ANN401",   # Dynamically typed expressions (typing.Any) are disallowed - TODO: Improve code
+  "C901",     # complex-structure - TODO: Improve code
+  "FBT001",   # Boolean-typed positional argument in function definition - TODO: Improve code
+  "FBT002",   # Boolean default positional argument in function definition - TODO: Improve code
+  "PD011",    # Use numpy instead of .values - False positive
+  "BLE001",   # Do not catch blind exception: `Exception - TODO: Improve code
+  "PLR2004",  # Magic value used in comparison - TODO: Evaluate
+  "DTZ005",   # `datetime.datetime.now()` called without a `tz` argument - TODO: Improve code
+  "UP038",    # UP038 Use `X | Y` in `isinstance` call instead of `(X, Y)` - Why would I? It impacts performance.
+  "ASYNC109", # async-function-with-timeout: Our async functions call several other async functions and we need each of those calls to be governed by the configurable timeout.
 ]
 
 [tool.ruff.lint.pydocstyle]
@@ -54,21 +52,21 @@ convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
 "ansible_collections/arista/avd/plugins/*/*.py" = [
-  "E402",    # Ansible plugins require a layout with imports below the docs
-  "INP001",  # implicit namespace package. Add an `__init__.py` - Ansible plugins are not in packages
+  "E402",   # Ansible plugins require a layout with imports below the docs
+  "INP001", # implicit namespace package. Add an `__init__.py` - Ansible plugins are not in packages
 ]
 "ansible_collections/arista/avd/roles/eos_validate_state/python_modules/**/*.py" = [
-  "INP001",  # implicit namespace package. Add an `__init__.py` - Will be fixed once moved to PyAVD
+  "INP001", # implicit namespace package. Add an `__init__.py` - Will be fixed once moved to PyAVD
 ]
 "ansible_collections/arista/avd/molecule/eos_designs_unit_tests/custom_modules/*.py" = [
-  "INP001",  # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
+  "INP001", # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
 ]
 "python-avd/scripts/**/*.py" = [
-  "T201",  # Interactive scripts can have print
-  "INP001",  # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
+  "T201",   # Interactive scripts can have print
+  "INP001", # implicit namespace package. Add an `__init__.py` - TODO: Evaluate or see if it is a false positive
 ]
 "python-avd/pyavd/_cv/client/*.py" = [
-  "B904",  # Within an `except` clause, raise exceptions with `raise - TODO: Improve code
+  "B904", # Within an `except` clause, raise exceptions with `raise - TODO: Improve code
 ]
 "python-avd/pyavd/_eos_cli_config_gen/schema/__init__.py" = [
   "A002",    # Argument is shadowing a Python builtin - OK since these are data classes
@@ -95,16 +93,16 @@ convention = "google"
   "D205",    # 1 blank line required between summary line and description - OK since descriptions are autogenerated and for data fields.
 ]
 "python-avd/tests/**/*" = [
-  "S101",  # Accept 'assert' in pytest.
-  "INP001",  # implicit namespace package. Add an `__init__.py` - Tests are not in packages
+  "S101",   # Accept 'assert' in pytest.
+  "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
 ]
 "python/**/tests/**/*" = [
-  "S101",  # Accept 'assert' in pytest.
-  "INP001",  # implicit namespace package. Add an `__init__.py` - Tests are not in packages
+  "S101",   # Accept 'assert' in pytest.
+  "INP001", # implicit namespace package. Add an `__init__.py` - Tests are not in packages
 ]
 "python-avd/pyavd/_anta/index.py" = [
-  "F403",  # Allow wildcard imports to avoid cluttering the index
-  "F405",  # Allow names defined in via a wildcard import
+  "F403", # Allow wildcard imports to avoid cluttering the index
+  "F405", # Allow names defined in via a wildcard import
 ]
 
 [tool.ruff.lint.pylint]
@@ -124,13 +122,25 @@ docstring-code-format = true
 runtime-evaluated-base-classes = ["pydantic.BaseModel"]
 
 [tool.pyright]
-include = [
-  ".github",
-  "python-avd/pyavd/_eos_designs",
-]
 exclude = [
-    "python-avd/pyavd/_eos_designs/schema/__init__.py",
-    "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py",
-    "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
+  "ansible_collections/arista/avd",                                      # TODO
+  "python/avdutils/tests",                                               # TODO
+  "python-avd/pyavd/api",                                                # TODO
+  "python-avd/pyavd/j2filters",                                          # TODO
+  "python-avd/pyavd/j2tests",                                            # TODO
+  "python-avd/pyavd/_anta",                                              # TODO
+  "python-avd/pyavd/_cv",                                                # TODO
+  "python-avd/pyavd/_utils",                                             # TODO
+  "python-avd/pyavd/_schema",                                            # TODO
+  "python-avd/pyavd/_errors",                                            # TODO
+  "python-avd/schema_tools",                                             # TODO
+  "python-avd/tests",                                                    # TODO
+  # Excluded
+  "python-avd/pyavd/_cv/api",
+  "python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates",
+  "python-avd/pyavd/_eos_cli_config_gen/schema/__init__.py",
+  "python-avd/pyavd/_eos_designs/eos_designs_facts/schema/protocol.py",
+  "python-avd/pyavd/_eos_designs/j2templates/compiled_templates",
+  "python-avd/pyavd/_eos_designs/schema/__init__.py",
 ]
 pythonVersion = "3.10"

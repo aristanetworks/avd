@@ -126,12 +126,17 @@ class UtilsMixin(Protocol):
     ) -> EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem:
         """Returns common structured_configuration for L3 interface or L3 Port-Channel."""
         # variables being set for constructing appropriate validation error
+        # Also set flow_tracker to avoid type checking issues.
         if isinstance(l3_generic_interface, EosDesigns._DynamicKeys.DynamicNodeTypesItem.NodeTypes.NodesItem.L3InterfacesItem):
-            interface = EosCliConfigGen.EthernetInterfacesItem()
+            interface = EosCliConfigGen.EthernetInterfacesItem(
+                flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
+            )
             schema_key = "l3_interfaces"
         else:
             # implies interface is "L3 Port-Channel"
-            interface = EosCliConfigGen.PortChannelInterfacesItem()
+            interface = EosCliConfigGen.PortChannelInterfacesItem(
+                flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, EosCliConfigGen.PortChannelInterfacesItem.FlowTracker),
+            )
             schema_key = "l3_port_channels"
 
         # logic below is common to l3_interface and l3_port_channel interface types
@@ -150,7 +155,6 @@ class UtilsMixin(Protocol):
             shutdown=not l3_generic_interface.enabled,
             service_profile=l3_generic_interface.qos_profile,
             eos_cli=l3_generic_interface.raw_eos_cli,
-            flow_tracker=self.shared_utils.get_flow_tracker(l3_generic_interface.flow_tracking, interface.FlowTracker),
         )
         interface.switchport.enabled = False if "." not in l3_generic_interface.name else None
 
