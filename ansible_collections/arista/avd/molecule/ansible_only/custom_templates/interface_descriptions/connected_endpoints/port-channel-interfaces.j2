@@ -1,3 +1,4 @@
+{# Adding an example to check `endpoint_port_channel` for custom_templates: port-channel-interface. #}
 {% if endpoint_port_channel is arista.avd.defined %}
 {{ peer }}-{{ endpoint_port_channel }}
 {% else %}
