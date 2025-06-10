@@ -21,15 +21,15 @@ management_interfaces:
       monitor:
         link_state: true
       supervisor_2:
-          primary_management_interface: Management2/1
-          backup_management_interfaces:
-            - Management2/2
-            - Management1/1
+        primary_management_interface: Management2/1
+        backup_management_interfaces:
+          - Management2/2
+          - Management1/1
       supervisor_1:
-          primary_management_interface: Management1/1
-          backup_management_interfaces:
-            - Management1/2
-            - Management2/1
+        primary_management_interface: Management1/1
+        backup_management_interfaces:
+          - Management1/2
+          - Management2/1
   - name: Vlan123
     description: inband_management
     vrf: default

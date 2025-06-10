@@ -20203,9 +20203,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             monitor: Monitor
             """Subclass of AvdModel."""
             supervisor_1: Supervisor1
-            """Subclass of AvdModel."""
+            """
+            Configuration for supervisor 1, including its primary and backup management interfaces.
+
+            Subclass of
+            AvdModel.
+            """
             supervisor_2: Supervisor2
-            """Subclass of AvdModel."""
+            """
+            Configuration for supervisor 2, including its primary and backup management interfaces.
+
+            Subclass of
+            AvdModel.
+            """
 
             if TYPE_CHECKING:
 
@@ -20229,8 +20239,16 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            Accepts a value between 0
                            and 3600 seconds, or the string `infinity` to disable fallback.
                         monitor: Subclass of AvdModel.
-                        supervisor_1: Subclass of AvdModel.
-                        supervisor_2: Subclass of AvdModel.
+                        supervisor_1:
+                           Configuration for supervisor 1, including its primary and backup management interfaces.
+
+                           Subclass of
+                           AvdModel.
+                        supervisor_2:
+                           Configuration for supervisor 2, including its primary and backup management interfaces.
+
+                           Subclass of
+                           AvdModel.
 
                     """
 

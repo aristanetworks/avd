@@ -33,11 +33,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.ipv6_address") | String | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.interval") | Integer |  |  | Min: 1<br>Max: 300000 | Interval between neighbor probes in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.multiplier") | Integer |  |  | Min: 1<br>Max: 100 | Number of missed neighbor replies after which it is timed out. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_1</samp>](## "management_interfaces.[].redundancy.supervisor_1") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_1</samp>](## "management_interfaces.[].redundancy.supervisor_1") | Dictionary |  |  |  | Configuration for supervisor 1, including its primary and backup management interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisor_1.primary_management_interface") | String | Required |  |  | Primary management interface name like 'Management1/1'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisor_1.backup_management_interfaces") | List, items: String | Required |  | Min Length: 1 | Backup management interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisor_1.backup_management_interfaces.[]") | String |  |  |  | Management interface name like 'Management2/1'. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_2</samp>](## "management_interfaces.[].redundancy.supervisor_2") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_2</samp>](## "management_interfaces.[].redundancy.supervisor_2") | Dictionary |  |  |  | Configuration for supervisor 2, including its primary and backup management interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisor_2.primary_management_interface") | String | Required |  |  | Primary management interface name like 'Management1/1'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisor_2.backup_management_interfaces") | List, items: String | Required |  | Min Length: 1 | Backup management interfaces. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisor_2.backup_management_interfaces.[]") | String |  |  |  | Management interface name like 'Management2/1'. |
@@ -105,6 +105,8 @@
 
               # Number of missed neighbor replies after which it is timed out.
               multiplier: <int; 1-100>
+
+          # Configuration for supervisor 1, including its primary and backup management interfaces.
           supervisor_1:
 
             # Primary management interface name like 'Management1/1'.
@@ -115,6 +117,8 @@
 
                 # Management interface name like 'Management2/1'.
               - <str>
+
+          # Configuration for supervisor 2, including its primary and backup management interfaces.
           supervisor_2:
 
             # Primary management interface name like 'Management1/1'.

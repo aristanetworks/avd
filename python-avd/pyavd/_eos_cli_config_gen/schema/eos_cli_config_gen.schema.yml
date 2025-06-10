@@ -8059,6 +8059,8 @@ keys:
                       - str
             supervisor_1:
               type: dict
+              description: Configuration for supervisor 1, including its primary and
+                backup management interfaces.
               keys:
                 primary_management_interface:
                   type: str
@@ -8074,6 +8076,8 @@ keys:
                     description: Management interface name like 'Management2/1'.
             supervisor_2:
               type: dict
+              description: Configuration for supervisor 2, including its primary and
+                backup management interfaces.
               $ref: eos_cli_config_gen#/keys/management_interfaces/items/keys/redundancy/keys/supervisor_1
         eos_cli:
           type: str
