@@ -411,6 +411,14 @@ router_bgp:
     redistribute_routes:
     - learned
     - igmp
+  - id: 10
+    tenant: Tenant_B
+    rd: 192.168.255.6:10010
+    route_targets:
+      both:
+      - 10010:10010
+    redistribute_routes:
+    - learned
   - id: 330
     tenant: Tenant_C
     rd: 192.168.255.6:10330
@@ -1223,6 +1231,9 @@ vlans:
 - id: 9
   name: MULTICAST_ENABLED_9
   tenant: Tenant_B
+- id: 10
+  name: MULTICAST_VXLAN_FLOOD_ENABLED_WITH_UNDERLAY_MULTICAST_GROUP
+  tenant: Tenant_B
 - id: 330
   name: L3_MULTICAST_DISABLED_330
   tenant: Tenant_C
@@ -1393,7 +1404,7 @@ vxlan_interface:
         flood_group: 232.1.0.4
       - id: 7
         vni: 10007
-        flood_group: 232.10.10.10
+        flood_group: 232.1.0.7
       - id: 8
         vni: 10008
         multicast_group: 232.0.16.8
@@ -1402,6 +1413,9 @@ vxlan_interface:
         vni: 10009
         multicast_group: 232.0.16.9
         flood_group: 232.1.0.9
+      - id: 10
+        vni: 10010
+        flood_group: 232.10.10.10
       - id: 330
         vni: 10330
       - id: 331
