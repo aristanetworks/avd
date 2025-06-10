@@ -30,4 +30,21 @@ errdisable:
       - xcvr-power-unsupported
       - xcvr-unsupported
       - arp-inspection
+    intervals:
+      - 100
+      - 200
+      - 300
+      - 400
+      - 500
+      - 600
+      - "none"
+      - 500
+      - 400
+      - 300
+      - 200
+      - 100
+      - "none"
+      - 100
+      - 200
+      - 300
     interval: 300

@@ -5391,9 +5391,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Causes._item_type = str
 
-            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "interval": {"type": int, "default": 300}}
+            class Intervals(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Intervals._item_type = str
+
+            _fields: ClassVar[dict] = {"causes": {"type": Causes}, "intervals": {"type": Intervals}, "interval": {"type": int, "default": 300}}
             causes: Causes
             """Subclass of AvdList with `str` items."""
+            intervals: Intervals
+            """
+            Interval for each recovery cause. This list should be of same length as `causes`.
+            Set 'none' for
+            default interval.
+            Minimum value: 300 and maximum value: 86400.
+
+            Subclass of AvdList with `str`
+            items.
+            """
             interval: int
             """
             Interval in seconds.
@@ -5403,7 +5418,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, causes: Causes | UndefinedType = Undefined, interval: int | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self,
+                    *,
+                    causes: Causes | UndefinedType = Undefined,
+                    intervals: Intervals | UndefinedType = Undefined,
+                    interval: int | UndefinedType = Undefined,
+                ) -> None:
                     """
                     Recovery.
 
@@ -5412,6 +5433,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     Args:
                         causes: Subclass of AvdList with `str` items.
+                        intervals:
+                           Interval for each recovery cause. This list should be of same length as `causes`.
+                           Set 'none' for
+                           default interval.
+                           Minimum value: 300 and maximum value: 86400.
+
+                           Subclass of AvdList with `str`
+                           items.
                         interval: Interval in seconds.
 
                     """

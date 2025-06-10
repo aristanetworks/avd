@@ -2156,6 +2156,18 @@ keys:
               - xcvr-overheat
               - xcvr-power-unsupported
               - xcvr-unsupported
+          intervals:
+            type: list
+            description: 'Interval for each recovery cause. This list should be of
+              same length as `causes`.
+
+              Set ''none'' for default interval.
+
+              Minimum value: 300 and maximum value: 86400.'
+            items:
+              type: str
+              convert_types:
+              - int
           interval:
             type: int
             convert_types:

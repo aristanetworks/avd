@@ -50,6 +50,17 @@ keys:
               - "xcvr-overheat"
               - "xcvr-power-unsupported"
               - "xcvr-unsupported"
+          intervals:
+            # TODO: AVD 6.0 - Consider changing the 'causes' key dict of dicts with each cause and its interval as a keys.
+            type: list
+            description: |-
+              Interval for each recovery cause. This list should be of same length as `causes`.
+              Set 'none' for default interval.
+              Minimum value: 300 and maximum value: 86400.
+            items:
+              type: str
+              convert_types:
+              - int
           interval:
             type: int
             convert_types:
