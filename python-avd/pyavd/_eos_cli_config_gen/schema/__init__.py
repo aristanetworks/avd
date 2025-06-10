@@ -11328,6 +11328,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             AdministrativeGroups._item_type = str
 
+            class Srlgs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Srlgs._item_type = str
+
             class Bandwidth(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -11438,7 +11443,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
-                "srlg": {"type": str},
+                "srlgs": {"type": Srlgs},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
                 "min_delay_static": {"type": MinDelayStatic},
@@ -11453,8 +11458,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
             """
-            srlg: str | None
-            """SRLG name or number."""
+            srlgs: Srlgs
+            """
+            List of SRLGs.
+
+            Subclass of AvdList with `str` items.
+            """
             metric: int | None
             bandwidth: Bandwidth
             """
@@ -11480,7 +11489,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
-                    srlg: str | None | UndefinedType = Undefined,
+                    srlgs: Srlgs | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
@@ -11499,7 +11508,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            integers 0-127.
 
                            Subclass of AvdList with `str` items.
-                        srlg: SRLG name or number.
+                        srlgs:
+                           List of SRLGs.
+
+                           Subclass of AvdList with `str` items.
                         metric: metric
                         bandwidth:
                            Interface maximum reservable bandwidth.
@@ -31018,6 +31030,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             AdministrativeGroups._item_type = str
 
+            class Srlgs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Srlgs._item_type = str
+
             class Bandwidth(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -31130,7 +31147,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
-                "srlg": {"type": str},
+                "srlgs": {"type": Srlgs},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
                 "min_delay_static": {"type": MinDelayStatic},
@@ -31145,8 +31162,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
             """
-            srlg: str | None
-            """SRLG name or number."""
+            srlgs: Srlgs
+            """
+            List of SRLGs.
+
+            Subclass of AvdList with `str` items.
+            """
             metric: int | None
             bandwidth: Bandwidth
             """
@@ -31172,7 +31193,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
-                    srlg: str | None | UndefinedType = Undefined,
+                    srlgs: Srlgs | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
@@ -31191,7 +31212,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            integers 0-127.
 
                            Subclass of AvdList with `str` items.
-                        srlg: SRLG name or number.
+                        srlgs:
+                           List of SRLGs.
+
+                           Subclass of AvdList with `str` items.
                         metric: metric
                         bandwidth:
                            Interface maximum reservable bandwidth.

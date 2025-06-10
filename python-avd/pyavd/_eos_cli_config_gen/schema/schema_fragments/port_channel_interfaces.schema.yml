@@ -1419,11 +1419,14 @@ keys:
                 type: str
                 convert_types:
                   - int
-            srlg:
-              description: SRLG name or number.
-              type: str
-              convert_types:
-                - int
+            srlgs:
+              description: List of SRLGs.
+              type: list
+              items:
+                type: str
+                description: SRLG name or number.
+                convert_types:
+                  - int
             metric:
               type: int
               convert_types:

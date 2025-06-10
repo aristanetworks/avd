@@ -436,7 +436,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "port_channel_interfaces.[].traffic_engineering.enabled") | Boolean |  |  |  | Whether to enable traffic-engineering on this interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;administrative_groups</samp>](## "port_channel_interfaces.[].traffic_engineering.administrative_groups") | List, items: String |  |  |  | List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single integers 0-127. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].traffic_engineering.administrative_groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlg</samp>](## "port_channel_interfaces.[].traffic_engineering.srlg") | String |  |  |  | SRLG name or number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;srlgs</samp>](## "port_channel_interfaces.[].traffic_engineering.srlgs") | List, items: String |  |  |  | List of SRLGs. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "port_channel_interfaces.[].traffic_engineering.srlgs.[]") | String |  |  |  | SRLG name or number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;metric</samp>](## "port_channel_interfaces.[].traffic_engineering.metric") | Integer |  |  | Min: 1<br>Max: 16777215 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bandwidth</samp>](## "port_channel_interfaces.[].traffic_engineering.bandwidth") | Dictionary |  |  |  | Interface maximum reservable bandwidth. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;number</samp>](## "port_channel_interfaces.[].traffic_engineering.bandwidth.number") | Integer | Required |  | Min: 0<br>Max: 10000 |  |
@@ -1456,8 +1457,11 @@
           administrative_groups:
             - <str>
 
-          # SRLG name or number.
-          srlg: <str>
+          # List of SRLGs.
+          srlgs:
+
+              # SRLG name or number.
+            - <str>
           metric: <int; 1-16777215>
 
           # Interface maximum reservable bandwidth.
