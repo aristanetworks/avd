@@ -528,20 +528,39 @@ keys:
     type: bool
     default: false
     $ref: eos_cli_config_gen#/keys/router_bgp/keys/updates/keys/wait_for_convergence
+  custom_connected_endpoints_keys:
+    $ref: eos_designs#/keys/connected_endpoints_keys
+    default: null
+    type: list
+    documentation_options:
+      table: connected-endpoints-keys
+    description: '`custom_connected_endpoints_keys` offers a flexible way to extend
+      endpoint definitions without altering the `connected_endpoints_keys`.
+
+      The values defined in `custom_connected_endpoints_keys`, are prepended to the
+      ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.
+
+      This approach helps preserving the default `connected_endpoints_keys`, unlike
+      directly overriding it.'
   connected_endpoints_keys:
     documentation_options:
       table: connected-endpoints-keys
     description: 'Endpoints connecting to the fabric can be grouped by using separate
       keys.
 
-      The keys can be customized to provide a better better organization or grouping
-      of your data.
+      The keys can be customized to provide a better organization or grouping of your
+      data.
 
       `connected_endpoints_keys` should be defined in the top level group_vars for
       the fabric.
 
       The default values will be overridden if defining this key, so it is recommended
       to copy the defaults and modify them.
+
+      If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
+
+      Entries under `custom_connected_endpoint_keys` will take precedence over entries
+      in `connected_endpoint_keys`.
 
       '
     type: list
@@ -5309,6 +5328,12 @@ dynamic_keys:
     display_name: Connected Endpoints
     documentation_options:
       table: connected-endpoints
+  custom_connected_endpoints_keys.key:
+    $ref: eos_designs#/$defs/connected_endpoints
+    type: list
+    display_name: Custom Connected Endpoints
+    documentation_options:
+      table: connected-endpoints
   custom_node_type_keys.key:
     $ref: eos_designs#/$defs/node_type
     type: dict
@@ -5999,6 +6024,8 @@ $defs:
                   `endpoint` - The name of the connected endpoint\n  - `endpoint_port`
                   - The value from `endpoint_ports` for this switch port if set.\n
                   \ - `port_channel_id`: The port-channel number for the switch."
+                items:
+                  type: str
   flow_tracking_link:
     type: dict
     keys:

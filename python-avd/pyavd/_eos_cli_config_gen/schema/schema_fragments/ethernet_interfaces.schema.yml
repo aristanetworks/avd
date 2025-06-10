@@ -1681,6 +1681,31 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                      - text
+                      - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                    convert_types:
+                      - int
+                  key_type:
+                    type: str
+                    convert_types:
+                      - int
+                    description: Authentication key type.
+                    valid_values:
+                      - "0"
+                      - "7"
+                      - "8a"
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation performed by the `eos_validate_state` role.
