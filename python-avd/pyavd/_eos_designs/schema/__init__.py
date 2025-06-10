@@ -60581,22 +60581,13 @@ class EosDesigns(EosDesignsRootModel):
     """
     custom_connected_endpoints_keys: CustomConnectedEndpointsKeys
     """
-    Define Custom Connected Endpoints Keys (`custom_connected_endpoints_keys`), to specify additional
-    values for endpoint identification beyond the system defaults.
-    This allows for flexible extension of
-    endpoint definitions without disrupting the base configuration provided by the default
-    `connected_endpoints_keys`.
-    `custom_connected_endpoints_keys` should generally be defined in the
-    top-level group_vars applicable to the fabric or relevant scope.
-
-    Values defined under
-    custom_connected_endpoints_keys are merged with the default `connected_endpoints_keys`. The default
-    values remain intact.
-    This behaviour contrasts with defining the primary `connected_endpoints_keys`
-    variable directly, as doing so would completely override the defaults.
-    Therefore, utilize
-    `custom_connected_endpoints_keys` specifically for supplementing the default set, ensuring the
-    original keys are preserved.
+    `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
+    altering the `connected_endpoints_keys`.
+    The values defined in `custom_connected_endpoints_keys`,
+    are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in
+    `connected_endpoint_keys`.
+    This approach helps preserving the default `connected_endpoints_keys`,
+    unlike directly overriding it.
 
     Subclass of AvdIndexedList with `CustomConnectedEndpointsKeysItem`
     items. Primary key is `key` (`str`).
@@ -60611,10 +60602,10 @@ class EosDesigns(EosDesignsRootModel):
     The default values will be overridden if
     defining this key, so it is recommended to copy the defaults and modify them.
     If you need to add
-    custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named
-    identically to default `connected_endpoints_keys` entries,
-    custom entries will replace the
-    equivalent default entry.
+    custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
+    Entries
+    under `custom_connected_endpoint_keys` will take precedence over entries in
+    `connected_endpoint_keys`.
 
 
     Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items.
@@ -62574,22 +62565,13 @@ class EosDesigns(EosDesignsRootModel):
                    Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                    convergence state is reached.
                 custom_connected_endpoints_keys:
-                   Define Custom Connected Endpoints Keys (`custom_connected_endpoints_keys`), to specify additional
-                   values for endpoint identification beyond the system defaults.
-                   This allows for flexible extension of
-                   endpoint definitions without disrupting the base configuration provided by the default
-                   `connected_endpoints_keys`.
-                   `custom_connected_endpoints_keys` should generally be defined in the
-                   top-level group_vars applicable to the fabric or relevant scope.
-
-                   Values defined under
-                   custom_connected_endpoints_keys are merged with the default `connected_endpoints_keys`. The default
-                   values remain intact.
-                   This behaviour contrasts with defining the primary `connected_endpoints_keys`
-                   variable directly, as doing so would completely override the defaults.
-                   Therefore, utilize
-                   `custom_connected_endpoints_keys` specifically for supplementing the default set, ensuring the
-                   original keys are preserved.
+                   `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
+                   altering the `connected_endpoints_keys`.
+                   The values defined in `custom_connected_endpoints_keys`,
+                   are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in
+                   `connected_endpoint_keys`.
+                   This approach helps preserving the default `connected_endpoints_keys`,
+                   unlike directly overriding it.
 
                    Subclass of AvdIndexedList with `CustomConnectedEndpointsKeysItem`
                    items. Primary key is `key` (`str`).
@@ -62602,10 +62584,10 @@ class EosDesigns(EosDesignsRootModel):
                    The default values will be overridden if
                    defining this key, so it is recommended to copy the defaults and modify them.
                    If you need to add
-                   custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named
-                   identically to default `connected_endpoints_keys` entries,
-                   custom entries will replace the
-                   equivalent default entry.
+                   custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
+                   Entries
+                   under `custom_connected_endpoint_keys` will take precedence over entries in
+                   `connected_endpoint_keys`.
 
 
                    Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items.

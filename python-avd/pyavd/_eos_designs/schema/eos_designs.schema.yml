@@ -534,24 +534,14 @@ keys:
     type: list
     documentation_options:
       table: connected-endpoints-keys
-    description: 'Define Custom Connected Endpoints Keys (`custom_connected_endpoints_keys`),
-      to specify additional values for endpoint identification beyond the system defaults.
+    description: '`custom_connected_endpoints_keys` offers a flexible way to extend
+      endpoint definitions without altering the `connected_endpoints_keys`.
 
-      This allows for flexible extension of endpoint definitions without disrupting
-      the base configuration provided by the default `connected_endpoints_keys`.
+      The values defined in `custom_connected_endpoints_keys`, are prepended to the
+      ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.
 
-      `custom_connected_endpoints_keys` should generally be defined in the top-level
-      group_vars applicable to the fabric or relevant scope.
-
-
-      Values defined under custom_connected_endpoints_keys are merged with the default
-      `connected_endpoints_keys`. The default values remain intact.
-
-      This behaviour contrasts with defining the primary `connected_endpoints_keys`
-      variable directly, as doing so would completely override the defaults.
-
-      Therefore, utilize `custom_connected_endpoints_keys` specifically for supplementing
-      the default set, ensuring the original keys are preserved.'
+      This approach helps preserving the default `connected_endpoints_keys`, unlike
+      directly overriding it.'
   connected_endpoints_keys:
     documentation_options:
       table: connected-endpoints-keys
@@ -567,10 +557,10 @@ keys:
       The default values will be overridden if defining this key, so it is recommended
       to copy the defaults and modify them.
 
-      If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`
-      - if named identically to default `connected_endpoints_keys` entries,
+      If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
 
-      custom entries will replace the equivalent default entry.
+      Entries under `custom_connected_endpoint_keys` will take precedence over entries
+      in `connected_endpoint_keys`.
 
       '
     type: list

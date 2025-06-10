@@ -14,7 +14,7 @@ keys:
       table: connected-endpoints-keys
     description: |-
       `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without altering the `connected_endpoints_keys`.
-     The values defined in `custom_connected_endpoints_keys`, are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.
+      The values defined in `custom_connected_endpoints_keys`, are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.
       This approach helps preserving the default `connected_endpoints_keys`, unlike directly overriding it.
   connected_endpoints_keys:
     documentation_options:

@@ -7,11 +7,11 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>custom_connected_endpoints_keys</samp>](## "custom_connected_endpoints_keys") | List, items: Dictionary |  |  |  | Define Custom Connected Endpoints Keys (`custom_connected_endpoints_keys`), to specify additional values for endpoint identification beyond the system defaults.<br>This allows for flexible extension of endpoint definitions without disrupting the base configuration provided by the default `connected_endpoints_keys`.<br>`custom_connected_endpoints_keys` should generally be defined in the top-level group_vars applicable to the fabric or relevant scope.<br><br>Values defined under custom_connected_endpoints_keys are merged with the default `connected_endpoints_keys`. The default values remain intact.<br>This behaviour contrasts with defining the primary `connected_endpoints_keys` variable directly, as doing so would completely override the defaults.<br>Therefore, utilize `custom_connected_endpoints_keys` specifically for supplementing the default set, ensuring the original keys are preserved. |
+    | [<samp>custom_connected_endpoints_keys</samp>](## "custom_connected_endpoints_keys") | List, items: Dictionary |  |  |  | `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without altering the `connected_endpoints_keys`.<br>The values defined in `custom_connected_endpoints_keys`, are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.<br>This approach helps preserving the default `connected_endpoints_keys`, unlike directly overriding it. |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "custom_connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "custom_connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "custom_connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
-    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  | See (+) on YAML tab |  | Endpoints connecting to the fabric can be grouped by using separate keys.<br>The keys can be customized to provide a better organization or grouping of your data.<br>`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br>If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named identically to default `connected_endpoints_keys` entries,<br>custom entries will replace the equivalent default entry.<br> |
+    | [<samp>connected_endpoints_keys</samp>](## "connected_endpoints_keys") | List, items: Dictionary |  | See (+) on YAML tab |  | Endpoints connecting to the fabric can be grouped by using separate keys.<br>The keys can be customized to provide a better organization or grouping of your data.<br>`connected_endpoints_keys` should be defined in the top level group_vars for the fabric.<br>The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.<br>If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.<br>Entries under `custom_connected_endpoint_keys` will take precedence over entries in `connected_endpoint_keys`.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;key</samp>](## "connected_endpoints_keys.[].key") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;type</samp>](## "connected_endpoints_keys.[].type") | String |  |  |  | Type used for documentation. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;description</samp>](## "connected_endpoints_keys.[].description") | String |  |  |  | Description used for documentation. |
@@ -19,13 +19,9 @@
 === "YAML"
 
     ```yaml
-    # Define Custom Connected Endpoints Keys (`custom_connected_endpoints_keys`), to specify additional values for endpoint identification beyond the system defaults.
-    # This allows for flexible extension of endpoint definitions without disrupting the base configuration provided by the default `connected_endpoints_keys`.
-    # `custom_connected_endpoints_keys` should generally be defined in the top-level group_vars applicable to the fabric or relevant scope.
-    #
-    # Values defined under custom_connected_endpoints_keys are merged with the default `connected_endpoints_keys`. The default values remain intact.
-    # This behaviour contrasts with defining the primary `connected_endpoints_keys` variable directly, as doing so would completely override the defaults.
-    # Therefore, utilize `custom_connected_endpoints_keys` specifically for supplementing the default set, ensuring the original keys are preserved.
+    # `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without altering the `connected_endpoints_keys`.
+    # The values defined in `custom_connected_endpoints_keys`, are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in `connected_endpoint_keys`.
+    # This approach helps preserving the default `connected_endpoints_keys`, unlike directly overriding it.
     custom_connected_endpoints_keys:
       - key: <str; required; unique>
 
@@ -39,8 +35,8 @@
     # The keys can be customized to provide a better organization or grouping of your data.
     # `connected_endpoints_keys` should be defined in the top level group_vars for the fabric.
     # The default values will be overridden if defining this key, so it is recommended to copy the defaults and modify them.
-    # If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys` - if named identically to default `connected_endpoints_keys` entries,
-    # custom entries will replace the equivalent default entry.
+    # If you need to add custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
+    # Entries under `custom_connected_endpoint_keys` will take precedence over entries in `connected_endpoint_keys`.
     connected_endpoints_keys: # (1)!
       - key: <str; required; unique>
 
