@@ -151,8 +151,8 @@ management api http-commands
 
 ```eos
 !
-username admin privilege 15 role network-admin secret sha512 <removed>
-username arista privilege 15 role network-admin nopassword
+username admin privilege 15 role network-admin nopassword
+username arista privilege 15 role network-admin secret sha512 <removed>
 ```
 
 ### Enable Password
