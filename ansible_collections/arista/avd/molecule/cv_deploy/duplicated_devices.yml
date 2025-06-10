@@ -249,6 +249,14 @@
           ignore_errors: true
           when: cv_deploy_results.workspace.id is not none and cv_deploy_results.workspace.id | length > 0
 
+        - name: "{{ test_id | upper }} Remove directory with dynamically created structured configs (required for molecule runner)."
+          tags: ["{{ test_id }}"]
+          run_once: true
+          delegate_to: localhost
+          ansible.builtin.file:
+            path: "{{ structured_dir }}"
+            state: absent
+
         - name: "{{ test_id | upper }} Cleanup"
           tags: ["{{ test_id }}"]
           run_once: true
