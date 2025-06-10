@@ -6,7 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from ipaddress import ip_address
 from re import fullmatch
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default
@@ -60,13 +60,13 @@ class OverlayMixin(Protocol):
 
     def get_rd_admin_subfield_value(self: SharedUtilsProtocol, admin_subfield: str, admin_subfield_offset: int) -> str:
         if admin_subfield in ["router_id", "overlay_loopback_ip"]:
-            return self.router_id
+            return cast("str", self.router_id)
 
         if admin_subfield == "vtep_loopback":
             return self.vtep_ip
 
         if admin_subfield == "bgp_as":
-            return self.bgp_as
+            return cast("str", self.bgp_as)
 
         if admin_subfield == "vrf_router_id":
             return "vrf_router_id"
@@ -75,7 +75,7 @@ class OverlayMixin(Protocol):
             if self.id is None:
                 msg = f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'"
                 raise AristaAvdInvalidInputsError(msg)
-            return self.id + admin_subfield_offset
+            return str(self.id + admin_subfield_offset)
 
         if fullmatch(r"\d+", str(admin_subfield)):
             return str(int(admin_subfield) + admin_subfield_offset)
@@ -83,7 +83,7 @@ class OverlayMixin(Protocol):
         try:
             ip_address(admin_subfield)
         except ValueError:
-            return self.router_id
+            return cast("str", self.router_id)
 
         return admin_subfield
 
@@ -126,7 +126,7 @@ class OverlayMixin(Protocol):
             if self.is_first_ha_peer:
                 return f"{self.router_id}:{self.wan_site.id}"
 
-            peer_fact = self.get_peer_facts(self.wan_ha_peer)
+            peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
             return f"{peer_fact.router_id}:{self.wan_site.id}"
 
         if self.overlay_vtep:

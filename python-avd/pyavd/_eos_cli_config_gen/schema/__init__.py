@@ -9855,6 +9855,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class PeerAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
+                mode: Literal["text", "ietf-md5"]
+                """Authentication mode."""
+                key: str
+                """Authentication key."""
+                key_type: Literal["0", "7", "8a"] | None
+                """Authentication key type."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
+                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PeerAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Authentication mode.
+                            key: Authentication key.
+                            key_type: Authentication key type.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
                 "priority_level": {"type": int},
@@ -9864,6 +9897,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tracked_object": {"type": TrackedObject},
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
+                "peer_authentication": {"type": PeerAuthentication},
             }
             id: int
             """VRID."""
@@ -9881,6 +9915,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ipv6: Ipv6
             """Subclass of AvdModel."""
+            peer_authentication: PeerAuthentication
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -9895,6 +9931,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     tracked_object: TrackedObject | UndefinedType = Undefined,
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
+                    peer_authentication: PeerAuthentication | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrrpIdsItem.
@@ -9911,6 +9948,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         tracked_object: Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`).
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
+                        peer_authentication: Subclass of AvdModel.
 
                     """
 
@@ -26139,6 +26177,44 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Mmu(AvdModel):
                 """Subclass of AvdModel."""
 
+                class HeadroomPoolLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
+                    bytes: int | None
+                    """
+                    Headroom pool limit in bytes.
+                    `bytes` and `cells` are mutually exclusive with `bytes` taking
+                    precedence.
+                    """
+                    cells: int | None
+                    """
+                    Headroom pool limit in cells.
+                    `bytes` and `cells` are mutually exclusive with `bytes` taking
+                    precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            HeadroomPoolLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                bytes:
+                                   Headroom pool limit in bytes.
+                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
+                                   precedence.
+                                cells:
+                                   Headroom pool limit in cells.
+                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
+                                   precedence.
+
+                            """
+
                 class QueueProfilesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -26354,16 +26430,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 QueueProfiles._item_type = QueueProfilesItem
 
-                _fields: ClassVar[dict] = {"active_profile": {"type": str}, "queue_profiles": {"type": QueueProfiles}}
+                _fields: ClassVar[dict] = {
+                    "active_profile": {"type": str},
+                    "headroom_pool_limit": {"type": HeadroomPoolLimit},
+                    "queue_profiles": {"type": QueueProfiles},
+                }
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
+                headroom_pool_limit: HeadroomPoolLimit
+                """
+                Max limit on headroom pool size.
+
+                Subclass of AvdModel.
+                """
                 queue_profiles: QueueProfiles
                 """Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`)."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, active_profile: str | None | UndefinedType = Undefined, queue_profiles: QueueProfiles | UndefinedType = Undefined
+                        self,
+                        *,
+                        active_profile: str | None | UndefinedType = Undefined,
+                        headroom_pool_limit: HeadroomPoolLimit | UndefinedType = Undefined,
+                        queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Mmu.
@@ -26373,6 +26463,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
+                            headroom_pool_limit:
+                               Max limit on headroom pool size.
+
+                               Subclass of AvdModel.
                             queue_profiles: Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`).
 
                         """
