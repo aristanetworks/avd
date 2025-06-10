@@ -1,0 +1,80 @@
+---
+type: wan_router
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.142.0/24
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      wan_ha:
+        enabled:
+      nodes:
+        - name: wan-ha-set-as-none
+          id: 1
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: 172.16.0.2/30
+              peer_ip: 172.16.0.1/30
+        - name: wan-ha-set-as-none-node2
+          id: 1
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: ATT
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: 172.16.0.1/30
+              peer_ip: 172.16.0.2/30
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+wan_path_groups:
+  - id: 100
+    name: INET
+
+cv_pathfinder_regions:
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+        location: Miami
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+tenants:
+  - name: TenantA
+    mac_vrf_vni_base: 1000
+    vrfs:
+      - name: PROD
+        vrf_id: 142
+
+expected_error_message: >-
+  Placing two WAN routers in a common node group will trigger WAN HA in a future AVD release. Currently WAN HA is in preview,
+  so it will not be automatically enabled. To avoid unplanned configuration changes once the feature is released,
+  it is currently required to set 'wan_ha.enabled' to 'true' or 'false'.

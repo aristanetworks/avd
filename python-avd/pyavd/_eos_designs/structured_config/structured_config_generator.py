@@ -23,8 +23,12 @@ if TYPE_CHECKING:
 
 
 def structured_config_contributor(func: Callable[[T_StructuredConfigGeneratorSubclass], None]) -> Callable[[T_StructuredConfigGeneratorSubclass], None]:
-    """Decorator to mark methods that contribute to the structured config."""
-    func._is_structured_config_contributor = True
+    """
+    Decorator to mark methods that contribute to the structured config.
+
+    TODO: Store the functions in a class variable on StructuredConfigGeneratorProtocol instead of modifying the func.
+    """
+    func._is_structured_config_contributor = True  # pyright: ignore [reportFunctionMemberAccess]
     return func
 
 
