@@ -93,7 +93,7 @@ servers:
         switches: [ CUSTOM-TEMPLATES-L3LEAF1B, CUSTOM-TEMPLATES-L3LEAF1B ]
         mode: trunk
         enabled: true
-        # description of this port-channel includes the value of key 'endpoint_port_channel'
+        # To check `connected_endpoints_port_channel_interfaces` includes `endpoint_port_channel` in description.
         port_channel:
           mode: active
           description: portchannel
