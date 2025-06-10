@@ -49,8 +49,7 @@
 {%             endif %}
 {%             if mgmt_intf.redundancy.monitor.link_state is arista.avd.defined %}
 | Monitor Link State | {{ mgmt_intf.redundancy.monitor.link_state }} |
-{%             endif %}
-{%             if mgmt_intf.redundancy.monitor.neighbor is arista.avd.defined %}
+{%             elif mgmt_intf.redundancy.monitor.neighbor is arista.avd.defined %}
 | Monitor Neighbor IPv6 Address | {{ mgmt_intf.redundancy.monitor.neighbor.ipv6_address }} |
 | Monitor Neighbor Interval | {{ mgmt_intf.redundancy.monitor.neighbor.interval | arista.avd.default("-") }} |
 | Monitor Neighbor Multiplier | {{ mgmt_intf.redundancy.monitor.neighbor.multiplier | arista.avd.default("-") }} |
