@@ -3,6 +3,7 @@ type: spine
 spine:
   nodes:
     - name: logging_settings
+      mgmt_ip: 192.168.66.22/24
       ptp:
         enabled: true
       id: 1
@@ -11,7 +12,7 @@ spine:
       bgp_as: 65000
       inband_mgmt_vrf: inband_mgmt_vrf
       inband_mgmt_interface: Vlan123
-
+mgmt_interface_vrf: MGMT
 logging_settings:
   console: errors
   monitor: disabled
@@ -27,70 +28,46 @@ logging_settings:
     rfc5424: true
     hostname: fqdn
   hosts:
+    - name: 10.10.10.7
+      vrf: mgt0
+    - name: 2001:db8::10:7
+    - name: 30.30.30.7
+      protocol: tcp
+      ports:
+        - 100
+        - 200
+    - name: 2001:db8::30:7
+      protocol: tcp
+      ports:
+        - 100
+        - 200
+    - name: 40.40.40.7
+      vrf: vrf_with_no_source_interface
+      ports:
+        - 300
+        - 400
+    - name: 2001:db8::40:7
+      vrf: default
+      ports:
+        - 300
+        - 400
+    - name: sslhost.net
+      vrf: use_mgmt_interface_vrf
+      protocol: tls
+      ssl_profile: logging-ssl
+      ports:
+        - 6515
     - name: syslog.server.com
       vrf: use_inband_mgmt_vrf
-  #   sequence_numbers: true
-  # source_interface: Ethernet2
-  # vrfs:
-  #   - name: mgt
-  #     source_interface: Management0
-  #     hosts:
-  #       - name: 10.10.10.7
-  #       - name: 2001:db8::10:7
-  #       - name: 30.30.30.7
-  #         protocol: tcp
-  #         ports:
-  #           - 100
-  #           - 200
-  #       - name: 2001:db8::30:7
-  #         protocol: tcp
-  #         ports:
-  #           - 100
-  #           - 200
-  #       - name: 40.40.40.7
-  #         ports:
-  #           - 300
-  #           - 400
-  #       - name: 2001:db8::40:7
-  #         ports:
-  #           - 300
-  #           - 400
-  #       - name: sslhost.net
-  #         protocol: tls
-  #         ssl_profile: logging-ssl
-  #         ports:
-  #           - 6515
-  #   - name: vrf_with_no_source_interface
-  #     hosts:
-  #       - name: 1.2.3.4
-  #         protocol: udp
-  #       - name: 2001:db8::1:2:3:4
-  #         protocol: udp
-  #   - name: default
-  #     source_interface: Loopback0
-  #     hosts:
-  #       - name: 20.20.20.7
-  #       - name: 2001:db8::20:7
-  #       - name: 50.50.50.7
-  #         protocol: tcp
-  #         ports:
-  #           - 100
-  #           - 200
-  #       - name: 2001:db8::50:7
-  #         protocol: tcp
-  #         ports:
-  #           - 100
-  #           - 200
-  #       - name: 60.60.60.7
-  #         protocol: udp
-  #         ports:
-  #           - 100
-  #           - 200
-  #       - name: 2001:db8::60:7
-  #         protocol: udp
-  #         ports:
-  #           - 100
-  #           - 200
+    - name: syslog2.server.com
+      vrf: use_inband_mgmt_vrf
+
+  vrfs:
+    - name: mgt0
+      source_interface: Management0
+    - name: vrf_with_no_source_interface
+    - name: default
+      source_interface: Loopback0
   event:
     congestion_drops_interval: 10
     global_link_status: false

@@ -2210,6 +2210,9 @@ keys:
           type: dict
           $ref: eos_cli_config_gen#/keys/logging/keys/vrfs/items/keys/hosts/items
           keys:
+            name:
+              type: str
+              required: true
             vrf:
               type: str
               description: "If not set, the VRF is automatically picked up from the

@@ -20,6 +20,54 @@ logging:
     timestamp: traditional year timezone
     hostname: fqdn
     rfc5424: true
+  vrfs:
+  - name: mgt0
+    source_interface: Management0
+    hosts:
+    - name: 10.10.10.7
+      protocol: udp
+  - name: MGMT
+    source_interface: Management1
+    hosts:
+    - name: 2001:db8::10:7
+      protocol: udp
+    - name: 30.30.30.7
+      protocol: tcp
+      ports:
+      - 100
+      - 200
+    - name: 2001:db8::30:7
+      protocol: tcp
+      ports:
+      - 100
+      - 200
+    - name: sslhost.net
+      protocol: tls
+      ports:
+      - 6515
+      ssl_profile: logging-ssl
+  - name: vrf_with_no_source_interface
+    hosts:
+    - name: 40.40.40.7
+      protocol: udp
+      ports:
+      - 300
+      - 400
+  - name: default
+    source_interface: Loopback0
+    hosts:
+    - name: 2001:db8::40:7
+      protocol: udp
+      ports:
+      - 300
+      - 400
+  - name: inband_mgmt_vrf
+    source_interface: Vlan123
+    hosts:
+    - name: syslog.server.com
+      protocol: udp
+    - name: syslog2.server.com
+      protocol: udp
   policy:
     match:
       match_lists:
@@ -48,6 +96,13 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.22/24
+  type: oob
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 prefix_lists:

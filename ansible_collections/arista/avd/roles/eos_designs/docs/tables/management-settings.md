@@ -70,8 +70,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rfc5424</samp>](## "logging_settings.format.rfc5424") | Boolean |  |  |  | Forward logs in RFC5424 format. |
     | [<samp>&nbsp;&nbsp;facility</samp>](## "logging_settings.facility") | String |  |  | Valid Values:<br>- <code>auth</code><br>- <code>cron</code><br>- <code>daemon</code><br>- <code>kern</code><br>- <code>local0</code><br>- <code>local1</code><br>- <code>local2</code><br>- <code>local3</code><br>- <code>local4</code><br>- <code>local5</code><br>- <code>local6</code><br>- <code>local7</code><br>- <code>lpr</code><br>- <code>mail</code><br>- <code>news</code><br>- <code>sys9</code><br>- <code>sys10</code><br>- <code>sys11</code><br>- <code>sys12</code><br>- <code>sys13</code><br>- <code>sys14</code><br>- <code>syslog</code><br>- <code>user</code><br>- <code>uucp</code> |  |
     | [<samp>&nbsp;&nbsp;hosts</samp>](## "logging_settings.hosts") | List, items: Dictionary | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "logging_settings.hosts.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "logging_settings.hosts.[].name") | String |  |  |  | Syslog server name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.hosts.[].name") | String | Required |  |  | Syslog server name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "logging_settings.hosts.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "logging_settings.hosts.[].protocol") | String |  | `udp` | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code><br>- <code>tls</code> |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ports</samp>](## "logging_settings.hosts.[].ports") | List, items: Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;int&gt;</samp>](## "logging_settings.hosts.[].ports.[]") | Integer |  |  |  |  |
@@ -297,6 +297,9 @@
       facility: <str; "auth" | "cron" | "daemon" | "kern" | "local0" | "local1" | "local2" | "local3" | "local4" | "local5" | "local6" | "local7" | "lpr" | "mail" | "news" | "sys9" | "sys10" | "sys11" | "sys12" | "sys13" | "sys14" | "syslog" | "user" | "uucp">
       hosts: # >=1 items; required
 
+          # Syslog server name.
+        - name: <str; required>
+
           # If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
           # The value of `vrf` will be interpreted according to these rules:
           # - `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.
@@ -304,10 +307,7 @@
           # - `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.
           #   An error will be raised if inband management is not configured for the device.
           # - Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
-        - vrf: <str>
-
-          # Syslog server name.
-          name: <str>
+          vrf: <str>
           protocol: <str; "tcp" | "udp" | "tls"; default="udp">
           ports:
             - <int>

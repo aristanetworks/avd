@@ -323,16 +323,22 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             self.structured_config.logging.event = logging_settings.event
             self.structured_config.logging.level = logging_settings.level
 
+            tmp_source_interfaces = EosCliConfigGen.Logging.Vrfs()
+            tmp_hosts = EosCliConfigGen.Logging.Vrfs()
             for host in self.inputs.logging_settings.hosts:
                 host_vrf, source_interface = self._get_vrf_and_source_interface(
                     vrf_input=host.vrf,
                     vrfs=self.inputs.logging_settings.vrfs,
-                    set_source_interfaces=False,
+                    set_source_interfaces=True,
                     context=f"logging_settings.hosts[name={host.name}].vrf",
                 )
-                # if source_interface:
-                #     self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)
-                self.structured_config.logging.vrfs.append_new(name=host_vrf,source_interface=source_interface,hosts=host.name)
+                tmp_source_interfaces.append_new(name=host_vrf, source_interface=source_interface)
+                tmp_hosts.obtain(host_vrf).hosts.append_new(
+                    name=host.name,
+                    protocol=host.protocol,
+                    ssl_profile=host.ssl_profile,
+                    ports=EosCliConfigGen.Logging.VrfsItem.HostsItem.Ports(items=host.ports),
+                )
 
     @structured_config_contributor
     def redundancy(self) -> None:

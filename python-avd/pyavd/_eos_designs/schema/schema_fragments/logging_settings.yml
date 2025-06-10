@@ -42,6 +42,9 @@ keys:
           type: dict
           $ref: eos_cli_config_gen#/keys/logging/keys/vrfs/items/keys/hosts/items
           keys:
+            name:
+              type: str
+              required: true
             vrf:
               type: str
               description: |-
@@ -79,4 +82,3 @@ keys:
       level:
         type: list
         $ref: eos_cli_config_gen#/keys/logging/keys/level
-

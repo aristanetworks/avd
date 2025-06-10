@@ -6613,12 +6613,14 @@ class EosDesigns(EosDesignsRootModel):
             Ports._item_type = int
 
             _fields: ClassVar[dict] = {
-                "vrf": {"type": str},
                 "name": {"type": str},
+                "vrf": {"type": str},
                 "protocol": {"type": str, "default": "udp"},
                 "ports": {"type": Ports},
                 "ssl_profile": {"type": str},
             }
+            name: str
+            """Syslog server name."""
             vrf: str | None
             """
             If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
@@ -6637,8 +6639,6 @@ class EosDesigns(EosDesignsRootModel):
             Any other string will be used directly as the VRF name. Remember to set the
             `logging_settings.vrfs[].source_interface` if needed.
             """
-            name: str | None
-            """Syslog server name."""
             protocol: Literal["tcp", "udp", "tls"]
             """Default value: `"udp"`"""
             ports: Ports
@@ -6651,8 +6651,8 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
+                    name: str | UndefinedType = Undefined,
                     vrf: str | None | UndefinedType = Undefined,
-                    name: str | None | UndefinedType = Undefined,
                     protocol: Literal["tcp", "udp", "tls"] | UndefinedType = Undefined,
                     ports: Ports | UndefinedType = Undefined,
                     ssl_profile: str | None | UndefinedType = Undefined,
@@ -6664,6 +6664,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
+                        name: Syslog server name.
                         vrf:
                            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
                            The
@@ -6680,7 +6681,6 @@ class EosDesigns(EosDesignsRootModel):
                            -
                            Any other string will be used directly as the VRF name. Remember to set the
                            `logging_settings.vrfs[].source_interface` if needed.
-                        name: Syslog server name.
                         protocol: protocol
                         ports: Subclass of AvdList with `int` items.
                         ssl_profile: Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
