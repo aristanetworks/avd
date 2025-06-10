@@ -37,7 +37,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisors</samp>](## "management_interfaces.[].redundancy.supervisors") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;number</samp>](## "management_interfaces.[].redundancy.supervisors.[].number") | Integer | Required |  |  | Supervisor number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisors.[].primary_management_interface") | String | Required |  |  | Primary redundant management interface.<br>Ex: Management1/1, Management1/2 |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisors.[].backup_management_interfaces") | List, items: String | Required |  |  | A list of backup redundant management interfaces.<br>Ex: Management1/1, Management1/2 |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisors.[].backup_management_interfaces") | List, items: String | Required |  |  | A list of backup redundant management interfaces.<br>Ex:<br>- Management1/1<br>- Management1/2 |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisors.[].backup_management_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "management_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the management interface in the final EOS configuration. |
 
@@ -116,7 +116,9 @@
               primary_management_interface: <str; required>
 
               # A list of backup redundant management interfaces.
-              # Ex: Management1/1, Management1/2
+              # Ex:
+              # - Management1/1
+              # - Management1/2
               backup_management_interfaces: # required
                 - <str>
 

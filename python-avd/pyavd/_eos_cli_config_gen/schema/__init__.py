@@ -20133,7 +20133,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 backup_management_interfaces: BackupManagementInterfaces
                 """
                 A list of backup redundant management interfaces.
-                Ex: Management1/1, Management1/2
+                Ex:
+                - Management1/1
+                - Management1/2
 
                 Subclass of
                 AvdList with `str` items.
@@ -20161,7 +20163,9 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Ex: Management1/1, Management1/2
                             backup_management_interfaces:
                                A list of backup redundant management interfaces.
-                               Ex: Management1/1, Management1/2
+                               Ex:
+                               - Management1/1
+                               - Management1/2
 
                                Subclass of
                                AvdList with `str` items.

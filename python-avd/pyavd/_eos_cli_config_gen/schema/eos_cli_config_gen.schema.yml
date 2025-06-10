@@ -8075,7 +8075,11 @@ keys:
                     type: list
                     description: 'A list of backup redundant management interfaces.
 
-                      Ex: Management1/1, Management1/2'
+                      Ex:
+
+                      - Management1/1
+
+                      - Management1/2'
                     required: true
                     items:
                       type: str
