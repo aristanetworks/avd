@@ -6745,18 +6745,46 @@ class EosDesigns(EosDesignsRootModel):
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
         }
-        console: str | None
+        console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
         """Console logging severity level."""
-        monitor: str | None
+        monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
         """Monitor logging severity level."""
         buffered: EosCliConfigGen.Logging.Buffered
         repeat_messages: bool | None
         """Summarize concurrent repeat messages."""
-        trap: str | None
+        trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"] | None
         """Trap logging severity level."""
         synchronous: EosCliConfigGen.Logging.Synchronous
         format: EosCliConfigGen.Logging.Format
-        facility: str | None
+        facility: (
+            Literal[
+                "auth",
+                "cron",
+                "daemon",
+                "kern",
+                "local0",
+                "local1",
+                "local2",
+                "local3",
+                "local4",
+                "local5",
+                "local6",
+                "local7",
+                "lpr",
+                "mail",
+                "news",
+                "sys9",
+                "sys10",
+                "sys11",
+                "sys12",
+                "sys13",
+                "sys14",
+                "syslog",
+                "user",
+                "uucp",
+            ]
+            | None
+        )
         hosts: Hosts
         """Subclass of AvdList with `HostsItem` items."""
         vrfs: Vrfs
@@ -6771,14 +6799,47 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
-                console: str | None | UndefinedType = Undefined,
-                monitor: str | None | UndefinedType = Undefined,
+                console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+                | None
+                | UndefinedType = Undefined,
+                monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+                | None
+                | UndefinedType = Undefined,
                 buffered: EosCliConfigGen.Logging.Buffered | UndefinedType = Undefined,
                 repeat_messages: bool | None | UndefinedType = Undefined,
-                trap: str | None | UndefinedType = Undefined,
+                trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
+                | None
+                | UndefinedType = Undefined,
                 synchronous: EosCliConfigGen.Logging.Synchronous | UndefinedType = Undefined,
                 format: EosCliConfigGen.Logging.Format | UndefinedType = Undefined,
-                facility: str | None | UndefinedType = Undefined,
+                facility: Literal[
+                    "auth",
+                    "cron",
+                    "daemon",
+                    "kern",
+                    "local0",
+                    "local1",
+                    "local2",
+                    "local3",
+                    "local4",
+                    "local5",
+                    "local6",
+                    "local7",
+                    "lpr",
+                    "mail",
+                    "news",
+                    "sys9",
+                    "sys10",
+                    "sys11",
+                    "sys12",
+                    "sys13",
+                    "sys14",
+                    "syslog",
+                    "user",
+                    "uucp",
+                ]
+                | None
+                | UndefinedType = Undefined,
                 hosts: Hosts | UndefinedType = Undefined,
                 vrfs: Vrfs | UndefinedType = Undefined,
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
