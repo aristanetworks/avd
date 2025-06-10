@@ -426,7 +426,7 @@
 {%         for po_te_interface in port_channel_te_interfaces %}
 {%             set admin_groups = po_te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = po_te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
-{%             set te_srlgs = po_te_interface.traffic_engineering.srlgs | arista.avd.default(["-"]) | join(", ") %}
+{%             set te_srlgs = po_te_interface.traffic_engineering.srlgs | arista.avd.default(["-"]) | join(",") %}
 {%             set te_metric = po_te_interface.traffic_engineering.metric | arista.avd.default("-") %}
 {%             if po_te_interface.traffic_engineering.bandwidth is arista.avd.defined %}
 {%                 set te_bandwidth = po_te_interface.traffic_engineering.bandwidth.number ~ " " ~ po_te_interface.traffic_engineering.bandwidth.unit %}

@@ -806,7 +806,7 @@
 {%         for te_interface in te_interfaces %}
 {%             set admin_groups = te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
-{%             set te_srlgs = te_interface.traffic_engineering.srlgs | arista.avd.default(["-"]) | join(", ")  %}
+{%             set te_srlgs = te_interface.traffic_engineering.srlgs | arista.avd.default(["-"]) | join(",")  %}
 {%             set te_metric = te_interface.traffic_engineering.metric | arista.avd.default("-") %}
 {%             if te_interface.traffic_engineering.bandwidth is arista.avd.defined %}
 {%                 set te_bandwidth = te_interface.traffic_engineering.bandwidth.number ~ " " ~ te_interface.traffic_engineering.bandwidth.unit %}
