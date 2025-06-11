@@ -27,7 +27,7 @@ logging:
     - name: 10.10.10.7
       protocol: udp
   - name: MGMT
-    source_interface: Management1
+    source_interface: Vlan121
     hosts:
     - name: 2001:db8::10:7
       protocol: udp
@@ -97,7 +97,7 @@ management_api_http:
   enable_vrfs:
   - name: MGMT
 management_interfaces:
-- name: Management1
+- name: Vlan121
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
@@ -110,24 +110,6 @@ prefix_lists:
   sequence_numbers:
   - sequence: 10
     action: permit 1.2.3.0/24 eq 32
-ptp:
-  mode: boundary
-  clock_identity: 00:1C:73:14:00:01
-  priority1: 20
-  priority2: 1
-  domain: 127
-  monitor:
-    enabled: true
-    threshold:
-      offset_from_master: 250
-      mean_path_delay: 1500
-    missing_message:
-      sequence_ids:
-        enabled: true
-        announce: 3
-        delay_resp: 3
-        follow_up: 3
-        sync: 3
 route_maps:
 - name: RM-CONN-2-BGP
   sequence_numbers:
@@ -135,6 +117,11 @@ route_maps:
     type: permit
     match:
     - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
 router_bgp:
   as: '65000'
   router_id: 1.2.3.1
@@ -151,14 +138,28 @@ router_bgp:
     type: ipv4
     send_community: all
     maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
   redistribute:
     connected:
       enabled: true
       route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
   address_family_ipv4:
     peer_groups:
     - name: IPv4-UNDERLAY-PEERS
       activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

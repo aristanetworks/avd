@@ -4,14 +4,12 @@ spine:
   nodes:
     - name: logging_settings
       mgmt_ip: 192.168.66.22/24
-      ptp:
-        enabled: true
       id: 1
-      evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 65000
       inband_mgmt_vrf: inband_mgmt_vrf
       inband_mgmt_interface: Vlan123
+      mgmt_interface: Vlan121
 mgmt_interface_vrf: MGMT
 logging_settings:
   console: errors
@@ -61,7 +59,6 @@ logging_settings:
       vrf: use_inband_mgmt_vrf
     - name: syslog2.server.com
       vrf: use_inband_mgmt_vrf
-
   vrfs:
     - name: mgt0
       source_interface: Management0
