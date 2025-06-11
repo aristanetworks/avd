@@ -406,7 +406,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 adapter_port_channel_id=data.port_channel_id,
                 adapter_port_channel_description=data.port_channel_description,
                 adapter_description=data.description,
-                endpoint_port_channel=data.peer_interface,
+                peer_interface=data.peer_interface,
             )
 
         if data.port_channel_description:
