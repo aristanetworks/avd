@@ -25,6 +25,11 @@
 {%             if platform.trident.mmu.active_profile is arista.avd.defined %}
 | MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
 {%             endif %}
+{%             if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
+| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.bytes }} bytes |
+{%             elif platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
+| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.cells }} cells |
+{%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
 #### Trident MMU QUEUE PROFILES
@@ -116,5 +121,6 @@
 ```eos
 {%     include 'eos/platform.j2' %}
 {%     include 'eos/platform-sfe-interface.j2' %}
+{%     include 'eos/platform-headroom-pool.j2' %}
 ```
 {% endif %}
