@@ -132,7 +132,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=interface_name,
                     peer_type="l3_interface",
                     ip_address=l3_interface.ip_addresses[node_index],
-                    mtu=l3_interface.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+                    mtu=l3_interface.mtu if self.shared_utils.allow_interface_mtu(interface_name) else None,
                     shutdown=not l3_interface.enabled,
                     description=interface_description,
                     eos_cli=l3_interface.raw_eos_cli,
@@ -166,8 +166,6 @@ class EthernetInterfacesMixin(Protocol):
                     self._set_ipv4_acl(acl)
 
                 if "." in interface_name:
-                    if not self.shared_utils.platform_settings.feature_support.subinterface_mtu:
-                        interface.mtu = None
                     # This is a subinterface so we need to ensure that the parent is created
                     parent_interface_name, subif_id = interface_name.split(".", maxsplit=1)
                     subif_parent_interface_names.add(parent_interface_name)
