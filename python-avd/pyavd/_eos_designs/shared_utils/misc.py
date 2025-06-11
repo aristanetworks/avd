@@ -165,9 +165,9 @@ class MiscMixin(Protocol):
 
     def allow_interface_mtu(self: SharedUtilsProtocol, interface_name: str | None = None) -> bool:
         """Returns 'True' if MTU is allowed on interface else returns 'False'."""
-        if not self.platform_settings.feature_support.per_interface_mtu:
-            return False
-        if interface_name and "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu:
+        if not self.platform_settings.feature_support.per_interface_mtu or (
+            interface_name and "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu
+        ):
             return False
         return True
 
