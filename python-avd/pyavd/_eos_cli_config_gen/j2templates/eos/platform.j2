@@ -4,7 +4,7 @@
  that can be found in the LICENSE file.
 #}
 {# eos - platform #}
-{% if platform is arista.avd.defined %}
+{% if platform.trident.l3 is arista.avd.defined or platform.trident.forwarding_table_partition is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined %}
 !
 {%     if platform.trident.l3 is arista.avd.defined %}
 {%         if platform.trident.l3.routing_mac_address_per_vlan is arista.avd.defined(true) %}

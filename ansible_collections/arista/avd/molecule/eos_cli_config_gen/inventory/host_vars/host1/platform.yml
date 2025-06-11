@@ -6,6 +6,9 @@ platform:
     forwarding_table_partition: 2
     mmu:
       active_profile: mc_example_profile
+      # To test headroom_pool_limit in cells.
+      headroom_pool_limit:
+        cells: 556
       queue_profiles:
         - name: mc_example_profile
           multicast_queues:

@@ -1450,11 +1450,18 @@ router pim sparse-mode
 | -------- | ----- |
 | Buffering Egress Profile | balanced |
 
+#### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+| MMU Headroom-pool Limit | 557 bytes |
+
 ### Platform Device Configuration
 
 ```eos
 !
 platform fap buffering egress profile balanced
+platform trident mmu headroom-pool limit 557
 ```
 
 ## Application Traffic Recognition
