@@ -1501,12 +1501,19 @@ ethernet_interfaces:
             reload: 800
         ipv4:
           address: 192.0.2.1
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
+          key_type: "0"
       - id: 2
         preempt:
           enabled: true
           delay:
         ipv6:
           address: 2001:db8::1
+        peer_authentication:
+          mode: text
+          key: auth_key
 
   - name: Ethernet66
     description: Multiple VRIDs and tracking
@@ -1534,6 +1541,9 @@ ethernet_interfaces:
             decrement: 5
           - name: ID1TrackedObjectShutdown
             shutdown: true
+        peer_authentication:
+          mode: ietf-md5
+          key: auth_key
       - id: 2
         preempt:
           enabled: true
@@ -1545,6 +1555,10 @@ ethernet_interfaces:
             decrement: 10
           - name: ID2TrackedObjectShutdown
             shutdown: true
+        peer_authentication:
+          mode: text
+          key: auth_key
+          key_type: "0"
       - id: 3
         timers:
           delay:

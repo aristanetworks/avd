@@ -228,7 +228,8 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
             msg = f"Unable to cast '{cls}' as type '{new_type}' since '{new_type}' is not an AvdList subclass."
             raise TypeError(msg)
 
-        if issubclass(self._item_type, AvdBase):
+        # In the case that _item_type is Any, issubclass will raise a TypeError.
+        if self._item_type is not Any and issubclass(self._item_type, AvdBase):
             items = cast("list[AvdBase]", self._items)
             return new_type([item._cast_as(new_type._item_type, ignore_extra_keys=ignore_extra_keys) for item in items])
 
