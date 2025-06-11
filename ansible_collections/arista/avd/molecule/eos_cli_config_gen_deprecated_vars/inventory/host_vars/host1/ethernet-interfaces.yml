@@ -126,5 +126,4 @@ ethernet_interfaces:
   - name: Ethernet13
     description: Traffic Engineering Interface
     traffic_engineering:
-      # enabled: true
       srlg: TEST
