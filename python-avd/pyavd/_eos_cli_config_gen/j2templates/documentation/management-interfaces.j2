@@ -35,6 +35,35 @@
 {%         set int_type = management_interface.type | arista.avd.default('oob') %}
 | {{ management_interface.name }} | {{ description }} | {{ int_type }} | {{ vrf }} | {{ ipv6 }} | {{ ipv6_gateway }} |
 {%     endfor %}
+{%     if management_interfaces | arista.avd.default([]) | selectattr('redundancy','arista.avd.defined') | list %}
+
+##### Interface Redundancy
+{%         for mgmt_intf in management_interfaces | selectattr('redundancy', 'arista.avd.defined') | arista.avd.natural_sort('name') %}
+
+###### {{mgmt_intf.name}}
+
+| Settings | Value |
+| -------- | ----- |
+{%             if mgmt_intf.redundancy.fallback_delay is arista.avd.defined %}
+| Fallback Delay | {{ mgmt_intf.redundancy.fallback_delay }} |
+{%             endif %}
+{%             if mgmt_intf.redundancy.monitor.link_state is arista.avd.defined %}
+| Monitor Link State | {{ mgmt_intf.redundancy.monitor.link_state }} |
+{%             elif mgmt_intf.redundancy.monitor.neighbor is arista.avd.defined %}
+| Monitor Neighbor IPv6 Address | {{ mgmt_intf.redundancy.monitor.neighbor.ipv6_address }} |
+| Monitor Neighbor Interval | {{ mgmt_intf.redundancy.monitor.neighbor.interval | arista.avd.default("-") }} |
+| Monitor Neighbor Multiplier | {{ mgmt_intf.redundancy.monitor.neighbor.multiplier | arista.avd.default("-") }} |
+{%             endif %}
+{%             if mgmt_intf.redundancy.supervisor_1 is arista.avd.defined %}
+| Supervisor 1 Primary Interface | {{ mgmt_intf.redundancy.supervisor_1.primary_management_interface }} |
+| Supervisor 1 Backup Interfaces | {{ ", ".join(mgmt_intf.redundancy.supervisor_1.backup_management_interfaces) }} |
+{%             endif %}
+{%             if mgmt_intf.redundancy.supervisor_2 is arista.avd.defined %}
+| Supervisor 2 Primary Interface | {{ mgmt_intf.redundancy.supervisor_2.primary_management_interface }} |
+| Supervisor 2 Backup Interfaces | {{ ", ".join(mgmt_intf.redundancy.supervisor_2.backup_management_interfaces) }} |
+{%             endif %}
+{%         endfor %}
+{%     endif %}
 
 #### Management Interfaces Device Configuration
 
