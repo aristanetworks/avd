@@ -1460,6 +1460,8 @@ router pim sparse-mode
 
 ```eos
 !
+platform fap buffering egress profile balanced
+!
 platform trident mmu headroom-pool limit 557
 ```
 
