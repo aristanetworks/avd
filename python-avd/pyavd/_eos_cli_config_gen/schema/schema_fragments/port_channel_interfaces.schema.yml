@@ -1434,7 +1434,7 @@ keys:
                 warning: true
                 removed: false
                 remove_in_version: 6.0.0
-                new_key: traffic_engineering.srlgs
+                new_key: srlgs
               convert_types:
                 - int
             metric:
