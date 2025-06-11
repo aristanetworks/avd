@@ -514,7 +514,7 @@ connected_endpoints_port_channel_interfaces:
 - `{{ adapter_port_channel_id }}`
 - `{{ adapter_port_channel_description }}`
 - `{{ adapter_description }}`
-- `{{ peer_interface }}`
+- `{{ endpoint_port_channel }}`
 - All group/hostvars
 
 router_id_loopback_interfaces (replacing overlay_loopback_interface):
