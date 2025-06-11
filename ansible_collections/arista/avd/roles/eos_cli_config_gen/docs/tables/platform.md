@@ -14,6 +14,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_mac_address_per_vlan</samp>](## "platform.trident.l3.routing_mac_address_per_vlan") | Boolean |  |  |  | Enable bridging of packets with destination MAC being a Router MAC in VLANs without routing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mmu</samp>](## "platform.trident.mmu") | Dictionary |  |  |  | Memory Management Unit settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;active_profile</samp>](## "platform.trident.mmu.active_profile") | String |  |  |  | The queue profile to be applied to the platform.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom_pool_limit</samp>](## "platform.trident.mmu.headroom_pool_limit") | Dictionary |  |  |  | Max limit on headroom pool size. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes</samp>](## "platform.trident.mmu.headroom_pool_limit.bytes") | Integer |  |  |  | Headroom pool limit in bytes.<br>`bytes` and `cells` are mutually exclusive with `bytes` taking precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cells</samp>](## "platform.trident.mmu.headroom_pool_limit.cells") | Integer |  |  |  | Headroom pool limit in cells.<br>`bytes` and `cells` are mutually exclusive with `bytes` taking precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_profiles</samp>](## "platform.trident.mmu.queue_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "platform.trident.mmu.queue_profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_queues</samp>](## "platform.trident.mmu.queue_profiles.[].multicast_queues") | List, items: Dictionary |  |  |  |  |
@@ -73,6 +76,17 @@
 
           # The queue profile to be applied to the platform.
           active_profile: <str>
+
+          # Max limit on headroom pool size.
+          headroom_pool_limit:
+
+            # Headroom pool limit in bytes.
+            # `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
+            bytes: <int>
+
+            # Headroom pool limit in cells.
+            # `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
+            cells: <int>
           queue_profiles:
             - name: <str; required; unique>
               multicast_queues:
