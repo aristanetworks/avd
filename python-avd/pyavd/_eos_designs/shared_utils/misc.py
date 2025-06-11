@@ -165,11 +165,10 @@ class MiscMixin(Protocol):
 
     def allow_interface_mtu(self: SharedUtilsProtocol, interface_name: str | None = None) -> bool:
         """Returns 'True' if MTU is allowed on interface else returns 'False'."""
-        if not self.platform_settings.feature_support.per_interface_mtu or (
-            interface_name and "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu
-        ):
-            return False
-        return True
+        return bool(
+            self.platform_settings.feature_support.per_interface_mtu
+            or (interface_name and "." in interface_name and self.platform_settings.feature_support.subinterface_mtu)
+        )
 
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None
