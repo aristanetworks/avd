@@ -44,17 +44,13 @@ class AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol(
     data_model: Literal["core_interfaces", "l3_edge"]
     inputs_data: EosDesigns.CoreInterfaces | EosDesigns.L3Edge
 
-    def render(self) -> list:
+    def render(self) -> None:
         """Render structured configs for core_interfaces and l3_Edge."""
-        result_list = []
-
         for data_model in DATA_MODELS:
             self.data_model = data_model
             self.inputs_data = self.inputs.core_interfaces if data_model == "core_interfaces" else self.inputs.l3_edge
-            result_list.append(super().render())
+            super().render()
             self.clear_cache()
-
-        return result_list
 
 
 class AvdStructuredConfigCoreInterfacesAndL3Edge(StructuredConfigGenerator, AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol):

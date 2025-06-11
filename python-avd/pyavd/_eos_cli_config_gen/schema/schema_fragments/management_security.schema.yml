@@ -25,6 +25,15 @@ keys:
           hardware_exclusive:
             type: bool
             description: Only use entropy from the hardware source.
+      signature_verification:
+        type: dict
+        description: Verify the SWIX signatures.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          ssl_profile:
+            type: str
       password:
         type: dict
         keys:

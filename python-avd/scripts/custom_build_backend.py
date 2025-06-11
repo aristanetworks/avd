@@ -35,7 +35,7 @@ def _translate_version(version: str, pyavd_prerelease: str) -> str:
 
 def _insert_version() -> None:
     with Path(__file__).parents[2].joinpath("ansible_collections/arista/avd/galaxy.yml").open(encoding="UTF-8") as galaxy_file:
-        ansible_version = dict(safe_load(galaxy_file)).get("version")
+        ansible_version: str = dict(safe_load(galaxy_file))["version"]
 
     with Path(__file__).parents[1].joinpath("pyavd/__init__.py").open(encoding="UTF-8") as init_file:
         init_lines = init_file.readlines()

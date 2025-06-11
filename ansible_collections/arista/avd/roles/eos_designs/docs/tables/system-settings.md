@@ -42,6 +42,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;detection</samp>](## "mac_address_table.notification_host_flap.detection") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;window</samp>](## "mac_address_table.notification_host_flap.detection.window") | Integer |  |  | Min: 2<br>Max: 300 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;moves</samp>](## "mac_address_table.notification_host_flap.detection.moves") | Integer |  |  | Min: 2<br>Max: 10 |  |
+    | [<samp>&nbsp;&nbsp;static_entries</samp>](## "mac_address_table.static_entries") | List, items: Dictionary |  |  |  | Add static MAC address entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;mac_address</samp>](## "mac_address_table.static_entries.[].mac_address") | String | Required |  | Pattern: `^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$` | The static MAC address to configure.<br>The combination of 'mac_address' and 'vlan' must be unique across all static entries. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vlan</samp>](## "mac_address_table.static_entries.[].vlan") | Integer | Required |  |  | The VLAN ID associated with the MAC address. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;drop</samp>](## "mac_address_table.static_entries.[].drop") | Boolean |  |  |  | If true, traffic destined for this MAC address on the specified VLAN will be dropped.<br>This option is mutually exclusive with 'interface' and takes precedence if both are defined. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface</samp>](## "mac_address_table.static_entries.[].interface") | String |  |  |  | The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with this MAC address and VLAN.<br>This option is mutually exclusive with 'drop'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;eligibility_forwarding</samp>](## "mac_address_table.static_entries.[].eligibility_forwarding") | Boolean |  |  |  | Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.<br>This option is only applicable when 'interface' is defined. |
     | [<samp>queue_monitor_length</samp>](## "queue_monitor_length") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.enabled") | Boolean | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;notifying</samp>](## "queue_monitor_length.notifying") | Boolean |  |  |  | If True, `eos_designs` will configure `queue-monitor length notifying` according to the<br>`platform_settings.[].feature_support.queue_monitor_length_notify` setting.<br> |
@@ -54,6 +60,19 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;high</samp>](## "queue_monitor_length.cpu.thresholds.high") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;low</samp>](## "queue_monitor_length.cpu.thresholds.low") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;tx_latency</samp>](## "queue_monitor_length.tx_latency") | Boolean |  |  |  | Enable tx-latency mode. |
+    | [<samp>&nbsp;&nbsp;mirror</samp>](## "queue_monitor_length.mirror") | Dictionary |  |  |  | Enable frame mirroring during congestion. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "queue_monitor_length.mirror.enabled") | Boolean |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination") | Dictionary |  |  |  | Mirror destination. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu</samp>](## "queue_monitor_length.mirror.destination.cpu") | Boolean |  |  |  | CPU ports. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ethernet_interfaces</samp>](## "queue_monitor_length.mirror.destination.ethernet_interfaces") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "queue_monitor_length.mirror.destination.ethernet_interfaces.[]") | String |  |  |  | Ethernet interface name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;tunnel_mode_gre</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.source") | String | Required |  |  | Source IP address of GRE tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;destination</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.destination") | String | Required |  |  | Destination IP address of GRE tunnel. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.dscp") | Integer |  |  | Min: 0<br>Max: 63 | DSCP of the GRE tunnel. EOS default is 0. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ttl</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.ttl") | Integer |  |  | Min: 1<br>Max: 255 | TTL range. EOS default is 128. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.protocol") | String |  |  |  | Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.<br>EOS default is 0x88BE. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "queue_monitor_length.mirror.destination.tunnel_mode_gre.vrf") | String |  |  |  | VRF name of the GRE tunnel. EOS default is "default". |
     | [<samp>redundancy</samp>](## "redundancy") | Dictionary |  |  |  | Redundancy for chassis platforms with dual supervisors | Optional. |
     | [<samp>&nbsp;&nbsp;protocol</samp>](## "redundancy.protocol") | String |  |  | Valid Values:<br>- <code>sso</code><br>- <code>rpr</code> |  |
     | [<samp>serial_number</samp>](## "serial_number") | String |  |  |  | Serial Number of the device.<br>Used for documentation purpose in the fabric documentation as can also be used by the 'eos_config_deploy_cvp' role.<br>"serial_number" can also be set directly under node type settings.<br>If both are set, the value under node type settings takes precedence.<br> |
@@ -199,6 +218,28 @@
         detection:
           window: <int; 2-300>
           moves: <int; 2-10>
+
+      # Add static MAC address entries.
+      static_entries:
+
+          # The static MAC address to configure.
+          # The combination of 'mac_address' and 'vlan' must be unique across all static entries.
+        - mac_address: <str; required>
+
+          # The VLAN ID associated with the MAC address.
+          vlan: <int; required>
+
+          # If true, traffic destined for this MAC address on the specified VLAN will be dropped.
+          # This option is mutually exclusive with 'interface' and takes precedence if both are defined.
+          drop: <bool>
+
+          # The allowed hardware Ethernet interface, LAG interface, or VXLAN tunnel interface associated with this MAC address and VLAN.
+          # This option is mutually exclusive with 'drop'.
+          interface: <str>
+
+          # Enable the ability to forward traffic on the specified interface and VLAN for this MAC address.
+          # This option is only applicable when 'interface' is defined.
+          eligibility_forwarding: <bool>
     queue_monitor_length:
       enabled: <bool; required>
 
@@ -223,6 +264,40 @@
 
       # Enable tx-latency mode.
       tx_latency: <bool>
+
+      # Enable frame mirroring during congestion.
+      mirror:
+        enabled: <bool>
+
+        # Mirror destination.
+        destination:
+
+          # CPU ports.
+          cpu: <bool>
+          ethernet_interfaces:
+
+              # Ethernet interface name.
+            - <str>
+          tunnel_mode_gre:
+
+            # Source IP address of GRE tunnel.
+            source: <str; required>
+
+            # Destination IP address of GRE tunnel.
+            destination: <str; required>
+
+            # DSCP of the GRE tunnel. EOS default is 0.
+            dscp: <int; 0-63>
+
+            # TTL range. EOS default is 128.
+            ttl: <int; 1-255>
+
+            # Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+            # EOS default is 0x88BE.
+            protocol: <str>
+
+            # VRF name of the GRE tunnel. EOS default is "default".
+            vrf: <str>
 
     # Redundancy for chassis platforms with dual supervisors | Optional.
     redundancy:

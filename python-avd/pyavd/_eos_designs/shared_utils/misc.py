@@ -386,3 +386,23 @@ class MiscMixin(Protocol):
         if not self.is_sfe_interface_profile_supported:
             return 0
         return self.platform_settings.feature_support.platform_sfe_interface_profile.max_rx_queues
+
+    @cached_property
+    def all_connected_endpoints(
+        self: SharedUtilsProtocol,
+    ) -> EosDesigns._DynamicKeys.DynamicConnectedEndpoints:
+        """Emit the complete list of connected_endpoints and custom_connected_endpoints, prioritizing custom_connected_endpoints."""
+        all_connected_endpoints = EosDesigns._DynamicKeys.DynamicConnectedEndpoints()
+        for connected_endpoint in self.inputs._dynamic_keys.custom_connected_endpoints:
+            connected_endpoint_item = connected_endpoint._cast_as(EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem)
+            connected_endpoint_item._internal_data.description = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].description
+            connected_endpoint_item._internal_data.type = self.inputs.custom_connected_endpoints_keys[connected_endpoint.key].type
+            all_connected_endpoints.append(connected_endpoint_item)
+
+        for connected_endpoint in self.inputs._dynamic_keys.connected_endpoints:
+            if connected_endpoint.key not in all_connected_endpoints:
+                connected_endpoint._internal_data.description = self.inputs.connected_endpoints_keys[connected_endpoint.key].description
+                connected_endpoint._internal_data.type = self.inputs.connected_endpoints_keys[connected_endpoint.key].type
+                all_connected_endpoints.append(connected_endpoint)
+
+        return all_connected_endpoints

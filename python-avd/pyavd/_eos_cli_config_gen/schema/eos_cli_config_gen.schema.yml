@@ -2940,7 +2940,27 @@ keys:
               - str
               min: 64
               max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv4
+            ipv4:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
             ipv6_segment_size:
+              type: int
+              convert_types:
+              - str
+              min: 64
+              max: 65475
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: ipv6
+            ipv6:
               type: int
               convert_types:
               - str
@@ -3987,6 +4007,31 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                    - text
+                    - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                    convert_types:
+                    - int
+                  key_type:
+                    type: str
+                    convert_types:
+                    - int
+                    description: Authentication key type.
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
@@ -5673,6 +5718,38 @@ keys:
                     valid_values:
                     - internet
                     - urpf-internet
+          load_balance_distribution:
+            type: dict
+            keys:
+              dynamic:
+                type: dict
+                keys:
+                  enabled:
+                    type: bool
+                    description: Enable dynamic load balancing.
+                    required: true
+                  flow_set_size:
+                    description: 'Set flow set size. Requires `enabled` key to be
+                      set to `true`.
+
+                      1: Allow up to 128 ECMP groups of 256 entries each.
+
+                      2: Allow up to 64 ECMP groups of 512 entries each.
+
+                      3: Allow up to 32 ECMP groups of 1024 entries each.
+
+                      4: Allow up to 16 ECMP groups of 2048 entries each.
+
+                      5: Allow up to 8 ECMP groups of 4096 entries each.
+
+                      6: Allow up to 4 ECMP groups of 8192 entries each.
+
+                      7: Allow up to 2 ECMP groups of 16384 entries each.'
+                    type: int
+                    min: 1
+                    max: 7
+                    convert_types:
+                    - str
   ip_http_client_source_interfaces:
     type: list
     items:
@@ -6145,6 +6222,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -6226,6 +6304,7 @@ keys:
               - 15
               - 16
               - 17
+              - 19
               - 20
               - 21
               - 24
@@ -7372,6 +7451,45 @@ keys:
                 max: 10
                 convert_types:
                 - str
+      static_entries:
+        type: list
+        description: Add static MAC address entries.
+        items:
+          type: dict
+          keys:
+            mac_address:
+              type: str
+              required: true
+              pattern: ^[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}\.[0-9A-Fa-f]{4}$
+              description: 'The static MAC address to configure.
+
+                The combination of ''mac_address'' and ''vlan'' must be unique across
+                all static entries.'
+            vlan:
+              type: int
+              required: true
+              convert_types:
+              - str
+              description: The VLAN ID associated with the MAC address.
+            drop:
+              type: bool
+              description: 'If true, traffic destined for this MAC address on the
+                specified VLAN will be dropped.
+
+                This option is mutually exclusive with ''interface'' and takes precedence
+                if both are defined.'
+            interface:
+              type: str
+              description: 'The allowed hardware Ethernet interface, LAG interface,
+                or VXLAN tunnel interface associated with this MAC address and VLAN.
+
+                This option is mutually exclusive with ''drop''.'
+            eligibility_forwarding:
+              type: bool
+              description: 'Enable the ability to forward traffic on the specified
+                interface and VLAN for this MAC address.
+
+                This option is only applicable when ''interface'' is defined.'
   mac_security:
     type: dict
     display_name: MAC Security (MACsec)
@@ -7917,6 +8035,75 @@ keys:
               convert_types:
               - str
               description: ZTP vlan number.
+        redundancy:
+          type: dict
+          keys:
+            fallback_delay:
+              type: str
+              description: 'The duration to wait before falling back to the higher-priority
+                interface.
+
+                Accepts a value between 0 and 3600 seconds, or the string `infinity`
+                to disable fallback.'
+              convert_types:
+              - int
+            monitor:
+              type: dict
+              keys:
+                link_state:
+                  type: bool
+                  description: 'Link state of interface.
+
+                    `neighbor` and `link_state` are mutually exclusive and `link_state`
+                    takes precedence.'
+                neighbor:
+                  type: dict
+                  description: 'To configure an IPv6 neighbor as monitor, `fallback_delay`
+                    must be set as infinity.
+
+                    `neighbor` and `link_state` are mutually exclusive and `link_state`
+                    takes precedence.'
+                  keys:
+                    ipv6_address:
+                      required: true
+                      type: str
+                    interval:
+                      type: int
+                      description: Interval between neighbor probes in milliseconds.
+                      min: 1
+                      max: 300000
+                      convert_types:
+                      - str
+                    multiplier:
+                      type: int
+                      description: Number of missed neighbor replies after which it
+                        is timed out.
+                      min: 1
+                      max: 100
+                      convert_types:
+                      - str
+            supervisor_1:
+              type: dict
+              description: Configuration for supervisor 1, including its primary and
+                backup management interfaces.
+              keys:
+                primary_management_interface:
+                  type: str
+                  description: Primary management interface name like 'Management1/1'.
+                  required: true
+                backup_management_interfaces:
+                  type: list
+                  description: Backup management interfaces.
+                  required: true
+                  min_length: 1
+                  items:
+                    type: str
+                    description: Management interface name like 'Management2/1'.
+            supervisor_2:
+              type: dict
+              description: Configuration for supervisor 2, including its primary and
+                backup management interfaces.
+              $ref: eos_cli_config_gen#/keys/management_interfaces/items/keys/redundancy/keys/supervisor_1
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the management interface
@@ -7940,6 +8127,15 @@ keys:
           hardware_exclusive:
             type: bool
             description: Only use entropy from the hardware source.
+      signature_verification:
+        type: dict
+        description: Verify the SWIX signatures.
+        keys:
+          enabled:
+            type: bool
+            required: true
+          ssl_profile:
+            type: str
       password:
         type: dict
         keys:
@@ -10098,6 +10294,26 @@ keys:
                 description: 'The queue profile to be applied to the platform.
 
                   '
+              headroom_pool_limit:
+                type: dict
+                description: Max limit on headroom pool size.
+                keys:
+                  bytes:
+                    type: int
+                    convert_types:
+                    - str
+                    description: 'Headroom pool limit in bytes.
+
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking
+                      precedence.'
+                  cells:
+                    type: int
+                    convert_types:
+                    - str
+                    description: 'Headroom pool limit in cells.
+
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking
+                      precedence.'
               queue_profiles:
                 type: list
                 primary_key: name
@@ -12995,6 +13211,57 @@ keys:
       tx_latency:
         type: bool
         description: Enable tx-latency mode.
+      mirror:
+        description: Enable frame mirroring during congestion.
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          destination:
+            description: Mirror destination.
+            type: dict
+            keys:
+              cpu:
+                type: bool
+                description: CPU ports.
+              ethernet_interfaces:
+                type: list
+                items:
+                  type: str
+                  description: Ethernet interface name.
+              tunnel_mode_gre:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    required: true
+                    description: Source IP address of GRE tunnel.
+                  destination:
+                    type: str
+                    required: true
+                    description: Destination IP address of GRE tunnel.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: DSCP of the GRE tunnel. EOS default is 0.
+                  ttl:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                    description: TTL range. EOS default is 128.
+                  protocol:
+                    type: str
+                    description: 'Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+
+                      EOS default is 0x88BE.'
+                  vrf:
+                    type: str
+                    description: VRF name of the GRE tunnel. EOS default is "default".
   queue_monitor_streaming:
     type: dict
     keys:
@@ -20952,6 +21219,23 @@ keys:
               for IP + TCP header).'
             convert_types:
             - int
+            deprecation:
+              warning: true
+              remove_in_version: 6.0.0
+              new_key: ipv4
+          ipv4:
+            type: str
+            description: 'Segment Size for IPv4.
+
+              Can be an integer in the range 64-65515 or "auto".
+
+              "auto" will enable auto-discovery which clamps the TCP MSS value to
+              the minimum of all the direct paths
+
+              and multi-hop path MTU towards a remote VTEP (minus 40bytes to account
+              for IP + TCP header).'
+            convert_types:
+            - int
           direction:
             type: str
             valid_values:
@@ -22832,7 +23116,16 @@ keys:
             `ipsec`: IPsec-over-IP encapsulation.'
         source_interface:
           type: str
-          description: Tunnel Source Interface Name.
+          description: 'Tunnel Source Interface Name.
+
+            Mutually exclusive with `source`, if both are defined `source_interface`
+            takes precedence.'
+        source:
+          type: str
+          description: 'Tunnel Source IPv4/IPv6 address.
+
+            Mutually exclusive with `source_interface`, if both are defined `source_interface`
+            takes precedence.'
         destination:
           type: str
           description: IPv4 or IPv6 Address Tunnel Destination.
@@ -23620,6 +23913,18 @@ keys:
           items:
             type: str
             description: Trunk Group Name.
+        e_tree:
+          type: dict
+          keys:
+            leaf_role:
+              type: bool
+              description: Set the VLAN into the E-Tree leaf role. By default all
+                VLANs are in root role.
+            remote_leaf_host_drop:
+              type: bool
+              description: Enables remote leaf hosts to instead be installed as explicit
+                drop routes in the local FDB. This is only applicable for VLANs operating
+                in the 'Leaf' role.
         private_vlan:
           type: dict
           keys:
