@@ -123,7 +123,7 @@ class UtilsMixin(Protocol):
             case "use_mgmt_interface_vrf":
                 has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
                 if not has_mgmt_ip:
-                    msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing an 'mgmt_ip'"
+                    msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
                     raise AristaAvdInvalidInputsError(msg)
 
                 vrf = self.inputs.mgmt_interface_vrf
@@ -132,7 +132,7 @@ class UtilsMixin(Protocol):
                     source_interface = self.shared_utils.mgmt_interface
             case "use_inband_mgmt_vrf":
                 if self.shared_utils.inband_mgmt_interface is None:
-                    msg = f"'{context}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management"
+                    msg = f"'{context}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management."
                     raise AristaAvdInvalidInputsError(msg)
 
                 vrf = self.shared_utils.inband_mgmt_vrf or "default"
