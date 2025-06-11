@@ -6,7 +6,7 @@ from __future__ import annotations
 from collections import defaultdict
 from dataclasses import dataclass, field
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol
+from typing import TYPE_CHECKING, Literal, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -142,7 +142,7 @@ class VxlanInterfaceMixin(Protocol):
                 return
 
             # NOTE: this can never be None here, it would be caught previously in the code
-            vrf_id: int = default(vrf.vrf_id, vrf.vrf_vni)
+            vrf_id = cast("int", default(vrf.vrf_id, vrf.vrf_vni))
 
             vxlan_vrf = EosCliConfigGen.VxlanInterface.Vxlan1.Vxlan.VrfsItem(name=vrf.name, vni=vni)
 
@@ -165,7 +165,7 @@ class VxlanInterfaceMixin(Protocol):
                     )
 
             self.structured_config.vxlan_interface.vxlan1.vxlan.vrfs.append(vxlan_vrf)
-            vnis[vxlan_vrf.vni].add(VniContext(vni=vxlan_vrf.vni, name=vxlan_vrf.name, tenant=tenant.name, source_type="VRF"))
+            vnis[vni].add(VniContext(vni=vni, name=vxlan_vrf.name, tenant=tenant.name, source_type="VRF"))
 
     def _set_vxlan_interface_config_for_vlan(
         self: AvdStructuredConfigNetworkServicesProtocol,
