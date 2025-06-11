@@ -350,17 +350,15 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             # Add new VRF config if it doesn't exist, or if source_interface differs (conflict)
             if not existing_vrf_config or existing_vrf_config.source_interface != source_interface:
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
+                self.structured_config.logging.vrfs.append_new(name=host_vrf, source_interface=source_interface)
 
             # Add host entry under the correct VRF
-            vrf_logging_config.obtain(host_vrf).hosts.append_new(
+            self.structured_config.logging.vrfs.obtain(host_vrf).hosts.append_new(
                 name=host.name,
                 protocol=host.protocol,
                 ssl_profile=host.ssl_profile,
                 ports=EosCliConfigGen.Logging.VrfsItem.HostsItem.Ports(items=host.ports),
             )
-
-        # Merge all VRF-level logging config into structured config
-        self.structured_config.logging.vrfs.extend(vrf_logging_config)
 
     @structured_config_contributor
     def redundancy(self) -> None:

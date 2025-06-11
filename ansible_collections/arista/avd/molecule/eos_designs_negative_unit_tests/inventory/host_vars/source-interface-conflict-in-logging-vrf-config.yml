@@ -24,5 +24,4 @@ logging_settings:
 
 expected_error_message: >-
   Found duplicate objects with conflicting data while generating configuration for Vrfs.
-  {'name': 'MGMT', 'source_interface': 'Vlan123'} conflicts with {'name': 'MGMT', 'source_interface': 'Vlan121',
-  'hosts': [{'name': 'sslhost.net', 'protocol': 'tls', 'ports': [6515], 'ssl_profile': 'logging-ssl'}]}.
+  {'name': 'MGMT', 'source_interface': 'Vlan123'} conflicts with {'name': 'MGMT', 'source_interface': 'Vlan121'}.
