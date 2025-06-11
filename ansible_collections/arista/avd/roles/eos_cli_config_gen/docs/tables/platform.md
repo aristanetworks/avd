@@ -58,6 +58,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;worker</samp>](## "platform.sfe.interface.profiles.[].interfaces.[].rx_queue.worker") | String |  |  |  | Worker ids specified as combination of range and/or comma separated values<br>such as 0-4,7. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "platform.sfe.interface.profiles.[].interfaces.[].rx_queue.mode") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>exclusive</code> | Mode applicable to the workers. Default mode is 'shared'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_profile</samp>](## "platform.sfe.interface.interface_profile") | String |  |  |  | RSS interface profile name to apply for the platform.<br>Needs system reload or Sfe agent restart for change to take effect. |
+    | [<samp>&nbsp;&nbsp;fap</samp>](## "platform.fap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;buffering_egress</samp>](## "platform.fap.buffering_egress") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "platform.fap.buffering_egress.profile") | String |  |  | Valid Values:<br>- <code>unicast</code><br>- <code>balanced</code> | Preferred traffic profile for egress fap buffering. |
 
 === "YAML"
 
@@ -180,4 +183,9 @@
           # RSS interface profile name to apply for the platform.
           # Needs system reload or Sfe agent restart for change to take effect.
           interface_profile: <str>
+      fap:
+        buffering_egress:
+
+          # Preferred traffic profile for egress fap buffering.
+          profile: <str; "unicast" | "balanced">
     ```
