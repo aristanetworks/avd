@@ -88,7 +88,7 @@ class AvdStructuredConfigFlows(StructuredConfigGenerator):
             else:
                 source_interface = None
 
-            if vrf_name in [None, "default"]:
+            if vrf_name is None or vrf_name == "default":
                 # Add destination without VRF field
                 self.structured_config.sflow.destinations.append_new(destination=destination.destination, port=destination.port)
                 self.structured_config.sflow.source_interface = source_interface

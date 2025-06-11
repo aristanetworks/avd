@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
+from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import template_var
 
@@ -13,7 +14,6 @@ if TYPE_CHECKING:
     from typing import TypeVar
 
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFactsProtocol
-    from pyavd._eos_designs.schema import EosDesigns
 
     from . import SharedUtilsProtocol
 
@@ -124,6 +124,13 @@ class UtilsMixin(Protocol):
             return adapter_or_network_port_settings
 
         adapter_profile = self.get_merged_port_profile(profile_name, adapter_or_network_port_settings._internal_data.context)
-        profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
-        adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
+
+        # Need this to assist the type checker.
+        if isinstance(adapter_or_network_port_settings, EosDesigns.NetworkPortsItem):  # NOSONAR, this is for the type checker
+            profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
+            adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
+        else:
+            profile_as_adapter_or_network_port_settings = adapter_profile._cast_as(type(adapter_or_network_port_settings))
+            adapter_or_network_port_settings._deepinherit(profile_as_adapter_or_network_port_settings)
+
         return adapter_or_network_port_settings
