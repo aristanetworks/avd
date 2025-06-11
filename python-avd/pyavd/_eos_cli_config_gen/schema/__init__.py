@@ -26602,7 +26602,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 _fields: ClassVar[dict] = {"profile": {"type": str}}
                 profile: Literal["unicast", "balanced"] | None
-                """Preferred traffic profile."""
+                """Preferred traffic profile for egress fap buffering."""
 
                 if TYPE_CHECKING:
 
@@ -26614,7 +26614,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            profile: Preferred traffic profile.
+                            profile: Preferred traffic profile for egress fap buffering.
 
                         """
 

@@ -10497,7 +10497,7 @@ keys:
             type: dict
             keys:
               profile:
-                description: Preferred traffic profile.
+                description: Preferred traffic profile for egress fap buffering.
                 type: str
                 valid_values:
                 - unicast

@@ -60,7 +60,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_profile</samp>](## "platform.sfe.interface.interface_profile") | String |  |  |  | RSS interface profile name to apply for the platform.<br>Needs system reload or Sfe agent restart for change to take effect. |
     | [<samp>&nbsp;&nbsp;fap</samp>](## "platform.fap") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;buffering_egress</samp>](## "platform.fap.buffering_egress") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "platform.fap.buffering_egress.profile") | String |  |  | Valid Values:<br>- <code>unicast</code><br>- <code>balanced</code> | Preferred traffic profile. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "platform.fap.buffering_egress.profile") | String |  |  | Valid Values:<br>- <code>unicast</code><br>- <code>balanced</code> | Preferred traffic profile for egress fap buffering. |
 
 === "YAML"
 
@@ -186,6 +186,6 @@
       fap:
         buffering_egress:
 
-          # Preferred traffic profile.
+          # Preferred traffic profile for egress fap buffering.
           profile: <str; "unicast" | "balanced">
     ```
