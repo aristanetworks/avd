@@ -20067,6 +20067,229 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Redundancy(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Monitor(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Neighbor(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"ipv6_address": {"type": str}, "interval": {"type": int}, "multiplier": {"type": int}}
+                    ipv6_address: str
+                    interval: int | None
+                    """Interval between neighbor probes in milliseconds."""
+                    multiplier: int | None
+                    """Number of missed neighbor replies after which it is timed out."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            ipv6_address: str | UndefinedType = Undefined,
+                            interval: int | None | UndefinedType = Undefined,
+                            multiplier: int | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            Neighbor.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ipv6_address: ipv6_address
+                                interval: Interval between neighbor probes in milliseconds.
+                                multiplier: Number of missed neighbor replies after which it is timed out.
+
+                            """
+
+                _fields: ClassVar[dict] = {"link_state": {"type": bool}, "neighbor": {"type": Neighbor}}
+                link_state: bool | None
+                """
+                Link state of interface.
+                `neighbor` and `link_state` are mutually exclusive and `link_state` takes
+                precedence.
+                """
+                neighbor: Neighbor
+                """
+                To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
+                `neighbor` and
+                `link_state` are mutually exclusive and `link_state` takes precedence.
+
+                Subclass of AvdModel.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, link_state: bool | None | UndefinedType = Undefined, neighbor: Neighbor | UndefinedType = Undefined) -> None:
+                        """
+                        Monitor.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            link_state:
+                               Link state of interface.
+                               `neighbor` and `link_state` are mutually exclusive and `link_state` takes
+                               precedence.
+                            neighbor:
+                               To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
+                               `neighbor` and
+                               `link_state` are mutually exclusive and `link_state` takes precedence.
+
+                               Subclass of AvdModel.
+
+                        """
+
+            class Supervisor1(AvdModel):
+                """Subclass of AvdModel."""
+
+                class BackupManagementInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                BackupManagementInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"primary_management_interface": {"type": str}, "backup_management_interfaces": {"type": BackupManagementInterfaces}}
+                primary_management_interface: str
+                """Primary management interface name like 'Management1/1'."""
+                backup_management_interfaces: BackupManagementInterfaces
+                """
+                Backup management interfaces.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        primary_management_interface: str | UndefinedType = Undefined,
+                        backup_management_interfaces: BackupManagementInterfaces | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Supervisor1.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            primary_management_interface: Primary management interface name like 'Management1/1'.
+                            backup_management_interfaces:
+                               Backup management interfaces.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            class Supervisor2(AvdModel):
+                """Subclass of AvdModel."""
+
+                class BackupManagementInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                BackupManagementInterfaces._item_type = str
+
+                _fields: ClassVar[dict] = {"primary_management_interface": {"type": str}, "backup_management_interfaces": {"type": BackupManagementInterfaces}}
+                primary_management_interface: str
+                """Primary management interface name like 'Management1/1'."""
+                backup_management_interfaces: BackupManagementInterfaces
+                """
+                Backup management interfaces.
+
+                Subclass of AvdList with `str` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        primary_management_interface: str | UndefinedType = Undefined,
+                        backup_management_interfaces: BackupManagementInterfaces | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Supervisor2.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            primary_management_interface: Primary management interface name like 'Management1/1'.
+                            backup_management_interfaces:
+                               Backup management interfaces.
+
+                               Subclass of AvdList with `str` items.
+
+                        """
+
+            _fields: ClassVar[dict] = {
+                "fallback_delay": {"type": str},
+                "monitor": {"type": Monitor},
+                "supervisor_1": {"type": Supervisor1},
+                "supervisor_2": {"type": Supervisor2},
+            }
+            fallback_delay: str | None
+            """
+            The duration to wait before falling back to the higher-priority interface.
+            Accepts a value between 0
+            and 3600 seconds, or the string `infinity` to disable fallback.
+            """
+            monitor: Monitor
+            """Subclass of AvdModel."""
+            supervisor_1: Supervisor1
+            """
+            Configuration for supervisor 1, including its primary and backup management interfaces.
+
+            Subclass of
+            AvdModel.
+            """
+            supervisor_2: Supervisor2
+            """
+            Configuration for supervisor 2, including its primary and backup management interfaces.
+
+            Subclass of
+            AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    fallback_delay: str | None | UndefinedType = Undefined,
+                    monitor: Monitor | UndefinedType = Undefined,
+                    supervisor_1: Supervisor1 | UndefinedType = Undefined,
+                    supervisor_2: Supervisor2 | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Redundancy.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        fallback_delay:
+                           The duration to wait before falling back to the higher-priority interface.
+                           Accepts a value between 0
+                           and 3600 seconds, or the string `infinity` to disable fallback.
+                        monitor: Subclass of AvdModel.
+                        supervisor_1:
+                           Configuration for supervisor 1, including its primary and backup management interfaces.
+
+                           Subclass of
+                           AvdModel.
+                        supervisor_2:
+                           Configuration for supervisor 2, including its primary and backup management interfaces.
+
+                           Subclass of
+                           AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "description": {"type": str},
@@ -20082,6 +20305,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ipv6_gateway": {"type": str},
             "mac_address": {"type": str},
             "lldp": {"type": Lldp},
+            "redundancy": {"type": Redundancy},
             "eos_cli": {"type": str},
         }
         name: str
@@ -20115,6 +20339,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """MAC address."""
         lldp: Lldp
         """Subclass of AvdModel."""
+        redundancy: Redundancy
+        """Subclass of AvdModel."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the management interface in the final EOS configuration."""
 
@@ -20137,6 +20363,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ipv6_gateway: str | None | UndefinedType = Undefined,
                 mac_address: str | None | UndefinedType = Undefined,
                 lldp: Lldp | UndefinedType = Undefined,
+                redundancy: Redundancy | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -20162,6 +20389,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ipv6_gateway: IPv6 address of default gateway in management VRF.
                     mac_address: MAC address.
                     lldp: Subclass of AvdModel.
+                    redundancy: Subclass of AvdModel.
                     eos_cli: Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
 
                 """
