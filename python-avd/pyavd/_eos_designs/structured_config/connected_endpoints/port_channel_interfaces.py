@@ -158,7 +158,7 @@ class PortChannelInterfacesMixin(Protocol):
             )
             or None,
             shutdown=not (adapter.port_channel.enabled if adapter.port_channel.enabled is not None else True),
-            mtu=adapter.mtu if self.shared_utils.allow_interface_mtu(port_channel_interface_name) else None,
+            mtu=adapter.mtu if self.shared_utils.interface_mtu(port_channel_interface_name) else None,
             storm_control=self._get_adapter_storm_control(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.StormControl),
             service_profile=adapter.qos_profile,
             link_tracking_groups=self._get_adapter_link_tracking_groups(adapter, output_type=EosCliConfigGen.PortChannelInterfacesItem.LinkTrackingGroups),

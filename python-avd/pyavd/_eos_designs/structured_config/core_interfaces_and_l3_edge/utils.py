@@ -243,7 +243,7 @@ class UtilsMixin(Protocol):
             peer_interface=p2p_link_data["peer_interface"],
             peer_type=p2p_link_data["peer_type"],
             shutdown=False,
-            mtu=p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.allow_interface_mtu(p2p_link_data["interface"]) else None,
+            mtu=p2p_link._get("mtu", self.shared_utils.p2p_uplinks_mtu) if self.shared_utils.interface_mtu(p2p_link_data["interface"]) else None,
             service_profile=p2p_link._get("qos_profile", self.inputs.p2p_uplinks_qos_profile),
             eos_cli=p2p_link.raw_eos_cli,
         )

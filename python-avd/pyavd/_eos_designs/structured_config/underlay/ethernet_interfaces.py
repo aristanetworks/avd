@@ -53,7 +53,7 @@ class EthernetInterfacesMixin(Protocol):
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
                 ethernet_interface._update(
-                    mtu=self.shared_utils.p2p_uplinks_mtu if self.shared_utils.allow_interface_mtu(link.interface) else None,
+                    mtu=self.shared_utils.p2p_uplinks_mtu if self.shared_utils.interface_mtu(link.interface) else None,
                     service_profile=self.inputs.p2p_uplinks_qos_profile,
                     ipv6_enable=link.ipv6_enable,
                     flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
@@ -196,7 +196,7 @@ class EthernetInterfacesMixin(Protocol):
                         description=description or None,
                         shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
                         ipv6_enable=subinterface.ipv6_enable,
-                        mtu=self.shared_utils.p2p_uplinks_mtu if self.shared_utils.allow_interface_mtu(subinterface.interface) else None,
+                        mtu=self.shared_utils.p2p_uplinks_mtu if self.shared_utils.interface_mtu(subinterface.interface) else None,
                         flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
@@ -369,7 +369,7 @@ class EthernetInterfacesMixin(Protocol):
                     shutdown=False,
                     channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=self.shared_utils.wan_ha_port_channel_id, mode="active"),
                     # TODO: do we need speed?
-                    mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.allow_interface_mtu(interface) else None,
+                    mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.interface_mtu(interface) else None,
                 )
             else:
                 # Using direct l3 interface
@@ -382,5 +382,5 @@ class EthernetInterfacesMixin(Protocol):
                     description=description or None,
                     ip_address=self.shared_utils.wan_ha_ip_addresses[index],
                     flow_tracker=direct_wan_ha_links_flow_tracker,
-                    mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.allow_interface_mtu(interface) else None,
+                    mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.interface_mtu(interface) else None,
                 )
