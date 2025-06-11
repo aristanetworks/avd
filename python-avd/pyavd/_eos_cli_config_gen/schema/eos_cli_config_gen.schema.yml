@@ -4007,6 +4007,31 @@ keys:
                     type: str
                     required: true
                     description: Virtual IPv6 address.
+              peer_authentication:
+                type: dict
+                keys:
+                  mode:
+                    type: str
+                    description: Authentication mode.
+                    valid_values:
+                    - text
+                    - ietf-md5
+                    required: true
+                  key:
+                    type: str
+                    required: true
+                    description: Authentication key.
+                    convert_types:
+                    - int
+                  key_type:
+                    type: str
+                    convert_types:
+                    - int
+                    description: Authentication key type.
+                    valid_values:
+                    - '0'
+                    - '7'
+                    - 8a
         validate_state:
           type: bool
           description: Set to false to disable interface state and LLDP topology validation
@@ -10200,6 +10225,26 @@ keys:
                 description: 'The queue profile to be applied to the platform.
 
                   '
+              headroom_pool_limit:
+                type: dict
+                description: Max limit on headroom pool size.
+                keys:
+                  bytes:
+                    type: int
+                    convert_types:
+                    - str
+                    description: 'Headroom pool limit in bytes.
+
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking
+                      precedence.'
+                  cells:
+                    type: int
+                    convert_types:
+                    - str
+                    description: 'Headroom pool limit in cells.
+
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking
+                      precedence.'
               queue_profiles:
                 type: list
                 primary_key: name
@@ -13097,6 +13142,57 @@ keys:
       tx_latency:
         type: bool
         description: Enable tx-latency mode.
+      mirror:
+        description: Enable frame mirroring during congestion.
+        type: dict
+        keys:
+          enabled:
+            type: bool
+          destination:
+            description: Mirror destination.
+            type: dict
+            keys:
+              cpu:
+                type: bool
+                description: CPU ports.
+              ethernet_interfaces:
+                type: list
+                items:
+                  type: str
+                  description: Ethernet interface name.
+              tunnel_mode_gre:
+                type: dict
+                keys:
+                  source:
+                    type: str
+                    required: true
+                    description: Source IP address of GRE tunnel.
+                  destination:
+                    type: str
+                    required: true
+                    description: Destination IP address of GRE tunnel.
+                  dscp:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 0
+                    max: 63
+                    description: DSCP of the GRE tunnel. EOS default is 0.
+                  ttl:
+                    type: int
+                    convert_types:
+                    - str
+                    min: 1
+                    max: 255
+                    description: TTL range. EOS default is 128.
+                  protocol:
+                    type: str
+                    description: 'Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+
+                      EOS default is 0x88BE.'
+                  vrf:
+                    type: str
+                    description: VRF name of the GRE tunnel. EOS default is "default".
   queue_monitor_streaming:
     type: dict
     keys:

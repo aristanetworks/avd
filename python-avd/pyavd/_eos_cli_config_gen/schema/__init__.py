@@ -9855,6 +9855,39 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         """
 
+            class PeerAuthentication(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"mode": {"type": str}, "key": {"type": str}, "key_type": {"type": str}}
+                mode: Literal["text", "ietf-md5"]
+                """Authentication mode."""
+                key: str
+                """Authentication key."""
+                key_type: Literal["0", "7", "8a"] | None
+                """Authentication key type."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        mode: Literal["text", "ietf-md5"] | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
+                        key_type: Literal["0", "7", "8a"] | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        PeerAuthentication.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            mode: Authentication mode.
+                            key: Authentication key.
+                            key_type: Authentication key type.
+
+                        """
+
             _fields: ClassVar[dict] = {
                 "id": {"type": int},
                 "priority_level": {"type": int},
@@ -9864,6 +9897,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "tracked_object": {"type": TrackedObject},
                 "ipv4": {"type": Ipv4},
                 "ipv6": {"type": Ipv6},
+                "peer_authentication": {"type": PeerAuthentication},
             }
             id: int
             """VRID."""
@@ -9881,6 +9915,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             ipv6: Ipv6
             """Subclass of AvdModel."""
+            peer_authentication: PeerAuthentication
+            """Subclass of AvdModel."""
 
             if TYPE_CHECKING:
 
@@ -9895,6 +9931,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     tracked_object: TrackedObject | UndefinedType = Undefined,
                     ipv4: Ipv4 | UndefinedType = Undefined,
                     ipv6: Ipv6 | UndefinedType = Undefined,
+                    peer_authentication: PeerAuthentication | UndefinedType = Undefined,
                 ) -> None:
                     """
                     VrrpIdsItem.
@@ -9911,6 +9948,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         tracked_object: Subclass of AvdIndexedList with `TrackedObjectItem` items. Primary key is `name` (`str`).
                         ipv4: Subclass of AvdModel.
                         ipv6: Subclass of AvdModel.
+                        peer_authentication: Subclass of AvdModel.
 
                     """
 
@@ -25911,6 +25949,44 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Mmu(AvdModel):
                 """Subclass of AvdModel."""
 
+                class HeadroomPoolLimit(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
+                    bytes: int | None
+                    """
+                    Headroom pool limit in bytes.
+                    `bytes` and `cells` are mutually exclusive with `bytes` taking
+                    precedence.
+                    """
+                    cells: int | None
+                    """
+                    Headroom pool limit in cells.
+                    `bytes` and `cells` are mutually exclusive with `bytes` taking
+                    precedence.
+                    """
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                            """
+                            HeadroomPoolLimit.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                bytes:
+                                   Headroom pool limit in bytes.
+                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
+                                   precedence.
+                                cells:
+                                   Headroom pool limit in cells.
+                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
+                                   precedence.
+
+                            """
+
                 class QueueProfilesItem(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -26126,16 +26202,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 QueueProfiles._item_type = QueueProfilesItem
 
-                _fields: ClassVar[dict] = {"active_profile": {"type": str}, "queue_profiles": {"type": QueueProfiles}}
+                _fields: ClassVar[dict] = {
+                    "active_profile": {"type": str},
+                    "headroom_pool_limit": {"type": HeadroomPoolLimit},
+                    "queue_profiles": {"type": QueueProfiles},
+                }
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
+                headroom_pool_limit: HeadroomPoolLimit
+                """
+                Max limit on headroom pool size.
+
+                Subclass of AvdModel.
+                """
                 queue_profiles: QueueProfiles
                 """Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`)."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, active_profile: str | None | UndefinedType = Undefined, queue_profiles: QueueProfiles | UndefinedType = Undefined
+                        self,
+                        *,
+                        active_profile: str | None | UndefinedType = Undefined,
+                        headroom_pool_limit: HeadroomPoolLimit | UndefinedType = Undefined,
+                        queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
                         """
                         Mmu.
@@ -26145,6 +26235,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
+                            headroom_pool_limit:
+                               Max limit on headroom pool size.
+
+                               Subclass of AvdModel.
                             queue_profiles: Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`).
 
                         """
@@ -33506,6 +33600,135 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class Mirror(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Destination(AvdModel):
+                """Subclass of AvdModel."""
+
+                class EthernetInterfaces(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                EthernetInterfaces._item_type = str
+
+                class TunnelModeGre(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {
+                        "source": {"type": str},
+                        "destination": {"type": str},
+                        "dscp": {"type": int},
+                        "ttl": {"type": int},
+                        "protocol": {"type": str},
+                        "vrf": {"type": str},
+                    }
+                    source: str
+                    """Source IP address of GRE tunnel."""
+                    destination: str
+                    """Destination IP address of GRE tunnel."""
+                    dscp: int | None
+                    """DSCP of the GRE tunnel. EOS default is 0."""
+                    ttl: int | None
+                    """TTL range. EOS default is 128."""
+                    protocol: str | None
+                    """
+                    Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                    EOS default is 0x88BE.
+                    """
+                    vrf: str | None
+                    """VRF name of the GRE tunnel. EOS default is "default"."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            source: str | UndefinedType = Undefined,
+                            destination: str | UndefinedType = Undefined,
+                            dscp: int | None | UndefinedType = Undefined,
+                            ttl: int | None | UndefinedType = Undefined,
+                            protocol: str | None | UndefinedType = Undefined,
+                            vrf: str | None | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            TunnelModeGre.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                source: Source IP address of GRE tunnel.
+                                destination: Destination IP address of GRE tunnel.
+                                dscp: DSCP of the GRE tunnel. EOS default is 0.
+                                ttl: TTL range. EOS default is 128.
+                                protocol:
+                                   Protocol type in GRE header. Protocol range - 0x0000-0xFFFF.
+                                   EOS default is 0x88BE.
+                                vrf: VRF name of the GRE tunnel. EOS default is "default".
+
+                            """
+
+                _fields: ClassVar[dict] = {
+                    "cpu": {"type": bool},
+                    "ethernet_interfaces": {"type": EthernetInterfaces},
+                    "tunnel_mode_gre": {"type": TunnelModeGre},
+                }
+                cpu: bool | None
+                """CPU ports."""
+                ethernet_interfaces: EthernetInterfaces
+                """Subclass of AvdList with `str` items."""
+                tunnel_mode_gre: TunnelModeGre
+                """Subclass of AvdModel."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        cpu: bool | None | UndefinedType = Undefined,
+                        ethernet_interfaces: EthernetInterfaces | UndefinedType = Undefined,
+                        tunnel_mode_gre: TunnelModeGre | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        Destination.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            cpu: CPU ports.
+                            ethernet_interfaces: Subclass of AvdList with `str` items.
+                            tunnel_mode_gre: Subclass of AvdModel.
+
+                        """
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "destination": {"type": Destination}}
+            enabled: bool | None
+            destination: Destination
+            """
+            Mirror destination.
+
+            Subclass of AvdModel.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, destination: Destination | UndefinedType = Undefined) -> None:
+                    """
+                    Mirror.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        destination:
+                           Mirror destination.
+
+                           Subclass of AvdModel.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "enabled": {"type": bool},
             "default_thresholds": {"type": DefaultThresholds},
@@ -33513,6 +33736,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "notifying": {"type": bool},
             "cpu": {"type": Cpu},
             "tx_latency": {"type": bool},
+            "mirror": {"type": Mirror},
         }
         enabled: bool
         default_thresholds: DefaultThresholds
@@ -33525,6 +33749,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """Subclass of AvdModel."""
         tx_latency: bool | None
         """Enable tx-latency mode."""
+        mirror: Mirror
+        """
+        Enable frame mirroring during congestion.
+
+        Subclass of AvdModel.
+        """
 
         if TYPE_CHECKING:
 
@@ -33537,6 +33767,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 notifying: bool | None | UndefinedType = Undefined,
                 cpu: Cpu | UndefinedType = Undefined,
                 tx_latency: bool | None | UndefinedType = Undefined,
+                mirror: Mirror | UndefinedType = Undefined,
             ) -> None:
                 """
                 QueueMonitorLength.
@@ -33551,6 +33782,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     notifying: Should only be used for platforms supporting the "queue-monitor length notifying" CLI.
                     cpu: Subclass of AvdModel.
                     tx_latency: Enable tx-latency mode.
+                    mirror:
+                       Enable frame mirroring during congestion.
+
+                       Subclass of AvdModel.
 
                 """
 
