@@ -373,6 +373,37 @@ agent KernelFib shutdown supervisor standby
 | Management42 | - | oob | default | - | - |
 | Vlan123 | inband_management | inband | default | - | - |
 
+##### Interface Redundancy
+
+###### Management0
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | 100 |
+| Monitor Link State | True |
+| Supervisor 1 Primary Interface | Management1/1 |
+| Supervisor 1 Backup Interfaces | Management1/2, Management2/1 |
+| Supervisor 2 Primary Interface | Management2/1 |
+| Supervisor 2 Backup Interfaces | Management2/2, Management1/1 |
+
+###### Management1
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | infinity |
+| Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
+| Monitor Neighbor Interval | 101 |
+| Monitor Neighbor Multiplier | 3 |
+
+###### Management42
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | infinity |
+| Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
+| Monitor Neighbor Interval | - |
+| Monitor Neighbor Multiplier | - |
+
 #### Management Interfaces Device Configuration
 
 ```eos
@@ -380,11 +411,17 @@ agent KernelFib shutdown supervisor standby
 interface Management0
    mac-address 00:1c:73:00:00:aa
    ip address 10.1.1.1
+   redundancy fallback-delay 100 seconds
+   redundancy monitor link-state
+   redundancy supervisor 1 interface primary Management1/1 backup Management1/2 Management2/1
+   redundancy supervisor 2 interface primary Management2/1 backup Management2/2 Management1/1
 !
 interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
+   redundancy fallback-delay infinity
+   redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !
 interface Management42
    shutdown
@@ -392,6 +429,8 @@ interface Management42
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
+   redundancy fallback-delay infinity
+   redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1
 !
 interface Vlan123
    description inband_management
@@ -11022,6 +11061,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Routing MAC Address per VLAN | true |
 | Forwarding Table Partition | 2 |
 | MMU Applied Profile | mc_example_profile |
+| MMU Headroom-pool Limit | 556 cells |
 
 #### Trident MMU QUEUE PROFILES
 
@@ -11133,6 +11173,8 @@ platform sfe interface
       interface Ethernet9
    !
    profile TestProfile3
+!
+platform trident mmu headroom-pool limit cells 556
 ```
 
 ## System L1
