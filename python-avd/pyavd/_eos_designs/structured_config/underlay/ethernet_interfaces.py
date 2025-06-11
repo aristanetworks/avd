@@ -369,7 +369,7 @@ class EthernetInterfacesMixin(Protocol):
                     shutdown=False,
                     channel_group=EosCliConfigGen.EthernetInterfacesItem.ChannelGroup(id=self.shared_utils.wan_ha_port_channel_id, mode="active"),
                     # TODO: do we need speed?
-                    mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.interface_mtu(interface) else None,
+                    mtu=self.shared_utils.node_config.wan_ha.mtu,
                 )
             else:
                 # Using direct l3 interface
@@ -382,5 +382,5 @@ class EthernetInterfacesMixin(Protocol):
                     description=description or None,
                     ip_address=self.shared_utils.wan_ha_ip_addresses[index],
                     flow_tracker=direct_wan_ha_links_flow_tracker,
-                    mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.interface_mtu(interface) else None,
+                    mtu=self.shared_utils.node_config.wan_ha.mtu,
                 )
