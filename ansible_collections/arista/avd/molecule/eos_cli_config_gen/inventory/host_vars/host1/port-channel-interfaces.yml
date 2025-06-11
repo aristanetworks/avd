@@ -1091,6 +1091,7 @@ port_channel_interfaces:
         - testgrp
       srlgs:
         - 16
+        - TEST
       metric: 2
       bandwidth:
         number: 100

@@ -2275,6 +2275,16 @@ keys:
                 description: SRLG name or number.
                 convert_types:
                   - int
+            srlg:
+              description: SRLG name or number.
+              type: str
+              deprecation:
+                warning: true
+                removed: false
+                remove_in_version: 6.0.0
+                new_key: traffic_engineering.srlgs
+              convert_types:
+                - int
             metric:
               type: int
               convert_types:

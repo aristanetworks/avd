@@ -959,6 +959,9 @@ interface {{ port_channel_interface.name }}
 {%     for srlg in port_channel_interface.traffic_engineering.srlgs | arista.avd.natural_sort %}
    traffic-engineering srlg {{ srlg }}
 {%     endfor %}
+{%     if port_channel_interface.traffic_engineering.srlg is arista.avd.defined %}
+   traffic-engineering srlg {{ port_channel_interface.traffic_engineering.srlg }}
+{%     endif %}
 {%     if port_channel_interface.traffic_engineering.metric is arista.avd.defined %}
    traffic-engineering metric {{ port_channel_interface.traffic_engineering.metric }}
 {%     endif %}

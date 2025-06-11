@@ -1918,9 +1918,6 @@ ethernet_interfaces:
         - 4
         - 7-100
         - testgrp
-      srlgs:
-        - 16
-        - 2
       metric: 2
       bandwidth:
         number: 100

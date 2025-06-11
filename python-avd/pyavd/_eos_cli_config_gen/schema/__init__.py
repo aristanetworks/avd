@@ -11444,6 +11444,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
                 "srlgs": {"type": Srlgs},
+                "srlg": {"type": str},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
                 "min_delay_static": {"type": MinDelayStatic},
@@ -11464,6 +11465,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            srlg: str | None
+            """SRLG name or number."""
             metric: int | None
             bandwidth: Bandwidth
             """
@@ -11490,6 +11493,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
                     srlgs: Srlgs | UndefinedType = Undefined,
+                    srlg: str | None | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
@@ -11512,6 +11516,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            List of SRLGs.
 
                            Subclass of AvdList with `str` items.
+                        srlg: SRLG name or number.
                         metric: metric
                         bandwidth:
                            Interface maximum reservable bandwidth.
@@ -31148,6 +31153,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
                 "srlgs": {"type": Srlgs},
+                "srlg": {"type": str},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
                 "min_delay_static": {"type": MinDelayStatic},
@@ -31168,6 +31174,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Subclass of AvdList with `str` items.
             """
+            srlg: str | None
+            """SRLG name or number."""
             metric: int | None
             bandwidth: Bandwidth
             """
@@ -31194,6 +31202,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
                     srlgs: Srlgs | UndefinedType = Undefined,
+                    srlg: str | None | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
                     min_delay_static: MinDelayStatic | UndefinedType = Undefined,
@@ -31216,6 +31225,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                            List of SRLGs.
 
                            Subclass of AvdList with `str` items.
+                        srlg: SRLG name or number.
                         metric: metric
                         bandwidth:
                            Interface maximum reservable bandwidth.

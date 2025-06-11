@@ -4106,7 +4106,7 @@ interface Dps1
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
 | Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
-| Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | 16,2 |
+| Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -5126,8 +5126,6 @@ interface Ethernet81/4
    traffic-engineering
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
-   traffic-engineering srlg 2
-   traffic-engineering srlg 16
    traffic-engineering metric 2
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
 !
@@ -6011,6 +6009,7 @@ interface Port-Channel137
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
    traffic-engineering srlg 16
+   traffic-engineering srlg TEST
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
 ```
