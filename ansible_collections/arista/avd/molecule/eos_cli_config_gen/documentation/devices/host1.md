@@ -11022,6 +11022,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Routing MAC Address per VLAN | true |
 | Forwarding Table Partition | 2 |
 | MMU Applied Profile | mc_example_profile |
+| MMU Headroom-pool Limit | 556 cells |
 
 #### Trident MMU QUEUE PROFILES
 
@@ -11133,6 +11134,8 @@ platform sfe interface
       interface Ethernet9
    !
    profile TestProfile3
+!
+platform trident mmu headroom-pool limit cells 556
 ```
 
 ## System L1
