@@ -5058,7 +5058,7 @@ keys:
                         - drop-report
                       local_interface:
                         type: str
-                        description: Local Source Interface.
+                        description: Local source interface.
                       template_interval:
                         type: int
                         convert_types:

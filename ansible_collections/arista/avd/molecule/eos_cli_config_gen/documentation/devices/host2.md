@@ -664,9 +664,9 @@ sflow interface egress enable default
 
 ##### Trackers Summary
 
-| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
-| ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-| T1 | 3666 | 5666 | 0 | - |
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
 
 #### Flow Tracking Device Configuration
 

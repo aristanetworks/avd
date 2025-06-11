@@ -13205,7 +13205,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     format: Literal["sflow", "drop-report"] | None
                     """Configure flow export format. Valid values are platform dependent."""
                     local_interface: str | None
-                    """Local Source Interface."""
+                    """Local source interface."""
                     template_interval: int | None
                     """Template interval in milliseconds."""
                     dscp: int | None
@@ -13232,7 +13232,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 name: Exporter Name.
                                 collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `name` (`str`).
                                 format: Configure flow export format. Valid values are platform dependent.
-                                local_interface: Local Source Interface.
+                                local_interface: Local source interface.
                                 template_interval: Template interval in milliseconds.
                                 dscp: dscp
 

@@ -2759,11 +2759,11 @@ Software export of IPFIX data records enabled.
 
 ##### Trackers Summary
 
-| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters | Applied On |
-| ------------ | --------------------------------- | ------------------------- | ------------------- | ---------- |
-| T1 | 3666 | 5666 | 0 | - |
-| T2 | - | - | 1 | - |
-| T3 | - | - | 2 | - |
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
+| T2 | - | - | 1 |
+| T3 | - | - | 2 |
 
 ##### Exporters Summary
 
