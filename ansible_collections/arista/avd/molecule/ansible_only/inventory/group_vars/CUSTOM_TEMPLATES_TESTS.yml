@@ -93,7 +93,7 @@ servers:
         switches: [ CUSTOM-TEMPLATES-L3LEAF1B, CUSTOM-TEMPLATES-L3LEAF1B ]
         mode: trunk
         enabled: true
-        # To check `connected_endpoints_port_channel_interfaces` includes `endpoint_port_channel` in description.
+        # To check `connected_endpoints_port_channel_interfaces` includes `peer_interface` in description.
         port_channel:
           mode: active
           description: portchannel
