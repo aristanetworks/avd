@@ -1,2 +1,3 @@
 ---
+# Testing RFC5549 with IPv6 overlay peers only
 overlay_routing_protocol: none
