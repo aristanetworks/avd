@@ -398,7 +398,6 @@ class AvdInterfaceDescriptions(AvdFacts):
             - mpls_lsr
             - overlay_routing_protocol
             - type.
-            - endpoint_port_channel
         """
         if template_path := self.shared_utils.node_type_key_data.interface_descriptions.connected_endpoints_port_channel_interfaces:
             return self._template(
@@ -407,7 +406,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                 adapter_port_channel_id=data.port_channel_id,
                 adapter_port_channel_description=data.port_channel_description,
                 adapter_description=data.description,
-                endpoint_port_channel=data.endpoint_port_channel,
+                peer_interface=data.peer_interface,
             )
 
         if data.port_channel_description:
@@ -573,7 +572,6 @@ class InterfaceDescriptionData:
         vrf: str | None = None,
         wan_carrier: str | None = None,
         wan_circuit_id: str | None = None,
-        endpoint_port_channel: str | None = None,
     ) -> None:
         self._shared_utils = shared_utils
         self.description = description
@@ -590,7 +588,6 @@ class InterfaceDescriptionData:
         self.vrf = vrf
         self.wan_carrier = wan_carrier
         self.wan_circuit_id = wan_circuit_id
-        self.endpoint_port_channel = endpoint_port_channel
 
     @property
     def mpls_overlay_role(self) -> str | None:
