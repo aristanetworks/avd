@@ -61151,20 +61151,20 @@ class EosDesigns(EosDesignsRootModel):
     modified to include fewer or more fields to keep separate pools or to use the same pool across
     areas.
     This can be a template using the AVD string formatter syntax:
-    https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-
-    string-formatter-syntax.
+    https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+    descriptions-names.html#avd-string-formatter-syntax.
     The available template fields are:
-      - `fabric_name`: The `fabric_name`
-    assigned to the device.
-      - `dc_name`: The `dc_name` assigned to the device.
-      - `pod_name`: The
-    `pod_name` assigned to the device.
-      - `type`: The `type` assigned to the device.
-      - `rack`: The
-    `rack` assigned to the device.
+      -
+    `fabric_name`: The `fabric_name` assigned to the device.
+      - `dc_name`: The `dc_name` assigned to
+    the device.
+      - `pod_name`: The `pod_name` assigned to the device.
+      - `type`: The `type` assigned
+    to the device.
+      - `rack`: The `rack` assigned to the device.
 
-    By default the Node ID pool key is templated from `fabric_name`,
-    `dc_name`, `pod_name` and `type`.
+    By default the Node ID pool key is
+    templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
 
     Default value: `"fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"`
     """
@@ -63028,20 +63028,20 @@ class EosDesigns(EosDesignsRootModel):
                    modified to include fewer or more fields to keep separate pools or to use the same pool across
                    areas.
                    This can be a template using the AVD string formatter syntax:
-                   https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-
-                   string-formatter-syntax.
+                   https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                   descriptions-names.html#avd-string-formatter-syntax.
                    The available template fields are:
-                     - `fabric_name`: The `fabric_name`
-                   assigned to the device.
-                     - `dc_name`: The `dc_name` assigned to the device.
-                     - `pod_name`: The
-                   `pod_name` assigned to the device.
-                     - `type`: The `type` assigned to the device.
-                     - `rack`: The
-                   `rack` assigned to the device.
+                     -
+                   `fabric_name`: The `fabric_name` assigned to the device.
+                     - `dc_name`: The `dc_name` assigned to
+                   the device.
+                     - `pod_name`: The `pod_name` assigned to the device.
+                     - `type`: The `type` assigned
+                   to the device.
+                     - `rack`: The `rack` assigned to the device.
 
-                   By default the Node ID pool key is templated from `fabric_name`,
-                   `dc_name`, `pod_name` and `type`.
+                   By default the Node ID pool key is
+                   templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
                 fabric_sflow:
                    Default enabling of sFlow for various interface types across the fabric.
                    sFlow can also be
