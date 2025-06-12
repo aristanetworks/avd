@@ -10296,14 +10296,13 @@ keys:
                   '
               headroom_pool:
                 type: dict
-                description: Max limit on headroom pool size.
                 keys:
                   unit:
                     type: str
                     valid_values:
                     - bytes
                     - cells
-                    description: 'Unit to be used for the `headroom_pool_limit` value.
+                    description: 'Unit to be used for the `headroom_pool` value.
 
                       If not specified, default is bytes.'
                   limit:
@@ -10466,6 +10465,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10526,6 +10537,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:

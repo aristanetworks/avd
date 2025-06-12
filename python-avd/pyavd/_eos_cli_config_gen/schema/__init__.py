@@ -26183,7 +26183,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     _fields: ClassVar[dict] = {"unit": {"type": str}, "limit": {"type": int}}
                     unit: Literal["bytes", "cells"] | None
                     """
-                    Unit to be used for the `headroom_pool_limit` value.
+                    Unit to be used for the `headroom_pool` value.
                     If not specified, default is bytes.
                     """
                     limit: int | None
@@ -26202,7 +26202,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 unit:
-                                   Unit to be used for the `headroom_pool_limit` value.
+                                   Unit to be used for the `headroom_pool` value.
                                    If not specified, default is bytes.
                                 limit: Max limit on headroom pool size.
 
@@ -26443,7 +26443,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: str | None
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -26456,7 +26456,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 id: int | UndefinedType = Undefined,
                                 unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: str | None | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26531,7 +26531,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: str | None
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -26544,7 +26544,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 id: int | UndefinedType = Undefined,
                                 unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: str | None | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26638,11 +26638,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
                 headroom_pool: HeadroomPool
-                """
-                Max limit on headroom pool size.
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 queue_profiles: QueueProfiles
                 """Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`)."""
 
@@ -26663,10 +26659,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
-                            headroom_pool:
-                               Max limit on headroom pool size.
-
-                               Subclass of AvdModel.
+                            headroom_pool: Subclass of AvdModel.
                             queue_profiles: Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`).
 
                         """

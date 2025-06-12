@@ -35,13 +35,12 @@ keys:
                   The queue profile to be applied to the platform.
               headroom_pool:
                 type: dict
-                description: Max limit on headroom pool size.
                 keys:
                   unit:
                     type: str
                     valid_values: ["bytes", "cells"]
                     description: |-
-                      Unit to be used for the `headroom_pool_limit` value.
+                      Unit to be used for the `headroom_pool` value.
                       If not specified, default is bytes.
                   limit:
                     type: int
@@ -183,6 +182,18 @@ keys:
                               - "int"
                             description: |
                               Dynamic Shared Memory threshold.
+                            valid_values:
+                              - "1"      # alpha1
+                              - "1/128"  # alphaDiv128
+                              - "1/16"   # alphaDiv16
+                              - "1/2"    # alphaDiv2
+                              - "1/32"   # alphaDiv32
+                              - "1/4"    # alphaDiv4
+                              - "1/64"   # alphaDiv64
+                              - "1/8"    # alphaDiv8
+                              - "2"      # alpha2
+                              - "4"      # alpha4
+                              - "8"      # alpha8
                           drop:
                             type: dict
                             keys:
@@ -229,6 +240,18 @@ keys:
                               - "int"
                             description: |
                               Dynamic Shared Memory threshold.
+                            valid_values:
+                              - "1"      # alpha1
+                              - "1/128"  # alphaDiv128
+                              - "1/16"   # alphaDiv16
+                              - "1/2"    # alphaDiv2
+                              - "1/32"   # alphaDiv32
+                              - "1/4"    # alphaDiv4
+                              - "1/64"   # alphaDiv64
+                              - "1/8"    # alphaDiv8
+                              - "2"      # alpha2
+                              - "4"      # alpha4
+                              - "8"      # alpha8
                           drop:
                             type: dict
                             keys:
