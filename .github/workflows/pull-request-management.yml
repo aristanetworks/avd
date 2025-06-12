@@ -733,12 +733,6 @@ jobs:
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
-      - name: Install cargo-llvm-cov for coverage reports
-        run: |
-          rustup component add llvm-tools-preview --toolchain stable-x86_64-unknown-linux-gnu
-          cargo install cargo-llvm-cov
-        if: |
-          matrix.os == 'ubuntu-latest'
       - name: Check code formatting with cargo fmt
         run: cargo fmt --verbose
         if: |
@@ -749,9 +743,11 @@ jobs:
           matrix.os == 'ubuntu-latest'
       - name: Run all tests
         run: cargo test --all-targets --all-features
-      - name: Generate coverage report from previously run tests
+      - name: Generate coverage report with cargo llvm-cov
         run: |
-          cargo llvm-cov report --lcov --output-path lcov.info
+          rustup component add llvm-tools-preview --toolchain stable-x86_64-unknown-linux-gnu
+          cargo install cargo-llvm-cov
+          cargo llvm-cov --all-targets --all-features --lcov --output-path lcov.info
         if: |
           matrix.os == 'ubuntu-latest'
       - name: Upload coverage report
