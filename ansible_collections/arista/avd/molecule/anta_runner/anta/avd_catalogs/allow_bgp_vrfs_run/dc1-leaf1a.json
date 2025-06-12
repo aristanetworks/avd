@@ -305,10 +305,6 @@
             "status": "up"
           },
           {
-            "name": "Ethernet5",
-            "status": "up"
-          },
-          {
             "name": "Ethernet6",
             "status": "up"
           },
@@ -342,10 +338,6 @@
           },
           {
             "name": "Port-Channel3",
-            "status": "up"
-          },
-          {
-            "name": "Port-Channel5",
             "status": "up"
           },
           {
@@ -404,7 +396,10 @@
           "tags": [
             "dc1-leaf1a"
           ]
-        }
+        },
+        "ignored_interfaces": [
+          "Port-Channel5"
+        ]
       }
     },
     {

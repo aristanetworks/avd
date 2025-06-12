@@ -5,7 +5,7 @@ from __future__ import annotations
 
 from functools import cached_property
 from re import findall
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
@@ -97,7 +97,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer_ip(self: SharedUtilsProtocol) -> str:
-        return self.mlag_peer_facts.mlag_ip
+        return cast("str", self.mlag_peer_facts.mlag_ip)
 
     @cached_property
     def mlag_peer_l3_ip(self: SharedUtilsProtocol) -> str | None:
@@ -107,7 +107,7 @@ class MlagMixin(Protocol):
 
     @cached_property
     def mlag_peer_id(self: SharedUtilsProtocol) -> int:
-        return self.mlag_peer_facts.id
+        return cast("int", self.mlag_peer_facts.id)
 
     @cached_property
     def mlag_peer_facts(self: SharedUtilsProtocol) -> EosDesignsFactsProtocol:
@@ -180,7 +180,7 @@ class MlagMixin(Protocol):
         if self.mlag_l3_ip is not None:
             return self.mlag_l3_ip
 
-        return self.mlag_ip
+        return cast("str", self.mlag_ip)
 
     @cached_property
     def mlag_peer_ibgp_ip(self: SharedUtilsProtocol) -> str:

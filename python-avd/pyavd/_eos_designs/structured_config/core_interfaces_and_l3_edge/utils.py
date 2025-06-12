@@ -7,12 +7,12 @@ import re
 from functools import cached_property
 from ipaddress import ip_network
 from itertools import islice
-from typing import TYPE_CHECKING, Literal, Protocol, TypeVar
+from typing import TYPE_CHECKING, Literal, Protocol, TypeVar, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
-from pyavd._utils import Undefined, default, get_ip_from_pool
+from pyavd._utils import default, get_ip_from_pool
 
 if TYPE_CHECKING:
     from . import AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol
@@ -37,11 +37,11 @@ class UtilsMixin(Protocol):
         For each links any referenced profiles are applied and IP addresses are resolved
         from pools or subnets.
         """
-        if not (p2p_links := self.inputs_data.p2p_links):
+        if not self.inputs_data.p2p_links:
             return []
 
         # Apply p2p_profiles if set. Silently ignoring missing profile.
-        p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in p2p_links]
+        p2p_links: list[T_P2pLinksItem] = [self._apply_p2p_links_profile(p2p_link) for p2p_link in cast("list[T_P2pLinksItem]", self.inputs_data.p2p_links)]
 
         # Filter to only include p2p_links with our hostname under "nodes"
         p2p_links = [p2p_link for p2p_link in p2p_links if self.shared_utils.hostname in p2p_link.nodes]
@@ -250,15 +250,15 @@ class UtilsMixin(Protocol):
         interface.switchport.enabled = False
 
         if p2p_link.structured_config:
-            if str(interface_name := p2p_link_data["interface"]).lower().startswith("p"):
+            if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):
                 # Port-channel
-                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface_name)._deepmerge(
+                self.custom_structured_configs.nested.port_channel_interfaces.obtain(interface.name)._deepmerge(
                     EosCliConfigGen.PortChannelInterfacesItem._from_dict(p2p_link.structured_config),
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
             else:
                 # Ethernet
-                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface_name)._deepmerge(
+                self.custom_structured_configs.nested.ethernet_interfaces.obtain(interface.name)._deepmerge(
                     EosCliConfigGen.EthernetInterfacesItem._from_dict(p2p_link.structured_config),
                     list_merge=self.custom_structured_configs.list_merge_strategy,
                 )
@@ -301,8 +301,11 @@ class UtilsMixin(Protocol):
         elif p2p_link_sflow := self.inputs.fabric_sflow.core_interfaces if self.data_model == "core_interfaces" else self.inputs.fabric_sflow.l3_edge:
             interface.sflow.enable = p2p_link_sflow
 
-        if (p2p_link_flow_tracking := self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker)) is not Undefined:
-            interface.flow_tracker = p2p_link_flow_tracking
+        # Adding type check to avoid confusing the type checker.
+        if isinstance(interface, EosCliConfigGen.PortChannelInterfacesItem):  # NOSONAR, this is for the type checker
+            interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
+        else:
+            interface._update(flow_tracker=self.shared_utils.get_flow_tracker(p2p_link.flow_tracking, output_type=interface.FlowTracker))
 
         if self.shared_utils.mpls_lsr and default(p2p_link.mpls_ip, True):  # noqa: FBT003
             interface.mpls.ip = True
@@ -310,7 +313,12 @@ class UtilsMixin(Protocol):
                 interface.mpls.ldp.interface = True
                 interface.mpls.ldp.igp_sync = True
 
-    def _get_channel_id(self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol, p2p_link: T_P2pLinksItem, node_data: dict) -> int:
+    def _get_channel_id(
+        self: AvdStructuredConfigCoreInterfacesAndL3EdgeProtocol,
+        p2p_link: T_P2pLinksItem,
+        node_data: EosDesigns.CoreInterfaces.P2pLinksItem.PortChannel.NodesChildInterfacesItem
+        | EosDesigns.L3Edge.P2pLinksItem.PortChannel.NodesChildInterfacesItem,
+    ) -> int:
         """Returns a channel ID for one p2p_link."""
         if node_data.channel_id:
             return node_data.channel_id
