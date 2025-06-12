@@ -115,6 +115,7 @@
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
   - [Synchronous Ethernet (SyncE) Settings](#synchronous-ethernet-synce-settings)
+- [Port-channel Summary](#port-channel-summary)
 - [Port-channel Device Configuration](#port-channel-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
@@ -3399,6 +3400,28 @@ Synchronous Ethernet Network Option: 2
 sync-e
    network option 2
 ```
+## Port-channel Summary
+
+#### Port-channel Load Balance Trident UDF Eth-type Headers
+
+| Eth-Type | Header | Layer | Offset | Mask |
+| -------- | ------ | ----- | ------ | ---- |
+| IPv4 | Outer | L2 | 2 | 0xff |
+| IPv4 | Outer | L2 | 5 | 0x02 |
+| IPv4 | Innner | L3 | 30 | 0x01 |
+| IPv4 | Innner | L3 | 10 | 0xff |
+| IPv4 | Outer | L3 | 3 | 0x01 |
+| IPv4 | Innner | L4 | 20 | 0x02 |
+| IPv4 | Outer | L4 | 50 | 0x04 |
+| IPv4 | Outer | L4 | 30 | 0xff |
+| IPv6 | Outer | L2 | 2 | 0xff |
+| IPv6 | Outer | L2 | 5 | 0x02 |
+| IPv6 | Innner | L3 | 30 | 0x01 |
+| IPv6 | Innner | L3 | 10 | 0xff |
+| IPv6 | Outer | L3 | 3 | 0x01 |
+| IPv6 | Innner | L4 | 20 | 0x02 |
+| IPv6 | Outer | L4 | 50 | 0x04 |
+| IPv6 | Outer | L4 | 30 | 0xff |
 
 ## Port-channel Device Configuration
 

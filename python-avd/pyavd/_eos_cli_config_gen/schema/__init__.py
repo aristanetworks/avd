@@ -27325,9 +27325,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"inner": {"type": Inner}, "outer": {"type": Outer}}
                         inner: Inner
-                        """Subclass of AvdModel."""
+                        """
+                        Inner header from the packet.
+
+                        Subclass of AvdModel.
+                        """
                         outer: Outer
-                        """Subclass of AvdModel."""
+                        """
+                        Outer header from the packet.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -27339,14 +27347,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    inner: Subclass of AvdModel.
-                                    outer: Subclass of AvdModel.
+                                    inner:
+                                       Inner header from the packet.
+
+                                       Subclass of AvdModel.
+                                    outer:
+                                       Outer header from the packet.
+
+                                       Subclass of AvdModel.
 
                                 """
 
                     _fields: ClassVar[dict] = {"header": {"type": Header}}
                     header: Header
-                    """Subclass of AvdModel."""
+                    """
+                    Offset starting header from the packet.
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -27358,7 +27376,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                header: Subclass of AvdModel.
+                                header:
+                                   Offset starting header from the packet.
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -27603,9 +27624,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         _fields: ClassVar[dict] = {"inner": {"type": Inner}, "outer": {"type": Outer}}
                         inner: Inner
-                        """Subclass of AvdModel."""
+                        """
+                        Inner header from the packet.
+
+                        Subclass of AvdModel.
+                        """
                         outer: Outer
-                        """Subclass of AvdModel."""
+                        """
+                        Outer header from the packet.
+
+                        Subclass of AvdModel.
+                        """
 
                         if TYPE_CHECKING:
 
@@ -27617,14 +27646,24 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    inner: Subclass of AvdModel.
-                                    outer: Subclass of AvdModel.
+                                    inner:
+                                       Inner header from the packet.
+
+                                       Subclass of AvdModel.
+                                    outer:
+                                       Outer header from the packet.
+
+                                       Subclass of AvdModel.
 
                                 """
 
                     _fields: ClassVar[dict] = {"header": {"type": Header}}
                     header: Header
-                    """Subclass of AvdModel."""
+                    """
+                    Offset starting header from the packet.
+
+                    Subclass of AvdModel.
+                    """
 
                     if TYPE_CHECKING:
 
@@ -27636,7 +27675,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                header: Subclass of AvdModel.
+                                header:
+                                   Offset starting header from the packet.
+
+                                   Subclass of AvdModel.
 
                             """
 
@@ -27663,7 +27705,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             _fields: ClassVar[dict] = {"udf_eth_type": {"type": UdfEthType}}
             udf_eth_type: UdfEthType
-            """Subclass of AvdModel."""
+            """
+            Ethernet type in the port channel hash.
+
+            Subclass of AvdModel.
+            """
 
             if TYPE_CHECKING:
 
@@ -27675,7 +27721,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        udf_eth_type: Subclass of AvdModel.
+                        udf_eth_type:
+                           Ethernet type in the port channel hash.
+
+                           Subclass of AvdModel.
 
                     """
 

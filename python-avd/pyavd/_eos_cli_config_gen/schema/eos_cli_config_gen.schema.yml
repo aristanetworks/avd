@@ -10669,15 +10669,18 @@ keys:
         type: dict
         keys:
           udf_eth_type:
+            description: Ethernet type in the port channel hash.
             type: dict
             keys:
               ipv4:
                 type: dict
                 keys:
                   header:
+                    description: Offset starting header from the packet.
                     type: dict
                     keys:
                       inner:
+                        description: Inner header from the packet.
                         type: dict
                         keys:
                           l3:
@@ -10701,6 +10704,7 @@ keys:
                             type: list
                             $ref: eos_cli_config_gen#/keys/port_channel/keys/load_balance_trident/keys/udf_eth_type/keys/ipv4/keys/header/keys/inner/keys/l3
                       outer:
+                        description: Outer header from the packet.
                         type: dict
                         keys:
                           l2:
