@@ -234,5 +234,5 @@ class PortChannelInterfacesMixin(Protocol):
             description=description or None,
             ip_address=self.shared_utils.wan_ha_ip_addresses[0],
             flow_tracker=direct_wan_ha_links_flow_tracker,
-            mtu=self.shared_utils.node_config.wan_ha.mtu if self.shared_utils.interface_mtu(port_channel_name) else None,
+            mtu=self.shared_utils.node_config.wan_ha.mtu,
         )
