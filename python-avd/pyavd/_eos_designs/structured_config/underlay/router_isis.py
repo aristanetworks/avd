@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdInvalidInputsError
@@ -28,7 +28,7 @@ class RouterIsisMixin(Protocol):
             return
 
         self.structured_config.router_isis._update(
-            instance=self.shared_utils.isis_instance_name,
+            instance=cast("str", self.shared_utils.isis_instance_name),
             log_adjacency_changes=True,
             net=self._isis_net,
             router_id=self.shared_utils.router_id if not self.inputs.use_router_general_for_router_id else None,
@@ -43,8 +43,16 @@ class RouterIsisMixin(Protocol):
         if self.inputs.isis_ti_lfa.enabled:
             self.structured_config.router_isis.timers.local_convergence._update(delay=self.inputs.isis_ti_lfa.local_convergence_delay, protected_prefixes=True)
 
-        if self.inputs.isis_ti_lfa.protection:
-            self.structured_config.router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode = f"{self.inputs.isis_ti_lfa.protection}-protection"
+        match self.inputs.isis_ti_lfa.protection:
+            case "link":
+                ti_lfa_mode = "link-protection"
+            case "node":
+                ti_lfa_mode = "node-protection"
+            case _:
+                ti_lfa_mode = None
+
+        if ti_lfa_mode:
+            self.structured_config.router_isis.address_family_ipv4.fast_reroute_ti_lfa.mode = ti_lfa_mode
 
         # Overlay protocol
         if self.shared_utils.overlay_routing_protocol == "none":
@@ -56,8 +64,8 @@ class RouterIsisMixin(Protocol):
             # but this could probably be taken out
             if self.shared_utils.underlay_ipv6 is True:
                 self.structured_config.router_isis.address_family_ipv6._update(enabled=True, maximum_paths=self.inputs.isis_maximum_paths)
-                if self.inputs.isis_ti_lfa.protection:
-                    self.structured_config.router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode = f"{self.inputs.isis_ti_lfa.protection}-protection"
+                if ti_lfa_mode:
+                    self.structured_config.router_isis.address_family_ipv6.fast_reroute_ti_lfa.mode = ti_lfa_mode
             self.structured_config.router_isis.segment_routing_mpls._update(router_id=self.shared_utils.router_id, enabled=True)
 
     @cached_property
@@ -77,7 +85,7 @@ class RouterIsisMixin(Protocol):
                 raise AristaAvdInvalidInputsError(msg)
             system_id = f"{isis_system_id_prefix}.{self.shared_utils.id:04d}"
         else:
-            system_id = self.ipv4_to_isis_system_id(self.shared_utils.router_id)
+            system_id = self.ipv4_to_isis_system_id(cast("str", self.shared_utils.router_id))
 
         isis_area_id = self.inputs.isis_area_id
         return f"{isis_area_id}.{system_id}.00"
