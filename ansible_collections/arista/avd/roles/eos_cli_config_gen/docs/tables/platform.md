@@ -14,6 +14,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_mac_address_per_vlan</samp>](## "platform.trident.l3.routing_mac_address_per_vlan") | Boolean |  |  |  | Enable bridging of packets with destination MAC being a Router MAC in VLANs without routing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mmu</samp>](## "platform.trident.mmu") | Dictionary |  |  |  | Memory Management Unit settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;active_profile</samp>](## "platform.trident.mmu.active_profile") | String |  |  |  | The queue profile to be applied to the platform.<br> |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom_pool_limit</samp>](## "platform.trident.mmu.headroom_pool_limit") | Dictionary |  |  |  | Max limit on headroom pool size. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes</samp>](## "platform.trident.mmu.headroom_pool_limit.bytes") | Integer |  |  |  | Headroom pool limit in bytes.<br>`bytes` and `cells` are mutually exclusive with `bytes` taking precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cells</samp>](## "platform.trident.mmu.headroom_pool_limit.cells") | Integer |  |  |  | Headroom pool limit in cells.<br>`bytes` and `cells` are mutually exclusive with `bytes` taking precedence. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_profiles</samp>](## "platform.trident.mmu.queue_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "platform.trident.mmu.queue_profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multicast_queues</samp>](## "platform.trident.mmu.queue_profiles.[].multicast_queues") | List, items: Dictionary |  |  |  |  |
@@ -55,6 +58,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;worker</samp>](## "platform.sfe.interface.profiles.[].interfaces.[].rx_queue.worker") | String |  |  |  | Worker ids specified as combination of range and/or comma separated values<br>such as 0-4,7. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mode</samp>](## "platform.sfe.interface.profiles.[].interfaces.[].rx_queue.mode") | String |  |  | Valid Values:<br>- <code>shared</code><br>- <code>exclusive</code> | Mode applicable to the workers. Default mode is 'shared'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_profile</samp>](## "platform.sfe.interface.interface_profile") | String |  |  |  | RSS interface profile name to apply for the platform.<br>Needs system reload or Sfe agent restart for change to take effect. |
+    | [<samp>&nbsp;&nbsp;fap</samp>](## "platform.fap") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;buffering_egress</samp>](## "platform.fap.buffering_egress") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "platform.fap.buffering_egress.profile") | String |  |  | Valid Values:<br>- <code>unicast</code><br>- <code>balanced</code> | Preferred traffic profile for egress fap buffering. |
 
 === "YAML"
 
@@ -73,6 +79,17 @@
 
           # The queue profile to be applied to the platform.
           active_profile: <str>
+
+          # Max limit on headroom pool size.
+          headroom_pool_limit:
+
+            # Headroom pool limit in bytes.
+            # `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
+            bytes: <int>
+
+            # Headroom pool limit in cells.
+            # `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
+            cells: <int>
           queue_profiles:
             - name: <str; required; unique>
               multicast_queues:
@@ -166,4 +183,9 @@
           # RSS interface profile name to apply for the platform.
           # Needs system reload or Sfe agent restart for change to take effect.
           interface_profile: <str>
+      fap:
+        buffering_egress:
+
+          # Preferred traffic profile for egress fap buffering.
+          profile: <str; "unicast" | "balanced">
     ```
