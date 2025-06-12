@@ -5,55 +5,55 @@ enable_password:
   disabled: true
 ethernet_interfaces:
 - name: Ethernet1
-  description: Interface description server_OLD_SW-1/2_ENDPOINT_PORT1
+  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT1
   shutdown: false
   channel_group:
     id: 1
     mode: active
   peer: OLD_SW-1/2
   peer_interface: Endpoint_port1
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet2
-  description: Interface description server_OLD_SW-1/2_ENDPOINT_PORT2
+  description: Interface description custom_server_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
   channel_group:
     id: 1
     mode: active
   peer: OLD_SW-1/2
   peer_interface: ENDPOINT_PORT2
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet3
-  description: SERVER_OLD_SW-1/3_ENDPOINT_PORT
+  description: CUSTOM_SERVER_OLD_SW-1/3_ENDPOINT_PORT
   shutdown: false
   channel_group:
     id: 3
     mode: active
   peer: OLD_SW-1/3
   peer_interface: ENDPOINT_PORT
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet4
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
   peer: OLD_SW-1/4
-  peer_type: server
+  peer_type: custom_server
   switchport:
     enabled: true
 - name: Ethernet5
-  description: SERVER_OLD_SW-1/5
+  description: CUSTOM_SERVER_OLD_SW-1/5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   peer: OLD_SW-1/5
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet6
-  description: SERVER_OLD_SW-1/5
+  description: CUSTOM_SERVER_OLD_SW-1/5
   shutdown: false
   channel_group:
     id: 5
     mode: active
   peer: OLD_SW-1/5
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet7
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
@@ -61,7 +61,7 @@ ethernet_interfaces:
     id: 7
     mode: active
   peer: OLD_SW-1/6
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet8
   description: PHYSICAL_PORT_DESCRIPTION
   shutdown: false
@@ -69,7 +69,7 @@ ethernet_interfaces:
     id: 7
     mode: active
   peer: OLD_SW-1/6
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet10
   description: PHYSICAL_PORT_DESCRIPTION_1
   shutdown: false
@@ -77,7 +77,7 @@ ethernet_interfaces:
     id: 10
     mode: active
   peer: OLD_SW-1/7
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet11
   description: PHYSICAL_PORT_DESCRIPTION_2
   shutdown: false
@@ -85,54 +85,54 @@ ethernet_interfaces:
     id: 10
     mode: active
   peer: OLD_SW-1/7
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet19
-  description: SERVER_OLD_SW-1/8_Endpoint_port4
+  description: CUSTOM_SERVER_OLD_SW-1/8_Endpoint_port4
   shutdown: false
   peer: OLD_SW-1/8
   peer_interface: Endpoint_port4
-  peer_type: server
+  peer_type: custom_server
   switchport:
     enabled: true
     mode: trunk
 - name: Ethernet20
-  description: SERVER_OLD_SW-1/9
+  description: CUSTOM_SERVER_OLD_SW-1/9
   shutdown: false
   channel_group:
     id: 20
     mode: active
   peer: OLD_SW-1/9
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet21
-  description: SERVER_OLD_SW-1/9
+  description: CUSTOM_SERVER_OLD_SW-1/9
   shutdown: false
   channel_group:
     id: 20
     mode: active
   peer: OLD_SW-1/9
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet24
-  description: SERVER_OLD_SW-1/11_Endpoint_port5
+  description: CUSTOM_SERVER_OLD_SW-1/11_Endpoint_port5
   shutdown: false
   peer: OLD_SW-1/11
   peer_interface: Endpoint_port5
-  peer_type: server
+  peer_type: custom_server
   switchport:
     enabled: true
     mode: trunk
     trunk:
       allowed_vlan: 1-4096
 - name: Ethernet25
-  description: SERVER_OLD_SW-1/12_Endpoint_port6
+  description: CUSTOM_SERVER_OLD_SW-1/12_Endpoint_port6
   shutdown: false
   channel_group:
     id: 25
     mode: active
   peer: OLD_SW-1/12
   peer_interface: Endpoint_port6
-  peer_type: server
+  peer_type: custom_server
 - name: Ethernet12
-  description: SERVER_INDIVIDUAL_1
+  description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
   channel_group:
     id: 12
@@ -151,7 +151,7 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
   peer: INDIVIDUAL_1
-  peer_type: server
+  peer_type: custom_server
   sflow:
     enable: false
   switchport:
@@ -162,7 +162,7 @@ ethernet_interfaces:
       native_vlan: 123
       native_vlan_tag: false
 - name: Ethernet13
-  description: SERVER_INDIVIDUAL_1
+  description: CUSTOM_SERVER_INDIVIDUAL_1
   shutdown: false
   channel_group:
     id: 12
@@ -181,7 +181,7 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
   peer: INDIVIDUAL_1
-  peer_type: server
+  peer_type: custom_server
   sflow:
     enable: false
   switchport:
@@ -192,7 +192,7 @@ ethernet_interfaces:
       native_vlan: 123
       native_vlan_tag: false
 - name: Ethernet14
-  description: SERVER_DOT1X_UNAUTHORIZED
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED
   shutdown: false
   poe:
     disabled: true
@@ -214,7 +214,7 @@ ethernet_interfaces:
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge
   peer: DOT1X_UNAUTHORIZED
-  peer_type: server
+  peer_type: custom_server
   sflow:
     enable: false
   port_profile: INDIVIDUAL_TRUNK
@@ -226,7 +226,7 @@ ethernet_interfaces:
       native_vlan: 123
       native_vlan_tag: false
 - name: Ethernet15
-  description: SERVER_INDIVIDUAL_2_TRUNK_PHONE
+  description: CUSTOM_SERVER_INDIVIDUAL_2_TRUNK_PHONE
   shutdown: false
   link_tracking_groups:
   - name: LT_GROUP1
@@ -235,7 +235,7 @@ ethernet_interfaces:
     id: 15
     mode: active
   peer: INDIVIDUAL_2_TRUNK_PHONE
-  peer_type: server
+  peer_type: custom_server
   switchport:
     enabled: true
     mode: trunk phone
@@ -244,7 +244,7 @@ ethernet_interfaces:
     phone:
       vlan: 321
 - name: Ethernet16
-  description: SERVER_INDIVIDUAL_2_TRUNK_PHONE
+  description: CUSTOM_SERVER_INDIVIDUAL_2_TRUNK_PHONE
   shutdown: false
   link_tracking_groups:
   - name: LT_GROUP1
@@ -253,7 +253,7 @@ ethernet_interfaces:
     id: 15
     mode: active
   peer: INDIVIDUAL_2_TRUNK_PHONE
-  peer_type: server
+  peer_type: custom_server
   switchport:
     enabled: true
     mode: trunk phone
@@ -262,7 +262,7 @@ ethernet_interfaces:
     phone:
       vlan: 321
 - name: Ethernet17
-  description: SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
   shutdown: false
   channel_group:
     id: 17
@@ -274,10 +274,10 @@ ethernet_interfaces:
       access_vlan_membership_egress: true
       native_vlan_membership_egress: true
   peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
-  peer_type: server
+  peer_type: custom_server
   port_profile: INDIVIDUAL_TRUNK
 - name: Ethernet18
-  description: SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
   shutdown: false
   channel_group:
     id: 17
@@ -289,8 +289,24 @@ ethernet_interfaces:
       access_vlan_membership_egress: true
       native_vlan_membership_egress: true
   peer: DOT1X_UNAUTHORIZED_PORT_CHANNEL
-  peer_type: server
+  peer_type: custom_server
   port_profile: INDIVIDUAL_TRUNK
+- name: Ethernet31
+  description: MONITOR_custom_connected_endpoint_Nic101
+  shutdown: false
+  peer: custom_connected_endpoint
+  peer_interface: Nic101
+  peer_type: monitor
+  switchport:
+    enabled: true
+- name: Ethernet111
+  description: TESTING_TYPE_1_testing_Nic1
+  shutdown: false
+  peer: testing
+  peer_interface: Nic1
+  peer_type: Testing_Type_1
+  switchport:
+    enabled: true
 hostname: connected_endpoints
 ip_igmp_snooping:
   globally_enabled: true
@@ -307,12 +323,12 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 port_channel_interfaces:
 - name: Port-Channel1
-  description: Port channel description server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
+  description: Port channel description custom_server_OLD_SW-1/2_Po1_ENDPOINT_PORT_CHANNEL_INTERFACE DESCRIPTION CUSTOM_SERVER_OLD_SW-1/2_ENDPOINT_PORT_CHANNEL
   shutdown: false
   switchport:
     enabled: true
 - name: Port-Channel3
-  description: SERVER_OLD_SW-1/3_ENDPOINT_PORT_CHANNEL
+  description: CUSTOM_SERVER_OLD_SW-1/3_ENDPOINT_PORT_CHANNEL
   shutdown: false
   switchport:
     enabled: true
@@ -332,7 +348,7 @@ port_channel_interfaces:
   switchport:
     enabled: true
 - name: Port-Channel20
-  description: SERVER_OLD_SW-1/9
+  description: CUSTOM_SERVER_OLD_SW-1/9
   shutdown: false
   switchport:
     enabled: false
@@ -353,26 +369,26 @@ port_channel_interfaces:
       encapsulation: client
   vlan_id: 200
 - name: Port-Channel25
-  description: SERVER_OLD_SW-1/12
+  description: CUSTOM_SERVER_OLD_SW-1/12
   shutdown: false
   switchport:
     enabled: false
 - name: Port-Channel12
-  description: SERVER_INDIVIDUAL_1_INDIVIDUAL_1
+  description: CUSTOM_SERVER_INDIVIDUAL_1_INDIVIDUAL_1
   shutdown: false
   lacp_fallback_timeout: 90
   lacp_fallback_mode: individual
   switchport:
     enabled: true
 - name: Port-Channel15
-  description: SERVER_INDIVIDUAL_2_TRUNK_PHONE
+  description: CUSTOM_SERVER_INDIVIDUAL_2_TRUNK_PHONE
   shutdown: false
   lacp_fallback_timeout: 90
   lacp_fallback_mode: individual
   switchport:
     enabled: true
 - name: Port-Channel17
-  description: SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
+  description: CUSTOM_SERVER_DOT1X_UNAUTHORIZED_PORT_CHANNEL
   shutdown: false
   spanning_tree_bpdufilter: 'True'
   spanning_tree_portfast: edge

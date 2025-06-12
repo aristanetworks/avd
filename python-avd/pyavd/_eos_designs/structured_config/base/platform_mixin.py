@@ -120,7 +120,7 @@ class PlatformMixin(Protocol):
             ),
         )
 
-    def _validate_rx_queue_count(self: AvdStructuredConfigBaseProtocol, rx_queue_count: int, l3_ethernet_interface_name: str) -> None:
+    def _validate_rx_queue_count(self: AvdStructuredConfigBaseProtocol, rx_queue_count: int | None, l3_ethernet_interface_name: str) -> None:
         if rx_queue_count and rx_queue_count > self.shared_utils.max_rx_queues:
             msg = (
                 f"'rx_queue.count' for interface '{l3_ethernet_interface_name}' exceeds maximum supported "
