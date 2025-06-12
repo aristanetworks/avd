@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 from ipaddress import ip_interface
-from typing import TYPE_CHECKING
 
 from anta.input_models.path_selection import DpsPath
 from anta.tests.path_selection import VerifySpecificPath
@@ -13,9 +12,6 @@ from pyavd._anta.logs import LogMessage
 from pyavd.j2filters import natural_sort
 
 from ._base_classes import AntaTestInputFactory
-
-if TYPE_CHECKING:
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
 
 class VerifySpecificPathInputFactory(AntaTestInputFactory):
@@ -39,16 +35,6 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
                 self.logger_adapter.debug(LogMessage.PATH_GROUP_NO_STATIC_PEERS, path_group=path_group.name)
                 continue
 
-            static_peers: list[EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem] = []
-            for static_peer in path_group.static_peers:
-                if not static_peer.ipv4_addresses:
-                    continue
-                static_peers.append(static_peer)
-
-            if not static_peers:
-                self.logger_adapter.debug(LogMessage.NO_STATIC_PEERS)
-                continue
-
             for interface in path_group.local_interfaces:
                 # Get the source IP address for the local interface
                 if interface.name.startswith("Ethernet") and interface.name in self.structured_config.ethernet_interfaces:
@@ -67,7 +53,7 @@ class VerifySpecificPathInputFactory(AntaTestInputFactory):
                     continue
 
                 source_address = ip_interface(ip_address).ip
-                for static_peer in static_peers:
+                for static_peer in path_group.static_peers:
                     for destination_address in static_peer.ipv4_addresses:
                         dps_path = DpsPath(
                             peer=static_peer.router_ip, path_group=path_group.name, source_address=source_address, destination_address=destination_address
