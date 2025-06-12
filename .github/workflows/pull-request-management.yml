@@ -750,7 +750,7 @@ jobs:
         run: cargo test --all-targets --all-features
       - name: Generate coverage report from previously run tests
         run: |
-          cargo llvm-cov --report --lcov --output-path lcov.info
+          cargo llvm-cov report --lcov --output-path lcov.info
         if: |
           matrix.os == 'ubuntu-latest'
       - name: Upload coverage report
