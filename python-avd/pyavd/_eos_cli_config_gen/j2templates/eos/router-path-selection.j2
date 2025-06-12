@@ -17,13 +17,13 @@ router path-selection
 {%         endif %}
    {{ tcp_mss_ceiling_cli }} {{ router_path_selection.tcp_mss_ceiling.direction | arista.avd.default("ingress") }}
 {%     endif %}
-{%     if router_path_selection.mtu_discovery.interval is arista.avd.defined %}
-   mtu discovery interval {{ router_path_selection.mtu_discovery.interval }} seconds
+{%     if router_path_selection.mtu_discovery_interval is arista.avd.defined %}
+   mtu discovery interval {{ router_path_selection.mtu_discovery_interval }} seconds
 {%     endif %}
-{%     if router_path_selection.mtu_discovery.enabled is arista.avd.defined(true) %}
+{%     if router_path_selection.mtu_discovery_hosts.enabled is arista.avd.defined(true) %}
 {%         set mtud_cli = "mtu discovery hosts" %}
-{%         if router_path_selection.mtu_discovery.fragmentation_needed_rate_limit is arista.avd.defined %}
-{%             set mtud_cli = mtud_cli ~ " fragmentation-needed rate-limit " ~ router_path_selection.mtu_discovery.fragmentation_needed_rate_limit ~ " packets-per-second" %}
+{%         if router_path_selection.mtu_discovery_hosts.fragmentation_needed_rate_limit is arista.avd.defined %}
+{%             set mtud_cli = mtud_cli ~ " fragmentation-needed rate-limit " ~ router_path_selection.mtu_discovery_hosts.fragmentation_needed_rate_limit ~ " packets-per-second" %}
 {%         endif %}
    {{ mtud_cli }}
 {%     endif %}
