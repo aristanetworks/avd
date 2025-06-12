@@ -33,7 +33,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipfix_version</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].format.ipfix_version") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].local_interface") | String |  |  |  | Local Source Interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.sampled.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.sampled.shutdown") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.sampled.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;hardware</samp>](## "flow_tracking.hardware") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;record</samp>](## "flow_tracking.hardware.record") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format_ipfix_standard_timestamps_counters</samp>](## "flow_tracking.hardware.record.format_ipfix_standard_timestamps_counters") | Boolean |  |  |  | Enable software export of IPFIX data records. |
@@ -51,7 +51,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipfix_version</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].format.ipfix_version") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].local_interface") | String |  |  |  | Local Source Interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.hardware.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.hardware.shutdown") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.hardware.shutdown") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;mirror_on_drop</samp>](## "flow_tracking.mirror_on_drop") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;encapsulation</samp>](## "flow_tracking.mirror_on_drop.encapsulation") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv4_ipv6</samp>](## "flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6") | Boolean |  |  |  | Set IPv4 and IPv6 encapsulations.<br>Both IPv4 and IPv6 encapsulations must be set together. |
@@ -65,13 +65,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;exporters</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].name") | String | Required, Unique |  |  | Exporter Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;collectors</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].name") | String | Required, Unique |  |  | Flow collector name.<br>It can be IPv4 address, IPv6 address, fully qualified domain name or sflow. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].port") | Integer |  |  | Min: 1<br>Max: 65535 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].host") | String | Required, Unique |  |  | Flow collector name.<br>The collector name can be an IPv4 address, IPv6 address, fully qualified domain name or `"sflow"`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;port</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].collectors.[].port") | Integer |  |  | Min: 1<br>Max: 65535 | Collector Port Number. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;format</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].format") | String |  |  | Valid Values:<br>- <code>sflow</code><br>- <code>drop-report</code> | Configure flow export format. Valid values are platform dependent. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;local_interface</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].local_interface") | String |  |  |  | Local source interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;template_interval</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].template_interval") | Integer |  |  | Min: 5000<br>Max: 3600000 | Template interval in milliseconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dscp</samp>](## "flow_tracking.mirror_on_drop.trackers.[].exporters.[].dscp") | Integer |  |  | Min: 0<br>Max: 63 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.mirror_on_drop.shutdown") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shutdown</samp>](## "flow_tracking.mirror_on_drop.shutdown") | Boolean |  |  |  |  |
     | [<samp>flow_trackings</samp>](## "flow_trackings") <span style="color:red">removed</span> | List, items: Dictionary |  |  |  | <span style="color:red">This key was removed. Support was removed in AVD version v5.0.0. Use <samp>flow_tracking</samp> instead.</span> |
     | [<samp>&nbsp;&nbsp;-&nbsp;type</samp>](## "flow_trackings.[].type") | String | Required, Unique |  | Valid Values:<br>- <code>sampled</code> | Flow Tracking Type - only 'sampled' supported for now. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sample</samp>](## "flow_trackings.[].sample") | Integer |  |  | Min: 1<br>Max: 4294967295 |  |
@@ -148,7 +148,7 @@
 
                 # Template interval in milliseconds.
                 template_interval: <int; 5000-3600000>
-        shutdown: <bool; default=False>
+        shutdown: <bool>
       hardware:
         record:
 
@@ -184,7 +184,7 @@
 
                 # Template interval in milliseconds.
                 template_interval: <int; 5000-3600000>
-        shutdown: <bool; default=False>
+        shutdown: <bool>
       mirror_on_drop:
         encapsulation:
 
@@ -213,8 +213,10 @@
                 collectors:
 
                     # Flow collector name.
-                    # It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
-                  - name: <str; required; unique>
+                    # The collector name can be an IPv4 address, IPv6 address, fully qualified domain name or `"sflow"`.
+                  - host: <str; required; unique>
+
+                    # Collector Port Number.
                     port: <int; 1-65535>
 
                 # Configure flow export format. Valid values are platform dependent.
@@ -226,5 +228,5 @@
                 # Template interval in milliseconds.
                 template_interval: <int; 5000-3600000>
                 dscp: <int; 0-63>
-        shutdown: <bool; default=False>
+        shutdown: <bool>
     ```

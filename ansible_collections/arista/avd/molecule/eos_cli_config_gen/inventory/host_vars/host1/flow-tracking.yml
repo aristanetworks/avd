@@ -108,27 +108,27 @@ flow_tracking:
         exporters:
           - name: T2-E1
             collectors:
-              - name: 42.42.42.42
-              - name: sflow
+              - host: 42.42.42.42
+              - host: sflow
                 port: 666
-              - name: 10.10.10.10
+              - host: 10.10.10.10
                 port: 777
-              - name: this.is.my.awesome.collector.dns.name
+              - host: this.is.my.awesome.collector.dns.name
                 port: 888
-              - name: dead:beef::cafe
-              - name: collector.without.port
+              - host: dead:beef::cafe
+              - host: collector.without.port
             dscp: 50
       - name: T3
         exporters:
           - name: T3-E3
             collectors:
-              - name: sflow
-              - name: collector.with.port
+              - host: sflow
+              - host: collector.with.port
                 port: 111
             format: sflow
             local_interface: Management1
             template_interval: 424242
           - name: T3-E4
             collectors:
-              - name: dead:beef::cafe
+              - host: dead:beef::cafe
     shutdown: false

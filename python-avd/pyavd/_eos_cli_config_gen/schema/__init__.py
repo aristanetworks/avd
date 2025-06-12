@@ -12836,7 +12836,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "sample": {"type": int},
                 "hardware_offload": {"type": HardwareOffload},
                 "trackers": {"type": Trackers},
-                "shutdown": {"type": bool, "default": False},
+                "shutdown": {"type": bool},
             }
             encapsulation: Encapsulation
             """Subclass of AvdModel."""
@@ -12845,8 +12845,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Subclass of AvdModel."""
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
-            shutdown: bool
-            """Default value: `False`"""
+            shutdown: bool | None
 
             if TYPE_CHECKING:
 
@@ -12857,7 +12856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     sample: int | None | UndefinedType = Undefined,
                     hardware_offload: HardwareOffload | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Sampled.
@@ -13062,13 +13061,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             Trackers._item_type = TrackersItem
 
-            _fields: ClassVar[dict] = {"record": {"type": Record}, "trackers": {"type": Trackers}, "shutdown": {"type": bool, "default": False}}
+            _fields: ClassVar[dict] = {"record": {"type": Record}, "trackers": {"type": Trackers}, "shutdown": {"type": bool}}
             record: Record
             """Subclass of AvdModel."""
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
-            shutdown: bool
-            """Default value: `False`"""
+            shutdown: bool | None
 
             if TYPE_CHECKING:
 
@@ -13077,7 +13075,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     record: Record | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     Hardware.
@@ -13158,17 +13156,19 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     class CollectorsItem(AvdModel):
                         """Subclass of AvdModel."""
 
-                        _fields: ClassVar[dict] = {"name": {"type": str}, "port": {"type": int}}
-                        name: str
+                        _fields: ClassVar[dict] = {"host": {"type": str}, "port": {"type": int}}
+                        host: str
                         """
                         Flow collector name.
-                        It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
+                        The collector name can be an IPv4 address, IPv6 address, fully qualified domain
+                        name or `"sflow"`.
                         """
                         port: int | None
+                        """Collector Port Number."""
 
                         if TYPE_CHECKING:
 
-                            def __init__(self, *, name: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
+                            def __init__(self, *, host: str | UndefinedType = Undefined, port: int | None | UndefinedType = Undefined) -> None:
                                 """
                                 CollectorsItem.
 
@@ -13176,17 +13176,18 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    name:
+                                    host:
                                        Flow collector name.
-                                       It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
-                                    port: port
+                                       The collector name can be an IPv4 address, IPv6 address, fully qualified domain
+                                       name or `"sflow"`.
+                                    port: Collector Port Number.
 
                                 """
 
                     class Collectors(AvdIndexedList[str, CollectorsItem]):
-                        """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `name` (`str`)."""
+                        """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
 
-                        _primary_key: ClassVar[str] = "name"
+                        _primary_key: ClassVar[str] = "host"
 
                     Collectors._item_type = CollectorsItem
 
@@ -13201,7 +13202,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     name: str
                     """Exporter Name."""
                     collectors: Collectors
-                    """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `name` (`str`)."""
+                    """Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`)."""
                     format: Literal["sflow", "drop-report"] | None
                     """Configure flow export format. Valid values are platform dependent."""
                     local_interface: str | None
@@ -13230,7 +13231,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 name: Exporter Name.
-                                collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `name` (`str`).
+                                collectors: Subclass of AvdIndexedList with `CollectorsItem` items. Primary key is `host` (`str`).
                                 format: Configure flow export format. Valid values are platform dependent.
                                 local_interface: Local source interface.
                                 template_interval: Template interval in milliseconds.
@@ -13286,7 +13287,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "encapsulation": {"type": Encapsulation},
                 "sample_limit": {"type": int},
                 "trackers": {"type": Trackers},
-                "shutdown": {"type": bool, "default": False},
+                "shutdown": {"type": bool},
             }
             encapsulation: Encapsulation
             """Subclass of AvdModel."""
@@ -13294,8 +13295,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """Limit the number of packets sampled."""
             trackers: Trackers
             """Subclass of AvdIndexedList with `TrackersItem` items. Primary key is `name` (`str`)."""
-            shutdown: bool
-            """Default value: `False`"""
+            shutdown: bool | None
 
             if TYPE_CHECKING:
 
@@ -13305,7 +13305,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     encapsulation: Encapsulation | UndefinedType = Undefined,
                     sample_limit: int | None | UndefinedType = Undefined,
                     trackers: Trackers | UndefinedType = Undefined,
-                    shutdown: bool | UndefinedType = Undefined,
+                    shutdown: bool | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     MirrorOnDrop.

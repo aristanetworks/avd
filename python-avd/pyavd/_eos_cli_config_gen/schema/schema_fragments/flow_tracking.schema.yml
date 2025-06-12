@@ -115,21 +115,16 @@ keys:
                         description: Exporter Name.
                       collectors:
                         type: list
-                        primary_key: name
+                        primary_key: host
                         items:
                           type: dict
+                          $ref: "eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collector"
                           keys:
-                            name:
+                            host:
                               type: str
                               description: |-
                                 Flow collector name.
-                                It can be IPv4 address, IPv6 address, fully qualified domain name or sflow.
-                            port:
-                              type: int
-                              min: 1
-                              max: 65535
-                              convert_types:
-                                - str
+                                The collector name can be an IPv4 address, IPv6 address, fully qualified domain name or `"sflow"`.
                       format:
                         type: str
                         description: |-
@@ -155,4 +150,3 @@ keys:
                           - str
           shutdown:
             type: bool
-            default: false

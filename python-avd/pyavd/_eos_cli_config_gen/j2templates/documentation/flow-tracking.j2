@@ -166,7 +166,7 @@ Software export of IPFIX data records enabled.
 | ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- | ------ |
 {%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
 {%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
-{%                         set current_exporter_collector_hosts = exporter.collectors | arista.avd.natural_sort | map(attribute='name') | list %}
+{%                         set current_exporter_collector_hosts = exporter.collectors | arista.avd.natural_sort | map(attribute='host') | list %}
 {%                         set current_exporter_collector_ports = exporter.collectors | arista.avd.natural_sort | map(attribute='port') | map('arista.avd.default', '-') | list %}
 | {{ tracker.name }} | {{ exporter.name }} | {{ exporter.local_interface | arista.avd.default("-") }} | {{ exporter.template_interval | arista.avd.default("-") }} | {{ current_exporter_collector_hosts | join('<br>') }} | {{ current_exporter_collector_ports | join('<br>') }} | {{ exporter.dscp | arista.avd.default("-") }} | {{ exporter.format | arista.avd.default("-") }} |
 {%                     endfor %}
