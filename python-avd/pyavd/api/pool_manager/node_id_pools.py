@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -18,7 +18,6 @@ if TYPE_CHECKING:
 @dataclass()
 class NodeIdPoolCollection(PoolCollection[int]):
     pools_key: str = "node_id_pools"
-    pools: dict[str, Pool[int]] = field(default_factory=dict)
     pool_cls: type[Pool[int]] = Pool[int]
     assignment_cls: type[PoolAssignment[int]] = PoolAssignment[int]
     value_type: type = int
