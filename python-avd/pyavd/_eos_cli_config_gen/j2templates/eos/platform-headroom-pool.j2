@@ -1,0 +1,14 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# eos - platform profile apply #}
+{% if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined or platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
+!
+{%     if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
+platform trident mmu headroom-pool limit {{ platform.trident.mmu.headroom_pool_limit.bytes }}
+{%     else %}
+platform trident mmu headroom-pool limit cells {{ platform.trident.mmu.headroom_pool_limit.cells }}
+{%     endif %}
+{% endif %}
