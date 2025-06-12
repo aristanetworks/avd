@@ -5994,6 +5994,8 @@ $defs:
 
           An arbitrary value for the new CloudVision `Link-Type` interface-level user
           tag to be associated with an interface.'
+        valid_values:
+        - Egress
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -7211,6 +7213,8 @@ $defs:
 
                         An arbitrary value for the new CloudVision `Link-Type` interface-level
                         user tag to be associated with an interface.'
+                      valid_values:
+                      - Egress
                     structured_config:
                       type: dict
                       relaxed_validation: true
@@ -10765,6 +10769,8 @@ $defs:
 
             An arbitrary value for the new CloudVision `Link-Type` interface-level
             user tag to be associated with an interface.'
+          valid_values:
+          - Egress
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in

@@ -1361,7 +1361,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: str | None
+            campus_link_type: Literal["Egress"] | None
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
             change at any time.
@@ -1418,7 +1418,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: str | None | UndefinedType = Undefined,
+                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -1946,7 +1946,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: str | None
+            campus_link_type: Literal["Egress"] | None
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
             change at any time.
@@ -2003,7 +2003,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: str | None | UndefinedType = Undefined,
+                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -5399,7 +5399,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: str | None
+            campus_link_type: Literal["Egress"] | None
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
             change at any time.
@@ -5456,7 +5456,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: str | None | UndefinedType = Undefined,
+                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -5984,7 +5984,7 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: str | None
+            campus_link_type: Literal["Egress"] | None
             """
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
             change at any time.
@@ -6041,7 +6041,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: str | None | UndefinedType = Undefined,
+                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -8107,7 +8107,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-        campus_link_type: str | None
+        campus_link_type: Literal["Egress"] | None
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
@@ -8159,7 +8159,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
-                campus_link_type: str | None | UndefinedType = Undefined,
+                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -11755,7 +11755,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-        campus_link_type: str | None
+        campus_link_type: Literal["Egress"] | None
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
@@ -11804,7 +11804,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
-                campus_link_type: str | None | UndefinedType = Undefined,
+                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -18471,7 +18471,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-                    campus_link_type: str | None
+                    campus_link_type: Literal["Egress"] | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
@@ -18523,7 +18523,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
-                            campus_link_type: str | None | UndefinedType = Undefined,
+                            campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -20068,7 +20068,7 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-                    campus_link_type: str | None
+                    campus_link_type: Literal["Egress"] | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
@@ -20120,7 +20120,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
-                            campus_link_type: str | None | UndefinedType = Undefined,
+                            campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -40478,7 +40478,7 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
-                        campus_link_type: str | None
+                        campus_link_type: Literal["Egress"] | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
@@ -40509,7 +40509,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
-                                campus_link_type: str | None | UndefinedType = Undefined,
+                                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                             ) -> None:

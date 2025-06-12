@@ -835,6 +835,7 @@ $defs:
                       description: |-
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
                         An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface.
+                      valid_values: ["Egress"]
                     structured_config:
                       type: dict
                       relaxed_validation: true

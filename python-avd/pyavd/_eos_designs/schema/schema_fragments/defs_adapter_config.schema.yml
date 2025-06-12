@@ -519,6 +519,7 @@ $defs:
         description: |-
           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
           An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface.
+        valid_values: ["Egress"]
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
