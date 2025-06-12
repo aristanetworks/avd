@@ -28,6 +28,7 @@ loopback_interfaces:
   description: ROUTER_ID
   shutdown: false
   ip_address: 192.168.42.8/32
+  ipv6_address: 2001:1::c/128
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -68,6 +69,10 @@ router_bgp:
         address_family_ipv6:
           enabled: true
           originate: true
+  address_family_ipv6:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
 service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
