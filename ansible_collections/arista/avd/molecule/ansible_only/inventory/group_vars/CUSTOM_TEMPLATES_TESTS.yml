@@ -86,3 +86,15 @@ servers:
         port_channel:
           mode: active
           description: portchannel
+  - name: SERVER-3
+    adapters:
+      - endpoint_ports: [ Nic1, Nic2 ]
+        switch_ports: [ Ethernet14, Ethernet15 ]
+        switches: [ CUSTOM-TEMPLATES-L3LEAF1B, CUSTOM-TEMPLATES-L3LEAF1B ]
+        mode: trunk
+        enabled: true
+        # To check `connected_endpoints_port_channel_interfaces` includes `peer_interface` in description.
+        port_channel:
+          mode: active
+          description: portchannel
+          endpoint_port_channel: port-channel1
