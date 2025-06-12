@@ -479,10 +479,9 @@ class AvdModel(AvdBase):
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
 
-        if other._created_from_null:
-            # Force all fields on this instance back to unset if other is a "null" class.
-            self.__dict__ = {}
-            self._custom_data = {}
+        # If the value of _created_from_null are different, consider it as a conflict.
+        if self._created_from_null != other._created_from_null:
+            raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
         for field, new_value in other.items():
             old_value = self._get_defined_attr(field)
@@ -507,17 +506,11 @@ class AvdModel(AvdBase):
                 continue
 
             if old_value != new_value:
-                # Should maybe collect all the problematic fields
+                # this also applies to fields where field_type is dict
                 raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
-        # TODO: check the two next lines
-        if other._created_from_null:
-            # Inherit the _created_from_null attribute to make sure we output null values instead of empty dicts.
-            self._created_from_null = True
-        elif self._created_from_null:
-            # We merged into a "null" class, but since we now have proper data, we clear the flag.
-            self._created_from_null = False
-
-        # TODO: Handle clashing custom data when combining - for now hardcoding list_merge"
         if other._custom_data:
-            merge(self._custom_data, deepcopy(other._custom_data), list_merge="append_rp")
+            try:
+                merge(self._custom_data, deepcopy(other._custom_data), list_merge="append_rp", same_key_strategy="must_match")
+            except ValueError as e:
+                raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump())) from e

@@ -318,12 +318,9 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
 
-        if self._created_from_null or other._created_from_null:
-            # Set the flag to the value of other and overwrite with data from other.
-            self._created_from_null = other._created_from_null
-            # Replace with the "other" list.
-            self._items = other._items.copy()
-            return
+        # If the value of _created_from_null are different, consider it as a conflict.
+        if self._created_from_null != other._created_from_null:
+            raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
         for item in other:
             # TODO: Do we need to copy the item to prevent some unsavory things later if other is modified?

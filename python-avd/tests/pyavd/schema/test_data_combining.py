@@ -123,54 +123,42 @@ def test_data_combining_wrong_type(
 
 
 @pytest.mark.parametrize(
-    ("a_data", "key", "b_data", "expected"),
+    ("a_data", "key", "b_data"),
     [
         # Testing AvdList
-        pytest.param(A_LIST, "some_list", B_LIST, B_LIST, id="list"),
+        pytest.param(A_LIST, "some_list", B_LIST, id="list"),
         # Testing AvdIndexedList
-        pytest.param(A_INDEXED_LIST, "some_indexed_list", B_INDEXED_LIST, B_INDEXED_LIST, id="indexed_list"),
+        pytest.param(A_INDEXED_LIST, "some_indexed_list", B_INDEXED_LIST, id="indexed_list"),
         # Testing AvdModel
-        pytest.param({"some_dict": None}, "some_dict", B_DICT, B_DICT, id="dict"),
+        pytest.param(A_DICT, "some_dict", B_DICT, id="dict"),
     ],
 )
-def test_data_combining_valid_a_from_null(
+def test_data_combining_different_from_null(
     a_data: dict,
     key: str,
     b_data: dict,
-    expected: dict,
     data_merging_schema_class: DataMergingTestSchema,
 ) -> None:
     a = data_merging_schema_class._from_dict(a_data)
+    b = data_merging_schema_class._from_dict(b_data)
+
+    # Setting _created_from_null to True for a
     getattr(a, key)._created_from_null = True
-    b = data_merging_schema_class._from_dict(b_data)
-    a._combine(b)
-    assert a._as_dict() == expected
-    assert getattr(a, key)._created_from_null == getattr(b, key)._created_from_null
+    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for "):
+        a._combine(b)
+
+    # Setting _created_from_null to True for b
+    getattr(a, key)._created_from_null = False
+    getattr(a, key)._created_from_null = True
+    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for "):
+        a._combine(b)
 
 
-# TODO: I am not sure this is something we want below - I would rather if b was created from null that we
-# keep whatever is in a as we are "combining" - thoughts?
-@pytest.mark.parametrize(
-    ("a_data", "key", "b_data", "expected"),
-    [
-        # Testing AvdList
-        pytest.param(A_LIST, "some_list", B_LIST, {"some_list": None}, id="list"),
-        # Testing AvdIndexedList
-        pytest.param(A_INDEXED_LIST, "some_indexed_list", B_INDEXED_LIST, {"some_indexed_list": None}, id="indexed_list"),
-        # Testing AvdModel
-        pytest.param(A_DICT, "some_dict", B_DICT, {"some_dict": None}, id="dict"),
-    ],
-)
-def test_data_combining_valid_b_from_null(
-    a_data: dict,
-    key: str,
-    b_data: dict,
-    expected: dict,
-    data_merging_schema_class: DataMergingTestSchema,
-) -> None:
-    a = data_merging_schema_class._from_dict(a_data)
-    b = data_merging_schema_class._from_dict(b_data)
-    getattr(b, key)._created_from_null = True
-    a._combine(b)
-    assert a._as_dict() == expected
-    assert getattr(a, key)._created_from_null == getattr(b, key)._created_from_null
+def test_data_combining_different_custom_data(data_merging_schema_class: DataMergingTestSchema) -> None:
+    a = data_merging_schema_class._from_dict(A_DICT)
+    b = data_merging_schema_class._from_dict(B_DICT)
+    # Injecting conflicting values in _custom_data
+    a.some_dict._custom_data["my_awesome_key"] = "context_a"
+    b.some_dict._custom_data["my_awesome_key"] = "context_b"
+    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for SomeDict"):
+        a._combine(b)

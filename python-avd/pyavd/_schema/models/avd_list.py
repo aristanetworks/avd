@@ -7,6 +7,7 @@ import re
 from collections.abc import Callable, Iterable, Iterator, Mapping, Sequence
 from typing import TYPE_CHECKING, Any, ClassVar, Generic, Literal, cast, overload
 
+from pyavd._errors import AristaAvdDuplicateDataError
 from pyavd._schema.coerce_type import coerce_type
 from pyavd._utils import Undefined, UndefinedType
 
@@ -278,17 +279,9 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
             msg = f"Unable to combine type '{type(other)}' into '{cls}'"
             raise TypeError(msg)
 
-        list_merge = "append_unique"
+        # If the value of _created_from_null are different, consider it as a conflict.
+        if self._created_from_null != other._created_from_null:
+            raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
-        if self._created_from_null or other._created_from_null:
-            # Set the flag to the value of other and set list_merge to replace so we overwrite with data from other below.
-            self._created_from_null = other._created_from_null
-            list_merge = "replace"
-
-        match list_merge:
-            case "append_unique":
-                # Append non-existing items.
-                self._items.extend(new_item for new_item in other._items if new_item not in self._items)
-            case "replace":
-                # Replace with the "other" list.
-                self._items = other._items.copy()
+        # Append non-existing items.
+        self._items.extend(new_item for new_item in other._items if new_item not in self._items)
