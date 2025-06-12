@@ -265,9 +265,15 @@ router_path_selection:
     id: 100
     local_interfaces:
     - name: Ethernet2
+      stun:
+        server_profiles:
+        - MPLS-autovpn-rr1-Ethernet1
     dynamic_peers:
       enabled: true
       ipsec: false
+    static_peers:
+    - router_ip: 192.168.131.1
+      name: autovpn-rr1
   load_balance_policies:
   - name: LB-DEFAULT-AUTOVPN-POLICY-CONTROL-PLANE
     path_groups:
@@ -315,13 +321,14 @@ router_path_selection:
   - name: WAN-VRF-NO-AF
     path_selection_policy: PROD-AUTOVPN-POLICY
   tcp_mss_ceiling:
-    ipv4_segment_size: auto
+    ipv4: auto
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
 stun:
   client:
     server_profiles:
+    - name: MPLS-autovpn-rr1-Ethernet1
     - name: INET-autovpn-rr1-Ethernet1
       ip_address: 10.7.7.7
     - name: INET-autovpn-rr2-Ethernet1

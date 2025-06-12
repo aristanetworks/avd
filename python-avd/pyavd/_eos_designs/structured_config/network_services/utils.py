@@ -6,7 +6,7 @@ from __future__ import annotations
 import ipaddress
 from functools import cached_property
 from re import fullmatch as re_fullmatch
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
 from pyavd._utils import default, get_ip_from_ip_prefix
@@ -304,9 +304,9 @@ class UtilsMixin(Protocol):
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
         tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> str:
-        """Return a string with the route-destinguisher admin subfield for one VRF."""
+        """Return a string with the route-destinguisher admin subfield for one VRF. Only called for routers where we know we have a router_id."""
         if (vrf_rd_admin_subfield := self.shared_utils.overlay_rd_type_vrf_admin_subfield) == "vrf_router_id":
-            return self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id) or self.shared_utils.router_id
+            return cast("str", self.get_vrf_router_id(vrf, tenant, vrf.bgp.router_id) or self.shared_utils.router_id)
 
         return vrf_rd_admin_subfield
 

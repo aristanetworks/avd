@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -54,7 +54,7 @@ class IpSecurityMixin(Protocol):
 
         # IKE policy for data-plane is not required for dynamic tunnels except for HA cases
         if self.shared_utils.wan_ha_ipsec:
-            self.structured_config.ip_security.ike_policies.append_new(name=ike_policy_name, local_id=self.shared_utils.vtep_ip)
+            self.structured_config.ip_security.ike_policies.append_new(name=cast("str", ike_policy_name), local_id=self.shared_utils.vtep_ip)
         self._set_sa_policy(sa_policy_name)
         self._set_profile(profile_name, ike_policy_name, sa_policy_name, key)
 

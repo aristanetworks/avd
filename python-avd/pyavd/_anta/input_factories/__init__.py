@@ -8,7 +8,7 @@ from __future__ import annotations
 from .avt import VerifyAVTRoleInputFactory
 from .connectivity import VerifyLLDPNeighborsInputFactory, VerifyReachabilityInputFactory
 from .hardware import VerifyEnvironmentCoolingInputFactory, VerifyEnvironmentPowerInputFactory
-from .interfaces import VerifyInterfacesStatusInputFactory
+from .interfaces import VerifyInterfacesStatusInputFactory, VerifyPortChannelsInputFactory
 from .mlag import VerifyMlagDualPrimaryInputFactory, VerifyMlagReloadDelayInputFactory
 from .routing_bgp import VerifyBGPPeerSessionInputFactory
 from .routing_generic import VerifyRoutingProtocolModelInputFactory
@@ -28,6 +28,7 @@ __all__ = [
     "VerifyLLDPNeighborsInputFactory",
     "VerifyMlagDualPrimaryInputFactory",
     "VerifyMlagReloadDelayInputFactory",
+    "VerifyPortChannelsInputFactory",
     "VerifyReachabilityInputFactory",
     "VerifyReloadCauseInputFactory",
     "VerifyRoutingProtocolModelInputFactory",
