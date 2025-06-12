@@ -5,3 +5,6 @@ platform:
     mmu:
       headroom_pool_limit:
         bytes: 557
+  fap:
+    buffering_egress:
+      profile: balanced

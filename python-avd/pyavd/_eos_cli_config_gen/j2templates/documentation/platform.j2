@@ -7,7 +7,7 @@
 {% if platform is arista.avd.defined %}
 
 ## Platform
-{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined %}
+{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined or platform.fap is arista.avd.defined %}
 
 ### Platform Summary
 {%         if platform.trident is arista.avd.defined %}
@@ -112,6 +112,16 @@
 {%                         endif %}
 {%                     endfor %}
 {%                 endif %}
+{%             endif %}
+{%         endif %}
+{%         if platform.fap is arista.avd.defined %}
+
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             if platform.fap.buffering_egress.profile is arista.avd.defined %}
+| Buffering Egress Profile | {{ platform.fap.buffering_egress.profile }} |
 {%             endif %}
 {%         endif %}
 {%     endif %}

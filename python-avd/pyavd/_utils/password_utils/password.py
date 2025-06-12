@@ -185,9 +185,9 @@ def bgp_encrypt(password: str, key: str) -> str:
     _validate_password_and_key(password, key)
 
     data = bytes(password, encoding="UTF-8")
-    key = bytes(f"{key}_passwd", encoding="UTF-8")
+    key_bytes = bytes(f"{key}_passwd", encoding="UTF-8")
 
-    return cbc_encrypt(key, data).decode()
+    return cbc_encrypt(key_bytes, data).decode()
 
 
 def bgp_decrypt(password: str, key: str) -> str:
@@ -209,10 +209,10 @@ def bgp_decrypt(password: str, key: str) -> str:
     _validate_password_and_key(password, key)
 
     data = bytes(password, encoding="UTF-8")
-    key = bytes(f"{key}_passwd", encoding="UTF-8")
+    key_bytes = bytes(f"{key}_passwd", encoding="UTF-8")
 
     try:
-        return cbc_decrypt(key, data).decode()
+        return cbc_decrypt(key_bytes, data).decode()
     except Exception as exc:
         msg = "BGP password decryption failed - check the input parameters"
         raise ValueError(msg) from exc

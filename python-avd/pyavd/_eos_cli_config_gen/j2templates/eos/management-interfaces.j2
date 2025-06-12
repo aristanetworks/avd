@@ -45,6 +45,32 @@ interface {{ management_interface.name }}
 {%     if management_interface.lldp.ztp_vlan is arista.avd.defined %}
    lldp tlv transmit ztp vlan {{ management_interface.lldp.ztp_vlan }}
 {%     endif %}
+{%     if management_interface.redundancy.fallback_delay is arista.avd.defined %}
+{%         set fallback_delay = "redundancy fallback-delay " ~ management_interface.redundancy.fallback_delay %}
+{%         if management_interface.redundancy.fallback_delay is arista.avd.defined("infinity") %}
+   {{ fallback_delay }}
+{%         else %}
+   {{ fallback_delay }} seconds
+{%         endif %}
+{%     endif %}
+{%     if management_interface.redundancy.monitor.link_state is arista.avd.defined(true) %}
+   redundancy monitor link-state
+{%     elif management_interface.redundancy.monitor.neighbor is arista.avd.defined %}
+{%         set neighbor_cli = "redundancy monitor neighbor ipv6 " ~ management_interface.redundancy.monitor.neighbor.ipv6_address %}
+{%         if management_interface.redundancy.monitor.neighbor.interval is arista.avd.defined %}
+{%             set neighbor_cli = neighbor_cli ~ " interval " ~ management_interface.redundancy.monitor.neighbor.interval ~ " milliseconds" %}
+{%         endif %}
+{%         if management_interface.redundancy.monitor.neighbor.multiplier is arista.avd.defined %}
+{%             set neighbor_cli = neighbor_cli ~ " multiplier " ~ management_interface.redundancy.monitor.neighbor.multiplier %}
+{%         endif %}
+   {{ neighbor_cli }}
+{%     endif %}
+{%     if management_interface.redundancy.supervisor_1 is arista.avd.defined %}
+   redundancy supervisor 1 interface primary {{ management_interface.redundancy.supervisor_1.primary_management_interface }} backup {{ " ".join(management_interface.redundancy.supervisor_1.backup_management_interfaces) }}
+{%     endif %}
+{%     if management_interface.redundancy.supervisor_2 is arista.avd.defined %}
+   redundancy supervisor 2 interface primary {{ management_interface.redundancy.supervisor_2.primary_management_interface }} backup {{ " ".join(management_interface.redundancy.supervisor_2.backup_management_interfaces) }}
+{%     endif %}
 {%     if management_interface.eos_cli is arista.avd.defined %}
    {{ management_interface.eos_cli | indent(3, false) }}
 {%     endif %}
