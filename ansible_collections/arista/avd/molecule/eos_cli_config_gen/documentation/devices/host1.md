@@ -5419,7 +5419,7 @@ interface Ethernet84
 
 | Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
-| Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | - |
+| Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | 666 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -6043,6 +6043,7 @@ interface Port-Channel136
    ip address 100.64.127.2/31
    traffic-engineering
    traffic-engineering administrative-group 7
+   traffic-engineering srlg 666
    traffic-engineering min-delay dynamic twamp-light fallback 123 microseconds
 !
 interface Port-Channel137
