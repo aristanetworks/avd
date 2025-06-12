@@ -735,6 +735,7 @@ jobs:
         run: rustup update stable
       - name: Install cargo-llvm-cov for coverage reports
         run: |
+          rustup component add llvm-tools-preview --toolchain stable-x86_64-unknown-linux-gnu
           cargo install cargo-llvm-cov
         if: |
           matrix.os == 'ubuntu-latest'
