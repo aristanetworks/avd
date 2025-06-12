@@ -5,7 +5,8 @@
 #}
 {# doc - port-channel #}
 {% if port_channel is arista.avd.defined %}
-## Port-channel Summary
+
+### Port-channel Summary
 {%     if port_channel.load_balance_trident is arista.avd.defined %}
 
 #### Port-channel Load Balance Trident UDF Eth-type Headers
@@ -44,7 +45,7 @@
 {%         endfor %}
 {%     endif %}
 
-## Port-channel Device Configuration
+### Port-channel Device Configuration
 
 ```eos
 {%     include 'eos/port-channel.j2' %}

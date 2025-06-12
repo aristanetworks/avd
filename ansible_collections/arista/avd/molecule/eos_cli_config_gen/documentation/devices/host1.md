@@ -115,8 +115,8 @@
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
   - [Synchronous Ethernet (SyncE) Settings](#synchronous-ethernet-synce-settings)
-- [Port-channel Summary](#port-channel-summary)
-- [Port-channel Device Configuration](#port-channel-device-configuration)
+  - [Port-channel Summary](#port-channel-summary)
+  - [Port-channel Device Configuration](#port-channel-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -3400,7 +3400,8 @@ Synchronous Ethernet Network Option: 2
 sync-e
    network option 2
 ```
-## Port-channel Summary
+
+### Port-channel Summary
 
 #### Port-channel Load Balance Trident UDF Eth-type Headers
 
@@ -3423,7 +3424,7 @@ sync-e
 | IPv6 | Outer | L4 | 50 | 0x04 |
 | IPv6 | Outer | L4 | 30 | 0xff |
 
-## Port-channel Device Configuration
+### Port-channel Device Configuration
 
 ```eos
 !
