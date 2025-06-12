@@ -130,7 +130,6 @@ exclude = [
   "python-avd/pyavd/j2tests",                                            # TODO
   "python-avd/pyavd/_anta",                                              # TODO
   "python-avd/pyavd/_cv",                                                # TODO
-  "python-avd/pyavd/_utils",                                             # TODO
   "python-avd/pyavd/_schema",                                            # TODO
   "python-avd/pyavd/_errors",                                            # TODO
   "python-avd/schema_tools",                                             # TODO
