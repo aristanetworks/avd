@@ -11366,6 +11366,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             AdministrativeGroups._item_type = str
 
+            class Srlgs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Srlgs._item_type = str
+
             class Bandwidth(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -11476,6 +11481,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
+                "srlgs": {"type": Srlgs},
                 "srlg": {"type": str},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
@@ -11488,6 +11494,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
             integers 0-127.
+
+            Subclass of AvdList with `str` items.
+            """
+            srlgs: Srlgs
+            """
+            List of SRLGs.
 
             Subclass of AvdList with `str` items.
             """
@@ -11518,6 +11530,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
+                    srlgs: Srlgs | UndefinedType = Undefined,
                     srlg: str | None | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
@@ -11535,6 +11548,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         administrative_groups:
                            List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
                            integers 0-127.
+
+                           Subclass of AvdList with `str` items.
+                        srlgs:
+                           List of SRLGs.
 
                            Subclass of AvdList with `str` items.
                         srlg: SRLG name or number.
@@ -31390,6 +31407,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
             AdministrativeGroups._item_type = str
 
+            class Srlgs(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            Srlgs._item_type = str
+
             class Bandwidth(AvdModel):
                 """Subclass of AvdModel."""
 
@@ -31502,6 +31524,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             _fields: ClassVar[dict] = {
                 "enabled": {"type": bool},
                 "administrative_groups": {"type": AdministrativeGroups},
+                "srlgs": {"type": Srlgs},
                 "srlg": {"type": str},
                 "metric": {"type": int},
                 "bandwidth": {"type": Bandwidth},
@@ -31514,6 +31537,12 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             """
             List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
             integers 0-127.
+
+            Subclass of AvdList with `str` items.
+            """
+            srlgs: Srlgs
+            """
+            List of SRLGs.
 
             Subclass of AvdList with `str` items.
             """
@@ -31544,6 +31573,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     *,
                     enabled: bool | None | UndefinedType = Undefined,
                     administrative_groups: AdministrativeGroups | UndefinedType = Undefined,
+                    srlgs: Srlgs | UndefinedType = Undefined,
                     srlg: str | None | UndefinedType = Undefined,
                     metric: int | None | UndefinedType = Undefined,
                     bandwidth: Bandwidth | UndefinedType = Undefined,
@@ -31561,6 +31591,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         administrative_groups:
                            List of traffic-engineering administrative groups, valid values are names, ranges 0-127, or single
                            integers 0-127.
+
+                           Subclass of AvdList with `str` items.
+                        srlgs:
+                           List of SRLGs.
 
                            Subclass of AvdList with `str` items.
                         srlg: SRLG name or number.
