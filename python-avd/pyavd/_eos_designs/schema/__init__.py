@@ -1311,7 +1311,7 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
@@ -1456,7 +1456,7 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
@@ -1902,7 +1902,7 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
@@ -2047,7 +2047,7 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
@@ -5311,7 +5311,7 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
@@ -5456,7 +5456,7 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
@@ -5902,7 +5902,7 @@ class EosDesigns(EosDesignsRootModel):
             multicast_pim_sm: bool | None
             """
             Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-            `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
             """
             multicast_static: bool | None
             """
@@ -6047,7 +6047,7 @@ class EosDesigns(EosDesignsRootModel):
                            to be `true`.
                         multicast_pim_sm:
                            Enable/Disable Protocol Independent Multicast sparse mode. Requires the global
-                           `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
                         multicast_static:
                            Enable/Disable static Protocol Independent Multicast. Requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
@@ -20975,13 +20975,13 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             enabled: bool | None
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                            interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                            core interfaces for the specific node.
                             """
                             uplinks: bool
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                            interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            remove all uplinks.
 
                             Default value: `True`
                             """
@@ -21016,11 +21016,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                           interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                           Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                           core interfaces for the specific node.
                                         uplinks:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                           interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -25241,13 +25241,13 @@ class EosDesigns(EosDesignsRootModel):
                                 }
                                 enabled: bool | None
                                 """
-                                Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                core interfaces for the specific node.
                                 """
                                 uplinks: bool
                                 """
-                                Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                remove all uplinks.
 
                                 Default value: `True`
                                 """
@@ -25282,11 +25282,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled:
-                                               Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                               interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                               Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                               core interfaces for the specific node.
                                             uplinks:
-                                               Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                               interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                               Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                               remove all uplinks.
                                             uplink_interfaces:
                                                Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -29453,13 +29453,13 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             enabled: bool | None
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                            interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                            core interfaces for the specific node.
                             """
                             uplinks: bool
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                            interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            remove all uplinks.
 
                             Default value: `True`
                             """
@@ -29494,11 +29494,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                           interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                           Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                           core interfaces for the specific node.
                                         uplinks:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                           interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -33729,13 +33729,13 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             enabled: bool | None
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                            interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                            core interfaces for the specific node.
                             """
                             uplinks: bool
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                            interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            remove all uplinks.
 
                             Default value: `True`
                             """
@@ -33770,11 +33770,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                           interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                           Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                           core interfaces for the specific node.
                                         uplinks:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                           interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -45100,13 +45100,13 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             enabled: bool | None
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                            interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                            core interfaces for the specific node.
                             """
                             uplinks: bool
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                            interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            remove all uplinks.
 
                             Default value: `True`
                             """
@@ -45141,11 +45141,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                           interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                           Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                           core interfaces for the specific node.
                                         uplinks:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                           interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -49366,13 +49366,13 @@ class EosDesigns(EosDesignsRootModel):
                                 }
                                 enabled: bool | None
                                 """
-                                Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                core interfaces for the specific node.
                                 """
                                 uplinks: bool
                                 """
-                                Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                remove all uplinks.
 
                                 Default value: `True`
                                 """
@@ -49407,11 +49407,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                         Args:
                                             enabled:
-                                               Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                               interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                               Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                               core interfaces for the specific node.
                                             uplinks:
-                                               Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                               interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                               Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                               remove all uplinks.
                                             uplink_interfaces:
                                                Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -53578,13 +53578,13 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             enabled: bool | None
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                            interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                            core interfaces for the specific node.
                             """
                             uplinks: bool
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                            interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            remove all uplinks.
 
                             Default value: `True`
                             """
@@ -53619,11 +53619,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                           interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                           Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                           core interfaces for the specific node.
                                         uplinks:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                           interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -57854,13 +57854,13 @@ class EosDesigns(EosDesignsRootModel):
                             }
                             enabled: bool | None
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                            interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                            core interfaces for the specific node.
                             """
                             uplinks: bool
                             """
-                            Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                            interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            remove all uplinks.
 
                             Default value: `True`
                             """
@@ -57895,11 +57895,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     Args:
                                         enabled:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink
-                                           interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                                           Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
+                                           core interfaces for the specific node.
                                         uplinks:
-                                           Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink
-                                           interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
 
@@ -60715,20 +60715,20 @@ class EosDesigns(EosDesignsRootModel):
     """
     General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must
     also be configured under the Network Services (tenants).
-    Requires "underlay_multicast: true" or
-    "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
-    For MLAG devices
-    Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-    `Warning` !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
-      The Following default
-    platform setting will be configured on 7050X3 and 7300X3: "platform trident forwarding-table
-    partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
-      The Following default
-    platform setting will be configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared
-    22000"
-      All forwarding agents will be restarted when this configuration is applied.
-      You can tune
-    the settings by overriding the default variable:
+    Requires "underlay_multicast_pim_sm: true"
+    and IGMP snooping enabled globally (default).
+    For MLAG devices Route Distinguisher must be unique
+    since this feature will create multi-vtep configuration.
+    Warning !!! For Trident3 based platforms
+    i.e 7050X3, 7300X3, 720XP.
+      The Following default platform setting will be configured on 7050X3 and
+    7300X3: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
+    l3-shared 131072"
+      The Following default platform setting will be configured on 720XP: "flexible
+    exact-match 16000 l2-shared 18000 l3-shared 22000"
+      All forwarding agents will be restarted when
+    this configuration is applied.
+      You can tune the settings by overriding the default variable:
     "platform_settings[platforms].trident_forwarding_table_partition:"
       Please contact an Arista
     representative for help with determining the appropriate values for your environment.
@@ -61715,7 +61715,6 @@ class EosDesigns(EosDesignsRootModel):
     l3 peer interface and core interfaces.
     Specifically PIM Sparse-Mode will be configured on all routed
     underlay interfaces.
-    This also enables "router multicast | ipv4 routing".
     """
     underlay_multicast_static: bool | None
     """
@@ -61723,7 +61722,6 @@ class EosDesigns(EosDesignsRootModel):
     core interfaces.
     Specifically "multicast ipv4 static" will be configured on all routed underlay
     interfaces.
-    This also enables "router multicast | ipv4 routing".
     """
     underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
     """
@@ -61750,12 +61748,8 @@ class EosDesigns(EosDesignsRootModel):
     according to the
     'underlay_multicast_anycast_rp.mode' setting.
 
-    Requires 'underlay_multicast: true' or
-    'underlay_multicast_pim_sm: true'.
-
-
-    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem`
-    items. Primary key is `rp` (`str`).
+    Requires 'underlay_multicast_pim_sm: true'.
+    Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
     """
     underlay_ospf_area: str
     """Default value: `"0.0.0.0"`"""
@@ -62598,20 +62592,20 @@ class EosDesigns(EosDesignsRootModel):
                 evpn_multicast:
                    General Configuration required for EVPN Multicast. "evpn_l2_multicast" or "evpn_l3_multicast" must
                    also be configured under the Network Services (tenants).
-                   Requires "underlay_multicast: true" or
-                   "underlay_multicast_pim_sm: true" and IGMP snooping enabled globally (default).
-                   For MLAG devices
-                   Route Distinguisher must be unique since this feature will create multi-vtep configuration.
-                   `Warning` !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.
-                     The Following default
-                   platform setting will be configured on 7050X3 and 7300X3: "platform trident forwarding-table
-                   partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072"
-                     The Following default
-                   platform setting will be configured on 720XP: "flexible exact-match 16000 l2-shared 18000 l3-shared
-                   22000"
-                     All forwarding agents will be restarted when this configuration is applied.
-                     You can tune
-                   the settings by overriding the default variable:
+                   Requires "underlay_multicast_pim_sm: true"
+                   and IGMP snooping enabled globally (default).
+                   For MLAG devices Route Distinguisher must be unique
+                   since this feature will create multi-vtep configuration.
+                   Warning !!! For Trident3 based platforms
+                   i.e 7050X3, 7300X3, 720XP.
+                     The Following default platform setting will be configured on 7050X3 and
+                   7300X3: "platform trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
+                   l3-shared 131072"
+                     The Following default platform setting will be configured on 720XP: "flexible
+                   exact-match 16000 l2-shared 18000 l3-shared 22000"
+                     All forwarding agents will be restarted when
+                   this configuration is applied.
+                     You can tune the settings by overriding the default variable:
                    "platform_settings[platforms].trident_forwarding_table_partition:"
                      Please contact an Arista
                    representative for help with determining the appropriate values for your environment.
@@ -63304,13 +63298,11 @@ class EosDesigns(EosDesignsRootModel):
                    l3 peer interface and core interfaces.
                    Specifically PIM Sparse-Mode will be configured on all routed
                    underlay interfaces.
-                   This also enables "router multicast | ipv4 routing".
                 underlay_multicast_static:
                    Enable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and
                    core interfaces.
                    Specifically "multicast ipv4 static" will be configured on all routed underlay
                    interfaces.
-                   This also enables "router multicast | ipv4 routing".
                 underlay_multicast_anycast_rp:
                    If multiple nodes are configured under 'underlay_multicast_rps.[].nodes' for the same RP address,
                    they will be configured
@@ -63333,12 +63325,8 @@ class EosDesigns(EosDesignsRootModel):
                    according to the
                    'underlay_multicast_anycast_rp.mode' setting.
 
-                   Requires 'underlay_multicast: true' or
-                   'underlay_multicast_pim_sm: true'.
-
-
-                   Subclass of AvdIndexedList with `UnderlayMulticastRpsItem`
-                   items. Primary key is `rp` (`str`).
+                   Requires 'underlay_multicast_pim_sm: true'.
+                   Subclass of AvdIndexedList with `UnderlayMulticastRpsItem` items. Primary key is `rp` (`str`).
                 underlay_ospf_area: underlay_ospf_area
                 underlay_ospf_authentication: Subclass of AvdModel.
                 underlay_ospf_bfd_enable: underlay_ospf_bfd_enable

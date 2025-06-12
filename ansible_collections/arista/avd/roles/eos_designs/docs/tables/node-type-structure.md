@@ -11,8 +11,8 @@
     | [<samp>&nbsp;&nbsp;defaults</samp>](## "<node_type_keys.key>.defaults") | Dictionary |  |  |  | Define variables for all nodes of this type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "<node_type_keys.key>.defaults.underlay_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.uplink_interfaces") | List, items: String |  |  |  | Uplink Interface names to enable for Protocol Independent Multicast sparse mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.defaults.underlay_multicast.pim_sm.mlag") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
@@ -28,8 +28,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.uplink_interfaces") | List, items: String |  |  |  | Uplink Interface names to enable for Protocol Independent Multicast sparse mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.pim_sm.mlag") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
@@ -41,8 +41,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].nodes.[].underlay_multicast.static.mlag") | Boolean |  |  |  | Enable/Disable static Multicast in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.uplink_interfaces") | List, items: String |  |  |  | Uplink Interface names to enable for Protocol Independent Multicast sparse mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.node_groups.[].underlay_multicast.pim_sm.mlag") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
@@ -56,8 +56,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "<node_type_keys.key>.nodes.[].name") | String | Required, Unique |  |  | The Node Name is used as "hostname". |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pim_sm</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.enabled") | Boolean |  |  |  | Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplinks</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.uplinks") | Boolean |  | `True` |  | Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;uplink_interfaces</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.uplink_interfaces") | List, items: String |  |  |  | Uplink Interface names to enable for Protocol Independent Multicast sparse mode. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.uplink_interfaces.[]") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mlag</samp>](## "<node_type_keys.key>.nodes.[].underlay_multicast.pim_sm.mlag") | Boolean |  |  |  | Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node. |
@@ -78,10 +78,10 @@
         underlay_multicast:
           pim_sm:
 
-            # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
+            # Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node.
             enabled: <bool>
 
-            # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+            # Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
             uplinks: <bool; default=True>
 
             # Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -120,10 +120,10 @@
               underlay_multicast:
                 pim_sm:
 
-                  # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                  # Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node.
                   enabled: <bool>
 
-                  # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                  # Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
                   uplinks: <bool; default=True>
 
                   # Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -149,10 +149,10 @@
           underlay_multicast:
             pim_sm:
 
-              # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
+              # Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node.
               enabled: <bool>
 
-              # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+              # Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
               uplinks: <bool; default=True>
 
               # Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -184,10 +184,10 @@
           underlay_multicast:
             pim_sm:
 
-              # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
+              # Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node.
               enabled: <bool>
 
-              # Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+              # Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
               uplinks: <bool; default=True>
 
               # Uplink Interface names to enable for Protocol Independent Multicast sparse mode.

@@ -1504,11 +1504,11 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: Enable/Disable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces for the specific node.
+                    description: Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core interfaces for the specific node.
                   uplinks:
                     type: bool
                     default: true
-                    description: Enable/Disable Protocol Independent Multicast sparse mode in the underlay on specific p2p uplink interfaces. If not set, all uplinks will be enabled. Set as False to remove all uplinks.
+                    description: Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
                   uplink_interfaces:
                     description: Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
                     type: list

@@ -28,7 +28,6 @@ keys:
     description: |
       Enable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.
       Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-      This also enables "router multicast | ipv4 routing".
   underlay_multicast_static:
     documentation_options:
       table: fabric-settings
@@ -36,4 +35,3 @@ keys:
     description: |
       Enable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.
       Specifically "multicast ipv4 static" will be configured on all routed underlay interfaces.
-      This also enables "router multicast | ipv4 routing".

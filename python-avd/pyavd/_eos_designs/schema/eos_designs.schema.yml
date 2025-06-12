@@ -1321,16 +1321,16 @@ keys:
     type: bool
     description: "General Configuration required for EVPN Multicast. \"evpn_l2_multicast\"
       or \"evpn_l3_multicast\" must also be configured under the Network Services
-      (tenants).\nRequires \"underlay_multicast: true\" or \"underlay_multicast_pim_sm:
-      true\" and IGMP snooping enabled globally (default).\nFor MLAG devices Route
-      Distinguisher must be unique since this feature will create multi-vtep configuration.\n`Warning`
-      !!! For Trident3 based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following
-      default platform setting will be configured on 7050X3 and 7300X3: \"platform
-      trident forwarding-table partition flexible exact-match 16384 l2-shared 98304
-      l3-shared 131072\"\n  The Following default platform setting will be configured
-      on 720XP: \"flexible exact-match 16000 l2-shared 18000 l3-shared 22000\"\n  All
-      forwarding agents will be restarted when this configuration is applied.\n  You
-      can tune the settings by overriding the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
+      (tenants).\nRequires \"underlay_multicast_pim_sm: true\" and IGMP snooping enabled
+      globally (default).\nFor MLAG devices Route Distinguisher must be unique since
+      this feature will create multi-vtep configuration.\nWarning !!! For Trident3
+      based platforms i.e 7050X3, 7300X3, 720XP.\n  The Following default platform
+      setting will be configured on 7050X3 and 7300X3: \"platform trident forwarding-table
+      partition flexible exact-match 16384 l2-shared 98304 l3-shared 131072\"\n  The
+      Following default platform setting will be configured on 720XP: \"flexible exact-match
+      16000 l2-shared 18000 l3-shared 22000\"\n  All forwarding agents will be restarted
+      when this configuration is applied.\n  You can tune the settings by overriding
+      the default variable: \"platform_settings[platforms].trident_forwarding_table_partition:\"\n
       \ Please contact an Arista representative for help with determining the appropriate
       values for your environment."
     default: false
@@ -4533,8 +4533,6 @@ keys:
 
       Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
 
-      This also enables "router multicast | ipv4 routing".
-
       '
   underlay_multicast_static:
     documentation_options:
@@ -4545,8 +4543,6 @@ keys:
 
       Specifically "multicast ipv4 static" will be configured on all routed underlay
       interfaces.
-
-      This also enables "router multicast | ipv4 routing".
 
       '
   underlay_multicast_anycast_rp:
@@ -4589,7 +4585,7 @@ keys:
       according to the ''underlay_multicast_anycast_rp.mode'' setting.
 
 
-      Requires ''underlay_multicast: true'' or ''underlay_multicast_pim_sm: true''.
+      Requires ''underlay_multicast_pim_sm: true''.
 
       '
     type: list
@@ -9953,16 +9949,14 @@ $defs:
                 keys:
                   enabled:
                     type: bool
-                    description: Enable/Disable Protocol Independent Multicast sparse
-                      mode in the underlay on all p2p uplink interfaces, mlag l3 peer
-                      interface and core interfaces for the specific node.
+                    description: Configure PIM sparse-mode in the underlay on all
+                      P2P uplink interfaces, MLAG L3 peer interface and core interfaces
+                      for the specific node.
                   uplinks:
                     type: bool
                     default: true
-                    description: Enable/Disable Protocol Independent Multicast sparse
-                      mode in the underlay on specific p2p uplink interfaces. If not
-                      set, all uplinks will be enabled. Set as False to remove all
-                      uplinks.
+                    description: Configure PIM sparse-mode in the underlay on specific
+                      P2P uplink interfaces. Set as `false` to remove all uplinks.
                   uplink_interfaces:
                     description: Uplink Interface names to enable for Protocol Independent
                       Multicast sparse mode.
@@ -10655,7 +10649,7 @@ $defs:
         multicast_pim_sm:
           type: bool
           description: Enable/Disable Protocol Independent Multicast sparse mode.
-            Requires the global `underlay_multicast_pim_sm` or  node setting `underlay_multicast.pim_sm.enabled`
+            Requires the global `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled`
             to be `true`.
         multicast_static:
           description: Enable/Disable static Protocol Independent Multicast. Requires
