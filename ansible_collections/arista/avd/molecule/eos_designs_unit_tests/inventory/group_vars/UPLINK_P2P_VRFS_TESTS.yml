@@ -62,15 +62,7 @@ l3leaf:
     - name: UPLINK_P2P_VRFS_TESTS_LEAF1
       id: 3
       uplink_switch_interfaces: [ Ethernet1, Ethernet2 ]
-    - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
-      # Testing RFC5549 with IPv6 overlay peers only
-      bgp_as: 65106
-      uplink_interfaces: ['Ethernet1', 'Ethernet2']
-      loopback_ipv6_pool: 2001:1::/64
-      loopback_ipv6_offset: 4
-      id: 8
-      mac_address: '0c:1d:c0:1d:62:01'
-      uplink_switch_interfaces: [ Ethernet3, Ethernet4 ]
+
 l2leaf:
   defaults:
     platform: vEOS-LAB

@@ -4,30 +4,27 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet1
-  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3
+- name: Ethernet3
+  description: P2P_UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1
   shutdown: false
   mtu: 9214
   ipv6_enable: true
   mac_security:
     profile: TEST
-  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
-  peer_interface: Ethernet3
-  peer_type: spine
+  peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
+  peer_interface: Ethernet1
+  peer_type: l3leaf
   switchport:
     enabled: false
-hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
-ip_igmp_snooping:
-  globally_enabled: true
+hostname: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
 ip_routing_ipv6_interfaces: true
-ip_virtual_router_mac_address: cafe:cafe:cafe
 ipv6_unicast_routing: true
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.42.8/32
+  ip_address: 192.168.42.1/32
 management_api_http:
   enable_https: true
   enable_vrfs:
@@ -37,7 +34,7 @@ metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 router_bgp:
   as: '65000'
-  router_id: 192.168.42.8
+  router_id: 192.168.42.1
   maximum_paths:
     paths: 4
     ecmp: 4
@@ -52,11 +49,11 @@ router_bgp:
     send_community: all
     maximum_routes: 12000
   neighbor_interfaces:
-  - name: Ethernet1
+  - name: Ethernet3
     remote_as: '65000'
-    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
+    peer: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
     peer_group: IPv4-UNDERLAY-PEERS
-    description: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1_Ethernet3
+    description: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF_Ethernet1
   redistribute:
     connected:
       enabled: true
@@ -69,6 +66,8 @@ router_bgp:
           enabled: true
           originate: true
 service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending
