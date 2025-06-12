@@ -403,10 +403,10 @@ class AvdInterfaceDescriptions(AvdFacts):
             return self._template(
                 template_path,
                 peer=data.peer,
+                peer_interface=data.peer_interface,
                 adapter_port_channel_id=data.port_channel_id,
                 adapter_port_channel_description=data.port_channel_description,
                 adapter_description=data.description,
-                peer_interface=data.peer_interface,
             )
 
         if data.port_channel_description:
