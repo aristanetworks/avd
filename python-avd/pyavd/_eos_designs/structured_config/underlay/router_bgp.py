@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -99,7 +99,7 @@ class RouterBgpMixin(Protocol):
                     continue
 
                 neighbor = EosCliConfigGen.RouterBgp.NeighborsItem(
-                    ip_address=link.peer_ip_address,
+                    ip_address=cast("str", link.peer_ip_address),
                     peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                     remote_as=link.peer_bgp_as,
                     peer=link.peer,
@@ -122,7 +122,7 @@ class RouterBgpMixin(Protocol):
                         self.structured_config.router_bgp.vrfs.append_new(name=subinterface_vrf, router_id=self.shared_utils.router_id)
 
                     self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
-                        ip_address=subinterface.peer_ip_address,
+                        ip_address=cast("str", subinterface.peer_ip_address),
                         peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
                         remote_as=link.peer_bgp_as,
                         description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",

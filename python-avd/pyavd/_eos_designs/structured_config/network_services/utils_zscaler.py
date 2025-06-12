@@ -6,7 +6,7 @@ from __future__ import annotations
 import asyncio
 from functools import cached_property
 from logging import getLogger
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._cv.client import CVClient
 from pyavd._cv.workflows.models import CVDevice
@@ -45,6 +45,7 @@ class UtilsZscalerMixin(Protocol):
         Should only be called for CV Pathfinder Client devices.
 
         TODO: Add support for cv_verify_certs
+        TODO: Get the CV proto updated to guarantee values in all endpoint fields and cloud_name.
         """
         context = "The WAN Internet-exit integration with Zscaler fetches information from CloudVision"
         if not (cv_server := self.inputs.cv_server):
@@ -79,15 +80,15 @@ class UtilsZscalerMixin(Protocol):
                     "Set 'serial_number' for the device in AVD vars, to ensure a unique match."
                 )
                 raise AristaAvdError(msg)
-            device_id: str = cv_inventory_devices[0].serial_number
+            device_id = cast("str", cv_inventory_devices[0].serial_number)
             request_time, _ = await cv_client.set_swg_device(device_id=device_id, service="zscaler", location=wan_site_location)
             cv_endpoint_status = await cv_client.wait_for_swg_endpoint_status(device_id=device_id, service="zscaler", start_time=request_time)
 
-        device_location: Location = cv_endpoint_status.device_location
+        device_location = cv_endpoint_status.device_location
 
         zscaler_endpoints = EosDesigns.ZscalerEndpoints(
-            cloud_name=cv_endpoint_status.cloud_name,
-            device_location=EosDesigns.ZscalerEndpoints.DeviceLocation(city=device_location.city, country=device_location.country),
+            cloud_name=cast("str", cv_endpoint_status.cloud_name),
+            device_location=EosDesigns.ZscalerEndpoints.DeviceLocation(city=cast("str", device_location.city), country=cast("str", device_location.country)),
         )
         if not getattr(cv_endpoint_status, "vpn_endpoints", None) or not getattr(cv_endpoint_status.vpn_endpoints, "values", None):
             msg = f"{context} but did not get any IPsec Tunnel endpoints back from the Zscaler API."
@@ -106,12 +107,12 @@ class UtilsZscalerMixin(Protocol):
                     key,
                     cls(
                         ip_address=vpn_endpoint.ip_address.value,
-                        datacenter=vpn_endpoint.datacenter,
-                        city=location.city,
-                        country=location.country,
-                        region=location.region,
-                        latitude=location.latitude,
-                        longitude=location.longitude,
+                        datacenter=cast("str", vpn_endpoint.datacenter),
+                        city=cast("str", location.city),
+                        country=cast("str", location.country),
+                        region=cast("str", location.region),
+                        latitude=str(cast("float", location.latitude)),
+                        longitude=str(cast("float", location.longitude)),
                     ),
                 )
 
