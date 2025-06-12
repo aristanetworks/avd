@@ -733,15 +733,35 @@ jobs:
         # This is needed for arm machines since they don't ship with 2024 edition.
       - name: Upgrade rust and cargo
         run: rustup update stable
-      - run: cargo fmt --verbose
+      - name: Install cargo-llvm-cov for coverage reports
+        run: |
+          cargo install cargo-llvm-cov
         if: |
           matrix.os == 'ubuntu-latest'
-      - run: cargo clippy --all-targets --all-features
+      - name: Check code formatting with cargo fmt
+        run: cargo fmt --verbose
         if: |
           matrix.os == 'ubuntu-latest'
-      - run: cargo build --all-targets --all-features
-      - run: cargo test --all-targets --all-features
-      - run: |
+      - name: Check code style with clippy
+        run: cargo clippy --all-targets --all-features
+        if: |
+          matrix.os == 'ubuntu-latest'
+      - name: Run all tests
+        run: cargo test --all-targets --all-features
+      - name: Generate coverage report from previously run tests
+        run: |
+          cargo llvm-cov --report --lcov --output-path lcov.info
+        if: |
+          matrix.os == 'ubuntu-latest'
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: rust-llvm-cov
+          path: lcov.info
+      - name: Test building to all targets
+        run: cargo build --all-targets --all-features
+      - name: Check Rust dependencies with cargo deny
+        run: |
           cargo install cargo-deny
           cargo deny check
         if: |
