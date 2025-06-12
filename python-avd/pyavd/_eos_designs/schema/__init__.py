@@ -61152,7 +61152,6 @@ class EosDesigns(EosDesignsRootModel):
     dns_settings: DnsSettings
     """
     DNS settings
-    For DNS source-interfaces see "source_interfaces.domain_lookup"
 
     Subclass of AvdModel.
     """
@@ -63063,7 +63062,6 @@ class EosDesigns(EosDesignsRootModel):
                 design: Subclass of AvdModel.
                 dns_settings:
                    DNS settings
-                   For DNS source-interfaces see "source_interfaces.domain_lookup"
 
                    Subclass of AvdModel.
                 enable_trunk_groups:

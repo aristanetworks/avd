@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>dns_settings</samp>](## "dns_settings") | Dictionary |  |  |  | DNS settings<br>For DNS source-interfaces see "source_interfaces.domain_lookup" |
+    | [<samp>dns_settings</samp>](## "dns_settings") | Dictionary |  |  |  | DNS settings |
     | [<samp>&nbsp;&nbsp;domain</samp>](## "dns_settings.domain") | String |  |  |  | DNS domain name like 'fabric.local' |
     | [<samp>&nbsp;&nbsp;servers</samp>](## "dns_settings.servers") | List, items: Dictionary | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;vrf</samp>](## "dns_settings.servers.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as DNS lookup source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the DNS server under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed. |
@@ -94,7 +94,6 @@
 
     ```yaml
     # DNS settings
-    # For DNS source-interfaces see "source_interfaces.domain_lookup"
     dns_settings:
 
       # DNS domain name like 'fabric.local'
