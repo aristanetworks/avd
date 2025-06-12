@@ -122,6 +122,7 @@ class SnmpServerMixin(Protocol):
 
                 if user.auth is not None and user.auth_passphrase is not None:
                     user_dict.auth = user.auth
+                    hash_filter = {}
                     if compute_v3_user_localized_key:
                         hash_filter = {"passphrase": user.auth_passphrase, "auth": user.auth, "engine_id": engine_ids.local}
                         user_dict.auth_passphrase = snmp_hash(hash_filter)

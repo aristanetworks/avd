@@ -1073,6 +1073,8 @@ port_channel_interfaces:
       enabled: true
       administrative_groups:
         - 7
+      srlgs:
+        - 666
       min_delay_dynamic:
         twamp_light_fallback:
           number: 123
@@ -1089,7 +1091,9 @@ port_channel_interfaces:
         - 4
         - 7-100
         - testgrp
-      srlg: 16
+      srlgs:
+        - 16
+        - TEST
       metric: 2
       bandwidth:
         number: 100

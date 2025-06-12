@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 class InternalData:
     __slots__ = (
         "context",
+        "description",
         "evpn_l3_multicast_enabled",
         "evpn_l3_multicast_evpn_peg_transit",
         "evpn_l3_multicast_group_ip",
@@ -28,6 +29,7 @@ class InternalData:
     )
 
     context: str
+    description: str | None
     evpn_l3_multicast_enabled: bool | None
     evpn_l3_multicast_evpn_peg_transit: bool | None
     evpn_l3_multicast_group_ip: str | None
