@@ -14,9 +14,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;routing_mac_address_per_vlan</samp>](## "platform.trident.l3.routing_mac_address_per_vlan") | Boolean |  |  |  | Enable bridging of packets with destination MAC being a Router MAC in VLANs without routing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mmu</samp>](## "platform.trident.mmu") | Dictionary |  |  |  | Memory Management Unit settings.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;active_profile</samp>](## "platform.trident.mmu.active_profile") | String |  |  |  | The queue profile to be applied to the platform.<br> |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom_pool_limit</samp>](## "platform.trident.mmu.headroom_pool_limit") | Dictionary |  |  |  | Max limit on headroom pool size. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bytes</samp>](## "platform.trident.mmu.headroom_pool_limit.bytes") | Integer |  |  |  | Headroom pool limit in bytes.<br>`bytes` and `cells` are mutually exclusive with `bytes` taking precedence. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cells</samp>](## "platform.trident.mmu.headroom_pool_limit.cells") | Integer |  |  |  | Headroom pool limit in cells.<br>`bytes` and `cells` are mutually exclusive with `bytes` taking precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;headroom_pool</samp>](## "platform.trident.mmu.headroom_pool") | Dictionary |  |  |  | Max limit on headroom pool size. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit</samp>](## "platform.trident.mmu.headroom_pool.unit") | String |  |  | Valid Values:<br>- <code>bytes</code><br>- <code>cells</code> | Unit to be used for the `headroom_pool_limit` value.<br>If not specified, default is bytes. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;limit</samp>](## "platform.trident.mmu.headroom_pool.limit") | Integer |  |  |  | Max limit on headroom pool size. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_profiles</samp>](## "platform.trident.mmu.queue_profiles") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "platform.trident.mmu.queue_profiles.[].name") | String | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ingress</samp>](## "platform.trident.mmu.queue_profiles.[].ingress") | Dictionary |  |  |  |  |
@@ -93,15 +93,14 @@
           active_profile: <str>
 
           # Max limit on headroom pool size.
-          headroom_pool_limit:
+          headroom_pool:
 
-            # Headroom pool limit in bytes.
-            # `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
-            bytes: <int>
+            # Unit to be used for the `headroom_pool_limit` value.
+            # If not specified, default is bytes.
+            unit: <str; "bytes" | "cells">
 
-            # Headroom pool limit in cells.
-            # `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
-            cells: <int>
+            # Max limit on headroom pool size.
+            limit: <int>
           queue_profiles:
             - name: <str; required; unique>
               ingress:

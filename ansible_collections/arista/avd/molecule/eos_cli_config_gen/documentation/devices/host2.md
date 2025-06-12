@@ -1454,7 +1454,7 @@ router pim sparse-mode
 
 ```eos
 !
-platform trident mmu headroom-pool limit 557
+platform trident mmu headroom-pool limit bytes 557
 ```
 
 ## Application Traffic Recognition

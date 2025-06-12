@@ -25949,41 +25949,34 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Mmu(AvdModel):
                 """Subclass of AvdModel."""
 
-                class HeadroomPoolLimit(AvdModel):
+                class HeadroomPool(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
-                    bytes: int | None
+                    _fields: ClassVar[dict] = {"unit": {"type": str}, "limit": {"type": int}}
+                    unit: Literal["bytes", "cells"] | None
                     """
-                    Headroom pool limit in bytes.
-                    `bytes` and `cells` are mutually exclusive with `bytes` taking
-                    precedence.
+                    Unit to be used for the `headroom_pool_limit` value.
+                    If not specified, default is bytes.
                     """
-                    cells: int | None
-                    """
-                    Headroom pool limit in cells.
-                    `bytes` and `cells` are mutually exclusive with `bytes` taking
-                    precedence.
-                    """
+                    limit: int | None
+                    """Max limit on headroom pool size."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined
+                        ) -> None:
                             """
-                            HeadroomPoolLimit.
+                            HeadroomPool.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                bytes:
-                                   Headroom pool limit in bytes.
-                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
-                                   precedence.
-                                cells:
-                                   Headroom pool limit in cells.
-                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
-                                   precedence.
+                                unit:
+                                   Unit to be used for the `headroom_pool_limit` value.
+                                   If not specified, default is bytes.
+                                limit: Max limit on headroom pool size.
 
                             """
 
@@ -26413,14 +26406,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 QueueProfiles._item_type = QueueProfilesItem
 
-                _fields: ClassVar[dict] = {
-                    "active_profile": {"type": str},
-                    "headroom_pool_limit": {"type": HeadroomPoolLimit},
-                    "queue_profiles": {"type": QueueProfiles},
-                }
+                _fields: ClassVar[dict] = {"active_profile": {"type": str}, "headroom_pool": {"type": HeadroomPool}, "queue_profiles": {"type": QueueProfiles}}
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
-                headroom_pool_limit: HeadroomPoolLimit
+                headroom_pool: HeadroomPool
                 """
                 Max limit on headroom pool size.
 
@@ -26435,7 +26424,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         active_profile: str | None | UndefinedType = Undefined,
-                        headroom_pool_limit: HeadroomPoolLimit | UndefinedType = Undefined,
+                        headroom_pool: HeadroomPool | UndefinedType = Undefined,
                         queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -26446,7 +26435,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
-                            headroom_pool_limit:
+                            headroom_pool:
                                Max limit on headroom pool size.
 
                                Subclass of AvdModel.

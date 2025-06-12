@@ -25,10 +25,8 @@
 {%             if platform.trident.mmu.active_profile is arista.avd.defined %}
 | MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
 {%             endif %}
-{%             if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
-| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.bytes }} bytes |
-{%             elif platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
-| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.cells }} cells |
+{%             if platform.trident.mmu.headroom_pool.limit is arista.avd.defined %}
+| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool.limit }} {{ platform.trident.mmu.headroom_pool.unit | arista.avd.default("bytes") }} |
 {%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
