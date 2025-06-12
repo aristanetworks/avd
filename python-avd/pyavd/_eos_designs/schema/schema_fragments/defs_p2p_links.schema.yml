@@ -222,6 +222,11 @@ $defs:
                     convert_types:
                       - str
                     description: Port-Channel ID. If no `channel_id` is specified, an id is generated using the `channel_id_algorithm`.
+        campus_link_type:
+          type: str
+          description: |-
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+            An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface.
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.

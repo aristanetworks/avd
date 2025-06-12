@@ -10,7 +10,7 @@ from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError
-from pyavd._utils import Undefined, default, get_v2
+from pyavd._utils import Undefined, default
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.j2filters import range_expand
 
@@ -59,8 +59,6 @@ class EthernetInterfacesMixin(Protocol):
                 EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, ignore_extra_keys=True
             )
             network_port_as_adapter._internal_data.context = network_port._internal_data.context
-            if self.shared_utils.is_campus_device:
-                network_port_as_adapter._internal_data.campus_egress = network_port._internal_data.campus_egress
             for ethernet_interface_name in range_expand(network_port.switch_ports):
                 # Skip the interface if it was already created by some other feature like connected endpoints or uplinks etc.
                 if ethernet_interface_name in self.structured_config.ethernet_interfaces:
@@ -242,8 +240,8 @@ class EthernetInterfacesMixin(Protocol):
         if adapter.flowcontrol:
             ethernet_interface.flowcontrol = adapter.flowcontrol
 
-        # Flag Ethernet interface as `campus_egress` when parent adapter is set as campus egress adapter.
-        if self.shared_utils.is_campus_device and get_v2(adapter._internal_data, "campus_egress"):
-            ethernet_interface._internal_data.campus_egress = True
+        # Propagate campus_link_type for campus devices
+        if self.shared_utils.is_campus_device and adapter.campus_link_type:
+            ethernet_interface.campus_link_type = adapter.campus_link_type
 
         return ethernet_interface

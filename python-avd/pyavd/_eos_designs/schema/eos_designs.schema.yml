@@ -5987,19 +5987,13 @@ $defs:
         type: bool
         description: Set to false to disable the LLDP topology validation performed
           by the `eos_validate_state` role.
-      campus_egress:
-        type: bool
+      campus_link_type:
+        type: str
         description: 'PREVIEW: This option is marked as "preview", meaning the data
           models or generated configuration can change at any time.
 
-          Flag used to identify one or more adapters as egress interfaces of the Arista
-          Campus fabric.
-
-          These interfaces will be tagged with `Link-Type: Egress`.
-
-          This tag can later be used in the CloudVision Campus Dashboard to correctly
-          identify egress interfaces and calculate their bandwidth utilization.'
-        default: false
+          An arbitrary value for the new CloudVision `Link-Type` interface-level user
+          tag to be associated with an interface.'
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -7209,6 +7203,14 @@ $defs:
                       $ref: eos_designs#/$defs/flow_tracking_link
                       description: Configures flow-tracking on the interface. Overrides
                         `fabric_flow_tracking.l3_interfaces` setting.
+                    campus_link_type:
+                      type: str
+                      description: 'PREVIEW: This option is marked as "preview", meaning
+                        the data models or generated configuration can change at any
+                        time.
+
+                        An arbitrary value for the new CloudVision `Link-Type` interface-level
+                        user tag to be associated with an interface.'
                     structured_config:
                       type: dict
                       relaxed_validation: true
@@ -10756,6 +10758,13 @@ $defs:
                     - str
                     description: Port-Channel ID. If no `channel_id` is specified,
                       an id is generated using the `channel_id_algorithm`.
+        campus_link_type:
+          type: str
+          description: 'PREVIEW: This option is marked as "preview", meaning the data
+            models or generated configuration can change at any time.
+
+            An arbitrary value for the new CloudVision `Link-Type` interface-level
+            user tag to be associated with an interface.'
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in

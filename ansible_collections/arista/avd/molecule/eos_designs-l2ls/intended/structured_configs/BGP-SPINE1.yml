@@ -50,48 +50,113 @@ ethernet_interfaces:
   peer_type: other
   switchport:
     enabled: false
+  campus_link_type: Egress
 - name: Ethernet6
+  description: P2P_DUMMY-CORE_Ethernet1/5
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.253.8/31
+  peer: DUMMY-CORE
+  peer_interface: Ethernet1/5
+  peer_type: other
+  switchport:
+    enabled: false
+  campus_link_type: Egress
+- name: Ethernet7
+  description: P2P_DUMMY-CORE_Ethernet1/7
+  shutdown: false
+  channel_group:
+    id: 7
+    mode: active
+  peer: DUMMY-CORE
+  peer_interface: Ethernet1/7
+  peer_type: other
+  campus_link_type: Egress
+- name: Ethernet8
+  description: P2P_DUMMY-CORE_Ethernet1/9
+  shutdown: false
+  channel_group:
+    id: 8
+    mode: active
+  peer: DUMMY-CORE
+  peer_interface: Ethernet1/9
+  peer_type: other
+  campus_link_type: Egress
+- name: Ethernet9
   shutdown: false
   ip_address: 10.0.1.0/31
   peer_type: l3_interface
   switchport:
     enabled: false
-- name: Ethernet7
+  campus_link_type: Egress
+- name: Ethernet14
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth0
   shutdown: false
-  channel_group:
-    id: 7
-    mode: active
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth0
   peer_type: firewall
-- name: Ethernet8
+  switchport:
+    enabled: true
+  campus_link_type: Egress
+- name: Ethernet15
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth2
   shutdown: false
-  channel_group:
-    id: 8
-    mode: active
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth2
   peer_type: firewall
-- name: Ethernet9
+  port_profile: campus_eggress
+  switchport:
+    enabled: true
+  campus_link_type: Egress
+- name: Ethernet16
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth4
   shutdown: false
+  channel_group:
+    id: 16
+    mode: active
   peer: CAMPUS_EGRESS_FW_1
   peer_interface: Eth4
   peer_type: firewall
-  switchport:
-    enabled: true
+  campus_link_type: Egress
+- name: Ethernet17
+  description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth6
+  shutdown: false
+  channel_group:
+    id: 17
+    mode: active
+  peer: CAMPUS_EGRESS_FW_1
+  peer_interface: Eth6
+  peer_type: firewall
+  port_profile: campus_eggress
+  campus_link_type: Egress
 - name: Ethernet10
   shutdown: false
   peer_type: network_port
   switchport:
     enabled: true
+  campus_link_type: Egress
 - name: Ethernet11
   shutdown: false
   peer_type: network_port
+  port_profile: campus_eggress
   switchport:
     enabled: true
+  campus_link_type: Egress
+- name: Ethernet12
+  shutdown: false
+  channel_group:
+    id: 12
+    mode: active
+  peer_type: network_port
+  campus_link_type: Egress
+- name: Ethernet13
+  shutdown: false
+  channel_group:
+    id: 13
+    mode: active
+  peer_type: network_port
+  port_profile: campus_eggress
+  campus_link_type: Egress
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true
@@ -177,7 +242,33 @@ metadata:
       tags:
       - name: Link-Type
         value: AVD-Managed
+      - name: Link-Type
+        value: Egress
     - interface: Ethernet9
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet14
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet15
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet16
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet17
       tags:
       - name: Link-Type
         value: AVD-Managed
@@ -193,6 +284,20 @@ metadata:
       tags:
       - name: Link-Type
         value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet12
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
+    - interface: Ethernet13
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
+      - name: Link-Type
+        value: Egress
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094
@@ -220,15 +325,43 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 1,100,200,4092
 - name: Port-Channel7
+  description: P2P_DUMMY-CORE_Port-Channel17
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.253.12/31
+  peer: DUMMY-CORE
+  peer_interface: Port-Channel17
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel8
+  description: P2P_DUMMY-CORE_Port-Channel19
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.253.16/31
+  peer: DUMMY-CORE
+  peer_interface: Port-Channel19
+  peer_type: other
+  switchport:
+    enabled: false
+- name: Port-Channel16
   description: FIREWALL_CAMPUS_EGRESS_FW_1
   shutdown: false
-  mlag: 7
   switchport:
     enabled: true
-- name: Port-Channel8
+- name: Port-Channel17
   description: FIREWALL_CAMPUS_EGRESS_FW_1
   shutdown: false
-  mlag: 8
+  switchport:
+    enabled: true
+- name: Port-Channel12
+  shutdown: false
+  mlag: 12
+  switchport:
+    enabled: true
+- name: Port-Channel13
+  shutdown: false
+  mlag: 13
   switchport:
     enabled: true
 route_maps:
@@ -269,6 +402,21 @@ router_bgp:
     peer: BGP-SPINE2
     description: BGP-SPINE2_Vlan4094
   - ip_address: 192.168.253.5
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: DUMMY-CORE
+    description: DUMMY-CORE
+  - ip_address: 192.168.253.9
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: DUMMY-CORE
+    description: DUMMY-CORE
+  - ip_address: 192.168.253.13
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: DUMMY-CORE
+    description: DUMMY-CORE
+  - ip_address: 192.168.253.17
     peer_group: IPv4-UNDERLAY-PEERS
     remote_as: '65000'
     peer: DUMMY-CORE

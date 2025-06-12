@@ -178,11 +178,14 @@ vlan 4094
 | Ethernet2 | L2_BGP-LEAF2_Ethernet2 | *trunk | *1,100,200,4092 | *- | *- | 1 |
 | Ethernet3 | MLAG_BGP-SPINE1_Ethernet3 | *trunk | *- | *- | *MLAG | 3 |
 | Ethernet4 | MLAG_BGP-SPINE1_Ethernet4 | *trunk | *- | *- | *MLAG | 3 |
-| Ethernet7 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth1 | *- | *- | *- | *- | 7 |
-| Ethernet8 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth3 | *- | *- | *- | *- | 8 |
-| Ethernet9 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth5 | - | - | - | - | - |
 | Ethernet10 | - | - | - | - | - | - |
 | Ethernet11 | - | - | - | - | - | - |
+| Ethernet12 | - | *- | *- | *- | *- | 12 |
+| Ethernet13 | - | *- | *- | *- | *- | 13 |
+| Ethernet14 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth1 | - | - | - | - | - |
+| Ethernet15 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth3 | - | - | - | - | - |
+| Ethernet16 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth5 | *- | *- | *- | *- | 16 |
+| Ethernet17 | FIREWALL_CAMPUS_EGRESS_FW_1_Eth7 | *- | *- | *- | *- | 17 |
 
 *Inherited from Port-Channel Interface
 
@@ -191,7 +194,12 @@ vlan 4094
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet5 | P2P_DUMMY-CORE_Ethernet1/4 | - | 192.168.253.6/31 | default | 9214 | False | - | - |
-| Ethernet6 | - | - | 10.0.1.2/31 | default | - | False | - | - |
+| Ethernet6 | P2P_DUMMY-CORE_Ethernet1/6 | - | 192.168.253.10/31 | default | 9214 | False | - | - |
+| Ethernet7 | P2P_DUMMY-CORE_Ethernet1/8 | 7 | *192.168.253.14/31 | *default | *9214 | *False | *- | *- |
+| Ethernet8 | P2P_DUMMY-CORE_Ethernet1/10 | 8 | *192.168.253.18/31 | *default | *9214 | *False | *- | *- |
+| Ethernet9 | - | - | 10.0.1.2/31 | default | - | False | - | - |
+
+*Inherited from Port-Channel Interface
 
 #### Ethernet Interfaces Device Configuration
 
@@ -225,24 +233,26 @@ interface Ethernet5
    ip address 192.168.253.6/31
 !
 interface Ethernet6
+   description P2P_DUMMY-CORE_Ethernet1/6
    no shutdown
+   mtu 9214
    no switchport
-   ip address 10.0.1.2/31
+   ip address 192.168.253.10/31
 !
 interface Ethernet7
-   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth1
+   description P2P_DUMMY-CORE_Ethernet1/8
    no shutdown
    channel-group 7 mode active
 !
 interface Ethernet8
-   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth3
+   description P2P_DUMMY-CORE_Ethernet1/10
    no shutdown
    channel-group 8 mode active
 !
 interface Ethernet9
-   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth5
    no shutdown
-   switchport
+   no switchport
+   ip address 10.0.1.2/31
 !
 interface Ethernet10
    no shutdown
@@ -251,6 +261,34 @@ interface Ethernet10
 interface Ethernet11
    no shutdown
    switchport
+!
+interface Ethernet12
+   no shutdown
+   channel-group 12 mode active
+!
+interface Ethernet13
+   no shutdown
+   channel-group 13 mode active
+!
+interface Ethernet14
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth1
+   no shutdown
+   switchport
+!
+interface Ethernet15
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth3
+   no shutdown
+   switchport
+!
+interface Ethernet16
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth5
+   no shutdown
+   channel-group 16 mode active
+!
+interface Ethernet17
+   description FIREWALL_CAMPUS_EGRESS_FW_1_Eth7
+   no shutdown
+   channel-group 17 mode active
 ```
 
 ### Port-Channel Interfaces
@@ -263,8 +301,17 @@ interface Ethernet11
 | --------- | ----------- | ---- | ----- | ----------- | ------------| --------------------- | ------------------ | ------- | -------- |
 | Port-Channel1 | L2_BGP-LEAFS_Port-Channel1 | trunk | 1,100,200,4092 | - | - | - | - | 1 | - |
 | Port-Channel3 | MLAG_BGP-SPINE1_Port-Channel3 | trunk | - | - | MLAG | - | - | - | - |
-| Port-Channel7 | FIREWALL_CAMPUS_EGRESS_FW_1 | - | - | - | - | - | - | 7 | - |
-| Port-Channel8 | FIREWALL_CAMPUS_EGRESS_FW_1 | - | - | - | - | - | - | 8 | - |
+| Port-Channel12 | - | - | - | - | - | - | - | 12 | - |
+| Port-Channel13 | - | - | - | - | - | - | - | 13 | - |
+| Port-Channel16 | FIREWALL_CAMPUS_EGRESS_FW_1 | - | - | - | - | - | - | - | - |
+| Port-Channel17 | FIREWALL_CAMPUS_EGRESS_FW_1 | - | - | - | - | - | - | - | - |
+
+##### IPv4
+
+| Interface | Description | MLAG ID | IP Address | VRF | MTU | Shutdown | ACL In | ACL Out |
+| --------- | ----------- | ------- | ---------- | --- | --- | -------- | ------ | ------- |
+| Port-Channel7 | P2P_DUMMY-CORE_Port-Channel18 | - | 192.168.253.14/31 | default | 9214 | False | - | - |
+| Port-Channel8 | P2P_DUMMY-CORE_Port-Channel110 | - | 192.168.253.18/31 | default | 9214 | False | - | - |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -286,16 +333,38 @@ interface Port-Channel3
    switchport
 !
 interface Port-Channel7
-   description FIREWALL_CAMPUS_EGRESS_FW_1
+   description P2P_DUMMY-CORE_Port-Channel18
    no shutdown
-   switchport
-   mlag 7
+   mtu 9214
+   no switchport
+   ip address 192.168.253.14/31
 !
 interface Port-Channel8
+   description P2P_DUMMY-CORE_Port-Channel110
+   no shutdown
+   mtu 9214
+   no switchport
+   ip address 192.168.253.18/31
+!
+interface Port-Channel12
+   no shutdown
+   switchport
+   mlag 12
+!
+interface Port-Channel13
+   no shutdown
+   switchport
+   mlag 13
+!
+interface Port-Channel16
    description FIREWALL_CAMPUS_EGRESS_FW_1
    no shutdown
    switchport
-   mlag 8
+!
+interface Port-Channel17
+   description FIREWALL_CAMPUS_EGRESS_FW_1
+   no shutdown
+   switchport
 ```
 
 ### Loopback Interfaces
@@ -496,6 +565,9 @@ ASN Notation: asplain
 | Neighbor | Remote AS | VRF | Shutdown | Send-community | Maximum-routes | Allowas-in | BFD | RIB Pre-Policy Retain | Route-Reflector Client | Passive | TTL Max Hops |
 | -------- | --------- | --- | -------- | -------------- | -------------- | ---------- | --- | --------------------- | ---------------------- | ------- | ------------ |
 | 192.168.253.7 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.253.11 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.253.15 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
+| 192.168.253.19 | 65000 | default | - | Inherited from peer group IPv4-UNDERLAY-PEERS | Inherited from peer group IPv4-UNDERLAY-PEERS | - | - | - | - | - | - |
 | 192.168.254.0 | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | default | - | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | Inherited from peer group MLAG-IPv4-UNDERLAY-PEER | - | - | - | - | - | - |
 
 #### Router BGP Device Configuration
@@ -520,6 +592,15 @@ router bgp 65001
    neighbor 192.168.253.7 peer group IPv4-UNDERLAY-PEERS
    neighbor 192.168.253.7 remote-as 65000
    neighbor 192.168.253.7 description DUMMY-CORE
+   neighbor 192.168.253.11 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.253.11 remote-as 65000
+   neighbor 192.168.253.11 description DUMMY-CORE
+   neighbor 192.168.253.15 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.253.15 remote-as 65000
+   neighbor 192.168.253.15 description DUMMY-CORE
+   neighbor 192.168.253.19 peer group IPv4-UNDERLAY-PEERS
+   neighbor 192.168.253.19 remote-as 65000
+   neighbor 192.168.253.19 description DUMMY-CORE
    neighbor 192.168.254.0 peer group MLAG-IPv4-UNDERLAY-PEER
    neighbor 192.168.254.0 description BGP-SPINE1_Vlan4094
    redistribute connected

@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Any, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError
@@ -285,11 +285,12 @@ class CvTagsMixin(Protocol):
 
         if generic_interface.peer_type == "mlag_peer" and interface_peer == self.facts.mlag_peer:
             tags.append_new(name="Link-Type", value="MLAG")
-        elif interface_peer in self.facts.uplink_peers:
+        elif self.facts.uplink_peers and interface_peer in cast("list", self.facts.uplink_peers):
             tags.append_new(name="Link-Type", value="Uplink")
-        elif interface_peer in self.facts.downlink_switches:
+        elif self.facts.downlink_switches and interface_peer in cast("list", self.facts.downlink_switches):
             tags.append_new(name="Link-Type", value="Downlink")
-        elif generic_interface.peer_type in ["other", "l3_interface"] or get_v2(generic_interface._internal_data, "campus_egress"):
-            tags.append_new(name="Link-Type", value="Egress")
+
+        if campus_link_type := generic_interface.campus_link_type:
+            tags.append_unique(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name="Link-Type", value=campus_link_type))
 
         return tags
