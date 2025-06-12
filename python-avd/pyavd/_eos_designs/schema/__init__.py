@@ -1210,6 +1210,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -1240,7 +1245,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
-                "campus_link_type": {"type": str},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -1361,13 +1366,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: Literal["Egress"] | None
-            """
-            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-            change at any time.
-            An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-            to be associated with an interface.
-            """
+            campus_link_type: CampusLinkType
+            """Subclass of AvdList with `str` items."""
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -1418,7 +1418,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -1497,11 +1497,7 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type:
-                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                           change at any time.
-                           An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                           to be associated with an interface.
+                        campus_link_type: Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -1795,6 +1791,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -1825,7 +1826,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
-                "campus_link_type": {"type": str},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -1946,13 +1947,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: Literal["Egress"] | None
-            """
-            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-            change at any time.
-            An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-            to be associated with an interface.
-            """
+            campus_link_type: CampusLinkType
+            """Subclass of AvdList with `str` items."""
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -2003,7 +1999,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -2082,11 +2078,7 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type:
-                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                           change at any time.
-                           An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                           to be associated with an interface.
+                        campus_link_type: Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -5248,6 +5240,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "id": {"type": int},
@@ -5278,7 +5275,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
-                "campus_link_type": {"type": str},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -5399,13 +5396,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: Literal["Egress"] | None
-            """
-            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-            change at any time.
-            An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-            to be associated with an interface.
-            """
+            campus_link_type: CampusLinkType
+            """Subclass of AvdList with `str` items."""
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -5456,7 +5448,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -5535,11 +5527,7 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type:
-                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                           change at any time.
-                           An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                           to be associated with an interface.
+                        campus_link_type: Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -5833,6 +5821,11 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
+            class CampusLinkType(AvdList[str]):
+                """Subclass of AvdList with `str` items."""
+
+            CampusLinkType._item_type = str
+
             _fields: ClassVar[dict] = {
                 "nodes": {"type": Nodes},
                 "profile": {"type": str},
@@ -5863,7 +5856,7 @@ class EosDesigns(EosDesignsRootModel):
                 "qos_profile": {"type": str},
                 "macsec_profile": {"type": str},
                 "port_channel": {"type": PortChannel},
-                "campus_link_type": {"type": str},
+                "campus_link_type": {"type": CampusLinkType},
                 "raw_eos_cli": {"type": str},
                 "routing_protocol": {"type": str},
                 "structured_config": {"type": dict},
@@ -5984,13 +5977,8 @@ class EosDesigns(EosDesignsRootModel):
 
             Subclass of AvdModel.
             """
-            campus_link_type: Literal["Egress"] | None
-            """
-            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-            change at any time.
-            An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-            to be associated with an interface.
-            """
+            campus_link_type: CampusLinkType
+            """Subclass of AvdList with `str` items."""
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -6041,7 +6029,7 @@ class EosDesigns(EosDesignsRootModel):
                     qos_profile: str | None | UndefinedType = Undefined,
                     macsec_profile: str | None | UndefinedType = Undefined,
                     port_channel: PortChannel | UndefinedType = Undefined,
-                    campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                    campus_link_type: CampusLinkType | UndefinedType = Undefined,
                     raw_eos_cli: str | None | UndefinedType = Undefined,
                     routing_protocol: Literal["ebgp"] | None | UndefinedType = Undefined,
                     structured_config: dict | UndefinedType = Undefined,
@@ -6120,11 +6108,7 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type:
-                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                           change at any time.
-                           An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                           to be associated with an interface.
+                        campus_link_type: Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -7874,6 +7858,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CampusLinkType(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        CampusLinkType._item_type = str
+
         _fields: ClassVar[dict] = {
             "switches": {"type": Switches},
             "platforms": {"type": Platforms},
@@ -7910,7 +7899,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
-            "campus_link_type": {"type": str},
+            "campus_link_type": {"type": CampusLinkType},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -8107,13 +8096,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-        campus_link_type: Literal["Egress"] | None
-        """
-        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-        change at any time.
-        An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-        to be associated with an interface.
-        """
+        campus_link_type: CampusLinkType
+        """Subclass of AvdList with `str` items."""
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -8159,7 +8143,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
-                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -8312,11 +8296,7 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                    campus_link_type:
-                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                       change at any time.
-                       An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                       to be associated with an interface.
+                    campus_link_type: Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -11568,6 +11548,11 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
+        class CampusLinkType(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        CampusLinkType._item_type = str
+
         _fields: ClassVar[dict] = {
             "profile": {"type": str},
             "parent_profile": {"type": str},
@@ -11601,7 +11586,7 @@ class EosDesigns(EosDesignsRootModel):
             "port_channel": {"type": PortChannel},
             "validate_state": {"type": bool},
             "validate_lldp": {"type": bool},
-            "campus_link_type": {"type": str},
+            "campus_link_type": {"type": CampusLinkType},
             "raw_eos_cli": {"type": str},
             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
         }
@@ -11755,13 +11740,8 @@ class EosDesigns(EosDesignsRootModel):
         """
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-        campus_link_type: Literal["Egress"] | None
-        """
-        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-        change at any time.
-        An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-        to be associated with an interface.
-        """
+        campus_link_type: CampusLinkType
+        """Subclass of AvdList with `str` items."""
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -11804,7 +11784,7 @@ class EosDesigns(EosDesignsRootModel):
                 port_channel: PortChannel | UndefinedType = Undefined,
                 validate_state: bool | None | UndefinedType = Undefined,
                 validate_lldp: bool | None | UndefinedType = Undefined,
-                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 raw_eos_cli: str | None | UndefinedType = Undefined,
                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
             ) -> None:
@@ -11919,11 +11899,7 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                    campus_link_type:
-                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                       change at any time.
-                       An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                       to be associated with an interface.
+                    campus_link_type: Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -18241,6 +18217,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class CampusLinkType(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    CampusLinkType._item_type = str
+
                     _fields: ClassVar[dict] = {
                         "switch_ports": {"type": SwitchPorts},
                         "switches": {"type": Switches},
@@ -18277,7 +18258,7 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
-                        "campus_link_type": {"type": str},
+                        "campus_link_type": {"type": CampusLinkType},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                     }
@@ -18471,13 +18452,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-                    campus_link_type: Literal["Egress"] | None
-                    """
-                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                    change at any time.
-                    An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                    to be associated with an interface.
-                    """
+                    campus_link_type: CampusLinkType
+                    """Subclass of AvdList with `str` items."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -18523,7 +18499,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
-                            campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -18672,11 +18648,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                                campus_link_type:
-                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                                   change at any time.
-                                   An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                                   to be associated with an interface.
+                                campus_link_type: Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -19838,6 +19810,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class CampusLinkType(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    CampusLinkType._item_type = str
+
                     _fields: ClassVar[dict] = {
                         "switch_ports": {"type": SwitchPorts},
                         "switches": {"type": Switches},
@@ -19874,7 +19851,7 @@ class EosDesigns(EosDesignsRootModel):
                         "port_channel": {"type": PortChannel},
                         "validate_state": {"type": bool},
                         "validate_lldp": {"type": bool},
-                        "campus_link_type": {"type": str},
+                        "campus_link_type": {"type": CampusLinkType},
                         "raw_eos_cli": {"type": str},
                         "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                     }
@@ -20068,13 +20045,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
-                    campus_link_type: Literal["Egress"] | None
-                    """
-                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                    change at any time.
-                    An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                    to be associated with an interface.
-                    """
+                    campus_link_type: CampusLinkType
+                    """Subclass of AvdList with `str` items."""
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -20120,7 +20092,7 @@ class EosDesigns(EosDesignsRootModel):
                             port_channel: PortChannel | UndefinedType = Undefined,
                             validate_state: bool | None | UndefinedType = Undefined,
                             validate_lldp: bool | None | UndefinedType = Undefined,
-                            campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                            campus_link_type: CampusLinkType | UndefinedType = Undefined,
                             raw_eos_cli: str | None | UndefinedType = Undefined,
                             structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                         ) -> None:
@@ -20269,11 +20241,7 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                                campus_link_type:
-                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                                   change at any time.
-                                   An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                                   to be associated with an interface.
+                                campus_link_type: Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -40403,6 +40371,11 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
+                        class CampusLinkType(AvdList[str]):
+                            """Subclass of AvdList with `str` items."""
+
+                        CampusLinkType._item_type = str
+
                         _fields: ClassVar[dict] = {
                             "interfaces": {"type": Interfaces},
                             "encapsulation_dot1q_vlan": {"type": EncapsulationDot1qVlan},
@@ -40418,7 +40391,7 @@ class EosDesigns(EosDesignsRootModel):
                             "ospf": {"type": Ospf},
                             "pim": {"type": Pim},
                             "flow_tracking": {"type": FlowTracking},
-                            "campus_link_type": {"type": str},
+                            "campus_link_type": {"type": CampusLinkType},
                             "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
                             "raw_eos_cli": {"type": str},
                         }
@@ -40478,13 +40451,8 @@ class EosDesigns(EosDesignsRootModel):
                         Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                         Subclass of AvdModel.
                         """
-                        campus_link_type: Literal["Egress"] | None
-                        """
-                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                        change at any time.
-                        An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                        to be associated with an interface.
-                        """
+                        campus_link_type: CampusLinkType
+                        """Subclass of AvdList with `str` items."""
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
                         raw_eos_cli: str | None
@@ -40509,7 +40477,7 @@ class EosDesigns(EosDesignsRootModel):
                                 ospf: Ospf | UndefinedType = Undefined,
                                 pim: Pim | UndefinedType = Undefined,
                                 flow_tracking: FlowTracking | UndefinedType = Undefined,
-                                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                                 structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
                                 raw_eos_cli: str | None | UndefinedType = Undefined,
                             ) -> None:
@@ -40560,11 +40528,7 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
-                                    campus_link_type:
-                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                                       change at any time.
-                                       An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                                       to be associated with an interface.
+                                    campus_link_type: Subclass of AvdList with `str` items.
                                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                                     raw_eos_cli: EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
 

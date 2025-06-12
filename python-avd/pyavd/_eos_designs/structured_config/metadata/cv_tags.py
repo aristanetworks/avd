@@ -290,7 +290,8 @@ class CvTagsMixin(Protocol):
         elif self.facts.downlink_switches and interface_peer in cast("list", self.facts.downlink_switches):
             tags.append_new(name="Link-Type", value="Downlink")
 
-        if campus_link_type := generic_interface.campus_link_type:
-            tags.append_unique(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name="Link-Type", value=campus_link_type))
+        if campus_link_types := generic_interface.campus_link_type:
+            for campus_link_type in campus_link_types:
+                tags.append_unique(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name="Link-Type", value=campus_link_type))
 
         return tags

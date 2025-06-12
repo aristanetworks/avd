@@ -52,7 +52,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_link_type</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].campus_link_type") | String |  |  | Valid Values:<br>- <code>Egress</code> | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;campus_link_type</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].campus_link_type") | List, items: String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].campus_link_type.[]") | String |  |  | Valid Values:<br>- <code>AVD-Managed</code><br>- <code>Downlink</code><br>- <code>Egress</code><br>- <code>Fabric</code><br>- <code>MLAG</code><br>- <code>Uplink</code> | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_interfaces.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.<br> |
 
@@ -154,10 +155,11 @@
 
                   # Flow tracker name as defined in flow_tracking_settings.
                   name: <str>
+                campus_link_type:
 
-                # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-                # An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface.
-                campus_link_type: <str; "Egress">
+                    # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+                    # An arbitrary value for the new CloudVision `Link-Type` interface-level user tag to be associated with an interface.
+                  - <str; "AVD-Managed" | "Downlink" | "Egress" | "Fabric" | "MLAG" | "Uplink">
 
                 # Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                 structured_config: <dict>

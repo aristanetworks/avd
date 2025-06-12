@@ -11552,6 +11552,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     """
 
+        class CampusLinkType(AvdList[str]):
+            """Subclass of AvdList with `str` items."""
+
+        CampusLinkType._item_type = str
+
         _fields: ClassVar[dict] = {
             "name": {"type": str},
             "comment": {"type": str},
@@ -11670,7 +11675,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "validate_lldp": {"type": bool},
             "switchport": {"type": Switchport},
             "traffic_engineering": {"type": TrafficEngineering},
-            "campus_link_type": {"type": str},
+            "campus_link_type": {"type": CampusLinkType},
             "eos_cli": {"type": str},
         }
         name: str
@@ -11943,13 +11948,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         """
         traffic_engineering: TrafficEngineering
         """Subclass of AvdModel."""
-        campus_link_type: Literal["Egress"] | None
-        """
-        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-        change at any time.
-        An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-        to be associated with an interface.
-        """
+        campus_link_type: CampusLinkType
+        """Subclass of AvdList with `str` items."""
         eos_cli: str | None
         """Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
 
@@ -12075,7 +12075,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 validate_lldp: bool | None | UndefinedType = Undefined,
                 switchport: Switchport | UndefinedType = Undefined,
                 traffic_engineering: TrafficEngineering | UndefinedType = Undefined,
-                campus_link_type: Literal["Egress"] | None | UndefinedType = Undefined,
+                campus_link_type: CampusLinkType | UndefinedType = Undefined,
                 eos_cli: str | None | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -12253,11 +12253,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Subclass of
                        AvdModel.
                     traffic_engineering: Subclass of AvdModel.
-                    campus_link_type:
-                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
-                       change at any time.
-                       An arbitrary value for the new CloudVision `Link-Type` interface-level user tag
-                       to be associated with an interface.
+                    campus_link_type: Subclass of AvdList with `str` items.
                     eos_cli: Multiline EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
 
                 """

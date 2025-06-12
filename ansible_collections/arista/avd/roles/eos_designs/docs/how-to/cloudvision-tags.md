@@ -141,8 +141,8 @@ The CloudVision Campus Dashboard provides an overview of the Campus network stat
 ![Campus Fabric Egress](../../../../../../../docs/_media/cloudvision_campus_fabric_dashboard_egress.png)
 
 The Dashboard identifies a fabric's egress interfaces by the presence of the `Link-Type: Egress` interface-level tag.
-A new key, `campus_link_type`, has been added to the `core_interfaces`, `l3_edge`, `network_ports`, `connected_endpoints`, and `l3_interfaces` (under Network services) data models to provide a flexible way to add an interface-level `Link-Type` tag with an arbitrary value to the fabric interface of your choice.
-Set `campus_link_type` to `Egress` for any Fabric interfaces that should be treated as Egress interfaces in the Campus dashboard.
+A new key, `campus_link_type`, has been added to the `core_interfaces`, `l3_edge`, `network_ports`, `connected_endpoints`, and `l3_interfaces` (under Network services) data models to provide a flexible way to add new interface-level `Link-Type` tags with an arbitrary value to the fabric interface(s) of your choice.
+Set `campus_link_type` to `["Egress"]` for any Fabric interfaces that should be treated as Egress interfaces in the Campus dashboard.
 
 ## CloudVision Custom Tags
 

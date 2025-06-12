@@ -4724,14 +4724,21 @@ keys:
                       - microseconds
                       - milliseconds
         campus_link_type:
-          type: str
-          description: 'PREVIEW: This option is marked as "preview", meaning the data
-            models or generated configuration can change at any time.
+          type: list
+          items:
+            type: str
+            description: 'PREVIEW: This option is marked as "preview", meaning the
+              data models or generated configuration can change at any time.
 
-            An arbitrary value for the new CloudVision `Link-Type` interface-level
-            user tag to be associated with an interface.'
-          valid_values:
-          - Egress
+              An arbitrary value for the new CloudVision `Link-Type` interface-level
+              user tag to be associated with an interface.'
+            valid_values:
+            - AVD-Managed
+            - Downlink
+            - Egress
+            - Fabric
+            - MLAG
+            - Uplink
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface
