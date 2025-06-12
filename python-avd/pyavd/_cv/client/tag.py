@@ -27,8 +27,8 @@ from pyavd._cv.api.arista.tag.v2 import (
 )
 from pyavd._cv.api.arista.time import TimeBounds
 
+from .async_decorators import GRPCRequestHandler
 from .constants import DEFAULT_API_TIMEOUT
-from .exceptions import get_cv_client_exception
 
 if TYPE_CHECKING:
     from datetime import datetime
@@ -56,6 +56,7 @@ class TagMixin(Protocol):
     tags_api_version: Literal["v2"] = "v2"
     # TODO: Ensure the to document that we only support v2 of this api - hence only the CV versions supporting that.
 
+    @GRPCRequestHandler()
     async def get_tags(
         self: CVClientProtocol,
         workspace_id: str,
@@ -91,11 +92,8 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),
         )
         client = TagServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            tags = [response.value async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '' (main), Element Type '{element_type}', Creator Type '{creator_type}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        tags = [response.value async for response in responses]
 
         # Now tags contain all mainline tags.
         if workspace_id == "" or creator_type in ["system", "external"]:
@@ -110,22 +108,20 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),
         )
         client = TagConfigServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                tag_config = response.value
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            tag_config = response.value
 
-                # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag.
-                tag = Tag(key=tag_config.key, creator_type=CreatorType.USER)
-                if tag_config.remove:
-                    self._remove_item_from_list(tag, tags, self._match_tags)
-                else:
-                    self._upsert_item_in_list(tag, tags, self._match_tags)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}', Creator Type '{creator_type}'") or e
+            # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag.
+            tag = Tag(key=tag_config.key, creator_type=CreatorType.USER)
+            if tag_config.remove:
+                self._remove_item_from_list(tag, tags, self._match_tags)
+            else:
+                self._upsert_item_in_list(tag, tags, self._match_tags)
 
         return tags
 
+    @GRPCRequestHandler()
     async def set_tags(
         self: CVClientProtocol,
         workspace_id: str,
@@ -161,15 +157,12 @@ class TagMixin(Protocol):
             )
 
         client = TagConfigServiceStub(self._channel)
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
-            tag_keys = [response.key async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
+        # Recreating a full tag object. Since we just created it, it *must* be a user created tag.
 
-        return tag_keys
+        return [response.key async for response in responses]
 
+    @GRPCRequestHandler()
     async def get_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -205,11 +198,8 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),
         )
         client = TagAssignmentServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            tag_assignments = [response.value async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '' (main), Element Type '{element_type}', Creator Type '{creator_type}'") or e
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        tag_assignments = [response.value async for response in responses]
 
         # Now tags contain all mainline tags.
         if workspace_id == "" or creator_type in ["system", "external"]:
@@ -224,22 +214,20 @@ class TagMixin(Protocol):
             time=TimeBounds(start=None, end=time),
         )
         client = TagAssignmentConfigServiceStub(self._channel)
-        try:
-            responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
-            async for response in responses:
-                tag_assignment_config = response.value
+        responses = client.get_all(request, metadata=self._metadata, timeout=timeout)
+        async for response in responses:
+            tag_assignment_config = response.value
 
-                # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag assignment.
-                tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.USER)
-                if tag_assignment_config.remove:
-                    self._remove_item_from_list(tag_assignment, tag_assignments, self._match_tag_assignments)
-                else:
-                    self._upsert_item_in_list(tag_assignment, tag_assignments, self._match_tag_assignments)
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}', Creator Type '{creator_type}'") or e
+            # Recreating a full tag object. Since this was in the workspace, it *must* be a user created tag assignment.
+            tag_assignment = TagAssignment(key=tag_assignment_config.key, tag_creator_type=CreatorType.USER)
+            if tag_assignment_config.remove:
+                self._remove_item_from_list(tag_assignment, tag_assignments, self._match_tag_assignments)
+            else:
+                self._upsert_item_in_list(tag_assignment, tag_assignments, self._match_tag_assignments)
 
         return tag_assignments
 
+    @GRPCRequestHandler()
     async def set_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -277,14 +265,11 @@ class TagMixin(Protocol):
             )
 
         client = TagAssignmentConfigServiceStub(self._channel)
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            tag_assignment_keys = [response.key async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
-        return tag_assignment_keys
+        return [response.key async for response in responses]
 
+    @GRPCRequestHandler()
     async def delete_tag_assignments(
         self: CVClientProtocol,
         workspace_id: str,
@@ -323,13 +308,9 @@ class TagMixin(Protocol):
             )
 
         client = TagAssignmentConfigServiceStub(self._channel)
-        try:
-            responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
-            tag_assignment_keys = [response.key async for response in responses]
-        except Exception as e:
-            raise get_cv_client_exception(e, f"Workspace ID '{workspace_id}', Element Type '{element_type}'") or e
+        responses = client.set_some(request, metadata=self._metadata, timeout=timeout + len(request.values) * 0.1)
 
-        return tag_assignment_keys
+        return [response.key async for response in responses]
 
     @staticmethod
     def _match_tags(a: Tag, b: Tag) -> bool:

@@ -511,6 +511,7 @@ connected_endpoints_ethernet_interfaces:
 connected_endpoints_port_channel_interfaces:
 
 - `{{ peer }}`
+- `{{ peer_interface }}`
 - `{{ adapter_port_channel_id }}`
 - `{{ adapter_port_channel_description }}`
 - `{{ adapter_description }}`
