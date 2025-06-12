@@ -96,6 +96,7 @@ Run `pre-commit run --all`, this will trigger recompiling the schemas and the te
      - Add the additional test cases to the next host directory, e.g., `host_vars/host2/<key_name>.yml`, `host_vars/host3/<key_name>.yml`, etc.
      - Ensure each file represents unique scenarios or configurations to validate different combinations.
    - Ensure that the new keys are thoroughly tested with various valid values and edge cases.
+   - Use `host1` for all inputs. Also use other hosts (e.g., `host2`, `host3`, etc.) when you have mutually exclusive inputs or wish to test different values for a single key.
 3. When marking any key as "deprecated", move the related tests to the `eos_cli_config_gen_deprecated_vars` molecule scenario and add any missing tests if necessary.
 4. Run `molecule converge -s <scenario_name>` from the path `ansible_collections/arista/avd/` to execute the molecule tests locally and generate the new expected configuration and documentation for newly added test-cases.
 5. To execute all the molecule scenarios, run `make refresh-facts` from the path `ansible_collections/arista/avd/molecule` and verify the tests.

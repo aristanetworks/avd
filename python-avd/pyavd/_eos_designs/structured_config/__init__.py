@@ -25,6 +25,8 @@ from .underlay import AvdStructuredConfigUnderlay
 if TYPE_CHECKING:
     from collections.abc import Mapping
 
+    from ansible.template import Templar
+
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
     from pyavd.avd_schema_tools import AvdSchemaTools
 
@@ -66,7 +68,7 @@ def get_structured_config(
     input_schema_tools: AvdSchemaTools,
     all_facts: Mapping[str, EosDesignsFacts],
     result: dict,
-    templar: object | None = None,
+    templar: Templar | None = None,
     validate: bool = True,
 ) -> EosCliConfigGen | None:
     """

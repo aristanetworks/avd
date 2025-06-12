@@ -81,6 +81,7 @@ ethernet_interfaces:
   peer: dc1-leaf1-server1
   peer_interface: PCI1
   peer_type: server
+  validate_state: false
 - name: Ethernet31
   description: WORKSTATION_dc1-leaf1-workstation1_e1
   shutdown: false
@@ -219,6 +220,7 @@ port_channel_interfaces:
     trunk:
       allowed_vlan: 11-12,21-22
       native_vlan: 4092
+  validate_state: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:

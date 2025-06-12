@@ -7,7 +7,7 @@
 {% if platform is arista.avd.defined %}
 
 ## Platform
-{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined %}
+{%     if platform.trident is arista.avd.defined or platform.sand is arista.avd.defined or platform.sfe is arista.avd.defined or platform.fap is arista.avd.defined %}
 
 ### Platform Summary
 {%         if platform.trident is arista.avd.defined %}
@@ -24,6 +24,11 @@
 {%             endif %}
 {%             if platform.trident.mmu.active_profile is arista.avd.defined %}
 | MMU Applied Profile | {{ platform.trident.mmu.active_profile }} |
+{%             endif %}
+{%             if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
+| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.bytes }} bytes |
+{%             elif platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
+| MMU Headroom-pool Limit | {{ platform.trident.mmu.headroom_pool_limit.cells }} cells |
 {%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
@@ -109,6 +114,16 @@
 {%                 endif %}
 {%             endif %}
 {%         endif %}
+{%         if platform.fap is arista.avd.defined %}
+
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+{%             if platform.fap.buffering_egress.profile is arista.avd.defined %}
+| Buffering Egress Profile | {{ platform.fap.buffering_egress.profile }} |
+{%             endif %}
+{%         endif %}
 {%     endif %}
 
 ### Platform Device Configuration
@@ -116,5 +131,6 @@
 ```eos
 {%     include 'eos/platform.j2' %}
 {%     include 'eos/platform-sfe-interface.j2' %}
+{%     include 'eos/platform-headroom-pool.j2' %}
 ```
 {% endif %}
