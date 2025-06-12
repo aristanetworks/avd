@@ -12,7 +12,6 @@ keys:
     type: dict
     description: |-
       DNS settings
-      For DNS source-interfaces see "source_interfaces.domain_lookup"
     keys:
       domain:
         type: str
