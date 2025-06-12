@@ -1,0 +1,57 @@
+---
+wan_mode: cv-pathfinder
+
+type: wan_router
+
+bgp_as: 65000
+
+cv_pathfinder_regions:
+  - name: AVD_Land_West
+    id: 42
+    description: AVD Region
+    sites:
+      - name: Site422
+        id: 422
+        location: Somewhere
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.255.0/24
+
+wan_ipsec_profiles:
+  control_plane:
+    shared_key: ABCDEF1234567890
+  data_plane:
+    shared_key: ABCDEF1234567890666
+
+wan_router:
+  defaults:
+    loopback_ipv4_pool: 192.168.42.0/24
+    vtep_loopback_ipv4_pool: 192.168.255.0/24
+    data_plane_cpu_allocation_max: 1
+  nodes:
+    - name: missing-cv-pathfinder-site-under-cv-pathfinder-global-sites
+      id: 1
+      wan_role: server
+      cv_pathfinder_region:
+      cv_pathfinder_site: Site422
+      l3_interfaces:
+        - name: Ethernet1
+          wan_carrier: ATT
+          wan_circuit_id: 666
+          dhcp_accept_default_route: true
+          ip_address: 10.1.1.1/24
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: ATT
+    path_group: INET
+    trusted: true
+
+expected_error_message: >-
+  The 'cv_pathfinder_site 'Site422' defined at the node level could not be found under the 'cv_pathfinder_global_sites' list

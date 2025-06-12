@@ -3,12 +3,12 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from .constants import EOS_CLI_CONFIG_GEN_SCHEMA_ID, EOS_DESIGNS_SCHEMA_ID
 
 if TYPE_CHECKING:
-    from collections.abc import Generator
+    from collections.abc import Generator, Mapping
 
     from typing_extensions import Self
 
@@ -37,7 +37,7 @@ class AvdSchemaTools:
 
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
-    def convert_data(self, data: dict) -> ValidationResult:
+    def convert_data(self, data: Mapping) -> ValidationResult:
         """
         Convert data according to the schema (convert_types).
 
@@ -77,7 +77,7 @@ class AvdSchemaTools:
 
         return result
 
-    def validate_data(self, data: dict) -> ValidationResult:
+    def validate_data(self, data: Mapping) -> ValidationResult:
         """
         Validate data according to the schema.
 
@@ -116,7 +116,7 @@ class AvdSchemaTools:
 
         return result
 
-    def convert_and_validate_data(self, data: dict) -> dict:
+    def convert_and_validate_data(self, data: Mapping) -> dict:
         """
         Convert and validate data according to the schema.
 
@@ -144,7 +144,7 @@ class EosDesignsAvdSchemaTools(AvdSchemaTools):
     def __new__(cls) -> Self:
         if not hasattr(cls, "instance"):
             cls.instance = AvdSchemaTools(schema_id=EOS_DESIGNS_SCHEMA_ID)
-        return cls.instance
+        return cast("Self", cls.instance)
 
 
 class EosCliConfigGenAvdSchemaTools(AvdSchemaTools):
@@ -153,4 +153,4 @@ class EosCliConfigGenAvdSchemaTools(AvdSchemaTools):
     def __new__(cls) -> Self:
         if not hasattr(cls, "instance"):
             cls.instance = AvdSchemaTools(schema_id=EOS_CLI_CONFIG_GEN_SCHEMA_ID)
-        return cls.instance
+        return cast("Self", cls.instance)

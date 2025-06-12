@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -121,7 +121,8 @@ class RouterPathSelectionMixin(Protocol):
         self.structured_config.router_path_selection.path_groups.append(path_group)
 
     def _wan_ha_peer_vtep_ip(self: AvdStructuredConfigOverlayProtocol) -> str:
-        peer_facts = self.shared_utils.get_peer_facts(self.shared_utils.wan_ha_peer)
+        """Called only when self.shared_utils.wan_ha is True."""
+        peer_facts = self.shared_utils.get_peer_facts(cast("str", self.shared_utils.wan_ha_peer))
         if not peer_facts.vtep_ip:
             msg = f"'vtep_ip' is required but was not found for host '{self.shared_utils.wan_ha_peer}'"
             raise AristaAvdInvalidInputsError(msg)
@@ -209,7 +210,7 @@ class RouterPathSelectionMixin(Protocol):
             ]
 
             path_group.static_peers.append_new(
-                router_ip=wan_route_server.vtep_ip,
+                router_ip=cast("str", wan_route_server.vtep_ip),
                 name=wan_route_server.hostname,
                 ipv4_addresses=EosCliConfigGen.RouterPathSelection.PathGroupsItem.StaticPeersItem.Ipv4Addresses(ipv4_addresses),
             )
