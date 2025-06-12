@@ -1462,7 +1462,7 @@ router pim sparse-mode
 !
 platform fap buffering egress profile balanced
 !
-platform trident mmu headroom-pool limit bytes 557
+platform trident mmu headroom-pool limit 557
 ```
 
 ## Application Traffic Recognition
