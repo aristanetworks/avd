@@ -6983,6 +6983,75 @@ keys:
               type: bool
       run:
         type: bool
+  load_balance:
+    type: dict
+    description: Configuration for load balancing behavior across port-channels and
+      ECMP paths.
+    keys:
+      policies:
+        type: dict
+        description: Collection of load balancing policy definitions.
+        keys:
+          sand_profiles:
+            type: list
+            description: List of load balancing profiles for SAND-based platforms,
+              used for port-channel and ECMP hashing.
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Unique name of the load-balancing profile.
+                fields:
+                  type: dict
+                  description: Configure packet fields used as input to the hash function
+                    for port-channel and ECMP load balancing.
+                  keys:
+                    udp:
+                      type: dict
+                      description: UDP-specific fields used in the load balancing
+                        hash.
+                      keys:
+                        dst_port:
+                          type: int
+                          required: true
+                          min: 0
+                          max: 65535
+                          description: Use the UDP destination port as a hash input.
+                          convert_types:
+                          - str
+                        payload_bytes:
+                          type: str
+                          description: Specifies the number or range of UDP payload
+                            bytes to use in hash calculation.
+                          convert_types:
+                          - int
+                        match:
+                          type: dict
+                          description: Configuration to match specific bits and define
+                            custom payload-based hashing.
+                          keys:
+                            payload_bits:
+                              type: str
+                              required: true
+                              description: Bit range within the UDP payload to match
+                                for hashing (e.g., "0-15").
+                              convert_types:
+                              - int
+                            pattern:
+                              type: int
+                              required: true
+                              description: Bit pattern to match in the UDP payload.
+                              convert_types:
+                              - str
+                            hash_payload_bytes:
+                              type: str
+                              required: true
+                              description: Number or range of UDP payload bytes to
+                                include in the hash after pattern match.
+                              convert_types:
+                              - int
   load_interval:
     type: dict
     keys:
