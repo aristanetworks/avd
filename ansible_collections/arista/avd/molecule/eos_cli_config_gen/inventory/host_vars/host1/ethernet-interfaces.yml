@@ -1908,7 +1908,10 @@ ethernet_interfaces:
         - 3
         - 15-29
         - testgrp
-      srlg: TEST-SRLG
+      srlgs:
+        - 2
+        - TEST-SRLG
+        - ARISTA
       metric: 4
       bandwidth:
         number: 10
@@ -1929,7 +1932,6 @@ ethernet_interfaces:
         - 4
         - 7-100
         - testgrp
-      srlg: 16
       metric: 2
       bandwidth:
         number: 100
