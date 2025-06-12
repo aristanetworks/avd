@@ -1,7 +1,16 @@
 # Copyright (c) 2023-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-def template(template_file: str, template_vars: dict, templar: object) -> str:
+from __future__ import annotations
+
+from typing import TYPE_CHECKING, cast
+
+if TYPE_CHECKING:
+    from ansible.parsing.dataloader import DataLoader
+    from ansible.template import Templar
+
+
+def template(template_file: str, template_vars: dict, templar: Templar | None) -> str:
     """
     Run Ansible Templar with template file.
 
@@ -34,14 +43,17 @@ def template(template_file: str, template_vars: dict, templar: object) -> str:
     # We only get here when running from Ansible, so it is safe to import from ansible.
     # pylint: disable=import-outside-toplevel
     from ansible.module_utils._text import to_text
+    from jinja2.loaders import FileSystemLoader
 
     # pylint: enable=import-outside-toplevel
 
-    dataloader = templar._loader
-    searchpath = templar.environment.loader.searchpath
+    dataloader: DataLoader = templar._loader
+    jinjaloader = templar.environment.loader
+    searchpath = jinjaloader.searchpath if isinstance(jinjaloader, FileSystemLoader) else []
     template_file_path = dataloader.path_dwim_relative_stack(searchpath, "templates", template_file)
     j2template, dummy = dataloader._get_file_contents(template_file_path)
     j2template = to_text(j2template)
 
     with templar.set_temporary_context(available_variables=template_vars):
-        return templar.template(j2template, convert_data=False, escape_backslashes=False)
+        # Since convert_data is False, we know the result is a string.
+        return cast("str", templar.template(j2template, convert_data=False, escape_backslashes=False))
