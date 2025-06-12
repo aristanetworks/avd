@@ -156,7 +156,7 @@ PARITY_BITS = [
 ENC_SIG = b"\x4c\x88\xbb"
 
 
-def des_setparity(key: bytes) -> bytes:
+def des_setparity(key: bytearray) -> bytes:
     res = b""
     for b in key:
         pos = b & 0x7F

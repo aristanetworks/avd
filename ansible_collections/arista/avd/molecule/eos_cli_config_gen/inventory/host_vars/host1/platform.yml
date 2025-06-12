@@ -103,3 +103,6 @@ platform:
             - name: Ethernet9
         - name: TestProfile3
       interface_profile: TestProfile1
+  fap:
+    buffering_egress:
+      profile: unicast
