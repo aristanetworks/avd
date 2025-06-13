@@ -19,6 +19,12 @@ wan_path_groups:
     id: 101
   - name: internet
     id: 102
+  - name: TAC
+    id: 103
+  - name: Global
+    id: 104
+  - name: Phone
+    id: 105
 
 wan_carriers:
   - name: isp-1
@@ -26,6 +32,15 @@ wan_carriers:
     trusted: true
   - name: mpls-sp-1
     path_group: mpls
+    trusted: true
+  - name: TAC
+    path_group: TAC
+    trusted: true
+  - name: Global
+    path_group: Global
+    trusted: true
+  - name: Phone
+    path_group: Phone
     trusted: true
 
 wan_route_servers:
@@ -40,6 +55,14 @@ wan_route_servers:
         interfaces:
           - name: Ethernet7
             public_ip: 100.64.1.2
+      # Test to skip the anta test VerifySpecificPath where static_peer.ipv4_addresses or static_peer are missing
+      - name: Global
+        interfaces:
+          - name: Ethernet1
+      - name: Phone
+        interfaces:
+          - name: Ethernet5
+            public_ip: 100.64.4.2
   - hostname: dc1-leaf1b
     vtep_ip: 10.255.255.20
     path_groups:
