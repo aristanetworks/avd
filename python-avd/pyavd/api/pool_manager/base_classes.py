@@ -35,7 +35,7 @@ class PoolAssignment(Generic[T_ValueType]):
 
 @dataclass
 class Pool(Generic[T_ValueType]):
-    """One Pool of resources indexed by T_AssignmentKeyType. Currently only supporting a pool of Integers."""
+    """One Pool of resources indexed by str. Currently only supporting a pool of Integers."""
 
     collection: PoolCollection[T_ValueType]
     pool_key: str
