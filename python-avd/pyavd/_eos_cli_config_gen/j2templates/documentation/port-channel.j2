@@ -15,35 +15,23 @@
 
 | Eth-Type | Header | Layer | Offset | Mask |
 | -------- | ------ | ----- | ------ | ---- |
-{%         for ipv4_l2_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv4.header.outer.l2 %}
-| IPv4 | Outer | L2 | {{ ipv4_l2_outer_header.offset }} | {{ ipv4_l2_outer_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv4_l3_inner_header in port_channel.load_balance_trident.udf_eth_type.ipv4.header.inner.l3 %}
-| IPv4 | Innner | L3 | {{ ipv4_l3_inner_header.offset }} | {{ ipv4_l3_inner_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv4_l3_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv4.header.outer.l3 %}
-| IPv4 | Outer | L3 | {{ ipv4_l3_outer_header.offset }} | {{ ipv4_l3_outer_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv4_l4_inner_header in port_channel.load_balance_trident.udf_eth_type.ipv4.header.inner.l4 %}
-| IPv4 | Innner | L4 | {{ ipv4_l4_inner_header.offset }} | {{ ipv4_l4_inner_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv4_l4_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv4.header.outer.l4 %}
-| IPv4 | Outer | L4 | {{ ipv4_l4_outer_header.offset }} | {{ ipv4_l4_outer_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv6_l2_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l2 %}
-| IPv6 | Outer | L2 | {{ ipv6_l2_outer_header.offset }} | {{ ipv6_l2_outer_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv6_l3_inner_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.inner.l3 %}
-| IPv6 | Innner | L3 | {{ ipv6_l3_inner_header.offset }} | {{ ipv6_l3_inner_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv6_l3_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l3 %}
-| IPv6 | Outer | L3 | {{ ipv6_l3_outer_header.offset }} | {{ ipv6_l3_outer_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv6_l4_inner_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.inner.l4 %}
-| IPv6 | Innner | L4 | {{ ipv6_l4_inner_header.offset }} | {{ ipv6_l4_inner_header.mask | arista.avd.default("-") }} |
-{%         endfor %}
-{%         for ipv6_l4_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l4 %}
-| IPv6 | Outer | L4 | {{ ipv6_l4_outer_header.offset }} | {{ ipv6_l4_outer_header.mask | arista.avd.default("-") }} |
+{%         set headers = [
+            ('IPv4', 'outer', 'l2'),
+            ('IPv4', 'inner', 'l3'),
+            ('IPv4', 'outer', 'l3'),
+            ('IPv4', 'inner', 'l4'),
+            ('IPv4', 'outer', 'l4'),
+            ('IPv6', 'outer', 'l2'),
+            ('IPv6', 'inner', 'l3'),
+            ('IPv6', 'outer', 'l3'),
+            ('IPv6', 'inner', 'l4'),
+            ('IPv6', 'outer', 'l4'),
+            ] %}
+{%         for ip_version, direction, layer in headers %}
+{%             set path = port_channel.load_balance_trident.udf_eth_type[ip_version | lower].header[direction][layer] %}
+{%             for entry in path %}
+| {{ ip_version }} | {{ direction | capitalize }} | {{ layer | upper }} | {{ entry.offset }} | {{ entry.mask | arista.avd.default("-") }} |
+{%             endfor %}
 {%         endfor %}
 {%     endif %}
 
