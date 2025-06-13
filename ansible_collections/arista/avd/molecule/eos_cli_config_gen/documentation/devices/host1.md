@@ -3216,24 +3216,24 @@ hardware tcam
 
 #### Profile_A
 
-##### UDP Fields Setting
+##### UDP Fields Settings
 
 | Setting | Value |
 | ------- | ----- |
 | Destination Port | 101 |
-| UDP payload | 25 |
+| UDP Payload | 25 |
 
 #### Profile_B
 
-##### UDP Fields Setting
+##### UDP Fields Settings
 
 | Setting | Value |
 | ------- | ----- |
 | Destination Port | 100 |
-| Match Payload bits | 10 |
+| Match Payload Bits | 10 |
 | Match Pattern | 1 |
 | Match Hash Payload Bytes | 10 |
-| UDP payload | 10-20 |
+| UDP Payload | 10-20 |
 
 ### Load Balance Configuration
 

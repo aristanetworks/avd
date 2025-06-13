@@ -14,18 +14,18 @@
 #### {{ profile.name }}
 {%         if profile.fields.udp is arista.avd.defined %}
 
-##### UDP Fields Setting
+##### UDP Fields Settings
 
 | Setting | Value |
 | ------- | ----- |
 | Destination Port | {{ profile.fields.udp.dst_port }} |
 {%             if profile.fields.udp.match is arista.avd.defined %}
-| Match Payload bits | {{ profile.fields.udp.match.payload_bits }} |
+| Match Payload Bits | {{ profile.fields.udp.match.payload_bits }} |
 | Match Pattern | {{ profile.fields.udp.match.pattern }} |
 | Match Hash Payload Bytes | {{ profile.fields.udp.match.hash_payload_bytes }} |
 {%             endif %}
 {%             if profile.fields.udp.payload_bytes is arista.avd.defined %}
-| UDP payload | {{ profile.fields.udp.payload_bytes }} |
+| UDP Payload | {{ profile.fields.udp.payload_bytes }} |
 {%             endif %}
 {%         endif %}
 {%     endfor %}
