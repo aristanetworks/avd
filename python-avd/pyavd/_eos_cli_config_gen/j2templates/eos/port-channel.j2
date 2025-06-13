@@ -6,7 +6,7 @@
 {# eos - port channel #}
 {% if port_channel.load_balance_trident is arista.avd.defined %}
 !
-{%     set all_headers_list = [
+{%     set all_headers = [
   {'protocol': 'IPv4', 'direction': 'outer', 'layer': 'l2', 'headers': port_channel.load_balance_trident.udf_eth_type.ipv4.header.outer.l2},
   {'protocol': 'IPv4', 'direction': 'inner', 'layer': 'l3', 'headers': port_channel.load_balance_trident.udf_eth_type.ipv4.header.inner.l3},
   {'protocol': 'IPv4', 'direction': 'outer', 'layer': 'l3', 'headers': port_channel.load_balance_trident.udf_eth_type.ipv4.header.outer.l3},
@@ -18,7 +18,7 @@
   {'protocol': 'IPv6', 'direction': 'inner', 'layer': 'l4', 'headers': port_channel.load_balance_trident.udf_eth_type.ipv6.header.inner.l4},
   {'protocol': 'IPv6', 'direction': 'outer', 'layer': 'l4', 'headers': port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l4}
 ] %}
-{%     for headers in all_headers_list %}
+{%     for headers in all_headers %}
 {%         for header in headers.headers %}
 {%             set header_cli = "port-channel load-balance trident udf eth-type " ~ headers.protocol ~ " header " ~ headers.direction ~ " " ~ headers.layer ~ " offset " ~ header.offset %}
 {%             if header.mask is arista.avd.defined %}

@@ -28,9 +28,9 @@
             ('IPv6', 'outer', 'l4'),
             ] %}
 {%         for ip_version, direction, layer in headers %}
-{%             set path = port_channel.load_balance_trident.udf_eth_type[ip_version | lower].header[direction][layer] %}
-{%             for entry in path %}
-| {{ ip_version }} | {{ direction | capitalize }} | {{ layer | upper }} | {{ entry.offset }} | {{ entry.mask | arista.avd.default("-") }} |
+{%             set headers = port_channel.load_balance_trident.udf_eth_type[ip_version | lower].header[direction][layer] %}
+{%             for header in headers %}
+| {{ ip_version }} | {{ direction | capitalize }} | {{ layer | upper }} | {{ header.offset }} | {{ header.mask | arista.avd.default("-") }} |
 {%             endfor %}
 {%         endfor %}
 {%     endif %}
