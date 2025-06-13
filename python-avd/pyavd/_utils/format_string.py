@@ -1,8 +1,13 @@
 # Copyright (c) 2024-2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from collections.abc import Iterable
+from __future__ import annotations
+
 from string import Formatter
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from collections.abc import Iterable, Mapping, Sequence
 
 
 class AvdStringFormatter(Formatter):
@@ -23,7 +28,7 @@ class AvdStringFormatter(Formatter):
     Note the order of syntax field matters!
     """
 
-    def _vformat(self, format_string: str, args: list, kwargs: dict, used_args: set, recursion_depth: int, auto_arg_index: int = 0) -> tuple[str, int]:
+    def _vformat(self, format_string: str, args: Sequence, kwargs: Mapping, used_args: set, recursion_depth: int, auto_arg_index: int = 0) -> tuple[str, int]:
         """
         Perform the actual formatting.
 
@@ -35,7 +40,7 @@ class AvdStringFormatter(Formatter):
             msg = "Max string recursion exceeded"
             raise ValueError(msg)
         result = []
-        for literal_text, org_field_name, org_format_spec, conversion, optional, prefix, suffix in self.parse(format_string):
+        for literal_text, org_field_name, org_format_spec, conversion, optional, prefix, suffix in self.enhanced_parse(format_string):
             # Make ruff happy.
             field_name = org_field_name
             format_spec = org_format_spec
@@ -83,14 +88,18 @@ class AvdStringFormatter(Formatter):
                 obj = self.convert_field(obj, conversion)
 
                 # expand the format spec, if needed
-                format_spec, auto_arg_index = self._vformat(format_spec, args, kwargs, used_args, recursion_depth - 1, auto_arg_index=auto_arg_index)
+                if format_spec is not None:
+                    format_spec, auto_arg_index = self._vformat(format_spec, args, kwargs, used_args, recursion_depth - 1, auto_arg_index=auto_arg_index)
 
                 # Append prefix if set
                 if prefix:
                     result.append(prefix)
 
                 # format the object and append to the result
-                result.append(self.format_field(obj, format_spec))
+                if format_spec is not None:
+                    result.append(format(obj, format_spec))
+                else:
+                    result.append(format(obj))
 
                 # Append suffix if set
                 if suffix:
@@ -98,7 +107,7 @@ class AvdStringFormatter(Formatter):
 
         return "".join(result), auto_arg_index
 
-    def parse(self, format_string: str) -> Iterable[tuple[str, str | None, str | None, str | None, bool | None, str | None, str | None]]:
+    def enhanced_parse(self, format_string: str) -> Iterable[tuple[str, str | None, str | None, str | None, bool | None, str | None, str | None]]:
         """
         Parse the format_string and yield elements back.
 
@@ -141,7 +150,7 @@ class AvdStringFormatter(Formatter):
         msg = f"Unknown conversion specifier {conversion!s}"
         raise ValueError(msg)
 
-    def get_field(self, field_name: str, args: list, kwargs: dict) -> tuple[object, str]:
+    def get_field(self, field_name: str, args: Sequence, kwargs: Mapping) -> tuple[object, str]:
         """
         Get field value including parsing attributes/keys.
 

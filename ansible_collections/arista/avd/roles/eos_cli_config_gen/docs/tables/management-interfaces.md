@@ -25,6 +25,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;transmit</samp>](## "management_interfaces.[].lldp.transmit") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;receive</samp>](## "management_interfaces.[].lldp.receive") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ztp_vlan</samp>](## "management_interfaces.[].lldp.ztp_vlan") | Integer |  |  |  | ZTP vlan number. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;redundancy</samp>](## "management_interfaces.[].redundancy") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fallback_delay</samp>](## "management_interfaces.[].redundancy.fallback_delay") | String |  |  |  | The duration to wait before falling back to the higher-priority interface.<br>Accepts a value between 0 and 3600 seconds, or the string `infinity` to disable fallback. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;monitor</samp>](## "management_interfaces.[].redundancy.monitor") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;link_state</samp>](## "management_interfaces.[].redundancy.monitor.link_state") | Boolean |  |  |  | Link state of interface.<br>`neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;neighbor</samp>](## "management_interfaces.[].redundancy.monitor.neighbor") | Dictionary |  |  |  | To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.<br>`neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.ipv6_address") | String | Required |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.interval") | Integer |  |  | Min: 1<br>Max: 300000 | Interval between neighbor probes in milliseconds. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;multiplier</samp>](## "management_interfaces.[].redundancy.monitor.neighbor.multiplier") | Integer |  |  | Min: 1<br>Max: 100 | Number of missed neighbor replies after which it is timed out. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_1</samp>](## "management_interfaces.[].redundancy.supervisor_1") | Dictionary |  |  |  | Configuration for supervisor 1, including its primary and backup management interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisor_1.primary_management_interface") | String | Required |  |  | Primary management interface name like 'Management1/1'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisor_1.backup_management_interfaces") | List, items: String | Required |  | Min Length: 1 | Backup management interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisor_1.backup_management_interfaces.[]") | String |  |  |  | Management interface name like 'Management2/1'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;supervisor_2</samp>](## "management_interfaces.[].redundancy.supervisor_2") | Dictionary |  |  |  | Configuration for supervisor 2, including its primary and backup management interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;primary_management_interface</samp>](## "management_interfaces.[].redundancy.supervisor_2.primary_management_interface") | String | Required |  |  | Primary management interface name like 'Management1/1'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;backup_management_interfaces</samp>](## "management_interfaces.[].redundancy.supervisor_2.backup_management_interfaces") | List, items: String | Required |  | Min Length: 1 | Backup management interfaces. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "management_interfaces.[].redundancy.supervisor_2.backup_management_interfaces.[]") | String |  |  |  | Management interface name like 'Management2/1'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;eos_cli</samp>](## "management_interfaces.[].eos_cli") | String |  |  |  | Multiline EOS CLI rendered directly on the management interface in the final EOS configuration. |
 
 === "YAML"
@@ -68,6 +84,51 @@
 
           # ZTP vlan number.
           ztp_vlan: <int>
+        redundancy:
+
+          # The duration to wait before falling back to the higher-priority interface.
+          # Accepts a value between 0 and 3600 seconds, or the string `infinity` to disable fallback.
+          fallback_delay: <str>
+          monitor:
+
+            # Link state of interface.
+            # `neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence.
+            link_state: <bool>
+
+            # To configure an IPv6 neighbor as monitor, `fallback_delay` must be set as infinity.
+            # `neighbor` and `link_state` are mutually exclusive and `link_state` takes precedence.
+            neighbor:
+              ipv6_address: <str; required>
+
+              # Interval between neighbor probes in milliseconds.
+              interval: <int; 1-300000>
+
+              # Number of missed neighbor replies after which it is timed out.
+              multiplier: <int; 1-100>
+
+          # Configuration for supervisor 1, including its primary and backup management interfaces.
+          supervisor_1:
+
+            # Primary management interface name like 'Management1/1'.
+            primary_management_interface: <str; required>
+
+            # Backup management interfaces.
+            backup_management_interfaces: # >=1 items; required
+
+                # Management interface name like 'Management2/1'.
+              - <str>
+
+          # Configuration for supervisor 2, including its primary and backup management interfaces.
+          supervisor_2:
+
+            # Primary management interface name like 'Management1/1'.
+            primary_management_interface: <str; required>
+
+            # Backup management interfaces.
+            backup_management_interfaces: # >=1 items; required
+
+                # Management interface name like 'Management2/1'.
+              - <str>
 
         # Multiline EOS CLI rendered directly on the management interface in the final EOS configuration.
         eos_cli: <str>
