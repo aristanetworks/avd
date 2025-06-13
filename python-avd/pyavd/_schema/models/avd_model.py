@@ -494,7 +494,7 @@ class AvdModel(AvdBase):
             # Combine new value
             field_type = self._fields[field]["type"]
             if issubclass(field_type, AvdBase):
-                # Merge in to the existing object
+                # Combine into the existing object
                 old_value = cast("AvdBase", old_value)
                 new_value = cast("AvdBase", new_value)
                 old_value._combine(new_value)
