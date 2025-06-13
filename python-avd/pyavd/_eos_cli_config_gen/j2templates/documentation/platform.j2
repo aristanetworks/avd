@@ -30,10 +30,12 @@
 {%             endif %}
 {%             if platform.trident.mmu.queue_profiles is arista.avd.defined %}
 
-#### Trident MMU Egress QUEUE PROFILES
+#### Trident MMU QUEUE PROFILES
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
 ##### {{ profile.name }}
+
+###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -43,13 +45,9 @@
 {%                     for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
 | Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
 {%                     endfor %}
-{%                 endfor %}
-{%                 if platform.trident.mmu.queue_profiles | arista.avd.default([]) | selectattr('ingress','arista.avd.defined') | list %}
 
-#### Trident MMU Ingress QUEUE PROFILES
-{%                     for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') | selectattr('ingress') %}
-
-##### {{ profile.name }}
+{%                     if profile.ingress is arista.avd.defined %}
+###### Ingress
 
 | Settings | Value |
 | -------- | ----- |
@@ -61,23 +59,23 @@
 {%                         if profile.ingress.reserved.memory is arista.avd.defined %}
 | Reserved | {{ profile.ingress.reserved.memory }} {{ profile.ingress.reserved.unit | arista.avd.default('bytes') }} |
 {%                         endif %}
-{%                         if profile.ingress.priority_groups is arista.avd.defined %}
+{%                     endif %}
+{%                     if profile.ingress.priority_groups is arista.avd.defined %}
 
-###### Priority Group
+###### Ingress Priority Group
 
 | Group Number | Threshold | Reserved |
 | ------------ | --------- | -------- |
-{%                             for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
-{%                                 if priority_group.reserved.memory is arista.avd.defined %}
-{%                                     set reserved = priority_group.reserved.memory ~ ' ' ~ (priority_group.reserved.unit | arista.avd.default('bytes')) %}
-{%                                 else %}
-{%                                     set reserved = '-' %}
-{%                                 endif %}
+{%                         for priority_group in profile.ingress.priority_groups | arista.avd.natural_sort('id') %}
+{%                             if priority_group.reserved.memory is arista.avd.defined %}
+{%                                 set reserved = priority_group.reserved.memory ~ ' ' ~ (priority_group.reserved.unit | arista.avd.default('bytes')) %}
+{%                             else %}
+{%                                 set reserved = '-' %}
+{%                             endif %}
 | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
-{%                             endfor %}
-{%                         endif %}
-{%                     endfor %}
-{%                 endif %}
+{%                         endfor %}
+{%                     endif %}
+{%                 endfor %}
 {%             endif %}
 {%         endif %}
 {%         if platform.sand is arista.avd.defined %}
