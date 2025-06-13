@@ -9,23 +9,28 @@ port_channel:
                 mask: "0x01"
               - offset: 10
                 mask: "0xff"
+              - offset: 2
             l4:
               - offset: 20
                 mask: "0x02"
+              - offset: 22
           outer:
             l2:
               - offset: 2
                 mask: "0xff"
               - offset: 5
                 mask: "0x02"
+              - offset: 35
             l3:
               - offset: 3
                 mask: "0x01"
+              - offset: 5
             l4:
               - offset: 50
                 mask: "0x04"
               - offset: 30
                 mask: "0xff"
+              - offset: 27
       ipv6:
         header:
           inner:
@@ -37,12 +42,14 @@ port_channel:
             l4:
               - offset: 20
                 mask: "0x02"
+              - offset: 2
           outer:
             l2:
               - offset: 2
                 mask: "0xff"
               - offset: 5
                 mask: "0x02"
+              - offset: 25
             l3:
               - offset: 3
                 mask: "0x01"
@@ -51,3 +58,4 @@ port_channel:
                 mask: "0x04"
               - offset: 30
                 mask: "0xff"
+              - offset: 28

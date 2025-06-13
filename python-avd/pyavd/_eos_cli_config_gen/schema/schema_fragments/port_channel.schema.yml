@@ -38,6 +38,8 @@ keys:
                                   type: int
                                   convert_types:
                                     - str
+                                  min: 0
+                                  max: 64
                                   required: true
                                   description: Offset starting from selected header in the packet.
                                 mask:

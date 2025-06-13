@@ -115,8 +115,8 @@
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
   - [Synchronous Ethernet (SyncE) Settings](#synchronous-ethernet-synce-settings)
-  - [Port-channel Summary](#port-channel-summary)
-  - [Port-channel Device Configuration](#port-channel-device-configuration)
+- [Port-Channel](#port-channel)
+  - [Port-Channel Summary](#port-channel-summary)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -3440,7 +3440,9 @@ sync-e
    network option 2
 ```
 
-### Port-channel Summary
+## Port-Channel
+
+### Port-Channel Summary
 
 #### Port-channel Load Balance Trident UDF Eth-type Headers
 
@@ -3448,41 +3450,57 @@ sync-e
 | -------- | ------ | ----- | ------ | ---- |
 | IPv4 | Outer | L2 | 2 | 0xff |
 | IPv4 | Outer | L2 | 5 | 0x02 |
+| IPv4 | Outer | L2 | 35 | - |
 | IPv4 | Innner | L3 | 30 | 0x01 |
 | IPv4 | Innner | L3 | 10 | 0xff |
+| IPv4 | Innner | L3 | 2 | - |
 | IPv4 | Outer | L3 | 3 | 0x01 |
+| IPv4 | Outer | L3 | 5 | - |
 | IPv4 | Innner | L4 | 20 | 0x02 |
+| IPv4 | Innner | L4 | 22 | - |
 | IPv4 | Outer | L4 | 50 | 0x04 |
 | IPv4 | Outer | L4 | 30 | 0xff |
+| IPv4 | Outer | L4 | 27 | - |
 | IPv6 | Outer | L2 | 2 | 0xff |
 | IPv6 | Outer | L2 | 5 | 0x02 |
+| IPv6 | Outer | L2 | 25 | - |
 | IPv6 | Innner | L3 | 30 | 0x01 |
 | IPv6 | Innner | L3 | 10 | 0xff |
 | IPv6 | Outer | L3 | 3 | 0x01 |
 | IPv6 | Innner | L4 | 20 | 0x02 |
+| IPv6 | Innner | L4 | 2 | - |
 | IPv6 | Outer | L4 | 50 | 0x04 |
 | IPv6 | Outer | L4 | 30 | 0xff |
+| IPv6 | Outer | L4 | 28 | - |
 
-### Port-channel Device Configuration
+#### Port-channel Device Configuration
 
 ```eos
 !
 port-channel load-balance trident udf eth-type IPv4 header outer l2 offset 2 mask 0xff
 port-channel load-balance trident udf eth-type IPv4 header outer l2 offset 5 mask 0x02
+port-channel load-balance trident udf eth-type IPv4 header outer l2 offset 35
 port-channel load-balance trident udf eth-type IPv4 header inner l3 offset 30 mask 0x01
 port-channel load-balance trident udf eth-type IPv4 header inner l3 offset 10 mask 0xff
+port-channel load-balance trident udf eth-type IPv4 header inner l3 offset 2
 port-channel load-balance trident udf eth-type IPv4 header outer l3 offset 3 mask 0x01
+port-channel load-balance trident udf eth-type IPv4 header outer l3 offset 5
 port-channel load-balance trident udf eth-type IPv4 header inner l4 offset 20 mask 0x02
+port-channel load-balance trident udf eth-type IPv4 header inner l4 offset 22
 port-channel load-balance trident udf eth-type IPv4 header outer l4 offset 50 mask 0x04
 port-channel load-balance trident udf eth-type IPv4 header outer l4 offset 30 mask 0xff
-port-channel load-balance trident udf eth-type ipv6 header outer l2 offset 2 mask 0xff
-port-channel load-balance trident udf eth-type ipv6 header outer l2 offset 5 mask 0x02
-port-channel load-balance trident udf eth-type ipv6 header inner l3 offset 30 mask 0x01
-port-channel load-balance trident udf eth-type ipv6 header inner l3 offset 10 mask 0xff
-port-channel load-balance trident udf eth-type ipv6 header outer l3 offset 3 mask 0x01
-port-channel load-balance trident udf eth-type ipv6 header inner l4 offset 20 mask 0x02
-port-channel load-balance trident udf eth-type ipv6 header outer l4 offset 50 mask 0x04
-port-channel load-balance trident udf eth-type ipv6 header outer l4 offset 30 mask 0xff
+port-channel load-balance trident udf eth-type IPv4 header outer l4 offset 27
+port-channel load-balance trident udf eth-type IPv6 header outer l2 offset 2 mask 0xff
+port-channel load-balance trident udf eth-type IPv6 header outer l2 offset 5 mask 0x02
+port-channel load-balance trident udf eth-type IPv6 header outer l2 offset 25
+port-channel load-balance trident udf eth-type IPv6 header inner l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv6 header inner l3 offset 10 mask 0xff
+port-channel load-balance trident udf eth-type IPv6 header outer l3 offset 3 mask 0x01
+port-channel load-balance trident udf eth-type IPv6 header inner l4 offset 20 mask 0x02
+port-channel load-balance trident udf eth-type IPv6 header inner l4 offset 2
+port-channel load-balance trident udf eth-type IPv6 header outer l4 offset 50 mask 0x04
+port-channel load-balance trident udf eth-type IPv6 header outer l4 offset 30 mask 0xff
+port-channel load-balance trident udf eth-type IPv6 header outer l4 offset 28
 ```
 
 ## Internal VLAN Allocation Policy

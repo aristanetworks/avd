@@ -42,35 +42,35 @@
 {{ l4_outer_header_cli }}
 {%     endfor %}
 {%     for ipv6_l2_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l2 %}
-{%         set l2_outer_header_cli = "port-channel load-balance trident udf eth-type ipv6 header outer l2 offset " ~ ipv6_l2_outer_header.offset %}
+{%         set l2_outer_header_cli = "port-channel load-balance trident udf eth-type IPv6 header outer l2 offset " ~ ipv6_l2_outer_header.offset %}
 {%         if ipv6_l2_outer_header.mask is arista.avd.defined %}
 {%             set l2_outer_header_cli = l2_outer_header_cli ~ " mask " ~ ipv6_l2_outer_header.mask %}
 {%         endif %}
 {{ l2_outer_header_cli }}
 {%     endfor %}
 {%     for ipv6_l3_inner_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.inner.l3 %}
-{%         set l3_inner_header_cli = "port-channel load-balance trident udf eth-type ipv6 header inner l3 offset " ~ ipv6_l3_inner_header.offset %}
+{%         set l3_inner_header_cli = "port-channel load-balance trident udf eth-type IPv6 header inner l3 offset " ~ ipv6_l3_inner_header.offset %}
 {%         if ipv6_l3_inner_header.mask is arista.avd.defined %}
 {%             set l3_inner_header_cli = l3_inner_header_cli ~ " mask " ~ ipv6_l3_inner_header.mask %}
 {%         endif %}
 {{ l3_inner_header_cli }}
 {%     endfor %}
 {%     for ipv6_l3_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l3 %}
-{%         set l3_outer_header_cli = "port-channel load-balance trident udf eth-type ipv6 header outer l3 offset " ~ ipv6_l3_outer_header.offset %}
+{%         set l3_outer_header_cli = "port-channel load-balance trident udf eth-type IPv6 header outer l3 offset " ~ ipv6_l3_outer_header.offset %}
 {%         if ipv6_l3_outer_header.mask is arista.avd.defined %}
 {%             set l3_outer_header_cli = l3_outer_header_cli ~ " mask " ~ ipv6_l3_outer_header.mask %}
 {%         endif %}
 {{ l3_outer_header_cli }}
 {%     endfor %}
 {%     for ipv6_l4_inner_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.inner.l4 %}
-{%         set l4_inner_header_cli = "port-channel load-balance trident udf eth-type ipv6 header inner l4 offset " ~ ipv6_l4_inner_header.offset %}
+{%         set l4_inner_header_cli = "port-channel load-balance trident udf eth-type IPv6 header inner l4 offset " ~ ipv6_l4_inner_header.offset %}
 {%         if ipv6_l4_inner_header.mask is arista.avd.defined %}
 {%             set l4_inner_header_cli = l4_inner_header_cli ~ " mask " ~ ipv6_l4_inner_header.mask %}
 {%         endif %}
 {{ l4_inner_header_cli }}
 {%     endfor %}
 {%     for ipv6_l4_outer_header in port_channel.load_balance_trident.udf_eth_type.ipv6.header.outer.l4 %}
-{%         set l4_outer_header_cli = "port-channel load-balance trident udf eth-type ipv6 header outer l4 offset " ~ ipv6_l4_outer_header.offset %}
+{%         set l4_outer_header_cli = "port-channel load-balance trident udf eth-type IPv6 header outer l4 offset " ~ ipv6_l4_outer_header.offset %}
 {%         if ipv6_l4_outer_header.mask is arista.avd.defined %}
 {%             set l4_outer_header_cli = l4_outer_header_cli ~ " mask " ~ ipv6_l4_outer_header.mask %}
 {%         endif %}
