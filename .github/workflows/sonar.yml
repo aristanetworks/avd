@@ -76,6 +76,14 @@ jobs:
           path: python-avd/pyavd/_eos_cli_config_gen/j2templates/compiled_templates/
           merge-multiple: true
 
+      - name: Download coverage report from rust tests
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          name: rust-llvm-cov
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
       - name: Get PR context
         # Source: https://github.com/orgs/community/discussions/25220#discussioncomment-11316244
         id: pr-context

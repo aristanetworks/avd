@@ -1,4 +1,5 @@
 Device,Test Name,Test Status,Message(s),Test description,Test category
+dc1-leaf1a,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
 dc1-leaf1a,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-leaf1a,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-leaf1a,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -24,7 +25,6 @@ dc1-leaf1a,VerifyMlagDualPrimary,unset,,Verifies the MLAG dual-primary detection
 dc1-leaf1a,VerifyMlagInterfaces,unset,,Verifies there are no inactive or active-partial MLAG ports.,MLAG
 dc1-leaf1a,VerifyMlagReloadDelay,unset,,Verifies the reload-delay parameters of the MLAG configuration.,MLAG
 dc1-leaf1a,VerifyMlagStatus,unset,,Verifies the health status of the MLAG configuration.,MLAG
-dc1-leaf1a,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all paths under router path-selection.,Path-Selection
 dc1-leaf1a,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-leaf1a,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-leaf1a,VerifyTelnetStatus,unset,,Verifies if Telnet is disabled in the default VRF.,Security
@@ -252,8 +252,8 @@ dc1-svc-leaf1b,VerifyReachability,unset,,Verifies reachability to IPv4 BGP neigh
 dc1-svc-leaf1b,VerifyEOSExtensions,unset,,Verifies that all EOS extensions installed on the device are enabled for boot persistence.,Software
 dc1-svc-leaf1b,VerifyEOSVersion,unset,,Verifies the EOS version of the device.,Software
 dc1-svc-leaf1b,VerifyTerminAttrVersion,unset,,Verifies the TerminAttr version of the device.,Software
-dc1-wan1,VerifyAVTPathHealth,unset,,Verifies the status of all AVT paths for all VRFs.,AVT
 dc1-wan1,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
+dc1-wan1,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
 dc1-wan1,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-wan1,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-wan1,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -272,7 +272,7 @@ dc1-wan1,VerifyInterfaceUtilization,unset,,Verifies that the utilization of inte
 dc1-wan1,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
 dc1-wan1,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-wan1,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
-dc1-wan1,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all paths under router path-selection.,Path-Selection
+dc1-wan1,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan1,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-wan1,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan1,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security
@@ -288,8 +288,8 @@ dc1-wan1,VerifyCoredump,unset,,Verifies there are no core dump files.,System
 dc1-wan1,VerifyFileSystemUtilization,unset,,Verifies that no partition is utilizing more than 75% of its disk space.,System
 dc1-wan1,VerifyMemoryUtilization,unset,,Verifies whether the memory utilization is below 75%.,System
 dc1-wan1,VerifyReloadCause,unset,,Verifies the last reload cause of the device.,System
-dc1-wan2,VerifyAVTPathHealth,unset,,Verifies the status of all AVT paths for all VRFs.,AVT
 dc1-wan2,VerifyAVTRole,unset,,Verifies the AVT role of a device.,AVT
+dc1-wan2,VerifyAVTSpecificPath,unset,,Verifies the Adaptive Virtual Topology (AVT) path.,AVT
 dc1-wan2,VerifyBGPPeerSession,unset,,Verifies the session state of BGP peers.,BGP
 dc1-wan2,VerifyRunningConfigDiffs,unset,,Verifies there is no difference between the running-config and the startup-config.,Configuration
 dc1-wan2,VerifyZeroTouch,unset,,Verifies ZeroTouch is disabled.,Configuration
@@ -301,14 +301,16 @@ dc1-wan2,VerifyEnvironmentPower,unset,,Verifies the power supplies status.,Hardw
 dc1-wan2,VerifyEnvironmentSystemCooling,unset,,Verifies the device's system cooling status.,Hardware
 dc1-wan2,VerifyTemperature,unset,,Verifies if the device temperature is within acceptable limits.,Hardware
 dc1-wan2,VerifyTransceiversTemperature,unset,,Verifies if all the transceivers are operating at an acceptable temperature.,Hardware
+dc1-wan2,VerifyIllegalLACP,unset,,Verifies there are no illegal LACP packets in all port channels.,Interfaces
 dc1-wan2,VerifyInterfaceDiscards,unset,,Verifies that the interfaces packet discard counters are equal to zero.,Interfaces
 dc1-wan2,VerifyInterfaceErrDisabled,unset,,Verifies there are no interfaces in the errdisabled state.,Interfaces
 dc1-wan2,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc1-wan2,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc1-wan2,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
+dc1-wan2,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc1-wan2,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces
 dc1-wan2,VerifyLoggingErrors,unset,,Verifies there are no syslog messages with a severity of ERRORS or higher.,Logging
-dc1-wan2,VerifyPathsHealth,unset,,Verifies the path and telemetry state of all paths under router path-selection.,Path-Selection
+dc1-wan2,VerifySpecificPath,unset,,Verifies the DPS path and telemetry state of an IPv4 peer.,Path-Selection
 dc1-wan2,VerifyRoutingProtocolModel,unset,,Verifies the configured routing protocol model.,Routing
 dc1-wan2,VerifyAPIHttpsSSL,unset,,Verifies if the eAPI has a valid SSL profile.,Security
 dc1-wan2,VerifySpecificIPSecConn,unset,,Verifies the IPv4 security connections.,Security

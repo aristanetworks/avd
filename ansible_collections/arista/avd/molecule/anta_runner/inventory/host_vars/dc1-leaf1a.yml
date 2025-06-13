@@ -17,6 +17,10 @@ custom_structured_configuration_router_path_selection:
       local_interfaces:
         - name: Ethernet3
 
+# Custom router adaptive virtual topology structured_config to test skip the anta test VerifyAVTSpecificPath for empty static peers
+custom_structured_configuration_router_adaptive_virtual_topology:
+  topology_role: edge
+
 # Custom ip name servers structured_config for DNS test
 custom_structured_configuration_ip_name_servers:
   - ip_address: 8.8.8.8
