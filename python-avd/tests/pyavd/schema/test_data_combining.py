@@ -53,7 +53,6 @@ UNIQUE_A_AND_B_INDEXED_LISTS = {
 }
 
 A_DICT = {"some_dict": {"some_nested_key": "blah"}}
-B_DICT = {"some_dict": {"some_nested_key": "blah"}}
 C_DICT = {"some_dict": {"some_nested_key": "plop"}}
 
 A = {"some_key": 42}
@@ -130,7 +129,7 @@ def test_data_combining_wrong_type(
         # Testing AvdIndexedList
         pytest.param(A_INDEXED_LIST, "some_indexed_list", B_INDEXED_LIST, id="indexed_list"),
         # Testing AvdModel
-        pytest.param(A_DICT, "some_dict", B_DICT, id="dict"),
+        pytest.param(A_DICT, "some_dict", A_DICT, id="dict"),
     ],
 )
 def test_data_combining_different_from_null(
@@ -156,7 +155,7 @@ def test_data_combining_different_from_null(
 
 def test_data_combining_different_custom_data(data_merging_schema_class: DataMergingTestSchema) -> None:
     a = data_merging_schema_class._from_dict(A_DICT)
-    b = data_merging_schema_class._from_dict(B_DICT)
+    b = data_merging_schema_class._from_dict(A_DICT)
     # Injecting conflicting values in _custom_data
     a.some_dict._custom_data["my_awesome_key"] = "context_a"
     b.some_dict._custom_data["my_awesome_key"] = "context_b"
