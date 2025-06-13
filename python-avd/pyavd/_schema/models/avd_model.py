@@ -487,7 +487,7 @@ class AvdModel(AvdBase):
             old_value = self._get_defined_attr(field)
 
             if old_value is Undefined:
-                # value not set so we can just pick the old_value
+                # value not set so we can just pick the new_value
                 setattr(self, field, new_value)
                 continue
 
