@@ -140,7 +140,9 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
 
         return list(self._items)
 
-    def _dump(self, include_default_values: bool = False) -> list:
+    def _dump(self, include_default_values: bool = False) -> list | None:
+        if self._created_from_null:
+            return None
         return self._as_list(include_default_values=include_default_values)
 
     def _natural_sorted(self, sort_key: str | None = None, ignore_case: bool = True) -> Self:

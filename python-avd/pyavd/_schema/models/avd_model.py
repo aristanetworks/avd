@@ -239,7 +239,9 @@ class AvdModel(AvdBase):
 
         return as_dict
 
-    def _dump(self, include_default_values: bool = False) -> dict:
+    def _dump(self, include_default_values: bool = False) -> dict | None:
+        if self._created_from_null:
+            return None
         return self._as_dict(include_default_values=include_default_values)
 
     def _get(self, name: str, default: Any = None) -> Any:
