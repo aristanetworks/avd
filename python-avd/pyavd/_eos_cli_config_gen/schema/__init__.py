@@ -17650,11 +17650,33 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             _fields: ClassVar[dict] = {"payload_bits": {"type": str}, "pattern": {"type": int}, "hash_payload_bytes": {"type": str}}
                             payload_bits: str
-                            """Bit range within the UDP payload to match for hashing (e.g., "0-15")."""
+                            """
+                            Specifies the bit positions within the UDP payload to match for hashing.
+                            Accepts a single bit (e.g.,
+                            "12"), a comma-separated list (e.g., "0,3,8"),
+                            a range (e.g., "0-15"), or combinations (e.g.,
+                            "0-7,9,12-15").
+                            Valid values must be in the range 0 to 503.
+                            Matching is limited to a maximum of 16
+                            bits total.
+                            """
                             pattern: int
-                            """Bit pattern to match in the UDP payload."""
+                            """
+                            Bit pattern to match in the UDP payload. The value must match the number of bits defined in
+                            `payload_bits`.
+                            The valid range is from 0 to (2^N - 1), where N is the number of bits selected in
+                            `payload_bits`.
+                            Matching is supported only on up to 16 bits of the UDP payload.
+                            """
                             hash_payload_bytes: str
-                            """Number or range of UDP payload bytes to include in the hash after pattern match."""
+                            """
+                            Specifies the UDP payload byte positions to include in the hash after pattern match.
+                            Accepts a
+                            single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                            a range (e.g., "0-15"), or a
+                            combination (e.g., "0-5,8,12-14").
+                            All byte positions must be within the range 0 to 62.
+                            """
 
                             if TYPE_CHECKING:
 
@@ -17672,9 +17694,28 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        payload_bits: Bit range within the UDP payload to match for hashing (e.g., "0-15").
-                                        pattern: Bit pattern to match in the UDP payload.
-                                        hash_payload_bytes: Number or range of UDP payload bytes to include in the hash after pattern match.
+                                        payload_bits:
+                                           Specifies the bit positions within the UDP payload to match for hashing.
+                                           Accepts a single bit (e.g.,
+                                           "12"), a comma-separated list (e.g., "0,3,8"),
+                                           a range (e.g., "0-15"), or combinations (e.g.,
+                                           "0-7,9,12-15").
+                                           Valid values must be in the range 0 to 503.
+                                           Matching is limited to a maximum of 16
+                                           bits total.
+                                        pattern:
+                                           Bit pattern to match in the UDP payload. The value must match the number of bits defined in
+                                           `payload_bits`.
+                                           The valid range is from 0 to (2^N - 1), where N is the number of bits selected in
+                                           `payload_bits`.
+                                           Matching is supported only on up to 16 bits of the UDP payload.
+                                        hash_payload_bytes:
+                                           Specifies the UDP payload byte positions to include in the hash after pattern match.
+                                           Accepts a
+                                           single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                                           a range (e.g., "0-15"), or a
+                                           combination (e.g., "0-5,8,12-14").
+                                           All byte positions must be within the range 0 to 62.
 
                                     """
 
@@ -17682,7 +17723,14 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         dst_port: int
                         """Use the UDP destination port as a hash input."""
                         payload_bytes: str | None
-                        """Specifies the number or range of UDP payload bytes to use in hash calculation."""
+                        """
+                        Specifies the UDP payload bytes to use in hash calculation.
+                        Accepts single bytes (e.g., "10"),
+                        comma-separated bytes (e.g., "0,1,5"),
+                        ranges (e.g., "0-15"), or combinations (e.g.,
+                        "0-10,12,15,20-25").
+                        Valid values are between 0 and 62.
+                        """
                         match: Match
                         """
                         Configuration to match specific bits and define custom payload-based hashing.
@@ -17707,7 +17755,13 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     dst_port: Use the UDP destination port as a hash input.
-                                    payload_bytes: Specifies the number or range of UDP payload bytes to use in hash calculation.
+                                    payload_bytes:
+                                       Specifies the UDP payload bytes to use in hash calculation.
+                                       Accepts single bytes (e.g., "10"),
+                                       comma-separated bytes (e.g., "0,1,5"),
+                                       ranges (e.g., "0-15"), or combinations (e.g.,
+                                       "0-10,12,15,20-25").
+                                       Valid values are between 0 and 62.
                                     match:
                                        Configuration to match specific bits and define custom payload-based hashing.
 

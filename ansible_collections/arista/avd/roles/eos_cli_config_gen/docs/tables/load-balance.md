@@ -14,11 +14,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fields</samp>](## "load_balance.policies.sand_profiles.[].fields") | Dictionary |  |  |  | Configure packet fields used as input to the hash function for port-channel and ECMP load balancing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;udp</samp>](## "load_balance.policies.sand_profiles.[].fields.udp") | Dictionary |  |  |  | UDP-specific fields used in the load balancing hash. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;dst_port</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.dst_port") | Integer | Required |  | Min: 0<br>Max: 65535 | Use the UDP destination port as a hash input. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.payload_bytes") | String |  |  |  | Specifies the number or range of UDP payload bytes to use in hash calculation. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.payload_bytes") | String |  |  |  | Specifies the UDP payload bytes to use in hash calculation.<br>Accepts single bytes (e.g., "10"), comma-separated bytes (e.g., "0,1,5"),<br>ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").<br>Valid values are between 0 and 62. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match") | Dictionary |  |  |  | Configuration to match specific bits and define custom payload-based hashing. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payload_bits</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.payload_bits") | String | Required |  |  | Bit range within the UDP payload to match for hashing (e.g., "0-15"). |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pattern</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.pattern") | Integer | Required |  |  | Bit pattern to match in the UDP payload. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.hash_payload_bytes") | String | Required |  |  | Number or range of UDP payload bytes to include in the hash after pattern match. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;payload_bits</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.payload_bits") | String | Required |  |  | Specifies the bit positions within the UDP payload to match for hashing.<br>Accepts a single bit (e.g., "12"), a comma-separated list (e.g., "0,3,8"),<br>a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").<br>Valid values must be in the range 0 to 503.<br>Matching is limited to a maximum of 16 bits total. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pattern</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.pattern") | Integer | Required |  |  | Bit pattern to match in the UDP payload. The value must match the number of bits defined in `payload_bits`.<br>The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.<br>Matching is supported only on up to 16 bits of the UDP payload. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_payload_bytes</samp>](## "load_balance.policies.sand_profiles.[].fields.udp.match.hash_payload_bytes") | String | Required |  |  | Specifies the UDP payload byte positions to include in the hash after pattern match.<br>Accepts a single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),<br>a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").<br>All byte positions must be within the range 0 to 62. |
 
 === "YAML"
 
@@ -44,18 +44,30 @@
                 # Use the UDP destination port as a hash input.
                 dst_port: <int; 0-65535; required>
 
-                # Specifies the number or range of UDP payload bytes to use in hash calculation.
+                # Specifies the UDP payload bytes to use in hash calculation.
+                # Accepts single bytes (e.g., "10"), comma-separated bytes (e.g., "0,1,5"),
+                # ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").
+                # Valid values are between 0 and 62.
                 payload_bytes: <str>
 
                 # Configuration to match specific bits and define custom payload-based hashing.
                 match:
 
-                  # Bit range within the UDP payload to match for hashing (e.g., "0-15").
+                  # Specifies the bit positions within the UDP payload to match for hashing.
+                  # Accepts a single bit (e.g., "12"), a comma-separated list (e.g., "0,3,8"),
+                  # a range (e.g., "0-15"), or combinations (e.g., "0-7,9,12-15").
+                  # Valid values must be in the range 0 to 503.
+                  # Matching is limited to a maximum of 16 bits total.
                   payload_bits: <str; required>
 
-                  # Bit pattern to match in the UDP payload.
+                  # Bit pattern to match in the UDP payload. The value must match the number of bits defined in `payload_bits`.
+                  # The valid range is from 0 to (2^N - 1), where N is the number of bits selected in `payload_bits`.
+                  # Matching is supported only on up to 16 bits of the UDP payload.
                   pattern: <int; required>
 
-                  # Number or range of UDP payload bytes to include in the hash after pattern match.
+                  # Specifies the UDP payload byte positions to include in the hash after pattern match.
+                  # Accepts a single byte (e.g., "5"), a comma-separated list (e.g., "0,3,7"),
+                  # a range (e.g., "0-15"), or a combination (e.g., "0-5,8,12-14").
+                  # All byte positions must be within the range 0 to 62.
                   hash_payload_bytes: <str; required>
     ```
