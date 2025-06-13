@@ -1074,7 +1074,6 @@ ASN Notation: asplain
 | ---------- |
 | graceful-restart |
 | no graceful-restart-helper |
-| no bgp additional-paths receive |
 | no bgp additional-paths send |
 | no bgp default ipv4-unicast |
 | no bgp default ipv4-unicast transport ipv6 |

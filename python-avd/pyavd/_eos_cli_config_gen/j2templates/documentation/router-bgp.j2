@@ -51,9 +51,8 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%         endif %}
 {%         if router_bgp.bgp.additional_paths.receive is arista.avd.defined(true) %}
 | bgp additional-paths receive |
-{%         endif %}
-{%         if router_bgp.bgp.additional_paths.receive is arista.avd.defined(false) %}
-| no bgp additional-paths receive |
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.receive is arista.avd.defined(true) %}
+|  bgp additional-paths receive |
 {%         endif %}
 {%         if router_bgp.bgp.additional_paths.send is arista.avd.defined %}
 {%             if router_bgp.bgp.additional_paths.send == 'disabled' %}
@@ -69,6 +68,16 @@ ASN Notation: {{ router_bgp.as_notation | arista.avd.default('asplain') }}
 {%             elif router_bgp.bgp.additional_paths.send_limit is arista.avd.defined and router_bgp.bgp.additional_paths.send == 'limit' %}
 | bgp additional-paths send limit {{ router_bgp.bgp.additional_paths.send_limit }} |
 {%             endif %}
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.any is arista.avd.defined(true) %}
+| bgp additional-paths send any |
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.backup is arista.avd.defined(true) %}
+| bgp additional-paths send backup |
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp is arista.avd.defined(true) %}
+| bgp additional-paths send ecmp |
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit is arista.avd.defined %}
+| bgp additional-paths send ecmp limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit }} |
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.limit is arista.avd.defined %}
+| bgp additional-paths send limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.limit }} |
 {%         endif %}
 {%         if router_bgp.updates.wait_for_convergence is arista.avd.defined(true) %}
 | update wait-for-convergence |
