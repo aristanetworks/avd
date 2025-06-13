@@ -91,7 +91,9 @@ class LogMessage(Enum):
 
     # WAN-specific messages
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
+    PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
+    NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
 
     # Input generation messages
     INPUT_NONE_FOUND = "skipped - No inputs available"

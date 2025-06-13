@@ -262,6 +262,8 @@ route_maps:
     - ip address prefix-list PL-MLAG-PEER-VRFS
   - sequence: 20
     type: permit
+router_adaptive_virtual_topology:
+  topology_role: edge
 router_bfd:
   multihop:
     interval: 300
