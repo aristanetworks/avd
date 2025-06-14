@@ -4215,6 +4215,12 @@ keys:
                 See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
                 '
+            wan:
+              type: bool
+              description: 'Support for Arista SD-WAN solution.
+
+                This feature raises an exception when used on unsupported platforms.'
+              default: true
         management_interface:
           type: str
           default: Management1
