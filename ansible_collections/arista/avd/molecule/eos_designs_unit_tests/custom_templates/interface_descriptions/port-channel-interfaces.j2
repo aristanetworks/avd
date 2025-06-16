@@ -3,11 +3,10 @@
  Use of this source code is governed by the Apache License 2.0
  that can be found in the LICENSE file.
 #}
-{# j2lint: disable=jinja-statements-delimiter #}
-{%- if link.main_port_channel_wan_carrier is arista.avd.defined -%}
-{{ link.main_port_channel_wan_carrier }}_{{ link.peer }}
-{%- elif link.wan_carrier is arista.avd.defined -%}
-{{ link.wan_carrier }}_{{ link.peer }}
-{%- else -%}
+{% if link.main_port_channel_wan_carrier is arista.avd.defined %}
+Custom_{{ link.main_port_channel_wan_carrier }}_{{ link.peer }}
+{% elif link.wan_carrier is arista.avd.defined %}
+Custom_{{ link.wan_carrier }}_{{ link.peer }}
+{% else %}
 description through custom template
-{%- endif -%}
+{% endif %}

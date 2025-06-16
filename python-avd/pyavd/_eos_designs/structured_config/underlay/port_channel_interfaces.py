@@ -158,14 +158,14 @@ class PortChannelInterfacesMixin(Protocol):
         # build common portion of the interface cfg
         interface = self._get_l3_common_interface_cfg(l3_port_channel)
 
-        if "." in l3_port_channel.name:
-            parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
-            main_port_channel_wan_carrier = self.shared_utils.node_config.l3_port_channels[parent_port_channel_name].wan_carrier
-        else:
-            main_port_channel_wan_carrier = None
-
         interface_description = l3_port_channel.description
         if not interface_description:
+            if "." in l3_port_channel.name:
+                parent_port_channel_name = l3_port_channel.name.split(".", maxsplit=1)[0]
+                main_port_channel_wan_carrier = self.shared_utils.node_config.l3_port_channels[parent_port_channel_name].wan_carrier
+            else:
+                main_port_channel_wan_carrier = None
+
             interface_description = self.shared_utils.interface_descriptions.underlay_port_channel_interface(
                 InterfaceDescriptionData(
                     shared_utils=self.shared_utils,
