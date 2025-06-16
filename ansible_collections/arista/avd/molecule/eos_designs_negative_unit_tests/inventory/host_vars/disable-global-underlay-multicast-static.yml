@@ -28,4 +28,5 @@ core_interfaces:
       multicast_static: true
 
 expected_error_message: >-
-  core_interfaces.p2p_links has `include_in_underlay_protocol: true` and `multicast_static: true`, which requires the global setting `underlay_multicast_static` to also be set to `true`.
+  core_interfaces.p2p_links has `include_in_underlay_protocol: true` and `multicast_static: true`,
+  which requires the global setting `underlay_multicast_static` to also be set to `true`.
