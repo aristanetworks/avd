@@ -174,9 +174,34 @@ tenants:
                   key: testpass1
                 - id: 2
                   key: testpass2
+                  # Test when 'id' and 'key' are not set under message-digest keys.
+                  # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required
+                - hash_algorithm: "sha256"
             raw_eos_cli: |
                logging event storm-control discards
                logging event link-status
+          - name: Port-Channel1112
+            description: incomplete message-digest keys
+            peer: inet-cloud-po1112
+            peer_port_channel: Po1112
+            enabled: true
+            ip_address: 1.1.1.12/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
+              message_digest_keys:
+                - hash_algorithm: "sha256"
+          - name: Port-Channel1113
+            description: empty message_digest_keys with authentication set to message-digest
+            peer: inet-cloud-po1113
+            peer_port_channel: Po1113
+            enabled: true
+            ip_address: 1.1.1.13/29
+            node: network-services-l3-port-channels
+            ospf:
+              enabled: true
+              authentication: "message-digest"
 
   - name: Subinterface
     mac_vrf_vni_base: 20000
