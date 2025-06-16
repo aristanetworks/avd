@@ -11070,16 +11070,6 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### mc_example_profile
 
-###### Egress
-
-| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
-| ---- | ------------ | --------- | -------- | --------------- |
-| Unicast | 1 | - | 0 bytes | - |
-| Unicast | 2 | 1/8 | 0 cells | - |
-| Multicast | 0 | - | 0 bytes | - |
-| Multicast | 1 | 1/64 | 0 cells | - |
-| Multicast | 7 | 1/64 | 0 cells | - |
-
 ###### Ingress
 
 | Settings | Value |
@@ -11096,17 +11086,17 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | 1 | 1 | - |
 | 2 | 1/32 | 3 bytes |
 
-##### unused_profile
-
 ###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
 | Unicast | 1 | - | 0 bytes | - |
 | Unicast | 2 | 1/8 | 0 cells | - |
-| Unicast | 7 | - | - bytes | - |
 | Multicast | 0 | - | 0 bytes | - |
-| Multicast | 1 | 8 | 0 cells | - |
+| Multicast | 1 | 1/64 | 0 cells | - |
+| Multicast | 7 | 1/64 | 0 cells | - |
+
+##### unused_profile
 
 ###### Ingress
 
@@ -11123,6 +11113,16 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | ------------ | --------- | -------- |
 | 2 | - | 55 bytes |
 | 5 | 1/32 | 34 cells |
+
+###### Egress
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+| Unicast | 1 | - | 0 bytes | - |
+| Unicast | 2 | 1/8 | 0 cells | - |
+| Unicast | 7 | - | - bytes | - |
+| Multicast | 0 | - | 0 bytes | - |
+| Multicast | 1 | 8 | 0 cells | - |
 
 #### Platform Sand Summary
 

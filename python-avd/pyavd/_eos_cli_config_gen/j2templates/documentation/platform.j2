@@ -35,17 +35,6 @@
 
 ##### {{ profile.name }}
 
-###### Egress
-
-| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
-| ---- | ------------ | --------- | -------- | --------------- |
-{%                     for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
-| Unicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
-{%                     endfor %}
-{%                     for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
-| Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
-{%                     endfor %}
-
 {%                     if profile.ingress is arista.avd.defined %}
 ###### Ingress
 
@@ -75,6 +64,17 @@
 | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
 {%                         endfor %}
 {%                     endif %}
+
+###### Egress
+
+| Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
+| ---- | ------------ | --------- | -------- | --------------- |
+{%                     for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
+| Unicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
+{%                     endfor %}
+{%                     for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
+| Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
+{%                     endfor %}
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
