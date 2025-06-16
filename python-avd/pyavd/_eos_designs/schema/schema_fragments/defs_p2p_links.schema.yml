@@ -164,9 +164,15 @@ $defs:
             remove_in_version: 6.0.0
         multicast_pim_sm:
           type: bool
-          description: Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+          description: |-
+            Configure PIM sparse-mode on specific P2P uplink interfaces.
+            When `true`, this requires the global `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            When `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden here.
         multicast_static:
-          description: Configure static PIM on specific P2P uplink interfaces. Requires the global `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+          description: |-
+            Configure static PIM on specific P2P uplink interfaces.
+            When `true`, this requires the global `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+            When `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden here.
           type: bool
         flow_tracking:
           type: dict

@@ -38,9 +38,6 @@ ethernet_interfaces:
   multicast:
     ipv4:
       static: true
-  pim:
-    ipv4:
-      sparse_mode: true
   peer: UNDERLAY-MULTICAST-L3LEAF2A
   peer_interface: Ethernet1
   peer_type: l3leaf
@@ -54,9 +51,6 @@ ethernet_interfaces:
   multicast:
     ipv4:
       static: true
-  pim:
-    ipv4:
-      sparse_mode: true
   peer: UNDERLAY-MULTICAST-L3LEAF2B
   peer_interface: Ethernet1
   peer_type: l3leaf

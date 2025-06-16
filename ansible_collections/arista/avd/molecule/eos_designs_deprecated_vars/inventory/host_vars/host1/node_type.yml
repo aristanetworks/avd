@@ -11,6 +11,9 @@ l3leaf:
     - name: host1
       id: 101
       bgp_as: 101
+    - name: host3
+      id: 103
+      bgp_as: 101
   node_groups:
     - group: sflow-tests-leaf-mlag
       bgp_as: 65105

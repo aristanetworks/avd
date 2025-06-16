@@ -204,8 +204,6 @@ keys:
             profile:
               type: str
               required: true
-        underlay_multicast:
-          type: bool
         underlay_multicast_pim_sm:
           type: bool
         underlay_multicast_static:

@@ -24,14 +24,16 @@ keys:
   underlay_multicast_pim_sm:
     documentation_options:
       table: fabric-settings
+    # TODO6.0: Add a default value false once underlay_multicast is deprecated
     type: bool
-    description: |
+    description: |-
       Enable Protocol Independent Multicast sparse mode in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.
       Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
   underlay_multicast_static:
     documentation_options:
       table: fabric-settings
     type: bool
-    description: |
+    default: false
+    description: |-
       Enable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.
       Specifically "multicast ipv4 static" will be configured on all routed underlay interfaces.

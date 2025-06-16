@@ -1,5 +1,3 @@
-# Testing "core_interfaces.p2p_links.[].as" not defined
-
 # Fabric node type keys
 node_type_keys:
   - key: core_router
@@ -12,12 +10,9 @@ type: core_router
 core_router:
   defaults:
     loopback_ipv4_pool: 10.0.0.0/24
-    loopback_ipv6_pool: "2000:1234:ffff:ffff::/64"
   nodes:
-    - name: core-interfaces-p2p-links-as
+    - name: disable-global-underlay-multicast-pim-sm
       id: 1
-
-underlay_multicast_pim_sm: true
 
 core_interfaces:
   p2p_links_profiles:
@@ -25,10 +20,12 @@ core_interfaces:
       speed: "forced 1000full"
       mtu: 1500
   p2p_links:
-    - nodes: [ core-interfaces-p2p-links-as, peer1 ]
+    - nodes: [ disable-global-underlay-multicast-pim-sm, peer1 ]
       id: 10
+      as: [6000]
       interfaces: [ Ethernet1, Ethernet1 ]
       include_in_underlay_protocol: true
       multicast_pim_sm: true
 
-expected_error_message: "core_interfaces.p2p_links.[].as or core_interfaces.p2p_links_profiles.[].as"
+expected_error_message: >-
+  core_interfaces.p2p_links has `include_in_underlay_protocol: true` and `multicast_pim_sm: true`, which requires the global setting `underlay_multicast_pim_sm` to also be set to `true`.

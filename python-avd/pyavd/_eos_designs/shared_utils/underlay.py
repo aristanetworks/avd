@@ -67,7 +67,7 @@ class UnderlayMixin(Protocol):
 
     @cached_property
     def underlay_multicast_static_enabled(self: SharedUtilsProtocol) -> bool:
-        return bool(default(self.node_config.underlay_multicast.static.enabled, self.inputs.underlay_multicast_static)) and self.underlay_router
+        return (default(self.node_config.underlay_multicast.static.enabled, self.inputs.underlay_multicast_static)) and self.underlay_router
 
     @cached_property
     def underlay_multicast_rp_interfaces(self: SharedUtilsProtocol) -> list[EosCliConfigGen.LoopbackInterfacesItem] | None:

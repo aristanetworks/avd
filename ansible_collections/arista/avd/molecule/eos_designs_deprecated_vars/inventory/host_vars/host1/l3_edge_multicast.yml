@@ -9,6 +9,11 @@ l3leaf:
       evpn_role: "none"
       loopback_ipv4_pool: 1.2.3.4/24
       bgp_as: 65000
+    # Temp host for improve coverage of underlay_multicast
+    - name: host3
+      id: 3
+      loopback_ipv4_pool: 1.2.3.4/24
+      bgp_as: 65000
 
 core_interfaces:
   p2p_links_ip_pools:
@@ -17,14 +22,14 @@ core_interfaces:
 
   p2p_links:
       # P2P link with underlay multicast(pim-sparse) disabled.
-    - nodes: [host1, host1]
+    - nodes: [host1, host3]
       interfaces: [Ethernet1, Ethernet2]
       ip: [192.168.0.4/31, 192.168.0.5/31]
-      include_in_underlay_protocol: true
+      include_in_underlay_protocol: false
       underlay_multicast: false
       as: [101, 101]
       # P2P link with underlay multicast(pim-sparse) enabled.
-    - nodes: [host1, host1]
+    - nodes: [host1, host3]
       interfaces: [Ethernet3, Ethernet4]
       ip: [192.168.0.2/31, 192.168.0.3/31]
       include_in_underlay_protocol: true

@@ -4550,20 +4550,17 @@ keys:
     description: 'Enable Protocol Independent Multicast sparse mode in the underlay
       on all p2p uplink interfaces, mlag l3 peer interface and core interfaces.
 
-      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.
-
-      '
+      Specifically PIM Sparse-Mode will be configured on all routed underlay interfaces.'
   underlay_multicast_static:
     documentation_options:
       table: fabric-settings
     type: bool
+    default: false
     description: 'Enable static Multicast in the underlay on all p2p uplink interfaces,
       mlag l3 peer interface and core interfaces.
 
       Specifically "multicast ipv4 static" will be configured on all routed underlay
-      interfaces.
-
-      '
+      interfaces.'
   underlay_multicast_anycast_rp:
     documentation_options:
       table: fabric-settings
@@ -9983,8 +9980,10 @@ $defs:
                   uplinks:
                     type: bool
                     default: true
-                    description: Configure PIM sparse-mode in the underlay on specific
-                      P2P uplink interfaces. Set as `false` to remove all uplinks.
+                    description: 'Configure PIM sparse-mode in the underlay on specific
+                      P2P uplink interfaces.
+
+                      Set as `false` to remove all uplinks.'
                   uplink_interfaces:
                     description: Uplink Interface names to enable for Protocol Independent
                       Multicast sparse mode.
@@ -9992,10 +9991,12 @@ $defs:
                     items:
                       type: str
                   mlag:
-                    description: Configure PIM sparse-mode in the underlay on all
+                    description: 'Configure PIM sparse-mode in the underlay on all
                       mlag l3 peer interface and core interfaces for the specific
-                      node. Set as `false` to remove all mlag l3 peer interface and
-                      core interfaces.
+                      node.
+
+                      Set as `false` to remove all mlag l3 peer interface and core
+                      interfaces.'
                     type: bool
               static:
                 type: dict
@@ -10008,18 +10009,21 @@ $defs:
                   uplinks:
                     type: bool
                     default: true
-                    description: Configure static PIM in the underlay on specific
-                      P2P uplink interfaces. Set as `false` to remove all uplinks.
+                    description: 'Configure static PIM in the underlay on specific
+                      P2P uplink interfaces.
+
+                      Set as `false` to remove all uplinks.'
                   uplink_interfaces:
                     description: Uplink Interface names to enable for static multicast.
                     type: list
                     items:
                       type: str
                   mlag:
-                    description: Configure static PIM in the underlay on all mlag
+                    description: 'Configure static PIM in the underlay on all mlag
                       l3 peer interface and core interfaces for the specific node.
+
                       Set as `false` to remove all mlag l3 peer interface and core
-                      interfaces.
+                      interfaces.'
                     type: bool
       node_groups:
         type: list
@@ -10677,13 +10681,21 @@ $defs:
             remove_in_version: 6.0.0
         multicast_pim_sm:
           type: bool
-          description: Configure PIM sparse-mode on specific P2P uplink interfaces.
-            Requires the global `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled`
-            to be `true`.
+          description: 'Configure PIM sparse-mode on specific P2P uplink interfaces.
+
+            When `true`, this requires the global `underlay_multicast_pim_sm` or node
+            setting `underlay_multicast.pim_sm.enabled` to be `true`.
+
+            When `include_in_underlay_protocol` is `true` this will follow the global
+            setting, unless overridden here.'
         multicast_static:
-          description: Configure static PIM on specific P2P uplink interfaces. Requires
-            the global `underlay_multicast_static` or node setting `underlay_multicast.static.enabled`
-            to be `true`.
+          description: 'Configure static PIM on specific P2P uplink interfaces.
+
+            When `true`, this requires the global `underlay_multicast_static` or node
+            setting `underlay_multicast.static.enabled` to be `true`.
+
+            When `include_in_underlay_protocol` is `true` this will follow the global
+            setting, unless overridden here.'
           type: bool
         flow_tracking:
           type: dict

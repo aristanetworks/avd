@@ -1509,14 +1509,18 @@ $defs:
                   uplinks:
                     type: bool
                     default: true
-                    description: Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
+                    description: |-
+                      Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                      Set as `false` to remove all uplinks.
                   uplink_interfaces:
                     description: Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
                     type: list
                     items:
                       type: str
                   mlag:
-                    description: Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                    description: |-
+                      Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the specific node.
+                      Set as `false` to remove all mlag l3 peer interface and core interfaces.
                     type: bool
               static:
                 type: dict
@@ -1527,14 +1531,18 @@ $defs:
                   uplinks:
                     type: bool
                     default: true
-                    description: Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all uplinks.
+                    description: |-
+                      Configure static PIM in the underlay on specific P2P uplink interfaces.
+                      Set as `false` to remove all uplinks.
                   uplink_interfaces:
                     description: Uplink Interface names to enable for static multicast.
                     type: list
                     items:
                       type: str
                   mlag:
-                    description: Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                    description: |-
+                      Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the specific node.
+                      Set as `false` to remove all mlag l3 peer interface and core interfaces.
                     type: bool
       node_groups:
         type: list

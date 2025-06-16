@@ -154,9 +154,6 @@ vlan_interfaces:
   description: MLAG_L3
   shutdown: false
   ip_address: 10.10.224.4/31
-  multicast:
-    ipv4:
-      static: true
   mtu: 9214
 - name: Vlan4094
   description: MLAG

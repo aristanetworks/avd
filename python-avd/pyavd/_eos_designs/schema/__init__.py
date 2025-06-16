@@ -1348,13 +1348,21 @@ class EosDesigns(EosDesignsRootModel):
             """
             multicast_pim_sm: bool | None
             """
-            Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+            Configure PIM sparse-mode on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             multicast_static: bool | None
             """
-            Configure static PIM on specific P2P uplink interfaces. Requires the global
+            Configure static PIM on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             flow_tracking: FlowTracking
             """
@@ -1493,11 +1501,19 @@ class EosDesigns(EosDesignsRootModel):
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
                         multicast_pim_sm:
-                           Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+                           Configure PIM sparse-mode on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         multicast_static:
-                           Configure static PIM on specific P2P uplink interfaces. Requires the global
+                           Configure static PIM on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -1939,13 +1955,21 @@ class EosDesigns(EosDesignsRootModel):
             """
             multicast_pim_sm: bool | None
             """
-            Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+            Configure PIM sparse-mode on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             multicast_static: bool | None
             """
-            Configure static PIM on specific P2P uplink interfaces. Requires the global
+            Configure static PIM on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             flow_tracking: FlowTracking
             """
@@ -2084,11 +2108,19 @@ class EosDesigns(EosDesignsRootModel):
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
                         multicast_pim_sm:
-                           Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+                           Configure PIM sparse-mode on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         multicast_static:
-                           Configure static PIM on specific P2P uplink interfaces. Requires the global
+                           Configure static PIM on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -5348,13 +5380,21 @@ class EosDesigns(EosDesignsRootModel):
             """
             multicast_pim_sm: bool | None
             """
-            Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+            Configure PIM sparse-mode on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             multicast_static: bool | None
             """
-            Configure static PIM on specific P2P uplink interfaces. Requires the global
+            Configure static PIM on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             flow_tracking: FlowTracking
             """
@@ -5493,11 +5533,19 @@ class EosDesigns(EosDesignsRootModel):
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
                         multicast_pim_sm:
-                           Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+                           Configure PIM sparse-mode on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         multicast_static:
-                           Configure static PIM on specific P2P uplink interfaces. Requires the global
+                           Configure static PIM on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -5939,13 +5987,21 @@ class EosDesigns(EosDesignsRootModel):
             """
             multicast_pim_sm: bool | None
             """
-            Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+            Configure PIM sparse-mode on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             multicast_static: bool | None
             """
-            Configure static PIM on specific P2P uplink interfaces. Requires the global
+            Configure static PIM on specific P2P uplink interfaces.
+            When `true`, this requires the global
             `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+            When
+            `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+            here.
             """
             flow_tracking: FlowTracking
             """
@@ -6084,11 +6140,19 @@ class EosDesigns(EosDesignsRootModel):
                            Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast`
                            to be `true`.
                         multicast_pim_sm:
-                           Configure PIM sparse-mode on specific P2P uplink interfaces. Requires the global
+                           Configure PIM sparse-mode on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_pim_sm` or node setting `underlay_multicast.pim_sm.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         multicast_static:
-                           Configure static PIM on specific P2P uplink interfaces. Requires the global
+                           Configure static PIM on specific P2P uplink interfaces.
+                           When `true`, this requires the global
                            `underlay_multicast_static` or node setting `underlay_multicast.static.enabled` to be `true`.
+                           When
+                           `include_in_underlay_protocol` is `true` this will follow the global setting, unless overridden
+                           here.
                         flow_tracking:
                            Enable flow-tracking. Overrides `fabric_flow_tracking` setting.
 
@@ -22744,7 +22808,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to
                             remove all uplinks.
 
                             Default value: `True`
@@ -22759,7 +22824,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -22783,7 +22849,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                            core interfaces for the specific node.
                                         uplinks:
-                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to
                                            remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -22792,7 +22859,8 @@ class EosDesigns(EosDesignsRootModel):
                                            AvdList with `str` items.
                                         mlag:
                                            Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -22817,7 +22885,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                            Configure static PIM in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to remove all
                             uplinks.
 
                             Default value: `True`
@@ -22831,7 +22900,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -22855,7 +22925,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                            interfaces for the specific node.
                                         uplinks:
-                                           Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                           Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to remove all
                                            uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for static multicast.
@@ -22863,7 +22934,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         mlag:
                                            Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -27012,7 +27084,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 uplinks: bool
                                 """
-                                Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                Set as `false` to
                                 remove all uplinks.
 
                                 Default value: `True`
@@ -27027,7 +27100,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag: bool | None
                                 """
                                 Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                specific node.
+                                Set as `false` to remove all mlag l3 peer interface and core interfaces.
                                 """
 
                                 if TYPE_CHECKING:
@@ -27051,7 +27125,8 @@ class EosDesigns(EosDesignsRootModel):
                                                Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                                core interfaces for the specific node.
                                             uplinks:
-                                               Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                               Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                               Set as `false` to
                                                remove all uplinks.
                                             uplink_interfaces:
                                                Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -27060,7 +27135,8 @@ class EosDesigns(EosDesignsRootModel):
                                                AvdList with `str` items.
                                             mlag:
                                                Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                               specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                               specific node.
+                                               Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                         """
 
@@ -27085,7 +27161,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 uplinks: bool
                                 """
-                                Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                Set as `false` to remove all
                                 uplinks.
 
                                 Default value: `True`
@@ -27099,7 +27176,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag: bool | None
                                 """
                                 Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                specific node.
+                                Set as `false` to remove all mlag l3 peer interface and core interfaces.
                                 """
 
                                 if TYPE_CHECKING:
@@ -27123,7 +27201,8 @@ class EosDesigns(EosDesignsRootModel):
                                                Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                                interfaces for the specific node.
                                             uplinks:
-                                               Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                               Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                               Set as `false` to remove all
                                                uplinks.
                                             uplink_interfaces:
                                                Uplink Interface names to enable for static multicast.
@@ -27131,7 +27210,8 @@ class EosDesigns(EosDesignsRootModel):
                                                Subclass of AvdList with `str` items.
                                             mlag:
                                                Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                               specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                               specific node.
+                                               Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                         """
 
@@ -31226,7 +31306,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to
                             remove all uplinks.
 
                             Default value: `True`
@@ -31241,7 +31322,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -31265,7 +31347,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                            core interfaces for the specific node.
                                         uplinks:
-                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to
                                            remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -31274,7 +31357,8 @@ class EosDesigns(EosDesignsRootModel):
                                            AvdList with `str` items.
                                         mlag:
                                            Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -31299,7 +31383,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                            Configure static PIM in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to remove all
                             uplinks.
 
                             Default value: `True`
@@ -31313,7 +31398,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -31337,7 +31423,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                            interfaces for the specific node.
                                         uplinks:
-                                           Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                           Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to remove all
                                            uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for static multicast.
@@ -31345,7 +31432,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         mlag:
                                            Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -35504,7 +35592,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to
                             remove all uplinks.
 
                             Default value: `True`
@@ -35519,7 +35608,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -35543,7 +35633,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                            core interfaces for the specific node.
                                         uplinks:
-                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to
                                            remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -35552,7 +35643,8 @@ class EosDesigns(EosDesignsRootModel):
                                            AvdList with `str` items.
                                         mlag:
                                            Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -35577,7 +35669,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                            Configure static PIM in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to remove all
                             uplinks.
 
                             Default value: `True`
@@ -35591,7 +35684,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -35615,7 +35709,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                            interfaces for the specific node.
                                         uplinks:
-                                           Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                           Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to remove all
                                            uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for static multicast.
@@ -35623,7 +35718,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         mlag:
                                            Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -46877,7 +46973,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to
                             remove all uplinks.
 
                             Default value: `True`
@@ -46892,7 +46989,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -46916,7 +47014,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                            core interfaces for the specific node.
                                         uplinks:
-                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to
                                            remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -46925,7 +47024,8 @@ class EosDesigns(EosDesignsRootModel):
                                            AvdList with `str` items.
                                         mlag:
                                            Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -46950,7 +47050,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                            Configure static PIM in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to remove all
                             uplinks.
 
                             Default value: `True`
@@ -46964,7 +47065,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -46988,7 +47090,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                            interfaces for the specific node.
                                         uplinks:
-                                           Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                           Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to remove all
                                            uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for static multicast.
@@ -46996,7 +47099,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         mlag:
                                            Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -51145,7 +51249,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 uplinks: bool
                                 """
-                                Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                Set as `false` to
                                 remove all uplinks.
 
                                 Default value: `True`
@@ -51160,7 +51265,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag: bool | None
                                 """
                                 Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                specific node.
+                                Set as `false` to remove all mlag l3 peer interface and core interfaces.
                                 """
 
                                 if TYPE_CHECKING:
@@ -51184,7 +51290,8 @@ class EosDesigns(EosDesignsRootModel):
                                                Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                                core interfaces for the specific node.
                                             uplinks:
-                                               Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                               Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                               Set as `false` to
                                                remove all uplinks.
                                             uplink_interfaces:
                                                Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -51193,7 +51300,8 @@ class EosDesigns(EosDesignsRootModel):
                                                AvdList with `str` items.
                                             mlag:
                                                Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                               specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                               specific node.
+                                               Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                         """
 
@@ -51218,7 +51326,8 @@ class EosDesigns(EosDesignsRootModel):
                                 """
                                 uplinks: bool
                                 """
-                                Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                Set as `false` to remove all
                                 uplinks.
 
                                 Default value: `True`
@@ -51232,7 +51341,8 @@ class EosDesigns(EosDesignsRootModel):
                                 mlag: bool | None
                                 """
                                 Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                specific node.
+                                Set as `false` to remove all mlag l3 peer interface and core interfaces.
                                 """
 
                                 if TYPE_CHECKING:
@@ -51256,7 +51366,8 @@ class EosDesigns(EosDesignsRootModel):
                                                Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                                interfaces for the specific node.
                                             uplinks:
-                                               Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                               Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                               Set as `false` to remove all
                                                uplinks.
                                             uplink_interfaces:
                                                Uplink Interface names to enable for static multicast.
@@ -51264,7 +51375,8 @@ class EosDesigns(EosDesignsRootModel):
                                                Subclass of AvdList with `str` items.
                                             mlag:
                                                Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                               specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                               specific node.
+                                               Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                         """
 
@@ -55359,7 +55471,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to
                             remove all uplinks.
 
                             Default value: `True`
@@ -55374,7 +55487,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -55398,7 +55512,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                            core interfaces for the specific node.
                                         uplinks:
-                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to
                                            remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -55407,7 +55522,8 @@ class EosDesigns(EosDesignsRootModel):
                                            AvdList with `str` items.
                                         mlag:
                                            Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -55432,7 +55548,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                            Configure static PIM in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to remove all
                             uplinks.
 
                             Default value: `True`
@@ -55446,7 +55563,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -55470,7 +55588,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                            interfaces for the specific node.
                                         uplinks:
-                                           Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                           Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to remove all
                                            uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for static multicast.
@@ -55478,7 +55597,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         mlag:
                                            Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -59637,7 +59757,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                            Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to
                             remove all uplinks.
 
                             Default value: `True`
@@ -59652,7 +59773,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -59676,7 +59798,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure PIM sparse-mode in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and
                                            core interfaces for the specific node.
                                         uplinks:
-                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces. Set as `false` to
+                                           Configure PIM sparse-mode in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to
                                            remove all uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for Protocol Independent Multicast sparse mode.
@@ -59685,7 +59808,8 @@ class EosDesigns(EosDesignsRootModel):
                                            AvdList with `str` items.
                                         mlag:
                                            Configure PIM sparse-mode in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -59710,7 +59834,8 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             uplinks: bool
                             """
-                            Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                            Configure static PIM in the underlay on specific P2P uplink interfaces.
+                            Set as `false` to remove all
                             uplinks.
 
                             Default value: `True`
@@ -59724,7 +59849,8 @@ class EosDesigns(EosDesignsRootModel):
                             mlag: bool | None
                             """
                             Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                            specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                            specific node.
+                            Set as `false` to remove all mlag l3 peer interface and core interfaces.
                             """
 
                             if TYPE_CHECKING:
@@ -59748,7 +59874,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Configure static PIM in the underlay on all P2P uplink interfaces, MLAG L3 peer interface and core
                                            interfaces for the specific node.
                                         uplinks:
-                                           Configure static PIM in the underlay on specific P2P uplink interfaces. Set as `false` to remove all
+                                           Configure static PIM in the underlay on specific P2P uplink interfaces.
+                                           Set as `false` to remove all
                                            uplinks.
                                         uplink_interfaces:
                                            Uplink Interface names to enable for static multicast.
@@ -59756,7 +59883,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Subclass of AvdList with `str` items.
                                         mlag:
                                            Configure static PIM in the underlay on all mlag l3 peer interface and core interfaces for the
-                                           specific node. Set as `false` to remove all mlag l3 peer interface and core interfaces.
+                                           specific node.
+                                           Set as `false` to remove all mlag l3 peer interface and core interfaces.
 
                                     """
 
@@ -61879,7 +62007,7 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_l2_port_channel_description": {"type": str, "default": "L2_{peer_node_group_or_peer}_{peer_interface}"},
         "underlay_multicast": {"type": bool, "default": False},
         "underlay_multicast_pim_sm": {"type": bool},
-        "underlay_multicast_static": {"type": bool},
+        "underlay_multicast_static": {"type": bool, "default": False},
         "underlay_multicast_anycast_rp": {"type": UnderlayMulticastAnycastRp},
         "underlay_multicast_rps": {"type": UnderlayMulticastRps},
         "underlay_ospf_area": {"type": str, "default": "0.0.0.0"},
@@ -63519,12 +63647,14 @@ class EosDesigns(EosDesignsRootModel):
     Specifically PIM Sparse-Mode will be configured on all routed
     underlay interfaces.
     """
-    underlay_multicast_static: bool | None
+    underlay_multicast_static: bool
     """
     Enable static Multicast in the underlay on all p2p uplink interfaces, mlag l3 peer interface and
     core interfaces.
     Specifically "multicast ipv4 static" will be configured on all routed underlay
     interfaces.
+
+    Default value: `False`
     """
     underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp
     """
@@ -63922,7 +64052,7 @@ class EosDesigns(EosDesignsRootModel):
             underlay_l2_port_channel_description: str | UndefinedType = Undefined,
             underlay_multicast: bool | UndefinedType = Undefined,
             underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
-            underlay_multicast_static: bool | None | UndefinedType = Undefined,
+            underlay_multicast_static: bool | UndefinedType = Undefined,
             underlay_multicast_anycast_rp: UnderlayMulticastAnycastRp | UndefinedType = Undefined,
             underlay_multicast_rps: UnderlayMulticastRps | UndefinedType = Undefined,
             underlay_ospf_area: str | UndefinedType = Undefined,

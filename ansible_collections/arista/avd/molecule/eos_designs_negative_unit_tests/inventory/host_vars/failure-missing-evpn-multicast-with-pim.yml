@@ -1,5 +1,5 @@
 type: l3leaf
-underlay_multicast: true
+underlay_multicast_pim_sm: true
 # When this is set to false, the VRF won't have evpn_l3_multicast enabled
 # and PIM will fail
 evpn_multicast: false

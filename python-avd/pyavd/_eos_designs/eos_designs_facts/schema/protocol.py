@@ -380,7 +380,6 @@ class EosDesignsFactsProtocol(Protocol):
             "peer_speed": {"type": str},
             "ptp": {"type": Ptp},
             "mac_security": {"type": MacSecurity},
-            "underlay_multicast": {"type": bool},
             "underlay_multicast_pim_sm": {"type": bool},
             "underlay_multicast_static": {"type": bool},
             "ipv6_enable": {"type": bool},
@@ -428,7 +427,6 @@ class EosDesignsFactsProtocol(Protocol):
         """
         mac_security: MacSecurity
         """Subclass of AvdModel."""
-        underlay_multicast: bool | None
         underlay_multicast_pim_sm: bool | None
         underlay_multicast_static: bool | None
         ipv6_enable: bool | None
@@ -493,7 +491,6 @@ class EosDesignsFactsProtocol(Protocol):
                 peer_speed: str | None | UndefinedType = Undefined,
                 ptp: Ptp | UndefinedType = Undefined,
                 mac_security: MacSecurity | UndefinedType = Undefined,
-                underlay_multicast: bool | None | UndefinedType = Undefined,
                 underlay_multicast_pim_sm: bool | None | UndefinedType = Undefined,
                 underlay_multicast_static: bool | None | UndefinedType = Undefined,
                 ipv6_enable: bool | None | UndefinedType = Undefined,
@@ -545,7 +542,6 @@ class EosDesignsFactsProtocol(Protocol):
 
                        Subclass of AvdModel.
                     mac_security: Subclass of AvdModel.
-                    underlay_multicast: underlay_multicast
                     underlay_multicast_pim_sm: underlay_multicast_pim_sm
                     underlay_multicast_static: underlay_multicast_static
                     ipv6_enable: ipv6_enable

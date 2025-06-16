@@ -29,9 +29,6 @@ ethernet_interfaces:
   speed: 100full
   mtu: 1601
   ip_address: 100.123.123.3/31
-  multicast:
-    ipv4:
-      static: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   service_profile: test_qos_profile
@@ -122,9 +119,6 @@ ethernet_interfaces:
   l2_mtu: 2222
   l2_mru: 2222
   ip_address: 100.64.48.13/31
-  multicast:
-    ipv4:
-      static: true
   ospf_network_point_to_point: true
   ospf_area: 0.0.0.0
   ptp:
@@ -356,9 +350,6 @@ router_general:
   router_id:
     ipv4: 10.0.0.2
     ipv6: 2000:1234:ffff:ffff::2
-router_multicast:
-  ipv4:
-    routing: true
 router_ospf:
   process_ids:
   - id: 101

@@ -36,9 +36,6 @@ underlay_ospf_process_id: 101
 underlay_ospf_max_lsa: 12000
 underlay_ospf_bfd_enable: true
 
-# Underlay static multicast
-underlay_multicast_static: true
-
 # Nodes
 type: core_router
 core_router:
@@ -89,7 +86,6 @@ core_interfaces:
       speed: "forced 1000full"
       mtu: 1500
       ip_pool: underlay_pool
-      multicast_static: true
       ptp:
         enabled: true
       # Testing merge of structured config on profile and link.
@@ -112,7 +108,6 @@ core_interfaces:
       ip_pool: some_other_pool
       speed: 100full
       mtu: 1601
-      multicast_static: true
       isis_hello_padding: true
       isis_circuit_type: level-1
       isis_metric: 60
@@ -205,25 +200,27 @@ core_interfaces:
       ptp:
         enabled: true
 
-    # P2P core links with multicast_pim_sm(pim-sparse) enabled.
+    # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static enabled.
     - nodes: [ core-4-multicast, peer1 ]
       id: 10
       as: [65001, 65002]
       interfaces: [ Ethernet1, Ethernet1 ]
       include_in_underlay_protocol: true
       multicast_pim_sm: true
+      multicast_static: true
       ip_pool: underlay_pool
 
-     # P2P core links with multicast_pim_sm(pim-sparse) disabled.
+     # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static disabled.
     - nodes: [ core-4-multicast, peer2 ]
       id: 11
       as: [65001, 65003]
       interfaces: [ Ethernet2, Ethernet2 ]
       include_in_underlay_protocol: true
       multicast_pim_sm: false
+      multicast_static: false
       ip_pool: underlay_pool
 
-    # P2P core links with multicast_pim_sm(pim-sparse) default.
+    # P2P core links with multicast_pim_sm(pim-sparse) and multicast_static default.
     - nodes: [ core-4-multicast, peer3 ]
       id: 12
       as: [65001, 65004]
@@ -279,4 +276,3 @@ l3_edge:
       include_in_underlay_protocol: false
       ip_pool: pool_29_mask
       id: 2
-      multicast_static: false

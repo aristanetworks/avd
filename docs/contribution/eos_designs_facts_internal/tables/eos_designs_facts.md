@@ -80,7 +80,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enable</samp>](## "uplinks.[].ptp.enable") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;mac_security</samp>](## "uplinks.[].mac_security") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;profile</samp>](## "uplinks.[].mac_security.profile") | String | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast</samp>](## "uplinks.[].underlay_multicast") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_pim_sm</samp>](## "uplinks.[].underlay_multicast_pim_sm") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_static</samp>](## "uplinks.[].underlay_multicast_static") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].ipv6_enable") | Boolean |  |  |  |  |
@@ -281,7 +280,6 @@
           enable: <bool; default=False>
         mac_security:
           profile: <str; required>
-        underlay_multicast: <bool>
         underlay_multicast_pim_sm: <bool>
         underlay_multicast_static: <bool>
         ipv6_enable: <bool>

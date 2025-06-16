@@ -37,9 +37,6 @@ ethernet_interfaces:
   speed: 100full
   mtu: 1601
   ip_address: 100.123.123.2/31
-  multicast:
-    ipv4:
-      static: true
   isis_enable: CORE
   isis_metric: 60
   isis_network_point_to_point: false
@@ -165,9 +162,6 @@ ethernet_interfaces:
   l2_mtu: 2222
   l2_mru: 2222
   ip_address: 100.64.48.12/31
-  multicast:
-    ipv4:
-      static: true
   isis_enable: CORE
   isis_metric: 50
   isis_network_point_to_point: true
@@ -526,9 +520,6 @@ router_isis:
   segment_routing_mpls:
     enabled: true
     router_id: 10.0.0.1
-router_multicast:
-  ipv4:
-    routing: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
