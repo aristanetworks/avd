@@ -91,7 +91,7 @@ class EthernetInterfacesMixin(Protocol):
         connected_endpoint: EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem,
     ) -> None:
         ethernet_interface._update(
-            mtu=adapter.mtu if self.shared_utils.interface_mtu(ethernet_interface.name) else None,
+            mtu=adapter.mtu if self.shared_utils.interface_mtu_supported(ethernet_interface.name) else None,
             l2_mtu=adapter.l2_mtu,
             l2_mru=adapter.l2_mru,
             spanning_tree_portfast=adapter.spanning_tree_portfast,

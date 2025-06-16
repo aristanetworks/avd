@@ -163,7 +163,7 @@ class MiscMixin(Protocol):
     def evpn_multicast(self: SharedUtilsProtocol) -> bool:
         return self.switch_facts.evpn_multicast is True
 
-    def interface_mtu(self: SharedUtilsProtocol, interface_name: str | None = None) -> bool:
+    def interface_mtu_supported(self: SharedUtilsProtocol, interface_name: str | None = None) -> bool:
         """Returns 'True' if MTU is allowed on interface else returns 'False'."""
         if self.platform_settings.feature_support.per_interface_mtu:
             if interface_name and "." in interface_name:
