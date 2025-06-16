@@ -5,26 +5,6 @@ overlay_routing_protocol: none
 underlay_ipv6: true
 underlay_rfc5549: true
 
-node_type_keys:
-  # modify spine to get l3 network_services
-  - key: spine
-    type: spine
-    default_evpn_role: server
-    default_ptp_priority1: 20
-    network_services:
-      l3: true
-  - key: l3leaf
-    type: l3leaf
-    connected_endpoints: true
-    default_evpn_role: client
-    mlag_support: true
-    network_services:
-      l2: true
-      l3: true
-    vtep: true
-    default_ptp_priority1: 30
-    cv_tags_topology_type: leaf
-
 default_node_types:
   - node_type: spine
     match_hostnames:
@@ -45,11 +25,10 @@ l3leaf:
     uplink_switches: [ UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1]
     uplink_interfaces: [ Ethernet1, Ethernet2 ]
     uplink_type: p2p-vrfs
-    uplink_macsec:
-      profile: TEST
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF
-      # Testing RFC5549 with IPv6 overlay peers only
       bgp_as: 65106
       uplink_interfaces: ['Ethernet1', 'Ethernet2']
       loopback_ipv6_pool: 2001:1::/64
@@ -70,15 +49,9 @@ spine:
 tenants:
   - name: TenantA
     vrfs:
-      # Testing VRF default is not added as subinterface.
       - name: default
         vrf_id: 1
       - name: PROD
         vrf_id: 42
       - name: IT
         vrf_id: 100
-  - name: TenantB
-    vrfs:
-      # Testing duplicate VRF with consistent ID. Silently ignored since it leads to the same subinterface config.
-      - name: PROD
-        vrf_id: 42

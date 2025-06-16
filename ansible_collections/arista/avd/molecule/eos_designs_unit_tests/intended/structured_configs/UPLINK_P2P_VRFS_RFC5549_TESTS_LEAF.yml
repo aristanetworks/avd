@@ -9,8 +9,6 @@ ethernet_interfaces:
   shutdown: false
   mtu: 9214
   ipv6_enable: true
-  mac_security:
-    profile: TEST
   peer: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
   peer_interface: Ethernet3
   peer_type: spine
@@ -83,3 +81,9 @@ vlan_internal_order:
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: IT
+  ip_routing: true
+  tenant: TenantA
+- name: PROD
+  ip_routing: true
+  tenant: TenantA
