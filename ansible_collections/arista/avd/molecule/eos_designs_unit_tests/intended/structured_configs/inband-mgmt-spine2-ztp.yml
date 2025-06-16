@@ -64,7 +64,7 @@ management_interfaces:
   description: OOB_MANAGEMENT
   shutdown: false
   vrf: MGMT
-  ip_address: 192.168.100.10/24
+  ip_address: 192.168.100.2/24
   type: oob
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS

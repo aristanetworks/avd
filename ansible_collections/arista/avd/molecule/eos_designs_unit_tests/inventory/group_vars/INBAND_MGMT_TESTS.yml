@@ -45,13 +45,13 @@ spine:
   defaults:
     loopback_ipv4_pool: 10.0.254.0/24
     bgp_as: 64999
-    # Dummy IP to avoid errors being raised because of dns_settings for device with oob management.
-    mgmt_ip: 192.168.100.10/24
   nodes:
     - name: inband-mgmt-spine1-ztp
       id: 1
+      mgmt_ip: 192.168.100.1/24
     - name: inband-mgmt-spine2-ztp
       id: 2
+      mgmt_ip: 192.168.100.2/24
 
 l3leaf:
   defaults:
@@ -62,20 +62,20 @@ l3leaf:
     filter:
       # Ensuring that the inband management vlan is correctly configured even when only_vlans_in_use is set
       only_vlans_in_use: true
-    # Dummy IP to avoid errors being raised because of dns_settings for device with oob management.
-    mgmt_ip: 192.168.100.10/24
   nodes:
     - name: inband-mgmt-parent
       id: 1
       inband_ztp: true
       uplink_switches: [inband-mgmt-spine1-ztp, inband-mgmt-spine2-ztp]
       uplink_ipv4_pool: 172.16.255.0/24
+      mgmt_ip: 192.168.100.11/24
     - name: inband-mgmt-parent-vrf
       inband_mgmt_vrf: INBANDMGMT
       id: 2
       inband_ztp: true
       uplink_switches: [inband-mgmt-spine1-ztp]
       uplink_ipv4_pool: 172.16.255.0/24
+      mgmt_ip: 192.168.100.12/24
   node_groups:
     - group: inband-mgmt-parents-dualstack
       mlag_peer_ipv4_pool: 100.64.0.0/24
@@ -83,17 +83,21 @@ l3leaf:
       nodes:
         - name: inband-mgmt-parent-dualstack1
           id: 3
+          mgmt_ip: 192.168.100.13/24
         - name: inband-mgmt-parent-dualstack2
           id: 4
+          mgmt_ip: 192.168.100.14/24
     - group: inband-mgmt-parents-ipv6
       mlag_peer_ipv4_pool: 100.64.0.0/24
       mlag_peer_l3_ipv4_pool: 100.64.1.0/24
       nodes:
         - name: inband-mgmt-parent-ipv6-1
           id: 5
+          mgmt_ip: 192.168.100.15/24
         - name: inband-mgmt-parent-ipv6-2
           inband_mgmt_vrf: INBANDMGMT
           id: 6
+          mgmt_ip: 192.168.100.16/24
 
 l2leaf:
   defaults:
