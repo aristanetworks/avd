@@ -10,7 +10,7 @@ keys:
     type: dict
     keys:
       load_balance_trident_udf:
-        description: Trident chip load balancing.
+        description: Trident chip UDF fields load balancing.
         type: list
         items:
           type: dict

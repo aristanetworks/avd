@@ -8,7 +8,7 @@
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>port_channel</samp>](## "port_channel") | Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;load_balance_trident_udf</samp>](## "port_channel.load_balance_trident_udf") | List, items: Dictionary |  |  |  | Trident chip load balancing. |
+    | [<samp>&nbsp;&nbsp;load_balance_trident_udf</samp>](## "port_channel.load_balance_trident_udf") | List, items: Dictionary |  |  |  | Trident chip UDF fields load balancing. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;eth_type</samp>](## "port_channel.load_balance_trident_udf.[].eth_type") | String | Required |  | Valid Values:<br>- <code>ipv4</code><br>- <code>ipv6</code> | Ethernet type in the port channel hash. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_protocol</samp>](## "port_channel.load_balance_trident_udf.[].ip_protocol") | String |  |  |  | IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.<br>IP protocol number within the range <0-255>. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;header</samp>](## "port_channel.load_balance_trident_udf.[].header") | String | Required |  | Valid Values:<br>- <code>inner_l3</code><br>- <code>inner_l4</code><br>- <code>outer_l2</code><br>- <code>outer_l3</code><br>- <code>outer_l4</code> |  |
@@ -20,7 +20,7 @@
     ```yaml
     port_channel:
 
-      # Trident chip load balancing.
+      # Trident chip UDF fields load balancing.
       load_balance_trident_udf:
 
           # Ethernet type in the port channel hash.

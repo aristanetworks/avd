@@ -27528,7 +27528,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}}
         load_balance_trident_udf: LoadBalanceTridentUdf
         """
-        Trident chip load balancing.
+        Trident chip UDF fields load balancing.
 
         Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
         """
@@ -27544,7 +27544,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     load_balance_trident_udf:
-                       Trident chip load balancing.
+                       Trident chip UDF fields load balancing.
 
                        Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
 

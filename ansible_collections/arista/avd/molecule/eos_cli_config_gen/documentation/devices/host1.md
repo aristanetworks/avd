@@ -3448,16 +3448,16 @@ sync-e
 
 | Eth-Type | IP Protocol |Header | Offset | Mask |
 | -------- | ---------- | ------ | ------ | ---- |
-| ipv4 | gre | inner l3 | 30 | 0x01 |
-| ipv4 | - | inner l3 | 10 | 0xff |
-| ipv4 | - | inner l4 | 2 | - |
-| ipv4 | 10 | inner l4 | 20 | 0x02 |
-| ipv4 | - | inner l3 | 22 | - |
-| ipv4 | sctp | outer l2 | 39 | - |
-| ipv6 | - | outer l3 | 30 | 0x01 |
-| ipv6 | - | inner l3 | 20 | - |
-| ipv6 | tcp | outer l4 | 20 | - |
-| ipv6 | 2 | inner l4 | 10 | 0x02 |
+| Ipv4 | GRE | inner l3 | 30 | 0x01 |
+| Ipv4 | - | inner l3 | 10 | 0xff |
+| Ipv4 | - | inner l4 | 2 | - |
+| Ipv4 | 10 | inner l4 | 20 | 0x02 |
+| Ipv4 | - | inner l3 | 22 | - |
+| Ipv4 | SCTP | outer l2 | 39 | - |
+| Ipv6 | - | outer l3 | 30 | 0x01 |
+| Ipv6 | - | inner l3 | 20 | - |
+| Ipv6 | TCP | outer l4 | 20 | - |
+| Ipv6 | 2 | inner l4 | 10 | 0x02 |
 
 #### Port-channel Device Configuration
 
