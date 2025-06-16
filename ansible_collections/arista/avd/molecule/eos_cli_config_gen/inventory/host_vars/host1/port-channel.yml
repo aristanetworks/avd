@@ -1,61 +1,42 @@
 port_channel:
-  load_balance_trident:
-    udf_eth_type:
-      ipv4:
-        header:
-          inner:
-            l3:
-              - offset: 30
-                mask: "0x01"
-              - offset: 10
-                mask: "0xff"
-              - offset: 2
-            l4:
-              - offset: 20
-                mask: "0x02"
-              - offset: 22
-          outer:
-            l2:
-              - offset: 2
-                mask: "0xff"
-              - offset: 5
-                mask: "0x02"
-              - offset: 35
-            l3:
-              - offset: 3
-                mask: "0x01"
-              - offset: 5
-            l4:
-              - offset: 50
-                mask: "0x04"
-              - offset: 30
-                mask: "0xff"
-              - offset: 27
-      ipv6:
-        header:
-          inner:
-            l3:
-              - offset: 30
-                mask: "0x01"
-              - offset: 10
-                mask: "0xff"
-            l4:
-              - offset: 20
-                mask: "0x02"
-              - offset: 2
-          outer:
-            l2:
-              - offset: 2
-                mask: "0xff"
-              - offset: 5
-                mask: "0x02"
-              - offset: 25
-            l3:
-              - offset: 3
-                mask: "0x01"
-            l4:
-              - offset: 50
-                mask: "0x04"
-              - offset: 30
-                mask: "0xff"
-              - offset: 28
+  load_balance_trident_udf:
+    - eth_type: ipv4
+      ip_protocol: gre
+      header: inner_l3
+      offset: 30
+      mask: "0x01"
+    - eth_type: ipv4
+      header: inner_l3
+      offset: 10
+      mask: "0xff"
+    - eth_type: ipv4
+      header: inner_l4
+      offset: 2
+    - eth_type: ipv4
+      ip_protocol: 10
+      header: inner_l4
+      offset: 20
+      mask: "0x02"
+    - eth_type: ipv4
+      header: inner_l3
+      offset: 22
+    - eth_type: ipv4
+      header: outer_l2
+      offset: 39
+      ip_protocol: sctp
+    - eth_type: ipv6
+      header: outer_l3
+      offset: 30
+      mask: "0x01"
+    - eth_type: ipv6
+      header: inner_l3
+      offset: 20
+    - eth_type: ipv6
+      ip_protocol: tcp
+      header: outer_l4
+      offset: 20
+    - eth_type: ipv6
+      ip_protocol: 2
+      header: inner_l4
+      offset: 10
+      mask: "0x02"
