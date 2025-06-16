@@ -1653,6 +1653,21 @@ keys:
 
               Note: Since the pool manager will remove stale entries after every run,
               each fabric should be using its own file.'
+  fabric_numbering_node_id_pool:
+    type: str
+    documentation_options:
+      table: fabric-numbering
+    description: "Name of Node ID pool or template used to render the name of each
+      Node ID pool.\nFor each device the Node ID is assigned from a pool shared by
+      all devices rendering the same pool name.\nThis can be modified to include fewer
+      or more fields to keep separate pools or to use the same pool across areas.\nThis
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      available template fields are:\n  - `fabric_name`: The `fabric_name` assigned
+      to the device.\n  - `dc_name`: The `dc_name` assigned to the device.\n  - `pod_name`:
+      The `pod_name` assigned to the device.\n  - `type`: The `type` assigned to the
+      device.\n  - `rack`: The `rack` assigned to the device.\n\nBy default the Node
+      ID pool key is templated from `fabric_name`, `dc_name`, `pod_name` and `type`."
+    default: fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}
   fabric_sflow:
     documentation_options:
       table: management-sflow-settings
