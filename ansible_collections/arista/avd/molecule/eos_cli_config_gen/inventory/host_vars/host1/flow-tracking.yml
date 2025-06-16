@@ -94,3 +94,41 @@ flow_tracking:
     shutdown: false
     record:
       format_ipfix_standard_timestamps_counters: true
+  mirror_on_drop:
+    encapsulation:
+      ipv4_ipv6: true
+      mpls: true
+    sample_limit: 777
+    trackers:
+      - name: T1
+        record_export:
+          on_inactive_timeout: 3666
+          on_interval: 5666
+      - name: T2
+        exporters:
+          - name: T2-E1
+            collectors:
+              - host: 42.42.42.42
+              - host: sflow
+                port: 666
+              - host: 10.10.10.10
+                port: 777
+              - host: this.is.my.awesome.collector.dns.name
+                port: 888
+              - host: dead:beef::cafe
+              - host: collector.without.port
+            dscp: 50
+      - name: T3
+        exporters:
+          - name: T3-E3
+            collectors:
+              - host: sflow
+              - host: collector.with.port
+                port: 111
+            format: sflow
+            local_interface: Management1
+            template_interval: 424242
+          - name: T3-E4
+            collectors:
+              - host: dead:beef::cafe
+    shutdown: false

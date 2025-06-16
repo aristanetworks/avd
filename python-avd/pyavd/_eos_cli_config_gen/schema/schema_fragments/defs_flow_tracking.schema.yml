@@ -76,4 +76,3 @@ $defs:
                     description: Template interval in milliseconds.
       shutdown:
         type: bool
-        default: false
