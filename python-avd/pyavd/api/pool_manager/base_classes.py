@@ -95,6 +95,14 @@ class Pool(Generic[T_ValueType]):
 
         return self.assignments[key]
 
+    def get_assignment_by_value(self, value: T_ValueType) -> PoolAssignment[T_ValueType] | None:
+        """Returns the assignment with the given value if found in the pool."""
+        for assignment in self.assignments.values():
+            if assignment.value == value:
+                return assignment
+
+        return None
+
     def _remove_stale_assignments(self) -> None:
         """
         Remove stale assignments. An assignment is deemed stale if "accessed" is not True. Sets parent .changed if it removed anything.
