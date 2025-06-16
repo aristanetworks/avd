@@ -102,8 +102,10 @@ class OverlayMixin(Protocol):
         return default(self.inputs.fabric_evpn_encapsulation, self.node_type_key_data.default_evpn_encapsulation)
 
     @cached_property
-    def evpn_soo(self: SharedUtilsProtocol) -> str | None:
+    def evpn_soo(self: SharedUtilsProtocol) -> str:
         """
+        This should be called only when either `self.is_wan_router` or `self.overlay_vtep` is True.
+
         Site-Of-Origin used as BGP extended community.
 
         - For regular VTEPs this is <vtep_ip>:1
@@ -131,10 +133,7 @@ class OverlayMixin(Protocol):
             peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
             return f"{peer_fact.router_id}:{self.wan_site.id}"
 
-        if self.overlay_vtep:
-            return f"{self.vtep_ip}:1"
-
-        return None
+        return f"{self.vtep_ip}:1"
 
     @cached_property
     def overlay_evpn(self: SharedUtilsProtocol) -> bool:
