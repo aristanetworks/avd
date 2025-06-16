@@ -5003,6 +5003,85 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+      mirror_on_drop:
+        type: dict
+        keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                description: 'Set IPv4 and IPv6 encapsulations.
+
+                  Both IPv4 and IPv6 encapsulations must be set together.'
+                type: bool
+              mpls:
+                type: bool
+          sample_limit:
+            description: Limit the number of packets sampled.
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Tracker Name.
+                record_export:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/record_export
+                exporters:
+                  type: list
+                  primary_key: name
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Exporter Name.
+                      collectors:
+                        type: list
+                        primary_key: host
+                        items:
+                          type: dict
+                          $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collector
+                          keys:
+                            host:
+                              type: str
+                              description: 'Flow collector name.
+
+                                The collector name can be an IPv4 address, IPv6 address,
+                                fully qualified domain name or `"sflow"`.'
+                      format:
+                        type: str
+                        description: Configure flow export format. Valid values are
+                          platform dependent.
+                        valid_values:
+                        - sflow
+                        - drop-report
+                      local_interface:
+                        type: str
+                        description: Local source interface.
+                      template_interval:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 5000
+                        max: 3600000
+                        description: Template interval in milliseconds.
+                      dscp:
+                        type: int
+                        min: 0
+                        max: 63
+                        convert_types:
+                        - str
+          shutdown:
+            type: bool
   flow_trackings:
     documentation_options:
       table: flow-tracking
@@ -24388,7 +24467,6 @@ $defs:
                     description: Template interval in milliseconds.
       shutdown:
         type: bool
-        default: false
   interface_ip_nat:
     type: dict
     keys:

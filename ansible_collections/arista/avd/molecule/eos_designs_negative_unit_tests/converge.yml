@@ -118,23 +118,6 @@
               - ansible_failed_result is defined
               - ansible_failed_result.msg == expected_error_message
 
-- name: Converge Negative tests for 'eos_designs_facts' - mlag_same_subnet_1
-  hosts: mlag_same_subnet_1
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Run failure scenario Test
-      block:
-        - name: Trigger Error
-          ansible.builtin.import_role:
-            name: arista.avd.eos_designs
-      rescue:
-        - name: Assert eos_designs failed with the expected error message
-          ansible.builtin.assert:
-            that:
-              - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
-
 - name: Converge Negative tests for 'eos_designs_facts' - missing-mlag-peer-ipv4-pool
   hosts: missing-mlag-peer-ipv4-pool1
   gather_facts: false
@@ -567,23 +550,6 @@
 
 - name: Converge Negative tests for 'eos_designs_structured_config'
   hosts: missing-wan-carriers
-  gather_facts: false
-  connection: local
-  tasks:
-    - name: Run failure scenario Test
-      block:
-        - name: Trigger Error
-          ansible.builtin.import_role:
-            name: arista.avd.eos_designs
-      rescue:
-        - name: Assert eos_designs failed with the expected error message
-          ansible.builtin.assert:
-            that:
-              - ansible_failed_result is defined
-              - ansible_failed_result.msg == expected_error_message
-
-- name: Converge Negative tests for 'eos_designs_structured_config'
-  hosts: missing-wan-pathgroup-in-wan-carriers
   gather_facts: false
   connection: local
   tasks:
