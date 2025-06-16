@@ -13,6 +13,7 @@ class StructuredConfigKey(Enum):
 
     ETHERNET_INTERFACES = "ethernet_interfaces"
     PORT_CHANNEL_INTERFACES = "port_channel_interfaces"
+    VXLAN1_INTERFACE = "vxlan_interface.vxlan1"
     HTTPS_SSL_PROFILE = "management_api_http.https_ssl_profile"
     MLAG_CONFIGURATION = "mlag_configuration"
     MLAG_DUAL_PRIMARY_DETECTION_DELAY = "mlag_configuration.dual_primary_detection_delay"
