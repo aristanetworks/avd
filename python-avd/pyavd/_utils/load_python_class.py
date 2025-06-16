@@ -45,7 +45,7 @@ def load_python_class(module_path: str, class_name: str, parent_class: type | No
     try:
         cls = getattr(importlib.import_module(module_path), class_name)
     except ImportError as imp_exc:
-        raise AristaAvdError(imp_exc) from imp_exc
+        raise AristaAvdError(str(imp_exc)) from imp_exc
 
     if parent_class is not None and not issubclass(cls, parent_class):
         msg = f"{cls} is not a subclass of {parent_class} class"

@@ -373,6 +373,37 @@ agent KernelFib shutdown supervisor standby
 | Management42 | - | oob | default | - | - |
 | Vlan123 | inband_management | inband | default | - | - |
 
+##### Interface Redundancy
+
+###### Management0
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | 100 |
+| Monitor Link State | True |
+| Supervisor 1 Primary Interface | Management1/1 |
+| Supervisor 1 Backup Interfaces | Management1/2, Management2/1 |
+| Supervisor 2 Primary Interface | Management2/1 |
+| Supervisor 2 Backup Interfaces | Management2/2, Management1/1 |
+
+###### Management1
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | infinity |
+| Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
+| Monitor Neighbor Interval | 101 |
+| Monitor Neighbor Multiplier | 3 |
+
+###### Management42
+
+| Settings | Value |
+| -------- | ----- |
+| Fallback Delay | infinity |
+| Monitor Neighbor IPv6 Address | 1:1:1:1:1:1:1:1 |
+| Monitor Neighbor Interval | - |
+| Monitor Neighbor Multiplier | - |
+
 #### Management Interfaces Device Configuration
 
 ```eos
@@ -380,11 +411,17 @@ agent KernelFib shutdown supervisor standby
 interface Management0
    mac-address 00:1c:73:00:00:aa
    ip address 10.1.1.1
+   redundancy fallback-delay 100 seconds
+   redundancy monitor link-state
+   redundancy supervisor 1 interface primary Management1/1 backup Management1/2 Management2/1
+   redundancy supervisor 2 interface primary Management2/1 backup Management2/2 Management1/1
 !
 interface Management1
    description OOB_MANAGEMENT
    vrf MGMT
    ip address 10.73.255.122/24
+   redundancy fallback-delay infinity
+   redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1 interval 101 milliseconds multiplier 3
 !
 interface Management42
    shutdown
@@ -392,6 +429,8 @@ interface Management42
    no lldp transmit
    no lldp receive
    lldp tlv transmit ztp vlan 666
+   redundancy fallback-delay infinity
+   redundancy monitor neighbor ipv6 1:1:1:1:1:1:1:1
 !
 interface Vlan123
    description inband_management
@@ -4103,10 +4142,10 @@ interface Dps1
 
 #### Traffic Engineering
 
-| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
-| Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | TEST-SRLG |
-| Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | 16 |
+| Ethernet81/3 | True | 3,15-29,testgrp | 4 | 10 percent | 5 microseconds | 2,TEST-SRLG,ARISTA |
+| Ethernet81/4 | True | 4,7-100,testgrp | 2 | 100 mbps | twamp-light, fallback 2 milliseconds | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -5116,6 +5155,8 @@ interface Ethernet81/3
    traffic-engineering
    traffic-engineering bandwidth 10 percent
    traffic-engineering administrative-group 3,15-29,testgrp
+   traffic-engineering srlg 2
+   traffic-engineering srlg ARISTA
    traffic-engineering srlg TEST-SRLG
    traffic-engineering metric 4
    traffic-engineering min-delay static 5 microseconds
@@ -5128,7 +5169,6 @@ interface Ethernet81/4
    traffic-engineering
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
-   traffic-engineering srlg 16
    traffic-engineering metric 2
    traffic-engineering min-delay dynamic twamp-light fallback 2 milliseconds
 !
@@ -5377,9 +5417,9 @@ interface Ethernet84
 
 #### Traffic Engineering
 
-| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
-| Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | - |
+| Port-Channel136 | True | 7 | - | - | twamp-light, fallback 123 microseconds | 666 |
 
 #### Port-Channel Interfaces Device Configuration
 
@@ -6003,6 +6043,7 @@ interface Port-Channel136
    ip address 100.64.127.2/31
    traffic-engineering
    traffic-engineering administrative-group 7
+   traffic-engineering srlg 666
    traffic-engineering min-delay dynamic twamp-light fallback 123 microseconds
 !
 interface Port-Channel137
@@ -6012,6 +6053,7 @@ interface Port-Channel137
    traffic-engineering bandwidth 100 mbps
    traffic-engineering administrative-group 4,7-100,testgrp
    traffic-engineering srlg 16
+   traffic-engineering srlg TEST
    traffic-engineering metric 2
    traffic-engineering min-delay static 2 milliseconds
 ```
@@ -11090,6 +11132,12 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### TestProfile3
 
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | unicast |
+
 ### Platform Device Configuration
 
 ```eos
@@ -11099,6 +11147,7 @@ platform trident forwarding-table partition 2
 platform sand forwarding mode arad
 platform sand lag mode 512x32
 platform sand lag hardware-only
+platform fap buffering egress profile unicast
 platform sand qos map traffic-class 0 to network-qos 0
 platform sand qos map traffic-class 1 to network-qos 7
 platform sand qos map traffic-class 2 to network-qos 15
