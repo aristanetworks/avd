@@ -1,0 +1,11 @@
+type: l2leaf
+l2leaf:
+  nodes:
+    - name: source-interfaces-with-no-mgmt-and-inband-mgmt-interface
+      id: 1
+
+# Test: False condition of mgmt_interface and inband_mgmt_interface
+source_interfaces:
+  radius:
+    mgmt_interface: false
+    inband_mgmt_interface: false
