@@ -96,7 +96,7 @@ class UtilsMixin(Protocol):
           An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
         - `use_inband_mgmt_vrf` will return `(<inband_mgmt_vrf>, <vrfs[].source_interface or inband_mgmt_interface>)`.
           An error will be raised if inband management is not configured for the device.
-        - Any other string will return `(<vrf_input>, None)`
+        - Any other string will return `(<vrf_input>, <vrfs[].source_interface or None)`
 
         Args:
             vrf_input: The VRF input value for one server.
