@@ -104,7 +104,7 @@ repos:
       - id: ruff-format
 
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.401
+    rev: v1.1.402
     hooks:
       - id: pyright
         name: PyRight static type checker

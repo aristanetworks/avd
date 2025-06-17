@@ -19,6 +19,10 @@ keys:
       domain_lookup:
         type: dict
         description: IP Domain Lookup source-interfaces.
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: dns_settings
         keys:
           mgmt_interface:
             type: bool

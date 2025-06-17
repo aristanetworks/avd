@@ -5,6 +5,10 @@ domain_list: null
 enable_password:
   disabled: true
 hostname: custom-structured-configuration
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_igmp_snooping: {}
 ip_name_servers:
 - ip_address: 192.168.42.10
@@ -60,6 +64,13 @@ local_users:
 management_api_http:
   enable_https: null
   enable_vrfs: []
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.100.10/24
+  type: oob
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent

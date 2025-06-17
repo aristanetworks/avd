@@ -161,6 +161,13 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.100.15/24
+  type: oob
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 mlag_configuration:
@@ -171,10 +178,15 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 ntp:
+  local_interface:
+    name: Management1
+    vrf: MGMT
   servers:
   - name: 2.2.2.55
     preferred: true
+    vrf: MGMT
   - name: pool.ntp.org
+    vrf: MGMT
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_inband-mgmt-parent-ipv6-2_Port-Channel11

@@ -300,9 +300,28 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
 
     @structured_config_contributor
     def ip_name_servers(self) -> None:
-        """ip_name_servers set based on name_servers data-model and mgmt_interface_vrf."""
+        """Set ip name servers using old name_servers model and new dns_settings model. Results will be combined."""
         for name_server in self.inputs.name_servers:
             self.structured_config.ip_name_servers.append_new(ip_address=name_server, vrf=self.inputs.mgmt_interface_vrf)
+
+        if not self.inputs.dns_settings:
+            return
+
+        if self.inputs.dns_settings.domain:
+            self.structured_config.dns_domain = self.inputs.dns_settings.domain
+
+        vrfs = self.inputs.dns_settings.vrfs
+        for server in self.inputs.dns_settings.servers:
+            server_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=server.vrf,
+                vrfs=vrfs,
+                set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
+                context=f"dns_settings.servers[ip_address={server.ip_address}].vrf",
+            )
+            if source_interface:
+                self.structured_config.ip_domain_lookup.source_interfaces.append_new(name=source_interface, vrf=server_vrf if server_vrf != "default" else None)
+
+            self.structured_config.ip_name_servers.append_new(ip_address=server.ip_address, vrf=server_vrf, priority=server.priority)
 
     @structured_config_contributor
     def redundancy(self) -> None:
