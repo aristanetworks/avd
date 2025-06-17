@@ -99,6 +99,7 @@ pub(crate) mod tests {
         let result = schema.to_file(Some(file_path));
         assert!(result.is_ok())
     }
+    #[cfg(feature = "xz2")]
     #[test]
     pub(crate) fn dump_xz2() {
         let file_path = get_tmp_file("test_dump.xz2");

@@ -510,6 +510,7 @@ vlan_interfaces:
     shutdown: false
     ip_igmp: true
     ip_igmp_version: 2
+    ip_igmp_querier_address_virtual: true
     ip_address_virtual: 10.10.144.3/20
     ipv6_address: 1b11:3a00:22b0:5200::15/64
     ipv6_nd_managed_config_flag: true

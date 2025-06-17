@@ -73,6 +73,7 @@ class OverlayMixin(Protocol):
 
         if admin_subfield == "switch_id":
             if self.id is None:
+                # Should never happen but just in case.
                 msg = f"'id' is not set on '{self.hostname}' and 'overlay_rd_type_admin_subfield' is set to 'switch_id'"
                 raise AristaAvdInvalidInputsError(msg)
             return str(self.id + admin_subfield_offset)
@@ -103,11 +104,12 @@ class OverlayMixin(Protocol):
     @cached_property
     def evpn_soo(self: SharedUtilsProtocol) -> str:
         """
+        This should be called only when either `self.is_wan_router` or `self.overlay_vtep` is True.
+
         Site-Of-Origin used as BGP extended community.
 
         - For regular VTEPs this is <vtep_ip>:1
         - For WAN routers this is <router_id_of_primary_HA_router>:<site_id or 0>
-        - Otherwise this is <router_id>:1.
 
         TODO: Reconsider if suffix should just be :1 for all WAN routers.
         """
@@ -118,6 +120,8 @@ class OverlayMixin(Protocol):
 
             if self.wan_site is None:
                 # Should never happen but just in case.
+                # The self.wan_site could be None only when 'cv_pathfinder_site' is not defined and 'self.is_cv_pathfinder_client' is false.
+                # it will return from line 116.
                 msg = "Could not find 'cv_pathfinder_site' so it is not possible to generate evpn_soo."
                 raise AristaAvdInvalidInputsError(msg)
 
@@ -129,10 +133,7 @@ class OverlayMixin(Protocol):
             peer_fact = self.get_peer_facts(cast("str", self.wan_ha_peer))
             return f"{peer_fact.router_id}:{self.wan_site.id}"
 
-        if self.overlay_vtep:
-            return f"{self.vtep_ip}:1"
-
-        return f"{self.router_id}:1"
+        return f"{self.vtep_ip}:1"
 
     @cached_property
     def overlay_evpn(self: SharedUtilsProtocol) -> bool:
@@ -191,9 +192,6 @@ class OverlayMixin(Protocol):
 
     @cached_property
     def overlay_peering_address(self: SharedUtilsProtocol) -> str | None:
-        if not self.underlay_router:
-            return None
-
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
 
