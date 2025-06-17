@@ -3446,7 +3446,7 @@ sync-e
 
 #### Port-channel Load Balance Trident UDF Eth-type Headers
 
-| Eth-Type | IP Protocol |Header | Offset | Mask |
+| Eth-Type | IP Protocol | Header | Offset | Mask |
 | -------- | ---------- | ------ | ------ | ---- |
 | Ipv4 | GRE | inner l3 | 30 | 0x01 |
 | Ipv4 | - | inner l3 | 10 | 0xff |
