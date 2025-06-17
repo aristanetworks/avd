@@ -2730,6 +2730,74 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class DigitalTwin(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Fabric(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"os_version": {"type": str}, "username": {"type": str}, "password": {"type": str}}
+            os_version: str | None
+            """Desired Digital Twin OS version for fabric nodes."""
+            username: str
+            """Desired Digital Twin username for fabric nodes."""
+            password: str
+            """Desired Digital Twin clear-text password for fabric nodes."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    os_version: str | None | UndefinedType = Undefined,
+                    username: str | UndefinedType = Undefined,
+                    password: str | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Fabric.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        os_version: Desired Digital Twin OS version for fabric nodes.
+                        username: Desired Digital Twin username for fabric nodes.
+                        password: Desired Digital Twin clear-text password for fabric nodes.
+
+                    """
+
+        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
+        environment: Literal["act"]
+        """
+        Targeted Digital Twin environment.
+
+        Default value: `"act"`
+        """
+        fabric: Fabric
+        """
+        Global Digital Twin settings related to the configuration of fabric nodes.
+
+        Subclass of AvdModel.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
+                """
+                DigitalTwin.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    environment: Targeted Digital Twin environment.
+                    fabric:
+                       Global Digital Twin settings related to the configuration of fabric nodes.
+
+                       Subclass of AvdModel.
+
+                """
+
     class DnsSettings(AvdModel):
         """Subclass of AvdModel."""
 
@@ -2887,74 +2955,6 @@ class EosDesigns(EosDesignsRootModel):
                        `use_inband_mgmt_vrf`.
                        Can be set to `false` to avoid changes when migrating from old `name_servers`
                        model.
-
-                """
-
-    class DigitalTwin(AvdModel):
-        """Subclass of AvdModel."""
-
-        class Fabric(AvdModel):
-            """Subclass of AvdModel."""
-
-            _fields: ClassVar[dict] = {"os_version": {"type": str}, "username": {"type": str}, "password": {"type": str}}
-            os_version: str | None
-            """Desired Digital Twin OS version for fabric nodes."""
-            username: str
-            """Desired Digital Twin username for fabric nodes."""
-            password: str
-            """Desired Digital Twin clear-text password for fabric nodes."""
-
-            if TYPE_CHECKING:
-
-                def __init__(
-                    self,
-                    *,
-                    os_version: str | None | UndefinedType = Undefined,
-                    username: str | UndefinedType = Undefined,
-                    password: str | UndefinedType = Undefined,
-                ) -> None:
-                    """
-                    Fabric.
-
-
-                    Subclass of AvdModel.
-
-                    Args:
-                        os_version: Desired Digital Twin OS version for fabric nodes.
-                        username: Desired Digital Twin username for fabric nodes.
-                        password: Desired Digital Twin clear-text password for fabric nodes.
-
-                    """
-
-        _fields: ClassVar[dict] = {"environment": {"type": str, "default": "act"}, "fabric": {"type": Fabric}}
-        environment: Literal["act"]
-        """
-        Targeted Digital Twin environment.
-
-        Default value: `"act"`
-        """
-        fabric: Fabric
-        """
-        Global Digital Twin settings related to the configuration of fabric nodes.
-
-        Subclass of AvdModel.
-        """
-
-        if TYPE_CHECKING:
-
-            def __init__(self, *, environment: Literal["act"] | UndefinedType = Undefined, fabric: Fabric | UndefinedType = Undefined) -> None:
-                """
-                DigitalTwin.
-
-
-                Subclass of AvdModel.
-
-                Args:
-                    environment: Targeted Digital Twin environment.
-                    fabric:
-                       Global Digital Twin settings related to the configuration of fabric nodes.
-
-                       Subclass of AvdModel.
 
                 """
 
@@ -60895,6 +60895,7 @@ class EosDesigns(EosDesignsRootModel):
         "design": {"type": Design},
         "digital_twin": {"type": DigitalTwin},
         "digital_twin_mode": {"type": bool, "default": False},
+        "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -61803,6 +61804,12 @@ class EosDesigns(EosDesignsRootModel):
     topology, adjusted configuration, etc.).
 
     Default value: `False`
+    """
+    dns_settings: DnsSettings
+    """
+    DNS settings
+
+    Subclass of AvdModel.
     """
     enable_trunk_groups: bool
     """
@@ -63168,6 +63175,7 @@ class EosDesigns(EosDesignsRootModel):
             design: Design | UndefinedType = Undefined,
             digital_twin: DigitalTwin | UndefinedType = Undefined,
             digital_twin_mode: bool | UndefinedType = Undefined,
+            dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -63749,6 +63757,10 @@ class EosDesigns(EosDesignsRootModel):
                    change at any time.
                    Enable generation of the Digital Twin version of the fabric (Digital Twin
                    topology, adjusted configuration, etc.).
+                dns_settings:
+                   DNS settings
+
+                   Subclass of AvdModel.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group

@@ -1182,6 +1182,48 @@ keys:
         - mpls
         - l2ls
         default: l3ls-evpn
+  digital_twin:
+    documentation_options:
+      table: digital-twin-configuration
+    type: dict
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Global settings to configure the Digital Twin of the Fabric.'
+    keys:
+      environment:
+        type: str
+        description: Targeted Digital Twin environment.
+        valid_values:
+        - act
+        default: act
+      fabric:
+        type: dict
+        description: Global Digital Twin settings related to the configuration of
+          fabric nodes.
+        required: true
+        keys:
+          os_version:
+            type: str
+            description: Desired Digital Twin OS version for fabric nodes.
+          username:
+            type: str
+            description: Desired Digital Twin username for fabric nodes.
+            required: true
+          password:
+            type: str
+            description: Desired Digital Twin clear-text password for fabric nodes.
+            required: true
+  digital_twin_mode:
+    documentation_options:
+      table: digital-twin-configuration
+    type: bool
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
+      adjusted configuration, etc.).'
+    default: false
   dns_settings:
     documentation_options:
       table: management-settings
@@ -1240,48 +1282,6 @@ keys:
 
           Can be set to `false` to avoid changes when migrating from old `name_servers`
           model.'
-  digital_twin:
-    documentation_options:
-      table: digital-twin-configuration
-    type: dict
-    description: 'PREVIEW: This option is marked as "preview", meaning the data models
-      or generated configuration can change at any time.
-
-      Global settings to configure the Digital Twin of the Fabric.'
-    keys:
-      environment:
-        type: str
-        description: Targeted Digital Twin environment.
-        valid_values:
-        - act
-        default: act
-      fabric:
-        type: dict
-        description: Global Digital Twin settings related to the configuration of
-          fabric nodes.
-        required: true
-        keys:
-          os_version:
-            type: str
-            description: Desired Digital Twin OS version for fabric nodes.
-          username:
-            type: str
-            description: Desired Digital Twin username for fabric nodes.
-            required: true
-          password:
-            type: str
-            description: Desired Digital Twin clear-text password for fabric nodes.
-            required: true
-  digital_twin_mode:
-    documentation_options:
-      table: digital-twin-configuration
-    type: bool
-    description: 'PREVIEW: This option is marked as "preview", meaning the data models
-      or generated configuration can change at any time.
-
-      Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
-      adjusted configuration, etc.).'
-    default: false
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
