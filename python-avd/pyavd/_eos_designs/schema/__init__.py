@@ -42988,6 +42988,7 @@ class EosDesigns(EosDesignsRootModel):
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
                         enabled: bool
                         underlay_multicast_group: str | None
+                        """Specific multicast group to use for this VLAN."""
 
                         if TYPE_CHECKING:
 
@@ -43002,7 +43003,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                 Args:
                                     enabled: enabled
-                                    underlay_multicast_group: underlay_multicast_group
+                                    underlay_multicast_group: Specific multicast group to use for this VLAN.
 
                                 """
 

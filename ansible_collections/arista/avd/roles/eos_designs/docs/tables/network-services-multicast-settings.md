@@ -94,7 +94,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].evpn_l2_multicast.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vxlan_flood_multicast</samp>](## "<network_services_keys.name>.[].l2vlans.[].vxlan_flood_multicast") | Dictionary |  |  |  | Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].vxlan_flood_multicast.enabled") | Boolean | Required |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_group</samp>](## "<network_services_keys.name>.[].l2vlans.[].vxlan_flood_multicast.underlay_multicast_group") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;underlay_multicast_group</samp>](## "<network_services_keys.name>.[].l2vlans.[].vxlan_flood_multicast.underlay_multicast_group") | String |  |  |  | Specific multicast group to use for this VLAN. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_enabled") | Boolean |  |  |  | Enable or disable IGMP snooping (Enabled by default on EOS). |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;igmp_snooping_querier</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier") | Dictionary |  |  |  | Enable igmp snooping querier, by default using IP address of Loopback 0.<br>When enabled, igmp snooping querier will only be configured on l3 devices, i.e., uplink_type: p2p.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].l2vlans.[].igmp_snooping_querier.enabled") | Boolean |  |  |  | Will be enabled automatically if evpn_l2_multicast is enabled. |
@@ -406,6 +406,8 @@
             # Explicitly enable or disable vxlan_flood_multicast to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
             vxlan_flood_multicast:
               enabled: <bool; required>
+
+              # Specific multicast group to use for this VLAN.
               underlay_multicast_group: <str>
 
             # Enable or disable IGMP snooping (Enabled by default on EOS).
