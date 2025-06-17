@@ -168,7 +168,7 @@ $defs:
         documentation_options:
           table: network-services-multicast-settings
         type: dict
-        description: |
+        description: |-
           Explicitly enable or disable vxlan_flood_multicast to override settings of `<network_services_key>.[].vxlan_flood_multicast`.
         keys:
           enabled:
