@@ -139,8 +139,6 @@ class MiscMixin(Protocol):
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtilsProtocol) -> int | None:
-        if not self.platform_settings.feature_support.per_interface_mtu:
-            return None
         p2p_uplinks_mtu = default(self.platform_settings.p2p_uplinks_mtu, self.inputs.p2p_uplinks_mtu)
         return default(self.node_config.uplink_mtu, p2p_uplinks_mtu)
 
