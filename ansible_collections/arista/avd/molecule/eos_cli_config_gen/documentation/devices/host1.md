@@ -11131,7 +11131,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Resume | 33 |
 | Reserved | 23 cells |
 
-###### Ingress Priority Group
+###### Ingress Priority Groups
 
 | Group Number | Threshold | Reserved |
 | ------------ | --------- | -------- |
@@ -11159,7 +11159,7 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Resume | - |
 | Reserved | 232 bytes |
 
-###### Ingress Priority Group
+###### Ingress Priority Groups
 
 | Group Number | Threshold | Reserved |
 | ------------ | --------- | -------- |

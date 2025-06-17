@@ -64,17 +64,19 @@
 | {{ priority_group.id }} | {{ priority_group.threshold | arista.avd.default('-') }} | {{ reserved }} |
 {%                         endfor %}
 {%                     endif %}
+{%                     if profile.unicast_queues is arista.avd.defined or profile.multicast_queues is arista.avd.defined %}
 
 ###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
-{%                     for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
+{%                         for queue in profile.unicast_queues | arista.avd.natural_sort('id') %}
 | Unicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
-{%                     endfor %}
-{%                     for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
+{%                         endfor %}
+{%                         for queue in profile.multicast_queues | arista.avd.natural_sort('id') %}
 | Multicast | {{ queue.id }} | {{ queue.threshold | arista.avd.default('-') }} | {{ queue.reserved | arista.avd.default('-') }} {{ queue.unit | arista.avd.default('bytes') }} | {{ queue.drop_precedence | arista.avd.default('-') }} |
-{%                     endfor %}
+{%                         endfor %}
+{%                     endif %}
 {%                 endfor %}
 {%             endif %}
 {%         endif %}
