@@ -285,5 +285,5 @@ class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
         if self._created_from_null != other._created_from_null:
             raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
 
-        # Append non-existing items.
-        self._items.extend(new_item for new_item in other._items if new_item not in self._items)
+        for item in other._items:
+            self.append_unique(item)

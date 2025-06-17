@@ -168,4 +168,7 @@ class AvdBase(ABC):
 
         Args:
             other: The other instance of the same type to combine into this instance.
+
+        Raises:
+            AristaAvdDuplicateDataError: When conflicting information is found when combining.
         """
