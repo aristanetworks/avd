@@ -12,36 +12,47 @@ from yaml import safe_dump
 
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._eos_designs.shared_utils import SharedUtils
+from pyavd._schema.store import create_store
 from pyavd.api.pool_manager import PoolManager
 from pyavd.api.pool_manager.base_classes import FILE_HEADER
+
+# Load schema from pickled file into lru_cache before we start mocking the file open.
+create_store(load_from_yaml=False)
 
 DUMMYDIR = "mydir"
 """ Files will be mocked throughout. This will be the fake directory under which the data folder holding the pool files will be created. """
 
-TESTHOST1 = {"inventory_hostname": "testhost1", "fabric_name": "pool_manager_tests", "type": "l2leaf"}
-TESTHOST2 = {"inventory_hostname": "testhost2", "fabric_name": "pool_manager_tests", "type": "l2leaf"}
-TESTHOST3 = {"inventory_hostname": "testhost3", "fabric_name": "pool_manager_tests", "type": "l2leaf", "pod_name": "POD1"}
-TESTHOST4 = {"inventory_hostname": "testhost4", "fabric_name": "pool_manager_tests", "type": "l2leaf", "pod_name": "POD1", "dc_name": "DC1"}
+TESTHOST1 = {"inventory_hostname": "testhost1", "fabric_name": "pool_manager_tests", "type": "l2leaf", "l2leaf": {"defaults": {}}}
+TESTHOST2 = {"inventory_hostname": "testhost2", "fabric_name": "pool_manager_tests", "type": "l2leaf", "l2leaf": {"defaults": {}}}
+TESTHOST3 = {"inventory_hostname": "testhost3", "fabric_name": "pool_manager_tests", "type": "l2leaf", "pod_name": "POD1", "l2leaf": {"defaults": {}}}
+TESTHOST4 = {
+    "inventory_hostname": "testhost4",
+    "fabric_name": "pool_manager_tests",
+    "type": "l2leaf",
+    "pod_name": "POD1",
+    "dc_name": "DC1",
+    "l2leaf": {"defaults": {}},
+}
 
 
-def get_assignment(hostvars: dict, node_id: int) -> dict:
-    return {"key": {"hostname": hostvars["inventory_hostname"]}, "value": node_id}
+def get_assignment(hostvars: dict, node_id: int) -> dict[str, int]:
+    return {f"hostname={hostvars['inventory_hostname']}": node_id}
 
 
-def get_pool(hostvars: dict, assignments: list[dict] | None = None) -> dict:
+def get_pool(hostvars: dict, assignments: list[dict[str, int]] | None = None) -> dict[str, dict[str, int]]:
+    pool_key = f"fabric_name={hostvars['fabric_name']}"
+    if "dc_name" in hostvars:
+        pool_key += f"/dc_name={hostvars['dc_name']}"
+    if "pod_name" in hostvars:
+        pool_key += f"/pod_name={hostvars['pod_name']}"
+    pool_key += f"/type={hostvars['type']}"
     return {
-        "pool_key": {
-            "fabric_name": hostvars.get("fabric_name"),
-            "dc_name": hostvars.get("dc_name"),
-            "pod_name": hostvars.get("pod_name"),
-            "type": hostvars.get("type"),
-        },
-        "assignments": assignments or [],
+        pool_key: {key: value for assignment in assignments or [] for key, value in assignment.items()},
     }
 
 
-def get_data(pools: list[dict] | None = None) -> dict:
-    return {"node_id_pools": pools or []}
+def get_data(pools: list[dict[str, dict[str, int]]] | None = None) -> dict[str, dict[str, dict[str, int]]]:
+    return {"node_id_pools": {key: value for pool in pools or {} for key, value in pool.items()}}
 
 
 BASIC_DATA = get_data([get_pool(TESTHOST1, [get_assignment(TESTHOST1, 1)])])
@@ -50,7 +61,7 @@ BASIC_DATA = get_data([get_pool(TESTHOST1, [get_assignment(TESTHOST1, 1)])])
 
 def get_file_content(data: dict) -> str:
     """Computed file content either to be used for mock_file_content or expected file content."""
-    return f"{FILE_HEADER}{safe_dump(data)}"
+    return f"{FILE_HEADER}{safe_dump(data, sort_keys=False)}"
 
 
 @pytest.mark.parametrize(
@@ -237,7 +248,7 @@ def test_avdpoolmanager_pool(
             requested_id = requested_ids[index] if requested_ids else None
             _hostvars = hostvars.copy()
             hostname = _hostvars.pop("inventory_hostname")
-            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns(**_hostvars), templar=object(), peer_facts={})
+            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns._from_dict(hostvars), templar=object(), peer_facts={})
             # Get the id of the host from hostvars. If not, a new data set will be created.
             assert pool_manager.get_assignment("node_id_pools", shared_utils, requested_id) == expected_ids[index]
 
@@ -287,59 +298,44 @@ class DummySharedUtils:
         pytest.param(
             {"node_id_pools": "test"},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type '<class 'str'>'. Expected a list."),
+            TypeError("Invalid type '<class 'str'>'. Expected a dict."),
             id="invalid_pools_type",
         ),
         pytest.param(
-            {"node_id_pools": [{"pool_key": "wrong"}]},
+            {"node_id_pools": {123: {}}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for 'pool_key' '<class 'str'>'. Expected a dict."),
+            TypeError("Invalid type for pool key '<class 'int'>'. Expected a str."),
             id="invalid_pool_key_type",
         ),
         pytest.param(
-            {"node_id_pools": [{"pool_key": {"foo": "bar"}}]},
-            DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError(r"NodeIdPoolKey.__init__\(\) got an unexpected keyword argument 'foo'"),
-            id="invalid_pool_key_dict_keys",
-        ),
-        pytest.param(
-            {"node_id_pools": [{"pool_key": {"pod_name": "foo", "type": "mytype"}}]},
-            DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError(r"NodeIdPoolKey.__init__\(\) missing 2 required positional arguments: 'fabric_name' and 'dc_name'"),
-            id="missing_pool_key_dict_keys",
-        ),
-        pytest.param(
-            {"node_id_pools": [{"pool_key": {"fabric_name": "fabric", "dc_name": "dc", "pod_name": "pod", "type": "mytype"}}]},
+            {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": None}},
             DummySharedUtils(fabric_name="Test", type="test"),
             TypeError("assignments"),
             id="missing_pool_assignments",
         ),
         pytest.param(
-            {"node_id_pools": [{"pool_key": {"fabric_name": "fabric", "dc_name": "dc", "pod_name": "pod", "type": "mytype"}, "assignments": "foo"}]},
+            {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": "foo"}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for 'assignments' '<class 'str'>'. Expected a list."),
+            TypeError("Invalid type for pool assignments '<class 'str'>'. Expected a dict."),
             id="invalid_pool_assignments_type",
         ),
         pytest.param(
-            {"node_id_pools": [{"pool_key": {"fabric_name": "fabric", "dc_name": "dc", "pod_name": "pod", "type": "mytype"}, "assignments": ["foo"]}]},
+            {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": ["foo"]}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid assignment type '<class 'str'>'. Expected a dict."),
+            TypeError("Invalid type for pool assignments '<class 'list'>'. Expected a dict."),
             id="invalid_pool_assignment_type",
         ),
         pytest.param(
-            {"node_id_pools": [{"pool_key": {"fabric_name": "fabric", "dc_name": "dc", "pod_name": "pod", "type": "mytype"}, "assignments": [{"key": "foo"}]}]},
+            {"node_id_pools": {"fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": {123: 123}}},
             DummySharedUtils(fabric_name="Test", type="test"),
-            TypeError("Invalid type for assignment 'key' '<class 'str'>'. Expected a dict."),
+            TypeError("Invalid type for assignment key '<class 'int'>'. Expected a str."),
             id="invalid_pool_assignment_key",
         ),
         pytest.param(
             {
-                "node_id_pools": [
-                    {
-                        "pool_key": {"fabric_name": "fabric", "dc_name": "dc", "pod_name": "pod", "type": "mytype"},
-                        "assignments": [{"key": {"hostname": "myhost"}, "value": "foo"}],
-                    }
-                ]
+                "node_id_pools": {
+                    "fabric_name=fabric/dc_name=dc/pod_name=pod/type=mytype": {"hostname=myhost": "foo"},
+                }
             },
             DummySharedUtils(fabric_name="Test", type="test"),
             TypeError("Invalid type for assignment 'value' '<class 'str'>'. Expected a int."),

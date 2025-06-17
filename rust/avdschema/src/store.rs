@@ -95,9 +95,12 @@ mod tests {
         let result = store.to_file(Some(file_path));
         assert!(result.is_ok());
 
-        let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
-        let result = store.to_file(Some(file_path));
-        assert!(result.is_ok());
+        #[cfg(feature = "xz2")]
+        {
+            let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
+            let result = store.to_file(Some(file_path));
+            assert!(result.is_ok());
+        }
     }
 
     #[test]
@@ -116,10 +119,13 @@ mod tests {
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), *store);
 
-        let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
-        let result = Store::from_file(Some(file_path));
-        assert!(result.is_ok());
-        assert_eq!(result.unwrap(), *store);
+        #[cfg(feature = "xz2")]
+        {
+            let file_path = get_tmp_file("test_dump_avd_store_resolved.xz2");
+            let result = Store::from_file(Some(file_path));
+            assert!(result.is_ok());
+            assert_eq!(result.unwrap(), *store);
+        }
     }
 
     #[test]

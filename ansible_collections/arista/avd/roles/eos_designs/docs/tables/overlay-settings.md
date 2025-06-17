@@ -70,7 +70,7 @@
     # Customize the description on overlay interface Loopback0.
     # This key is deprecated.
     # Support will be removed in AVD version 6.0.0.
-    # Use <samp>router_id_loopback_description</samp> instead.
+    # Use `router_id_loopback_description` instead.
     overlay_loopback_description: <str>
 
     # IPv6 Unnumbered for MLAG iBGP connections.

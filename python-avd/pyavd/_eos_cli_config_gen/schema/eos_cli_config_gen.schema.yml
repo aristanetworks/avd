@@ -5003,6 +5003,85 @@ keys:
               format_ipfix_standard_timestamps_counters:
                 type: bool
                 description: Enable software export of IPFIX data records.
+      mirror_on_drop:
+        type: dict
+        keys:
+          encapsulation:
+            type: dict
+            keys:
+              ipv4_ipv6:
+                description: 'Set IPv4 and IPv6 encapsulations.
+
+                  Both IPv4 and IPv6 encapsulations must be set together.'
+                type: bool
+              mpls:
+                type: bool
+          sample_limit:
+            description: Limit the number of packets sampled.
+            type: int
+            convert_types:
+            - str
+            min: 1
+            max: 4294967295
+          trackers:
+            type: list
+            primary_key: name
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: Tracker Name.
+                record_export:
+                  type: dict
+                  $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/record_export
+                exporters:
+                  type: list
+                  primary_key: name
+                  items:
+                    type: dict
+                    keys:
+                      name:
+                        type: str
+                        description: Exporter Name.
+                      collectors:
+                        type: list
+                        primary_key: host
+                        items:
+                          type: dict
+                          $ref: eos_cli_config_gen#/$defs/flow_tracking/keys/trackers/items/keys/exporters/items/keys/collector
+                          keys:
+                            host:
+                              type: str
+                              description: 'Flow collector name.
+
+                                The collector name can be an IPv4 address, IPv6 address,
+                                fully qualified domain name or `"sflow"`.'
+                      format:
+                        type: str
+                        description: Configure flow export format. Valid values are
+                          platform dependent.
+                        valid_values:
+                        - sflow
+                        - drop-report
+                      local_interface:
+                        type: str
+                        description: Local source interface.
+                      template_interval:
+                        type: int
+                        convert_types:
+                        - str
+                        min: 5000
+                        max: 3600000
+                        description: Template interval in milliseconds.
+                      dscp:
+                        type: int
+                        min: 0
+                        max: 63
+                        convert_types:
+                        - str
+          shutdown:
+            type: bool
   flow_trackings:
     documentation_options:
       table: flow-tracking
@@ -10325,26 +10404,22 @@ keys:
                 description: 'The queue profile to be applied to the platform.
 
                   '
-              headroom_pool_limit:
+              headroom_pool:
                 type: dict
-                description: Max limit on headroom pool size.
                 keys:
-                  bytes:
+                  unit:
+                    type: str
+                    valid_values:
+                    - bytes
+                    - cells
+                    description: 'Unit to be used for the `headroom_pool` value.
+
+                      If not specified, default is bytes.'
+                  limit:
                     type: int
                     convert_types:
                     - str
-                    description: 'Headroom pool limit in bytes.
-
-                      `bytes` and `cells` are mutually exclusive with `bytes` taking
-                      precedence.'
-                  cells:
-                    type: int
-                    convert_types:
-                    - str
-                    description: 'Headroom pool limit in cells.
-
-                      `bytes` and `cells` are mutually exclusive with `bytes` taking
-                      precedence.'
+                    description: Max limit on headroom pool size.
               queue_profiles:
                 type: list
                 primary_key: name
@@ -10353,9 +10428,117 @@ keys:
                   keys:
                     name:
                       type: str
+                    ingress:
+                      type: dict
+                      keys:
+                        priority_groups:
+                          type: list
+                          primary_key: id
+                          items:
+                            type: dict
+                            keys:
+                              id:
+                                type: int
+                                convert_types:
+                                - str
+                                description: Priority-group group number.
+                                min: 0
+                                max: 7
+                              threshold:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '1'
+                                - 1/128
+                                - 1/16
+                                - 1/2
+                                - 1/32
+                                - 1/4
+                                - 1/64
+                                - 1/8
+                                - '2'
+                                - '4'
+                                - '8'
+                              reserved:
+                                type: dict
+                                keys:
+                                  unit:
+                                    type: str
+                                    valid_values:
+                                    - bytes
+                                    - cells
+                                    description: 'Unit to be used for the `priority_groups`
+                                      `reserved` value.
+
+                                      If not specified, default is bytes.'
+                                  memory:
+                                    type: int
+                                    convert_types:
+                                    - str
+                                    description: Specify the amount of memory that
+                                      should be reserved.
+                        threshold:
+                          type: str
+                          convert_types:
+                          - int
+                          description: Specify the dynamic shared memory threshold.
+                          valid_values:
+                          - '1'
+                          - 1/128
+                          - 1/16
+                          - 1/2
+                          - 1/32
+                          - 1/4
+                          - 1/64
+                          - 1/8
+                          - '2'
+                          - '4'
+                          - '8'
+                        reserved:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the `reserved` value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        headroom:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the headroom value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        resume:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Amount of memory that should be reserved (in
+                            bytes)
                     multicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress multicast queues.
                       items:
                         type: dict
                         keys:
@@ -10392,6 +10575,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10415,6 +10610,7 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress unicast queues.
                       items:
                         type: dict
                         keys:
@@ -10451,6 +10647,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -23300,6 +23508,8 @@ keys:
           - str
           min: 1
           max: 3
+        ip_igmp_querier_address_virtual:
+          type: bool
         ip_igmp_host_proxy:
           type: dict
           keys:
@@ -24406,7 +24616,6 @@ $defs:
                     description: Template interval in milliseconds.
       shutdown:
         type: bool
-        default: false
   interface_ip_nat:
     type: dict
     keys:
