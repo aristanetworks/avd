@@ -502,11 +502,6 @@ class AvdModel(AvdBase):
                 old_value._combine(new_value)
                 continue
 
-            if field_type is dict:
-                # TODO: In place combining without schema - need to set the keys probably
-                setattr(self, field, new_value)
-                continue
-
             if old_value != new_value:
                 # this also applies to fields where field_type is dict
                 raise AristaAvdDuplicateDataError(type(self).__name__, str(self._dump()), str(other._dump()))
