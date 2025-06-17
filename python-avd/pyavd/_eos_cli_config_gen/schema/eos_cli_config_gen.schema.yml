@@ -7021,23 +7021,36 @@ keys:
                           description: Use the UDP destination port as a hash input.
                           convert_types:
                           - str
+                        single_line_payload_bytes:
+                          type: str
+                          description: "Specifies the UDP payload bytes to use in
+                            hash calculation.\nAccepts:\n  - A single byte (e.g.,
+                            \"10\")\n  - Comma-separated bytes (e.g., \"0,1,5\")\n
+                            \ - Ranges (e.g., \"0-15\")\n  - Combinations of the above
+                            (e.g., \"0-10,12,15,20-25\")\nValid byte positions range
+                            from 0 to 62.\nThis field generates a single-line command:
+                            `fields udp dst-port <dst_port> <payload_bytes>`.\nThis
+                            option is mutually exclusive with `payload_bytes`. If
+                            both are specified, `payload_bytes` takes precedence."
                         payload_bytes:
                           type: str
-                          description: 'Specifies the UDP payload bytes to use in
-                            hash calculation.
-
-                            Accepts single bytes (e.g., "10"), comma-separated bytes
-                            (e.g., "0,1,5"),
-
-                            ranges (e.g., "0-15"), or combinations (e.g., "0-10,12,15,20-25").
-
-                            Valid values are between 0 and 62.'
+                          description: "Specifies the UDP payload bytes to use in
+                            hash calculation.\nAccepts:\n  - A single byte (e.g.,
+                            \"10\")\n  - Comma-separated bytes (e.g., \"0,1,5\")\n
+                            \ - Ranges (e.g., \"0-15\")\n  - Combinations of the above
+                            (e.g., \"0-10,12,15,20-25\")\nValid byte positions range
+                            from 0 to 62.\nThis field generates a multi-line command
+                            format.\nThis option is mutually exclusive with `single_line_payload_bytes`
+                            and takes precedence if both are provided.\nSupported
+                            only on EOS versions 4.33.1F and later."
                           convert_types:
                           - int
                         match:
                           type: dict
-                          description: Configuration to match specific bits and define
+                          description: 'Configuration to match specific bits and define
                             custom payload-based hashing.
+
+                            Supported only on EOS versions 4.33.1F and later.'
                           keys:
                             payload_bits:
                               type: str

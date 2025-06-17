@@ -13,12 +13,17 @@ load-balance policies
 {%         endif %}
    load-balance sand profile {{ profile.name }}
 {%         if profile.fields.udp is arista.avd.defined %}
-      fields udp dst-port {{ profile.fields.udp.dst_port }}
-{%             if profile.fields.udp.match is arista.avd.defined %}
+{%             set udp_cli = "fields udp dst-port " ~ profile.fields.udp.dst_port %}
+{%             if profile.fields.udp.payload_bytes is arista.avd.defined or profile.fields.udp.match is arista.avd.defined %}
+      {{ udp_cli }}
+{%                 if profile.fields.udp.match is arista.avd.defined %}
          match payload bits {{ profile.fields.udp.match.payload_bits }} pattern {{ profile.fields.udp.match.pattern }} hash payload bytes {{ profile.fields.udp.match.hash_payload_bytes }}
-{%             endif %}
-{%             if profile.fields.udp.payload_bytes is arista.avd.defined %}
+{%                 endif %}
+{%                 if profile.fields.udp.payload_bytes is arista.avd.defined %}
          payload bytes {{ profile.fields.udp.payload_bytes }}
+{%                 endif %}
+{%             elif profile.fields.udp.single_line_payload_bytes is arista.avd.defined %}
+      {{ udp_cli }} payload bytes {{ profile.fields.udp.single_line_payload_bytes }}
 {%             endif %}
 {%         endif %}
 {%     endfor %}

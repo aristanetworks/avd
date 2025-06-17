@@ -17719,21 +17719,50 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                     """
 
-                        _fields: ClassVar[dict] = {"dst_port": {"type": int}, "payload_bytes": {"type": str}, "match": {"type": Match}}
+                        _fields: ClassVar[dict] = {
+                            "dst_port": {"type": int},
+                            "single_line_payload_bytes": {"type": str},
+                            "payload_bytes": {"type": str},
+                            "match": {"type": Match},
+                        }
                         dst_port: int
                         """Use the UDP destination port as a hash input."""
+                        single_line_payload_bytes: str | None
+                        """
+                        Specifies the UDP payload bytes to use in hash calculation.
+                        Accepts:
+                          - A single byte (e.g., "10")
+                        - Comma-separated bytes (e.g., "0,1,5")
+                          - Ranges (e.g., "0-15")
+                          - Combinations of the above
+                        (e.g., "0-10,12,15,20-25")
+                        Valid byte positions range from 0 to 62.
+                        This field generates a single-
+                        line command: `fields udp dst-port <dst_port> <payload_bytes>`.
+                        This option is mutually exclusive
+                        with `payload_bytes`. If both are specified, `payload_bytes` takes precedence.
+                        """
                         payload_bytes: str | None
                         """
                         Specifies the UDP payload bytes to use in hash calculation.
-                        Accepts single bytes (e.g., "10"),
-                        comma-separated bytes (e.g., "0,1,5"),
-                        ranges (e.g., "0-15"), or combinations (e.g.,
-                        "0-10,12,15,20-25").
-                        Valid values are between 0 and 62.
+                        Accepts:
+                          - A single byte (e.g., "10")
+                        - Comma-separated bytes (e.g., "0,1,5")
+                          - Ranges (e.g., "0-15")
+                          - Combinations of the above
+                        (e.g., "0-10,12,15,20-25")
+                        Valid byte positions range from 0 to 62.
+                        This field generates a multi-
+                        line command format.
+                        This option is mutually exclusive with `single_line_payload_bytes` and takes
+                        precedence if both are provided.
+                        Supported only on EOS versions 4.33.1F and later.
                         """
                         match: Match
                         """
                         Configuration to match specific bits and define custom payload-based hashing.
+                        Supported only on EOS
+                        versions 4.33.1F and later.
 
                         Subclass of AvdModel.
                         """
@@ -17744,6 +17773,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 self,
                                 *,
                                 dst_port: int | UndefinedType = Undefined,
+                                single_line_payload_bytes: str | None | UndefinedType = Undefined,
                                 payload_bytes: str | None | UndefinedType = Undefined,
                                 match: Match | UndefinedType = Undefined,
                             ) -> None:
@@ -17755,15 +17785,37 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                                 Args:
                                     dst_port: Use the UDP destination port as a hash input.
+                                    single_line_payload_bytes:
+                                       Specifies the UDP payload bytes to use in hash calculation.
+                                       Accepts:
+                                         - A single byte (e.g., "10")
+                                       - Comma-separated bytes (e.g., "0,1,5")
+                                         - Ranges (e.g., "0-15")
+                                         - Combinations of the above
+                                       (e.g., "0-10,12,15,20-25")
+                                       Valid byte positions range from 0 to 62.
+                                       This field generates a single-
+                                       line command: `fields udp dst-port <dst_port> <payload_bytes>`.
+                                       This option is mutually exclusive
+                                       with `payload_bytes`. If both are specified, `payload_bytes` takes precedence.
                                     payload_bytes:
                                        Specifies the UDP payload bytes to use in hash calculation.
-                                       Accepts single bytes (e.g., "10"),
-                                       comma-separated bytes (e.g., "0,1,5"),
-                                       ranges (e.g., "0-15"), or combinations (e.g.,
-                                       "0-10,12,15,20-25").
-                                       Valid values are between 0 and 62.
+                                       Accepts:
+                                         - A single byte (e.g., "10")
+                                       - Comma-separated bytes (e.g., "0,1,5")
+                                         - Ranges (e.g., "0-15")
+                                         - Combinations of the above
+                                       (e.g., "0-10,12,15,20-25")
+                                       Valid byte positions range from 0 to 62.
+                                       This field generates a multi-
+                                       line command format.
+                                       This option is mutually exclusive with `single_line_payload_bytes` and takes
+                                       precedence if both are provided.
+                                       Supported only on EOS versions 4.33.1F and later.
                                     match:
                                        Configuration to match specific bits and define custom payload-based hashing.
+                                       Supported only on EOS
+                                       versions 4.33.1F and later.
 
                                        Subclass of AvdModel.
 
