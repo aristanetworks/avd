@@ -7,7 +7,7 @@ import re
 from pyavd._errors import AristaAvdError
 
 try:
-    from passlib.hash import sha512_crypt
+    from avdutils.passwords import sha512_crypt
 except ImportError as imp_exc:
     raise AristaAvdError(imp_exc) from imp_exc
 
@@ -62,7 +62,7 @@ def _user_password_hash(clear_password: str, salt: str | None = None) -> str:
 
     try:
         # setting the rounds parameter to 5000 to omit rounds from the hash string, similar to EOS implementation
-        return sha512_crypt.using(rounds=5000, salt=salt).hash(clear_password)
+        return sha512_crypt(clear_password, salt)
     except Exception as exc:
         msg = "SHA-512 password hashing failed - check the input parameters of arista.avd.secure_hash"
         raise ValueError(msg) from exc
