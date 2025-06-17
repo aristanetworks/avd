@@ -11523,6 +11523,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -11665,6 +11666,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            Feature will be ignored on unsupported platforms.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -11688,6 +11696,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -11773,6 +11782,9 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Arista SD-WAN solution.
                            This feature raises an exception when used on unsupported
                            platforms.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           Feature will be ignored on unsupported platforms.
 
                     """
 
@@ -12230,6 +12242,7 @@ class EosDesigns(EosDesignsRootModel):
                 "hardware_speed_group": {"type": bool, "default": True},
                 "private_vlan": {"type": bool, "default": True},
                 "wan": {"type": bool, "default": True},
+                "ptp": {"type": bool, "default": True},
             }
             queue_monitor: bool
             """
@@ -12372,6 +12385,13 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `True`
             """
+            ptp: bool
+            """
+            Support for Precision Time Protocol (PTP).
+            Feature will be ignored on unsupported platforms.
+
+            Default value: `True`
+            """
 
             if TYPE_CHECKING:
 
@@ -12395,6 +12415,7 @@ class EosDesigns(EosDesignsRootModel):
                     hardware_speed_group: bool | UndefinedType = Undefined,
                     private_vlan: bool | UndefinedType = Undefined,
                     wan: bool | UndefinedType = Undefined,
+                    ptp: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
                     FeatureSupport.
@@ -12480,6 +12501,9 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Arista SD-WAN solution.
                            This feature raises an exception when used on unsupported
                            platforms.
+                        ptp:
+                           Support for Precision Time Protocol (PTP).
+                           Feature will be ignored on unsupported platforms.
 
                     """
 

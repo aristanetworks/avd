@@ -143,6 +143,7 @@ custom_platform_settings:
       queue_monitor_length_notify: false
       hardware_speed_group: false
       per_interface_l2_mru: false
+      ptp: false
     p2p_uplinks_mtu: 9194
   - platforms:
       - customplatform
@@ -187,6 +188,11 @@ l3leaf:
     bgp_as: 65001
     loopback_ipv4_pool: 10.10.10.0/24
     vtep_loopback_ipv4_pool: 10.10.20.0/24
+    # Test PTP
+    ptp:
+      enabled: true
+    uplink_ptp:
+      enable: true
   nodes:
     - name: HARDWARE_FEATURES_VEOS_LAB
       id: 1
@@ -197,6 +203,11 @@ l3leaf:
     - name: HARDWARE_FEATURES_CLOUDEOS
       id: 3
       platform: cloudEOS
+      # Test PTP
+      ptp:
+        enabled: true
+      uplink_ptp:
+        enable: true
     - name: HARDWARE_FEATURES_720XP
       id: 4
       # Supports PoE
@@ -243,6 +254,9 @@ servers:
             action: maintain
         l2_mtu: 1001
         l2_mru: 1002
+        # Test PTP
+        ptp:
+          enabled: true
   - name: TEST_MTU_MRU
     adapters:
       - switch_ports:
@@ -449,3 +463,17 @@ hardware_counters:
     - name: vni encap
     - name: vtep decap
     - name: vtep encap
+
+core_interfaces:
+  p2p_links:
+    - nodes: [HARDWARE_FEATURES_VEOS_LAB, HARDWARE_FEATURES_CLOUDEOS]
+      interfaces: [Ethernet4, Ethernet4]
+      as: ["65000", "65001"]
+      ip: ["10.10.10.0/31", "10.10.10.1/31"]
+      # Test PTP
+      ptp:
+        enabled: true
+
+# Test PTP
+uplink_ptp:
+  enable: true

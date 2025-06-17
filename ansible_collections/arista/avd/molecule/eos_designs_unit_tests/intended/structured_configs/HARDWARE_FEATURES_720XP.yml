@@ -18,6 +18,16 @@ ethernet_interfaces:
   poe:
     reboot:
       action: maintain
+  ptp:
+    enable: true
+    announce:
+      interval: 0
+      timeout: 3
+    delay_req: -3
+    sync_message:
+      interval: -3
+    role: master
+    transport: ipv4
   peer: TEST_POE
   peer_interface: ETH4_WITH_POE
   peer_type: server
@@ -100,6 +110,24 @@ prefix_lists:
     action: permit 10.10.10.0/24 eq 32
   - sequence: 20
     action: permit 10.10.20.0/24 eq 32
+ptp:
+  mode: boundary
+  clock_identity: 00:1C:73:1e:00:04
+  priority1: 30
+  priority2: 4
+  domain: 127
+  monitor:
+    enabled: true
+    threshold:
+      offset_from_master: 250
+      mean_path_delay: 1500
+    missing_message:
+      sequence_ids:
+        enabled: true
+        announce: 3
+        delay_resp: 3
+        follow_up: 3
+        sync: 3
 queue_monitor_length:
   enabled: true
 queue_monitor_streaming:

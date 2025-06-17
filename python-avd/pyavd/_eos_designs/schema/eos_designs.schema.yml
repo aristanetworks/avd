@@ -4221,6 +4221,12 @@ keys:
 
                 This feature raises an exception when used on unsupported platforms.'
               default: true
+            ptp:
+              type: bool
+              description: 'Support for Precision Time Protocol (PTP).
+
+                Feature will be ignored on unsupported platforms.'
+              default: true
         management_interface:
           type: str
           default: Management1
