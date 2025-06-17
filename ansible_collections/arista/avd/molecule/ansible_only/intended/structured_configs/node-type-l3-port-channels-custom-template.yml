@@ -166,7 +166,7 @@ metadata:
       pathgroup: INET
 port_channel_interfaces:
 - name: Port-Channel5
-  description: StreamFast_peer2
+  description: custom_StreamFast_peer2
   shutdown: false
   service_policy:
     qos:
@@ -182,7 +182,7 @@ port_channel_interfaces:
 
     '
 - name: Port-Channel5.100
-  description: StreamFast_peer2
+  description: custom_StreamFast_peer2
   shutdown: false
   encapsulation_dot1q:
     vlan: 108
@@ -194,7 +194,7 @@ port_channel_interfaces:
   peer_interface: Port-Channel15
   peer_type: l3_port_channel
 - name: Port-Channel5.105
-  description: StreamFast_peer2
+  description: custom_StreamFast_peer2
   shutdown: false
   encapsulation_dot1q:
     vlan: 105

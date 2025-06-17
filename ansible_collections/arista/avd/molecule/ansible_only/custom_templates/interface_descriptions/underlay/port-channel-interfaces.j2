@@ -1,7 +1,7 @@
 {% if link.main_port_channel_wan_carrier is arista.avd.defined %}
-{{ link.main_port_channel_wan_carrier }}_{{ link.peer }}
+custom_{{ link.main_port_channel_wan_carrier }}_{{ link.peer }}
 {% elif link.wan_carrier is arista.avd.defined %}
-{{ link.wan_carrier }}_{{ link.peer }}
+custom_{{ link.wan_carrier }}_{{ link.peer }}
 {% else %}
 {{ description_prefix }}_{{ link.peer | upper }}_Po{{ link.channel_group_id }}_To_Po{{ link.peer_channel_group_id }}_{{ link.channel_description }}
 {% endif %}
