@@ -1,0 +1,26 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  fabric_numbering_node_id_pool:
+    type: str
+    documentation_options:
+      table: fabric-numbering
+    description: |-
+      Name of Node ID pool or template used to render the name of each Node ID pool.
+      For each device the Node ID is assigned from a pool shared by all devices rendering the same pool name.
+      This can be modified to include fewer or more fields to keep separate pools or to use the same pool across areas.
+      This can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.
+      The available template fields are:
+        - `fabric_name`: The `fabric_name` assigned to the device.
+        - `dc_name`: The `dc_name` assigned to the device.
+        - `pod_name`: The `pod_name` assigned to the device.
+        - `type`: The `type` assigned to the device.
+        - `rack`: The `rack` assigned to the device.
+
+      By default the Node ID pool key is templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
+    default: "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"
