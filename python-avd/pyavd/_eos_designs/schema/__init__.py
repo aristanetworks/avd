@@ -4,7 +4,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, ClassVar, Literal
+from typing import TYPE_CHECKING, ClassVar, Literal
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._schema.coerce_type import coerce_type
@@ -816,6 +816,44 @@ class EosDesigns(EosDesignsRootModel):
                        Subclass of AvdModel.
 
                 """
+
+    class CustomConnectedEndpointsKeysItem(AvdModel):
+        """Subclass of AvdModel."""
+
+        _fields: ClassVar[dict] = {"key": {"type": str}, "type": {"type": str}, "description": {"type": str}}
+        key: str
+        type: str | None
+        """Type used for documentation."""
+        description: str | None
+        """Description used for documentation."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self, *, key: str | UndefinedType = Undefined, type: str | None | UndefinedType = Undefined, description: str | None | UndefinedType = Undefined
+            ) -> None:
+                """
+                CustomConnectedEndpointsKeysItem.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    key: key
+                    type: Type used for documentation.
+                    description: Description used for documentation.
+
+                """
+
+    class CustomConnectedEndpointsKeys(AvdIndexedList[str, CustomConnectedEndpointsKeysItem]):
+        """
+        Subclass of AvdIndexedList with `CustomConnectedEndpointsKeysItem` items. Primary key is `key`
+        (`str`).
+        """
+
+        _primary_key: ClassVar[str] = "key"
+
+    CustomConnectedEndpointsKeys._item_type = CustomConnectedEndpointsKeysItem
 
     class ConnectedEndpointsKeysItem(AvdModel):
         """Subclass of AvdModel."""
@@ -2689,6 +2727,166 @@ class EosDesigns(EosDesignsRootModel):
                     type:
                        By setting the design.type variable, the default node-types and templates described in these
                        documents will be used.
+
+                """
+
+    class DnsSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ServersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf": {"type": str}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str | None
+            """
+            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+            The
+            value of `vrf` will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+            DNS lookup source-interface.
+              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+            configured for the device.
+            - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+              An
+            error will be raised if inband management is not configured for the device.
+            - Any other string will
+            be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
+            needed.
+            """
+            ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
+            priority: int | None
+            """Priority value (lower is first)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    vrf: str | None | UndefinedType = Undefined,
+                    ip_address: str | UndefinedType = Undefined,
+                    priority: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf:
+                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                           The
+                           value of `vrf` will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+                           DNS lookup source-interface.
+                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+                           configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+                           with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           - Any other string will
+                           be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
+                           needed.
+                        ip_address: IPv4 or IPv6 address for DNS server.
+                        priority: Priority value (lower is first).
+
+                    """
+
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
+
+        Servers._item_type = ServersItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """VRF name."""
+            source_interface: str | None
+            """
+            Source interface to use for DNS lookups in this VRF.
+            If set for the VRFs defined by
+            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        source_interface:
+                           Source interface to use for DNS lookups in this VRF.
+                           If set for the VRFs defined by
+                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "domain": {"type": str},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
+            "set_source_interfaces": {"type": bool, "default": True},
+        }
+        domain: str | None
+        """DNS domain name like 'fabric.local'"""
+        servers: Servers
+        """Subclass of AvdList with `ServersItem` items."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        set_source_interfaces: bool
+        """
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
+        `use_inband_mgmt_vrf`.
+        Can be set to `false` to avoid changes when migrating from old `name_servers`
+        model.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                domain: str | None | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                set_source_interfaces: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                DnsSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    domain: DNS domain name like 'fabric.local'
+                    servers: Subclass of AvdList with `ServersItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    set_source_interfaces:
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
+                       `use_inband_mgmt_vrf`.
+                       Can be set to `false` to avoid changes when migrating from old `name_servers`
+                       model.
 
                 """
 
@@ -17280,10 +17478,10 @@ class EosDesigns(EosDesignsRootModel):
 
                     EndpointPorts._item_type = str
 
-                    class Descriptions(AvdList[Any]):
-                        """Subclass of AvdList with `Any` items."""
+                    class Descriptions(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
 
-                    Descriptions._item_type = Any
+                    Descriptions._item_type = str
 
                     class TrunkGroups(AvdList[str]):
                         """Subclass of AvdList with `str` items."""
@@ -18420,7 +18618,7 @@ class EosDesigns(EosDesignsRootModel):
                       - `port_channel_id`: The port-channel number for the
                     switch.
 
-                    Subclass of AvdList with `Any` items.
+                    Subclass of AvdList with `str` items.
                     """
                     speed: str | None
                     """
@@ -18658,7 +18856,7 @@ class EosDesigns(EosDesignsRootModel):
                                      - `port_channel_id`: The port-channel number for the
                                    switch.
 
-                                   Subclass of AvdList with `Any` items.
+                                   Subclass of AvdList with `str` items.
                                 speed:
                                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
                                    <interface_speed>`.
@@ -18841,6 +19039,1589 @@ class EosDesigns(EosDesignsRootModel):
 
         DynamicConnectedEndpoints._item_type = DynamicConnectedEndpointsItem
 
+        class DynamicCustomConnectedEndpointsItem(AvdModel):
+            class CustomConnectedEndpointsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class AdaptersItem(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    class SwitchPorts(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    SwitchPorts._item_type = str
+
+                    class Switches(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Switches._item_type = str
+
+                    class EndpointPorts(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    EndpointPorts._item_type = str
+
+                    class Descriptions(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    Descriptions._item_type = str
+
+                    class TrunkGroups(AvdList[str]):
+                        """Subclass of AvdList with `str` items."""
+
+                    TrunkGroups._item_type = str
+
+                    class Ptp(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {
+                            "enabled": {"type": bool, "default": False},
+                            "endpoint_role": {"type": str, "default": "follower"},
+                            "profile": {"type": str, "default": "aes67-r16-2016"},
+                        }
+                        enabled: bool
+                        """Default value: `False`"""
+                        endpoint_role: Literal["follower", "dynamic", "bmca", "default"]
+                        """
+                        PTP role of the endpoint.
+                        `follower` will configure the switch port as `ptp role master`.
+                        `dynamic`
+                        will use BMCA.
+                        `default` is deprecated in favor of `follower`.
+                        `bmca` is deprecated in favor of
+                        `dynamic`.
+
+                        Default value: `"follower"`
+                        """
+                        profile: str
+                        """
+                        Default available profiles are:
+                          - "aes67"
+                          - "aes67-r16-2016"
+                          - "smpte2059-2"
+
+                        Default value: `"aes67-r16-2016"`
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                enabled: bool | UndefinedType = Undefined,
+                                endpoint_role: Literal["follower", "dynamic", "bmca", "default"] | UndefinedType = Undefined,
+                                profile: str | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ptp.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    endpoint_role:
+                                       PTP role of the endpoint.
+                                       `follower` will configure the switch port as `ptp role master`.
+                                       `dynamic`
+                                       will use BMCA.
+                                       `default` is deprecated in favor of `follower`.
+                                       `bmca` is deprecated in favor of
+                                       `dynamic`.
+                                    profile:
+                                       Default available profiles are:
+                                         - "aes67"
+                                         - "aes67-r16-2016"
+                                         - "smpte2059-2"
+
+                                """
+
+                    class FlowTracking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                        enabled: bool | None
+                        name: str | None
+                        """Flow tracker name as defined in flow_tracking_settings."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                FlowTracking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    name: Flow tracker name as defined in flow_tracking_settings.
+
+                                """
+
+                    class LinkTracking(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"enabled": {"type": bool}, "name": {"type": str}}
+                        enabled: bool | None
+                        name: str | None
+                        """
+                        Tracking group name.
+                        The default group name is taken from fabric variable of the switch,
+                        `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                        Optional if default
+                        link_tracking settings are configured on the node.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(self, *, enabled: bool | None | UndefinedType = Undefined, name: str | None | UndefinedType = Undefined) -> None:
+                                """
+                                LinkTracking.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    enabled: enabled
+                                    name:
+                                       Tracking group name.
+                                       The default group name is taken from fabric variable of the switch,
+                                       `link_tracking.groups[0].name` with default value being "LT_GROUP1".
+                                       Optional if default
+                                       link_tracking settings are configured on the node.
+
+                                """
+
+                    class StormControl(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class All(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Literal["percent", "pps"]
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    All.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class Broadcast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Literal["percent", "pps"]
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Broadcast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class Multicast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Literal["percent", "pps"]
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Multicast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        class UnknownUnicast(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"level": {"type": str}, "unit": {"type": str, "default": "percent"}}
+                            level: str | None
+                            """Configure maximum storm-control level."""
+                            unit: Literal["percent", "pps"]
+                            """
+                            Optional variable and is hardware dependent.
+
+                            Default value: `"percent"`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, level: str | None | UndefinedType = Undefined, unit: Literal["percent", "pps"] | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    UnknownUnicast.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        level: Configure maximum storm-control level.
+                                        unit: Optional variable and is hardware dependent.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "all": {"type": All},
+                            "broadcast": {"type": Broadcast},
+                            "multicast": {"type": Multicast},
+                            "unknown_unicast": {"type": UnknownUnicast},
+                        }
+                        all: All
+                        """Subclass of AvdModel."""
+                        broadcast: Broadcast
+                        """Subclass of AvdModel."""
+                        multicast: Multicast
+                        """Subclass of AvdModel."""
+                        unknown_unicast: UnknownUnicast
+                        """Subclass of AvdModel."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                all: All | UndefinedType = Undefined,
+                                broadcast: Broadcast | UndefinedType = Undefined,
+                                multicast: Multicast | UndefinedType = Undefined,
+                                unknown_unicast: UnknownUnicast | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                StormControl.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    all: Subclass of AvdModel.
+                                    broadcast: Subclass of AvdModel.
+                                    multicast: Subclass of AvdModel.
+                                    unknown_unicast: Subclass of AvdModel.
+
+                                """
+
+                    class MonitorSessionsItem(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class SourceSettings(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AccessGroup(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}, "priority": {"type": int}}
+                                type: Literal["ip", "ipv6", "mac"] | None
+                                name: str | None
+                                """ACL name."""
+                                priority: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                        priority: int | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        AccessGroup.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            type: type
+                                            name: ACL name.
+                                            priority: priority
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"direction": {"type": str}, "access_group": {"type": AccessGroup}}
+                            direction: Literal["rx", "tx", "both"] | None
+                            access_group: AccessGroup
+                            """
+                            This can only be set when `session_settings.access_group` is not set.
+
+                            Subclass of AvdModel.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    direction: Literal["rx", "tx", "both"] | None | UndefinedType = Undefined,
+                                    access_group: AccessGroup | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SourceSettings.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        direction: direction
+                                        access_group:
+                                           This can only be set when `session_settings.access_group` is not set.
+
+                                           Subclass of AvdModel.
+
+                                    """
+
+                        class SessionSettings(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class AccessGroup(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"type": {"type": str}, "name": {"type": str}}
+                                type: Literal["ip", "ipv6", "mac"] | None
+                                name: str | None
+                                """ACL name."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        type: Literal["ip", "ipv6", "mac"] | None | UndefinedType = Undefined,
+                                        name: str | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        AccessGroup.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            type: type
+                                            name: ACL name.
+
+                                        """
+
+                            class Truncate(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"enabled": {"type": bool}, "size": {"type": int}}
+                                enabled: bool | None
+                                size: int | None
+                                """Size in bytes."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self, *, enabled: bool | None | UndefinedType = Undefined, size: int | None | UndefinedType = Undefined
+                                    ) -> None:
+                                        """
+                                        Truncate.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            enabled: enabled
+                                            size: Size in bytes.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "encapsulation_gre_metadata_tx": {"type": bool},
+                                "header_remove_size": {"type": int},
+                                "access_group": {"type": AccessGroup},
+                                "rate_limit_per_ingress_chip": {"type": str},
+                                "rate_limit_per_egress_chip": {"type": str},
+                                "sample": {"type": int},
+                                "truncate": {"type": Truncate},
+                            }
+                            encapsulation_gre_metadata_tx: bool | None
+                            header_remove_size: int | None
+                            """Number of bytes to remove from header."""
+                            access_group: AccessGroup
+                            """Subclass of AvdModel."""
+                            rate_limit_per_ingress_chip: str | None
+                            """
+                            Ratelimit and unit as string.
+                            Examples:
+                              "100000 bps"
+                              "100 kbps"
+                              "10 mbps"
+                            """
+                            rate_limit_per_egress_chip: str | None
+                            """
+                            Ratelimit and unit as string.
+                            Examples:
+                              "100000 bps"
+                              "100 kbps"
+                              "10 mbps"
+                            """
+                            sample: int | None
+                            truncate: Truncate
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    encapsulation_gre_metadata_tx: bool | None | UndefinedType = Undefined,
+                                    header_remove_size: int | None | UndefinedType = Undefined,
+                                    access_group: AccessGroup | UndefinedType = Undefined,
+                                    rate_limit_per_ingress_chip: str | None | UndefinedType = Undefined,
+                                    rate_limit_per_egress_chip: str | None | UndefinedType = Undefined,
+                                    sample: int | None | UndefinedType = Undefined,
+                                    truncate: Truncate | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SessionSettings.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        encapsulation_gre_metadata_tx: encapsulation_gre_metadata_tx
+                                        header_remove_size: Number of bytes to remove from header.
+                                        access_group: Subclass of AvdModel.
+                                        rate_limit_per_ingress_chip:
+                                           Ratelimit and unit as string.
+                                           Examples:  # fmt: skip
+                                             "100000 bps"
+                                             "100 kbps"
+                                             "10 mbps"
+                                        rate_limit_per_egress_chip:
+                                           Ratelimit and unit as string.
+                                           Examples:  # fmt: skip
+                                             "100000 bps"
+                                             "100 kbps"
+                                             "10 mbps"
+                                        sample: sample
+                                        truncate: Subclass of AvdModel.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "name": {"type": str},
+                            "role": {"type": str},
+                            "source_settings": {"type": SourceSettings},
+                            "session_settings": {"type": SessionSettings},
+                        }
+                        name: str
+                        """Session name."""
+                        role: Literal["source", "destination"] | None
+                        source_settings: SourceSettings
+                        """Subclass of AvdModel."""
+                        session_settings: SessionSettings
+                        """
+                        Session settings are defined per session name.
+                        Different session_settings for the same session name
+                        will be combined/merged.
+
+
+                        Subclass of AvdModel.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                name: str | UndefinedType = Undefined,
+                                role: Literal["source", "destination"] | None | UndefinedType = Undefined,
+                                source_settings: SourceSettings | UndefinedType = Undefined,
+                                session_settings: SessionSettings | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                MonitorSessionsItem.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    name: Session name.
+                                    role: role
+                                    source_settings: Subclass of AvdModel.
+                                    session_settings:
+                                       Session settings are defined per session name.
+                                       Different session_settings for the same session name
+                                       will be combined/merged.
+
+
+                                       Subclass of AvdModel.
+
+                                """
+
+                    class MonitorSessions(AvdList[MonitorSessionsItem]):
+                        """Subclass of AvdList with `MonitorSessionsItem` items."""
+
+                    MonitorSessions._item_type = MonitorSessionsItem
+
+                    class EthernetSegment(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class DesignatedForwarderPreferences(AvdList[int]):
+                            """Subclass of AvdList with `int` items."""
+
+                        DesignatedForwarderPreferences._item_type = int
+
+                        _fields: ClassVar[dict] = {
+                            "short_esi": {"type": str},
+                            "redundancy": {"type": str},
+                            "designated_forwarder_algorithm": {"type": str},
+                            "designated_forwarder_preferences": {"type": DesignatedForwarderPreferences},
+                            "dont_preempt": {"type": bool},
+                        }
+                        short_esi: str
+                        """
+                        In format xxxx:xxxx:xxxx or "auto".
+                        Define a manual short-esi (be careful using this on profiles) or
+                        set the value to "auto" to automatically generate the value.
+                        Please see the notes under "EVPN A/A
+                        ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                        """
+                        redundancy: Literal["all-active", "single-active"] | None
+                        """
+                        If omitted, Port-Channels use the EOS default of all-active.
+                        If omitted, Ethernet interfaces are
+                        configured as single-active.
+                        """
+                        designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None
+                        """
+                        Configure DF algorithm and preferences.
+                        - auto: Use preference-based algorithm and assign preference
+                        based on position of device in the 'switches' list,
+                          e.g., assuming a list of three switches, this
+                        would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                        -
+                        preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                        -
+                        modulus: Use the default modulus-based algorithm.
+                        If omitted, Port-Channels use the EOS default of
+                        modulus.
+                        If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                        """
+                        designated_forwarder_preferences: DesignatedForwarderPreferences
+                        """
+                        Manual preference as described above, required only for preference algorithm.
+
+                        Subclass of AvdList
+                        with `int` items.
+                        """
+                        dont_preempt: bool | None
+                        """Disable preemption for single-active forwarding when auto/manual DF preference is configured."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                short_esi: str | UndefinedType = Undefined,
+                                redundancy: Literal["all-active", "single-active"] | None | UndefinedType = Undefined,
+                                designated_forwarder_algorithm: Literal["auto", "modulus", "preference"] | None | UndefinedType = Undefined,
+                                designated_forwarder_preferences: DesignatedForwarderPreferences | UndefinedType = Undefined,
+                                dont_preempt: bool | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                EthernetSegment.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    short_esi:
+                                       In format xxxx:xxxx:xxxx or "auto".
+                                       Define a manual short-esi (be careful using this on profiles) or
+                                       set the value to "auto" to automatically generate the value.
+                                       Please see the notes under "EVPN A/A
+                                       ESI dual and single-attached endpoint scenarios" before setting `short_esi: auto`.
+                                    redundancy:
+                                       If omitted, Port-Channels use the EOS default of all-active.
+                                       If omitted, Ethernet interfaces are
+                                       configured as single-active.
+                                    designated_forwarder_algorithm:
+                                       Configure DF algorithm and preferences.
+                                       - auto: Use preference-based algorithm and assign preference
+                                       based on position of device in the 'switches' list,
+                                         e.g., assuming a list of three switches, this
+                                       would assign a preference of 200 to the first switch, 100 to the 2nd, and 0 to the third.
+                                       -
+                                       preference: Set preference for each switch manually using designated_forwarder_preferences key.
+                                       -
+                                       modulus: Use the default modulus-based algorithm.
+                                       If omitted, Port-Channels use the EOS default of
+                                       modulus.
+                                       If omitted, Ethernet interfaces default to the 'auto' mechanism detailed above.
+                                    designated_forwarder_preferences:
+                                       Manual preference as described above, required only for preference algorithm.
+
+                                       Subclass of AvdList
+                                       with `int` items.
+                                    dont_preempt: Disable preemption for single-active forwarding when auto/manual DF preference is configured.
+
+                                """
+
+                    class PortChannel(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class LacpFallback(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Individual(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"profile": {"type": str}}
+                                profile: str | None
+                                """Port-profile name to inherit configuration."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, profile: str | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        Individual.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            profile: Port-profile name to inherit configuration.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "individual": {"type": Individual}, "timeout": {"type": int, "default": 90}}
+                            mode: Literal["static", "individual"] | None
+                            """
+                            Either static or individual mode is supported.
+                            If the mode is set to "individual" the
+                            "individual.profile" setting must be defined.
+                            """
+                            individual: Individual
+                            """
+                            Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                            "individual".
+
+                            Subclass of AvdModel.
+                            """
+                            timeout: int
+                            """
+                            Timeout in seconds.
+
+                            Default value: `90`
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    mode: Literal["static", "individual"] | None | UndefinedType = Undefined,
+                                    individual: Individual | UndefinedType = Undefined,
+                                    timeout: int | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    LacpFallback.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode:
+                                           Either static or individual mode is supported.
+                                           If the mode is set to "individual" the
+                                           "individual.profile" setting must be defined.
+                                        individual:
+                                           Define parameters for port-channel member interfaces. Applies only if LACP fallback is set to
+                                           "individual".
+
+                                           Subclass of AvdModel.
+                                        timeout: Timeout in seconds.
+
+                                    """
+
+                        class LacpTimer(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"mode": {"type": str}, "multiplier": {"type": int}}
+                            mode: Literal["normal", "fast"] | None
+                            """LACP mode for interface members."""
+                            multiplier: int | None
+                            """Number of LACP BPDUs lost before deeming the peer down. EOS default is 3."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    mode: Literal["normal", "fast"] | None | UndefinedType = Undefined,
+                                    multiplier: int | None | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    LacpTimer.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        mode: LACP mode for interface members.
+                                        multiplier: Number of LACP BPDUs lost before deeming the peer down. EOS default is 3.
+
+                                    """
+
+                        class SubinterfacesItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class EncapsulationVlan(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"client_dot1q": {"type": int}}
+                                client_dot1q: int | None
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(self, *, client_dot1q: int | None | UndefinedType = Undefined) -> None:
+                                        """
+                                        EncapsulationVlan.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            client_dot1q: client_dot1q
+
+                                        """
+
+                            _fields: ClassVar[dict] = {
+                                "number": {"type": int},
+                                "short_esi": {"type": str},
+                                "vlan_id": {"type": int},
+                                "encapsulation_vlan": {"type": EncapsulationVlan},
+                                "raw_eos_cli": {"type": str},
+                                "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                            }
+                            number: int | None
+                            """Subinterface number."""
+                            short_esi: str | None
+                            """
+                            In format xxxx:xxxx:xxxx or "auto".
+                            Required for multihomed port-channels with subinterfaces.
+                            """
+                            vlan_id: int | None
+                            """
+                            VLAN ID to bridge.
+                            Default is subinterface number.
+                            """
+                            encapsulation_vlan: EncapsulationVlan
+                            """
+                            Client VLAN ID encapsulation.
+                            Default is subinterface number.
+
+
+                            Subclass of AvdModel.
+                            """
+                            raw_eos_cli: str | None
+                            """EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration."""
+                            structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                            """
+                            Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                            eos_cli_config_gen.
+                            """
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    number: int | None | UndefinedType = Undefined,
+                                    short_esi: str | None | UndefinedType = Undefined,
+                                    vlan_id: int | None | UndefinedType = Undefined,
+                                    encapsulation_vlan: EncapsulationVlan | UndefinedType = Undefined,
+                                    raw_eos_cli: str | None | UndefinedType = Undefined,
+                                    structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    SubinterfacesItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        number: Subinterface number.
+                                        short_esi:
+                                           In format xxxx:xxxx:xxxx or "auto".
+                                           Required for multihomed port-channels with subinterfaces.
+                                        vlan_id:
+                                           VLAN ID to bridge.
+                                           Default is subinterface number.
+                                        encapsulation_vlan:
+                                           Client VLAN ID encapsulation.
+                                           Default is subinterface number.
+
+
+                                           Subclass of AvdModel.
+                                        raw_eos_cli: EOS CLI rendered directly on the port-channel subinterface in the final EOS configuration.
+                                        structured_config:
+                                           Custom structured config added under port_channel_interfaces.[name=<subinterface>] for
+                                           eos_cli_config_gen.
+
+                                    """
+
+                        class Subinterfaces(AvdList[SubinterfacesItem]):
+                            """Subclass of AvdList with `SubinterfacesItem` items."""
+
+                        Subinterfaces._item_type = SubinterfacesItem
+
+                        _fields: ClassVar[dict] = {
+                            "mode": {"type": str},
+                            "channel_id": {"type": int},
+                            "description": {"type": str},
+                            "endpoint_port_channel": {"type": str},
+                            "enabled": {"type": bool, "default": True},
+                            "ptp_mpass": {"type": bool, "default": False},
+                            "lacp_fallback": {"type": LacpFallback},
+                            "lacp_timer": {"type": LacpTimer},
+                            "subinterfaces": {"type": Subinterfaces},
+                            "raw_eos_cli": {"type": str},
+                            "structured_config": {"type": EosCliConfigGen.PortChannelInterfacesItem},
+                        }
+                        mode: Literal["active", "passive", "on"] | None
+                        """Port-Channel Mode."""
+                        channel_id: int | None
+                        """
+                        Port-Channel ID.
+                        If no channel_id is specified, an id is generated from the first switch port in the
+                        port channel.
+                        """
+                        description: str | None
+                        """
+                        Description or description template to be used on the port-channel interface.
+                        This can be a template
+                        using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-
+                        to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                        The available template fields are:
+                        - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                          -
+                        `endpoint` - The name of the connected endpoint
+                          - `endpoint_port_channel` - The value from
+                        `endpoint_port_channel` if set.
+                          - `port_channel_id` - The port-channel number for the switch.
+                          -
+                        `adapter_description` - The adapter's description if set.
+                          - `adapter_description_or_endpoint` -
+                        Helper alias of the adapter_description or endpoint.
+
+                        The default description is set by
+                        `default_connected_endpoints_port_channel_description`.
+                        By default the description is templated from
+                        the type, name and port_channel interface of the endpoint if set.
+                        """
+                        endpoint_port_channel: str | None
+                        """
+                        Name of the port-channel interface on the endpoint.
+                        Used for the port-channel description template
+                        with the field name `peer_interface`
+                        """
+                        enabled: bool
+                        """
+                        Port-Channel administrative state.
+                        Setting to false will set port to 'shutdown' in intended
+                        configuration.
+
+                        Default value: `True`
+                        """
+                        ptp_mpass: bool
+                        """
+                        When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                        logical device.
+                        Arista PTP enabled devices always place PTP messages on the same physical link
+                        within the port-channel.
+                        Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                        devices.
+
+                        Default value: `False`
+                        """
+                        lacp_fallback: LacpFallback
+                        """
+                        LACP fallback configuration.
+
+                        Subclass of AvdModel.
+                        """
+                        lacp_timer: LacpTimer
+                        """
+                        LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                        Subclass of AvdModel.
+                        """
+                        subinterfaces: Subinterfaces
+                        """
+                        Port-Channel L2 Subinterfaces
+                        Subinterfaces are only supported on routed port-channels, which means
+                        they cannot be configured on MLAG port-channels.
+                        Setting short_esi: auto generates the short_esi
+                        automatically using a hash of configuration elements.
+                        Please see the notes under "EVPN A/A ESI dual-
+                        attached endpoint scenario" before setting short_esi: auto.
+
+
+                        Subclass of AvdList with
+                        `SubinterfacesItem` items.
+                        """
+                        raw_eos_cli: str | None
+                        """EOS CLI rendered directly on the port-channel interface in the final EOS configuration."""
+                        structured_config: EosCliConfigGen.PortChannelInterfacesItem
+                        """
+                        Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                        eos_cli_config_gen.
+                        """
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                mode: Literal["active", "passive", "on"] | None | UndefinedType = Undefined,
+                                channel_id: int | None | UndefinedType = Undefined,
+                                description: str | None | UndefinedType = Undefined,
+                                endpoint_port_channel: str | None | UndefinedType = Undefined,
+                                enabled: bool | UndefinedType = Undefined,
+                                ptp_mpass: bool | UndefinedType = Undefined,
+                                lacp_fallback: LacpFallback | UndefinedType = Undefined,
+                                lacp_timer: LacpTimer | UndefinedType = Undefined,
+                                subinterfaces: Subinterfaces | UndefinedType = Undefined,
+                                raw_eos_cli: str | None | UndefinedType = Undefined,
+                                structured_config: EosCliConfigGen.PortChannelInterfacesItem | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                PortChannel.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    mode: Port-Channel Mode.
+                                    channel_id:
+                                       Port-Channel ID.
+                                       If no channel_id is specified, an id is generated from the first switch port in the
+                                       port channel.
+                                    description:
+                                       Description or description template to be used on the port-channel interface.
+                                       This can be a template
+                                       using the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-
+                                       to/custom-descriptions-names.html#avd-string-formatter-syntax.
+                                       The available template fields are:
+                                       - `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                                         -
+                                       `endpoint` - The name of the connected endpoint
+                                         - `endpoint_port_channel` - The value from
+                                       `endpoint_port_channel` if set.
+                                         - `port_channel_id` - The port-channel number for the switch.
+                                         -
+                                       `adapter_description` - The adapter's description if set.
+                                         - `adapter_description_or_endpoint` -
+                                       Helper alias of the adapter_description or endpoint.
+
+                                       The default description is set by
+                                       `default_connected_endpoints_port_channel_description`.
+                                       By default the description is templated from
+                                       the type, name and port_channel interface of the endpoint if set.
+                                    endpoint_port_channel:
+                                       Name of the port-channel interface on the endpoint.
+                                       Used for the port-channel description template
+                                       with the field name `peer_interface`
+                                    enabled:
+                                       Port-Channel administrative state.
+                                       Setting to false will set port to 'shutdown' in intended
+                                       configuration.
+                                    ptp_mpass:
+                                       When MPASS is enabled on an MLAG port-channel, MLAG peers coordinate to function as a single PTP
+                                       logical device.
+                                       Arista PTP enabled devices always place PTP messages on the same physical link
+                                       within the port-channel.
+                                       Hence, MPASS is needed only on MLAG port-channels connected to non-Arista
+                                       devices.
+                                    lacp_fallback:
+                                       LACP fallback configuration.
+
+                                       Subclass of AvdModel.
+                                    lacp_timer:
+                                       LACP timer configuration. Applies only when Port-channel mode is not "on".
+
+                                       Subclass of AvdModel.
+                                    subinterfaces:
+                                       Port-Channel L2 Subinterfaces
+                                       Subinterfaces are only supported on routed port-channels, which means
+                                       they cannot be configured on MLAG port-channels.
+                                       Setting short_esi: auto generates the short_esi
+                                       automatically using a hash of configuration elements.
+                                       Please see the notes under "EVPN A/A ESI dual-
+                                       attached endpoint scenario" before setting short_esi: auto.
+
+
+                                       Subclass of AvdList with
+                                       `SubinterfacesItem` items.
+                                    raw_eos_cli: EOS CLI rendered directly on the port-channel interface in the final EOS configuration.
+                                    structured_config:
+                                       Custom structured config added under port_channel_interfaces.[name=<interface>] for
+                                       eos_cli_config_gen.
+
+                                """
+
+                    _fields: ClassVar[dict] = {
+                        "switch_ports": {"type": SwitchPorts},
+                        "switches": {"type": Switches},
+                        "endpoint_ports": {"type": EndpointPorts},
+                        "descriptions": {"type": Descriptions},
+                        "speed": {"type": str},
+                        "description": {"type": str},
+                        "profile": {"type": str},
+                        "enabled": {"type": bool, "default": True},
+                        "mode": {"type": str},
+                        "mtu": {"type": int},
+                        "l2_mtu": {"type": int},
+                        "l2_mru": {"type": int},
+                        "native_vlan": {"type": int},
+                        "native_vlan_tag": {"type": bool},
+                        "phone_vlan": {"type": int},
+                        "phone_trunk_mode": {"type": str},
+                        "trunk_groups": {"type": TrunkGroups},
+                        "vlans": {"type": str},
+                        "spanning_tree_portfast": {"type": str},
+                        "spanning_tree_bpdufilter": {"type": str},
+                        "spanning_tree_bpduguard": {"type": str},
+                        "flowcontrol": {"type": EosCliConfigGen.EthernetInterfacesItem.Flowcontrol},
+                        "qos_profile": {"type": str},
+                        "ptp": {"type": Ptp},
+                        "sflow": {"type": bool},
+                        "flow_tracking": {"type": FlowTracking},
+                        "link_tracking": {"type": LinkTracking},
+                        "dot1x": {"type": EosCliConfigGen.EthernetInterfacesItem.Dot1x},
+                        "poe": {"type": EosCliConfigGen.EthernetInterfacesItem.Poe},
+                        "storm_control": {"type": StormControl},
+                        "monitor_sessions": {"type": MonitorSessions},
+                        "ethernet_segment": {"type": EthernetSegment},
+                        "port_channel": {"type": PortChannel},
+                        "validate_state": {"type": bool},
+                        "validate_lldp": {"type": bool},
+                        "raw_eos_cli": {"type": str},
+                        "structured_config": {"type": EosCliConfigGen.EthernetInterfacesItem},
+                    }
+                    switch_ports: SwitchPorts
+                    """
+                    List of switch interfaces.
+                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                    same length.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    switches: Switches
+                    """
+                    List of switches.
+                    The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                    length.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    endpoint_ports: EndpointPorts
+                    """
+                    Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                    The
+                    lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                    Each list item is one switchport.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    descriptions: Descriptions
+                    """
+                    Unique description per port. When set, takes priority over description.
+                    This can be a template using
+                    the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                      -
+                    `endpoint` - The name of the connected endpoint
+                      - `endpoint_port` - The value from
+                    `endpoint_ports` for this switch port if set.
+                      - `port_channel_id`: The port-channel number for the
+                    switch.
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    speed: str | None
+                    """
+                    Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
+                    <interface_speed>`.
+                    If not specified speed will be auto.
+                    """
+                    description: str | None
+                    """
+                    Description or description template to be used on all ports.
+                    This can be a template using the AVD
+                    string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-
+                    descriptions-names.html#avd-string-formatter-syntax.
+                    The available template fields are:
+                      -
+                    `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                      -
+                    `endpoint` - The name of the connected endpoint
+                      - `endpoint_port` - The value from
+                    `endpoint_ports` for this switch port if set.
+
+                    The default description is set by
+                    `default_connected_endpoints_description`.
+                    By default the description is templated from the type,
+                    name and port of the endpoint if set.
+                    """
+                    profile: str | None
+                    """Port-profile name to inherit configuration."""
+                    enabled: bool
+                    """
+                    Administrative state, setting to false will set the port to 'shutdown' in the intended
+                    configuration.
+
+                    Default value: `True`
+                    """
+                    mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None
+                    """Interface mode."""
+                    mtu: int | None
+                    l2_mtu: int | None
+                    """"l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI."""
+                    l2_mru: int | None
+                    """"l2_mru" should only be defined for platforms supporting the "l2 mru" CLI."""
+                    native_vlan: int | None
+                    """
+                    Native VLAN for a trunk port.
+                    If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                    takes precedence.
+                    """
+                    native_vlan_tag: bool | None
+                    """If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence."""
+                    phone_vlan: int | None
+                    """
+                    Phone VLAN for a mode `trunk phone` port.
+                    Requires `mode: trunk phone` to be set.
+                    """
+                    phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None
+                    """
+                    Specify if the phone traffic is tagged or untagged.
+                    If both data and phone traffic are untagged,
+                    MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                    """
+                    trunk_groups: TrunkGroups
+                    """
+                    Required with `enable_trunk_groups: true`.
+                    Trunk Groups are used for limiting VLANs on trunk ports
+                    to VLANs with the same Trunk Group.
+
+
+                    Subclass of AvdList with `str` items.
+                    """
+                    vlans: str | None
+                    """
+                    Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                    VLAN 1 will be used for access ports.
+                    """
+                    spanning_tree_portfast: Literal["edge", "network"] | None
+                    spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+                    spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None
+                    flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol
+                    qos_profile: str | None
+                    """QOS profile name."""
+                    ptp: Ptp
+                    """
+                    The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                    enabled.
+                    `ptp role master` is set to ensure control over the PTP topology.
+
+
+                    Subclass of AvdModel.
+                    """
+                    sflow: bool | None
+                    """Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting."""
+                    flow_tracking: FlowTracking
+                    """
+                    Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                    Subclass of AvdModel.
+                    """
+                    link_tracking: LinkTracking
+                    """
+                    Configure the downstream interfaces of a respective Link Tracking Group.
+                    If `port_channel` is
+                    defined in an adapter, then the port-channel interface is configured to be the downstream.
+                    Else all
+                    the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                    multihomed networks.
+
+
+                    Subclass of AvdModel.
+                    """
+                    dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x
+                    """802.1x"""
+                    poe: EosCliConfigGen.EthernetInterfacesItem.Poe
+                    """Power Over Ethernet settings applied on port. Only configured if platform supports PoE."""
+                    storm_control: StormControl
+                    """
+                    Storm control settings applied on port toward the endpoint.
+
+                    Subclass of AvdModel.
+                    """
+                    monitor_sessions: MonitorSessions
+                    """
+                    Used to define switchports as source or destination for monitoring sessions.
+
+                    Subclass of AvdList
+                    with `MonitorSessionsItem` items.
+                    """
+                    ethernet_segment: EthernetSegment
+                    """
+                    Settings for all or single-active EVPN multihoming.
+
+                    Subclass of AvdModel.
+                    """
+                    port_channel: PortChannel
+                    """
+                    Used for port-channel adapter.
+
+                    Subclass of AvdModel.
+                    """
+                    validate_state: bool | None
+                    """
+                    Set to false to disable interface state and LLDP topology validation performed by the
+                    `eos_validate_state` role.
+                    """
+                    validate_lldp: bool | None
+                    """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
+                    raw_eos_cli: str | None
+                    """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
+                    structured_config: EosCliConfigGen.EthernetInterfacesItem
+                    """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(
+                            self,
+                            *,
+                            switch_ports: SwitchPorts | UndefinedType = Undefined,
+                            switches: Switches | UndefinedType = Undefined,
+                            endpoint_ports: EndpointPorts | UndefinedType = Undefined,
+                            descriptions: Descriptions | UndefinedType = Undefined,
+                            speed: str | None | UndefinedType = Undefined,
+                            description: str | None | UndefinedType = Undefined,
+                            profile: str | None | UndefinedType = Undefined,
+                            enabled: bool | UndefinedType = Undefined,
+                            mode: Literal["access", "dot1q-tunnel", "trunk", "trunk phone"] | None | UndefinedType = Undefined,
+                            mtu: int | None | UndefinedType = Undefined,
+                            l2_mtu: int | None | UndefinedType = Undefined,
+                            l2_mru: int | None | UndefinedType = Undefined,
+                            native_vlan: int | None | UndefinedType = Undefined,
+                            native_vlan_tag: bool | None | UndefinedType = Undefined,
+                            phone_vlan: int | None | UndefinedType = Undefined,
+                            phone_trunk_mode: Literal["tagged", "untagged", "tagged phone", "untagged phone"] | None | UndefinedType = Undefined,
+                            trunk_groups: TrunkGroups | UndefinedType = Undefined,
+                            vlans: str | None | UndefinedType = Undefined,
+                            spanning_tree_portfast: Literal["edge", "network"] | None | UndefinedType = Undefined,
+                            spanning_tree_bpdufilter: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                            spanning_tree_bpduguard: Literal["enabled", "disabled", "True", "False", "true", "false"] | None | UndefinedType = Undefined,
+                            flowcontrol: EosCliConfigGen.EthernetInterfacesItem.Flowcontrol | UndefinedType = Undefined,
+                            qos_profile: str | None | UndefinedType = Undefined,
+                            ptp: Ptp | UndefinedType = Undefined,
+                            sflow: bool | None | UndefinedType = Undefined,
+                            flow_tracking: FlowTracking | UndefinedType = Undefined,
+                            link_tracking: LinkTracking | UndefinedType = Undefined,
+                            dot1x: EosCliConfigGen.EthernetInterfacesItem.Dot1x | UndefinedType = Undefined,
+                            poe: EosCliConfigGen.EthernetInterfacesItem.Poe | UndefinedType = Undefined,
+                            storm_control: StormControl | UndefinedType = Undefined,
+                            monitor_sessions: MonitorSessions | UndefinedType = Undefined,
+                            ethernet_segment: EthernetSegment | UndefinedType = Undefined,
+                            port_channel: PortChannel | UndefinedType = Undefined,
+                            validate_state: bool | None | UndefinedType = Undefined,
+                            validate_lldp: bool | None | UndefinedType = Undefined,
+                            raw_eos_cli: str | None | UndefinedType = Undefined,
+                            structured_config: EosCliConfigGen.EthernetInterfacesItem | UndefinedType = Undefined,
+                        ) -> None:
+                            """
+                            AdaptersItem.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                switch_ports:
+                                   List of switch interfaces.
+                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the
+                                   same length.
+
+
+                                   Subclass of AvdList with `str` items.
+                                switches:
+                                   List of switches.
+                                   The lists `endpoint_ports`, `switch_ports`, and `switches` must have the same
+                                   length.
+
+
+                                   Subclass of AvdList with `str` items.
+                                endpoint_ports:
+                                   Endpoint ports is used for description, required unless `description` or `descriptions` is set.
+                                   The
+                                   lists `endpoint_ports`, `switch_ports`, `descriptions` and `switches` must have the same length.
+                                   Each list item is one switchport.
+
+
+                                   Subclass of AvdList with `str` items.
+                                descriptions:
+                                   Unique description per port. When set, takes priority over description.
+                                   This can be a template using
+                                   the AVD string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                                     -
+                                   `endpoint` - The name of the connected endpoint
+                                     - `endpoint_port` - The value from
+                                   `endpoint_ports` for this switch port if set.
+                                     - `port_channel_id`: The port-channel number for the
+                                   switch.
+
+                                   Subclass of AvdList with `str` items.
+                                speed:
+                                   Set adapter speed in the format `<interface_speed>` or `forced <interface_speed>` or `auto
+                                   <interface_speed>`.
+                                   If not specified speed will be auto.
+                                description:
+                                   Description or description template to be used on all ports.
+                                   This can be a template using the AVD
+                                   string formatter syntax: https://avd.arista.com/devel/roles/eos_designs/docs/how-to/custom-
+                                   descriptions-names.html#avd-string-formatter-syntax.
+                                   The available template fields are:
+                                     -
+                                   `endpoint_type` - the `type` from `connected_endpoints_keys` like `server`, `router` etc.
+                                     -
+                                   `endpoint` - The name of the connected endpoint
+                                     - `endpoint_port` - The value from
+                                   `endpoint_ports` for this switch port if set.
+
+                                   The default description is set by
+                                   `default_connected_endpoints_description`.
+                                   By default the description is templated from the type,
+                                   name and port of the endpoint if set.
+                                profile: Port-profile name to inherit configuration.
+                                enabled:
+                                   Administrative state, setting to false will set the port to 'shutdown' in the intended
+                                   configuration.
+                                mode: Interface mode.
+                                mtu: mtu
+                                l2_mtu: "l2_mtu" should only be defined for platforms supporting the "l2 mtu" CLI.
+                                l2_mru: "l2_mru" should only be defined for platforms supporting the "l2 mru" CLI.
+                                native_vlan:
+                                   Native VLAN for a trunk port.
+                                   If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag`
+                                   takes precedence.
+                                native_vlan_tag: If both `native_vlan` and `native_vlan_tag` are set, `native_vlan_tag` takes precedence.
+                                phone_vlan:
+                                   Phone VLAN for a mode `trunk phone` port.
+                                   Requires `mode: trunk phone` to be set.
+                                phone_trunk_mode:
+                                   Specify if the phone traffic is tagged or untagged.
+                                   If both data and phone traffic are untagged,
+                                   MAC-Based VLAN Assignment (MBVA) is used, if supported by the model of switch.
+                                trunk_groups:
+                                   Required with `enable_trunk_groups: true`.
+                                   Trunk Groups are used for limiting VLANs on trunk ports
+                                   to VLANs with the same Trunk Group.
+
+
+                                   Subclass of AvdList with `str` items.
+                                vlans:
+                                   Interface VLANs - if not set, the EOS default is that all VLANs are allowed for trunk ports, and
+                                   VLAN 1 will be used for access ports.
+                                spanning_tree_portfast: spanning_tree_portfast
+                                spanning_tree_bpdufilter: spanning_tree_bpdufilter
+                                spanning_tree_bpduguard: spanning_tree_bpduguard
+                                flowcontrol: flowcontrol
+                                qos_profile: QOS profile name.
+                                ptp:
+                                   The global PTP profile parameters will be applied to all connected endpoints where `ptp` is manually
+                                   enabled.
+                                   `ptp role master` is set to ensure control over the PTP topology.
+
+
+                                   Subclass of AvdModel.
+                                sflow: Configures sFlow on the interface. Overrides `fabric_sflow.endpoints` setting.
+                                flow_tracking:
+                                   Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.endpoints` setting.
+                                   Subclass of AvdModel.
+                                link_tracking:
+                                   Configure the downstream interfaces of a respective Link Tracking Group.
+                                   If `port_channel` is
+                                   defined in an adapter, then the port-channel interface is configured to be the downstream.
+                                   Else all
+                                   the ethernet interfaces will be configured as downstream -> to configure single-active EVPN
+                                   multihomed networks.
+
+
+                                   Subclass of AvdModel.
+                                dot1x: 802.1x
+                                poe: Power Over Ethernet settings applied on port. Only configured if platform supports PoE.
+                                storm_control:
+                                   Storm control settings applied on port toward the endpoint.
+
+                                   Subclass of AvdModel.
+                                monitor_sessions:
+                                   Used to define switchports as source or destination for monitoring sessions.
+
+                                   Subclass of AvdList
+                                   with `MonitorSessionsItem` items.
+                                ethernet_segment:
+                                   Settings for all or single-active EVPN multihoming.
+
+                                   Subclass of AvdModel.
+                                port_channel:
+                                   Used for port-channel adapter.
+
+                                   Subclass of AvdModel.
+                                validate_state:
+                                   Set to false to disable interface state and LLDP topology validation performed by the
+                                   `eos_validate_state` role.
+                                validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
+                                raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
+                                structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
+
+                            """
+
+                class Adapters(AvdList[AdaptersItem]):
+                    """Subclass of AvdList with `AdaptersItem` items."""
+
+                Adapters._item_type = AdaptersItem
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "rack": {"type": str}, "adapters": {"type": Adapters}}
+                name: str
+                """Endpoint name will be used in the switchport description."""
+                rack: str | None
+                """Rack is used for documentation purposes only."""
+                adapters: Adapters
+                """
+                A list of adapters, group by adapters leveraging the same port-profile.
+
+                Subclass of AvdList with
+                `AdaptersItem` items.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        rack: str | None | UndefinedType = Undefined,
+                        adapters: Adapters | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        CustomConnectedEndpointsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Endpoint name will be used in the switchport description.
+                            rack: Rack is used for documentation purposes only.
+                            adapters:
+                               A list of adapters, group by adapters leveraging the same port-profile.
+
+                               Subclass of AvdList with
+                               `AdaptersItem` items.
+
+                        """
+
+            class CustomConnectedEndpoints(AvdIndexedList[str, CustomConnectedEndpointsItem]):
+                """Subclass of AvdIndexedList with `CustomConnectedEndpointsItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            CustomConnectedEndpoints._item_type = CustomConnectedEndpointsItem
+
+            _fields: ClassVar[dict] = {"key": {"type": str}, "value": {"type": CustomConnectedEndpoints}}
+            _field_to_key_map: ClassVar[dict] = {"value": "custom_connected_endpoints_keys_key"}
+            _key_to_field_map: ClassVar[dict] = {"custom_connected_endpoints_keys_key": "value"}
+            key: str
+            """Key used as dynamic key"""
+            value: CustomConnectedEndpoints
+            """Value of dynamic key"""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, key: str | UndefinedType = Undefined, value: CustomConnectedEndpoints | UndefinedType = Undefined) -> None:
+                    """
+                    DynamicCustomConnectedEndpointsItem.
+
+
+                    Args:
+                        key: Key used as dynamic key
+                        value: Value of dynamic key
+
+                    """
+
+        class DynamicCustomConnectedEndpoints(AvdIndexedList[str, DynamicCustomConnectedEndpointsItem]):
+            _primary_key: ClassVar[str] = "key"
+
+        DynamicCustomConnectedEndpoints._item_type = DynamicCustomConnectedEndpointsItem
+
         class DynamicCustomNodeTypesItem(AvdModel):
             class CustomNodeTypes(AvdModel):
                 """Subclass of AvdModel."""
@@ -18855,7 +20636,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -18866,7 +20647,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -18883,8 +20664,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -18901,8 +20684,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -18924,8 +20707,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -22931,7 +24714,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                                name: str | None
+                                name: str
                                 """Tracking group name."""
                                 recovery_delay: int | None
                                 """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -22942,7 +24725,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        name: str | None | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         recovery_delay: int | None | UndefinedType = Undefined,
                                         links_minimum: int | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -22959,8 +24742,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class Groups(AvdList[GroupsItem]):
-                                """Subclass of AvdList with `GroupsItem` items."""
+                            class Groups(AvdIndexedList[str, GroupsItem]):
+                                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "name"
 
                             Groups._item_type = GroupsItem
 
@@ -22977,8 +24762,8 @@ class EosDesigns(EosDesignsRootModel):
                             Any groups defined under "groups" will replace the default.
 
 
-                            Subclass of AvdList with `GroupsItem`
-                            items.
+                            Subclass of AvdIndexedList with
+                            `GroupsItem` items. Primary key is `name` (`str`).
 
                             Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                             """
@@ -23000,8 +24785,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Any groups defined under "groups" will replace the default.
 
 
-                                           Subclass of AvdList with `GroupsItem`
-                                           items.
+                                           Subclass of AvdIndexedList with
+                                           `GroupsItem` items. Primary key is `name` (`str`).
 
                                     """
 
@@ -26987,7 +28772,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -26998,7 +28783,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -27015,8 +28800,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -27033,8 +28820,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -27056,8 +28843,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -31090,7 +32877,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -31101,7 +32888,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -31118,8 +32905,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -31136,8 +32925,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -31159,8 +32948,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -42288,7 +44077,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -42299,7 +44088,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -42316,8 +44105,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -42334,8 +44125,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -42357,8 +44148,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -46364,7 +48155,7 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                                name: str | None
+                                name: str
                                 """Tracking group name."""
                                 recovery_delay: int | None
                                 """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -46375,7 +48166,7 @@ class EosDesigns(EosDesignsRootModel):
                                     def __init__(
                                         self,
                                         *,
-                                        name: str | None | UndefinedType = Undefined,
+                                        name: str | UndefinedType = Undefined,
                                         recovery_delay: int | None | UndefinedType = Undefined,
                                         links_minimum: int | None | UndefinedType = Undefined,
                                     ) -> None:
@@ -46392,8 +48183,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                         """
 
-                            class Groups(AvdList[GroupsItem]):
-                                """Subclass of AvdList with `GroupsItem` items."""
+                            class Groups(AvdIndexedList[str, GroupsItem]):
+                                """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                                _primary_key: ClassVar[str] = "name"
 
                             Groups._item_type = GroupsItem
 
@@ -46410,8 +48203,8 @@ class EosDesigns(EosDesignsRootModel):
                             Any groups defined under "groups" will replace the default.
 
 
-                            Subclass of AvdList with `GroupsItem`
-                            items.
+                            Subclass of AvdIndexedList with
+                            `GroupsItem` items. Primary key is `name` (`str`).
 
                             Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                             """
@@ -46433,8 +48226,8 @@ class EosDesigns(EosDesignsRootModel):
                                            Any groups defined under "groups" will replace the default.
 
 
-                                           Subclass of AvdList with `GroupsItem`
-                                           items.
+                                           Subclass of AvdIndexedList with
+                                           `GroupsItem` items. Primary key is `name` (`str`).
 
                                     """
 
@@ -50420,7 +52213,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -50431,7 +52224,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -50448,8 +52241,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -50466,8 +52261,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -50489,8 +52284,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -54523,7 +56318,7 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"name": {"type": str}, "recovery_delay": {"type": int}, "links_minimum": {"type": int}}
-                            name: str | None
+                            name: str
                             """Tracking group name."""
                             recovery_delay: int | None
                             """default -> platform_settings_mlag_reload_delay -> 300."""
@@ -54534,7 +56329,7 @@ class EosDesigns(EosDesignsRootModel):
                                 def __init__(
                                     self,
                                     *,
-                                    name: str | None | UndefinedType = Undefined,
+                                    name: str | UndefinedType = Undefined,
                                     recovery_delay: int | None | UndefinedType = Undefined,
                                     links_minimum: int | None | UndefinedType = Undefined,
                                 ) -> None:
@@ -54551,8 +56346,10 @@ class EosDesigns(EosDesignsRootModel):
 
                                     """
 
-                        class Groups(AvdList[GroupsItem]):
-                            """Subclass of AvdList with `GroupsItem` items."""
+                        class Groups(AvdIndexedList[str, GroupsItem]):
+                            """Subclass of AvdIndexedList with `GroupsItem` items. Primary key is `name` (`str`)."""
+
+                            _primary_key: ClassVar[str] = "name"
 
                         Groups._item_type = GroupsItem
 
@@ -54569,8 +56366,8 @@ class EosDesigns(EosDesignsRootModel):
                         Any groups defined under "groups" will replace the default.
 
 
-                        Subclass of AvdList with `GroupsItem`
-                        items.
+                        Subclass of AvdIndexedList with
+                        `GroupsItem` items. Primary key is `name` (`str`).
 
                         Default value: `lambda cls: coerce_type([{"name": "LT_GROUP1"}], target_type=cls)`
                         """
@@ -54592,8 +56389,8 @@ class EosDesigns(EosDesignsRootModel):
                                        Any groups defined under "groups" will replace the default.
 
 
-                                       Subclass of AvdList with `GroupsItem`
-                                       items.
+                                       Subclass of AvdIndexedList with
+                                       `GroupsItem` items. Primary key is `name` (`str`).
 
                                 """
 
@@ -58638,18 +60435,22 @@ class EosDesigns(EosDesignsRootModel):
 
         _dynamic_key_maps: ClassVar[tuple[dict, ...]] = (
             {"dynamic_keys_path": "connected_endpoints_keys.key", "model_key": "connected_endpoints"},
+            {"dynamic_keys_path": "custom_connected_endpoints_keys.key", "model_key": "custom_connected_endpoints"},
             {"dynamic_keys_path": "custom_node_type_keys.key", "model_key": "custom_node_types"},
             {"dynamic_keys_path": "network_services_keys.name", "model_key": "network_services"},
             {"dynamic_keys_path": "node_type_keys.key", "model_key": "node_types"},
         )
         _fields: ClassVar[dict] = {
             "connected_endpoints": {"type": DynamicConnectedEndpoints},
+            "custom_connected_endpoints": {"type": DynamicCustomConnectedEndpoints},
             "custom_node_types": {"type": DynamicCustomNodeTypes},
             "network_services": {"type": DynamicNetworkServices},
             "node_types": {"type": DynamicNodeTypes},
         }
         connected_endpoints: DynamicConnectedEndpoints
         """Collection of dynamic 'connected_endpoints'."""
+        custom_connected_endpoints: DynamicCustomConnectedEndpoints
+        """Collection of dynamic 'custom_connected_endpoints'."""
         custom_node_types: DynamicCustomNodeTypes
         """Collection of dynamic 'custom_node_types'."""
         network_services: DynamicNetworkServices
@@ -58663,6 +60464,7 @@ class EosDesigns(EosDesignsRootModel):
                 self,
                 *,
                 connected_endpoints: DynamicConnectedEndpoints | UndefinedType = Undefined,
+                custom_connected_endpoints: DynamicCustomConnectedEndpoints | UndefinedType = Undefined,
                 custom_node_types: DynamicCustomNodeTypes | UndefinedType = Undefined,
                 network_services: DynamicNetworkServices | UndefinedType = Undefined,
                 node_types: DynamicNodeTypes | UndefinedType = Undefined,
@@ -58675,6 +60477,7 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     connected_endpoints: Collection of dynamic 'connected_endpoints'.
+                    custom_connected_endpoints: Collection of dynamic 'custom_connected_endpoints'.
                     custom_node_types: Collection of dynamic 'custom_node_types'.
                     network_services: Collection of dynamic 'network_services'.
                     node_types: Collection of dynamic 'node_types'.
@@ -58699,6 +60502,7 @@ class EosDesigns(EosDesignsRootModel):
         "bgp_peer_groups": {"type": BgpPeerGroups},
         "bgp_update_wait_install": {"type": bool, "default": True},
         "bgp_update_wait_for_convergence": {"type": bool, "default": False},
+        "custom_connected_endpoints_keys": {"type": CustomConnectedEndpointsKeys},
         "connected_endpoints_keys": {
             "type": ConnectedEndpointsKeys,
             "default": lambda cls: coerce_type(
@@ -58749,6 +60553,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
+        "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -58770,6 +60575,7 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_ip_addressing": {"type": FabricIpAddressing},
         "fabric_name": {"type": str},
         "fabric_numbering": {"type": FabricNumbering},
+        "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
@@ -59204,19 +61010,37 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
+    custom_connected_endpoints_keys: CustomConnectedEndpointsKeys
+    """
+    `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
+    altering the `connected_endpoints_keys`.
+    The values defined in `custom_connected_endpoints_keys`,
+    are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in
+    `connected_endpoint_keys`.
+    This approach helps preserving the default `connected_endpoints_keys`,
+    unlike directly overriding it.
+
+    Subclass of AvdIndexedList with `CustomConnectedEndpointsKeysItem`
+    items. Primary key is `key` (`str`).
+    """
     connected_endpoints_keys: ConnectedEndpointsKeys
     """
     Endpoints connecting to the fabric can be grouped by using separate keys.
     The keys can be customized
-    to provide a better better organization or grouping of your data.
-    `connected_endpoints_keys` should
-    be defined in the top level group_vars for the fabric.
+    to provide a better organization or grouping of your data.
+    `connected_endpoints_keys` should be
+    defined in the top level group_vars for the fabric.
     The default values will be overridden if
     defining this key, so it is recommended to copy the defaults and modify them.
+    If you need to add
+    custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
+    Entries
+    under `custom_connected_endpoint_keys` will take precedence over entries in
+    `connected_endpoint_keys`.
 
 
-    Subclass of
-    AvdIndexedList with `ConnectedEndpointsKeysItem` items. Primary key is `key` (`str`).
+    Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items.
+    Primary key is `key` (`str`).
 
     Default value: `lambda cls: coerce_type([{"key": "servers", "type": "server", "description": "Server"}, {"key": "firewalls", "type": "firewall", "description": "Firewall"}, {"key": "routers", "type": "router", "description": "Router"}, {"key": "load_balancers", "type": "load_balancer", "description": "Load Balancer"}, {"key": "storage_arrays", "type": "storage_array", "description": "Storage Array"}, {"key": "cpes", "type": "cpe", "description": "CPE"}, {"key": "workstations", "type": "workstation", "description": "Workstation"}, {"key": "access_points", "type": "access_point", "description": "Access Point"}, {"key": "phones", "type": "phone", "description": "Phone"}, {"key": "printers", "type": "printer", "description": "Printer"}, {"key": "cameras", "type": "camera", "description": "Camera"}, {"key": "generic_devices", "type": "generic_device", "description": "Generic Device"}], target_type=cls)`
     """
@@ -59595,6 +61419,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     design: Design
     """Subclass of AvdModel."""
+    dns_settings: DnsSettings
+    """
+    DNS settings
+
+    Subclass of AvdModel.
+    """
     enable_trunk_groups: bool
     """
     Enable Trunk Group support across eos_designs.
@@ -59747,6 +61577,32 @@ class EosDesigns(EosDesignsRootModel):
     Assignment policies for numbers like Node ID.
 
     Subclass of AvdModel.
+    """
+    fabric_numbering_node_id_pool: str
+    """
+    Name of Node ID pool or template used to render the name of each Node ID pool.
+    For each device the
+    Node ID is assigned from a pool shared by all devices rendering the same pool name.
+    This can be
+    modified to include fewer or more fields to keep separate pools or to use the same pool across
+    areas.
+    This can be a template using the AVD string formatter syntax:
+    https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+    descriptions-names.html#avd-string-formatter-syntax.
+    The available template fields are:
+      -
+    `fabric_name`: The `fabric_name` assigned to the device.
+      - `dc_name`: The `dc_name` assigned to
+    the device.
+      - `pod_name`: The `pod_name` assigned to the device.
+      - `type`: The `type` assigned
+    to the device.
+      - `rack`: The `rack` assigned to the device.
+
+    By default the Node ID pool key is
+    templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
+
+    Default value: `"fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"`
     """
     fabric_sflow: FabricSflow
     """
@@ -60908,6 +62764,7 @@ class EosDesigns(EosDesignsRootModel):
             bgp_peer_groups: BgpPeerGroups | UndefinedType = Undefined,
             bgp_update_wait_install: bool | UndefinedType = Undefined,
             bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
+            custom_connected_endpoints_keys: CustomConnectedEndpointsKeys | UndefinedType = Undefined,
             connected_endpoints_keys: ConnectedEndpointsKeys | UndefinedType = Undefined,
             core_interfaces: CoreInterfaces | UndefinedType = Undefined,
             custom_structured_configuration_list_merge: Literal["replace", "append", "keep", "prepend", "append_rp", "prepend_rp"] | UndefinedType = Undefined,
@@ -60936,6 +62793,7 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
             design: Design | UndefinedType = Undefined,
+            dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -60957,6 +62815,7 @@ class EosDesigns(EosDesignsRootModel):
             fabric_ip_addressing: FabricIpAddressing | UndefinedType = Undefined,
             fabric_name: str | UndefinedType = Undefined,
             fabric_numbering: FabricNumbering | UndefinedType = Undefined,
+            fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
@@ -61177,18 +63036,34 @@ class EosDesigns(EosDesignsRootModel):
                 bgp_update_wait_for_convergence:
                    Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP
                    convergence state is reached.
+                custom_connected_endpoints_keys:
+                   `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
+                   altering the `connected_endpoints_keys`.
+                   The values defined in `custom_connected_endpoints_keys`,
+                   are prepended to the ones in `connected_endpoint_keys`, taking precedence over any values in
+                   `connected_endpoint_keys`.
+                   This approach helps preserving the default `connected_endpoints_keys`,
+                   unlike directly overriding it.
+
+                   Subclass of AvdIndexedList with `CustomConnectedEndpointsKeysItem`
+                   items. Primary key is `key` (`str`).
                 connected_endpoints_keys:
                    Endpoints connecting to the fabric can be grouped by using separate keys.
                    The keys can be customized
-                   to provide a better better organization or grouping of your data.
-                   `connected_endpoints_keys` should
-                   be defined in the top level group_vars for the fabric.
+                   to provide a better organization or grouping of your data.
+                   `connected_endpoints_keys` should be
+                   defined in the top level group_vars for the fabric.
                    The default values will be overridden if
                    defining this key, so it is recommended to copy the defaults and modify them.
+                   If you need to add
+                   custom `connected_endpoints_keys`, create them under `custom_connected_endpoints_keys`.
+                   Entries
+                   under `custom_connected_endpoint_keys` will take precedence over entries in
+                   `connected_endpoint_keys`.
 
 
-                   Subclass of
-                   AvdIndexedList with `ConnectedEndpointsKeysItem` items. Primary key is `key` (`str`).
+                   Subclass of AvdIndexedList with `ConnectedEndpointsKeysItem` items.
+                   Primary key is `key` (`str`).
                 core_interfaces: Subclass of AvdModel.
                 custom_structured_configuration_list_merge:
                    The List-merge strategy used when merging custom structured configurations.
@@ -61489,6 +63364,10 @@ class EosDesigns(EosDesignsRootModel):
                    By default the description is
                    templated from the VRF name.
                 design: Subclass of AvdModel.
+                dns_settings:
+                   DNS settings
+
+                   Subclass of AvdModel.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group
@@ -61589,6 +63468,28 @@ class EosDesigns(EosDesignsRootModel):
                    Assignment policies for numbers like Node ID.
 
                    Subclass of AvdModel.
+                fabric_numbering_node_id_pool:
+                   Name of Node ID pool or template used to render the name of each Node ID pool.
+                   For each device the
+                   Node ID is assigned from a pool shared by all devices rendering the same pool name.
+                   This can be
+                   modified to include fewer or more fields to keep separate pools or to use the same pool across
+                   areas.
+                   This can be a template using the AVD string formatter syntax:
+                   https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                   descriptions-names.html#avd-string-formatter-syntax.
+                   The available template fields are:
+                     -
+                   `fabric_name`: The `fabric_name` assigned to the device.
+                     - `dc_name`: The `dc_name` assigned to
+                   the device.
+                     - `pod_name`: The `pod_name` assigned to the device.
+                     - `type`: The `type` assigned
+                   to the device.
+                     - `rack`: The `rack` assigned to the device.
+
+                   By default the Node ID pool key is
+                   templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
                 fabric_sflow:
                    Default enabling of sFlow for various interface types across the fabric.
                    sFlow can also be

@@ -96,6 +96,9 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [Platform](#platform)
+  - [Platform Summary](#platform-summary)
+  - [Platform Device Configuration](#platform-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
@@ -653,6 +656,18 @@ sflow interface egress enable default
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+| default | mpls |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -664,6 +679,11 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
+!
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
@@ -1436,6 +1456,31 @@ router pim sparse-mode
 | Service type | Framed MTU |
 | ------------ | ---------- |
 | True | 1500 |
+
+## Platform
+
+### Platform Summary
+
+#### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+| MMU Headroom-pool Limit | 557 bytes |
+
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | balanced |
+
+### Platform Device Configuration
+
+```eos
+!
+platform fap buffering egress profile balanced
+!
+platform trident mmu headroom-pool limit 557
+```
 
 ## Application Traffic Recognition
 

@@ -33,6 +33,24 @@ keys:
                 type: str
                 description: |
                   The queue profile to be applied to the platform.
+              headroom_pool_limit:
+                type: dict
+                description: Max limit on headroom pool size.
+                keys:
+                  bytes:
+                    type: int
+                    convert_types:
+                      - str
+                    description: |-
+                      Headroom pool limit in bytes.
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
+                  cells:
+                    type: int
+                    convert_types:
+                      - str
+                    description: |-
+                      Headroom pool limit in cells.
+                      `bytes` and `cells` are mutually exclusive with `bytes` taking precedence.
               queue_profiles:
                 type: list
                 primary_key: name
@@ -237,3 +255,15 @@ keys:
                 description: |-
                   RSS interface profile name to apply for the platform.
                   Needs system reload or Sfe agent restart for change to take effect.
+      fap:
+        type: dict
+        keys:
+          buffering_egress:
+            type: dict
+            keys:
+              profile:
+                description: Preferred traffic profile for egress fap buffering.
+                type: str
+                valid_values:
+                  - unicast
+                  - balanced

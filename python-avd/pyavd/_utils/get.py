@@ -4,9 +4,14 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any
+from typing import TYPE_CHECKING, cast
 
 from pyavd._errors import AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+
+if TYPE_CHECKING:
+    from typing import Any
+
+    from pyavd._schema.models.avd_model import AvdModel
 
 
 def get(
@@ -120,6 +125,7 @@ def get_v2(
         value = dict_or_object.get(keys[0])
     elif hasattr(dict_or_object, "_key_to_field_map"):
         # AvdModel subclass - avoiding circular imports.
+        dict_or_object = cast("AvdModel", dict_or_object)
         field_name = dict_or_object._key_to_field_map.get(keys[0], keys[0])
         value = dict_or_object._get(field_name) if field_name in dict_or_object._fields else None
     else:

@@ -12,9 +12,6 @@ l2leaf:
 mgmt_interface_vrf: default
 
 source_interfaces:
-  domain_lookup:
-    mgmt_interface: true
-    inband_mgmt_interface: true
   http_client:
     mgmt_interface: true
     inband_mgmt_interface: true

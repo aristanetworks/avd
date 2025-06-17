@@ -16,7 +16,7 @@ if TYPE_CHECKING:
 LOGGER = getLogger(__name__)
 
 
-def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str) -> None:
+def dump_anta_catalog(hostname: str, catalog: AntaCatalog, catalog_dir: str | Path) -> None:
     """
     Dump the ANTA catalog for a device to the provided catalog directory.
 
