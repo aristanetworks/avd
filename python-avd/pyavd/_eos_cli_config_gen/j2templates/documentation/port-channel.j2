@@ -13,7 +13,7 @@
 
 #### Port-channel Load Balance Trident UDF Eth-type Headers
 
-| Eth-Type | IP Protocol |Header | Offset | Mask |
+| Eth-Type | IP Protocol | Header | Offset | Mask |
 | -------- | ---------- | ------ | ------ | ---- |
 {%         for udf_field in port_channel.load_balance_trident_udf %}
 | {{ udf_field.eth_type | capitalize }} | {{ udf_field.ip_protocol | arista.avd.default("-") | upper }} | {{ udf_field.header | replace("_", " ") }} | {{ udf_field.offset }} | {{ udf_field.mask | arista.avd.default("-") }} |
