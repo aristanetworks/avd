@@ -6433,19 +6433,21 @@ $defs:
         vxlan_flood_multicast:
           documentation_options:
             table: network-services-multicast-settings
-          description: 'Enable Flood group Multicast for all SVIs and l2vlans within
-            Tenant.
-
-            '
           type: dict
           keys:
             enabled:
               type: bool
               required: true
+              description: Enable Flood group Multicast for all SVIs and l2vlans within
+                Tenant.
             underlay_l2_multicast_group_ipv4_pool:
               type: str
-              description: Comma separated list of prefixes (IPv4 address/Mask) or
-                ranges (IPv4_address-IPv4_address).
+              description: 'IPv4 Pool to allocate vxlan flood groups from.
+
+                The VLAN ID - 1 + `underlay_l2_multicast_group_ipv4_pool_offset` is
+                the offset for each group.
+
+                Comma separated list of prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).'
               format: ipv4_pool
             underlay_l2_multicast_group_ipv4_pool_offset:
               type: int
@@ -8045,14 +8047,11 @@ $defs:
                 documentation_options:
                   table: network-services-multicast-settings
                 type: dict
-                description: 'Explicitly enable or disable vxlan_flood_multicast to
-                  override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
-
-                  '
                 keys:
                   enabled:
                     type: bool
-                    required: true
+                    description: Explicitly enable or disable vxlan_flood_multicast
+                      to override setting of `<network_services_key>.[].vxlan_flood_multicast.enabled`.
                   underlay_multicast_group:
                     description: Specific multicast group to use for this VLAN.
                     type: str
@@ -11108,8 +11107,10 @@ $defs:
         keys:
           enabled:
             type: bool
-            required: true
+            description: Explicitly enable or disable vxlan_flood_multicast to override
+              settings of `<network_services_key>.[].vxlan_flood_multicast`.
           underlay_multicast_group:
+            description: Specific multicast group to use for this SVI.
             type: str
       evpn_l3_multicast:
         documentation_options:

@@ -13651,12 +13651,19 @@ class EosDesigns(EosDesignsRootModel):
                 """Subclass of AvdModel."""
 
                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                enabled: bool
+                enabled: bool | None
+                """
+                Explicitly enable or disable vxlan_flood_multicast to override settings of
+                `<network_services_key>.[].vxlan_flood_multicast`.
+                """
                 underlay_multicast_group: str | None
+                """Specific multicast group to use for this SVI."""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                    ) -> None:
                         """
                         VxlanFloodMulticast.
 
@@ -13664,8 +13671,10 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            enabled: enabled
-                            underlay_multicast_group: underlay_multicast_group
+                            enabled:
+                               Explicitly enable or disable vxlan_flood_multicast to override settings of
+                               `<network_services_key>.[].vxlan_flood_multicast`.
+                            underlay_multicast_group: Specific multicast group to use for this SVI.
 
                         """
 
@@ -14458,12 +14467,19 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-            enabled: bool
+            enabled: bool | None
+            """
+            Explicitly enable or disable vxlan_flood_multicast to override settings of
+            `<network_services_key>.[].vxlan_flood_multicast`.
+            """
             underlay_multicast_group: str | None
+            """Specific multicast group to use for this SVI."""
 
             if TYPE_CHECKING:
 
-                def __init__(self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined) -> None:
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                ) -> None:
                     """
                     VxlanFloodMulticast.
 
@@ -14471,8 +14487,10 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        enabled: enabled
-                        underlay_multicast_group: underlay_multicast_group
+                        enabled:
+                           Explicitly enable or disable vxlan_flood_multicast to override settings of
+                           `<network_services_key>.[].vxlan_flood_multicast`.
+                        underlay_multicast_group: Specific multicast group to use for this SVI.
 
                     """
 
@@ -37668,8 +37686,15 @@ class EosDesigns(EosDesignsRootModel):
                         "underlay_l2_multicast_group_ipv4_pool_offset": {"type": int, "default": 0},
                     }
                     enabled: bool
+                    """Enable Flood group Multicast for all SVIs and l2vlans within Tenant."""
                     underlay_l2_multicast_group_ipv4_pool: str | None
-                    """Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address)."""
+                    """
+                    IPv4 Pool to allocate vxlan flood groups from.
+                    The VLAN ID - 1 +
+                    `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                    Comma separated list of
+                    prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
+                    """
                     underlay_l2_multicast_group_ipv4_pool_offset: int
                     """Default value: `0`"""
 
@@ -37689,8 +37714,13 @@ class EosDesigns(EosDesignsRootModel):
                             Subclass of AvdModel.
 
                             Args:
-                                enabled: enabled
-                                underlay_l2_multicast_group_ipv4_pool: Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
+                                enabled: Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
+                                underlay_l2_multicast_group_ipv4_pool:
+                                   IPv4 Pool to allocate vxlan flood groups from.
+                                   The VLAN ID - 1 +
+                                   `underlay_l2_multicast_group_ipv4_pool_offset` is the offset for each group.
+                                   Comma separated list of
+                                   prefixes (IPv4_address/Mask) or ranges (IPv4_address-IPv4_address).
                                 underlay_l2_multicast_group_ipv4_pool_offset: underlay_l2_multicast_group_ipv4_pool_offset
 
                             """
@@ -38645,13 +38675,21 @@ class EosDesigns(EosDesignsRootModel):
                                 """Subclass of AvdModel."""
 
                                 _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                                enabled: bool
+                                enabled: bool | None
+                                """
+                                Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                `<network_services_key>.[].vxlan_flood_multicast`.
+                                """
                                 underlay_multicast_group: str | None
+                                """Specific multicast group to use for this SVI."""
 
                                 if TYPE_CHECKING:
 
                                     def __init__(
-                                        self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                        self,
+                                        *,
+                                        enabled: bool | None | UndefinedType = Undefined,
+                                        underlay_multicast_group: str | None | UndefinedType = Undefined,
                                     ) -> None:
                                         """
                                         VxlanFloodMulticast.
@@ -38660,8 +38698,10 @@ class EosDesigns(EosDesignsRootModel):
                                         Subclass of AvdModel.
 
                                         Args:
-                                            enabled: enabled
-                                            underlay_multicast_group: underlay_multicast_group
+                                            enabled:
+                                               Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                               `<network_services_key>.[].vxlan_flood_multicast`.
+                                            underlay_multicast_group: Specific multicast group to use for this SVI.
 
                                         """
 
@@ -39477,13 +39517,18 @@ class EosDesigns(EosDesignsRootModel):
                             """Subclass of AvdModel."""
 
                             _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                            enabled: bool
+                            enabled: bool | None
+                            """
+                            Explicitly enable or disable vxlan_flood_multicast to override settings of
+                            `<network_services_key>.[].vxlan_flood_multicast`.
+                            """
                             underlay_multicast_group: str | None
+                            """Specific multicast group to use for this SVI."""
 
                             if TYPE_CHECKING:
 
                                 def __init__(
-                                    self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                    self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
                                 ) -> None:
                                     """
                                     VxlanFloodMulticast.
@@ -39492,8 +39537,10 @@ class EosDesigns(EosDesignsRootModel):
                                     Subclass of AvdModel.
 
                                     Args:
-                                        enabled: enabled
-                                        underlay_multicast_group: underlay_multicast_group
+                                        enabled:
+                                           Explicitly enable or disable vxlan_flood_multicast to override settings of
+                                           `<network_services_key>.[].vxlan_flood_multicast`.
+                                        underlay_multicast_group: Specific multicast group to use for this SVI.
 
                                     """
 
@@ -42986,14 +43033,18 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
 
                         _fields: ClassVar[dict] = {"enabled": {"type": bool}, "underlay_multicast_group": {"type": str}}
-                        enabled: bool
+                        enabled: bool | None
+                        """
+                        Explicitly enable or disable vxlan_flood_multicast to override setting of
+                        `<network_services_key>.[].vxlan_flood_multicast.enabled`.
+                        """
                         underlay_multicast_group: str | None
                         """Specific multicast group to use for this VLAN."""
 
                         if TYPE_CHECKING:
 
                             def __init__(
-                                self, *, enabled: bool | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
+                                self, *, enabled: bool | None | UndefinedType = Undefined, underlay_multicast_group: str | None | UndefinedType = Undefined
                             ) -> None:
                                 """
                                 VxlanFloodMulticast.
@@ -43002,7 +43053,9 @@ class EosDesigns(EosDesignsRootModel):
                                 Subclass of AvdModel.
 
                                 Args:
-                                    enabled: enabled
+                                    enabled:
+                                       Explicitly enable or disable vxlan_flood_multicast to override setting of
+                                       `<network_services_key>.[].vxlan_flood_multicast.enabled`.
                                     underlay_multicast_group: Specific multicast group to use for this VLAN.
 
                                 """
@@ -43203,13 +43256,7 @@ class EosDesigns(EosDesignsRootModel):
                     AvdModel.
                     """
                     vxlan_flood_multicast: VxlanFloodMulticast
-                    """
-                    Explicitly enable or disable vxlan_flood_multicast to override setting of
-                    `<network_services_key>.[].vxlan_flood_multicast.enabled`.
-
-
-                    Subclass of AvdModel.
-                    """
+                    """Subclass of AvdModel."""
                     igmp_snooping_enabled: bool | None
                     """Enable or disable IGMP snooping (Enabled by default on EOS)."""
                     igmp_snooping_querier: IgmpSnoopingQuerier
@@ -43314,12 +43361,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of
                                    AvdModel.
-                                vxlan_flood_multicast:
-                                   Explicitly enable or disable vxlan_flood_multicast to override setting of
-                                   `<network_services_key>.[].vxlan_flood_multicast.enabled`.
-
-
-                                   Subclass of AvdModel.
+                                vxlan_flood_multicast: Subclass of AvdModel.
                                 igmp_snooping_enabled: Enable or disable IGMP snooping (Enabled by default on EOS).
                                 igmp_snooping_querier:
                                    Enable igmp snooping querier, by default using IP address of Loopback 0.
@@ -43721,12 +43763,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
                 """
                 vxlan_flood_multicast: VxlanFloodMulticast
-                """
-                Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
-
-
-                Subclass of AvdModel.
-                """
+                """Subclass of AvdModel."""
                 evpn_l3_multicast: EvpnL3Multicast
                 """
                 Enable L3 Multicast for all SVIs and l3vlans within Tenant.
@@ -43926,11 +43963,7 @@ class EosDesigns(EosDesignsRootModel):
 
 
                                Subclass of AvdModel.
-                            vxlan_flood_multicast:
-                               Enable Flood group Multicast for all SVIs and l2vlans within Tenant.
-
-
-                               Subclass of AvdModel.
+                            vxlan_flood_multicast: Subclass of AvdModel.
                             evpn_l3_multicast:
                                Enable L3 Multicast for all SVIs and l3vlans within Tenant.
                                - In the evpn-l3ls design type, this
