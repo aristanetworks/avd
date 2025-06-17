@@ -5,10 +5,13 @@ from __future__ import annotations
 
 import json
 import logging
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
+import yaml
 from ansible.errors import AnsibleActionFail
+from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
 from yaml import load
 
@@ -119,7 +122,7 @@ class ActionModule(ActionBase):
 
         if output.digital_twin:
             changed = write_file(
-                content=output.digital_twin,
+                content=yaml.dump(asdict(output.digital_twin), Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )

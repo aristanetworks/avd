@@ -3,12 +3,16 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
-
-import yaml
+from dataclasses import field, make_dataclass
+from typing import TYPE_CHECKING
 
 from pyavd._utils import get
-from pyavd.api.fabric_documentation import FabricDocumentation
+from pyavd.api.fabric_documentation import (
+    DigitalTwinFabricDocumentationActLink,
+    DigitalTwinFabricDocumentationActNode,
+    DigitalTwinFabricDocumentationActNodeType,
+    FabricDocumentation,
+)
 
 if TYPE_CHECKING:
     from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
@@ -118,17 +122,10 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _strip_unsafe(potentially_unsafe_string: str) -> str | None:
-    """Convert AnsibleUnsafeText to plain str if needed."""
-    if hasattr(potentially_unsafe_string, "_strip_unsafe"):
-        return potentially_unsafe_string._strip_unsafe()
-    return potentially_unsafe_string
-
-
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> str:
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> object:
     digital_twin_env = next(
         (
-            _strip_unsafe(environment)
+            environment
             for device_structurude_config in fabric_documentation_facts.structured_configs.values()
             if (environment := get(device_structurude_config, "metadata.digital_twin.environment")) is not None
         ),
@@ -141,61 +138,78 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> s
             return ""
 
 
-def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> str:
-    digital_twin_topology: dict[str, Any] = {}
+def _act_dynamic_digital_twin_fabric_documentation(
+    cls_name: str,
+    node_types: dict,
+    nodes: tuple[dict[str, DigitalTwinFabricDocumentationActNode], ...],
+    links: tuple[DigitalTwinFabricDocumentationActLink, ...],
+) -> object:
+    return make_dataclass(
+        cls_name,
+        # Process ACT node_types
+        [(key, DigitalTwinFabricDocumentationActNodeType, field(default=value)) for key, value in node_types.items()]
+        +
+        # Process ACT nodes
+        [("nodes", tuple[dict[str, DigitalTwinFabricDocumentationActNode], ...], field(default=nodes))]
+        +
+        # Process ACT links
+        [("links", tuple[DigitalTwinFabricDocumentationActLink, ...], field(default=links))],
+        frozen=True,
+    )()
+
+
+def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> object:
     digital_twin_node_types: set[str] = set()
+
+    # Identify common username for fabric nodes
     digital_twin_fabric_username: str | None = next(
         (
-            _strip_unsafe(username)
+            username
             for device_structurude_config in fabric_documentation_facts.structured_configs.values()
             if (username := get(device_structurude_config, "metadata.digital_twin.username")) is not None
         ),
         None,
     )
+
+    # Identify common password for fabric nodes
     digital_twin_fabric_password: str | None = next(
         (
-            _strip_unsafe(password)
+            password
             for device_structurude_config in fabric_documentation_facts.structured_configs.values()
             if (password := get(device_structurude_config, "metadata.digital_twin.password")) is not None
         ),
         None,
     )
-    digital_twin_devices: list[dict[str, Any] | None] = []
 
-    device_list: list[str | None] = [_strip_unsafe(device) for device in fabric_documentation_facts.avd_facts]
+    digital_twin_devices: list[dict[str, DigitalTwinFabricDocumentationActNode]] = []
+    device_list: list[str] = list(fabric_documentation_facts.avd_facts)
     for device in sorted(device_list):
-        if (
-            digital_twin_node_type := _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type"))
-        ) is not None:
+        if (digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")) is not None:
             digital_twin_node_types.add(digital_twin_node_type)
 
         digital_twin_devices.append(
             {
-                device: {
-                    "node_type": _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")),
-                    "ip_addr": _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.ip_addr")),
-                    "version": _strip_unsafe(get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.version")),
-                }
+                device: DigitalTwinFabricDocumentationActNode(
+                    node_type=get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type"),
+                    ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.ip_addr"),
+                    version=get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.version"),
+                )
             }
         )
 
-    for digital_twin_node_type in sorted(digital_twin_node_types):
-        digital_twin_topology[digital_twin_node_type] = {
-            "username": digital_twin_fabric_username,
-            "password": digital_twin_fabric_password,
-        }
-
-    # Render nodes
-    digital_twin_topology["nodes"] = digital_twin_devices
-    # Render links
-    digital_twin_topology["links"] = [
-        {
-            "connection": [
-                f"{_strip_unsafe(topology_link['node'])}:{_strip_unsafe(topology_link['node_interface'])}",
-                f"{_strip_unsafe(topology_link['peer'])}:{_strip_unsafe(topology_link['peer_interface'])}",
-            ]
-        }
-        for topology_link in fabric_documentation_facts.topology_links
-    ]
-
-    return yaml.dump(digital_twin_topology, Dumper=yaml.CSafeDumper, default_flow_style=False, indent=2, sort_keys=False, width=130)
+    return _act_dynamic_digital_twin_fabric_documentation(
+        cls_name="digital_twin_act_data",
+        node_types={
+            digital_twin_node_type: DigitalTwinFabricDocumentationActNodeType(
+                username=str(digital_twin_fabric_username), password=str(digital_twin_fabric_password)
+            )
+            for digital_twin_node_type in sorted(digital_twin_node_types)
+        },
+        nodes=tuple(digital_twin_devices),
+        links=tuple(
+            DigitalTwinFabricDocumentationActLink(
+                connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")
+            )
+            for topology_link in fabric_documentation_facts.topology_links
+        ),
+    )
