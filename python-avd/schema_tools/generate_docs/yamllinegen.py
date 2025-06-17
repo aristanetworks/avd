@@ -157,7 +157,10 @@ class YamlLineGenBase:
             descriptions.append(f"Support will be removed in the first major AVD version released after {self.schema.deprecation.remove_after_date}.")
 
         if self.schema.deprecation.new_key:
-            descriptions.append(f"Use <samp>{self.schema.deprecation.new_key}</samp> instead.")
+            # Enclose each new key in backticks
+            new_keys = self.schema.deprecation.new_key.split(" or ")
+            new_keys = [f"`{new_key}`" for new_key in new_keys]
+            descriptions.append(f"Use {' or '.join(new_keys)} instead.")
 
         if self.schema.deprecation.url:
             descriptions.append(f"See [here]({self.schema.deprecation.url}) for details.")

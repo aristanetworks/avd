@@ -49,9 +49,10 @@ A good example to demonstrate the various behaviors is to use the `ip name-serve
 ```yaml
 ---
 # Only eos_designs name_servers variables
-name_servers:
-  - 192.168.42.10
-  - 192.168.42.40
+dns_settings:
+  servers:
+    - ip_address: 192.168.42.10
+    - ip_address: 192.168.42.40
 ```
 
 will generate as intended config:

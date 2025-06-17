@@ -1214,6 +1214,64 @@ keys:
         - mpls
         - l2ls
         default: l3ls-evpn
+  dns_settings:
+    documentation_options:
+      table: management-settings
+    type: dict
+    description: DNS settings
+    keys:
+      domain:
+        type: str
+        description: DNS domain name like 'fabric.local'
+      servers:
+        type: list
+        required: true
+        min_length: 1
+        $ref: eos_cli_config_gen#/keys/ip_name_servers
+        items:
+          type: dict
+          keys:
+            vrf:
+              type: str
+              description: "If not set, the VRF is automatically picked up from the
+                global setting `default_mgmt_method`.\nThe value of `vrf` will be
+                interpreted according to these rules:\n- `use_mgmt_interface_vrf`
+                will configure the DNS server under the VRF set with `mgmt_interface_vrf`
+                and set the `mgmt_interface` as DNS lookup source-interface.\n  An
+                error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured
+                for the device.\n- `use_inband_mgmt_vrf` will configure the DNS server
+                under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface`
+                as DNS lookup source-interface.\n  An error will be raised if inband
+                management is not configured for the device.\n- Any other string will
+                be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface`
+                if needed."
+              convert_types:
+              - int
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+              - int
+              description: VRF name.
+            source_interface:
+              type: str
+              description: 'Source interface to use for DNS lookups in this VRF.
+
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
+                this setting will take precedence.'
+      set_source_interfaces:
+        type: bool
+        default: true
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`
+          and `use_inband_mgmt_vrf`.
+
+          Can be set to `false` to avoid changes when migrating from old `name_servers`
+          model.'
   enable_trunk_groups:
     documentation_options:
       table: fabric-settings
@@ -1685,6 +1743,21 @@ keys:
 
               Note: Since the pool manager will remove stale entries after every run,
               each fabric should be using its own file.'
+  fabric_numbering_node_id_pool:
+    type: str
+    documentation_options:
+      table: fabric-numbering
+    description: "Name of Node ID pool or template used to render the name of each
+      Node ID pool.\nFor each device the Node ID is assigned from a pool shared by
+      all devices rendering the same pool name.\nThis can be modified to include fewer
+      or more fields to keep separate pools or to use the same pool across areas.\nThis
+      can be a template using the AVD string formatter syntax: https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-descriptions-names.html#avd-string-formatter-syntax.\nThe
+      available template fields are:\n  - `fabric_name`: The `fabric_name` assigned
+      to the device.\n  - `dc_name`: The `dc_name` assigned to the device.\n  - `pod_name`:
+      The `pod_name` assigned to the device.\n  - `type`: The `type` assigned to the
+      device.\n  - `rack`: The `rack` assigned to the device.\n\nBy default the Node
+      ID pool key is templated from `fabric_name`, `dc_name`, `pod_name` and `type`."
+    default: fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}
   fabric_sflow:
     documentation_options:
       table: management-sflow-settings
@@ -2467,6 +2540,10 @@ keys:
     items:
       type: str
       description: IPv4 or IPv6 address.
+    deprecation:
+      warning: true
+      remove_in_version: 6.0.0
+      new_key: dns_settings.servers
   network_ports:
     type: list
     items:
@@ -4220,6 +4297,10 @@ keys:
       domain_lookup:
         type: dict
         description: IP Domain Lookup source-interfaces.
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: dns_settings
         keys:
           mgmt_interface:
             type: bool
