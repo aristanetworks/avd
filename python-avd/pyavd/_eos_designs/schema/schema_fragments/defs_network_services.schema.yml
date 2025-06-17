@@ -1535,6 +1535,7 @@ $defs:
                     type: bool
                     required: true
                   underlay_multicast_group:
+                    description: Specific multicast group to use for this VLAN.
                     type: str
               igmp_snooping_enabled:
                 documentation_options:
