@@ -130,7 +130,7 @@ class VlanInterfacesMixin(Protocol):
                 if (vrf_diagnostic_loopback := vrf.vtep_diagnostic.loopback) is None:
                     msg = (
                         f"No vtep_diagnostic loopback defined on VRF '{vrf.name}' in Tenant '{tenant.name}'."
-                        "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
+                        " This is required when 'l3_multicast' is enabled on the VRF and 'ip_address_virtual' is used on an SVI in that VRF."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 vlan_interface_config.pim.ipv4.local_interface = f"Loopback{vrf_diagnostic_loopback}"
