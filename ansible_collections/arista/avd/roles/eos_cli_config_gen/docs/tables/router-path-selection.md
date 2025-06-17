@@ -203,7 +203,7 @@
         # and multi-hop path MTU towards a remote VTEP (minus 40bytes to account for IP + TCP header).
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>ipv4</samp> instead.
+        # Use `ipv4` instead.
         ipv4_segment_size: <str>
 
         # Segment Size for IPv4.
