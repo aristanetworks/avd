@@ -451,7 +451,8 @@ class FilteredTenantsMixin(Protocol):
         """
         Handle OSPF authentication for l3_interfaces, l3_port_channels and SVIs.
 
-        Work for both simple and message_digest authentication method. If encryption by AVD is required, handles this as well.
+        Work for both simple and message_digest authentication method.
+        If encryption by AVD is required via `encrypt_passwords` or because it must always be encrypted (password at VRF level), handle this as well.
 
         Interface level configuration always takes precedence over VRF level configuration.
 
@@ -470,11 +471,12 @@ class FilteredTenantsMixin(Protocol):
 
         if ospf_authentication == "simple":
             if network_services_interface.ospf.simple_auth_key is not None:
-                if network_services_interface.ospf.simple_auth_key_type == "0":
+                if self.inputs.encrypt_passwords:
                     ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.simple_auth_key, interface.name)
                 else:
                     ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
             elif vrf.ospf.simple_auth_key is not None:
+                # Always encrypt if defined at VRF level.
                 ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
             else:
                 # TODO: path maybe be misleading for port-channels
@@ -488,11 +490,11 @@ class FilteredTenantsMixin(Protocol):
             # TODO: consider merging the two lists if the `id` are not clashing?
             if network_services_interface.ospf.message_digest_keys:
                 for ospf_key in network_services_interface.ospf.message_digest_keys:
-                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface)
+                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
 
             elif vrf.ospf.message_digest_keys:
                 for ospf_key in vrf.ospf.message_digest_keys:
-                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface)
+                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface, encrypt=True)
             if interface.ospf_message_digest_keys:
                 interface.ospf_authentication = ospf_authentication
 
@@ -503,6 +505,7 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ospf.MessageDigestKeysItem,
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
+        encrypt: bool,
     ) -> None:
         """
         Handle OSPF authentication for one message digest key.
@@ -511,24 +514,15 @@ class FilteredTenantsMixin(Protocol):
         """
         if not (ospf_key.id and ospf_key.key):
             return
-        # TODO: not great as the key_type is only available at interface level and not VRF level. Need to refactor this.
-        if hasattr(ospf_key, "key_type"):
-            if ospf_key.key_type == "0":
-                key = ospf_message_digest_encrypt(
-                    password=ospf_key.key,
-                    key=interface.name,
-                    hash_algorithm=ospf_key.hash_algorithm,
-                    key_id=str(ospf_key.id),
-                )
-            else:
-                key = ospf_key.key
-        else:
+        if encrypt:
             key = ospf_message_digest_encrypt(
                 password=ospf_key.key,
                 key=interface.name,
                 hash_algorithm=ospf_key.hash_algorithm,
                 key_id=str(ospf_key.id),
             )
+        else:
+            key = ospf_key.key
 
         interface.ospf_message_digest_keys.append_new(
             id=ospf_key.id,

@@ -562,9 +562,10 @@ $defs:
                     max_length: 8
                     description: |-
                       Password used with simple authentication.
-                      Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual `l3_interface` or `l3_port_channel`.
+                      Only plaintext passwords are supported here as `eos_designs` will encrypt the key for type7 for each individual `l3_interface` or `l3_port_channel`.
                       To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
                       Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
+                      `encrypt_passwords` value does not have any effect on this key.
                   message_digest_keys:
                     type: list
                     primary_key: id
@@ -598,6 +599,7 @@ $defs:
                             Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual `l3_interface` or `l3_port_channel`.
                             To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
                             Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
+                            `encrypt_passwords` value does not have any effect on this key.
                   nodes:
                     type: list
                     items:
@@ -845,14 +847,9 @@ $defs:
                         simple_auth_key:
                           type: str
                           description: |-
-                            Password used with simple authentication using `simple_auth_key_type`.
+                            Key for OSPF simple authentication.
+                            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
                             Maximum 8 characters for cleartext password.
-                        simple_auth_key_type:
-                          type: str
-                          convert_types:
-                            - int
-                          valid_values: ["0", "7"]
-                          default: "7"
                         message_digest_keys:
                           type: list
                           items:
@@ -874,14 +871,9 @@ $defs:
                               key:
                                 type: str
                                 description: |-
-                                  Key password using `key_type`.
+                                  Key for OSPF message digest.
+                                  Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
                                   Maximum 16 characters for cleartext password.
-                              key_type:
-                                type: str
-                                convert_types:
-                                  - int
-                                valid_values: ["0", "7"]
-                                default: "7"
                     pim:
                       type: dict
                       description: |
@@ -1056,14 +1048,9 @@ $defs:
                         simple_auth_key:
                           type: str
                           description: |-
-                            Password used with simple authentication using `simple_auth_key_type`.
+                            Key for OSPF simple authentication.
+                            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
                             Maximum 8 characters for cleartext password.
-                        simple_auth_key_type:
-                          type: str
-                          convert_types:
-                            - int
-                          valid_values: ["0", "7"]
-                          default: "7"
                         message_digest_keys:
                           type: list
                           items:
@@ -1085,14 +1072,9 @@ $defs:
                               key:
                                 type: str
                                 description: |-
-                                  Key password using `key_type`.
+                                  Key for OSPF message digest.
+                                  Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
                                   Maximum 16 characters for cleartext password.
-                              key_type:
-                                type: str
-                                convert_types:
-                                  - int
-                                valid_values: ["0", "7"]
-                                default: "7"
                     flow_tracking:
                       type: dict
                       $ref: "eos_designs#/$defs/flow_tracking_link"
