@@ -3452,7 +3452,6 @@ sync-e
 | Ipv4 | - | inner l3 | 10 | 0xff |
 | Ipv4 | - | inner l4 | 2 | - |
 | Ipv4 | 10 | inner l4 | 20 | 0x02 |
-| Ipv4 | - | inner l3 | 22 | - |
 | Ipv4 | SCTP | outer l2 | 39 | - |
 | Ipv6 | - | outer l3 | 30 | 0x01 |
 | Ipv6 | - | inner l3 | 20 | - |
@@ -3467,7 +3466,6 @@ port-channel load-balance trident udf eth-type ipv4 ip-protocol gre header inner
 port-channel load-balance trident udf eth-type ipv4 header inner l3 offset 10 mask 0xff
 port-channel load-balance trident udf eth-type ipv4 header inner l4 offset 2
 port-channel load-balance trident udf eth-type ipv4 ip-protocol 10 header inner l4 offset 20 mask 0x02
-port-channel load-balance trident udf eth-type ipv4 header inner l3 offset 22
 port-channel load-balance trident udf eth-type ipv4 ip-protocol sctp header outer l2 offset 39
 port-channel load-balance trident udf eth-type ipv6 header outer l3 offset 30 mask 0x01
 port-channel load-balance trident udf eth-type ipv6 header inner l3 offset 20
