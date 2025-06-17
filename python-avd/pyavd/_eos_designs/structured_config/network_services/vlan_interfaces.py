@@ -49,7 +49,7 @@ class VlanInterfacesMixin(Protocol):
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
         if self.shared_utils.node_config.virtual_router_mac_address is None:
-            msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using '{variable}' under 'svi'"
+            msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using '{variable}' under 'svis'."
             raise AristaAvdInvalidInputsError(msg)
 
     def _get_vlan_interface_config_for_svi(
@@ -130,7 +130,7 @@ class VlanInterfacesMixin(Protocol):
                 if (vrf_diagnostic_loopback := vrf.vtep_diagnostic.loopback) is None:
                     msg = (
                         f"No vtep_diagnostic loopback defined on VRF '{vrf.name}' in Tenant '{tenant.name}'."
-                        "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
+                        " This is required when 'l3_multicast' is enabled on the VRF and 'ip_address_virtual' is used on an SVI in that VRF."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 vlan_interface_config.pim.ipv4.local_interface = f"Loopback{vrf_diagnostic_loopback}"
