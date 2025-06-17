@@ -212,9 +212,9 @@ class VxlanInterfaceMixin(Protocol):
             if vxlan_vlan.flood_group is None:
                 if not tenant.vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool:
                     msg = (
-                        "'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant: "
-                        f"{tenant.name} or 'vxlan_flood_multicast.underlay_l2_multicast_group' for VLAN: "
-                        f"{vlan.id} is required."
+                        "'vxlan_flood_multicast.underlay_l2_multicast_group_ipv4_pool' for Tenant "
+                        f"'{tenant.name}' or 'vxlan_flood_multicast.underlay_l2_multicast_group' for VLAN "
+                        f"'{vlan.id}' is required."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 vxlan_vlan.flood_group = self.shared_utils.ip_addressing.evpn_underlay_l2_flood_group(
