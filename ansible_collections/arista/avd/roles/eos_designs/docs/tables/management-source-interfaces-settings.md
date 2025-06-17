@@ -39,7 +39,7 @@
       # IP Domain Lookup source-interfaces.
       # This key is deprecated.
       # Support will be removed in AVD version 6.0.0.
-      # Use <samp>dns_settings</samp> instead.
+      # Use `dns_settings` instead.
       domain_lookup:
 
         # Configure an IP Domain Lookup source-interface with the interface set by `mgmt_interface` for the VRF set by `mgmt_interface_vrf`.
