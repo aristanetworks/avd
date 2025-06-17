@@ -10106,6 +10106,10 @@ ethernet_interfaces:
       vlan: 220
       trunk: untagged
 hostname: LEAF2A
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management0
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
@@ -10118,7 +10122,11 @@ local_users:
 - name: admin
   privilege: 15
   role: network-admin
-  sha512_password: $6$eucN5ngreuExDgwS$xnD7T8jO..GBDX0DUlp.hn.W7yW94xTjSanqgaQGBzPIhDAsyAl9N4oScHvOMvf07uVBFI4mKMxwdVEUVKgY/.
+  no_password: true
+- name: arista
+  privilege: 15
+  role: network-admin
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 management_api_http:
   enable_https: true
   enable_vrfs:

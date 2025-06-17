@@ -421,12 +421,18 @@
 
 #### Traffic Engineering
 
-| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLG |
+| Interface | Enabled | Administrative Groups | Metric | Max Reservable Bandwidth | Min-delay | SRLGs |
 | --------- | ------- | --------------------- | ------ | ------------------------ | --------- | ---- |
 {%         for po_te_interface in port_channel_te_interfaces %}
 {%             set admin_groups = po_te_interface.traffic_engineering.administrative_groups | arista.avd.default (["-"]) | join(",") %}
 {%             set te_enabled = po_te_interface.traffic_engineering.enabled | arista.avd.default("-") %}
-{%             set te_srlg = po_te_interface.traffic_engineering.srlg | arista.avd.default("-") %}
+{%             if po_te_interface.traffic_engineering.srlgs is arista.avd.defined %}
+{%                 set te_srlgs = po_te_interface.traffic_engineering.srlgs %}
+{%             elif po_te_interface.traffic_engineering.srlg is arista.avd.defined %}
+{%                 set te_srlgs = [ po_te_interface.traffic_engineering.srlg ] %}
+{%             else %}
+{%                 set te_srlgs = ["-"] %}
+{%             endif %}
 {%             set te_metric = po_te_interface.traffic_engineering.metric | arista.avd.default("-") %}
 {%             if po_te_interface.traffic_engineering.bandwidth is arista.avd.defined %}
 {%                 set te_bandwidth = po_te_interface.traffic_engineering.bandwidth.number ~ " " ~ po_te_interface.traffic_engineering.bandwidth.unit %}
@@ -440,7 +446,7 @@
 {%             else %}
 {%                 set te_min_del = "-" %}
 {%             endif %}
-| {{ po_te_interface.name }} | {{ te_enabled }} | {{ admin_groups }} | {{ te_metric }} | {{ te_bandwidth }} | {{ te_min_del }} | {{ te_srlg }} |
+| {{ po_te_interface.name }} | {{ te_enabled }} | {{ admin_groups }} | {{ te_metric }} | {{ te_bandwidth }} | {{ te_min_del }} | {{ te_srlgs | join(",") }} |
 {%         endfor %}
 {%     endif %}
 
