@@ -29,7 +29,7 @@
         # IPv6 Network/Mask.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>prefix</samp> instead.
+        # Use `prefix` instead.
         destination_address_prefix: <str>
 
         # IPv6 Network/Mask.
@@ -39,7 +39,7 @@
         # IPv6 Address.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>next_hop</samp> instead.
+        # Use `next_hop` instead.
         gateway: <str>
 
         # IPv6 Address.

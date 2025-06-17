@@ -274,7 +274,7 @@
     # List of DNS servers. The VRF is set to < mgmt_interface_vrf >.
     # This key is deprecated.
     # Support will be removed in AVD version 6.0.0.
-    # Use <samp>dns_settings.servers</samp> instead.
+    # Use `dns_settings.servers` instead.
     name_servers:
 
         # IPv4 or IPv6 address.
