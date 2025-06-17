@@ -175,7 +175,7 @@
         eos_cli: <str>
       # This key is deprecated.
       # Support will be removed in AVD version 6.0.0.
-      # Use <samp>vxlan1</samp> instead.
+      # Use `vxlan1` instead.
       Vxlan1:
         description: <str>
         vxlan:
