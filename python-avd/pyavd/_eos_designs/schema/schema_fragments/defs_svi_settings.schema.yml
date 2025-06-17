@@ -173,8 +173,11 @@ $defs:
         keys:
           enabled:
             type: bool
-            required: true
+            description: |-
+              Explicitly enable or disable vxlan_flood_multicast to override settings of `<network_services_key>.[].vxlan_flood_multicast`.
           underlay_multicast_group:
+            description: |-
+              Specific multicast group to use for this SVI.
             type: str
       evpn_l3_multicast:
         documentation_options:
