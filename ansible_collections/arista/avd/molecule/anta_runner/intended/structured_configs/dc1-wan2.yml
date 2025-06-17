@@ -72,6 +72,14 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet5
+  description: Phone_DC1-INET-4
+  shutdown: false
+  ip_address: dhcp
+  dhcp_client_accept_default_route: true
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 flow_tracking:
   hardware:
     trackers:
@@ -207,6 +215,22 @@ metadata:
         value: isp-1
       - name: Circuit
         value: DC1-INET-4
+    - interface: Ethernet5
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: Phone
+      - name: Circuit
+        value: DC1-INET-4
+    - interface: Port-Channel1
+      tags:
+      - name: Type
+        value: wan
+      - name: Carrier
+        value: mpls-sp-1
+      - name: Circuit
+        value: DC1-MPLS-4
   cv_pathfinder:
     role: edge
     region: Global
@@ -222,10 +246,26 @@ metadata:
       carrier: mpls-sp-1
       circuit_id: DC1-MPLS-4
       pathgroup: mpls
+    - name: Port-Channel1
+      carrier: mpls-sp-1
+      circuit_id: DC1-MPLS-4
+      pathgroup: mpls
     - name: Ethernet4
       carrier: isp-1
       circuit_id: DC1-INET-4
       pathgroup: internet
+    - name: Ethernet5
+      carrier: Phone
+      circuit_id: DC1-INET-4
+      pathgroup: Phone
+port_channel_interfaces:
+- name: Port-Channel1
+  description: mpls-sp-1_DC1-MPLS-4
+  shutdown: false
+  ip_address: 170.18.4.2/24
+  peer_type: l3_port_channel
+  switchport:
+    enabled: false
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
   sequence_numbers:
@@ -491,6 +531,11 @@ router_path_selection:
         server_profiles:
         - mpls-dc1-leaf1a-Ethernet6
         - mpls-dc1-leaf1b-Ethernet6
+    - name: Port-Channel1
+      stun:
+        server_profiles:
+        - mpls-dc1-leaf1a-Ethernet6
+        - mpls-dc1-leaf1b-Ethernet6
     dynamic_peers:
       enabled: true
     static_peers:
@@ -522,6 +567,21 @@ router_path_selection:
       name: dc1-leaf1b
       ipv4_addresses:
       - 100.64.2.2
+  - name: Phone
+    id: 105
+    ipsec_profile: CP-PROFILE
+    local_interfaces:
+    - name: Ethernet5
+      stun:
+        server_profiles:
+        - Phone-dc1-leaf1a-Ethernet5
+    dynamic_peers:
+      enabled: true
+    static_peers:
+    - router_ip: 10.255.255.10
+      name: dc1-leaf1a
+      ipv4_addresses:
+      - 100.64.4.2
   - name: LAN_HA
     id: 65535
     ipsec_profile: DP-PROFILE
@@ -540,11 +600,13 @@ router_path_selection:
     path_groups:
     - name: internet
     - name: mpls
+    - name: Phone
     - name: LAN_HA
   - name: LB-DEFAULT-POLICY-DEFAULT
     path_groups:
     - name: internet
     - name: mpls
+    - name: Phone
     - name: LAN_HA
   tcp_mss_ceiling:
     ipv4: auto
@@ -561,6 +623,10 @@ static_routes:
   next_hop: 172.18.4.1
 - prefix: 100.64.0.0/16
   next_hop: 100.64.4.1
+- prefix: 100.64.0.0/16
+  next_hop: 100.64.5.1
+- prefix: 170.18.0.0/16
+  next_hop: 170.18.4.1
 stun:
   client:
     server_profiles:
@@ -575,6 +641,9 @@ stun:
       ssl_profile: STUN-DTLS
     - name: internet-dc1-leaf1b-Ethernet7
       ip_address: 100.64.2.2
+      ssl_profile: STUN-DTLS
+    - name: Phone-dc1-leaf1a-Ethernet5
+      ip_address: 100.64.4.2
       ssl_profile: STUN-DTLS
 transceiver_qsfp_default_mode_4x10: false
 vrfs:
