@@ -7,6 +7,13 @@ from contextlib import suppress
 from os import environ
 from pathlib import Path
 
+AVD_LOGGING_V2_ENABLE = environ.get("AVD_LOGGING_V2_ENABLE")
+
+if AVD_LOGGING_V2_ENABLE:
+    from .plugin_utils.utils.avd_logging import init_avd_logging
+
+    init_avd_logging()
+
 PYTHON_AVD_PATH = (
     Path(molecule).parents[4] / "python-avd"
     if (molecule := environ.get("MOLECULE_SCENARIO_DIRECTORY")) is not None

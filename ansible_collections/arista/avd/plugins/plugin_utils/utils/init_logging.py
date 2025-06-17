@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import logging
+from os import environ
 
 from ansible.utils.display import Display
 
@@ -19,6 +20,9 @@ def init_pyavd_logging() -> None:
     - Ansible verbosity 1 to 2 (-v to -vv) translates to a level of info
     - Ansible verbosity 3 and above translates to a level of debug
     """
+    if environ.get("AVD_LOGGING_V2_ENABLE"):
+        return
+
     pyavd_logger = logging.getLogger("pyavd")
     schema_tools_logger = logging.getLogger("schema_tools")
     # Avoid duplicate logs
