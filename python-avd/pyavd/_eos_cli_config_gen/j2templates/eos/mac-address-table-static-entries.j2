@@ -8,7 +8,7 @@
 {% for static_entry in mac_address_table.static_entries | arista.avd.natural_sort %}
 {%     if static_entry.drop is arista.avd.defined(true) or static_entry.interface is arista.avd.defined %}
 {%         set ns.has_valid_entry = true %}
-{%         break %} {# Exit the loop as soon as we find one valid entry #}
+{%         break %}
 {%     endif %}
 {% endfor %}
 {% if ns.has_valid_entry %}

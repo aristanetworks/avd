@@ -6,11 +6,27 @@ platform:
     forwarding_table_partition: 2
     mmu:
       active_profile: mc_example_profile
-      # To test headroom_pool_limit in cells.
-      headroom_pool_limit:
-        cells: 556
+      # To test headroom_pool in cells.
+      headroom_pool:
+        unit: cells
+        limit: 556
       queue_profiles:
         - name: mc_example_profile
+          ingress:
+            headroom:
+              memory: 12
+            threshold: 1/32
+            reserved:
+              unit: cells
+              memory: 23
+            resume: 33
+            priority_groups:
+              - id: 2
+                threshold: 1/32
+                reserved:
+                  memory: 3
+              - id: 1
+                threshold: 1
           multicast_queues:
             - id: 0
               reserved: 0
@@ -34,6 +50,21 @@ platform:
               unit: cells
               reserved: 0
         - name: unused_profile
+          ingress:
+            headroom:
+              memory: 121
+              unit: cells
+            reserved:
+              memory: 232
+            priority_groups:
+              - id: 5
+                threshold: 1/32
+                reserved:
+                  memory: 34
+                  unit: cells
+              - id: 2
+                reserved:
+                  memory: 55
           multicast_queues:
             - id: 0
               reserved: 0
