@@ -34,8 +34,8 @@
 {%                 for profile in platform.trident.mmu.queue_profiles | arista.avd.natural_sort('name') %}
 
 ##### {{ profile.name }}
-
 {%                     if profile.ingress is arista.avd.defined %}
+
 ###### Ingress
 
 | Settings | Value |
