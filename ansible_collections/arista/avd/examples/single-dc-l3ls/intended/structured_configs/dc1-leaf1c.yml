@@ -44,6 +44,10 @@ ethernet_interfaces:
     mode: access
     access_vlan: 11
 hostname: dc1-leaf1c
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
@@ -55,10 +59,10 @@ local_users:
   privilege: 15
   role: network-admin
   no_password: true
-- name: ansible
+- name: arista
   privilege: 15
   role: network-admin
-  sha512_password: $6$7u4j1rkb3VELgcZE$EJt2Qff8kd/TapRoci0XaIZsL4tFzgq1YZBLD9c6f/knXzvcYY0NcMKndZeCv0T268knGKhOEwZAxqKjlMm920
+  sha512_password: $6$Enl0WfE32FthwyiJ$yTyGaEJ2uPKLU.F7314YtB7J1jrzrMi7ogXIRTEHQfLdLgKWWmr1UvNlZLN6AyuxET7G5aH3AI9OYRzxVTkB1.
 management_api_http:
   enable_https: true
   enable_vrfs:

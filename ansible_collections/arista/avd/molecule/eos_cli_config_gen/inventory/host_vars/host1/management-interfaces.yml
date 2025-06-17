@@ -6,9 +6,30 @@ management_interfaces:
     ip_address: 10.73.255.122/24
     gateway: 10.73.255.2
     type: oob
+    redundancy:
+      fallback_delay: infinity
+      monitor:
+        neighbor:
+          ipv6_address: "1:1:1:1:1:1:1:1"
+          interval: 101
+          multiplier: 3
   - name: Management0
     ip_address: 10.1.1.1
     mac_address: 00:1c:73:00:00:aa
+    redundancy:
+      fallback_delay: 100
+      monitor:
+        link_state: true
+      supervisor_2:
+        primary_management_interface: Management2/1
+        backup_management_interfaces:
+          - Management2/2
+          - Management1/1
+      supervisor_1:
+        primary_management_interface: Management1/1
+        backup_management_interfaces:
+          - Management1/2
+          - Management2/1
   - name: Vlan123
     description: inband_management
     vrf: default
@@ -24,3 +45,8 @@ management_interfaces:
       transmit: false
       receive: false
       ztp_vlan: 666
+    redundancy:
+      fallback_delay: infinity
+      monitor:
+        neighbor:
+          ipv6_address: "1:1:1:1:1:1:1:1"

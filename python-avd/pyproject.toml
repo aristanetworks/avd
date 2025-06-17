@@ -74,7 +74,7 @@ requires = [
     "pydantic>=2.3.0",
     "cryptography>=38.0.4",
     "aristaproto>=0.1.1",
-    "ruff==0.11.12",
+    "ruff==0.11.13",
 ]
 build-backend = "custom_build_backend"
 backend-path = ["scripts"]
@@ -143,6 +143,8 @@ exclude_also = [
     "@(abc\\.)?abstractmethod",
     # Don't complain about TYPE_CHECKING blocks
     "if TYPE_CHECKING:",
+    # Ignore typing overloads
+    "@overload",
     # Don't complain about Jinja2 internalcode
     # Note that except KeyError is a bit sad but this is the pattern
     "except KeyError:",

@@ -283,7 +283,7 @@
           # Path to Custom J2 template.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>router_id_loopback_interface</samp> instead.
+          # Use `router_id_loopback_interface` instead.
           overlay_loopback_interface: <str>
 
     # Define Node Type Keys, to specify the properties of each node type in the fabric.
@@ -461,6 +461,6 @@
           # Path to Custom J2 template.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>router_id_loopback_interface</samp> instead.
+          # Use `router_id_loopback_interface` instead.
           overlay_loopback_interface: <str>
     ```
