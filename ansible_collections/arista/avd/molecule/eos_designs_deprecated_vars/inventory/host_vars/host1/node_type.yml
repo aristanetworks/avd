@@ -18,3 +18,11 @@ l3leaf:
         - name: host1
           id: 5
           mgmt_ip: 192.168.0.103/24
+          # Used by source-interfaces test:
+          inband_mgmt_interface: Vlan10
+          inband_mgmt_ip: 10.20.30.40/24
+          inband_mgmt_gateway: 10.20.30.1
+          inband_mgmt_vrf: INBANDMGMT
+
+# Used by source-interfaces test: Testing that the generated source interfaces do not contain the VRF if VRF "default"
+mgmt_interface_vrf: default

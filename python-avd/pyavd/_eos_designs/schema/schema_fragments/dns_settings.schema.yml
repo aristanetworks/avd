@@ -1,0 +1,60 @@
+# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../../plugins/plugin_utils/schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  dns_settings:
+    documentation_options:
+      table: management-settings
+    type: dict
+    description: |-
+      DNS settings
+    keys:
+      domain:
+        type: str
+        description: DNS domain name like 'fabric.local'
+      servers:
+        type: list
+        required: true
+        min_length: 1
+        $ref: eos_cli_config_gen#/keys/ip_name_servers
+        items:
+          type: dict
+          keys:
+            vrf:
+              type: str
+              description: |-
+                If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                The value of `vrf` will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as DNS lookup source-interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+                  An error will be raised if inband management is not configured for the device.
+                - Any other string will be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if needed.
+              convert_types:
+                - int
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: VRF name.
+            source_interface:
+              type: str
+              description: |-
+                Source interface to use for DNS lookups in this VRF.
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+      set_source_interfaces:
+        type: bool
+        default: true
+        description: |-
+          Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+          Can be set to `false` to avoid changes when migrating from old `name_servers` model.

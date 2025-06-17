@@ -167,9 +167,9 @@ ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
 - ip_address: 1.1.1.1
-  vrf: MGMT
+  vrf: default
 - ip_address: 8.8.8.8
-  vrf: MGMT
+  vrf: default
 is_deployed: true
 management_api_http:
   enable_https: true
@@ -185,10 +185,15 @@ mlag_configuration:
   reload_delay_mlag: '300'
   reload_delay_non_mlag: '330'
 ntp:
+  local_interface:
+    name: Vlan101
+    vrf: default
   servers:
   - name: 2.2.2.55
     preferred: true
+    vrf: default
   - name: pool.ntp.org
+    vrf: default
 port_channel_interfaces:
 - name: Port-Channel11
   description: MLAG_inband-mgmt-mlag-a_Port-Channel11
