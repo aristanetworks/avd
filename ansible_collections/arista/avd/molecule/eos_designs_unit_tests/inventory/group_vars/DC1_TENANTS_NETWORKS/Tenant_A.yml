@@ -63,6 +63,31 @@ tenant_a:
             ospf:
               enabled: true
               point_to_point: true
+          # test ospf authentication at SVI level being encrypted by AVD on DC1-BL1A
+          - id: 115
+            name: Tenant_A_OP_Zone_4
+            tags: [DC1_BL1]
+            nodes:
+              - node: DC1-BL1A
+              - node: DC1-BL1B
+                # using `encrypt_password: false`
+                ospf:
+                  message_digest_keys:
+                    - id: 2
+                      key: cWuRi5NDH6EVzs1zPgGzYw==
+            enabled: true
+            ospf:
+              enabled: true
+              point_to_point: true
+              # overwriting keys from VRF
+              authentication: message-digest
+              message_digest_keys:
+                - id: 1
+                  hash_algorithm: sha1
+                  key: arista
+                - id: 2
+                  # Testing eos_designs encryption at interface level on some device using `encrypt_passwords: true`
+                  key: ClearText
         ospf:
           enabled: true
           router_id: 10.10.10.10
@@ -179,14 +204,13 @@ tenant_a:
               cost: 100
               authentication: message-digest
               point_to_point: true
-              # overwritingkeys from VRF
+              # overwriting keys from VRF
               message_digest_keys:
                 - id: 1
                   hash_algorithm: sha1
-                  key: "AQQvKeimxJu+uGQ/yYvv9w=="
+                  key: arista
                 - id: 2
-                  key_type: 0
-                  # Testing eos_designs encryption at interface level.
+                  # Testing eos_designs encryption at interface level on some device using `encrypt_passwords: true`
                   key: ClearText
           - interfaces: [Ethernet7]
             ip_addresses: [10.10.20.20/24]
@@ -199,6 +223,23 @@ tenant_a:
               enabled: true
               cost: 100
               point_to_point: true
+          - interfaces: [Ethernet6]
+            ip_addresses: [10.10.70.70/24]
+            nodes: [DC1-BL1B]
+            mtu: 9000
+            enabled: true
+            description: "test"
+            ospf:
+              enabled: true
+              cost: 100
+              authentication: message-digest
+              point_to_point: true
+              # overwriting keys from VRF on DC1-BL1B, which is using `encrypt_passwords: false`
+              # hence verifying the type 7 password is not encrypted
+              message_digest_keys:
+                - id: 1
+                  hash_algorithm: sha1
+                  key: qKh1ui6D2mKd2SnK6uhhlw==
         static_routes:
           - prefix: 10.3.4.0/24
             next_hop: 1.2.3.4
@@ -261,6 +302,15 @@ tenant_a:
               cost: 100
               authentication: simple
               simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+            nodes:
+              - node: DC1-BL1A
+                # DC1-BL1A is using `encrypt_passwords: true`
+                ospf:
+                  enabled: true
+                  area: 1
+                  cost: 100
+                  authentication: simple
+                  simple_auth_key: arista
             static_routes:
               - prefix: 10.3.5.0/24
                 next_hop: 1.2.3.4

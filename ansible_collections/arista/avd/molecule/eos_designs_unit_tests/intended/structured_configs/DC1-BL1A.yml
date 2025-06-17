@@ -132,7 +132,7 @@ ethernet_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha1
-    key: AQQvKeimxJu+uGQ/yYvv9w==
+    key: qKh1ui6D2mKd2SnK6uhhlw==
   - id: 2
     hash_algorithm: sha512
     key: 77a3qHKOAkJUjy4rPnlxzA==
@@ -250,6 +250,11 @@ loopback_interfaces:
   ip_address: 192.168.254.14/32
   ip_address_secondaries:
   - 192.168.255.255/32
+- name: Loopback100
+  description: Tenant_A_OP_Zone_VTEP_DIAGNOSTICS
+  shutdown: false
+  vrf: Tenant_A_OP_Zone
+  ip_address: 10.255.1.14/32
 mac_address_table:
   aging_time: 42
   notification_host_flap:
@@ -427,6 +432,20 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlan_aware_bundles:
+  - name: Tenant_A_OP_Zone
+    rd: 192.168.254.14:9
+    rd_evpn_domain:
+      domain: remote
+      rd: 192.168.254.14:9
+    route_targets:
+      both:
+      - '65104:9'
+      import_export_evpn_domains:
+      - domain: remote
+        route_target: '65104:9'
+    redistribute_routes:
+    - learned
+    vlan: '115'
   - name: Tenant_A_WAN_Zone
     rd: 192.168.254.14:14
     rd_evpn_domain:
@@ -513,6 +532,20 @@ router_bgp:
       - address_family: evpn
         route_targets:
         - '65104:15'
+    redistribute:
+      connected:
+        enabled: true
+  - name: Tenant_A_OP_Zone
+    rd: 192.168.254.14:9
+    route_targets:
+      import:
+      - address_family: evpn
+        route_targets:
+        - '65104:9'
+      export:
+      - address_family: evpn
+        route_targets:
+        - '65104:9'
     redistribute:
       connected:
         enabled: true
@@ -703,7 +736,27 @@ static_routes:
 tcam_profile:
   system: vxlan-routing
 transceiver_qsfp_default_mode_4x10: true
+virtual_source_nat_vrfs:
+- name: Tenant_A_OP_Zone
+  ip_address: 10.255.1.14
 vlan_interfaces:
+- name: Vlan115
+  description: Tenant_A_OP_Zone_4
+  shutdown: false
+  vrf: Tenant_A_OP_Zone
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha1
+    key: aVzrcVJNb6arbe59a2HfJw==
+  - id: 2
+    hash_algorithm: sha512
+    key: 6FTU8rnVU9efMHnBMwZGKQ==
+  tenant: Tenant_A
+  tags:
+  - DC1_BL1
 - name: Vlan150
   description: Tenant_A_WAN_Zone_1
   shutdown: false
@@ -713,7 +766,7 @@ vlan_interfaces:
   ospf_area: '1'
   ospf_cost: 100
   ospf_authentication: simple
-  ospf_authentication_key: AQQvKeimxJu+uGQ/yYvv9w==
+  ospf_authentication_key: yowZkEpQLoC5uuiiB9f4OQ==
   tenant: Tenant_A
   tags:
   - wan
@@ -749,6 +802,9 @@ vlan_internal_order:
     beginning: 1006
     ending: 1199
 vlans:
+- id: 115
+  name: Tenant_A_OP_Zone_4
+  tenant: Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
   tenant: Tenant_A
@@ -765,6 +821,10 @@ vrfs:
 - name: MGMT
   ip_routing: false
 - name: Tenant_A_L3_VRF_Zone
+  ip_routing: true
+  tenant: Tenant_A
+- name: Tenant_A_OP_Zone
+  description: Tenant_A_OP_Zone
   ip_routing: true
   tenant: Tenant_A
 - name: Tenant_A_WAN_Zone
@@ -790,6 +850,8 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
+      - id: 115
+        vni: 10115
       - id: 150
         vni: 10150
       - id: 250
@@ -801,6 +863,8 @@ vxlan_interface:
       vrfs:
       - name: Tenant_A_L3_VRF_Zone
         vni: 15
+      - name: Tenant_A_OP_Zone
+        vni: 10
       - name: Tenant_A_WAN_Zone
         vni: 14
       - name: Tenant_B_OP_Zone

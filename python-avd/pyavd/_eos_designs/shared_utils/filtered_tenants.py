@@ -410,8 +410,8 @@ class FilteredTenantsMixin(Protocol):
 
         return natural_sort({vrf.name for tenant in self.filtered_tenants for vrf in tenant.vrfs})
 
-    @staticmethod
     def get_additional_svi_config(
+        self: SharedUtilsProtocol,
         config: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
@@ -438,10 +438,10 @@ class FilteredTenantsMixin(Protocol):
                 ospf_network_point_to_point=svi.ospf.point_to_point,
                 ospf_cost=svi.ospf.cost,
             )
-            FilteredTenantsMixin.update_ospf_authentication(config, svi, vrf)
+            self.update_ospf_authentication(config, svi, vrf)
 
-    @staticmethod
     def update_ospf_authentication(
+        self: SharedUtilsProtocol,
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
         network_services_interface: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem
@@ -490,16 +490,16 @@ class FilteredTenantsMixin(Protocol):
             # TODO: consider merging the two lists if the `id` are not clashing?
             if network_services_interface.ospf.message_digest_keys:
                 for ospf_key in network_services_interface.ospf.message_digest_keys:
-                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
+                    self.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
 
             elif vrf.ospf.message_digest_keys:
                 for ospf_key in vrf.ospf.message_digest_keys:
-                    FilteredTenantsMixin.update_message_digest_key(ospf_key, interface, encrypt=True)
+                    self.update_message_digest_key(ospf_key, interface, encrypt=True)
             if interface.ospf_message_digest_keys:
                 interface.ospf_authentication = ospf_authentication
 
-    @staticmethod
     def update_message_digest_key(
+        self: SharedUtilsProtocol,
         ospf_key: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.Ospf.MessageDigestKeysItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem.Ospf.MessageDigestKeysItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem

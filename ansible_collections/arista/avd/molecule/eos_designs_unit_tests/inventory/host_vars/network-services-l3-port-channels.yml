@@ -1,4 +1,6 @@
 ---
+encrypt_passwords: true
+
 # This yml file is being used to test the various supported schema attributes for L3 Port-Channel
 ipv4_acls:
   - name: inACL
@@ -142,7 +144,6 @@ tenants:
               area: "0.0.0.0"
               cost: 1
               authentication: simple
-              simple_auth_key_type: 0
               simple_auth_key: testpass
             structured_config:
               logging:
@@ -175,15 +176,14 @@ tenants:
                   hash_algorithm: "sha256"
                   # max 8 characters for cleartext passwords
                   key: test1
-                  key_type: 0
                 - id: 2
                   key: testpass2
                   # Test when 'id' and 'key' are not set under message-digest keys.
                   # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required
                 - hash_algorithm: "sha256"
             raw_eos_cli: |
-               logging event storm-control discards
-               logging event link-status
+              logging event storm-control discards
+              logging event link-status
           - name: Port-Channel1112
             description: incomplete message-digest keys
             peer: inet-cloud-po1112

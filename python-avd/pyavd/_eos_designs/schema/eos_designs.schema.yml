@@ -1259,6 +1259,36 @@ keys:
 
       '
     default: false
+  encrypt_passwords:
+    type: bool
+    documentation_options:
+      table: management-settings
+    default: false
+    description: 'When `true`, `eos_designs` will automatically encrypt the following
+      keys:
+
+      - `<network_services_key>.vrfs.svis.ospf.simple_auth_key`
+
+      - `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`
+
+      - `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`
+
+      - `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`
+
+      - `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`
+
+      - `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`
+
+      - `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`
+
+      - `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`
+
+
+      This implies that the keys and passwords must be provided as cleartext (via
+      a vault preferably).
+
+
+      When `false`, the keys and passwords must be provided as type 7.'
   eos_designs_custom_templates:
     documentation_options:
       table: role-custom-templates
@@ -6901,14 +6931,16 @@ $defs:
                     description: 'Password used with simple authentication.
 
                       Only plaintext passwords are supported here as `eos_designs`
-                      will encrypt the password for each individual `l3_interface`
+                      will encrypt the key for type7 for each individual `l3_interface`
                       or `l3_port_channel`.
 
                       To protect the password at rest it is strongly recommended to
                       make use of Ansible Vault or similar.
 
                       Configuration at the interface level under `l3_interfaces` or
-                      `l3_port_channels` takes precedence.'
+                      `l3_port_channels` takes precedence.
+
+                      `encrypt_passwords` value does not have any effect on this key.'
                   message_digest_keys:
                     type: list
                     primary_key: id
@@ -6947,7 +6979,10 @@ $defs:
                             to make use of Ansible Vault or similar.
 
                             Configuration at the interface level under `l3_interfaces`
-                            or `l3_port_channels` takes precedence.'
+                            or `l3_port_channels` takes precedence.
+
+                            `encrypt_passwords` value does not have any effect on
+                            this key.'
                   nodes:
                     type: list
                     items:
@@ -7250,18 +7285,12 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: 'Password used with simple authentication using
-                            `simple_auth_key_type`.
+                          description: 'Key for OSPF simple authentication.
+
+                            Expect a cleartext password if `encrypt_passwords: true`,
+                            otherwise expect a type 7 password.
 
                             Maximum 8 characters for cleartext password.'
-                        simple_auth_key_type:
-                          type: str
-                          convert_types:
-                          - int
-                          valid_values:
-                          - '0'
-                          - '7'
-                          default: '7'
                         message_digest_keys:
                           type: list
                           items:
@@ -7282,17 +7311,12 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: 'Key password using `key_type`.
+                                description: 'Key for OSPF message digest.
+
+                                  Expect a cleartext password if `encrypt_passwords:
+                                  true`, otherwise expect a type 7 password.
 
                                   Maximum 16 characters for cleartext password.'
-                              key_type:
-                                type: str
-                                convert_types:
-                                - int
-                                valid_values:
-                                - '0'
-                                - '7'
-                                default: '7'
                     pim:
                       type: dict
                       description: 'Enable PIM sparse-mode on the interface; requires
@@ -7485,18 +7509,12 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: 'Password used with simple authentication using
-                            `simple_auth_key_type`.
+                          description: 'Key for OSPF simple authentication.
+
+                            Expect a cleartext password if `encrypt_passwords: true`,
+                            otherwise expect a type 7 password.
 
                             Maximum 8 characters for cleartext password.'
-                        simple_auth_key_type:
-                          type: str
-                          convert_types:
-                          - int
-                          valid_values:
-                          - '0'
-                          - '7'
-                          default: '7'
                         message_digest_keys:
                           type: list
                           items:
@@ -7517,17 +7535,12 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: 'Key password using `key_type`.
+                                description: 'Key for OSPF message digest.
+
+                                  Expect a cleartext password if `encrypt_passwords:
+                                  true`, otherwise expect a type 7 password.
 
                                   Maximum 16 characters for cleartext password.'
-                              key_type:
-                                type: str
-                                convert_types:
-                                - int
-                                valid_values:
-                                - '0'
-                                - '7'
-                                default: '7'
                     flow_tracking:
                       type: dict
                       $ref: eos_designs#/$defs/flow_tracking_link
@@ -11258,15 +11271,12 @@ $defs:
             - message-digest
           simple_auth_key:
             type: str
-            description: Password used with simple authentication using `simple_auth_key_type`.
-          simple_auth_key_type:
-            type: str
-            convert_types:
-            - int
-            valid_values:
-            - '0'
-            - '7'
-            default: '7'
+            description: 'Key for OSPF simple authentication.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.
+
+              Maximum 8 characters for cleartext password.'
           message_digest_keys:
             type: list
             items:
@@ -11285,17 +11295,14 @@ $defs:
                   - sha384
                   - sha512
                   default: sha512
-                key_type:
-                  type: str
-                  convert_types:
-                  - int
-                  valid_values:
-                  - '0'
-                  - '7'
-                  default: '7'
                 key:
                   type: str
-                  description: Key password using `key_type`.
+                  description: 'Key for OSPF simple authentication.
+
+                    Expect a cleartext password if `encrypt_passwords: true`, otherwise
+                    expect a type 7 password.
+
+                    Maximum 8 characters for cleartext password.'
       bgp:
         type: dict
         keys:
