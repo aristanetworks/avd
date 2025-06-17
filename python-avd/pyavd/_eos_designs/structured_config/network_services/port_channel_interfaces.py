@@ -126,7 +126,7 @@ class PortChannelInterfacesMixin(Protocol):
                 port_channel_interface = EosCliConfigGen.PortChannelInterfacesItem(
                     name=l3_port_channel.name,
                     peer=l3_port_channel.peer,
-                    mtu=l3_port_channel.mtu if self.shared_utils.interface_mtu_supported(l3_port_channel.name) else None,
+                    mtu=self.shared_utils.get_interface_mtu(l3_port_channel.name, l3_port_channel.mtu),
                     description=interface_description or None,
                     ip_address=l3_port_channel.ip_address,
                     shutdown=not l3_port_channel.enabled,

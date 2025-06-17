@@ -39,9 +39,10 @@ class InbandManagementMixin(Protocol):
 
     @cached_property
     def inband_mgmt_mtu(self: SharedUtilsProtocol) -> int | None:
-        if self.interface_mtu_supported():
-            return self.node_config.inband_mgmt_mtu
-        return None
+        if not self.platform_settings.feature_support.per_interface_mtu:
+            return None
+
+        return self.node_config.inband_mgmt_mtu
 
     @cached_property
     def inband_mgmt_vrf(self: SharedUtilsProtocol) -> str | None:
