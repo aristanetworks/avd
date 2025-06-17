@@ -64051,6 +64051,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             "ip_verify_unicast_source_reachable_via": {"type": str},
             "ip_igmp": {"type": bool},
             "ip_igmp_version": {"type": int},
+            "ip_igmp_querier_address_virtual": {"type": bool},
             "ip_igmp_host_proxy": {"type": IpIgmpHostProxy},
             "ip_helpers": {"type": IpHelpers},
             "ip_dhcp_relay_all_subnets": {"type": bool},
@@ -64131,6 +64132,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None
         ip_igmp: bool | None
         ip_igmp_version: int | None
+        ip_igmp_querier_address_virtual: bool | None
         ip_igmp_host_proxy: IpIgmpHostProxy
         """Subclass of AvdModel."""
         ip_helpers: IpHelpers
@@ -64280,6 +64282,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 ip_verify_unicast_source_reachable_via: Literal["any", "rx"] | None | UndefinedType = Undefined,
                 ip_igmp: bool | None | UndefinedType = Undefined,
                 ip_igmp_version: int | None | UndefinedType = Undefined,
+                ip_igmp_querier_address_virtual: bool | None | UndefinedType = Undefined,
                 ip_igmp_host_proxy: IpIgmpHostProxy | UndefinedType = Undefined,
                 ip_helpers: IpHelpers | UndefinedType = Undefined,
                 ip_dhcp_relay_all_subnets: bool | None | UndefinedType = Undefined,
@@ -64358,6 +64361,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     ip_verify_unicast_source_reachable_via: ip_verify_unicast_source_reachable_via
                     ip_igmp: ip_igmp
                     ip_igmp_version: ip_igmp_version
+                    ip_igmp_querier_address_virtual: ip_igmp_querier_address_virtual
                     ip_igmp_host_proxy: Subclass of AvdModel.
                     ip_helpers:
                        List of DHCP servers.

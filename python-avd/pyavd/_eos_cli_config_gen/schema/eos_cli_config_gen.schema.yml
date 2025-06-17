@@ -23361,6 +23361,8 @@ keys:
           - str
           min: 1
           max: 3
+        ip_igmp_querier_address_virtual:
+          type: bool
         ip_igmp_host_proxy:
           type: dict
           keys:
