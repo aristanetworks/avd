@@ -4,17 +4,14 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
-- name: Ethernet1
-  description: SERVER_OLD_SW-1/2_Endpoint_port1
+- name: Ethernet4
+  description: P2P_host3_Ethernet5
   shutdown: false
   mtu: 9214
   ip_address: 192.168.0.4/31
-  channel_group:
-    id: 1
-    mode: active
-  peer: OLD_SW-1/2
-  peer_interface: Endpoint_port1
-  peer_type: server
+  peer: host3
+  peer_interface: Ethernet5
+  peer_type: other
   switchport:
     enabled: false
 - name: Ethernet3
@@ -36,6 +33,15 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet1
+  description: SERVER_OLD_SW-1/2_Endpoint_port1
+  shutdown: false
+  channel_group:
+    id: 1
+    mode: active
+  peer: OLD_SW-1/2
+  peer_interface: Endpoint_port1
+  peer_type: server
 - name: Ethernet2
   description: SERVER_OLD_SW-1/2_ENDPOINT_PORT2
   shutdown: false
