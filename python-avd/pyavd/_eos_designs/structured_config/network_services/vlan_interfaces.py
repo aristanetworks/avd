@@ -49,7 +49,7 @@ class VlanInterfacesMixin(Protocol):
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
         if self.shared_utils.node_config.virtual_router_mac_address is None:
-            msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using '{variable}' under 'svi'"
+            msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using '{variable}' under 'svis'."
             raise AristaAvdInvalidInputsError(msg)
 
     def _get_vlan_interface_config_for_svi(
