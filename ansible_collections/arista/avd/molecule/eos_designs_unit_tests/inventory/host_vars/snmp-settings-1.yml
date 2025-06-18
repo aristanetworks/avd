@@ -71,6 +71,7 @@ snmp_settings:
       users:
         - username: USER-WRITE
           authentication_level: auth
+    # test without vrf
     - host: 10.6.75.129
       version: 3
       community: SNMP-COMMUNITY-2
