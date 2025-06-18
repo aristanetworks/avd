@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
+from collections import defaultdict
 from typing import TYPE_CHECKING, Any, Protocol, cast
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -44,7 +45,6 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "Campus",
     "Campus-Pod",
     "Access-Pod",
-    "Link-Type",
     "Role",
 ]
 """These tag names overlap with CV system tags or topology_hints"""
@@ -181,6 +181,9 @@ class CvTagsMixin(Protocol):
         ):
             return
 
+        tags_of_subif_parent_interfaces: dict[str, EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags] = defaultdict(
+            EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags
+        )
         for ethernet_interface in self.structured_config.ethernet_interfaces:
             tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
             for generate_tag in tags_to_generate:
@@ -207,10 +210,31 @@ class CvTagsMixin(Protocol):
                 tags.extend(self._get_cv_pathfinder_interface_tags(ethernet_interface))
 
             if self.inputs.generate_cv_tags.topology_hints and self.shared_utils.is_campus_device:
-                tags.extend(self._get_campus_interface_tags(ethernet_interface))
+                interface_campus_tags, subif_parent_interface_name = self._get_campus_interface_tags(ethernet_interface)
+                # Process parent interface of the sub-interface
+                if subif_parent_interface_name:
+                    for tag in tags:
+                        tags_of_subif_parent_interfaces[subif_parent_interface_name].append_unique(tag)
+                    for tag in interface_campus_tags:
+                        tags_of_subif_parent_interfaces[subif_parent_interface_name].append_unique(tag)
+                    continue
+                # Process standalone interface which is as well a parent for at least one sub-interface
+                if ethernet_interface.name in tags_of_subif_parent_interfaces:
+                    for tag in tags:
+                        tags_of_subif_parent_interfaces[ethernet_interface.name].append_unique(tag)
+                    for tag in interface_campus_tags:
+                        tags_of_subif_parent_interfaces[ethernet_interface.name].append_unique(tag)
+                    continue
+                # All other cases
+                tags.extend(interface_campus_tags)
 
             if tags:
                 self.structured_config.metadata.cv_tags.interface_tags.append_new(interface=ethernet_interface.name, tags=tags)
+
+        # Handle tags for sub-interface parent interfaces
+        if tags_of_subif_parent_interfaces:
+            for subif_parent_interface, subif_parent_interface_tags in tags_of_subif_parent_interfaces.items():
+                self.structured_config.metadata.cv_tags.interface_tags.append_new(interface=subif_parent_interface, tags=subif_parent_interface_tags)
 
         # Handle tags for management interface
         if self.inputs.generate_cv_tags.topology_hints and self.shared_utils.is_campus_device:
@@ -273,8 +297,12 @@ class CvTagsMixin(Protocol):
 
     def _get_campus_interface_tags(
         self: AvdStructuredConfigMetadataProtocol, generic_interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem
-    ) -> EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags:
-        """Return list of Campus interface tags for a given interface of a Campus device."""
+    ) -> tuple[EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags, str | None]:
+        """
+        Return list of Campus interface tags for a given interface of a Campus device.
+
+        If the interface is a sub-interface, also return the name of the parent interface where the tags should eventually be applied.
+        """
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
         interface_peer = generic_interface.peer
 
@@ -294,4 +322,6 @@ class CvTagsMixin(Protocol):
             for campus_link_type in campus_link_types:
                 tags.append_unique(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name="Link-Type", value=campus_link_type))
 
-        return tags
+        if "." in generic_interface.name:
+            return tags, generic_interface.name.split(".", maxsplit=1)[0]
+        return tags, None

@@ -45,6 +45,39 @@ tenants:
               - "10.0.1.2/31"
             nodes:
               - BGP-SPINE2
+          # Sub-interface labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.100
+            ip_addresses:
+              - "10.0.1.4/31"
+            nodes:
+              - BGP-SPINE1
+            campus_link_type: ["Egress"]
+          # Sub-interface not labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.100
+            ip_addresses:
+              - "10.0.1.6/31"
+            nodes:
+              - BGP-SPINE2
+      - name: New_VRF
+        vrf_id: 101
+        l3_interfaces:
+          # Sub-interface labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.101
+            ip_addresses:
+              - "10.0.1.8/31"
+            nodes:
+              - BGP-SPINE1
+            campus_link_type: ["Egress"]
+          # Sub-interface not labeled as Campus Egress
+          - interfaces:
+              - Ethernet18.101
+            ip_addresses:
+              - "10.0.1.10/31"
+            nodes:
+              - BGP-SPINE2
 
 port_profiles:
   - profile: campus_eggress

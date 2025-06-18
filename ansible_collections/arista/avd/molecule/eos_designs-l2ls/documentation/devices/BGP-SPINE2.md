@@ -33,6 +33,7 @@
 - [Multicast](#multicast)
   - [IP IGMP Snooping](#ip-igmp-snooping)
 - [Filters](#filters)
+  - [Prefix-lists](#prefix-lists)
   - [Route-maps](#route-maps)
 - [VRF Instances](#vrf-instances)
   - [VRF Instances Summary](#vrf-instances-summary)
@@ -137,6 +138,7 @@ vlan internal order ascending range 1006 1199
 | 100 | SVI_100 | - |
 | 200 | SVI_200 | - |
 | 220 | SVI_220 | - |
+| 3100 | MLAG_L3_VRF_New_VRF | MLAG |
 | 4092 | INBAND_MGMT | - |
 | 4094 | MLAG | MLAG |
 
@@ -155,6 +157,10 @@ vlan 200
 !
 vlan 220
    name SVI_220
+!
+vlan 3100
+   name MLAG_L3_VRF_New_VRF
+   trunk group MLAG
 !
 vlan 4092
    name INBAND_MGMT
@@ -189,6 +195,13 @@ vlan 4094
 
 *Inherited from Port-Channel Interface
 
+##### Encapsulation Dot1q Interfaces
+
+| Interface | Description | Vlan ID | Dot1q VLAN Tag | Dot1q Inner VLAN Tag |
+| --------- | ----------- | ------- | -------------- | -------------------- |
+| Ethernet18.100 | - | - | 100 | - |
+| Ethernet18.101 | - | - | 101 | - |
+
 ##### IPv4
 
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
@@ -198,6 +211,8 @@ vlan 4094
 | Ethernet7 | P2P_DUMMY-CORE_Ethernet1/8 | 7 | *192.168.253.14/31 | *default | *9214 | *False | *- | *- |
 | Ethernet8 | P2P_DUMMY-CORE_Ethernet1/10 | 8 | *192.168.253.18/31 | *default | *9214 | *False | *- | *- |
 | Ethernet9 | - | - | 10.0.1.2/31 | default | - | False | - | - |
+| Ethernet18.100 | - | - | 10.0.1.6/31 | default | - | False | - | - |
+| Ethernet18.101 | - | - | 10.0.1.10/31 | New_VRF | - | False | - | - |
 
 *Inherited from Port-Channel Interface
 
@@ -289,6 +304,21 @@ interface Ethernet17
    description FIREWALL_CAMPUS_EGRESS_FW_1_Eth7
    no shutdown
    channel-group 17 mode active
+!
+interface Ethernet18
+   no shutdown
+   no switchport
+!
+interface Ethernet18.100
+   no shutdown
+   encapsulation dot1q vlan 100
+   ip address 10.0.1.6/31
+!
+interface Ethernet18.101
+   no shutdown
+   encapsulation dot1q vlan 101
+   vrf New_VRF
+   ip address 10.0.1.10/31
 ```
 
 ### Port-Channel Interfaces
@@ -403,6 +433,7 @@ interface Loopback0
 | Vlan100 | SVI_100 | default | - | False |
 | Vlan200 | SVI_200 | default | - | False |
 | Vlan220 | SVI_220 | default | - | False |
+| Vlan3100 | MLAG_L3_VRF_New_VRF | New_VRF | 9214 | False |
 | Vlan4092 | Inband Management | default | 1500 | False |
 | Vlan4094 | MLAG | default | 9214 | False |
 
@@ -414,6 +445,7 @@ interface Loopback0
 | Vlan100 |  default  |  -  |  10.1.100.1/24  |  -  |  -  |  -  |
 | Vlan200 |  default  |  -  |  10.1.200.1/24  |  -  |  -  |  -  |
 | Vlan220 |  default  |  -  |  10.1.220.1/24  |  -  |  -  |  -  |
+| Vlan3100 |  New_VRF  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
 | Vlan4092 |  default  |  172.23.254.3/24  |  -  |  172.23.254.1  |  -  |  -  |
 | Vlan4094 |  default  |  192.168.254.1/31  |  -  |  -  |  -  |  -  |
 
@@ -440,6 +472,13 @@ interface Vlan220
    description SVI_220
    no shutdown
    ip address virtual 10.1.220.1/24
+!
+interface Vlan3100
+   description MLAG_L3_VRF_New_VRF
+   no shutdown
+   mtu 9214
+   vrf New_VRF
+   ip address 192.168.254.1/31
 !
 interface Vlan4092
    description Inband Management
@@ -489,6 +528,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 | --- | --------------- |
 | default | True |
 | MGMT | False |
+| New_VRF | True |
 
 #### IP Routing Device Configuration
 
@@ -496,6 +536,7 @@ ip virtual-router mac-address 00:1c:73:00:00:99
 !
 ip routing
 no ip routing vrf MGMT
+ip routing vrf New_VRF
 ```
 
 ### IPv6 Routing
@@ -506,6 +547,7 @@ no ip routing vrf MGMT
 | --- | --------------- |
 | default | False |
 | MGMT | false |
+| New_VRF | false |
 
 ### Static Routes
 
@@ -629,9 +671,34 @@ router bgp 65001
 
 ## Filters
 
+### Prefix-lists
+
+#### Prefix-lists Summary
+
+##### PL-MLAG-PEER-VRFS
+
+| Sequence | Action |
+| -------- | ------ |
+| 10 | permit 192.168.254.0/31 |
+
+#### Prefix-lists Device Configuration
+
+```eos
+!
+ip prefix-list PL-MLAG-PEER-VRFS
+   seq 10 permit 192.168.254.0/31
+```
+
 ### Route-maps
 
 #### Route-maps Summary
+
+##### RM-CONN-2-BGP-VRFS
+
+| Sequence | Type | Match | Set | Sub-Route-Map | Continue |
+| -------- | ---- | ----- | --- | ------------- | -------- |
+| 10 | deny | ip address prefix-list PL-MLAG-PEER-VRFS | - | - | - |
+| 20 | permit | - | - | - | - |
 
 ##### RM-MLAG-PEER-IN
 
@@ -642,6 +709,11 @@ router bgp 65001
 #### Route-maps Device Configuration
 
 ```eos
+!
+route-map RM-CONN-2-BGP-VRFS deny 10
+   match ip address prefix-list PL-MLAG-PEER-VRFS
+!
+route-map RM-CONN-2-BGP-VRFS permit 20
 !
 route-map RM-MLAG-PEER-IN permit 10
    description Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
@@ -655,10 +727,13 @@ route-map RM-MLAG-PEER-IN permit 10
 | VRF Name | IP Routing |
 | -------- | ---------- |
 | MGMT | disabled |
+| New_VRF | enabled |
 
 ### VRF Instances Device Configuration
 
 ```eos
 !
 vrf instance MGMT
+!
+vrf instance New_VRF
 ```

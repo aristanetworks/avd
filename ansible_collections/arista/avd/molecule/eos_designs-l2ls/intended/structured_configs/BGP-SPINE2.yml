@@ -84,6 +84,24 @@ ethernet_interfaces:
   peer_type: l3_interface
   switchport:
     enabled: false
+- name: Ethernet18.100
+  shutdown: false
+  encapsulation_dot1q:
+    vlan: 100
+  ip_address: 10.0.1.6/31
+  peer_type: l3_interface
+- name: Ethernet18.101
+  shutdown: false
+  vrf: New_VRF
+  encapsulation_dot1q:
+    vlan: 101
+  ip_address: 10.0.1.10/31
+  peer_type: l3_interface
+- name: Ethernet18
+  shutdown: false
+  peer_type: l3_interface
+  switchport:
+    enabled: false
 - name: Ethernet14
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth1
   shutdown: false
@@ -259,6 +277,10 @@ metadata:
       tags:
       - name: Link-Type
         value: AVD-Managed
+    - interface: Ethernet18
+      tags:
+      - name: Link-Type
+        value: AVD-Managed
 mlag_configuration:
   domain_id: BGP_SPINES
   local_interface: Vlan4094
@@ -325,6 +347,11 @@ port_channel_interfaces:
   mlag: 13
   switchport:
     enabled: true
+prefix_lists:
+- name: PL-MLAG-PEER-VRFS
+  sequence_numbers:
+  - sequence: 10
+    action: permit 192.168.254.0/31
 route_maps:
 - name: RM-MLAG-PEER-IN
   sequence_numbers:
@@ -333,6 +360,14 @@ route_maps:
     description: Make routes learned over MLAG Peer-link less preferred on spines to ensure optimal routing
     set:
     - origin incomplete
+- name: RM-CONN-2-BGP-VRFS
+  sequence_numbers:
+  - sequence: 10
+    type: deny
+    match:
+    - ip address prefix-list PL-MLAG-PEER-VRFS
+  - sequence: 20
+    type: permit
 router_bgp:
   as: '65001'
   router_id: 192.168.255.2
@@ -433,6 +468,14 @@ vlan_interfaces:
   shutdown: false
   ip_address_virtual: 10.1.220.1/24
   tenant: L2LS_BGP
+- name: Vlan3100
+  description: MLAG_L3_VRF_New_VRF
+  shutdown: false
+  vrf: New_VRF
+  ip_address: 192.168.254.1/31
+  mtu: 9214
+  tenant: L2LS_BGP
+  type: underlay_peering
 - name: Vlan4092
   description: Inband Management
   shutdown: false
@@ -466,9 +509,17 @@ vlans:
 - id: 220
   name: SVI_220
   tenant: L2LS_BGP
+- id: 3100
+  name: MLAG_L3_VRF_New_VRF
+  trunk_groups:
+  - MLAG
+  tenant: L2LS_BGP
 - id: 4092
   name: INBAND_MGMT
   tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
+- name: New_VRF
+  ip_routing: true
+  tenant: L2LS_BGP
