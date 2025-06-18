@@ -1,4 +1,4 @@
-# Copyright (c) 2023-2025 Arista Networks, Inc.
+# Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 from __future__ import annotations
@@ -6,6 +6,7 @@ from __future__ import annotations
 from functools import cached_property
 from typing import TYPE_CHECKING, Literal, Protocol, overload
 
+from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, unique
@@ -14,8 +15,6 @@ from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
     from typing import Any
-
-    from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
     from . import SharedUtilsProtocol
 
@@ -469,34 +468,43 @@ class FilteredTenantsMixin(Protocol):
         if not ospf_authentication:
             return
 
-        if ospf_authentication == "simple":
-            if network_services_interface.ospf.simple_auth_key is not None:
-                if self.inputs.encrypt_passwords:
-                    ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.simple_auth_key, interface.name)
+        match ospf_authentication:
+            case "simple":
+                if network_services_interface.ospf.simple_auth_key is not None:
+                    if self.inputs.encrypt_passwords:
+                        ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.simple_auth_key, interface.name)
+                    else:
+                        ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
+                elif vrf.ospf.simple_auth_key is not None:
+                    # Always encrypt if defined at VRF level.
+                    ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
                 else:
-                    ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
-            elif vrf.ospf.simple_auth_key is not None:
-                # Always encrypt if defined at VRF level.
-                ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
-            else:
-                # TODO: path maybe be misleading for port-channels
-                msg = f"`vrf.ospf.simple_auth_key` or `l3_interfaces[name={interface.name}].ospf.simple_auth_key`"
-                raise AristaAvdMissingVariableError(msg)
+                    # TODO: missing tenant key / name here but would require a context key also in the SVI config..
+                    match interface:
+                        case EosCliConfigGen.EthernetInterfacesItem():
+                            key_path = f"vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
+                        case EosCliConfigGen.PortChannelInterfacesItem():
+                            key_path = f"vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
+                        case EosCliConfigGen.VlanInterfacesItem():
+                            key_path = f"vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
 
-            interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
+                    msg = f"`vrfs[vrf={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
+                    raise AristaAvdMissingVariableError(msg)
 
-        elif ospf_authentication == "message-digest":
-            # The full list of keys is EITHER taken from the network_services_interface or from the VRF
-            # TODO: consider merging the two lists if the `id` are not clashing?
-            if network_services_interface.ospf.message_digest_keys:
-                for ospf_key in network_services_interface.ospf.message_digest_keys:
-                    self.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
+                interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
 
-            elif vrf.ospf.message_digest_keys:
-                for ospf_key in vrf.ospf.message_digest_keys:
-                    self.update_message_digest_key(ospf_key, interface, encrypt=True)
-            if interface.ospf_message_digest_keys:
-                interface.ospf_authentication = ospf_authentication
+            case "message-digest":
+                # The full list of keys is EITHER taken from the network_services_interface or from the VRF
+                # TODO: consider merging the two lists if the `id` are not clashing?
+                if network_services_interface.ospf.message_digest_keys:
+                    for ospf_key in network_services_interface.ospf.message_digest_keys:
+                        self.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
+
+                elif vrf.ospf.message_digest_keys:
+                    for ospf_key in vrf.ospf.message_digest_keys:
+                        self.update_message_digest_key(ospf_key, interface, encrypt=True)
+                if interface.ospf_message_digest_keys:
+                    interface.ospf_authentication = ospf_authentication
 
     def update_message_digest_key(
         self: SharedUtilsProtocol,
