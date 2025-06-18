@@ -38106,13 +38106,13 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Key password.
                             Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-                            for each individual `l3_interface` or `l3_port_channel`.
-                            To protect the password at rest it is
-                            strongly recommended to make use of Ansible Vault or similar.
-                            Configuration at the interface level
-                            under `l3_interfaces` or `l3_port_channels` takes precedence.
-                            `encrypt_passwords` value does not
-                            have any effect on this key.
+                            for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
+                            To protect the password at rest
+                            it is strongly recommended to make use of Ansible Vault or similar.
+                            Configuration at the interface
+                            level under `l3_interfaces` or `l3_port_channels` takes precedence.
+                            `encrypt_passwords` value does
+                            not have any effect on this key.
                             """
 
                             if TYPE_CHECKING:
@@ -38136,13 +38136,13 @@ class EosDesigns(EosDesignsRootModel):
                                         key:
                                            Key password.
                                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-                                           for each individual `l3_interface` or `l3_port_channel`.
-                                           To protect the password at rest it is
-                                           strongly recommended to make use of Ansible Vault or similar.
-                                           Configuration at the interface level
-                                           under `l3_interfaces` or `l3_port_channels` takes precedence.
-                                           `encrypt_passwords` value does not
-                                           have any effect on this key.
+                                           for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
+                                           To protect the password at rest
+                                           it is strongly recommended to make use of Ansible Vault or similar.
+                                           Configuration at the interface
+                                           level under `l3_interfaces` or `l3_port_channels` takes precedence.
+                                           `encrypt_passwords` value does
+                                           not have any effect on this key.
 
                                     """
 
@@ -38206,12 +38206,12 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         Password used with simple authentication.
                         Only plaintext passwords are supported here as
-                        `eos_designs` will encrypt the key for type7 for each individual `l3_interface` or
-                        `l3_port_channel`.
-                        To protect the password at rest it is strongly recommended to make use of Ansible
-                        Vault or similar.
-                        Configuration at the interface level under `l3_interfaces` or `l3_port_channels`
-                        takes precedence.
+                        `eos_designs` will encrypt the key for type7 for each individual `l3_interfaces`, `l3_port_channels`
+                        or `svis`.
+                        To protect the password at rest it is strongly recommended to make use of Ansible Vault
+                        or similar.
+                        Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes
+                        precedence.
                         `encrypt_passwords` value does not have any effect on this key.
                         """
                         message_digest_keys: MessageDigestKeys
@@ -38272,12 +38272,12 @@ class EosDesigns(EosDesignsRootModel):
                                     simple_auth_key:
                                        Password used with simple authentication.
                                        Only plaintext passwords are supported here as
-                                       `eos_designs` will encrypt the key for type7 for each individual `l3_interface` or
-                                       `l3_port_channel`.
-                                       To protect the password at rest it is strongly recommended to make use of Ansible
-                                       Vault or similar.
-                                       Configuration at the interface level under `l3_interfaces` or `l3_port_channels`
-                                       takes precedence.
+                                       `eos_designs` will encrypt the key for type7 for each individual `l3_interfaces`, `l3_port_channels`
+                                       or `svis`.
+                                       To protect the password at rest it is strongly recommended to make use of Ansible Vault
+                                       or similar.
+                                       Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes
+                                       precedence.
                                        `encrypt_passwords` value does not have any effect on this key.
                                     message_digest_keys: Subclass of AvdIndexedList with `MessageDigestKeysItem` items. Primary key is `id` (`int`).
                                     nodes: Subclass of AvdList with `str` items.
@@ -40265,6 +40265,13 @@ class EosDesigns(EosDesignsRootModel):
                                 Expect a cleartext password if `encrypt_passwords: true`, otherwise
                                 expect a type 7 password.
                                 Maximum 16 characters for cleartext password.
+
+                                NOTE: when using type 7
+                                password, the l3_interfaces.interfaces list must not be more than 1 interface
+                                      or they must all
+                                be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
+                                      name
+                                (when common encryption is disabled).
                                 """
 
                                 if TYPE_CHECKING:
@@ -40290,6 +40297,13 @@ class EosDesigns(EosDesignsRootModel):
                                                Expect a cleartext password if `encrypt_passwords: true`, otherwise
                                                expect a type 7 password.
                                                Maximum 16 characters for cleartext password.
+
+                                               NOTE: when using type 7
+                                               password, the l3_interfaces.interfaces list must not be more than 1 interface
+                                                     or they must all
+                                               be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
+                                                     name
+                                               (when common encryption is disabled).
 
                                         """
 
@@ -40325,6 +40339,12 @@ class EosDesigns(EosDesignsRootModel):
                             Expect a cleartext password if `encrypt_passwords: true`,
                             otherwise expect a type 7 password.
                             Maximum 8 characters for cleartext password.
+
+                            NOTE: when using
+                            type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
+                                  or they
+                            must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
+                            name (when common encryption is disabled).
                             """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -40359,6 +40379,12 @@ class EosDesigns(EosDesignsRootModel):
                                            Expect a cleartext password if `encrypt_passwords: true`,
                                            otherwise expect a type 7 password.
                                            Maximum 8 characters for cleartext password.
+
+                                           NOTE: when using
+                                           type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
+                                                 or they
+                                           must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
+                                           name (when common encryption is disabled).
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
