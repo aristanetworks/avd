@@ -389,8 +389,8 @@ vlan 4094
 | Interface | Description | Channel Group | IP Address | VRF |  MTU | Shutdown | ACL In | ACL Out |
 | --------- | ----------- | ------------- | ---------- | ----| ---- | -------- | ------ | ------- |
 | Ethernet3 | P2P_site2-wan1_Ethernet1 | - | 10.0.2.12/31 | default | 9214 | False | - | - |
-| Ethernet3.100 | P2P_site2-wan1_Ethernet1.100_VRF_BLUE | - | 10.0.2.12/31 | BLUE | - | False | - | - |
-| Ethernet3.101 | P2P_site2-wan1_Ethernet1.101_VRF_RED | - | 10.0.2.12/31 | RED | - | False | - | - |
+| Ethernet3.100 | P2P_site2-wan1_Ethernet1.100_VRF_BLUE | - | 10.0.2.12/31 | BLUE | 9214 | False | - | - |
+| Ethernet3.101 | P2P_site2-wan1_Ethernet1.101_VRF_RED | - | 10.0.2.12/31 | RED | 9214 | False | - | - |
 
 #### Ethernet Interfaces Device Configuration
 
@@ -407,6 +407,7 @@ interface Ethernet3
 interface Ethernet3.100
    description P2P_site2-wan1_Ethernet1.100_VRF_BLUE
    no shutdown
+   mtu 9214
    encapsulation dot1q vlan 100
    flow tracker sampled FLOW-TRACKER
    vrf BLUE
@@ -415,6 +416,7 @@ interface Ethernet3.100
 interface Ethernet3.101
    description P2P_site2-wan1_Ethernet1.101_VRF_RED
    no shutdown
+   mtu 9214
    encapsulation dot1q vlan 101
    flow tracker sampled FLOW-TRACKER
    vrf RED
