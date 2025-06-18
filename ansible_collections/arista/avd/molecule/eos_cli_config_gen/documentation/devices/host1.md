@@ -3496,7 +3496,7 @@ sync-e
 
 ### Port-Channel Summary
 
-#### Port-channel Load Balance Trident UDF Eth-type Headers
+#### Port-channel Load-balance Trident UDF Eth-type Headers
 
 | Eth-Type | IP Protocol | Header | Offset | Mask |
 | -------- | ----------- | ------ | ------ | ---- |
