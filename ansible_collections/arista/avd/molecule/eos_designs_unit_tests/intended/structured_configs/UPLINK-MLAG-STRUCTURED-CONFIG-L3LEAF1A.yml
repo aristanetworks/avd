@@ -181,6 +181,7 @@ router_bgp:
     remote_as: '65001'
     peer: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1
     description: UPLINK-MLAG-STRUCTURED-CONFIG-SPINE1_Ethernet1
+    bfd: true
   - ip_address: 192.168.255.1
     peer_group: EVPN-OVERLAY-PEERS
     remote_as: '65001'

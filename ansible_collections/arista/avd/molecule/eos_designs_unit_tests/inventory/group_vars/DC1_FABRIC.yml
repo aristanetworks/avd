@@ -118,6 +118,7 @@ l3leaf:
           rack: "rackA"
           mgmt_ip: 192.168.200.105/24
           mac_address: '0c:1d:c0:1d:62:01'
+          uplink_structured_config: {}
           # Commented out for automatic downlink allocation on spine
           # uplink_switch_interfaces: [ Ethernet1, Ethernet1, Ethernet1, Ethernet1 ]
           # Test setting loopback0 and the VTEP loopback manually

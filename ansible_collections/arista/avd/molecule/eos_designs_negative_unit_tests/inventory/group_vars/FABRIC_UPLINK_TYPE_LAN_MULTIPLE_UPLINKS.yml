@@ -1,0 +1,16 @@
+---
+fabric_name: FABRIC_UPLINK_TYPE_LAN_MULTIPLE_UPLINKS
+type: l3spine
+
+l3spine:
+  nodes:
+    - name: uplink-type-lan-multiple-uplinks
+      loopback_ipv4_pool: 192.168.255.0/24
+      id: 1
+      bgp_as: 65000
+      uplink_type: lan
+      uplink_interfaces: [Ethernet1, Ethernet2]
+
+expected_error_message: >-
+  'uplink_type: lan' only supports a single uplink interface.
+  Got ['Ethernet1', 'Ethernet2'] for host 'uplink-type-lan-multiple-uplinks'.
