@@ -3,9 +3,15 @@ type: spine
 spine:
   defaults:
     bgp_as: 65001-65100
-    loopback_ipv4_pool: 192.168.0.0/24
+    loopback_ipv4_pool: 192.168.0.0/24 # Loopback0 will be 192.168.0.1/32 for ID: 1
+    rack: rack123
     # id: 1 will be set by pool_manager
+
+dc_name: dc1
+pod_name: pod101
 
 fabric_numbering:
   node_id:
     algorithm: pool_manager
+
+fabric_numbering_node_id_pool: "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}{rack?</rack=}"

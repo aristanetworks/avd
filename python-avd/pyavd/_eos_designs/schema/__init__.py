@@ -2730,6 +2730,166 @@ class EosDesigns(EosDesignsRootModel):
 
                 """
 
+    class DnsSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class ServersItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"vrf": {"type": str}, "ip_address": {"type": str}, "priority": {"type": int}}
+            vrf: str | None
+            """
+            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+            The
+            value of `vrf` will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+            DNS lookup source-interface.
+              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+            configured for the device.
+            - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+            with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+              An
+            error will be raised if inband management is not configured for the device.
+            - Any other string will
+            be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
+            needed.
+            """
+            ip_address: str
+            """IPv4 or IPv6 address for DNS server."""
+            priority: int | None
+            """Priority value (lower is first)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    vrf: str | None | UndefinedType = Undefined,
+                    ip_address: str | UndefinedType = Undefined,
+                    priority: int | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    ServersItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        vrf:
+                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                           The
+                           value of `vrf` will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the DNS server under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as
+                           DNS lookup source-interface.
+                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not
+                           configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the DNS server under the VRF set
+                           with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as DNS lookup source-interface.
+                             An
+                           error will be raised if inband management is not configured for the device.
+                           - Any other string will
+                           be used directly as the VRF name. Remember to set the `dns_settings.vrfs[].source_interface` if
+                           needed.
+                        ip_address: IPv4 or IPv6 address for DNS server.
+                        priority: Priority value (lower is first).
+
+                    """
+
+        class Servers(AvdList[ServersItem]):
+            """Subclass of AvdList with `ServersItem` items."""
+
+        Servers._item_type = ServersItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """VRF name."""
+            source_interface: str | None
+            """
+            Source interface to use for DNS lookups in this VRF.
+            If set for the VRFs defined by
+            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        source_interface:
+                           Source interface to use for DNS lookups in this VRF.
+                           If set for the VRFs defined by
+                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "domain": {"type": str},
+            "servers": {"type": Servers},
+            "vrfs": {"type": Vrfs},
+            "set_source_interfaces": {"type": bool, "default": True},
+        }
+        domain: str | None
+        """DNS domain name like 'fabric.local'"""
+        servers: Servers
+        """Subclass of AvdList with `ServersItem` items."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        set_source_interfaces: bool
+        """
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
+        `use_inband_mgmt_vrf`.
+        Can be set to `false` to avoid changes when migrating from old `name_servers`
+        model.
+
+        Default value: `True`
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                domain: str | None | UndefinedType = Undefined,
+                servers: Servers | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                set_source_interfaces: bool | UndefinedType = Undefined,
+            ) -> None:
+                """
+                DnsSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    domain: DNS domain name like 'fabric.local'
+                    servers: Subclass of AvdList with `ServersItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    set_source_interfaces:
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
+                       `use_inband_mgmt_vrf`.
+                       Can be set to `false` to avoid changes when migrating from old `name_servers`
+                       model.
+
+                """
+
     class EosDesignsCustomTemplatesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -60125,6 +60285,7 @@ class EosDesigns(EosDesignsRootModel):
         "default_underlay_p2p_port_channel_description": {"type": str, "default": "P2P_{peer}_{peer_interface}"},
         "default_vrf_diag_loopback_description": {"type": str, "default": "DIAG_VRF_{vrf}"},
         "design": {"type": Design},
+        "dns_settings": {"type": DnsSettings},
         "enable_trunk_groups": {"type": bool, "default": False},
         "eos_designs_custom_templates": {"type": EosDesignsCustomTemplates},
         "eos_designs_documentation": {"type": EosDesignsDocumentation},
@@ -60146,6 +60307,7 @@ class EosDesigns(EosDesignsRootModel):
         "fabric_ip_addressing": {"type": FabricIpAddressing},
         "fabric_name": {"type": str},
         "fabric_numbering": {"type": FabricNumbering},
+        "fabric_numbering_node_id_pool": {"type": str, "default": "fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"},
         "fabric_sflow": {"type": FabricSflow},
         "flow_tracking_settings": {"type": FlowTrackingSettings},
         "generate_cv_tags": {"type": GenerateCvTags},
@@ -60988,6 +61150,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     design: Design
     """Subclass of AvdModel."""
+    dns_settings: DnsSettings
+    """
+    DNS settings
+
+    Subclass of AvdModel.
+    """
     enable_trunk_groups: bool
     """
     Enable Trunk Group support across eos_designs.
@@ -61140,6 +61308,32 @@ class EosDesigns(EosDesignsRootModel):
     Assignment policies for numbers like Node ID.
 
     Subclass of AvdModel.
+    """
+    fabric_numbering_node_id_pool: str
+    """
+    Name of Node ID pool or template used to render the name of each Node ID pool.
+    For each device the
+    Node ID is assigned from a pool shared by all devices rendering the same pool name.
+    This can be
+    modified to include fewer or more fields to keep separate pools or to use the same pool across
+    areas.
+    This can be a template using the AVD string formatter syntax:
+    https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+    descriptions-names.html#avd-string-formatter-syntax.
+    The available template fields are:
+      -
+    `fabric_name`: The `fabric_name` assigned to the device.
+      - `dc_name`: The `dc_name` assigned to
+    the device.
+      - `pod_name`: The `pod_name` assigned to the device.
+      - `type`: The `type` assigned
+    to the device.
+      - `rack`: The `rack` assigned to the device.
+
+    By default the Node ID pool key is
+    templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
+
+    Default value: `"fabric_name={fabric_name}{dc_name?</dc_name=}{pod_name?</pod_name=}{type?</type=}"`
     """
     fabric_sflow: FabricSflow
     """
@@ -62324,6 +62518,7 @@ class EosDesigns(EosDesignsRootModel):
             default_underlay_p2p_port_channel_description: str | UndefinedType = Undefined,
             default_vrf_diag_loopback_description: str | UndefinedType = Undefined,
             design: Design | UndefinedType = Undefined,
+            dns_settings: DnsSettings | UndefinedType = Undefined,
             enable_trunk_groups: bool | UndefinedType = Undefined,
             eos_designs_custom_templates: EosDesignsCustomTemplates | UndefinedType = Undefined,
             eos_designs_documentation: EosDesignsDocumentation | UndefinedType = Undefined,
@@ -62345,6 +62540,7 @@ class EosDesigns(EosDesignsRootModel):
             fabric_ip_addressing: FabricIpAddressing | UndefinedType = Undefined,
             fabric_name: str | UndefinedType = Undefined,
             fabric_numbering: FabricNumbering | UndefinedType = Undefined,
+            fabric_numbering_node_id_pool: str | UndefinedType = Undefined,
             fabric_sflow: FabricSflow | UndefinedType = Undefined,
             flow_tracking_settings: FlowTrackingSettings | UndefinedType = Undefined,
             generate_cv_tags: GenerateCvTags | UndefinedType = Undefined,
@@ -62892,6 +63088,10 @@ class EosDesigns(EosDesignsRootModel):
                    By default the description is
                    templated from the VRF name.
                 design: Subclass of AvdModel.
+                dns_settings:
+                   DNS settings
+
+                   Subclass of AvdModel.
                 enable_trunk_groups:
                    Enable Trunk Group support across eos_designs.
                    Warning: Because of the nature of the EOS Trunk Group
@@ -62992,6 +63192,28 @@ class EosDesigns(EosDesignsRootModel):
                    Assignment policies for numbers like Node ID.
 
                    Subclass of AvdModel.
+                fabric_numbering_node_id_pool:
+                   Name of Node ID pool or template used to render the name of each Node ID pool.
+                   For each device the
+                   Node ID is assigned from a pool shared by all devices rendering the same pool name.
+                   This can be
+                   modified to include fewer or more fields to keep separate pools or to use the same pool across
+                   areas.
+                   This can be a template using the AVD string formatter syntax:
+                   https://avd.arista.com/devel/ansible_collections/arista/avd/roles/eos_designs/docs/how-to/custom-
+                   descriptions-names.html#avd-string-formatter-syntax.
+                   The available template fields are:
+                     -
+                   `fabric_name`: The `fabric_name` assigned to the device.
+                     - `dc_name`: The `dc_name` assigned to
+                   the device.
+                     - `pod_name`: The `pod_name` assigned to the device.
+                     - `type`: The `type` assigned
+                   to the device.
+                     - `rack`: The `rack` assigned to the device.
+
+                   By default the Node ID pool key is
+                   templated from `fabric_name`, `dc_name`, `pod_name` and `type`.
                 fabric_sflow:
                    Default enabling of sFlow for various interface types across the fabric.
                    sFlow can also be
