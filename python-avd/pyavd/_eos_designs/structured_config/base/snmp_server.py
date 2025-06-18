@@ -203,7 +203,7 @@ class SnmpServerMixin(Protocol):
 
         TODO: AVD6.0 remove the legacy inputs.
         """
-        if source_interfaces_inputs and not self.inputs.avd_6_behaviors.snmp_settings_vrfs:
+        if source_interfaces_inputs:
             self.structured_config.snmp_server.local_interfaces = self._build_source_interfaces(
                 source_interfaces_inputs.mgmt_interface,
                 source_interfaces_inputs.inband_mgmt_interface,
