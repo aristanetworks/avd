@@ -145,6 +145,9 @@ interface {{ vlan_interface.name }}
 {%     if vlan_interface.ip_igmp_version is arista.avd.defined %}
    ip igmp version {{ vlan_interface.ip_igmp_version }}
 {%     endif %}
+{%     if vlan_interface.ip_igmp_querier_address_virtual is arista.avd.defined(true) %}
+   ip igmp querier address virtual
+{%     endif %}
 {%     if vlan_interface.ip_igmp_host_proxy.enabled is arista.avd.defined(true) %}
 {%         set host_proxy_cli =  "ip igmp host-proxy" %}
    {{ host_proxy_cli }}
