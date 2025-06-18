@@ -14,14 +14,6 @@ snmp_settings:
   compute_local_engineid: true
   compute_local_engineid_source: system_mac
   compute_v3_user_localized_key: true
-  users:
-    - name: usertest-auth-priv
-      group: usergroup
-      version: v3
-      auth: sha
-      auth_passphrase: clearauth # to get from vault in real life
-      priv: aes192
-      priv_passphrase: clearpriv
 
 expected_error_message: >-
   'compute_local_engineid_source: system_mac' requires 'system_mac_address' to be set.

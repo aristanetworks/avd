@@ -107,6 +107,9 @@ snmp_server:
     users:
     - username: USER-WRITE
       authentication_level: auth
+  - host: 10.6.75.129
+    version: '3'
+    community: SNMP-COMMUNITY-2
   traps:
     enable: true
   vrfs:

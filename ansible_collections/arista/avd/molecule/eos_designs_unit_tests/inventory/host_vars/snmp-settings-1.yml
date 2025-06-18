@@ -71,6 +71,9 @@ snmp_settings:
       users:
         - username: USER-WRITE
           authentication_level: auth
+    - host: 10.6.75.129
+      version: 3
+      community: SNMP-COMMUNITY-2
 
   communities: # Copied from eos_cli_config_gen, since we pass this through 1:1
     - name: SNMP-COMMUNITY-1
