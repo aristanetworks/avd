@@ -237,18 +237,10 @@ class SnmpServerMixin(Protocol):
             vrf_name = self.get_vrf(vrf.name, context=f"snmp_settings.vrfs[name={vrf.name}]")
             vrfs.append_new(name=vrf_name, enable=vrf.enable)
 
-        if (
-            has_mgmt_ip
-            and (enable_mgmt_interface_vrf := snmp_settings.enable_mgmt_interface_vrf) is not None
-            and not self.inputs.avd_6_behaviors.snmp_settings_vrfs
-        ):
+        if has_mgmt_ip and (enable_mgmt_interface_vrf := snmp_settings.enable_mgmt_interface_vrf) is not None:
             vrfs.append_new(name=self.inputs.mgmt_interface_vrf, enable=enable_mgmt_interface_vrf)
 
-        if (
-            (enable_inband_mgmt_vrf := snmp_settings.enable_inband_mgmt_vrf) is not None
-            and self.shared_utils.inband_mgmt_interface is not None
-            and not self.inputs.avd_6_behaviors.snmp_settings_vrfs
-        ):
+        if (enable_inband_mgmt_vrf := snmp_settings.enable_inband_mgmt_vrf) is not None and self.shared_utils.inband_mgmt_interface is not None:
             # self.shared_utils.inband_mgmt_vrf returns None for the default VRF, but here we need "default" to avoid duplicates.
             vrfs.append_new(name=self.shared_utils.inband_mgmt_vrf or "default", enable=enable_inband_mgmt_vrf)
 
