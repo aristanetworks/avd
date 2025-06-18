@@ -26432,46 +26432,223 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             class Mmu(AvdModel):
                 """Subclass of AvdModel."""
 
-                class HeadroomPoolLimit(AvdModel):
+                class HeadroomPool(AvdModel):
                     """Subclass of AvdModel."""
 
-                    _fields: ClassVar[dict] = {"bytes": {"type": int}, "cells": {"type": int}}
-                    bytes: int | None
+                    _fields: ClassVar[dict] = {"unit": {"type": str}, "limit": {"type": int}}
+                    unit: Literal["bytes", "cells"] | None
                     """
-                    Headroom pool limit in bytes.
-                    `bytes` and `cells` are mutually exclusive with `bytes` taking
-                    precedence.
+                    Unit to be used for the `headroom_pool` value.
+                    If not specified, default is bytes.
                     """
-                    cells: int | None
-                    """
-                    Headroom pool limit in cells.
-                    `bytes` and `cells` are mutually exclusive with `bytes` taking
-                    precedence.
-                    """
+                    limit: int | None
+                    """Max limit on headroom pool size."""
 
                     if TYPE_CHECKING:
 
-                        def __init__(self, *, bytes: int | None | UndefinedType = Undefined, cells: int | None | UndefinedType = Undefined) -> None:
+                        def __init__(
+                            self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, limit: int | None | UndefinedType = Undefined
+                        ) -> None:
                             """
-                            HeadroomPoolLimit.
+                            HeadroomPool.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                bytes:
-                                   Headroom pool limit in bytes.
-                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
-                                   precedence.
-                                cells:
-                                   Headroom pool limit in cells.
-                                   `bytes` and `cells` are mutually exclusive with `bytes` taking
-                                   precedence.
+                                unit:
+                                   Unit to be used for the `headroom_pool` value.
+                                   If not specified, default is bytes.
+                                limit: Max limit on headroom pool size.
 
                             """
 
                 class QueueProfilesItem(AvdModel):
                     """Subclass of AvdModel."""
+
+                    class Ingress(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        class PriorityGroupsItem(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            class Reserved(AvdModel):
+                                """Subclass of AvdModel."""
+
+                                _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                                unit: Literal["bytes", "cells"] | None
+                                """
+                                Unit to be used for the `priority_groups` `reserved` value.
+                                If not specified, default is bytes.
+                                """
+                                memory: int | None
+                                """Specify the amount of memory that should be reserved."""
+
+                                if TYPE_CHECKING:
+
+                                    def __init__(
+                                        self,
+                                        *,
+                                        unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
+                                        memory: int | None | UndefinedType = Undefined,
+                                    ) -> None:
+                                        """
+                                        Reserved.
+
+
+                                        Subclass of AvdModel.
+
+                                        Args:
+                                            unit:
+                                               Unit to be used for the `priority_groups` `reserved` value.
+                                               If not specified, default is bytes.
+                                            memory: Specify the amount of memory that should be reserved.
+
+                                        """
+
+                            _fields: ClassVar[dict] = {"id": {"type": int}, "threshold": {"type": str}, "reserved": {"type": Reserved}}
+                            id: int
+                            """Priority-group group number."""
+                            threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                            reserved: Reserved
+                            """Subclass of AvdModel."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self,
+                                    *,
+                                    id: int | UndefinedType = Undefined,
+                                    threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"]
+                                    | None
+                                    | UndefinedType = Undefined,
+                                    reserved: Reserved | UndefinedType = Undefined,
+                                ) -> None:
+                                    """
+                                    PriorityGroupsItem.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        id: Priority-group group number.
+                                        threshold: threshold
+                                        reserved: Subclass of AvdModel.
+
+                                    """
+
+                        class PriorityGroups(AvdIndexedList[int, PriorityGroupsItem]):
+                            """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
+
+                            _primary_key: ClassVar[str] = "id"
+
+                        PriorityGroups._item_type = PriorityGroupsItem
+
+                        class Reserved(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                            unit: Literal["bytes", "cells"] | None
+                            """
+                            Unit to be used for the `reserved` value.
+                            If not specified, default is bytes.
+                            """
+                            memory: int | None
+                            """Specify the amount of memory that should be reserved."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Reserved.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unit:
+                                           Unit to be used for the `reserved` value.
+                                           If not specified, default is bytes.
+                                        memory: Specify the amount of memory that should be reserved.
+
+                                    """
+
+                        class Headroom(AvdModel):
+                            """Subclass of AvdModel."""
+
+                            _fields: ClassVar[dict] = {"unit": {"type": str}, "memory": {"type": int}}
+                            unit: Literal["bytes", "cells"] | None
+                            """
+                            Unit to be used for the headroom value.
+                            If not specified, default is bytes.
+                            """
+                            memory: int | None
+                            """Specify the amount of memory that should be reserved."""
+
+                            if TYPE_CHECKING:
+
+                                def __init__(
+                                    self, *, unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined, memory: int | None | UndefinedType = Undefined
+                                ) -> None:
+                                    """
+                                    Headroom.
+
+
+                                    Subclass of AvdModel.
+
+                                    Args:
+                                        unit:
+                                           Unit to be used for the headroom value.
+                                           If not specified, default is bytes.
+                                        memory: Specify the amount of memory that should be reserved.
+
+                                    """
+
+                        _fields: ClassVar[dict] = {
+                            "priority_groups": {"type": PriorityGroups},
+                            "threshold": {"type": str},
+                            "reserved": {"type": Reserved},
+                            "headroom": {"type": Headroom},
+                            "resume": {"type": int},
+                        }
+                        priority_groups: PriorityGroups
+                        """Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`)."""
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
+                        """Specify the dynamic shared memory threshold."""
+                        reserved: Reserved
+                        """Subclass of AvdModel."""
+                        headroom: Headroom
+                        """Subclass of AvdModel."""
+                        resume: int | None
+                        """Amount of memory that should be reserved (in bytes)"""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                priority_groups: PriorityGroups | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
+                                reserved: Reserved | UndefinedType = Undefined,
+                                headroom: Headroom | UndefinedType = Undefined,
+                                resume: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                Ingress.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    priority_groups: Subclass of AvdIndexedList with `PriorityGroupsItem` items. Primary key is `id` (`int`).
+                                    threshold: Specify the dynamic shared memory threshold.
+                                    reserved: Subclass of AvdModel.
+                                    headroom: Subclass of AvdModel.
+                                    resume: Amount of memory that should be reserved (in bytes)
+
+                                """
 
                     class MulticastQueuesItem(AvdModel):
                         """Subclass of AvdModel."""
@@ -26521,7 +26698,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: str | None
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -26534,7 +26711,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 id: int | UndefinedType = Undefined,
                                 unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: str | None | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26609,7 +26786,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         Amount of memory that should be reserved for this
                         queue.
                         """
-                        threshold: str | None
+                        threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None
                         """Dynamic Shared Memory threshold."""
                         drop: Drop
                         """Subclass of AvdModel."""
@@ -26622,7 +26799,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                 id: int | UndefinedType = Undefined,
                                 unit: Literal["bytes", "cells"] | None | UndefinedType = Undefined,
                                 reserved: int | None | UndefinedType = Undefined,
-                                threshold: str | None | UndefinedType = Undefined,
+                                threshold: Literal["1", "1/128", "1/16", "1/2", "1/32", "1/4", "1/64", "1/8", "2", "4", "8"] | None | UndefinedType = Undefined,
                                 drop: Drop | UndefinedType = Undefined,
                             ) -> None:
                                 """
@@ -26649,12 +26826,29 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                     UnicastQueues._item_type = UnicastQueuesItem
 
-                    _fields: ClassVar[dict] = {"name": {"type": str}, "multicast_queues": {"type": MulticastQueues}, "unicast_queues": {"type": UnicastQueues}}
+                    _fields: ClassVar[dict] = {
+                        "name": {"type": str},
+                        "ingress": {"type": Ingress},
+                        "multicast_queues": {"type": MulticastQueues},
+                        "unicast_queues": {"type": UnicastQueues},
+                    }
                     name: str
+                    ingress: Ingress
+                    """Subclass of AvdModel."""
                     multicast_queues: MulticastQueues
-                    """Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`)."""
+                    """
+                    Egress multicast queues.
+
+                    Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key
+                    is `id` (`int`).
+                    """
                     unicast_queues: UnicastQueues
-                    """Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`)."""
+                    """
+                    Egress unicast queues.
+
+                    Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is
+                    `id` (`int`).
+                    """
 
                     if TYPE_CHECKING:
 
@@ -26662,6 +26856,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                             self,
                             *,
                             name: str | UndefinedType = Undefined,
+                            ingress: Ingress | UndefinedType = Undefined,
                             multicast_queues: MulticastQueues | UndefinedType = Undefined,
                             unicast_queues: UnicastQueues | UndefinedType = Undefined,
                         ) -> None:
@@ -26673,8 +26868,17 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             Args:
                                 name: name
-                                multicast_queues: Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key is `id` (`int`).
-                                unicast_queues: Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is `id` (`int`).
+                                ingress: Subclass of AvdModel.
+                                multicast_queues:
+                                   Egress multicast queues.
+
+                                   Subclass of AvdIndexedList with `MulticastQueuesItem` items. Primary key
+                                   is `id` (`int`).
+                                unicast_queues:
+                                   Egress unicast queues.
+
+                                   Subclass of AvdIndexedList with `UnicastQueuesItem` items. Primary key is
+                                   `id` (`int`).
 
                             """
 
@@ -26685,19 +26889,11 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 QueueProfiles._item_type = QueueProfilesItem
 
-                _fields: ClassVar[dict] = {
-                    "active_profile": {"type": str},
-                    "headroom_pool_limit": {"type": HeadroomPoolLimit},
-                    "queue_profiles": {"type": QueueProfiles},
-                }
+                _fields: ClassVar[dict] = {"active_profile": {"type": str}, "headroom_pool": {"type": HeadroomPool}, "queue_profiles": {"type": QueueProfiles}}
                 active_profile: str | None
                 """The queue profile to be applied to the platform."""
-                headroom_pool_limit: HeadroomPoolLimit
-                """
-                Max limit on headroom pool size.
-
-                Subclass of AvdModel.
-                """
+                headroom_pool: HeadroomPool
+                """Subclass of AvdModel."""
                 queue_profiles: QueueProfiles
                 """Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`)."""
 
@@ -26707,7 +26903,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         self,
                         *,
                         active_profile: str | None | UndefinedType = Undefined,
-                        headroom_pool_limit: HeadroomPoolLimit | UndefinedType = Undefined,
+                        headroom_pool: HeadroomPool | UndefinedType = Undefined,
                         queue_profiles: QueueProfiles | UndefinedType = Undefined,
                     ) -> None:
                         """
@@ -26718,10 +26914,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                         Args:
                             active_profile: The queue profile to be applied to the platform.
-                            headroom_pool_limit:
-                               Max limit on headroom pool size.
-
-                               Subclass of AvdModel.
+                            headroom_pool: Subclass of AvdModel.
                             queue_profiles: Subclass of AvdIndexedList with `QueueProfilesItem` items. Primary key is `name` (`str`).
 
                         """
@@ -27699,6 +27892,92 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                        Control-plane policy configuration.
 
                        Subclass of AvdModel.
+
+                """
+
+    class PortChannel(AvdModel):
+        """Subclass of AvdModel."""
+
+        class LoadBalanceTridentUdfItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "eth_type": {"type": str},
+                "ip_protocol": {"type": str},
+                "header": {"type": str},
+                "offset": {"type": int},
+                "mask": {"type": str},
+            }
+            eth_type: Literal["ipv4", "ipv6"]
+            """Ethernet type in the port channel hash."""
+            ip_protocol: str | None
+            """
+            IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
+            IP protocol number within the
+            range <0-255>.
+            """
+            header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"]
+            offset: int
+            """Offset starting from selected header in the packet."""
+            mask: str | None
+            """Mask of the offset. A hex value within the range 0x01-0xFF."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    eth_type: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                    ip_protocol: str | None | UndefinedType = Undefined,
+                    header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"] | UndefinedType = Undefined,
+                    offset: int | UndefinedType = Undefined,
+                    mask: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LoadBalanceTridentUdfItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        eth_type: Ethernet type in the port channel hash.
+                        ip_protocol:
+                           IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
+                           IP protocol number within the
+                           range <0-255>.
+                        header: header
+                        offset: Offset starting from selected header in the packet.
+                        mask: Mask of the offset. A hex value within the range 0x01-0xFF.
+
+                    """
+
+        class LoadBalanceTridentUdf(AvdList[LoadBalanceTridentUdfItem]):
+            """Subclass of AvdList with `LoadBalanceTridentUdfItem` items."""
+
+        LoadBalanceTridentUdf._item_type = LoadBalanceTridentUdfItem
+
+        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}}
+        load_balance_trident_udf: LoadBalanceTridentUdf
+        """
+        Trident chip UDF fields load balancing.
+
+        Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined) -> None:
+                """
+                PortChannel.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    load_balance_trident_udf:
+                       Trident chip UDF fields load balancing.
+
+                       Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
 
                 """
 
@@ -56546,6 +56825,32 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     class RouterPathSelection(AvdModel):
         """Subclass of AvdModel."""
 
+        class MtuDiscoveryHosts(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool}, "fragmentation_needed_rate_limit": {"type": int}}
+            enabled: bool | None
+            """Enable MTU discovery for hosts."""
+            fragmentation_needed_rate_limit: int | None
+            """Maximum rate of ICMP packet generation per CPU core(packets per second)."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, enabled: bool | None | UndefinedType = Undefined, fragmentation_needed_rate_limit: int | None | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    MtuDiscoveryHosts.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: Enable MTU discovery for hosts.
+                        fragmentation_needed_rate_limit: Maximum rate of ICMP packet generation per CPU core(packets per second).
+
+                    """
+
         class PathGroupsItem(AvdModel):
             """Subclass of AvdModel."""
 
@@ -57260,6 +57565,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
         _fields: ClassVar[dict] = {
             "peer_dynamic_source": {"type": str},
+            "mtu_discovery_interval": {"type": int},
+            "mtu_discovery_hosts": {"type": MtuDiscoveryHosts},
             "path_groups": {"type": PathGroups},
             "load_balance_policies": {"type": LoadBalancePolicies},
             "policies": {"type": Policies},
@@ -57269,6 +57576,10 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         }
         peer_dynamic_source: Literal["stun"] | None
         """Source of dynamic peer discovery."""
+        mtu_discovery_interval: int | None
+        """MTU discovery interval in seconds."""
+        mtu_discovery_hosts: MtuDiscoveryHosts
+        """Subclass of AvdModel."""
         path_groups: PathGroups
         """Subclass of AvdIndexedList with `PathGroupsItem` items. Primary key is `name` (`str`)."""
         load_balance_policies: LoadBalancePolicies
@@ -57288,6 +57599,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 self,
                 *,
                 peer_dynamic_source: Literal["stun"] | None | UndefinedType = Undefined,
+                mtu_discovery_interval: int | None | UndefinedType = Undefined,
+                mtu_discovery_hosts: MtuDiscoveryHosts | UndefinedType = Undefined,
                 path_groups: PathGroups | UndefinedType = Undefined,
                 load_balance_policies: LoadBalancePolicies | UndefinedType = Undefined,
                 policies: Policies | UndefinedType = Undefined,
@@ -57303,6 +57616,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 Args:
                     peer_dynamic_source: Source of dynamic peer discovery.
+                    mtu_discovery_interval: MTU discovery interval in seconds.
+                    mtu_discovery_hosts: Subclass of AvdModel.
                     path_groups: Subclass of AvdIndexedList with `PathGroupsItem` items. Primary key is `name` (`str`).
                     load_balance_policies: Subclass of AvdIndexedList with `LoadBalancePoliciesItem` items. Primary key is `name` (`str`).
                     policies: Subclass of AvdIndexedList with `PoliciesItem` items. Primary key is `name` (`str`).
@@ -65798,6 +66113,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "platform": {"type": Platform},
         "poe": {"type": Poe},
         "policy_maps": {"type": PolicyMaps},
+        "port_channel": {"type": PortChannel},
         "port_channel_interfaces": {"type": PortChannelInterfaces},
         "prefix_lists": {"type": PrefixLists},
         "priority_flow_control": {"type": PriorityFlowControl},
@@ -66265,6 +66581,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     policy_maps: PolicyMaps
     """Subclass of AvdModel."""
+    port_channel: PortChannel
+    """Subclass of AvdModel."""
     port_channel_interfaces: PortChannelInterfaces
     """Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`)."""
     prefix_lists: PrefixLists
@@ -66559,6 +66877,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             platform: Platform | UndefinedType = Undefined,
             poe: Poe | UndefinedType = Undefined,
             policy_maps: PolicyMaps | UndefinedType = Undefined,
+            port_channel: PortChannel | UndefinedType = Undefined,
             port_channel_interfaces: PortChannelInterfaces | UndefinedType = Undefined,
             prefix_lists: PrefixLists | UndefinedType = Undefined,
             priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
@@ -66877,6 +67196,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 poe: Subclass of AvdModel.
                 policy_maps: Subclass of AvdModel.
+                port_channel: Subclass of AvdModel.
                 port_channel_interfaces: Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`).
                 prefix_lists: Subclass of AvdIndexedList with `PrefixListsItem` items. Primary key is `name` (`str`).
                 priority_flow_control:
