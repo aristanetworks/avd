@@ -7,7 +7,7 @@
 
     | Variable | Type | Required | Default | Value Restrictions | Description |
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
-    | [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  | SNMP settings.<br>For SNMP local-interfaces see "source_interfaces.snmp".<br>Configuration of remote SNMP engine IDs are currently only possible using `structured_config`. |
+    | [<samp>snmp_settings</samp>](## "snmp_settings") | Dictionary |  |  |  | SNMP settings.<br>Configuration of remote SNMP engine IDs are currently only possible using `structured_config`. |
     | [<samp>&nbsp;&nbsp;contact</samp>](## "snmp_settings.contact") | String |  |  |  | SNMP contact. |
     | [<samp>&nbsp;&nbsp;location</samp>](## "snmp_settings.location") | Boolean |  | `False` |  | Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name> <switch_rack> <inventory_hostname>". |
     | [<samp>&nbsp;&nbsp;vrfs</samp>](## "snmp_settings.vrfs") | List, items: Dictionary |  |  |  |  |
@@ -75,7 +75,6 @@
 
     ```yaml
     # SNMP settings.
-    # For SNMP local-interfaces see "source_interfaces.snmp".
     # Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.
     snmp_settings:
 

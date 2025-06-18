@@ -62223,9 +62223,8 @@ class EosDesigns(EosDesignsRootModel):
     snmp_settings: SnmpSettings
     """
     SNMP settings.
-    For SNMP local-interfaces see "source_interfaces.snmp".
-    Configuration of remote SNMP
-    engine IDs are currently only possible using `structured_config`.
+    Configuration of remote SNMP engine IDs are currently only possible using
+    `structured_config`.
 
     Subclass of AvdModel.
     """
@@ -63895,9 +63894,8 @@ class EosDesigns(EosDesignsRootModel):
                    are not present in the network.
                 snmp_settings:
                    SNMP settings.
-                   For SNMP local-interfaces see "source_interfaces.snmp".
-                   Configuration of remote SNMP
-                   engine IDs are currently only possible using `structured_config`.
+                   Configuration of remote SNMP engine IDs are currently only possible using
+                   `structured_config`.
 
                    Subclass of AvdModel.
                 source_interfaces:
