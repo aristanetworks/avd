@@ -7,7 +7,7 @@
 {% if port_channel.load_balance_trident_udf is arista.avd.defined %}
 !
 {%     for udf_field in port_channel.load_balance_trident_udf %}
-{%         set udf_header_cli = "port-channel load-balance trident udf eth-type " ~ udf_field.eth_type %}
+{%         set udf_header_cli = "port-channel load-balance trident udf eth-type " ~ udf_field.eth_type | replace("ip", "IP") %}
 {%         if udf_field.ip_protocol is arista.avd.defined %}
 {%             set udf_header_cli = udf_header_cli ~ " ip-protocol " ~ udf_field.ip_protocol %}
 {%         endif %}

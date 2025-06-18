@@ -3500,29 +3500,29 @@ sync-e
 
 | Eth-Type | IP Protocol | Header | Offset | Mask |
 | -------- | ----------- | ------ | ------ | ---- |
-| Ipv4 | GRE | inner l3 | 30 | 0x01 |
-| Ipv4 | - | inner l3 | 10 | 0xff |
-| Ipv4 | - | inner l4 | 2 | - |
-| Ipv4 | 10 | inner l4 | 20 | 0x02 |
-| Ipv4 | SCTP | outer l2 | 39 | - |
-| Ipv6 | - | outer l3 | 30 | 0x01 |
-| Ipv6 | - | inner l3 | 20 | - |
-| Ipv6 | TCP | outer l4 | 20 | - |
-| Ipv6 | 2 | inner l4 | 10 | 0x02 |
+| IPv4 | GRE | inner l3 | 30 | 0x01 |
+| IPv4 | - | inner l3 | 10 | 0xff |
+| IPv4 | - | inner l4 | 2 | - |
+| IPv4 | 10 | inner l4 | 20 | 0x02 |
+| IPv4 | SCTP | outer l2 | 39 | - |
+| IPv6 | - | outer l3 | 30 | 0x01 |
+| IPv6 | - | inner l3 | 20 | - |
+| IPv6 | TCP | outer l4 | 20 | - |
+| IPv6 | 2 | inner l4 | 10 | 0x02 |
 
 #### Port-channel Device Configuration
 
 ```eos
 !
-port-channel load-balance trident udf eth-type ipv4 ip-protocol gre header inner l3 offset 30 mask 0x01
-port-channel load-balance trident udf eth-type ipv4 header inner l3 offset 10 mask 0xff
-port-channel load-balance trident udf eth-type ipv4 header inner l4 offset 2
-port-channel load-balance trident udf eth-type ipv4 ip-protocol 10 header inner l4 offset 20 mask 0x02
-port-channel load-balance trident udf eth-type ipv4 ip-protocol sctp header outer l2 offset 39
-port-channel load-balance trident udf eth-type ipv6 header outer l3 offset 30 mask 0x01
-port-channel load-balance trident udf eth-type ipv6 header inner l3 offset 20
-port-channel load-balance trident udf eth-type ipv6 ip-protocol tcp header outer l4 offset 20
-port-channel load-balance trident udf eth-type ipv6 ip-protocol 2 header inner l4 offset 10 mask 0x02
+port-channel load-balance trident udf eth-type IPv4 ip-protocol gre header inner l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv4 header inner l3 offset 10 mask 0xff
+port-channel load-balance trident udf eth-type IPv4 header inner l4 offset 2
+port-channel load-balance trident udf eth-type IPv4 ip-protocol 10 header inner l4 offset 20 mask 0x02
+port-channel load-balance trident udf eth-type IPv4 ip-protocol sctp header outer l2 offset 39
+port-channel load-balance trident udf eth-type IPv6 header outer l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv6 header inner l3 offset 20
+port-channel load-balance trident udf eth-type IPv6 ip-protocol tcp header outer l4 offset 20
+port-channel load-balance trident udf eth-type IPv6 ip-protocol 2 header inner l4 offset 10 mask 0x02
 ```
 
 ## Internal VLAN Allocation Policy
