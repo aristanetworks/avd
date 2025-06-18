@@ -201,21 +201,17 @@ class SnmpServerMixin(Protocol):
         """
         Set local_interfaces from "source_interfaces.snmp" or "snmp_settings.vrfs[].source_interface.
 
-        TODO: AVD6.0 remove the legacy inputs.
+        TODO: AVD6.0 remove this method.
         """
-        if source_interfaces_inputs:
-            self.structured_config.snmp_server.local_interfaces = self._build_source_interfaces(
-                source_interfaces_inputs.mgmt_interface,
-                source_interfaces_inputs.inband_mgmt_interface,
-                error_context="SNMP",
-                output_type=EosCliConfigGen.SnmpServer.LocalInterfaces,
-            )
+        if not source_interfaces_inputs:
+            return
 
-        # Settings defined under vrf.source_interface will take precedence over the legacy source_interfaces.snmp inputs consumed above.
-        # In reality they should never be set at the same time, since the schema will prevent it.
-        for vrf in self.inputs.snmp_settings.vrfs:
-            if vrf.source_interface is not None:
-                self.structured_config.snmp_server.local_interfaces.obtain(vrf.source_interface).vrf = vrf.name if vrf.name != "default" else None
+        self.structured_config.snmp_server.local_interfaces = self._build_source_interfaces(
+            source_interfaces_inputs.mgmt_interface,
+            source_interfaces_inputs.inband_mgmt_interface,
+            error_context="SNMP",
+            output_type=EosCliConfigGen.SnmpServer.LocalInterfaces,
+        )
 
     def _snmp_vrfs(self: AvdStructuredConfigBaseProtocol, snmp_settings: EosDesigns.SnmpSettings) -> None:
         """
