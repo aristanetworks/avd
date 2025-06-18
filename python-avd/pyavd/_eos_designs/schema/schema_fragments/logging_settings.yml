@@ -6,34 +6,7 @@ keys:
     type: dict
     description: |-
       Logging settings
-    # NOTE: we can't just ref the full logging model as we need to remove source_interface
-    # and we have no mechanism today to omit a key in a ref...
-    # Maybe in the future.
     keys:
-      console:
-        type: str
-        $ref: eos_cli_config_gen#/keys/logging/keys/console
-      monitor:
-        type: str
-        $ref: eos_cli_config_gen#/keys/logging/keys/monitor
-      buffered:
-        type: dict
-        $ref: eos_cli_config_gen#/keys/logging/keys/buffered
-      repeat_messages:
-        type: bool
-        $ref: eos_cli_config_gen#/keys/logging/keys/repeat_messages
-      trap:
-        type: str
-        $ref: eos_cli_config_gen#/keys/logging/keys/trap
-      synchronous:
-        type: dict
-        $ref: eos_cli_config_gen#/keys/logging/keys/synchronous
-      format:
-        type: dict
-        $ref: eos_cli_config_gen#/keys/logging/keys/format
-      facility:
-        type: str
-        $ref: eos_cli_config_gen#/keys/logging/keys/facility
       hosts:
         type: list
         required: true
@@ -73,6 +46,30 @@ keys:
               description: |-
                 Source interface to use for logging destinations in this VRF.
                 If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+      console:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/console
+      monitor:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/monitor
+      buffered:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/buffered
+      repeat_messages:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/logging/keys/repeat_messages
+      trap:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/trap
+      synchronous:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/synchronous
+      format:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/format
+      facility:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/facility
       policy:
         type: dict
         $ref: eos_cli_config_gen#/keys/logging/keys/policy

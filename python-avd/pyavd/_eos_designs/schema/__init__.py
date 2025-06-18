@@ -6929,6 +6929,8 @@ class EosDesigns(EosDesignsRootModel):
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {
+            "hosts": {"type": Hosts},
+            "vrfs": {"type": Vrfs},
             "console": {"type": str},
             "monitor": {"type": str},
             "buffered": {"type": EosCliConfigGen.Logging.Buffered},
@@ -6937,12 +6939,14 @@ class EosDesigns(EosDesignsRootModel):
             "synchronous": {"type": EosCliConfigGen.Logging.Synchronous},
             "format": {"type": EosCliConfigGen.Logging.Format},
             "facility": {"type": str},
-            "hosts": {"type": Hosts},
-            "vrfs": {"type": Vrfs},
             "policy": {"type": EosCliConfigGen.Logging.Policy},
             "event": {"type": EosCliConfigGen.Logging.Event},
             "level": {"type": EosCliConfigGen.Logging.Level},
         }
+        hosts: Hosts
+        """Subclass of AvdList with `HostsItem` items."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
         """Console logging severity level."""
         monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
@@ -6983,10 +6987,6 @@ class EosDesigns(EosDesignsRootModel):
             ]
             | None
         )
-        hosts: Hosts
-        """Subclass of AvdList with `HostsItem` items."""
-        vrfs: Vrfs
-        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         policy: EosCliConfigGen.Logging.Policy
         event: EosCliConfigGen.Logging.Event
         level: EosCliConfigGen.Logging.Level
@@ -6997,6 +6997,8 @@ class EosDesigns(EosDesignsRootModel):
             def __init__(
                 self,
                 *,
+                hosts: Hosts | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
                 console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
                 | None
                 | UndefinedType = Undefined,
@@ -7038,8 +7040,6 @@ class EosDesigns(EosDesignsRootModel):
                 ]
                 | None
                 | UndefinedType = Undefined,
-                hosts: Hosts | UndefinedType = Undefined,
-                vrfs: Vrfs | UndefinedType = Undefined,
                 policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
                 event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
                 level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
@@ -7051,6 +7051,8 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
+                    hosts: Subclass of AvdList with `HostsItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     console: Console logging severity level.
                     monitor: Monitor logging severity level.
                     buffered: buffered
@@ -7059,8 +7061,6 @@ class EosDesigns(EosDesignsRootModel):
                     synchronous: synchronous
                     format: format
                     facility: facility
-                    hosts: Subclass of AvdList with `HostsItem` items.
-                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     policy: policy
                     event: event
                     level: Configure logging severity.

@@ -64,6 +64,16 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;secondary_ssh_key</samp>](## "local_users.[].secondary_ssh_key") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shell</samp>](## "local_users.[].shell") | String |  |  | Valid Values:<br>- <code>/bin/bash</code><br>- <code>/bin/sh</code><br>- <code>/sbin/nologin</code> | Specify shell for the user.<br> |
     | [<samp>logging_settings</samp>](## "logging_settings") | Dictionary |  |  |  | Logging settings |
+    | [<samp>&nbsp;&nbsp;hosts</samp>](## "logging_settings.hosts") | List, items: Dictionary | Required |  | Min Length: 1 |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.hosts.[].name") | String | Required |  |  | Syslog server name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "logging_settings.hosts.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "logging_settings.hosts.[].protocol") | String |  | `udp` | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code><br>- <code>tls</code> |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ports</samp>](## "logging_settings.hosts.[].ports") | List, items: Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;int&gt;</samp>](## "logging_settings.hosts.[].ports.[]") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "logging_settings.hosts.[].ssl_profile") | String |  |  |  | Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`. |
+    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "logging_settings.vrfs") | List, items: Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "logging_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for logging destinations in this VRF.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
     | [<samp>&nbsp;&nbsp;console</samp>](## "logging_settings.console") | String |  |  | Valid Values:<br>- <code>debugging</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>errors</code><br>- <code>critical</code><br>- <code>alerts</code><br>- <code>emergencies</code><br>- <code>disabled</code> | Console logging severity level. |
     | [<samp>&nbsp;&nbsp;monitor</samp>](## "logging_settings.monitor") | String |  |  | Valid Values:<br>- <code>debugging</code><br>- <code>informational</code><br>- <code>notifications</code><br>- <code>warnings</code><br>- <code>errors</code><br>- <code>critical</code><br>- <code>alerts</code><br>- <code>emergencies</code><br>- <code>disabled</code> | Monitor logging severity level. |
     | [<samp>&nbsp;&nbsp;buffered</samp>](## "logging_settings.buffered") | Dictionary |  |  |  |  |
@@ -79,16 +89,6 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sequence_numbers</samp>](## "logging_settings.format.sequence_numbers") | Boolean |  |  |  | Add sequence numbers to log messages. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;rfc5424</samp>](## "logging_settings.format.rfc5424") | Boolean |  |  |  | Forward logs in RFC5424 format. |
     | [<samp>&nbsp;&nbsp;facility</samp>](## "logging_settings.facility") | String |  |  | Valid Values:<br>- <code>auth</code><br>- <code>cron</code><br>- <code>daemon</code><br>- <code>kern</code><br>- <code>local0</code><br>- <code>local1</code><br>- <code>local2</code><br>- <code>local3</code><br>- <code>local4</code><br>- <code>local5</code><br>- <code>local6</code><br>- <code>local7</code><br>- <code>lpr</code><br>- <code>mail</code><br>- <code>news</code><br>- <code>sys9</code><br>- <code>sys10</code><br>- <code>sys11</code><br>- <code>sys12</code><br>- <code>sys13</code><br>- <code>sys14</code><br>- <code>syslog</code><br>- <code>user</code><br>- <code>uucp</code> |  |
-    | [<samp>&nbsp;&nbsp;hosts</samp>](## "logging_settings.hosts") | List, items: Dictionary | Required |  | Min Length: 1 |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.hosts.[].name") | String | Required |  |  | Syslog server name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "logging_settings.hosts.[].vrf") | String |  |  |  | If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;protocol</samp>](## "logging_settings.hosts.[].protocol") | String |  | `udp` | Valid Values:<br>- <code>tcp</code><br>- <code>udp</code><br>- <code>tls</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ports</samp>](## "logging_settings.hosts.[].ports") | List, items: Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;int&gt;</samp>](## "logging_settings.hosts.[].ports.[]") | Integer |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl_profile</samp>](## "logging_settings.hosts.[].ssl_profile") | String |  |  |  | Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`. |
-    | [<samp>&nbsp;&nbsp;vrfs</samp>](## "logging_settings.vrfs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "logging_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "logging_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for logging destinations in this VRF.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
     | [<samp>&nbsp;&nbsp;policy</samp>](## "logging_settings.policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;match</samp>](## "logging_settings.policy.match") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;match_lists</samp>](## "logging_settings.policy.match.match_lists") | List, items: Dictionary |  |  |  |  |
@@ -304,6 +304,33 @@
 
     # Logging settings
     logging_settings:
+      hosts: # >=1 items; required
+
+          # Syslog server name.
+        - name: <str; required>
+
+          # If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+          # The value of `vrf` will be interpreted according to these rules:
+          # - `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.
+          #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+          # - `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.
+          #   An error will be raised if inband management is not configured for the device.
+          # - Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
+          vrf: <str>
+          protocol: <str; "tcp" | "udp" | "tls"; default="udp">
+          ports:
+            - <int>
+
+          # Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
+          ssl_profile: <str>
+      vrfs:
+
+          # VRF name.
+        - name: <str; required; unique>
+
+          # Source interface to use for logging destinations in this VRF.
+          # If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+          source_interface: <str>
 
       # Console logging severity level.
       console: <str; "debugging" | "informational" | "notifications" | "warnings" | "errors" | "critical" | "alerts" | "emergencies" | "disabled">
@@ -339,33 +366,6 @@
         # Forward logs in RFC5424 format.
         rfc5424: <bool>
       facility: <str; "auth" | "cron" | "daemon" | "kern" | "local0" | "local1" | "local2" | "local3" | "local4" | "local5" | "local6" | "local7" | "lpr" | "mail" | "news" | "sys9" | "sys10" | "sys11" | "sys12" | "sys13" | "sys14" | "syslog" | "user" | "uucp">
-      hosts: # >=1 items; required
-
-          # Syslog server name.
-        - name: <str; required>
-
-          # If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
-          # The value of `vrf` will be interpreted according to these rules:
-          # - `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.
-          #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-          # - `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.
-          #   An error will be raised if inband management is not configured for the device.
-          # - Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
-          vrf: <str>
-          protocol: <str; "tcp" | "udp" | "tls"; default="udp">
-          ports:
-            - <int>
-
-          # Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
-          ssl_profile: <str>
-      vrfs:
-
-          # VRF name.
-        - name: <str; required; unique>
-
-          # Source interface to use for logging destinations in this VRF.
-          # If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
-          source_interface: <str>
       policy:
         match:
           match_lists:
