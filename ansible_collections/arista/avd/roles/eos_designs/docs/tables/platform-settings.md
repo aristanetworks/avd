@@ -378,7 +378,6 @@
             evpn_gateway_all_active_multihoming: true
             interface_storm_control: false
             queue_monitor_length_notify: false
-            subinterface_mtu: false
           platforms:
           - VEOS
           - VEOS-LAB
