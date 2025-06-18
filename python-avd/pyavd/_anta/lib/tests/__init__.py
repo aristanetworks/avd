@@ -46,7 +46,7 @@ from anta.tests.system import (
     VerifyNTP,
     VerifyReloadCause,
 )
-from anta.tests.vlan import VerifyVlanStatus
+from anta.tests.vlan import VerifyVlanInternalPolicy, VerifyVlanStatus
 
 __all__ = [
     "VerifyAPIHttpsSSL",
@@ -89,6 +89,7 @@ __all__ = [
     "VerifyTelnetStatus",
     "VerifyTemperature",
     "VerifyTransceiversTemperature",
+    "VerifyVlanInternalPolicy",
     "VerifyVlanStatus",
     "VerifyZeroTouch",
 ]
