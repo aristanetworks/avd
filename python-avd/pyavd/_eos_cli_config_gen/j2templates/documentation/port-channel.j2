@@ -1,0 +1,28 @@
+{#
+ Copyright (c) 2023-2025 Arista Networks, Inc.
+ Use of this source code is governed by the Apache License 2.0
+ that can be found in the LICENSE file.
+#}
+{# doc - port-channel #}
+{% if port_channel is arista.avd.defined %}
+
+## Port-Channel
+
+### Port-Channel Summary
+{%     if port_channel.load_balance_trident_udf is arista.avd.defined %}
+
+#### Port-channel Load-balance Trident UDF Eth-type Headers
+
+| Eth-Type | IP Protocol | Header | Offset | Mask |
+| -------- | ----------- | ------ | ------ | ---- |
+{%         for udf_field in port_channel.load_balance_trident_udf %}
+| {{ udf_field.eth_type | replace("ip", "IP") }} | {{ udf_field.ip_protocol | arista.avd.default("-") | upper }} | {{ udf_field.header | replace("_", " ") }} | {{ udf_field.offset }} | {{ udf_field.mask | arista.avd.default("-") }} |
+{%         endfor %}
+{%     endif %}
+
+### Port-channel Device Configuration
+
+```eos
+{%     include 'eos/port-channel.j2' %}
+```
+{% endif %}
