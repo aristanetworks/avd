@@ -99,11 +99,11 @@ class AvdBase(ABC):
         """In-place update the instance to remove data matching the given strip_values."""
 
     @abstractmethod
-    def _dump(self, include_default_values: bool = False) -> dict | list | None:
+    def _dump(self, include_default_values: bool = False) -> dict | list | str:
         """
         Dump data into native Python types with or without default values.
 
-        It honors _created_from_null.
+        It honors _created_from_null, returning the string "null".
         """
 
     @abstractmethod

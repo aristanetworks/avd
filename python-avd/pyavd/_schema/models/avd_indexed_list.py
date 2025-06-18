@@ -156,9 +156,9 @@ class AvdIndexedList(Sequence[T_AvdModel], Generic[T_PrimaryKey, T_AvdModel], Av
         """Returns a list with all the data from this model and any nested models."""
         return [item._as_dict(include_default_values=include_default_values) for item in self._items.values()]
 
-    def _dump(self, include_default_values: bool = False) -> list[dict] | None:
+    def _dump(self, include_default_values: bool = False) -> list[dict] | str:
         if self._created_from_null:
-            return None
+            return "null"
         return self._as_list(include_default_values=include_default_values)
 
     def _natural_sorted(self, ignore_case: bool = True) -> Self:

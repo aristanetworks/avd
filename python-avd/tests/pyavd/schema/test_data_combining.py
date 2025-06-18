@@ -143,13 +143,13 @@ def test_data_combining_different_from_null(
 
     # Setting _created_from_null to True for a
     getattr(a, key)._created_from_null = True
-    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for.*None.*"):
+    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for.*null.*"):
         a._combine(b)
 
     # Setting _created_from_null to True for b
     getattr(a, key)._created_from_null = False
     getattr(b, key)._created_from_null = True
-    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for.*None.*"):
+    with pytest.raises(AristaAvdDuplicateDataError, match="Found duplicate objects with conflicting data while generating configuration for.*null.*"):
         a._combine(b)
 
 
