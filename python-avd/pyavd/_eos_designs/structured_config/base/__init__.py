@@ -352,7 +352,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             level=settings.level,
         )
 
-        # Temporary structure to group hosts by VRF with source interface tracking
+        # Temporary structure to detect source interface conflicts
         vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
 
         for host in settings.hosts:
@@ -364,15 +364,14 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
                 context=f"logging_settings.hosts[name={host.name}].vrf",
             )
 
-            existing_vrf_config = vrf_logging_config.get(host_vrf)
-
-            # Add new VRF config if it doesn't exist, or if source_interface differs (conflict)
-            if not existing_vrf_config or existing_vrf_config.source_interface != source_interface:
+            logging_vrf = self.structured_config.logging.vrfs.obtain(host_vrf)
+            if source_interface:
+                # Add to local tmp object to detect conflicts.
                 vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
-                self.structured_config.logging.vrfs.append_new(name=host_vrf, source_interface=source_interface)
+                logging_vrf.source_interface = source_interface
 
             # Add host entry under the correct VRF
-            self.structured_config.logging.vrfs.obtain(host_vrf).hosts.append_new(
+            logging_vrf.hosts.append_new(
                 name=host.name,
                 protocol=host.protocol,
                 ssl_profile=host.ssl_profile,
