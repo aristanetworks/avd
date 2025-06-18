@@ -199,7 +199,7 @@ class SnmpServerMixin(Protocol):
 
     def _snmp_local_interfaces(self: AvdStructuredConfigBaseProtocol, source_interfaces_inputs: EosDesigns.SourceInterfaces.Snmp) -> None:
         """
-        Set local_interfaces from "source_interfaces.snmp" or "snmp_settings.vrfs[].source_interface.
+        Set local_interfaces from "source_interfaces.snmp".
 
         TODO: AVD6.0 remove this method.
         """
