@@ -10386,26 +10386,22 @@ keys:
                 description: 'The queue profile to be applied to the platform.
 
                   '
-              headroom_pool_limit:
+              headroom_pool:
                 type: dict
-                description: Max limit on headroom pool size.
                 keys:
-                  bytes:
+                  unit:
+                    type: str
+                    valid_values:
+                    - bytes
+                    - cells
+                    description: 'Unit to be used for the `headroom_pool` value.
+
+                      If not specified, default is bytes.'
+                  limit:
                     type: int
                     convert_types:
                     - str
-                    description: 'Headroom pool limit in bytes.
-
-                      `bytes` and `cells` are mutually exclusive with `bytes` taking
-                      precedence.'
-                  cells:
-                    type: int
-                    convert_types:
-                    - str
-                    description: 'Headroom pool limit in cells.
-
-                      `bytes` and `cells` are mutually exclusive with `bytes` taking
-                      precedence.'
+                    description: Max limit on headroom pool size.
               queue_profiles:
                 type: list
                 primary_key: name
@@ -10414,9 +10410,117 @@ keys:
                   keys:
                     name:
                       type: str
+                    ingress:
+                      type: dict
+                      keys:
+                        priority_groups:
+                          type: list
+                          primary_key: id
+                          items:
+                            type: dict
+                            keys:
+                              id:
+                                type: int
+                                convert_types:
+                                - str
+                                description: Priority-group group number.
+                                min: 0
+                                max: 7
+                              threshold:
+                                type: str
+                                convert_types:
+                                - int
+                                valid_values:
+                                - '1'
+                                - 1/128
+                                - 1/16
+                                - 1/2
+                                - 1/32
+                                - 1/4
+                                - 1/64
+                                - 1/8
+                                - '2'
+                                - '4'
+                                - '8'
+                              reserved:
+                                type: dict
+                                keys:
+                                  unit:
+                                    type: str
+                                    valid_values:
+                                    - bytes
+                                    - cells
+                                    description: 'Unit to be used for the `priority_groups`
+                                      `reserved` value.
+
+                                      If not specified, default is bytes.'
+                                  memory:
+                                    type: int
+                                    convert_types:
+                                    - str
+                                    description: Specify the amount of memory that
+                                      should be reserved.
+                        threshold:
+                          type: str
+                          convert_types:
+                          - int
+                          description: Specify the dynamic shared memory threshold.
+                          valid_values:
+                          - '1'
+                          - 1/128
+                          - 1/16
+                          - 1/2
+                          - 1/32
+                          - 1/4
+                          - 1/64
+                          - 1/8
+                          - '2'
+                          - '4'
+                          - '8'
+                        reserved:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the `reserved` value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        headroom:
+                          type: dict
+                          keys:
+                            unit:
+                              type: str
+                              valid_values:
+                              - bytes
+                              - cells
+                              description: 'Unit to be used for the headroom value.
+
+                                If not specified, default is bytes.'
+                            memory:
+                              type: int
+                              convert_types:
+                              - str
+                              description: Specify the amount of memory that should
+                                be reserved.
+                        resume:
+                          type: int
+                          convert_types:
+                          - str
+                          description: Amount of memory that should be reserved (in
+                            bytes)
                     multicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress multicast queues.
                       items:
                         type: dict
                         keys:
@@ -10453,6 +10557,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:
@@ -10476,6 +10592,7 @@ keys:
                     unicast_queues:
                       type: list
                       primary_key: id
+                      description: Egress unicast queues.
                       items:
                         type: dict
                         keys:
@@ -10512,6 +10629,18 @@ keys:
                             description: 'Dynamic Shared Memory threshold.
 
                               '
+                            valid_values:
+                            - '1'
+                            - 1/128
+                            - 1/16
+                            - 1/2
+                            - 1/32
+                            - 1/4
+                            - 1/64
+                            - 1/8
+                            - '2'
+                            - '4'
+                            - '8'
                           drop:
                             type: dict
                             keys:

@@ -11123,6 +11123,24 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### mc_example_profile
 
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 12 bytes |
+| Threshold | 1/32 |
+| Resume | 33 |
+| Reserved | 23 cells |
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+| 1 | 1 | - |
+| 2 | 1/32 | 3 bytes |
+
+###### Egress
+
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
 | Unicast | 1 | - | 0 bytes | - |
@@ -11132,6 +11150,24 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Multicast | 7 | 1/64 | 0 cells | - |
 
 ##### unused_profile
+
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 121 cells |
+| Threshold | - |
+| Resume | - |
+| Reserved | 232 bytes |
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+| 2 | - | 55 bytes |
+| 5 | 1/32 | 34 cells |
+
+###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
