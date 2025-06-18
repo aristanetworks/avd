@@ -488,7 +488,7 @@ class FilteredTenantsMixin(Protocol):
                         case EosCliConfigGen.VlanInterfacesItem():
                             key_path = f"vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
 
-                    msg = f"`vrfs[vrf={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
+                    msg = f"`vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
                     raise AristaAvdMissingVariableError(msg)
 
                 interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)

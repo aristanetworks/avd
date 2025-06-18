@@ -14,7 +14,7 @@ tenant_a:
         redistribute_mlag_ibgp_peering_vrfs: false
         svis:
           # SVI as string
-          - id: "110"
+          - id: '110'
             name: Tenant_A_OP_Zone_1
             tags: ["opzone"]
             enabled: true

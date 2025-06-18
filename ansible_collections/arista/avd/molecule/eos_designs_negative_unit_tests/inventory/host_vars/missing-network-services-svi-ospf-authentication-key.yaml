@@ -30,4 +30,4 @@ tenants:
               - node: missing-network-services-svi-ospf-authentication-key
 
 expected_error_message: >-
-  '`vrfs[vrf=TESTING].ospf.simple_auth_key` or `vrfs[name=TESTING].svis[id=42].ospf.simple_auth_key`' is required but was not found.
+  '`vrfs[name=TESTING].ospf.simple_auth_key` or `vrfs[name=TESTING].svis[id=42].ospf.simple_auth_key`' is required but was not found.
