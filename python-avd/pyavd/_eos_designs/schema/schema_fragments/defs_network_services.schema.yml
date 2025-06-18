@@ -1553,6 +1553,17 @@ $defs:
                     description: |
                       EOS cli commands rendered on router_bgp.vlans.
                       This configuration will not be applied to vlan aware bundles.
+              private_vlan:
+                type: dict
+                keys:
+                  type:
+                    type: str
+                    valid_values: ["community", "isolated"]
+                  primary_vlan:
+                    type: int
+                    convert_types:
+                      - str
+                    description: Primary VLAN ID.
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings

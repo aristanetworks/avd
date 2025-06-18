@@ -42880,6 +42880,34 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class PrivateVlan(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
+                        type: Literal["community", "isolated"] | None
+                        primary_vlan: int | None
+                        """Primary VLAN ID."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self,
+                                *,
+                                type: Literal["community", "isolated"] | None | UndefinedType = Undefined,
+                                primary_vlan: int | None | UndefinedType = Undefined,
+                            ) -> None:
+                                """
+                                PrivateVlan.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: type
+                                    primary_vlan: Primary VLAN ID.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "vni_override": {"type": int},
@@ -42896,6 +42924,7 @@ class EosDesigns(EosDesignsRootModel):
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
+                        "private_vlan": {"type": PrivateVlan},
                     }
                     id: int
                     """VLAN ID."""
@@ -42997,6 +43026,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp: Bgp
                     """Subclass of AvdModel."""
+                    private_vlan: PrivateVlan
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -43018,6 +43049,7 @@ class EosDesigns(EosDesignsRootModel):
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
+                            private_vlan: PrivateVlan | UndefinedType = Undefined,
                         ) -> None:
                             """
                             L2vlansItem.
@@ -43096,6 +43128,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 bgp: Subclass of AvdModel.
+                                private_vlan: Subclass of AvdModel.
 
                             """
 
