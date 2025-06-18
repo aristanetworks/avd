@@ -117,6 +117,7 @@
   - [Synchronous Ethernet (SyncE) Settings](#synchronous-ethernet-synce-settings)
 - [Port-Channel](#port-channel)
   - [Port-Channel Summary](#port-channel-summary)
+  - [Port-channel Device Configuration](#port-channel-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
