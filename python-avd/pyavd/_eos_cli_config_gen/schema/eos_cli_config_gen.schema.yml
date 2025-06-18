@@ -11008,6 +11008,50 @@ keys:
                   valid_values:
                   - pps
                   - kbps
+  port_channel:
+    type: dict
+    keys:
+      load_balance_trident_udf:
+        description: Trident chip UDF fields load balancing.
+        type: list
+        items:
+          type: dict
+          keys:
+            eth_type:
+              description: Ethernet type in the port channel hash.
+              type: str
+              valid_values:
+              - ipv4
+              - ipv6
+              required: true
+            ip_protocol:
+              type: str
+              convert_types:
+              - int
+              description: 'IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre,
+                sctp.
+
+                IP protocol number within the range <0-255>.'
+            header:
+              type: str
+              valid_values:
+              - inner_l3
+              - inner_l4
+              - outer_l2
+              - outer_l3
+              - outer_l4
+              required: true
+            offset:
+              type: int
+              convert_types:
+              - str
+              min: 0
+              max: 64
+              required: true
+              description: Offset starting from selected header in the packet.
+            mask:
+              type: str
+              description: Mask of the offset. A hex value within the range 0x01-0xFF.
   port_channel_interfaces:
     type: list
     primary_key: name

@@ -27895,6 +27895,92 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                 """
 
+    class PortChannel(AvdModel):
+        """Subclass of AvdModel."""
+
+        class LoadBalanceTridentUdfItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "eth_type": {"type": str},
+                "ip_protocol": {"type": str},
+                "header": {"type": str},
+                "offset": {"type": int},
+                "mask": {"type": str},
+            }
+            eth_type: Literal["ipv4", "ipv6"]
+            """Ethernet type in the port channel hash."""
+            ip_protocol: str | None
+            """
+            IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
+            IP protocol number within the
+            range <0-255>.
+            """
+            header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"]
+            offset: int
+            """Offset starting from selected header in the packet."""
+            mask: str | None
+            """Mask of the offset. A hex value within the range 0x01-0xFF."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    eth_type: Literal["ipv4", "ipv6"] | UndefinedType = Undefined,
+                    ip_protocol: str | None | UndefinedType = Undefined,
+                    header: Literal["inner_l3", "inner_l4", "outer_l2", "outer_l3", "outer_l4"] | UndefinedType = Undefined,
+                    offset: int | UndefinedType = Undefined,
+                    mask: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    LoadBalanceTridentUdfItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        eth_type: Ethernet type in the port channel hash.
+                        ip_protocol:
+                           IP protocol name like - gre, icmp, tcp, udp, mpls-over-gre, sctp.
+                           IP protocol number within the
+                           range <0-255>.
+                        header: header
+                        offset: Offset starting from selected header in the packet.
+                        mask: Mask of the offset. A hex value within the range 0x01-0xFF.
+
+                    """
+
+        class LoadBalanceTridentUdf(AvdList[LoadBalanceTridentUdfItem]):
+            """Subclass of AvdList with `LoadBalanceTridentUdfItem` items."""
+
+        LoadBalanceTridentUdf._item_type = LoadBalanceTridentUdfItem
+
+        _fields: ClassVar[dict] = {"load_balance_trident_udf": {"type": LoadBalanceTridentUdf}}
+        load_balance_trident_udf: LoadBalanceTridentUdf
+        """
+        Trident chip UDF fields load balancing.
+
+        Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+        """
+
+        if TYPE_CHECKING:
+
+            def __init__(self, *, load_balance_trident_udf: LoadBalanceTridentUdf | UndefinedType = Undefined) -> None:
+                """
+                PortChannel.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    load_balance_trident_udf:
+                       Trident chip UDF fields load balancing.
+
+                       Subclass of AvdList with `LoadBalanceTridentUdfItem` items.
+
+                """
+
     class PortChannelInterfacesItem(AvdModel):
         """Subclass of AvdModel."""
 
@@ -65991,6 +66077,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
         "platform": {"type": Platform},
         "poe": {"type": Poe},
         "policy_maps": {"type": PolicyMaps},
+        "port_channel": {"type": PortChannel},
         "port_channel_interfaces": {"type": PortChannelInterfaces},
         "prefix_lists": {"type": PrefixLists},
         "priority_flow_control": {"type": PriorityFlowControl},
@@ -66458,6 +66545,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
     """Subclass of AvdModel."""
     policy_maps: PolicyMaps
     """Subclass of AvdModel."""
+    port_channel: PortChannel
+    """Subclass of AvdModel."""
     port_channel_interfaces: PortChannelInterfaces
     """Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`)."""
     prefix_lists: PrefixLists
@@ -66752,6 +66841,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
             platform: Platform | UndefinedType = Undefined,
             poe: Poe | UndefinedType = Undefined,
             policy_maps: PolicyMaps | UndefinedType = Undefined,
+            port_channel: PortChannel | UndefinedType = Undefined,
             port_channel_interfaces: PortChannelInterfaces | UndefinedType = Undefined,
             prefix_lists: PrefixLists | UndefinedType = Undefined,
             priority_flow_control: PriorityFlowControl | UndefinedType = Undefined,
@@ -67070,6 +67160,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                    Subclass of AvdModel.
                 poe: Subclass of AvdModel.
                 policy_maps: Subclass of AvdModel.
+                port_channel: Subclass of AvdModel.
                 port_channel_interfaces: Subclass of AvdIndexedList with `PortChannelInterfacesItem` items. Primary key is `name` (`str`).
                 prefix_lists: Subclass of AvdIndexedList with `PrefixListsItem` items. Primary key is `name` (`str`).
                 priority_flow_control:
