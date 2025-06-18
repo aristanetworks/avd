@@ -226,6 +226,8 @@ metadata:
     - interface: Ethernet3
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Fabric
@@ -233,6 +235,8 @@ metadata:
         value: MLAG
     - interface: Ethernet4
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -242,6 +246,8 @@ metadata:
     - interface: Ethernet1
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Fabric
@@ -249,6 +255,8 @@ metadata:
         value: Downlink
     - interface: Ethernet2
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -258,11 +266,15 @@ metadata:
     - interface: Ethernet5
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet6
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -270,11 +282,15 @@ metadata:
     - interface: Ethernet7
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet8
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -282,11 +298,15 @@ metadata:
     - interface: Ethernet9
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet14
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -294,11 +314,15 @@ metadata:
     - interface: Ethernet15
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet16
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -306,11 +330,15 @@ metadata:
     - interface: Ethernet17
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet10
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -318,11 +346,15 @@ metadata:
     - interface: Ethernet11
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet12
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
@@ -330,11 +362,15 @@ metadata:
     - interface: Ethernet13
       tags:
       - name: Link-Type
+        value: AnotherValue
+      - name: Link-Type
         value: AVD-Managed
       - name: Link-Type
         value: Egress
     - interface: Ethernet18
       tags:
+      - name: Link-Type
+        value: AnotherValue
       - name: Link-Type
         value: AVD-Managed
       - name: Link-Type

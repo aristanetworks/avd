@@ -18,3 +18,10 @@ l3spine:
           id: 1
         - name: BGP-SPINE2
           id: 2
+
+generate_cv_tags:
+  topology_hints: true
+  campus_fabric: true
+  interface_tags:
+    - name: Link-Type
+      value: AnotherValue
