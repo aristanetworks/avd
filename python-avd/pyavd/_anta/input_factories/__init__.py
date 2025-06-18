@@ -17,6 +17,7 @@ from .security import VerifyAPIHttpsSSLInputFactory, VerifySpecificIPSecConnInpu
 from .services import VerifyDNSServersInputFactory
 from .stun import VerifyStunClientTranslationInputFactory
 from .system import VerifyReloadCauseInputFactory
+from .vlan import VerifyVlanStatusInputFactory
 
 __all__ = [
     "VerifyAPIHttpsSSLInputFactory",
@@ -37,4 +38,5 @@ __all__ = [
     "VerifySpecificIPSecConnInputFactory",
     "VerifySpecificPathInputFactory",
     "VerifyStunClientTranslationInputFactory",
+    "VerifyVlanStatusInputFactory",
 ]

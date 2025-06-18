@@ -164,6 +164,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyTransceiversTemperature,
     ),
     TestSpec(
+        test_class=VerifyVlanStatus,
+        conditional_keys=[StructuredConfigKey.VLANS],
+    ),
+    TestSpec(
         test_class=VerifyZeroTouch,
     ),
 ]
