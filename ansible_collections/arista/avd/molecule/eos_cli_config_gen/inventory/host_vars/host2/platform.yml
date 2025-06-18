@@ -1,10 +1,10 @@
 ---
-# To test headroom_pool_limit in bytes.
+# To test headroom_pool in bytes.
 platform:
   trident:
     mmu:
-      headroom_pool_limit:
-        bytes: 557
+      headroom_pool:
+        limit: 557
   fap:
     buffering_egress:
       profile: balanced
