@@ -3510,7 +3510,7 @@ sync-e
 | IPv6 | TCP | outer l4 | 20 | - |
 | IPv6 | 2 | inner l4 | 10 | 0x02 |
 
-#### Port-channel Device Configuration
+### Port-channel Device Configuration
 
 ```eos
 !
