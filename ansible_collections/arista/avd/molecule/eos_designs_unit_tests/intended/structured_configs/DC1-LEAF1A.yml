@@ -310,7 +310,7 @@ router_bgp:
       - '1234:9'
     redistribute_routes:
     - learned
-    vlan: 113-114
+    vlan: '113'
   - name: Tenant_A_WEB_Zone
     rd: 1.1.1.1:11
     route_targets:
@@ -414,7 +414,6 @@ router_ospf:
     router_id: 10.10.10.10
     no_passive_interfaces:
     - Vlan113
-    - Vlan114
     redistribute:
       bgp:
         enabled: true
@@ -494,17 +493,6 @@ vlan_interfaces:
   tenant: Tenant_A
   tags:
   - DC1_LEAF1
-- name: Vlan114
-  description: Tenant_A_OP_Zone_4
-  shutdown: false
-  vrf: Tenant_A_OP_Zone
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: simple
-  ospf_authentication_key: 9e3ZbKYR3B0VeSpVywafWA==
-  tenant: Tenant_A
-  tags:
-  - DC1_LEAF1
 - name: Vlan120
   description: Tenant_A_WEB_Zone_1
   shutdown: false
@@ -581,9 +569,6 @@ vlans:
 - id: 113
   name: Tenant_A_OP_Zone_4
   tenant: Tenant_A
-- id: 114
-  name: Tenant_A_OP_Zone_4
-  tenant: Tenant_A
 - id: 120
   name: Tenant_A_WEB_Zone_1
   tenant: Tenant_A
@@ -631,8 +616,6 @@ vxlan_interface:
         vni: 10132
       - id: 113
         vni: 10113
-      - id: 114
-        vni: 10114
       - id: 120
         vni: 10120
       - id: 121

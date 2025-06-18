@@ -207,7 +207,7 @@ router_bgp:
       - '9:9'
     redistribute_routes:
     - learned
-    vlan: 110-115
+    vlan: 110-113
   - name: Tenant_A_WAN_Zone
     rd: 192.168.255.109:14
     route_targets:
@@ -695,34 +695,6 @@ vlan_interfaces:
   tenant: Tenant_A
   tags:
   - DC1_LEAF1
-- name: Vlan114
-  description: Tenant_A_OP_Zone_4
-  shutdown: false
-  vrf: Tenant_A_OP_Zone
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: simple
-  ospf_authentication_key: 9e3ZbKYR3B0VeSpVywafWA==
-  tenant: Tenant_A
-  tags:
-  - DC1_LEAF1
-- name: Vlan115
-  description: Tenant_A_OP_Zone_4
-  shutdown: false
-  vrf: Tenant_A_OP_Zone
-  ospf_network_point_to_point: true
-  ospf_area: 0.0.0.0
-  ospf_authentication: message-digest
-  ospf_message_digest_keys:
-  - id: 1
-    hash_algorithm: sha1
-    key: arista
-  - id: 2
-    hash_algorithm: sha512
-    key: ClearText
-  tenant: Tenant_A
-  tags:
-  - DC1_BL1
 - name: Vlan150
   description: Tenant_A_WAN_Zone_1
   shutdown: false
@@ -962,12 +934,6 @@ vlans:
 - id: 113
   name: Tenant_A_OP_Zone_4
   tenant: Tenant_A
-- id: 114
-  name: Tenant_A_OP_Zone_4
-  tenant: Tenant_A
-- id: 115
-  name: Tenant_A_OP_Zone_4
-  tenant: Tenant_A
 - id: 150
   name: Tenant_A_WAN_Zone_1
   tenant: Tenant_A
@@ -1119,10 +1085,6 @@ vxlan_interface:
         vni: 10112
       - id: 113
         vni: 10113
-      - id: 114
-        vni: 10114
-      - id: 115
-        vni: 10115
       - id: 150
         vni: 10150
       - id: 151

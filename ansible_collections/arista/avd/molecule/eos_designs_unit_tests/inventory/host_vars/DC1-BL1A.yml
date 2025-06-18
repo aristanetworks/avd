@@ -3,9 +3,6 @@ my_special_dci_ethernet_interfaces:
   - name: Ethernet4000
     ip_address: 10.3.2.1/21
 
-# Verifying we can encrypt passwords
-encrypt_passwords: true
-
 custom_structured_configuration_list_merge: append
 
 use_router_general_for_router_id: true
