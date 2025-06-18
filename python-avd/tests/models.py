@@ -43,7 +43,10 @@ class MoleculeHost:
     @cached_property
     def structured_config(self) -> dict:
         """The intended structured config for the host, as read from the YAML file in the molecule scenario."""
-        structured_config_path = self.scenario.path / "intended/structured_configs" / f"{self.name}.yml"
+        if self.scenario.name.endswith("digital_twin_act"):
+            structured_config_path = self.scenario.path / "inventory/digital_twin/act/intended/structured_configs" / f"{self.name}.yml"
+        else:
+            structured_config_path = self.scenario.path / "intended/structured_configs" / f"{self.name}.yml"
         if not structured_config_path.exists():
             return {}
 
@@ -52,7 +55,10 @@ class MoleculeHost:
     @cached_property
     def config(self) -> str | None:
         """The intended EOS config for the host, as read from the cfg file in the molecule scenario."""
-        config_path = self.scenario.path / "intended/configs" / f"{self.name}.cfg"
+        if self.scenario.name.endswith("digital_twin_act"):
+            config_path = self.scenario.path / "inventory/digital_twin/act/intended/configs" / f"{self.name}.cfg"
+        else:
+            config_path = self.scenario.path / "intended/configs" / f"{self.name}.cfg"
         if not config_path.exists():
             return None
 
@@ -61,7 +67,10 @@ class MoleculeHost:
     @cached_property
     def doc(self) -> str | None:
         """The intended MarkDown documentation for the host, as read from the md file in the molecule scenario."""
-        doc_path = self.scenario.path / "documentation/devices" / f"{self.name}.md"
+        if self.scenario.name.endswith("digital_twin_act"):
+            doc_path = self.scenario.path / "inventory/digital_twin/act/documentation/devices" / f"{self.name}.md"
+        else:
+            doc_path = self.scenario.path / "documentation/devices" / f"{self.name}.md"
         if not doc_path.exists():
             return None
 
@@ -70,6 +79,8 @@ class MoleculeHost:
     @cached_property
     def hostvars(self) -> dict:
         """The input vars for the host, as read from the Ansible inventory in the molecule scenario."""
+        if self.scenario.name.endswith("digital_twin_act"):
+            return json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host) | {"digital_twin_mode": True}))
         return json.loads(json.dumps(self.scenario._vars.get_vars(host=self.ansible_host)))
 
 
@@ -138,7 +149,10 @@ class MoleculeScenario:
 
         None if no fabric documentation is found in the molecule artifacts.
         """
-        fabric_doc_path = self.path / "documentation/fabric"
+        if self.name.endswith("digital_twin_act"):
+            fabric_doc_path = self.path / "inventory/digital_twin/act/documentation/fabric"
+        else:
+            fabric_doc_path = self.path / "documentation/fabric"
         files = list(fabric_doc_path.glob("*-documentation.md"))
         if not files:
             return None
@@ -156,7 +170,10 @@ class MoleculeScenario:
 
         None if no Topology CSV is found in the molecule artifacts.
         """
-        fabric_doc_path = self.path / "documentation/fabric"
+        if self.name.endswith("digital_twin_act"):
+            fabric_doc_path = self.path / "inventory/digital_twin/act/documentation/fabric"
+        else:
+            fabric_doc_path = self.path / "documentation/fabric"
         files = list(fabric_doc_path.glob("*-topology.csv"))
         if not files:
             return None
@@ -174,7 +191,10 @@ class MoleculeScenario:
 
         None if no P2P Links CSV is found in the molecule artifacts.
         """
-        fabric_doc_path = self.path / "documentation/fabric"
+        if self.name.endswith("digital_twin_act"):
+            fabric_doc_path = self.path / "inventory/digital_twin/act/documentation/fabric"
+        else:
+            fabric_doc_path = self.path / "documentation/fabric"
         files = list(fabric_doc_path.glob("*-p2p-links.csv"))
         if not files:
             return None

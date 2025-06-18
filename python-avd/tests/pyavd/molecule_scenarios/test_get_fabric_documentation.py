@@ -19,6 +19,7 @@ from tests.models import MoleculeScenario
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
+    "eos_designs_digital_twin_act",
     # TODO: "evpn_underlay_ebgp_overlay_ebgp", # Remove inline jinja
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
@@ -44,6 +45,7 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
         topology_csv = get(first_hostvars, "eos_designs_documentation.topology_csv", default=False)
         p2p_links_csv = get(first_hostvars, "eos_designs_documentation.p2p_links_csv", default=False)
         toc = get(first_hostvars, "eos_designs_documentation.toc", default=True)
+        digital_twin = molecule_scenario.name.endswith("digital_twin_act")
 
         fabric_documentation_obj = get_fabric_documentation(
             avd_facts=molecule_avd_facts,
@@ -54,6 +56,7 @@ def test_get_fabric_documentation(molecule_scenario: MoleculeScenario) -> None:
             topology_csv=topology_csv,
             p2p_links_csv=p2p_links_csv,
             toc=toc,
+            digital_twin=digital_twin,
         )
 
     assert isinstance(fabric_documentation_obj, FabricDocumentation)

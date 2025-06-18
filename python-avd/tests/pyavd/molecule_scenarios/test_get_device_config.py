@@ -18,6 +18,7 @@ from tests.models import MoleculeHost
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     "eos_designs-twodc-5stage-clos",
+    "eos_designs_digital_twin_act",
     "evpn_underlay_ebgp_overlay_ebgp",
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",

@@ -67,6 +67,7 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     "eos_designs-twodc-5stage-clos",
+    "eos_designs_digital_twin_act",
     "evpn_underlay_ebgp_overlay_ebgp",
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
@@ -77,7 +78,6 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
-    "eos_designs_digital_twin",
 )
 def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test EosDesigns model with valid data."""
@@ -101,6 +101,7 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     "eos_designs-twodc-5stage-clos",
+    "eos_designs_digital_twin_act",
     "evpn_underlay_ebgp_overlay_ebgp",
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
@@ -111,7 +112,6 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
-    "eos_designs_digital_twin",
 )
 def test_eos_designs_initialize_dict_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test EosDesigns model with valid data."""

@@ -19,6 +19,7 @@ SCHEMA = create_store()["eos_cli_config_gen"]
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
+    "eos_designs_digital_twin_act",
     "evpn_underlay_ebgp_overlay_ebgp",
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
@@ -51,6 +52,7 @@ def test_eos_cli_config_gen_initialize_dict_with_valid_data(molecule_host: Molec
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
+    "eos_designs_digital_twin_act",
     "evpn_underlay_ebgp_overlay_ebgp",
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
