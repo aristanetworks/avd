@@ -29,7 +29,7 @@ keys:
         - underlay_multicast
         - underlay_multicast_rp_interfaces
         - underlay_rfc5549
-        - is_wan_router
+        - wan_role
         - vtep_vvtep_ip
         - inband_ztp
     type: bool
