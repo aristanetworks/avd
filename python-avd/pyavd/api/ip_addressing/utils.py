@@ -256,7 +256,7 @@ class UtilsMixin(Protocol):
             raise AristaAvdError(msg)
 
         if uplink_pool is None and downlink_pool is None:
-            msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on all the uplink switches"
+            msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
             raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:
