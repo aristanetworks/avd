@@ -15,9 +15,13 @@ l3leaf:
     - name: ospf-encryption-password-encrypt-true
       id: 42
       mgmt_ip: 192.168.42.42/24
+      filter:
+        tags: [ospf-encryption-password-encrypt-true]
     - name: ospf-encryption-password-encrypt-false
       id: 43
       mgmt_ip: 192.168.42.43/24
+      filter:
+        tags: [ospf-encryption-password-encrypt-false]
 
 tenants:
   - name: Tenant_OSPF
@@ -101,7 +105,7 @@ tenants:
               area: 1
               cost: 100
               authentication: simple
-              simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+              simple_auth_key: P6e73mHkLBd2exwHPq6K3A==
             nodes:
               - node: ospf-encryption-password-encrypt-true
                 ospf:
@@ -153,7 +157,7 @@ tenants:
               message_digest_keys:
                 - id: 1
                   hash_algorithm: sha1
-                  key: qKh1ui6D2mKd2SnK6uhhlw==
+                  key: CSjTKv7UtuWSOX61bToedQ==
           - interfaces: [Ethernet2]
             ip_addresses: [10.10.20.20/24]
             nodes: [ospf-encryption-password-encrypt-false]
@@ -270,7 +274,7 @@ tenants:
               area: 1
               cost: 100
               authentication: simple
-              simple_auth_key: "AQQvKeimxJu+uGQ/yYvv9w=="
+              simple_auth_key: 9lUSaRCtplbyboJZn9kq5g==
             nodes:
               - node: ospf-encryption-password-encrypt-true
                 ospf:
@@ -326,8 +330,8 @@ tenants:
               # hence verifying the type 7 password is not encrypted
               message_digest_keys:
                 - id: 1
-                  hash_algorithm: sha1
-                  key: qKh1ui6D2mKd2SnK6uhhlw==
+                  hash_algorithm: sha512
+                  key: g73J3pK8WsFSHE+mvk4W8A==
           # Test inheriting authentication from VRF, the VRF keys are ALWAYS encrypted no matter the value
           - interfaces: [Ethernet4]
             ip_addresses: [10.10.20.20/24]
@@ -420,8 +424,8 @@ tenants:
               # hence verifying the type 7 password is not encrypted
               message_digest_keys:
                 - id: 1
-                  hash_algorithm: sha1
-                  key: qKh1ui6D2mKd2SnK6uhhlw==
+                  hash_algorithm: sha384
+                  key: HETNWQ4hixKxgZv7UHHb9w==
           - interfaces: [Ethernet6]
             ip_addresses: [10.10.20.20/24]
             nodes: [ospf-encryption-password-encrypt-false]
