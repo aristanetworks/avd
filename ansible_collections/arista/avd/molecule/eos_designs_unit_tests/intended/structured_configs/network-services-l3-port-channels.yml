@@ -233,10 +233,10 @@ port_channel_interfaces:
   ospf_message_digest_keys:
   - id: 1
     hash_algorithm: sha256
-    key: /RdMnFKYD0o3FwAn/G2q6A==
+    key: ocAzkT2JRNKrbPGT790Geg==
   - id: 2
     hash_algorithm: sha512
-    key: fE8cfFsXVLpu9efmnDvXeA==
+    key: uVG6QXeIXN+QGY2DP4UCtA==
   flow_tracker:
     sampled: FLOW-TRACKER
   peer: inet-cloud
