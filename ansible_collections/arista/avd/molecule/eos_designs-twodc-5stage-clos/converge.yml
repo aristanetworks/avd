@@ -9,3 +9,18 @@
       delegate_to: 127.0.0.1
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
+
+    - name: Generate intended variables in ACT Digital Twin mode
+      delegate_to: 127.0.0.1
+      ansible.builtin.import_role:
+        name: arista.avd.eos_designs
+      vars:
+        root_dir: "inventory/digital_twin/act"
+        digital_twin_mode: true
+        # Dynamically pass vars specific to each Digital Twin environment (to allow runs for different Digital Twin environments)
+        digital_twin:
+          environment: act
+          fabric:
+            username: act_user
+            password: act_pass
+            os_version: 4.33.0F
