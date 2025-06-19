@@ -113,6 +113,9 @@ class UtilsMixin(Protocol):
         Returns:
             VRF name
             Source Interface if available.
+
+        Raises:
+            AristaAvdInvalidInputsError raised by get_vrf() if conditions mentioned above are not met.
         """
         source_interface: str | None = None
         vrf = self.get_vrf(vrf_input, context=context)
