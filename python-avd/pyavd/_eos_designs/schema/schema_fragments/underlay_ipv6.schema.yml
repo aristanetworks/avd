@@ -20,6 +20,7 @@ keys:
     description: |
       This feature allows pure IPv6 underlay routing protocol with numbered addresses.
       Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses.
+      Currently BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.
       Requires:
         - "underlay_ipv6: true"
         - "loopback_ipv6_pool"
