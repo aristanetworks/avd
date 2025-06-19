@@ -37,4 +37,5 @@ tenants:
                 peer: inet-cloud
 
 expected_error_message: >-
-  '`vrfs[name=TESTING].ospf.simple_auth_key` or `vrfs[name=TESTING].l3_port_channels[name=Port-Channel1111].ospf.simple_auth_key`' is required but was not found.
+  '`vrfs[name=TESTING].ospf.simple_auth_key` or `vrfs[name=TESTING].l3_port_channels[name=Port-Channel1111].ospf.simple_auth_key`'
+  is required but was not found.
