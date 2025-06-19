@@ -25,11 +25,7 @@ if TYPE_CHECKING:
         EosCliConfigGen.IpRadiusSourceInterfaces,
     )
 
-    T_ProtocolVrfs = TypeVar(
-        "T_ProtocolVrfs",
-        EosDesigns.DnsSettings.Vrfs,
-        EosDesigns.SflowSettings.Vrfs,
-    )
+    T_ProtocolVrfs = TypeVar("T_ProtocolVrfs", EosDesigns.DnsSettings.Vrfs, EosDesigns.SflowSettings.Vrfs, EosDesigns.LoggingSettings.Vrfs)
 
 
 class UtilsMixin(Protocol):
