@@ -117,14 +117,13 @@ class UtilsMixin(Protocol):
         source_interface: str | None = None
         vrf = self.get_vrf(vrf_input, context=context)
         if set_source_interfaces:
+            # source_interface may be overridden below if given in the 'vrfs'
             match vrf_input:
                 case None | "" | "use_default_mgmt_method_vrf":
                     source_interface = self.shared_utils.default_mgmt_protocol_interface
                 case "use_mgmt_interface_vrf":
-                    # source_interface may be overridden below if given in the 'vrfs'
                     source_interface = self.shared_utils.mgmt_interface
                 case "use_inband_mgmt_vrf":
-                    # source_interface may be overridden below if given in the 'vrfs'
                     source_interface = self.shared_utils.inband_mgmt_interface
 
         if vrf in vrfs and vrfs[vrf].source_interface:
@@ -155,6 +154,11 @@ class UtilsMixin(Protocol):
 
         Returns:
             VRF name
+
+        Raises:
+            AristaAvdInvalidInputsError: If `vrf` is unset or set to `use_default_mgmt_method_vrf` and `default_mgmt_method` is set to 'none'.
+            AristaAvdInvalidInputsError: If `vrf` is set to `use_mgmt_interface_vrf` and no `mgmt_ip` is set for this device.
+            AristaAvdInvalidInputsError: If `vrf` is set to `use_inband_mgmt_vrf` and inband management is not configured for this device.
         """
         if not vrf_input or vrf_input == "use_default_mgmt_method_vrf":
             match self.inputs.default_mgmt_method:
