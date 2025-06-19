@@ -61182,18 +61182,19 @@ class EosDesigns(EosDesignsRootModel):
     """
     `default_mgmt_method` controls the default VRF and source interface used for the following
     management and monitoring protocols configured with `eos_designs`:
-      - `ntp_settings`
+      - `logging_settings`
       -
-    `sflow_settings`
+    `ntp_settings`
+      - `sflow_settings`
+      - `snmp_settings`
 
-    `oob` means the protocols will be configured with the VRF set by
-    `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-    `inband` means the protocols will
-    be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
-    interface.
-    `none` means the VRF and or interface must be manually set for each protocol.
-    This can be
-    overridden under the settings for each protocol.
+    `oob` means the protocols will be
+    configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+    `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and
+    `inband_mgmt_interface` as the source interface.
+    `none` means the VRF and or interface must be
+    manually set for each protocol.
+    This can be overridden under the settings for each protocol.
 
     Default value: `"oob"`
     """
@@ -63151,18 +63152,19 @@ class EosDesigns(EosDesignsRootModel):
                 default_mgmt_method:
                    `default_mgmt_method` controls the default VRF and source interface used for the following
                    management and monitoring protocols configured with `eos_designs`:
-                     - `ntp_settings`
+                     - `logging_settings`
                      -
-                   `sflow_settings`
+                   `ntp_settings`
+                     - `sflow_settings`
+                     - `snmp_settings`
 
-                   `oob` means the protocols will be configured with the VRF set by
-                   `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-                   `inband` means the protocols will
-                   be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source
-                   interface.
-                   `none` means the VRF and or interface must be manually set for each protocol.
-                   This can be
-                   overridden under the settings for each protocol.
+                   `oob` means the protocols will be
+                   configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
+                   `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and
+                   `inband_mgmt_interface` as the source interface.
+                   `none` means the VRF and or interface must be
+                   manually set for each protocol.
+                   This can be overridden under the settings for each protocol.
                 default_network_ports_description:
                    Default description or description template to be used on all ports defined under `network_ports`.
                    This can be a template using the AVD string formatter syntax:
