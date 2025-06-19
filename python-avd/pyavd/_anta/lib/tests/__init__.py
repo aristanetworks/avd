@@ -20,6 +20,7 @@ from anta.tests.interfaces import (
     VerifyInterfaceErrors,
     VerifyInterfacesStatus,
     VerifyInterfaceUtilization,
+    VerifyL3MTU,
     VerifyPortChannels,
     VerifyStormControlDrops,
 )
@@ -65,6 +66,7 @@ __all__ = [
     "VerifyInterfaceErrors",
     "VerifyInterfaceUtilization",
     "VerifyInterfacesStatus",
+    "VerifyL3MTU",
     "VerifyLLDPNeighbors",
     "VerifyLoggingErrors",
     "VerifyMemoryUtilization",

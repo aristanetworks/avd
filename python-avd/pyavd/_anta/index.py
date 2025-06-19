@@ -85,6 +85,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyStormControlDrops,
     ),
     TestSpec(
+        test_class=VerifyL3MTU,
+        input_factory=VerifyL3MTUInputFactory,
+    ),
+    TestSpec(
         test_class=VerifyLLDPNeighbors,
         conditional_keys=[StructuredConfigKey.ETHERNET_INTERFACES],
         input_factory=VerifyLLDPNeighborsInputFactory,

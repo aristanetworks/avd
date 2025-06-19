@@ -88,6 +88,8 @@ class LogMessage(Enum):
     INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
     INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
+    SWITCHPORT_INTERFACE = "{interface} skipped - switchport interface"
+    NO_MTU = "{interface} skipped - no mtu on interface"
 
     # WAN-specific messages
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
