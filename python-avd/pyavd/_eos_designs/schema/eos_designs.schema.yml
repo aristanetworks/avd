@@ -241,7 +241,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: false
@@ -273,7 +276,10 @@ keys:
             required: true
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: false
@@ -294,7 +300,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: false
@@ -315,7 +324,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: true
@@ -336,7 +348,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: true
@@ -357,7 +372,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: true
@@ -378,7 +396,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: true
@@ -399,7 +420,10 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.'
           bfd:
             type: bool
             default: true
@@ -420,7 +444,12 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.
+
+              Type 7 encrypted password.
 
               When configuring a password on the `wan_overlay_peers` BGP peer group,
 
@@ -488,7 +517,11 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'Type 7 encrypted password.
+            description: 'BGP peer group password.
+
+              Expect a cleartext password if `encrypt_passwords: true`, otherwise
+              expect a type 7 password.
+
 
               When configuring a password on the `wan_overlay_peers` BGP peer group,
 
@@ -6528,6 +6561,12 @@ $defs:
               name:
                 type: str
                 description: BGP peer group name.
+              password:
+                type: str
+                description: 'BGP Peer group password.
+
+                  Expect a cleartext password if `encrypt_passwords: true`, otherwise
+                  expect a type 7 password.'
               nodes:
                 type: list
                 items:
@@ -7836,7 +7875,10 @@ $defs:
                       type: str
                     password:
                       type: str
-                      description: Encrypted password.
+                      description: 'BGP Peer password.
+
+                        Expect a cleartext password if `encrypt_passwords: true`,
+                        otherwise expect a type 7 password.'
                     send_community:
                       type: str
                       description: '''all'' or a combination of ''standard'', ''extended'',
@@ -8022,6 +8064,12 @@ $defs:
                         a bgp_peer mapped to the corresponding peer_group.
 
                         '
+                    password:
+                      type: str
+                      description: 'BGP Peer group password.
+
+                        Expect a cleartext password if `encrypt_passwords: true`,
+                        otherwise expect a type 7 password.'
                     address_family_ipv4:
                       type: dict
                       keys:

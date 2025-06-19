@@ -4,9 +4,10 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Protocol, overload
 
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
+from pyavd._utils.password_utils.password import bgp_encrypt
 from pyavd.j2filters import range_expand
 
 if TYPE_CHECKING:
@@ -119,3 +120,25 @@ class RoutingMixin(Protocol):
         except IndexError as exc:
             msg = f"Unable to allocate BGP AS: bgp_as range is too small ({len(bgp_as_range_expanded)}) for the id of the device"
             raise AristaAvdError(msg) from exc
+
+    @overload
+    def get_bgp_password(self: SharedUtilsProtocol, key: str, password: None) -> None: ...
+
+    @overload
+    def get_bgp_password(self: SharedUtilsProtocol, key: str, password: str) -> str: ...
+
+    def get_bgp_password(self: SharedUtilsProtocol, key: str, password: str | None) -> str | None:
+        """
+        Take a peer group name or a neighbor IP as `key` and the password and return the Type 7 encrypted password if `encrypt_passwords: true`.
+
+        Args:
+            key: the BGP peer group name or neighbor address
+            password: the configured BGP passwords
+
+        Returns:
+            str: The type 7 encrypted password if `encrypt_passwords: true`
+        """
+        if not self.inputs.encrypt_passwords or password is None:
+            return password
+
+        return bgp_encrypt(password, key)
