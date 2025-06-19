@@ -9,6 +9,10 @@
     | -------- | ---- | -------- | ------- | ------------------ | ----------- |
     | [<samp>router_path_selection</samp>](## "router_path_selection") | Dictionary |  |  |  | Dynamic path selection configuration. |
     | [<samp>&nbsp;&nbsp;peer_dynamic_source</samp>](## "router_path_selection.peer_dynamic_source") | String |  |  | Valid Values:<br>- <code>stun</code> | Source of dynamic peer discovery. |
+    | [<samp>&nbsp;&nbsp;mtu_discovery_interval</samp>](## "router_path_selection.mtu_discovery_interval") | Integer |  |  | Min: 60<br>Max: 600 | MTU discovery interval in seconds. |
+    | [<samp>&nbsp;&nbsp;mtu_discovery_hosts</samp>](## "router_path_selection.mtu_discovery_hosts") | Dictionary |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "router_path_selection.mtu_discovery_hosts.enabled") | Boolean |  |  |  | Enable MTU discovery for hosts. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;fragmentation_needed_rate_limit</samp>](## "router_path_selection.mtu_discovery_hosts.fragmentation_needed_rate_limit") | Integer |  |  | Min: 1<br>Max: 500 | Maximum rate of ICMP packet generation per CPU core(packets per second). |
     | [<samp>&nbsp;&nbsp;path_groups</samp>](## "router_path_selection.path_groups") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "router_path_selection.path_groups.[].name") | String | Required, Unique |  |  | Path group name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;id</samp>](## "router_path_selection.path_groups.[].id") | Integer |  |  | Min: 1<br>Max: 65535 | Path group ID. |
@@ -77,6 +81,16 @@
 
       # Source of dynamic peer discovery.
       peer_dynamic_source: <str; "stun">
+
+      # MTU discovery interval in seconds.
+      mtu_discovery_interval: <int; 60-600>
+      mtu_discovery_hosts:
+
+        # Enable MTU discovery for hosts.
+        enabled: <bool>
+
+        # Maximum rate of ICMP packet generation per CPU core(packets per second).
+        fragmentation_needed_rate_limit: <int; 1-500>
       path_groups:
 
           # Path group name.
