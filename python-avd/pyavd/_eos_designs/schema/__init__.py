@@ -62874,18 +62874,20 @@ class EosDesigns(EosDesignsRootModel):
     This feature allows pure IPv6 underlay routing protocol with numbered addresses.
     Currently sets both
     underlay and overlay, including MLAG, to use IPv6 addresses.
+    Currently BGP peer-groups are named
+    with IPv4 by default. This can be modified under `bgp_peer_groups`.
     Requires:
-      - "underlay_ipv6: true"
-      -
-    "loopback_ipv6_pool"
+      - "underlay_ipv6:
+    true"
+      - "loopback_ipv6_pool"
       - "underlay_routing_protocol: ebgp"
-    Some settings are not yet supported with
-    IPv6 underlay:
+    Some settings are not yet
+    supported with IPv6 underlay:
       - underlay_multicast
       - underlay_multicast_rp_interfaces
-      - underlay_rfc5549
       -
-    is_wan_router
+    underlay_rfc5549
+      - wan_role
       - vtep_vvtep_ip
       - inband_ztp
 
@@ -62894,7 +62896,7 @@ class EosDesigns(EosDesignsRootModel):
     enable_router_id_diagnostic: bool
     """
     This feature allows configuring a loopback0 IPv4 that matches the BGP router_id for diagnostics with
-    an IPv6 unuderlay.
+    an IPv6 underlay.
     Requires:
       - "underlay_ipv6_numbered: true"
 
@@ -64542,23 +64544,25 @@ class EosDesigns(EosDesignsRootModel):
                    This feature allows pure IPv6 underlay routing protocol with numbered addresses.
                    Currently sets both
                    underlay and overlay, including MLAG, to use IPv6 addresses.
+                   Currently BGP peer-groups are named
+                   with IPv4 by default. This can be modified under `bgp_peer_groups`.
                    Requires:
-                     - "underlay_ipv6: true"
-                     -
-                   "loopback_ipv6_pool"
+                     - "underlay_ipv6:
+                   true"
+                     - "loopback_ipv6_pool"
                      - "underlay_routing_protocol: ebgp"
-                   Some settings are not yet supported with
-                   IPv6 underlay:
+                   Some settings are not yet
+                   supported with IPv6 underlay:
                      - underlay_multicast
                      - underlay_multicast_rp_interfaces
-                     - underlay_rfc5549
                      -
-                   is_wan_router
+                   underlay_rfc5549
+                     - wan_role
                      - vtep_vvtep_ip
                      - inband_ztp
                 enable_router_id_diagnostic:
                    This feature allows configuring a loopback0 IPv4 that matches the BGP router_id for diagnostics with
-                   an IPv6 unuderlay.
+                   an IPv6 underlay.
                    Requires:
                      - "underlay_ipv6_numbered: true"
                 underlay_isis_authentication_key: Type-7 encrypted password.
