@@ -485,7 +485,8 @@ class FilteredTenantsMixin(Protocol):
                             key_path = f"vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
                         case EosCliConfigGen.PortChannelInterfacesItem():
                             key_path = f"vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
-                        case EosCliConfigGen.VlanInterfacesItem():
+                        case _:
+                            # This is EosCliConfigGen.VlanInterfacesItem
                             key_path = f"vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
 
                     msg = f"`vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
@@ -493,7 +494,8 @@ class FilteredTenantsMixin(Protocol):
 
                 interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
 
-            case "message-digest":
+            case _:
+                # This is "message-digest"
                 # The full list of keys is EITHER taken from the network_services_interface or from the VRF
                 # TODO: consider merging the two lists if the `id` are not clashing?
                 if network_services_interface.ospf.message_digest_keys:
