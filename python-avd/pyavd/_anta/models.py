@@ -118,3 +118,114 @@ class DeviceTestContext:
         )
 
         return BgpNeighbor(ip_address=ip_address, vrf=vrf, update_source=update_source)
+
+    @cached_property
+    def l3_mtu_interfaces(self) -> tuple[list[dict[str, int]], list[str]]:
+        """
+        Generate MTU mappings for Layer 3 interfaces.
+
+        This includes:
+        - Ethernet interfaces configured in routed mode.
+        - Port-channel interfaces configured in routed mode.
+        - VLAN interfaces (always treated as routed interfaces).
+
+        Interfaces without an MTU configured or not applicable for L3 validation
+        are logged and added to the ignored list.
+
+        Returns:
+            A tuple containing:
+            - List of dictionaries with interface name and MTU.
+            - List of ignored interface names.
+        """
+        l3_interfaces: list[dict[str, int]] = []
+        ignored_interfaces: list[str] = []
+
+        l3_interfaces, ignored_interfaces = self._process_interfaces(
+            self.structured_config.ethernet_interfaces, l3_interfaces, ignored_interfaces, is_l2_mtu=False
+        )
+        l3_interfaces, ignored_interfaces = self._process_interfaces(
+            self.structured_config.port_channel_interfaces, l3_interfaces, ignored_interfaces, is_l2_mtu=False
+        )
+
+        for vlan_interface in self.structured_config.vlan_interfaces:
+            if vlan_interface.mtu is not None:
+                l3_interfaces.append({vlan_interface.name: vlan_interface.mtu})
+            else:
+                LOGGER.debug("%s skipped - no mtu on interface", vlan_interface.name)
+                ignored_interfaces.append(vlan_interface.name)
+
+        ignored_interfaces += ["Dps", "Fabric", "Loopback", "Management", "Recirc-Channel", "Tunnel", "Vxlan"]
+        return l3_interfaces, ignored_interfaces
+
+    @cached_property
+    def l2_mtu_interfaces(self) -> tuple[list[dict[str, int]], list[str]]:
+        """
+        Generate MTU mappings for Layer 2 interfaces.
+
+        This includes:
+        - Ethernet interfaces operating in switchport mode.
+        - Port-channel interfaces operating in switchport mode.
+
+        Routed or unsupported interfaces and those without MTU configuration
+        are logged and added to the ignored list.
+
+        Returns:
+            A tuple containing:
+            - List of dictionaries with interface name and MTU.
+            - List of ignored interface names.
+        """
+        l2_interfaces: list[dict[str, int]] = []
+        ignored_interfaces: list[str] = []
+
+        l2_interfaces, ignored_interfaces = self._process_interfaces(
+            self.structured_config.ethernet_interfaces, l2_interfaces, ignored_interfaces, is_l2_mtu=True
+        )
+        l2_interfaces, ignored_interfaces = self._process_interfaces(
+            self.structured_config.port_channel_interfaces, l2_interfaces, ignored_interfaces, is_l2_mtu=True
+        )
+
+        ignored_interfaces += ["Dps", "Fabric", "Loopback", "Management", "Recirc-Channel", "Tunnel", "Vlan", "Vxlan"]
+        return l2_interfaces, ignored_interfaces
+
+    def _process_interfaces(
+        self,
+        interfaces_to_process: EosCliConfigGen.EthernetInterfaces | EosCliConfigGen.PortChannelInterfaces,
+        interfaces: list[dict[str, int]],
+        ignored_interfaces: list[str],
+        is_l2_mtu: bool,
+    ) -> tuple[list[dict[str, int]], list[str]]:
+        """
+        Process a list of interfaces for MTU validation.
+
+        Args:
+            interfaces_to_process: List of interface objects to evaluate.
+            interfaces: List of collected MTU mappings.
+            ignored_interfaces: List to record interfaces excluded from validation.
+            is_l2_mtu: Whether the validation is for L2 (switchport) or L3 (routed) context.
+
+        Returns:
+            A tuple of (interfaces, ignored_interfaces)
+        """
+        for interface in interfaces_to_process:
+            if interface.validate_state is False:
+                LOGGER.debug("%s skipped - validate_state or validate_lldp disabled", interface.name)
+                ignored_interfaces.append(interface.name)
+                continue
+
+            if is_l2_mtu:
+                if interface.switchport and interface.switchport.enabled is False:
+                    LOGGER.debug("%s skipped - routed interface", interface.name)
+                    ignored_interfaces.append(interface.name)
+                    continue
+            elif interface.switchport and interface.switchport.enabled is True:
+                LOGGER.debug("%s skipped - switchport interface", interface.name)
+                ignored_interfaces.append(interface.name)
+                continue
+
+            if interface.mtu is not None:
+                interfaces.append({interface.name: interface.mtu})
+            else:
+                LOGGER.debug("%s skipped - no mtu on interface", interface.name)
+                ignored_interfaces.append(interface.name)
+
+        return interfaces, ignored_interfaces

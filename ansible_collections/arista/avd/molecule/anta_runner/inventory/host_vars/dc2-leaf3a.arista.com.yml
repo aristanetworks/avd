@@ -89,6 +89,12 @@ custom_structured_configuration_ethernet_interfaces:
     peer_interface: Ethernet19
     switchport:
       enabled: false
+  
+  - name: Ethernet20
+    description: Test_anta_l2mtu_testcase
+    switchport:
+      enabled: true
+    mtu: 2100
 
 custom_structured_configuration_port_channel_interfaces:
   - name: Port-Channel11

@@ -659,6 +659,7 @@ dc2-leaf3a.arista.com,VerifyInterfaceErrDisabled,unset,,Verifies there are no in
 dc2-leaf3a.arista.com,VerifyInterfaceErrors,unset,,Verifies that the interfaces error counters are equal to zero.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfaceUtilization,unset,,Verifies that the utilization of interfaces is below a certain threshold.,Interfaces
 dc2-leaf3a.arista.com,VerifyInterfacesStatus,unset,,Verifies the operational states of specified interfaces to ensure they match expected configurations.,Interfaces
+dc2-leaf3a.arista.com,VerifyL2MTU,unset,,Verifies the global L2 MTU of all L2 interfaces.,Interfaces
 dc2-leaf3a.arista.com,VerifyL3MTU,unset,,Verifies the global L3 MTU of all L3 interfaces.,Interfaces
 dc2-leaf3a.arista.com,VerifyPortChannels,unset,,Verifies there are no inactive ports in all port channels.,Interfaces
 dc2-leaf3a.arista.com,VerifyStormControlDrops,unset,,Verifies there are no interface storm-control drop counters.,Interfaces

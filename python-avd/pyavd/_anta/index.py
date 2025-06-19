@@ -85,6 +85,10 @@ AVD_TEST_INDEX: list[TestSpec] = [
         test_class=VerifyStormControlDrops,
     ),
     TestSpec(
+        test_class=VerifyL2MTU,
+        input_factory=VerifyL2MTUInputFactory,
+    ),
+    TestSpec(
         test_class=VerifyL3MTU,
         input_factory=VerifyL3MTUInputFactory,
     ),

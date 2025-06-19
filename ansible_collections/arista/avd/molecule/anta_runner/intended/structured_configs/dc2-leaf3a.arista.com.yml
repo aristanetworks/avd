@@ -108,6 +108,11 @@ ethernet_interfaces:
   peer_interface: Ethernet19
   switchport:
     enabled: false
+- name: Ethernet20
+  description: Test_anta_l2mtu_testcase
+  mtu: 2100
+  switchport:
+    enabled: true
 hostname: dc2-leaf3a.arista.com
 ip_igmp_snooping:
   globally_enabled: true
