@@ -89,7 +89,7 @@ custom_structured_configuration_ethernet_interfaces:
     peer_interface: Ethernet19
     switchport:
       enabled: false
-  
+
   - name: Ethernet20
     description: Test_anta_l2mtu_testcase
     switchport:
