@@ -18,7 +18,6 @@ from tests.models import MoleculeHost
     "eos_designs-l2ls",
     "eos_designs-mpls-isis-sr-ldp",
     # TODO: "eos_designs-twodc-5stage-clos", # Remove inline jinja
-    "eos_designs_digital_twin_act",
     # TODO: "evpn_underlay_ebgp_overlay_ebgp", # Remove inline jinja
     "evpn_underlay_isis_overlay_ibgp",
     "evpn_underlay_ospf_overlay_ebgp",
