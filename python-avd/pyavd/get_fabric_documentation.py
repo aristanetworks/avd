@@ -190,9 +190,9 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         digital_twin_devices.append(
             {
                 device: DigitalTwinFabricDocumentationActNode(
-                    node_type=get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type"),
-                    ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.ip_addr"),
-                    version=get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.version"),
+                    node_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator=".."),
+                    ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
+                    version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
                 )
             }
         )
