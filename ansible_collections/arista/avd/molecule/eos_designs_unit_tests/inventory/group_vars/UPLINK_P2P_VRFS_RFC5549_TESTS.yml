@@ -42,6 +42,8 @@ spine:
     platform: vEOS-LAB
     loopback_ipv6_pool: 2001:2::/64
     loopback_ipv4_pool: 192.168.1.0/24
+    filter:
+      always_include_vrfs_in_tenants: [TenantA]
   nodes:
     - name: UPLINK_P2P_VRFS_RFC5549_TESTS_SPINE1
       id: 1
@@ -55,3 +57,7 @@ tenants:
         vrf_id: 42
       - name: IT
         vrf_id: 100
+        bgp_peers:
+          - ip_address: 10.10.1.2
+            peer_group: MYPEERGROUP
+            nodes: [UPLINK_P2P_VRFS_RFC5549_TESTS_LEAF]
