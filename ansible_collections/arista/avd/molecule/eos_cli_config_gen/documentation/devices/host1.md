@@ -6884,7 +6884,7 @@ interface Vlan4094
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
 | Vtep-to-Vtep Bridging | True |
-| Vxlan Encapsulation | ipv4 ipv6 |
+| Vxlan Encapsulation | ipv4, ipv6 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
