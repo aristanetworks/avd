@@ -64,7 +64,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             ),
             shutdown=False,
             no_autostate=True,
-            mtu=self.shared_utils.p2p_uplinks_mtu,
+            mtu=self.shared_utils.get_interface_mtu(main_vlan_interface_name, self.shared_utils.p2p_uplinks_mtu),
         )
 
         if self.shared_utils.node_config.mlag_peer_vlan_structured_config:
@@ -99,7 +99,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
                 InterfaceDescriptionData(shared_utils=self.shared_utils, interface=l3_vlan_interface_name)
             ),
             shutdown=False,
-            mtu=self.shared_utils.p2p_uplinks_mtu,
+            mtu=self.shared_utils.get_interface_mtu(l3_vlan_interface_name, self.shared_utils.p2p_uplinks_mtu),
         )
         if not self.inputs.underlay_rfc5549:
             l3_vlan_interface.ip_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"

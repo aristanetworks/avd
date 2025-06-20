@@ -93,6 +93,12 @@ keys:
             poe:
               type: bool
               default: false
+            subinterface_mtu:
+              type: bool
+              default: true
+              description: |
+                Support for MTU configuration under sub-interfaces.
+                When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
             per_interface_mtu:
               type: bool
               default: true
