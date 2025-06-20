@@ -38,15 +38,6 @@ ethernet_interfaces:
   peer: peerDevice2
   peer_interface: Ethernet1/12
   peer_type: l3_port_channel_member
-- name: Ethernet1/5
-  description: peer2
-  shutdown: false
-  speed: forced 10000full
-  channel_group:
-    id: 5
-    mode: passive
-  peer: peer2
-  peer_type: l3_port_channel_member
 flow_tracking:
   hardware:
     trackers:
@@ -168,42 +159,25 @@ port_channel_interfaces:
 - name: Port-Channel5
   description: custom_StreamFast_peer2
   shutdown: false
-  service_policy:
-    qos:
-      input: TEST_POLICY
   ip_address: 192.168.1.105/31
-  service_profile: TEST-QOS-PROFILE1
   peer: peer2
   peer_interface: Port-Channel15
   peer_type: l3_port_channel
   switchport:
     enabled: false
-  eos_cli: '! TEST RAW_EOS_CLI
-
-    '
 - name: Port-Channel5.100
-  description: custom_StreamFast_peer2
+  description: custom_StreamFast_
   shutdown: false
   encapsulation_dot1q:
-    vlan: 108
+    vlan: 100
   ip_address: 192.168.100.115/31
-  service_profile: TEST-QOS-PROFILE2
-  flow_tracker:
-    hardware: FLOW-TRACKER
-  peer: peer2
-  peer_interface: Port-Channel15
   peer_type: l3_port_channel
 - name: Port-Channel5.105
-  description: custom_StreamFast_peer2
+  description: custom_StreamFast_
   shutdown: false
   encapsulation_dot1q:
     vlan: 105
   ip_address: 192.168.100.116/31
-  service_profile: TEST-QOS-PROFILE2
-  flow_tracker:
-    hardware: FLOW-TRACKER
-  peer: peer2
-  peer_interface: Port-Channel16
   peer_type: l3_port_channel
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
