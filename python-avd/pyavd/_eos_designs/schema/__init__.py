@@ -20,6 +20,342 @@ if TYPE_CHECKING:
 class EosDesigns(EosDesignsRootModel):
     """Subclass of EosDesignsRootModel."""
 
+    class AaaSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class Tacacs(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Groups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Groups._item_type = str
+
+                _fields: ClassVar[dict] = {
+                    "groups": {"type": Groups},
+                    "host": {"type": str},
+                    "vrf": {"type": str},
+                    "key": {"type": str},
+                    "key_type": {"type": str, "default": "7"},
+                    "single_connection": {"type": bool},
+                    "timeout": {"type": int},
+                }
+                groups: Groups
+                """Subclass of AvdList with `str` items."""
+                host: str | None
+                """Host IP address or name."""
+                vrf: str | None
+                key: str | None
+                """Encrypted key."""
+                key_type: Literal["0", "7", "8a"]
+                """Default value: `"7"`"""
+                single_connection: bool | None
+                timeout: int | None
+                """Timeout in seconds."""
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        groups: Groups | UndefinedType = Undefined,
+                        host: str | None | UndefinedType = Undefined,
+                        vrf: str | None | UndefinedType = Undefined,
+                        key: str | None | UndefinedType = Undefined,
+                        key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
+                        single_connection: bool | None | UndefinedType = Undefined,
+                        timeout: int | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            groups: Subclass of AvdList with `str` items.
+                            host: Host IP address or name.
+                            vrf: vrf
+                            key: Encrypted key.
+                            key_type: key_type
+                            single_connection: single_connection
+                            timeout: Timeout in seconds.
+
+                        """
+
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
+
+            Servers._item_type = ServersItem
+
+            class VrfsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+                name: str | None
+                """
+                VRF Name.
+                The value of `vrf` will be interpreted according to these rules:
+                -
+                `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
+                and set the `mgmt_interface` as SNMP source-interface.
+                  An error will be raised if `mgmt_ip` or
+                `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the SNMP
+                host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
+                interface.
+                  An error will be raised if inband management is not configured for the device.
+                -
+                `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as
+                the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                """
+                source_interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        VrfsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name:
+                               VRF Name.
+                               The value of `vrf` will be interpreted according to these rules:
+                               -
+                               `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
+                               and set the `mgmt_interface` as SNMP source-interface.
+                                 An error will be raised if `mgmt_ip` or
+                               `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will configure the SNMP
+                               host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
+                               interface.
+                                 An error will be raised if inband management is not configured for the device.
+                               -
+                               `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                               above depending on the value of `default_mgmt_method`.
+                               - Any other string will be used directly as
+                               the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                            source_interface: source_interface
+
+                        """
+
+            class Vrfs(AvdList[VrfsItem]):
+                """Subclass of AvdList with `VrfsItem` items."""
+
+            Vrfs._item_type = VrfsItem
+
+            class Policy(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"ignore_unknown_mandatory_attribute": {"type": bool, "default": False}}
+                ignore_unknown_mandatory_attribute: bool
+                """Default value: `False`"""
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, ignore_unknown_mandatory_attribute: bool | UndefinedType = Undefined) -> None:
+                        """
+                        Policy.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            ignore_unknown_mandatory_attribute: ignore_unknown_mandatory_attribute
+
+                        """
+
+            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "vrfs": {"type": Vrfs}, "policy": {"type": Policy}}
+            servers: Servers
+            """Subclass of AvdList with `ServersItem` items."""
+            vrfs: Vrfs
+            """Subclass of AvdList with `VrfsItem` items."""
+            policy: Policy
+            """Subclass of AvdModel."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self, *, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined, policy: Policy | UndefinedType = Undefined
+                ) -> None:
+                    """
+                    Tacacs.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        servers: Subclass of AvdList with `ServersItem` items.
+                        vrfs: Subclass of AvdList with `VrfsItem` items.
+                        policy: Subclass of AvdModel.
+
+                    """
+
+        class Radius(AvdModel):
+            """Subclass of AvdModel."""
+
+            class ServersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                class Groups(AvdList[str]):
+                    """Subclass of AvdList with `str` items."""
+
+                Groups._item_type = str
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "groups": {"type": Groups}, "key": {"type": str}}
+                name: str | None
+                groups: Groups
+                """Subclass of AvdList with `str` items."""
+                key: str
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self, *, name: str | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined, key: str | UndefinedType = Undefined
+                    ) -> None:
+                        """
+                        ServersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: name
+                            groups: Subclass of AvdList with `str` items.
+                            key: key
+
+                        """
+
+            class Servers(AvdList[ServersItem]):
+                """Subclass of AvdList with `ServersItem` items."""
+
+            Servers._item_type = ServersItem
+
+            class VrfsItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+                name: str | None
+                source_interface: str | None
+
+                if TYPE_CHECKING:
+
+                    def __init__(self, *, name: str | None | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                        """
+                        VrfsItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: name
+                            source_interface: source_interface
+
+                        """
+
+            class Vrfs(AvdList[VrfsItem]):
+                """Subclass of AvdList with `VrfsItem` items."""
+
+            Vrfs._item_type = VrfsItem
+
+            _fields: ClassVar[dict] = {"servers": {"type": Servers}, "vrfs": {"type": Vrfs}}
+            servers: Servers
+            """Subclass of AvdList with `ServersItem` items."""
+            vrfs: Vrfs
+            """Subclass of AvdList with `VrfsItem` items."""
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, servers: Servers | UndefinedType = Undefined, vrfs: Vrfs | UndefinedType = Undefined) -> None:
+                    """
+                    Radius.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        servers: Subclass of AvdList with `ServersItem` items.
+                        vrfs: Subclass of AvdList with `VrfsItem` items.
+
+                    """
+
+        class RootLogin(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"enabled": {"type": bool, "default": False}, "sha512_password": {"type": str}}
+            enabled: bool
+            """Default value: `False`"""
+            sha512_password: str | None
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, sha512_password: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    RootLogin.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        enabled: enabled
+                        sha512_password: sha512_password
+
+                    """
+
+        _fields: ClassVar[dict] = {
+            "tacacs": {"type": Tacacs},
+            "radius": {"type": Radius},
+            "authentication": {"type": EosCliConfigGen.AaaAuthentication},
+            "authorization": {"type": EosCliConfigGen.AaaAuthorization},
+            "accounting": {"type": EosCliConfigGen.AaaAccounting},
+            "root_login": {"type": RootLogin},
+        }
+        tacacs: Tacacs
+        """Subclass of AvdModel."""
+        radius: Radius
+        """Subclass of AvdModel."""
+        authentication: EosCliConfigGen.AaaAuthentication
+        authorization: EosCliConfigGen.AaaAuthorization
+        accounting: EosCliConfigGen.AaaAccounting
+        root_login: RootLogin
+        """Subclass of AvdModel."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                tacacs: Tacacs | UndefinedType = Undefined,
+                radius: Radius | UndefinedType = Undefined,
+                authentication: EosCliConfigGen.AaaAuthentication | UndefinedType = Undefined,
+                authorization: EosCliConfigGen.AaaAuthorization | UndefinedType = Undefined,
+                accounting: EosCliConfigGen.AaaAccounting | UndefinedType = Undefined,
+                root_login: RootLogin | UndefinedType = Undefined,
+            ) -> None:
+                """
+                AaaSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    tacacs: Subclass of AvdModel.
+                    radius: Subclass of AvdModel.
+                    authentication: authentication
+                    authorization: authorization
+                    accounting: accounting
+                    root_login: Subclass of AvdModel.
+
+                """
+
     class BfdMultihop(AvdModel):
         """Subclass of AvdModel."""
 
@@ -60485,6 +60821,7 @@ class EosDesigns(EosDesignsRootModel):
                 """
 
     _fields: ClassVar[dict] = {
+        "aaa_settings": {"type": AaaSettings},
         "application_classification": {"type": EosCliConfigGen.ApplicationTrafficRecognition},
         "avd_data_validation_mode": {"type": str, "default": "error"},
         "avd_eos_designs_debug": {"type": bool, "default": False},
@@ -60878,6 +61215,8 @@ class EosDesigns(EosDesignsRootModel):
         "_dynamic_keys": {"type": _DynamicKeys},
     }
     _allow_other_keys: ClassVar[bool] = True
+    aaa_settings: AaaSettings
+    """Subclass of AvdModel."""
     application_classification: EosCliConfigGen.ApplicationTrafficRecognition
     """Application traffic recognition configuration."""
     avd_data_validation_mode: Literal["error", "warning"]
@@ -62747,6 +63086,7 @@ class EosDesigns(EosDesignsRootModel):
         def __init__(
             self,
             *,
+            aaa_settings: AaaSettings | UndefinedType = Undefined,
             application_classification: EosCliConfigGen.ApplicationTrafficRecognition | UndefinedType = Undefined,
             avd_data_validation_mode: Literal["error", "warning"] | UndefinedType = Undefined,
             avd_eos_designs_debug: bool | UndefinedType = Undefined,
@@ -62957,6 +63297,7 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of EosDesignsRootModel.
 
             Args:
+                aaa_settings: Subclass of AvdModel.
                 application_classification: Application traffic recognition configuration.
                 avd_data_validation_mode:
                    Validation Mode for AVD input data validation.

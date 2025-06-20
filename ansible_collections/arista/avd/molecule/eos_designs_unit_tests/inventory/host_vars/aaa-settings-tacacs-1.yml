@@ -1,0 +1,33 @@
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: aaa-settings-tacacs-1
+      mgmt_ip: 192.168.0.2/24
+
+aaa_settings:
+  tacacs:
+    servers:
+      - host: 10.10.10.1
+        vrf: default
+
+      - host: 10.10.10.1
+        vrf: use_mgmt_interface_vrf
+        key: password
+        key_type: 0
+        single_connection: true
+        timeout: 100
+
+      - host: 10.10.10.2
+        vrf: MGMT
+
+      - host: 10.10.10.2
+        vrf: other_vrf
+
+      #- host: 10.10.10.3
+        # No VRF, so it should honor default_mgmt_method which is oob in this case
+
+    vrfs:
+      # Testing override of source for VRF default - no VRF in output source interface model.
+      - name: default
+        source_interface: Vlan123
