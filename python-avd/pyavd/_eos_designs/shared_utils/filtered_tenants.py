@@ -484,17 +484,18 @@ class FilteredTenantsMixin(Protocol):
                     if tenant is not None:
                         match interface:
                             case EosCliConfigGen.EthernetInterfacesItem():
-                                key_path = f"tenants[{tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
+                                key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
                             case EosCliConfigGen.PortChannelInterfacesItem():
-                                key_path = f"tenants[{tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
+                                key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
                             case _:
                                 # This is EosCliConfigGen.VlanInterfacesItem
-                                key_path = f"tenants[{tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
+                                key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
+                        msg = f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
                     else:
                         # get_additional_svi_config was called from uplink
-                        key_path = "TODO"
+                        # this should never happen
+                        msg = "Missing OSPF simple_auth_key for uplink"
 
-                    msg = f"`vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
                     raise AristaAvdMissingVariableError(msg)
 
                 interface._update(ospf_authentication=ospf_authentication, ospf_authentication_key=ospf_simple_auth_key)
