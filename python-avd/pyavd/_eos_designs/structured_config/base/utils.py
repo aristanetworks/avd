@@ -28,6 +28,7 @@ if TYPE_CHECKING:
     T_ProtocolVrfs = TypeVar(
         "T_ProtocolVrfs",
         EosDesigns.DnsSettings.Vrfs,
+        EosDesigns.LoggingSettings.Vrfs,
         EosDesigns.SflowSettings.Vrfs,
         EosDesigns.SnmpSettings.Vrfs,
     )
