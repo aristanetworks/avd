@@ -1,0 +1,167 @@
+aaa_root:
+  disabled: true
+config_end: true
+enable_password:
+  disabled: true
+hostname: logging_settings
+ip_routing: true
+is_deployed: true
+logging:
+  console: errors
+  monitor: disabled
+  buffered:
+    size: 1000000
+    level: warnings
+  repeat_messages: true
+  trap: disabled
+  synchronous:
+    level: warnings
+  format:
+    timestamp: traditional year timezone
+    hostname: fqdn
+    rfc5424: true
+  vrfs:
+  - name: MGMT
+    source_interface: Management1
+    hosts:
+    - name: 30.30.30.7
+      protocol: tcp
+      ports:
+      - 100
+      - 200
+    - name: sslhost.local
+      protocol: tls
+      ports:
+      - 6515
+      ssl_profile: logging-ssl
+  - name: mgt0
+    source_interface: Management0
+    hosts:
+    - name: 10.10.10.7
+      protocol: udp
+  - name: vrf_with_no_source_interface
+    hosts:
+    - name: 40.40.40.7
+      protocol: udp
+      ports:
+      - 300
+      - 400
+  - name: default
+    source_interface: Loopback0
+    hosts:
+    - name: 2001:db8::40:7
+      protocol: udp
+      ports:
+      - 300
+      - 400
+  - name: inband_mgmt_vrf
+    source_interface: Vlan123
+    hosts:
+    - name: syslog.server.local
+      protocol: udp
+    - name: syslog2.server.local
+      protocol: udp
+  policy:
+    match:
+      match_lists:
+      - name: molecule
+        action: discard
+  event:
+    congestion_drops_interval: 10
+    global_link_status: false
+    storm_control:
+      discards:
+        global: true
+        interval: 10
+  level:
+  - facility: BGP
+    severity: '0'
+  - facility: AAA
+    severity: warnings
+  - facility: ACL
+    severity: critical
+loopback_interfaces:
+- name: Loopback0
+  description: ROUTER_ID
+  shutdown: false
+  ip_address: 1.2.3.1/32
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 192.168.66.22/24
+  type: oob
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+prefix_lists:
+- name: PL-LOOPBACKS-EVPN-OVERLAY
+  sequence_numbers:
+  - sequence: 10
+    action: permit 1.2.3.0/24 eq 32
+route_maps:
+- name: RM-CONN-2-BGP
+  sequence_numbers:
+  - sequence: 10
+    type: permit
+    match:
+    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
+router_bfd:
+  multihop:
+    interval: 300
+    min_rx: 300
+    multiplier: 3
+router_bgp:
+  as: '65000'
+  router_id: 1.2.3.1
+  maximum_paths:
+    paths: 4
+    ecmp: 4
+  updates:
+    wait_install: true
+  bgp:
+    default:
+      ipv4_unicast: false
+  peer_groups:
+  - name: IPv4-UNDERLAY-PEERS
+    type: ipv4
+    send_community: all
+    maximum_routes: 12000
+  - name: EVPN-OVERLAY-PEERS
+    type: evpn
+    next_hop_unchanged: true
+    update_source: Loopback0
+    bfd: true
+    ebgp_multihop: 3
+    send_community: all
+    maximum_routes: 0
+  redistribute:
+    connected:
+      enabled: true
+      route_map: RM-CONN-2-BGP
+  address_family_evpn:
+    peer_groups:
+    - name: EVPN-OVERLAY-PEERS
+      activate: true
+  address_family_ipv4:
+    peer_groups:
+    - name: IPv4-UNDERLAY-PEERS
+      activate: true
+    - name: EVPN-OVERLAY-PEERS
+      activate: false
+service_routing_protocols_model: multi-agent
+spanning_tree:
+  mode: none
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vrfs:
+- name: MGMT
+  ip_routing: false

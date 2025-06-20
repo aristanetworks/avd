@@ -6839,6 +6839,274 @@ class EosDesigns(EosDesignsRootModel):
 
     L3InterfaceProfiles._item_type = L3InterfaceProfilesItem
 
+    class LoggingSettings(AvdModel):
+        """Subclass of AvdModel."""
+
+        class HostsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            class Ports(AvdList[int]):
+                """Subclass of AvdList with `int` items."""
+
+            Ports._item_type = int
+
+            _fields: ClassVar[dict] = {
+                "name": {"type": str},
+                "vrf": {"type": str},
+                "protocol": {"type": str, "default": "udp"},
+                "ports": {"type": Ports},
+                "ssl_profile": {"type": str},
+            }
+            name: str
+            """Syslog server name."""
+            vrf: str | None
+            """
+            If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+            The
+            value of `vrf` will be interpreted according to these rules:
+            - `use_mgmt_interface_vrf` will
+            configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the
+            `mgmt_interface` as logging source-interface.
+              An error will be raised if `mgmt_ip` or
+            `ipv6_mgmt_ip` are not configured for the device.
+            - `use_inband_mgmt_vrf` will configure the logging
+            destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging
+            source-interface.
+              An error will be raised if inband management is not configured for the device.
+            -
+            Any other string will be used directly as the VRF name. Remember to set the
+            `logging_settings.vrfs[].source_interface` if needed.
+            """
+            protocol: Literal["tcp", "udp", "tls"]
+            """Default value: `"udp"`"""
+            ports: Ports
+            """Subclass of AvdList with `int` items."""
+            ssl_profile: str | None
+            """Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`."""
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    name: str | UndefinedType = Undefined,
+                    vrf: str | None | UndefinedType = Undefined,
+                    protocol: Literal["tcp", "udp", "tls"] | UndefinedType = Undefined,
+                    ports: Ports | UndefinedType = Undefined,
+                    ssl_profile: str | None | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    HostsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: Syslog server name.
+                        vrf:
+                           If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                           The
+                           value of `vrf` will be interpreted according to these rules:
+                           - `use_mgmt_interface_vrf` will
+                           configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the
+                           `mgmt_interface` as logging source-interface.
+                             An error will be raised if `mgmt_ip` or
+                           `ipv6_mgmt_ip` are not configured for the device.
+                           - `use_inband_mgmt_vrf` will configure the logging
+                           destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging
+                           source-interface.
+                             An error will be raised if inband management is not configured for the device.
+                           -
+                           Any other string will be used directly as the VRF name. Remember to set the
+                           `logging_settings.vrfs[].source_interface` if needed.
+                        protocol: protocol
+                        ports: Subclass of AvdList with `int` items.
+                        ssl_profile: Used when host protocol is 'tls'. Profiles are defined under `management_security.ssl_profiles`.
+
+                    """
+
+        class Hosts(AvdList[HostsItem]):
+            """Subclass of AvdList with `HostsItem` items."""
+
+        Hosts._item_type = HostsItem
+
+        class VrfsItem(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
+            name: str
+            """VRF name."""
+            source_interface: str | None
+            """
+            Source interface to use for logging destinations in this VRF.
+            If set for the VRFs defined by
+            `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(self, *, name: str | UndefinedType = Undefined, source_interface: str | None | UndefinedType = Undefined) -> None:
+                    """
+                    VrfsItem.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        name: VRF name.
+                        source_interface:
+                           Source interface to use for logging destinations in this VRF.
+                           If set for the VRFs defined by
+                           `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+
+                    """
+
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
+
+        Vrfs._item_type = VrfsItem
+
+        _fields: ClassVar[dict] = {
+            "hosts": {"type": Hosts},
+            "vrfs": {"type": Vrfs},
+            "console": {"type": str},
+            "monitor": {"type": str},
+            "buffered": {"type": EosCliConfigGen.Logging.Buffered},
+            "repeat_messages": {"type": bool},
+            "trap": {"type": str},
+            "synchronous": {"type": EosCliConfigGen.Logging.Synchronous},
+            "format": {"type": EosCliConfigGen.Logging.Format},
+            "facility": {"type": str},
+            "policy": {"type": EosCliConfigGen.Logging.Policy},
+            "event": {"type": EosCliConfigGen.Logging.Event},
+            "level": {"type": EosCliConfigGen.Logging.Level},
+        }
+        hosts: Hosts
+        """Subclass of AvdList with `HostsItem` items."""
+        vrfs: Vrfs
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+        console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
+        """Console logging severity level."""
+        monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"] | None
+        """Monitor logging severity level."""
+        buffered: EosCliConfigGen.Logging.Buffered
+        repeat_messages: bool | None
+        """Summarize concurrent repeat messages."""
+        trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"] | None
+        """Trap logging severity level."""
+        synchronous: EosCliConfigGen.Logging.Synchronous
+        format: EosCliConfigGen.Logging.Format
+        facility: (
+            Literal[
+                "auth",
+                "cron",
+                "daemon",
+                "kern",
+                "local0",
+                "local1",
+                "local2",
+                "local3",
+                "local4",
+                "local5",
+                "local6",
+                "local7",
+                "lpr",
+                "mail",
+                "news",
+                "sys9",
+                "sys10",
+                "sys11",
+                "sys12",
+                "sys13",
+                "sys14",
+                "syslog",
+                "user",
+                "uucp",
+            ]
+            | None
+        )
+        policy: EosCliConfigGen.Logging.Policy
+        event: EosCliConfigGen.Logging.Event
+        level: EosCliConfigGen.Logging.Level
+        """Configure logging severity."""
+
+        if TYPE_CHECKING:
+
+            def __init__(
+                self,
+                *,
+                hosts: Hosts | UndefinedType = Undefined,
+                vrfs: Vrfs | UndefinedType = Undefined,
+                console: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+                | None
+                | UndefinedType = Undefined,
+                monitor: Literal["debugging", "informational", "notifications", "warnings", "errors", "critical", "alerts", "emergencies", "disabled"]
+                | None
+                | UndefinedType = Undefined,
+                buffered: EosCliConfigGen.Logging.Buffered | UndefinedType = Undefined,
+                repeat_messages: bool | None | UndefinedType = Undefined,
+                trap: Literal["alerts", "critical", "debugging", "emergencies", "errors", "informational", "notifications", "system", "warnings", "disabled"]
+                | None
+                | UndefinedType = Undefined,
+                synchronous: EosCliConfigGen.Logging.Synchronous | UndefinedType = Undefined,
+                format: EosCliConfigGen.Logging.Format | UndefinedType = Undefined,
+                facility: Literal[
+                    "auth",
+                    "cron",
+                    "daemon",
+                    "kern",
+                    "local0",
+                    "local1",
+                    "local2",
+                    "local3",
+                    "local4",
+                    "local5",
+                    "local6",
+                    "local7",
+                    "lpr",
+                    "mail",
+                    "news",
+                    "sys9",
+                    "sys10",
+                    "sys11",
+                    "sys12",
+                    "sys13",
+                    "sys14",
+                    "syslog",
+                    "user",
+                    "uucp",
+                ]
+                | None
+                | UndefinedType = Undefined,
+                policy: EosCliConfigGen.Logging.Policy | UndefinedType = Undefined,
+                event: EosCliConfigGen.Logging.Event | UndefinedType = Undefined,
+                level: EosCliConfigGen.Logging.Level | UndefinedType = Undefined,
+            ) -> None:
+                """
+                LoggingSettings.
+
+
+                Subclass of AvdModel.
+
+                Args:
+                    hosts: Subclass of AvdList with `HostsItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
+                    console: Console logging severity level.
+                    monitor: Monitor logging severity level.
+                    buffered: buffered
+                    repeat_messages: Summarize concurrent repeat messages.
+                    trap: Trap logging severity level.
+                    synchronous: synchronous
+                    format: format
+                    facility: facility
+                    policy: policy
+                    event: event
+                    level: Configure logging severity.
+
+                """
+
     class ManagementEapi(AvdModel):
         """Subclass of AvdModel."""
 
@@ -61033,6 +61301,7 @@ class EosDesigns(EosDesignsRootModel):
         "l3_interface_profiles": {"type": L3InterfaceProfiles},
         "load_interval": {"type": EosCliConfigGen.LoadInterval},
         "local_users": {"type": EosCliConfigGen.LocalUsers},
+        "logging_settings": {"type": LoggingSettings},
         "mac_address_table": {"type": EosCliConfigGen.MacAddressTable},
         "management_eapi": {"type": ManagementEapi},
         "mgmt_destination_networks": {"type": MgmtDestinationNetworks},
@@ -62179,6 +62448,12 @@ class EosDesigns(EosDesignsRootModel):
     """
     load_interval: EosCliConfigGen.LoadInterval
     local_users: EosCliConfigGen.LocalUsers
+    logging_settings: LoggingSettings
+    """
+    Logging settings
+
+    Subclass of AvdModel.
+    """
     mac_address_table: EosCliConfigGen.MacAddressTable
     management_eapi: ManagementEapi
     """
@@ -63288,6 +63563,7 @@ class EosDesigns(EosDesignsRootModel):
             l3_interface_profiles: L3InterfaceProfiles | UndefinedType = Undefined,
             load_interval: EosCliConfigGen.LoadInterval | UndefinedType = Undefined,
             local_users: EosCliConfigGen.LocalUsers | UndefinedType = Undefined,
+            logging_settings: LoggingSettings | UndefinedType = Undefined,
             mac_address_table: EosCliConfigGen.MacAddressTable | UndefinedType = Undefined,
             management_eapi: ManagementEapi | UndefinedType = Undefined,
             mgmt_destination_networks: MgmtDestinationNetworks | UndefinedType = Undefined,
@@ -64033,6 +64309,10 @@ class EosDesigns(EosDesignsRootModel):
                    `L3InterfaceProfilesItem` items. Primary key is `profile` (`str`).
                 load_interval: load_interval
                 local_users: local_users
+                logging_settings:
+                   Logging settings
+
+                   Subclass of AvdModel.
                 mac_address_table: mac_address_table
                 management_eapi:
                    Default is HTTPS management eAPI enabled.
