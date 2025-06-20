@@ -265,7 +265,7 @@ class UtilsMixin(Protocol):
             pass
 
         # Adding IP helpers and OSPF via a common function also used for SVIs on L3 switches.
-        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf)
+        self.shared_utils.get_additional_svi_config(subinterface, svi, vrf, None)
 
         return subinterface
 

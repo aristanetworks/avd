@@ -158,7 +158,7 @@ class PortChannelInterfacesMixin(Protocol):
                         ospf_network_point_to_point=l3_port_channel.ospf.point_to_point,
                         ospf_cost=l3_port_channel.ospf.cost,
                     )
-                    self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf)
+                    self.shared_utils.update_ospf_authentication(port_channel_interface, l3_port_channel, vrf, tenant)
 
                 if is_subinterface:
                     port_channel_interface.encapsulation_dot1q.vlan = default(

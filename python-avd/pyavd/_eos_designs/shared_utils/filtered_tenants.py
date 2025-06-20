@@ -414,6 +414,7 @@ class FilteredTenantsMixin(Protocol):
         config: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None,
     ) -> None:
         """
         Adding IP helpers and OSPF for SVIs via a common function.
@@ -437,7 +438,7 @@ class FilteredTenantsMixin(Protocol):
                 ospf_network_point_to_point=svi.ospf.point_to_point,
                 ospf_cost=svi.ospf.cost,
             )
-            self.update_ospf_authentication(config, svi, vrf)
+            self.update_ospf_authentication(config, svi, vrf, tenant)
 
     def update_ospf_authentication(
         self: SharedUtilsProtocol,
@@ -446,6 +447,7 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None,
     ) -> None:
         """
         Handle OSPF authentication for l3_interfaces, l3_port_channels and SVIs.
@@ -479,15 +481,18 @@ class FilteredTenantsMixin(Protocol):
                     # Always encrypt if defined at VRF level.
                     ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
                 else:
-                    # TODO: missing tenant key / name here but would require a context key also in the SVI config..
-                    match interface:
-                        case EosCliConfigGen.EthernetInterfacesItem():
-                            key_path = f"vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
-                        case EosCliConfigGen.PortChannelInterfacesItem():
-                            key_path = f"vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
-                        case _:
-                            # This is EosCliConfigGen.VlanInterfacesItem
-                            key_path = f"vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
+                    if tenant is not None:
+                        match interface:
+                            case EosCliConfigGen.EthernetInterfacesItem():
+                                key_path = f"tenants[{tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
+                            case EosCliConfigGen.PortChannelInterfacesItem():
+                                key_path = f"tenants[{tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
+                            case _:
+                                # This is EosCliConfigGen.VlanInterfacesItem
+                                key_path = f"tenants[{tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
+                    else:
+                        # get_additional_svi_config was called from uplink
+                        key_path = "TODO"
 
                     msg = f"`vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
                     raise AristaAvdMissingVariableError(msg)

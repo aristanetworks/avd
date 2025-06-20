@@ -188,7 +188,7 @@ class EthernetInterfacesMixin(Protocol):
                         ospf_cost=l3_interface.ospf.cost,
                     )
 
-                    self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf)
+                    self.shared_utils.update_ospf_authentication(interface, l3_interface, vrf, tenant)
 
                 if l3_interface.pim.enabled:
                     if not getattr(vrf._internal_data, "evpn_l3_multicast_enabled", False):
