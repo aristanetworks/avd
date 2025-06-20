@@ -61,10 +61,10 @@ class MiscMixin(Protocol):
                 msg = "'fabric_numbering.id.algorithm' is set to 'pool_manager' but no PoolManager instance is available."
                 raise AristaAvdError(msg)
 
-            id_from_pool = self.pool_manager.get_assignment(pool_type="node_id_pools", shared_utils=self, requested_value=node_id)
+            id_from_pool = self.pool_manager.get_node_id_assignment(shared_utils=self, requested_value=node_id)
 
             if node_id is not None and node_id != id_from_pool:
-                pool = self.pool_manager.get_pool(pool_type="node_id_pools", shared_utils=self)
+                pool = self.pool_manager.get_node_id_pool(shared_utils=self)
                 msg = "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible."
                 if (assignment := pool.get_assignment_by_value(node_id)) is None:
                     msg += f" The given 'id: {node_id}' is not a valid Node ID for the Pool Manager."
