@@ -7013,10 +7013,11 @@ $defs:
                     valid_values:
                     - simple
                     - message-digest
-                    description: 'Configure OSPF authentication at the VRF level.
+                    description: 'Configure OSPF authentication for all interfaces
+                      under the VRF.
 
-                      Configuration at the interface level under `l3_interfaces` or
-                      `l3_port_channels` takes precedence.'
+                      Can be overridden at the interface level under `l3_interfaces`,
+                      `l3_port_channels` or `svis`.'
                   simple_auth_key:
                     type: str
                     min_length: 1
@@ -7069,7 +7070,7 @@ $defs:
                             `l3_port_channels` or `svis`.
 
                             To protect the password at rest it is strongly recommended
-                            to make use of Ansible Vault or similar.
+                            to make use of a vault or similar.
 
                             Configuration at the interface level under `l3_interfaces`
                             or `l3_port_channels` takes precedence.
@@ -7378,9 +7379,9 @@ $defs:
                           - message-digest
                         simple_auth_key:
                           type: str
-                          description: "Key for OSPF simple authentication.\nExpect
+                          description: "Key for OSPF simple authentication.\nExpects
                             a cleartext password if `encrypt_passwords: true`, otherwise
-                            expect a type 7 password.\nMaximum 8 characters for cleartext
+                            expects a type 7 password.\nMaximum 8 characters for cleartext
                             password.\n\nNOTE: when using type 7 password, the l3_interfaces.interfaces
                             list must not be more than 1 interface\n      or they
                             must all be the same (e.g. [Ethernet7, Ethernet7]) as
@@ -7406,15 +7407,21 @@ $defs:
                                 default: sha512
                               key:
                                 type: str
-                                description: "Key for OSPF message digest.\nExpect
-                                  a cleartext password if `encrypt_passwords: true`,
-                                  otherwise expect a type 7 password.\nMaximum 16
-                                  characters for cleartext password.\n\nNOTE: when
-                                  using type 7 password, the l3_interfaces.interfaces
-                                  list must not be more than 1 interface\n      or
-                                  they must all be the same (e.g. [Ethernet7, Ethernet7])
-                                  as the type7 password depends on the interface\n
-                                  \     name (when common encryption is disabled)."
+                                description: 'Key for OSPF message digest.
+
+                                  Expects a cleartext password if `encrypt_passwords:
+                                  true`, otherwise expects a type 7 password.
+
+                                  Maximum 16 characters for cleartext password.
+
+
+                                  NOTE: when using type 7 password, the l3_interfaces.interfaces
+                                  list must not be more than 1 interface
+
+                                  or they must all be the same (e.g. [Ethernet7, Ethernet7])
+                                  as the type7 password depends on the interface name
+
+                                  (when common encryption is disabled).'
                     pim:
                       type: dict
                       description: 'Enable PIM sparse-mode on the interface; requires
@@ -7609,8 +7616,8 @@ $defs:
                           type: str
                           description: 'Key for OSPF simple authentication.
 
-                            Expect a cleartext password if `encrypt_passwords: true`,
-                            otherwise expect a type 7 password.
+                            Expects a cleartext password if `encrypt_passwords: true`,
+                            otherwise expects a type 7 password.
 
                             Maximum 8 characters for cleartext password.'
                         message_digest_keys:
@@ -7635,8 +7642,8 @@ $defs:
                                 type: str
                                 description: 'Key for OSPF message digest.
 
-                                  Expect a cleartext password if `encrypt_passwords:
-                                  true`, otherwise expect a type 7 password.
+                                  Expects a cleartext password if `encrypt_passwords:
+                                  true`, otherwise expects a type 7 password.
 
                                   Maximum 16 characters for cleartext password.'
                     flow_tracking:
@@ -11371,8 +11378,8 @@ $defs:
             type: str
             description: 'Key for OSPF simple authentication.
 
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise
-              expect a type 7 password.
+              Expects a cleartext password if `encrypt_passwords: true`, otherwise
+              expects a type 7 password.
 
               Maximum 8 characters for cleartext password.'
           message_digest_keys:
@@ -11397,8 +11404,8 @@ $defs:
                   type: str
                   description: 'Key for OSPF simple authentication.
 
-                    Expect a cleartext password if `encrypt_passwords: true`, otherwise
-                    expect a type 7 password.
+                    Expects a cleartext password if `encrypt_passwords: true`, otherwise
+                    expects a type 7 password.
 
                     Maximum 8 characters for cleartext password.'
       bgp:

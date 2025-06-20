@@ -23,12 +23,12 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;redistribute_connected</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.redistribute_connected") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.redistribute_connected.enabled") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;route_map</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.redistribute_connected.route_map") | String |  |  |  | Route-map name. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> | Configure OSPF authentication at the VRF level.<br>Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> | Configure OSPF authentication for all interfaces under the VRF.<br>Can be overridden at the interface level under `l3_interfaces`, `l3_port_channels` or `svis`. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.simple_auth_key") | String |  |  | Min Length: 1<br>Max Length: 8 | Password used with simple authentication.<br>Only plaintext passwords are supported here as `eos_designs` will encrypt the key for type7 for each individual `l3_interfaces`, `l3_port_channels` or `svis`.<br>To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.<br>Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.<br>`encrypt_passwords` value does not have any effect on this key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.message_digest_keys") | List, items: Dictionary |  |  | Min Length: 1<br>Max Length: 2 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.message_digest_keys.[].id") | Integer | Required, Unique |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.message_digest_keys.[].key") | String | Required |  | Min Length: 1<br>Max Length: 16 | Key password.<br>Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual `l3_interfaces`, `l3_port_channels` or `svis`.<br>To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.<br>Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.<br>`encrypt_passwords` value does not have any effect on this key. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.message_digest_keys.[].key") | String | Required |  | Min Length: 1<br>Max Length: 16 | Key password.<br>Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual `l3_interfaces`, `l3_port_channels` or `svis`.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br>Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.<br>`encrypt_passwords` value does not have any effect on this key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.nodes") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.nodes.[]") | String |  |  |  | Hostname. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "<network_services_keys.name>.[].vrfs.[].ospf.structured_config") | Dictionary |  |  |  | Custom structured config added under router_ospf.process_ids.[process_id=<process_id>] for eos_cli_config_gen. |
@@ -43,22 +43,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.cost") | Integer |  |  |  | OSPF link cost. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.message_digest_keys") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.message_digest_keys.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].nodes.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.cost") | Integer |  |  |  | OSPF link cost. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.message_digest_keys") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.message_digest_keys.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].svis.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>svi_profiles</samp>](## "svi_profiles") | List, items: Dictionary |  |  |  | Profiles to share common settings for SVIs under `<network_services_key>.[].vrfs.svis`.<br>Keys are the same used under SVIs. Keys defined under SVIs take precedence.<br>Note: structured configuration is not merged recursively and will be taken directly from the most specific level in the following order:<br>1. svi.nodes[inventory_hostname].structured_config<br>2. svi_profile.nodes[inventory_hostname].structured_config<br>3. svi_parent_profile.nodes[inventory_hostname].structured_config<br>4. svi.structured_config<br>5. svi_profile.structured_config<br>6. svi_parent_profile.structured_config<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;profile</samp>](## "svi_profiles.[].profile") | String | Required, Unique |  |  | Profile name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;nodes</samp>](## "svi_profiles.[].nodes") | List, items: Dictionary |  |  |  | Define node specific configuration, such as unique IP addresses.<br>Any keys set here will be merged onto the SVI config, except `structured_config` keys which will replace the `structured_config` set on SVI level.<br> |
@@ -69,22 +69,22 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].nodes.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "svi_profiles.[].nodes.[].ospf.cost") | Integer |  |  |  | OSPF link cost. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "svi_profiles.[].nodes.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "svi_profiles.[].nodes.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "svi_profiles.[].nodes.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "svi_profiles.[].nodes.[].ospf.message_digest_keys") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "svi_profiles.[].nodes.[].ospf.message_digest_keys.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "svi_profiles.[].nodes.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "svi_profiles.[].nodes.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "svi_profiles.[].nodes.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ospf</samp>](## "svi_profiles.[].ospf") | Dictionary |  |  |  | OSPF interface configuration. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "svi_profiles.[].ospf.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;point_to_point</samp>](## "svi_profiles.[].ospf.point_to_point") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "svi_profiles.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "svi_profiles.[].ospf.cost") | Integer |  |  |  | OSPF link cost. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "svi_profiles.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "svi_profiles.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "svi_profiles.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "svi_profiles.[].ospf.message_digest_keys") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "svi_profiles.[].ospf.message_digest_keys.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "svi_profiles.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "svi_profiles.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "svi_profiles.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
 
 === "YAML"
 
@@ -136,8 +136,8 @@
                 # Route-map name.
                 route_map: <str>
 
-              # Configure OSPF authentication at the VRF level.
-              # Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
+              # Configure OSPF authentication for all interfaces under the VRF.
+              # Can be overridden at the interface level under `l3_interfaces`, `l3_port_channels` or `svis`.
               authentication: <str; "simple" | "message-digest">
 
               # Password used with simple authentication.
@@ -152,7 +152,7 @@
 
                   # Key password.
                   # Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
-                  # To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
+                  # To protect the password at rest it is strongly recommended to make use of a vault or similar.
                   # Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
                   # `encrypt_passwords` value does not have any effect on this key.
                   key: <str; length 1-16; required>
@@ -194,7 +194,7 @@
                       authentication: <str; "simple" | "message-digest">
 
                       # Key for OSPF simple authentication.
-                      # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                      # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                       # Maximum 8 characters for cleartext password.
                       simple_auth_key: <str>
                       message_digest_keys:
@@ -202,7 +202,7 @@
                           hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
 
                           # Key for OSPF simple authentication.
-                          # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                          # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                           # Maximum 8 characters for cleartext password.
                           key: <str>
 
@@ -219,7 +219,7 @@
                   authentication: <str; "simple" | "message-digest">
 
                   # Key for OSPF simple authentication.
-                  # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                  # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                   # Maximum 8 characters for cleartext password.
                   simple_auth_key: <str>
                   message_digest_keys:
@@ -227,7 +227,7 @@
                       hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
 
                       # Key for OSPF simple authentication.
-                      # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                      # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                       # Maximum 8 characters for cleartext password.
                       key: <str>
 
@@ -265,7 +265,7 @@
               authentication: <str; "simple" | "message-digest">
 
               # Key for OSPF simple authentication.
-              # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
               # Maximum 8 characters for cleartext password.
               simple_auth_key: <str>
               message_digest_keys:
@@ -273,7 +273,7 @@
                   hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
 
                   # Key for OSPF simple authentication.
-                  # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                  # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                   # Maximum 8 characters for cleartext password.
                   key: <str>
 
@@ -290,7 +290,7 @@
           authentication: <str; "simple" | "message-digest">
 
           # Key for OSPF simple authentication.
-          # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+          # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
           # Maximum 8 characters for cleartext password.
           simple_auth_key: <str>
           message_digest_keys:
@@ -298,7 +298,7 @@
               hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
 
               # Key for OSPF simple authentication.
-              # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
               # Maximum 8 characters for cleartext password.
               key: <str>
     ```

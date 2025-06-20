@@ -46,11 +46,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;area</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.area") | String |  | `0.0.0.0` |  | OSPF area ID. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cost</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.cost") | Integer |  |  |  | OSPF link cost. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;authentication</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.authentication") | String |  |  | Valid Values:<br>- <code>simple</code><br>- <code>message-digest</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 8 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;simple_auth_key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.simple_auth_key") | String |  |  |  | Key for OSPF simple authentication.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 8 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;message_digest_keys</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.message_digest_keys") | List, items: Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;id</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.message_digest_keys.[].id") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hash_algorithm</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.message_digest_keys.[].hash_algorithm") | String |  | `sha512` | Valid Values:<br>- <code>md5</code><br>- <code>sha1</code><br>- <code>sha256</code><br>- <code>sha384</code><br>- <code>sha512</code> |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF message digest.<br>Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.<br>Maximum 16 characters for cleartext password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].ospf.message_digest_keys.[].key") | String |  |  |  | Key for OSPF message digest.<br>Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.<br>Maximum 16 characters for cleartext password. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flow_tracking</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].flow_tracking") | Dictionary |  |  |  | Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_port_channels` setting. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;enabled</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].flow_tracking.enabled") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "<network_services_keys.name>.[].vrfs.[].l3_port_channels.[].flow_tracking.name") | String |  |  |  | Flow tracker name as defined in flow_tracking_settings. |
@@ -174,7 +174,7 @@
                   authentication: <str; "simple" | "message-digest">
 
                   # Key for OSPF simple authentication.
-                  # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                  # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                   # Maximum 8 characters for cleartext password.
                   simple_auth_key: <str>
                   message_digest_keys:
@@ -182,7 +182,7 @@
                       hash_algorithm: <str; "md5" | "sha1" | "sha256" | "sha384" | "sha512"; default="sha512">
 
                       # Key for OSPF message digest.
-                      # Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                      # Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                       # Maximum 16 characters for cleartext password.
                       key: <str>
 

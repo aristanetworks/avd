@@ -14018,8 +14018,8 @@ class EosDesigns(EosDesignsRootModel):
                     key: str | None
                     """
                     Key for OSPF simple authentication.
-                    Expect a cleartext password if `encrypt_passwords: true`,
-                    otherwise expect a type 7 password.
+                    Expects a cleartext password if `encrypt_passwords: true`,
+                    otherwise expects a type 7 password.
                     Maximum 8 characters for cleartext password.
                     """
 
@@ -14043,8 +14043,8 @@ class EosDesigns(EosDesignsRootModel):
                                 hash_algorithm: hash_algorithm
                                 key:
                                    Key for OSPF simple authentication.
-                                   Expect a cleartext password if `encrypt_passwords: true`,
-                                   otherwise expect a type 7 password.
+                                   Expects a cleartext password if `encrypt_passwords: true`,
+                                   otherwise expects a type 7 password.
                                    Maximum 8 characters for cleartext password.
 
                             """
@@ -14078,8 +14078,8 @@ class EosDesigns(EosDesignsRootModel):
                 simple_auth_key: str | None
                 """
                 Key for OSPF simple authentication.
-                Expect a cleartext password if `encrypt_passwords: true`,
-                otherwise expect a type 7 password.
+                Expects a cleartext password if `encrypt_passwords: true`,
+                otherwise expects a type 7 password.
                 Maximum 8 characters for cleartext password.
                 """
                 message_digest_keys: MessageDigestKeys
@@ -14112,8 +14112,8 @@ class EosDesigns(EosDesignsRootModel):
                             authentication: authentication
                             simple_auth_key:
                                Key for OSPF simple authentication.
-                               Expect a cleartext password if `encrypt_passwords: true`,
-                               otherwise expect a type 7 password.
+                               Expects a cleartext password if `encrypt_passwords: true`,
+                               otherwise expects a type 7 password.
                                Maximum 8 characters for cleartext password.
                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
@@ -14805,8 +14805,8 @@ class EosDesigns(EosDesignsRootModel):
                 key: str | None
                 """
                 Key for OSPF simple authentication.
-                Expect a cleartext password if `encrypt_passwords: true`,
-                otherwise expect a type 7 password.
+                Expects a cleartext password if `encrypt_passwords: true`,
+                otherwise expects a type 7 password.
                 Maximum 8 characters for cleartext password.
                 """
 
@@ -14830,8 +14830,8 @@ class EosDesigns(EosDesignsRootModel):
                             hash_algorithm: hash_algorithm
                             key:
                                Key for OSPF simple authentication.
-                               Expect a cleartext password if `encrypt_passwords: true`,
-                               otherwise expect a type 7 password.
+                               Expects a cleartext password if `encrypt_passwords: true`,
+                               otherwise expects a type 7 password.
                                Maximum 8 characters for cleartext password.
 
                         """
@@ -14865,8 +14865,8 @@ class EosDesigns(EosDesignsRootModel):
             simple_auth_key: str | None
             """
             Key for OSPF simple authentication.
-            Expect a cleartext password if `encrypt_passwords: true`,
-            otherwise expect a type 7 password.
+            Expects a cleartext password if `encrypt_passwords: true`,
+            otherwise expects a type 7 password.
             Maximum 8 characters for cleartext password.
             """
             message_digest_keys: MessageDigestKeys
@@ -14899,8 +14899,8 @@ class EosDesigns(EosDesignsRootModel):
                         authentication: authentication
                         simple_auth_key:
                            Key for OSPF simple authentication.
-                           Expect a cleartext password if `encrypt_passwords: true`,
-                           otherwise expect a type 7 password.
+                           Expects a cleartext password if `encrypt_passwords: true`,
+                           otherwise expects a type 7 password.
                            Maximum 8 characters for cleartext password.
                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
@@ -38404,11 +38404,11 @@ class EosDesigns(EosDesignsRootModel):
                             Only plaintext passwords are supported here as `eos_designs` will encrypt the password
                             for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
                             To protect the password at rest
-                            it is strongly recommended to make use of Ansible Vault or similar.
-                            Configuration at the interface
-                            level under `l3_interfaces` or `l3_port_channels` takes precedence.
-                            `encrypt_passwords` value does
-                            not have any effect on this key.
+                            it is strongly recommended to make use of a vault or similar.
+                            Configuration at the interface level
+                            under `l3_interfaces` or `l3_port_channels` takes precedence.
+                            `encrypt_passwords` value does not
+                            have any effect on this key.
                             """
 
                             if TYPE_CHECKING:
@@ -38434,11 +38434,11 @@ class EosDesigns(EosDesignsRootModel):
                                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password
                                            for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
                                            To protect the password at rest
-                                           it is strongly recommended to make use of Ansible Vault or similar.
-                                           Configuration at the interface
-                                           level under `l3_interfaces` or `l3_port_channels` takes precedence.
-                                           `encrypt_passwords` value does
-                                           not have any effect on this key.
+                                           it is strongly recommended to make use of a vault or similar.
+                                           Configuration at the interface level
+                                           under `l3_interfaces` or `l3_port_channels` takes precedence.
+                                           `encrypt_passwords` value does not
+                                           have any effect on this key.
 
                                     """
 
@@ -38494,9 +38494,9 @@ class EosDesigns(EosDesignsRootModel):
                         """Subclass of AvdModel."""
                         authentication: Literal["simple", "message-digest"] | None
                         """
-                        Configure OSPF authentication at the VRF level.
-                        Configuration at the interface level under
-                        `l3_interfaces` or `l3_port_channels` takes precedence.
+                        Configure OSPF authentication for all interfaces under the VRF.
+                        Can be overridden at the interface
+                        level under `l3_interfaces`, `l3_port_channels` or `svis`.
                         """
                         simple_auth_key: str | None
                         """
@@ -38562,9 +38562,9 @@ class EosDesigns(EosDesignsRootModel):
                                     redistribute_bgp: Subclass of AvdModel.
                                     redistribute_connected: Subclass of AvdModel.
                                     authentication:
-                                       Configure OSPF authentication at the VRF level.
-                                       Configuration at the interface level under
-                                       `l3_interfaces` or `l3_port_channels` takes precedence.
+                                       Configure OSPF authentication for all interfaces under the VRF.
+                                       Can be overridden at the interface
+                                       level under `l3_interfaces`, `l3_port_channels` or `svis`.
                                     simple_auth_key:
                                        Password used with simple authentication.
                                        Only plaintext passwords are supported here as
@@ -39040,8 +39040,8 @@ class EosDesigns(EosDesignsRootModel):
                                     key: str | None
                                     """
                                     Key for OSPF simple authentication.
-                                    Expect a cleartext password if `encrypt_passwords: true`,
-                                    otherwise expect a type 7 password.
+                                    Expects a cleartext password if `encrypt_passwords: true`,
+                                    otherwise expects a type 7 password.
                                     Maximum 8 characters for cleartext password.
                                     """
 
@@ -39065,8 +39065,8 @@ class EosDesigns(EosDesignsRootModel):
                                                 hash_algorithm: hash_algorithm
                                                 key:
                                                    Key for OSPF simple authentication.
-                                                   Expect a cleartext password if `encrypt_passwords: true`,
-                                                   otherwise expect a type 7 password.
+                                                   Expects a cleartext password if `encrypt_passwords: true`,
+                                                   otherwise expects a type 7 password.
                                                    Maximum 8 characters for cleartext password.
 
                                             """
@@ -39100,8 +39100,8 @@ class EosDesigns(EosDesignsRootModel):
                                 simple_auth_key: str | None
                                 """
                                 Key for OSPF simple authentication.
-                                Expect a cleartext password if `encrypt_passwords: true`,
-                                otherwise expect a type 7 password.
+                                Expects a cleartext password if `encrypt_passwords: true`,
+                                otherwise expects a type 7 password.
                                 Maximum 8 characters for cleartext password.
                                 """
                                 message_digest_keys: MessageDigestKeys
@@ -39134,8 +39134,8 @@ class EosDesigns(EosDesignsRootModel):
                                             authentication: authentication
                                             simple_auth_key:
                                                Key for OSPF simple authentication.
-                                               Expect a cleartext password if `encrypt_passwords: true`,
-                                               otherwise expect a type 7 password.
+                                               Expects a cleartext password if `encrypt_passwords: true`,
+                                               otherwise expects a type 7 password.
                                                Maximum 8 characters for cleartext password.
                                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
@@ -39850,8 +39850,8 @@ class EosDesigns(EosDesignsRootModel):
                                 key: str | None
                                 """
                                 Key for OSPF simple authentication.
-                                Expect a cleartext password if `encrypt_passwords: true`,
-                                otherwise expect a type 7 password.
+                                Expects a cleartext password if `encrypt_passwords: true`,
+                                otherwise expects a type 7 password.
                                 Maximum 8 characters for cleartext password.
                                 """
 
@@ -39875,8 +39875,8 @@ class EosDesigns(EosDesignsRootModel):
                                             hash_algorithm: hash_algorithm
                                             key:
                                                Key for OSPF simple authentication.
-                                               Expect a cleartext password if `encrypt_passwords: true`,
-                                               otherwise expect a type 7 password.
+                                               Expects a cleartext password if `encrypt_passwords: true`,
+                                               otherwise expects a type 7 password.
                                                Maximum 8 characters for cleartext password.
 
                                         """
@@ -39910,8 +39910,8 @@ class EosDesigns(EosDesignsRootModel):
                             simple_auth_key: str | None
                             """
                             Key for OSPF simple authentication.
-                            Expect a cleartext password if `encrypt_passwords: true`,
-                            otherwise expect a type 7 password.
+                            Expects a cleartext password if `encrypt_passwords: true`,
+                            otherwise expects a type 7 password.
                             Maximum 8 characters for cleartext password.
                             """
                             message_digest_keys: MessageDigestKeys
@@ -39944,8 +39944,8 @@ class EosDesigns(EosDesignsRootModel):
                                         authentication: authentication
                                         simple_auth_key:
                                            Key for OSPF simple authentication.
-                                           Expect a cleartext password if `encrypt_passwords: true`,
-                                           otherwise expect a type 7 password.
+                                           Expects a cleartext password if `encrypt_passwords: true`,
+                                           otherwise expects a type 7 password.
                                            Maximum 8 characters for cleartext password.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
@@ -40558,16 +40558,16 @@ class EosDesigns(EosDesignsRootModel):
                                 key: str | None
                                 """
                                 Key for OSPF message digest.
-                                Expect a cleartext password if `encrypt_passwords: true`, otherwise
-                                expect a type 7 password.
+                                Expects a cleartext password if `encrypt_passwords: true`, otherwise
+                                expects a type 7 password.
                                 Maximum 16 characters for cleartext password.
 
                                 NOTE: when using type 7
                                 password, the l3_interfaces.interfaces list must not be more than 1 interface
-                                      or they must all
-                                be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
-                                      name
-                                (when common encryption is disabled).
+                                or they must all be
+                                the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
+                                (when
+                                common encryption is disabled).
                                 """
 
                                 if TYPE_CHECKING:
@@ -40590,16 +40590,16 @@ class EosDesigns(EosDesignsRootModel):
                                             hash_algorithm: hash_algorithm
                                             key:
                                                Key for OSPF message digest.
-                                               Expect a cleartext password if `encrypt_passwords: true`, otherwise
-                                               expect a type 7 password.
+                                               Expects a cleartext password if `encrypt_passwords: true`, otherwise
+                                               expects a type 7 password.
                                                Maximum 16 characters for cleartext password.
 
                                                NOTE: when using type 7
                                                password, the l3_interfaces.interfaces list must not be more than 1 interface
-                                                     or they must all
-                                               be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
-                                                     name
-                                               (when common encryption is disabled).
+                                               or they must all be
+                                               the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
+                                               (when
+                                               common encryption is disabled).
 
                                         """
 
@@ -40632,8 +40632,8 @@ class EosDesigns(EosDesignsRootModel):
                             simple_auth_key: str | None
                             """
                             Key for OSPF simple authentication.
-                            Expect a cleartext password if `encrypt_passwords: true`,
-                            otherwise expect a type 7 password.
+                            Expects a cleartext password if `encrypt_passwords: true`,
+                            otherwise expects a type 7 password.
                             Maximum 8 characters for cleartext password.
 
                             NOTE: when using
@@ -40672,8 +40672,8 @@ class EosDesigns(EosDesignsRootModel):
                                         authentication: authentication
                                         simple_auth_key:
                                            Key for OSPF simple authentication.
-                                           Expect a cleartext password if `encrypt_passwords: true`,
-                                           otherwise expect a type 7 password.
+                                           Expects a cleartext password if `encrypt_passwords: true`,
+                                           otherwise expects a type 7 password.
                                            Maximum 8 characters for cleartext password.
 
                                            NOTE: when using
@@ -41046,8 +41046,8 @@ class EosDesigns(EosDesignsRootModel):
                                 key: str | None
                                 """
                                 Key for OSPF message digest.
-                                Expect a cleartext password if `encrypt_passwords: true`, otherwise
-                                expect a type 7 password.
+                                Expects a cleartext password if `encrypt_passwords: true`, otherwise
+                                expects a type 7 password.
                                 Maximum 16 characters for cleartext password.
                                 """
 
@@ -41071,8 +41071,8 @@ class EosDesigns(EosDesignsRootModel):
                                             hash_algorithm: hash_algorithm
                                             key:
                                                Key for OSPF message digest.
-                                               Expect a cleartext password if `encrypt_passwords: true`, otherwise
-                                               expect a type 7 password.
+                                               Expects a cleartext password if `encrypt_passwords: true`, otherwise
+                                               expects a type 7 password.
                                                Maximum 16 characters for cleartext password.
 
                                         """
@@ -41106,8 +41106,8 @@ class EosDesigns(EosDesignsRootModel):
                             simple_auth_key: str | None
                             """
                             Key for OSPF simple authentication.
-                            Expect a cleartext password if `encrypt_passwords: true`,
-                            otherwise expect a type 7 password.
+                            Expects a cleartext password if `encrypt_passwords: true`,
+                            otherwise expects a type 7 password.
                             Maximum 8 characters for cleartext password.
                             """
                             message_digest_keys: MessageDigestKeys
@@ -41140,8 +41140,8 @@ class EosDesigns(EosDesignsRootModel):
                                         authentication: authentication
                                         simple_auth_key:
                                            Key for OSPF simple authentication.
-                                           Expect a cleartext password if `encrypt_passwords: true`,
-                                           otherwise expect a type 7 password.
+                                           Expects a cleartext password if `encrypt_passwords: true`,
+                                           otherwise expects a type 7 password.
                                            Maximum 8 characters for cleartext password.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
