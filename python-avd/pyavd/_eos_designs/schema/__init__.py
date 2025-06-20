@@ -10251,6 +10251,7 @@ class EosDesigns(EosDesignsRootModel):
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
+                "subinterface_mtu": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
@@ -10263,6 +10264,14 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `True`"""
             poe: bool
             """Default value: `False`"""
+            subinterface_mtu: bool
+            """
+            Support for MTU configuration under sub-interfaces.
+            When this key is set to False, MTU is not
+            rendered under sub-interfaces even if it is set in the inputs.
+
+            Default value: `True`
+            """
             per_interface_mtu: bool
             """
             Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
@@ -10313,6 +10322,7 @@ class EosDesigns(EosDesignsRootModel):
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
+                    subinterface_mtu: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -10329,6 +10339,10 @@ class EosDesigns(EosDesignsRootModel):
                         queue_monitor_length_notify: queue_monitor_length_notify
                         interface_storm_control: interface_storm_control
                         poe: poe
+                        subinterface_mtu:
+                           Support for MTU configuration under sub-interfaces.
+                           When this key is set to False, MTU is not
+                           rendered under sub-interfaces even if it is set in the inputs.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -10568,6 +10582,7 @@ class EosDesigns(EosDesignsRootModel):
                 "queue_monitor_length_notify": {"type": bool, "default": True},
                 "interface_storm_control": {"type": bool, "default": True},
                 "poe": {"type": bool, "default": False},
+                "subinterface_mtu": {"type": bool, "default": True},
                 "per_interface_mtu": {"type": bool, "default": True},
                 "bgp_update_wait_install": {"type": bool, "default": True},
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
@@ -10580,6 +10595,14 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `True`"""
             poe: bool
             """Default value: `False`"""
+            subinterface_mtu: bool
+            """
+            Support for MTU configuration under sub-interfaces.
+            When this key is set to False, MTU is not
+            rendered under sub-interfaces even if it is set in the inputs.
+
+            Default value: `True`
+            """
             per_interface_mtu: bool
             """
             Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
@@ -10630,6 +10653,7 @@ class EosDesigns(EosDesignsRootModel):
                     queue_monitor_length_notify: bool | UndefinedType = Undefined,
                     interface_storm_control: bool | UndefinedType = Undefined,
                     poe: bool | UndefinedType = Undefined,
+                    subinterface_mtu: bool | UndefinedType = Undefined,
                     per_interface_mtu: bool | UndefinedType = Undefined,
                     bgp_update_wait_install: bool | UndefinedType = Undefined,
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
@@ -10646,6 +10670,10 @@ class EosDesigns(EosDesignsRootModel):
                         queue_monitor_length_notify: queue_monitor_length_notify
                         interface_storm_control: interface_storm_control
                         poe: poe
+                        subinterface_mtu:
+                           Support for MTU configuration under sub-interfaces.
+                           When this key is set to False, MTU is not
+                           rendered under sub-interfaces even if it is set in the inputs.
                         per_interface_mtu:
                            Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
                            Effectively this means that all settings regarding interface MTU will be ignored if this is false.
