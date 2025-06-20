@@ -10,9 +10,10 @@ from unittest.mock import patch
 import pytest
 from yaml import CSafeLoader, load
 
-from pyavd import get_device_config, get_device_doc, get_device_structured_config, validate_inputs, validate_structured_config
+from pyavd import get_device_config, get_device_doc, get_device_structured_config, get_fabric_documentation, validate_inputs, validate_structured_config
 from pyavd._utils import get
-from tests.models import MoleculeHost
+from pyavd.api.fabric_documentation import FabricDocumentation
+from tests.models import MoleculeHost, MoleculeScenario
 
 
 def mocked_hostvars(self: MoleculeHost, digital_twin_environment: str = "act") -> dict:
@@ -63,6 +64,45 @@ def mocked_doc(self: MoleculeHost, digital_twin_environment: str = "act") -> str
         return None
 
     return doc_path.read_text()
+
+
+def mocked_fabric_documentation(self: MoleculeScenario, digital_twin_environment: str = "act") -> str | None:
+    fabric_doc_path = self.path / f"inventory/digital_twin/{digital_twin_environment}/documentation/fabric"
+    files = list(fabric_doc_path.glob("*-documentation.md"))
+    if not files:
+        return None
+
+    if len(files) > 1:
+        msg = "Found too many fabric documentation files: %s"
+        raise LookupError(msg, files)
+
+    return files[0].read_text("UTF-8")
+
+
+def mocked_topology_csv(self: MoleculeScenario, digital_twin_environment: str = "act") -> str | None:
+    fabric_doc_path = self.path / f"inventory/digital_twin/{digital_twin_environment}/documentation/fabric"
+    files = list(fabric_doc_path.glob("*-topology.csv"))
+    if not files:
+        return None
+
+    if len(files) > 1:
+        msg = "Found too many Topology CSV files: %s"
+        raise LookupError(msg, files)
+
+    return files[0].read_text("UTF-8")
+
+
+def mocked_p2p_links_csv(self: MoleculeScenario, digital_twin_environment: str = "act") -> str | None:
+    fabric_doc_path = self.path / f"inventory/digital_twin/{digital_twin_environment}/documentation/fabric"
+    files = list(fabric_doc_path.glob("*-p2p-links.csv"))
+    if not files:
+        return None
+
+    if len(files) > 1:
+        msg = "Found too many P2P Links CSV files: %s"
+        raise LookupError(msg, files)
+
+    return files[0].read_text("UTF-8")
 
 
 @pytest.mark.molecule_scenarios(
@@ -157,3 +197,76 @@ def test_digital_twin_act_get_device_structured_config(molecule_host: MoleculeHo
     assert expected_structured_config == structured_config
     # Test that we can dump the returned data as json.
     assert json.dumps(structured_config)
+
+
+@pytest.mark.molecule_scenarios(
+    "eos_designs-twodc-5stage-clos",
+)
+def test_digital_twin_act_get_fabric_documentation(molecule_scenario: MoleculeScenario, monkeypatch: Any) -> None:
+    """Test get_fabric_documentation for Digital Twin ACT mode."""
+    for host in molecule_scenario.hosts:
+        host.__dict__.pop("hostvars", None)
+        monkeypatch.setattr(type(host), "hostvars", property(lambda host: mocked_hostvars(host, "act")))
+        host.__dict__.pop("structured_config", None)
+        monkeypatch.setattr(type(host), "structured_config", property(lambda host: mocked_structured_config(host, "act")))
+
+    # Mock fabric documentation cached property
+    molecule_scenario.__dict__.pop("fabric_documentation", None)
+    monkeypatch.setattr(
+        type(molecule_scenario), "fabric_documentation", property(lambda molecule_scenario: mocked_fabric_documentation(molecule_scenario, "act"))
+    )
+
+    with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
+        molecule_structured_configs = {host.name: deepcopy(host.structured_config) for host in molecule_scenario.hosts}
+        molecule_avd_facts = molecule_scenario.avd_facts
+
+        # Get variables from the first molecule host.
+        first_hostvars = next(iter(molecule_scenario.hosts)).hostvars
+        molecule_fabric_name: str = first_hostvars["fabric_name"]
+        enable = get(first_hostvars, "eos_designs_documentation.enable", default=True)
+        connected_endpoints = get(first_hostvars, "eos_designs_documentation.connected_endpoints", default=False)
+        topology_csv = get(first_hostvars, "eos_designs_documentation.topology_csv", default=False)
+        p2p_links_csv = get(first_hostvars, "eos_designs_documentation.p2p_links_csv", default=False)
+        toc = get(first_hostvars, "eos_designs_documentation.toc", default=True)
+        digital_twin = get(first_hostvars, "digital_twin_mode", default=True)
+
+        fabric_documentation_obj = get_fabric_documentation(
+            avd_facts=molecule_avd_facts,
+            structured_configs=molecule_structured_configs,
+            fabric_name=molecule_fabric_name,
+            fabric_documentation=enable,
+            include_connected_endpoints=connected_endpoints,
+            topology_csv=topology_csv,
+            p2p_links_csv=p2p_links_csv,
+            toc=toc,
+            digital_twin=digital_twin,
+        )
+
+    assert isinstance(fabric_documentation_obj, FabricDocumentation)
+
+    if enable:
+        # We expect fabric docs
+        assert isinstance(molecule_scenario.fabric_documentation, str)
+        assert fabric_documentation_obj.fabric_documentation == molecule_scenario.fabric_documentation
+    else:
+        # No fabric docs
+        assert molecule_scenario.fabric_documentation is None
+        assert fabric_documentation_obj.fabric_documentation == ""
+
+    if topology_csv:
+        # We expect topology csv
+        assert isinstance(molecule_scenario.topology_csv, str)
+        assert fabric_documentation_obj.topology_csv == molecule_scenario.topology_csv
+    else:
+        # No topology csv
+        assert molecule_scenario.topology_csv is None
+        assert fabric_documentation_obj.topology_csv == ""
+
+    if p2p_links_csv:
+        # We expect p2p links csv
+        assert isinstance(molecule_scenario.p2p_links_csv, str)
+        assert fabric_documentation_obj.p2p_links_csv == molecule_scenario.p2p_links_csv
+    else:
+        # No p2p links csv
+        assert molecule_scenario.p2p_links_csv is None
+        assert fabric_documentation_obj.p2p_links_csv == ""
