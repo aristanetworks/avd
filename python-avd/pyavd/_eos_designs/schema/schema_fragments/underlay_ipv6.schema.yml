@@ -14,23 +14,3 @@ keys:
       Requires "underlay_rfc5549: true" and "loopback_ipv6_pool" under the node type settings.
     type: bool
     default: false
-  underlay_ipv6_numbered:
-    documentation_options:
-      table: fabric-settings
-    description: |
-      This feature allows pure IPv6 underlay routing protocol with numbered addresses.
-      Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses.
-      Currently BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.
-      Requires:
-        - "underlay_ipv6: true"
-        - "loopback_ipv6_pool"
-        - "underlay_routing_protocol: ebgp"
-      Some settings are not yet supported with IPv6 underlay:
-        - underlay_multicast
-        - underlay_multicast_rp_interfaces
-        - underlay_rfc5549
-        - wan_role
-        - vtep_vvtep_ip
-        - inband_ztp
-    type: bool
-    default: false
