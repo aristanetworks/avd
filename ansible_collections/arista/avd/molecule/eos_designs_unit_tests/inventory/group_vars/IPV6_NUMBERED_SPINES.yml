@@ -61,7 +61,6 @@ name_servers:
 
 underlay_ipv6: true
 underlay_ipv6_numbered: true
-enable_router_id_diagnostic: true
 
 fabric_ip_addressing:
   mlag:

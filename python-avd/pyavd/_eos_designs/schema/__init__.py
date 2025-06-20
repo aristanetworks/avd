@@ -61268,7 +61268,6 @@ class EosDesigns(EosDesignsRootModel):
         "underlay_filter_redistribute_connected": {"type": bool, "default": True},
         "underlay_ipv6": {"type": bool, "default": False},
         "underlay_ipv6_numbered": {"type": bool, "default": False},
-        "enable_router_id_diagnostic": {"type": bool, "default": False},
         "underlay_isis_authentication_key": {"type": str},
         "underlay_isis_authentication_mode": {"type": str},
         "underlay_isis_bfd": {"type": bool, "default": False},
@@ -62893,15 +62892,6 @@ class EosDesigns(EosDesignsRootModel):
 
     Default value: `False`
     """
-    enable_router_id_diagnostic: bool
-    """
-    This feature allows configuring a loopback0 IPv4 that matches the BGP router_id for diagnostics with
-    an IPv6 underlay.
-    Requires:
-      - "underlay_ipv6_numbered: true"
-
-    Default value: `False`
-    """
     underlay_isis_authentication_key: str | None
     """Type-7 encrypted password."""
     underlay_isis_authentication_mode: Literal["md5", "text"] | None
@@ -63367,7 +63357,6 @@ class EosDesigns(EosDesignsRootModel):
             underlay_filter_redistribute_connected: bool | UndefinedType = Undefined,
             underlay_ipv6: bool | UndefinedType = Undefined,
             underlay_ipv6_numbered: bool | UndefinedType = Undefined,
-            enable_router_id_diagnostic: bool | UndefinedType = Undefined,
             underlay_isis_authentication_key: str | None | UndefinedType = Undefined,
             underlay_isis_authentication_mode: Literal["md5", "text"] | None | UndefinedType = Undefined,
             underlay_isis_bfd: bool | UndefinedType = Undefined,
@@ -64560,11 +64549,6 @@ class EosDesigns(EosDesignsRootModel):
                      - wan_role
                      - vtep_vvtep_ip
                      - inband_ztp
-                enable_router_id_diagnostic:
-                   This feature allows configuring a loopback0 IPv4 that matches the BGP router_id for diagnostics with
-                   an IPv6 underlay.
-                   Requires:
-                     - "underlay_ipv6_numbered: true"
                 underlay_isis_authentication_key: Type-7 encrypted password.
                 underlay_isis_authentication_mode: Underlay ISIS authentication mode.
                 underlay_isis_bfd: Enable BFD for ISIS on all underlay links.
