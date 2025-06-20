@@ -71,6 +71,10 @@ ethernet_interfaces:
   peer_interface: PCI1
   peer_type: server
 hostname: dc1-leaf1a
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_igmp_snooping:
   globally_enabled: true
 ip_name_servers:
@@ -584,8 +588,8 @@ vxlan_interface:
     vxlan:
       source_interface: Loopback1
       udp_port: 4789
-      ipv6_underlay:
-        enabled: true
+      encapsulations:
+        ipv6: true
       virtual_router_encapsulation_mac_address: mlag-system-id
       vlans:
       - id: 11
