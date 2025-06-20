@@ -9956,7 +9956,7 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `False`"""
             subinterface_mtu: bool
             """
-            Allow/disallow MTU configuration under sub-interfaces.
+            Support for MTU configuration under sub-interfaces.
             When this key is set to False, MTU is not
             rendered under sub-interfaces even if it is set in the inputs.
 
@@ -10030,7 +10030,7 @@ class EosDesigns(EosDesignsRootModel):
                         interface_storm_control: interface_storm_control
                         poe: poe
                         subinterface_mtu:
-                           Allow/disallow MTU configuration under sub-interfaces.
+                           Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
                            rendered under sub-interfaces even if it is set in the inputs.
                         per_interface_mtu:
@@ -10287,7 +10287,7 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `False`"""
             subinterface_mtu: bool
             """
-            Allow/disallow MTU configuration under sub-interfaces.
+            Support for MTU configuration under sub-interfaces.
             When this key is set to False, MTU is not
             rendered under sub-interfaces even if it is set in the inputs.
 
@@ -10361,7 +10361,7 @@ class EosDesigns(EosDesignsRootModel):
                         interface_storm_control: interface_storm_control
                         poe: poe
                         subinterface_mtu:
-                           Allow/disallow MTU configuration under sub-interfaces.
+                           Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
                            rendered under sub-interfaces even if it is set in the inputs.
                         per_interface_mtu:
