@@ -554,7 +554,7 @@ $defs:
                       - simple
                       - message-digest
                     description: |-
-                      Configure OSPF authentication at the VRF level.
+                      Configure OSPF authentication for all interfaces under the VRF.
                       Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
                   simple_auth_key:
                     type: str
