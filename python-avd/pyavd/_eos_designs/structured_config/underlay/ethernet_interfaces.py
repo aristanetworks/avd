@@ -53,7 +53,7 @@ class EthernetInterfacesMixin(Protocol):
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
                 ethernet_interface._update(
-                    mtu=self.shared_utils.p2p_uplinks_mtu,
+                    mtu=self.shared_utils.get_interface_mtu(link.interface, self.shared_utils.p2p_uplinks_mtu),
                     service_profile=self.inputs.p2p_uplinks_qos_profile,
                     ipv6_enable=link.ipv6_enable,
                     flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
@@ -196,7 +196,7 @@ class EthernetInterfacesMixin(Protocol):
                         description=description or None,
                         shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
                         ipv6_enable=subinterface.ipv6_enable,
-                        mtu=self.shared_utils.p2p_uplinks_mtu,
+                        mtu=self.shared_utils.get_interface_mtu(subinterface.interface, self.shared_utils.p2p_uplinks_mtu),
                         flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan

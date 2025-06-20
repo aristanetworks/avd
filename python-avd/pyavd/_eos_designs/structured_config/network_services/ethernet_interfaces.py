@@ -132,7 +132,7 @@ class EthernetInterfacesMixin(Protocol):
                     name=interface_name,
                     peer_type="l3_interface",
                     ip_address=l3_interface.ip_addresses[node_index],
-                    mtu=l3_interface.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+                    mtu=self.shared_utils.get_interface_mtu(interface_name, l3_interface.mtu),
                     shutdown=not l3_interface.enabled,
                     description=interface_description,
                     eos_cli=l3_interface.raw_eos_cli,
