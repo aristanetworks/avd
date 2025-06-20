@@ -1084,12 +1084,13 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n\n`oob`
-      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
-      and `mgmt_interface` as the source interface.\n`inband` means the protocols
-      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
-      as the source interface.\n`none` means the VRF and or interface must be manually
-      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
+      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n
+      \ - `ssh_settings`\n\n`oob` means the protocols will be configured with the
+      VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.\n`inband`
+      means the protocols will be configured with the VRF set by `inband_mgmt_vrf`
+      and `inband_mgmt_interface` as the source interface.\n`none` means the VRF and
+      or interface must be manually set for each protocol.\nThis can be overridden
+      under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -4580,6 +4581,27 @@ keys:
 
               `inband_mgmt_interface` is typically a loopback or SVI interface, and
               can be set under the node settings.'
+  ssh_settings:
+    type: dict
+    keys:
+      vrfs:
+        type: list
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: VRF name.
+            enabled:
+              type: bool
+              required: true
+            ipv4_acl:
+              type: str
+            ipv6_acl:
+              type: str
+      idle_timeout:
+        type: int
+        $ref: eos_cli_config_gen#/keys/management_ssh/keys/idle_timeout
   svi_profiles:
     type: list
     primary_key: profile
