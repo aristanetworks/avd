@@ -117,13 +117,6 @@ tenant_a:
               - 10.1.32.254
               - 10.2.32.254/24
               - 10.3.32.254/24
-        l3_interfaces:
-          - interfaces: [Ethernet10.10]
-            ip_addresses: [10.10.10.10/24]
-            nodes: [DC1-LEAF1A]
-            mtu: 9000
-            enabled: true
-            description: "test mtu not rendered for VEOS platform"
         bgp:
           router_id: none
       - name: Tenant_A_DB_Zone
