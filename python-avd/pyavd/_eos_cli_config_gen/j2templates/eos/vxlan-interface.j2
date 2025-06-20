@@ -24,8 +24,17 @@ interface Vxlan1
 {%     if vxlan_config.vxlan.udp_port is arista.avd.defined %}
    vxlan udp-port {{ vxlan_config.vxlan.udp_port }}
 {%     endif %}
-{%     if vxlan_config.vxlan.ipv6_underlay.enabled is arista.avd.defined(true) %}
-   vxlan encapsulation ipv6
+{%     if vxlan_config.vxlan.encapsulations is arista.avd.defined %}
+{%         set tmp_encapsulations = [] %}
+{%         if vxlan_config.vxlan.encapsulations.ipv4 is arista.avd.defined(true) %}
+{%             do tmp_encapsulations.append("ipv4") %}
+{%         endif %}
+{%         if vxlan_config.vxlan.encapsulations.ipv6 is arista.avd.defined(true) %}
+{%             do tmp_encapsulations.append("ipv6") %}
+{%         endif %}
+{%         if tmp_encapsulations %}
+   vxlan encapsulation {{ tmp_encapsulations | join(" ") }}
+{%         endif %}
 {%     endif %}
 {%     if vxlan_config.vxlan.vtep_to_vtep_bridging is arista.avd.defined(true) %}
    vxlan bridging vtep-to-vtep

@@ -89,7 +89,7 @@ class VxlanInterfaceMixin(Protocol):
             vxlan.controller_client.enabled = True
 
         if self.shared_utils.underlay_ipv6_numbered:
-            vxlan.ipv6_underlay.enabled = True
+            vxlan.encapsulations.ipv6 = True
 
         # Keep track of the VNIs added to check for duplicates
         # The entries are {<vni>: (<type>, <name>, <tenant>)}

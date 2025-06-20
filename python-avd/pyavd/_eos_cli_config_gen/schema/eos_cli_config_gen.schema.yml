@@ -24332,12 +24332,15 @@ keys:
                 type: int
                 convert_types:
                 - str
-              ipv6_underlay:
+              encapsulations:
                 type: dict
-                description: Enable bridging over EVPN IPv6 VXLAN underlay.
                 keys:
-                  enabled:
+                  ipv4:
                     type: bool
+                    description: Use IPv4 for VXLAN Encapsulation.
+                  ipv6:
+                    type: bool
+                    description: Use IPv6 for VXLAN Encapsulation.
               vtep_to_vtep_bridging:
                 type: bool
                 description: Enable bridging between different VTEPs in vxlan overlay.
