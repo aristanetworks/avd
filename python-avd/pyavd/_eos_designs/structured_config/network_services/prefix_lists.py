@@ -41,7 +41,9 @@ class PrefixListsMixin(Protocol):
             if not self.shared_utils.underlay_ipv6_numbered:
                 self.structured_config.prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
             else:
-                self.structured_config.ipv6_prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
+                self.structured_config.ipv6_prefix_lists.append_new(
+                    name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers._cast_as(EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers)
+                )
 
     def _set_prefix_lists_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set the prefix_lists for EVPN services in VRF "default"."""

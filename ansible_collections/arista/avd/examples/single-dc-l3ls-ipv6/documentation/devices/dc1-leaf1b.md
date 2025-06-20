@@ -628,6 +628,7 @@ interface Vlan4094
 | ------- | ----- |
 | Source Interface | Loopback1 |
 | UDP port | 4789 |
+| Vxlan Encapsulation | ipv6 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 
 ##### VLAN to VNI, Flood List and Multicast Group Mappings

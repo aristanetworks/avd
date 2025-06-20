@@ -104,7 +104,7 @@ class UnderlayMixin(Protocol):
                 msg = "Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay"
                 raise AristaAvdInvalidInputsError(msg)
             if self.inputs.underlay_routing_protocol not in (None, "ebgp"):
-                msg = f"Invalid combination of inputs. {self.inputs.underlay_routing_protocol} is not supported with numbered IPv6 underlay, \
-                    underlay_routing_protocol must be set to 'ebgp'"
+                msg = f"Invalid combination of inputs. {self.inputs.underlay_routing_protocol} is not supported with numbered IPv6 underlay."
+                msg += " underlay_routing_protocol must be set to 'ebgp'"
                 raise AristaAvdInvalidInputsError(msg)
         return self.inputs.underlay_ipv6_numbered
