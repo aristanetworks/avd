@@ -24,7 +24,7 @@ dps_interfaces:
   mtu: 9194
   ip_address: 192.168.142.1/32
   flow_tracker:
-    hardware: FLOW-TRACKER
+    sampled: FLOW-TRACKER
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -39,12 +39,13 @@ ethernet_interfaces:
   peer_interface: Ethernet1/12
   peer_type: l3_port_channel_member
 flow_tracking:
-  hardware:
+  sampled:
+    sample: 10000
     trackers:
-    - name: FLOW-TRACKER
-      record_export:
+    - record_export:
         on_inactive_timeout: 70000
         on_interval: 300000
+      name: FLOW-TRACKER
       exporters:
       - name: CV-TELEMETRY
         collector:
