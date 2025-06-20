@@ -48,17 +48,6 @@ default_interfaces:
     mlag_interfaces: [ Ethernet11-12 ]
     downlink_interfaces: [ Ethernet8 ]
 
-# CloudVision Portal definitions
-cvp_instance_ips:
-  - 192.168.1.30
-terminattr_smashexcludes: "ale,flexCounter,hardware,kni,pulse,strata"
-terminattr_ingestexclude: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
-terminattr_disable_aaa: true
-
-# DNS Server
-name_servers:
-  - 192.168.1.1
-
 underlay_ipv6: true
 underlay_ipv6_numbered: true
 

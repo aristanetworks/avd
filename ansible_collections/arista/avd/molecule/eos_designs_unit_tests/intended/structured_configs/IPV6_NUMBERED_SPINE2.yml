@@ -1,16 +1,6 @@
 aaa_root:
   disabled: true
 config_end: true
-daemon_terminattr:
-  cvaddrs:
-  - 192.168.1.30:9910
-  cvauth:
-    method: token
-    token_file: /tmp/token
-  cvvrf: MGMT
-  disable_aaa: true
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-  smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -45,9 +35,6 @@ ethernet_interfaces:
   switchport:
     enabled: false
 hostname: IPV6_NUMBERED_SPINE2
-ip_name_servers:
-- ip_address: 192.168.1.1
-  vrf: MGMT
 ip_routing: true
 ipv6_prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY-V6

@@ -122,10 +122,19 @@ class RouterBgpMixin(Protocol):
                     if subinterface_vrf not in self.structured_config.router_bgp.vrfs:
                         self.structured_config.router_bgp.vrfs.append_new(name=subinterface_vrf, router_id=self.shared_utils.router_id)
 
-                    self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
-                        ip_address=cast("str", subinterface.peer_ip_address),
-                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                        remote_as=link.peer_bgp_as,
-                        description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
-                        bfd=link.bfd,
-                    )
+                    if subinterface.peer_ipv6_address is not None:
+                        self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
+                            ip_address=cast("str", subinterface.peer_ipv6_address),
+                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                            remote_as=link.peer_bgp_as,
+                            description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
+                            bfd=link.bfd,
+                        )
+                    else:
+                        self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
+                            ip_address=cast("str", subinterface.peer_ip_address),
+                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                            remote_as=link.peer_bgp_as,
+                            description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
+                            bfd=link.bfd,
+                        )
