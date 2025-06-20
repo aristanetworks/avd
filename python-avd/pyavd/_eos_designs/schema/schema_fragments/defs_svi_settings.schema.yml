@@ -251,7 +251,7 @@ $defs:
             type: str
             description: |-
               Key for OSPF simple authentication.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
               Maximum 8 characters for cleartext password.
           message_digest_keys:
             type: list
@@ -275,7 +275,7 @@ $defs:
                   type: str
                   description: |-
                     Key for OSPF simple authentication.
-                    Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                    Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                     Maximum 8 characters for cleartext password.
       bgp:
         type: dict
