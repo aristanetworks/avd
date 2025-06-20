@@ -26,12 +26,11 @@ class ManagementSshMixin(Protocol):
         """management_ssh set based on "ssh_settings" data-model."""
         if not (ssh_settings := self.inputs.ssh_settings):
             return
-        
+
         if ssh_settings.idle_timeout:
             self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
 
         self._ssh_vrfs_acls(ssh_settings)
-
 
     def _ssh_vrfs_acls(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """
@@ -44,7 +43,7 @@ class ManagementSshMixin(Protocol):
                 continue
 
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
-            if vrf_name!= "default":
+            if vrf_name != "default":
                 vrfs.append_new(name=vrf_name, enable=vrf.enabled)
                 self.structured_config.management_ssh.vrfs = vrfs._natural_sorted()
 
