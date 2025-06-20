@@ -22,6 +22,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "custom_platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "custom_platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "custom_platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "custom_platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "custom_platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "custom_platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br> |
@@ -52,6 +53,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;queue_monitor_length_notify</samp>](## "platform_settings.[].feature_support.queue_monitor_length_notify") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interface_storm_control</samp>](## "platform_settings.[].feature_support.interface_storm_control") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;poe</samp>](## "platform_settings.[].feature_support.poe") | Boolean |  | `False` |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;subinterface_mtu</samp>](## "platform_settings.[].feature_support.subinterface_mtu") | Boolean |  | `True` |  | Support for MTU configuration under sub-interfaces.<br>When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;per_interface_mtu</samp>](## "platform_settings.[].feature_support.per_interface_mtu") | Boolean |  | `True` |  | Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.<br>Effectively this means that all settings regarding interface MTU will be ignored if this is false.<br>Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_install</samp>](## "platform_settings.[].feature_support.bgp_update_wait_install") | Boolean |  | `True` |  | Disables FIB updates and route advertisement when the BGP instance is initiated until the BGP convergence state is reached.<br>Can be overridden by setting "bgp_update_wait_install" host/group_vars.<br> |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;bgp_update_wait_for_convergence</samp>](## "platform_settings.[].feature_support.bgp_update_wait_for_convergence") | Boolean |  | `True` |  | Do not advertise reachability to a prefix until that prefix has been installed in hardware.<br>This will eliminate any temporary black holes due to a BGP speaker advertising reachability to a prefix that may not yet be installed into the forwarding plane.<br>Can be overridden by setting "bgp_update_wait_for_convergence" host/group_vars.<br> |
@@ -106,6 +108,10 @@
           queue_monitor_length_notify: <bool; default=True>
           interface_storm_control: <bool; default=True>
           poe: <bool; default=False>
+
+          # Support for MTU configuration under sub-interfaces.
+          # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
+          subinterface_mtu: <bool; default=True>
 
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
           # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
@@ -184,6 +190,10 @@
           queue_monitor_length_notify: <bool; default=True>
           interface_storm_control: <bool; default=True>
           poe: <bool; default=False>
+
+          # Support for MTU configuration under sub-interfaces.
+          # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
+          subinterface_mtu: <bool; default=True>
 
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
           # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
