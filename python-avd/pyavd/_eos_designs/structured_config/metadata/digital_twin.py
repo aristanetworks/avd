@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default, get_v2
 
 if TYPE_CHECKING:
@@ -38,6 +37,3 @@ class DigitalTwinMixin(Protocol):
                     password=self.inputs.digital_twin.fabric.password,
                 )
                 return
-            case _:
-                msg = f"'digital_twin.{environment}_node_type' key must be set in 'platform_settings' item used by platform '{self.shared_utils.platform}'."
-                raise AristaAvdInvalidInputsError(msg)
