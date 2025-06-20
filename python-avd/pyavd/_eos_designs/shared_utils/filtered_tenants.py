@@ -503,7 +503,7 @@ class FilteredTenantsMixin(Protocol):
             case _:
                 # This is "message-digest"
                 # The full list of keys is EITHER taken from the network_services_interface or from the VRF
-                # TODO: consider merging the two lists if the `id` are not clashing?
+                # TODO: consider merging the two lists if the `id` are not clashing - today the keys are AvdList so we replace.
                 if network_services_interface.ospf.message_digest_keys:
                     for ospf_key in network_services_interface.ospf.message_digest_keys:
                         self.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
@@ -511,6 +511,8 @@ class FilteredTenantsMixin(Protocol):
                 elif vrf.ospf.message_digest_keys:
                     for ospf_key in vrf.ospf.message_digest_keys:
                         self.update_message_digest_key(ospf_key, interface, encrypt=True)
+
+                # TODO: decide if we should raise if we end up with no keys
                 if interface.ospf_message_digest_keys:
                     interface.ospf_authentication = ospf_authentication
 
@@ -525,8 +527,6 @@ class FilteredTenantsMixin(Protocol):
     ) -> None:
         """
         Handle OSPF authentication for one message digest key.
-
-        TODO: expand
         """
         if not (ospf_key.id and ospf_key.key):
             return
