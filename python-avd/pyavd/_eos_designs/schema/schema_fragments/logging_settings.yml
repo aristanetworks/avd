@@ -1,0 +1,81 @@
+type: dict
+keys:
+  logging_settings:
+    documentation_options:
+      table: management-settings
+    type: dict
+    description: |-
+      Logging settings
+    keys:
+      hosts:
+        type: list
+        required: true
+        min_length: 1
+        items:
+          type: dict
+          $ref: eos_cli_config_gen#/keys/logging/keys/vrfs/items/keys/hosts/items
+          keys:
+            name:
+              type: str
+              required: true
+            vrf:
+              type: str
+              description: |-
+                If not set, the VRF is automatically picked up from the global setting `default_mgmt_method`.
+                The value of `vrf` will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will configure the logging destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as logging source-interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the logging destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as logging source-interface.
+                  An error will be raised if inband management is not configured for the device.
+                - Any other string will be used directly as the VRF name. Remember to set the `logging_settings.vrfs[].source_interface` if needed.
+              convert_types:
+                - int
+      vrfs:
+        type: list
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              convert_types:
+                - int
+              description: VRF name.
+            source_interface:
+              type: str
+              description: |-
+                Source interface to use for logging destinations in this VRF.
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence.
+      console:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/console
+      monitor:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/monitor
+      buffered:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/buffered
+      repeat_messages:
+        type: bool
+        $ref: eos_cli_config_gen#/keys/logging/keys/repeat_messages
+      trap:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/trap
+      synchronous:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/synchronous
+      format:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/format
+      facility:
+        type: str
+        $ref: eos_cli_config_gen#/keys/logging/keys/facility
+      policy:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/policy
+      event:
+        type: dict
+        $ref: eos_cli_config_gen#/keys/logging/keys/event
+      level:
+        type: list
+        $ref: eos_cli_config_gen#/keys/logging/keys/level
