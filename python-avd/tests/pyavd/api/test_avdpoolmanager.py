@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from ipaddress import IPv4Interface, IPv4Network
 from pathlib import Path
 from unittest import mock
 
@@ -248,9 +249,9 @@ def test_avdpoolmanager_pool(
             requested_id = requested_ids[index] if requested_ids else None
             _hostvars = hostvars.copy()
             hostname = _hostvars.pop("inventory_hostname")
-            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns._from_dict(hostvars), templar=object(), peer_facts={})
+            shared_utils = SharedUtils(hostname=hostname, hostvars=_hostvars, inputs=EosDesigns._from_dict(hostvars), templar=None, peer_facts={})
             # Get the id of the host from hostvars. If not, a new data set will be created.
-            assert pool_manager.get_assignment("node_id_pools", shared_utils, requested_id) == expected_ids[index]
+            assert pool_manager.get_node_id_assignment(shared_utils, requested_id) == expected_ids[index]
 
         mocked_exists.assert_called_once()
         if file_exists:
@@ -353,4 +354,38 @@ def test_avdpoolmanager_load_data_negative(mock_file_data: dict, shared_utils: D
         shared_utils.inputs = mock.MagicMock()
         pool_manager = PoolManager(Path(DUMMYDIR))
         with pytest.raises(type(expected_exception), match=str(expected_exception)):
-            pool_manager.get_pool("node_id_pools", shared_utils)
+            pool_manager.get_node_id_pool(shared_utils)
+
+
+def test_ipv4_interface_pools() -> None:
+    """
+    Test the PoolManager with ipv4 pools.
+
+    Performs multiple calls to a single instance of the pool manager.
+    """
+    hostvars = TESTHOST1.copy()
+    shared_utils = SharedUtils(
+        hostname=hostvars.pop("inventory_hostname"), hostvars=hostvars, inputs=EosDesigns._from_dict(hostvars), templar=None, peer_facts={}
+    )
+
+    # Initialize an empty pool manager
+    pool_manager = PoolManager(Path(DUMMYDIR))
+    # Get one new interface ip on a /31 link net
+    r1 = pool_manager.get_ipv4_interface_assignment(shared_utils, "Ethernet1", IPv4Network("192.168.0.0/24"), 31)
+    assert r1 == IPv4Interface("192.168.0.0/31")
+
+    # Request the same assignment.
+    r2 = pool_manager.get_ipv4_interface_assignment(shared_utils, "Ethernet1", IPv4Network("192.168.0.0/24"), 31)
+    assert r2 == r1
+
+    # Request another assignment in the same pool with a suggested value. This is actually another host address in the same subnet, but that should not matter.
+    r3 = pool_manager.get_ipv4_interface_assignment(shared_utils, "Ethernet2", IPv4Network("192.168.0.0/24"), 31, IPv4Interface("192.168.0.1/31"))
+    assert r3 == IPv4Interface("192.168.0.1/31")
+
+    # Request another assignment in the same pool.
+    r4 = pool_manager.get_ipv4_interface_assignment(shared_utils, "Ethernet3", IPv4Network("192.168.0.0/24"), 31)
+    assert r4 == IPv4Interface("192.168.0.2/31")
+
+    # Request the same assignment for another interface, getting another IP:
+    r5 = pool_manager.get_ipv4_interface_assignment(shared_utils, "Ethernet4", IPv4Network("192.168.0.0/24"), 31, IPv4Interface("192.168.0.1/31"))
+    assert r5 == IPv4Interface("192.168.0.4/31")

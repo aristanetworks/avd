@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from itertools import filterfalse
 from pathlib import Path
 from typing import TYPE_CHECKING
 
@@ -21,10 +22,9 @@ class NodeIdPoolCollection(PoolCollection[int]):
     pool_cls: type[Pool[int]] = Pool[int]
     assignment_cls: type[PoolAssignment[int]] = PoolAssignment[int]
     value_type: type = int
-    min_value: int = 1
 
     @staticmethod
-    def _pool_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
+    def get_pool_key(shared_utils: SharedUtilsProtocol) -> str:
         """Returns the pool key to use for this device."""
         return AvdStringFormatter().format(
             shared_utils.inputs.fabric_numbering_node_id_pool,
@@ -43,6 +43,27 @@ class NodeIdPoolCollection(PoolCollection[int]):
         return Path(default(shared_utils.inputs.fabric_numbering.node_id.pools_file, default_id_file))
 
     @staticmethod
-    def _assignment_key_from_shared_utils(shared_utils: SharedUtilsProtocol) -> str:
+    def get_assignment_key(shared_utils: SharedUtilsProtocol) -> str:
         """Returns the assignment key to use for this device."""
         return f"hostname={shared_utils.hostname}"
+
+    @staticmethod
+    def is_valid_value(value: int, pool: Pool[int]) -> bool:  # noqa: ARG004
+        """Check if a value is valid according to the pool definition."""
+        return bool(value)
+
+    def add_pool(self, pool_key: str, assignments: dict[str, PoolAssignment[int]] | None = None) -> None:
+        """Creates a new pool and add it to the collection with the given assignments or as an empty pool."""
+        self._pools[pool_key] = self.pool_cls(
+            collection=self,
+            pool_key=pool_key,
+            assignments=assignments or {},
+        )
+
+    def _next_available(self, pool: Pool[int]) -> int:
+        """Finds next available value in the pool. This is not doing any assignment."""
+        existing_ids = {assignment.value for assignment in pool.assignments.values()}
+        # Create a filterfalse generator from a range starting 1, excluding the values that are already assigned.
+        # Nothing will be iterated at this point, but the next(iter()) below will ask the generator for the first item.
+        available_ids = filterfalse(existing_ids.__contains__, range(1, 1 + len(existing_ids) + 2))
+        return next(iter(available_ids))
