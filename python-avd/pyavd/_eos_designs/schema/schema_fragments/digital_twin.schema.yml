@@ -24,23 +24,23 @@ keys:
       fabric:
         type: dict
         description: |-
-          Global Digital Twin settings related to the configuration of fabric nodes.
+          Settings for Digital Twin fabric devices.
         required: true
         keys:
           # TODO: Enforce (in code) to be set (here or under node_config)
           os_version:
             type: str
             description: |-
-              Desired Digital Twin OS version for fabric nodes.
+              OS version for Digital Twin fabric devices.
           username:
             type: str
             description: |-
-              Desired Digital Twin username for fabric nodes.
+              Username for Digital Twin fabric devices.
             required: true
           password:
             type: str
             description: |-
-              Desired Digital Twin clear-text password for fabric nodes.
+              Cleartext password for Digital Twin fabric devices.
             required: true
       # endpoints:
       #   type: dict

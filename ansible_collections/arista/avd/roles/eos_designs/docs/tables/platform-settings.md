@@ -36,9 +36,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "custom_platform_settings.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu_jitter</samp>](## "custom_platform_settings.[].security_entropy_sources.cpu_jitter") | Boolean |  |  |  | Use the Jitter RNG algorithm of a CPU based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_exclusive</samp>](## "custom_platform_settings.[].security_entropy_sources.hardware_exclusive") | Boolean |  |  |  | Only use entropy from the hardware source. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "custom_platform_settings.[].digital_twin.platform") | String |  |  |  | Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>veos</code><br>- <code>cloudeos</code><br>- <code>generic</code> | ACT node type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "custom_platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `digital_twin_mode` is `true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "custom_platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "custom_platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "custom_platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "custom_platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_settings</samp>](## "platform_settings") | List, items: Dictionary |  | See (+) on YAML tab |  | Platform settings. The first entry containing `platforms` matching the `platform` node setting will be chosen. If no matches are found, the first entry containing a platform `default` will be chosen. The default values will be overridden if `platform_settings` is defined. If you need to replace all the default platforms, it is recommended to copy the defaults and modify them. If you need to add custom platforms, create them under `custom_platform_settings`. Entries under `custom_platform_settings` will be matched before the equivalent entries from `platform_settings`. |
@@ -70,9 +70,9 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;haveged</samp>](## "platform_settings.[].security_entropy_sources.haveged") | Boolean |  |  |  | Use the HAVEGE algorithm. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;cpu_jitter</samp>](## "platform_settings.[].security_entropy_sources.cpu_jitter") | Boolean |  |  |  | Use the Jitter RNG algorithm of a CPU based source. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hardware_exclusive</samp>](## "platform_settings.[].security_entropy_sources.hardware_exclusive") | Boolean |  |  |  | Only use entropy from the hardware source. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "platform_settings.[].digital_twin.platform") | String |  |  |  | Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>veos</code><br>- <code>cloudeos</code><br>- <code>generic</code> | ACT node type. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;digital_twin</samp>](## "platform_settings.[].digital_twin") | Dictionary |  |  |  | PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.<br>Digital Twin settings applied when `digital_twin_mode` is `true`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;platform</samp>](## "platform_settings.[].digital_twin.platform") | String |  |  |  | Name of an alternate `platform_settings` platform used when running in Digital Twin mode.<br>The `platform_settings` for the regular `platform` is used if this is not set. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;act_node_type</samp>](## "platform_settings.[].digital_twin.act_node_type") | String |  |  | Valid Values:<br>- <code>cloudeos</code><br>- <code>cvp</code><br>- <code>generic</code><br>- <code>third-party</code><br>- <code>tools-server</code><br>- <code>veos</code> | ACT node type. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "platform_settings.[].structured_config") | Dictionary |  |  |  | Custom structured config for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;raw_eos_cli</samp>](## "platform_settings.[].raw_eos_cli") | String |  |  |  | EOS CLI rendered directly on the root level of the final EOS configuration. |
     | [<samp>platform_speed_groups</samp>](## "platform_speed_groups") | List, items: Dictionary |  |  |  | Set Hardware Speed Groups per Platform. |
@@ -162,14 +162,15 @@
           hardware_exclusive: <bool>
 
         # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-        # Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform.
+        # Digital Twin settings applied when `digital_twin_mode` is `true`.
         digital_twin:
 
-          # Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode.
+          # Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+          # The `platform_settings` for the regular `platform` is used if this is not set.
           platform: <str>
 
           # ACT node type.
-          act_node_type: <str; "veos" | "cloudeos" | "generic">
+          act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
         # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>
@@ -254,14 +255,15 @@
           hardware_exclusive: <bool>
 
         # PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-        # Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform.
+        # Digital Twin settings applied when `digital_twin_mode` is `true`.
         digital_twin:
 
-          # Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode.
+          # Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+          # The `platform_settings` for the regular `platform` is used if this is not set.
           platform: <str>
 
           # ACT node type.
-          act_node_type: <str; "veos" | "cloudeos" | "generic">
+          act_node_type: <str; "cloudeos" | "cvp" | "generic" | "third-party" | "tools-server" | "veos">
 
         # Custom structured config for eos_cli_config_gen.
         structured_config: <dict>

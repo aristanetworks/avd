@@ -3,24 +3,40 @@
 # that can be found in the LICENSE file.
 
 from dataclasses import dataclass
+from typing import Protocol
 
 
 @dataclass(frozen=True)
-class DigitalTwinFabricDocumentationActLink:
+class ActLinkSettings:
     connection: tuple[str | None, str | None]
 
 
 @dataclass(frozen=True)
-class DigitalTwinFabricDocumentationActNodeType:
+class ActNodeTypeSettings:
     username: str | None = None
     password: str | None = None
 
 
 @dataclass(frozen=True)
-class DigitalTwinFabricDocumentationActNode:
+class ActNodeSettings:
     node_type: str | None = None
     ip_addr: str | None = None
     version: str | None = None
+
+
+class ACTDigitalTwin(Protocol):
+    """Protocol describing the structure of the dynamically generated ACT Digital Twin fabric documentation dataclass."""
+
+    # Always present attributes
+    nodes: tuple[dict[str, ActNodeSettings], ...]
+    links: tuple[ActLinkSettings, ...]
+    # Dynamically-added attributes
+    cloudeos: ActNodeTypeSettings | None
+    cvp: ActNodeTypeSettings | None
+    generic: ActNodeTypeSettings | None
+    third_party: ActNodeTypeSettings | None
+    tools_server: ActNodeTypeSettings | None
+    veos: ActNodeTypeSettings | None
 
 
 class FabricDocumentation:
@@ -37,4 +53,4 @@ class FabricDocumentation:
     fabric_documentation: str = ""
     topology_csv: str = ""
     p2p_links_csv: str = ""
-    digital_twin: object | None = None
+    digital_twin: ACTDigitalTwin | None = None

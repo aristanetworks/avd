@@ -160,20 +160,24 @@ keys:
           type: dict
           description: |-
             PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-            Data model that controls the selection of the casted AVD platform as well as the selection of the Digital Twin virtual platform.
+            Digital Twin settings applied when `digital_twin_mode` is `true`.
           keys:
             platform:
               type: str
               description: |-
-                Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings during AVD execution in Digital Twin mode.
+                Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+                The `platform_settings` for the regular `platform` is used if this is not set.
             act_node_type:
               type: str
               description: |-
                 ACT node type.
               valid_values:
-                - veos
                 - cloudeos
+                - cvp
                 - generic
+                - third-party
+                - tools-server
+                - veos
         structured_config:
           type: dict
           relaxed_validation: true

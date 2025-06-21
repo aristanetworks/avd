@@ -13,7 +13,6 @@ import yaml
 from ansible.errors import AnsibleActionFail
 from ansible.parsing.yaml.dumper import AnsibleDumper
 from ansible.plugins.action import ActionBase, display
-from yaml import load
 
 from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import RaiseOnUse
 from ansible_collections.arista.avd.plugins.plugin_utils.utils import PythonToAnsibleHandler, YamlLoader, write_file
@@ -121,8 +120,9 @@ class ActionModule(ActionBase):
             result["changed"] = result.get("changed") or changed
 
         if output.digital_twin:
+            content = {str(key).replace("_", "-"): value for key, value in asdict(output.digital_twin).items()}
             changed = write_file(
-                content=yaml.dump(asdict(output.digital_twin), Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
+                content=yaml.dump(content, Dumper=AnsibleDumper, indent=2, sort_keys=False, width=130),
                 filename=validated_args["digital_twin_file"],
                 file_mode=validated_args["mode"],
             )
@@ -150,7 +150,7 @@ class ActionModule(ActionBase):
 
         with path.open(encoding="UTF-8") as stream:
             if structured_config_suffix in ["yml", "yaml"]:
-                return load(stream, Loader=YamlLoader)  # noqa: S506
+                return yaml.load(stream, Loader=YamlLoader)  # noqa: S506
 
             # JSON
             return json.load(stream)

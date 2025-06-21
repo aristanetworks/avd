@@ -2780,11 +2780,11 @@ class EosDesigns(EosDesignsRootModel):
 
             _fields: ClassVar[dict] = {"os_version": {"type": str}, "username": {"type": str}, "password": {"type": str}}
             os_version: str | None
-            """Desired Digital Twin OS version for fabric nodes."""
+            """OS version for Digital Twin fabric devices."""
             username: str
-            """Desired Digital Twin username for fabric nodes."""
+            """Username for Digital Twin fabric devices."""
             password: str
-            """Desired Digital Twin clear-text password for fabric nodes."""
+            """Cleartext password for Digital Twin fabric devices."""
 
             if TYPE_CHECKING:
 
@@ -2802,9 +2802,9 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        os_version: Desired Digital Twin OS version for fabric nodes.
-                        username: Desired Digital Twin username for fabric nodes.
-                        password: Desired Digital Twin clear-text password for fabric nodes.
+                        os_version: OS version for Digital Twin fabric devices.
+                        username: Username for Digital Twin fabric devices.
+                        password: Cleartext password for Digital Twin fabric devices.
 
                     """
 
@@ -2817,7 +2817,7 @@ class EosDesigns(EosDesignsRootModel):
         """
         fabric: Fabric
         """
-        Global Digital Twin settings related to the configuration of fabric nodes.
+        Settings for Digital Twin fabric devices.
 
         Subclass of AvdModel.
         """
@@ -2834,7 +2834,7 @@ class EosDesigns(EosDesignsRootModel):
                 Args:
                     environment: Targeted Digital Twin environment.
                     fabric:
-                       Global Digital Twin settings related to the configuration of fabric nodes.
+                       Settings for Digital Twin fabric devices.
 
                        Subclass of AvdModel.
 
@@ -10484,10 +10484,11 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
             platform: str | None
             """
-            Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
-            during AVD execution in Digital Twin mode.
+            Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+            The
+            `platform_settings` for the regular `platform` is used if this is not set.
             """
-            act_node_type: Literal["veos", "cloudeos", "generic"] | None
+            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
             """ACT node type."""
 
             if TYPE_CHECKING:
@@ -10496,7 +10497,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     platform: str | None | UndefinedType = Undefined,
-                    act_node_type: Literal["veos", "cloudeos", "generic"] | None | UndefinedType = Undefined,
+                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -10506,8 +10507,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         platform:
-                           Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
-                           during AVD execution in Digital Twin mode.
+                           Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+                           The
+                           `platform_settings` for the regular `platform` is used if this is not set.
                         act_node_type: ACT node type.
 
                     """
@@ -10560,10 +10562,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Data model that controls the selection of the casted AVD platform as well as the
-        selection of the Digital Twin virtual platform.
+        Digital Twin settings applied when `digital_twin_mode` is `true`.
 
-        Subclass of AvdModel.
+        Subclass of
+        AvdModel.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -10617,10 +10619,10 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Data model that controls the selection of the casted AVD platform as well as the
-                       selection of the Digital Twin virtual platform.
+                       Digital Twin settings applied when `digital_twin_mode` is `true`.
 
-                       Subclass of AvdModel.
+                       Subclass of
+                       AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -10867,10 +10869,11 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {"platform": {"type": str}, "act_node_type": {"type": str}}
             platform: str | None
             """
-            Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
-            during AVD execution in Digital Twin mode.
+            Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+            The
+            `platform_settings` for the regular `platform` is used if this is not set.
             """
-            act_node_type: Literal["veos", "cloudeos", "generic"] | None
+            act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None
             """ACT node type."""
 
             if TYPE_CHECKING:
@@ -10879,7 +10882,7 @@ class EosDesigns(EosDesignsRootModel):
                     self,
                     *,
                     platform: str | None | UndefinedType = Undefined,
-                    act_node_type: Literal["veos", "cloudeos", "generic"] | None | UndefinedType = Undefined,
+                    act_node_type: Literal["cloudeos", "cvp", "generic", "third-party", "tools-server", "veos"] | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DigitalTwin.
@@ -10889,8 +10892,9 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         platform:
-                           Platform name used to match the AVD `platform_settings` item to enforce platform-specific settings
-                           during AVD execution in Digital Twin mode.
+                           Name of an alternate `platform_settings` platform used when running in Digital Twin mode.
+                           The
+                           `platform_settings` for the regular `platform` is used if this is not set.
                         act_node_type: ACT node type.
 
                     """
@@ -10943,10 +10947,10 @@ class EosDesigns(EosDesignsRootModel):
         """
         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
         change at any time.
-        Data model that controls the selection of the casted AVD platform as well as the
-        selection of the Digital Twin virtual platform.
+        Digital Twin settings applied when `digital_twin_mode` is `true`.
 
-        Subclass of AvdModel.
+        Subclass of
+        AvdModel.
         """
         structured_config: EosCliConfigGen
         """Custom structured config for eos_cli_config_gen."""
@@ -11000,10 +11004,10 @@ class EosDesigns(EosDesignsRootModel):
                     digital_twin:
                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                        change at any time.
-                       Data model that controls the selection of the casted AVD platform as well as the
-                       selection of the Digital Twin virtual platform.
+                       Digital Twin settings applied when `digital_twin_mode` is `true`.
 
-                       Subclass of AvdModel.
+                       Subclass of
+                       AvdModel.
                     structured_config: Custom structured config for eos_cli_config_gen.
                     raw_eos_cli: EOS CLI rendered directly on the root level of the final EOS configuration.
 
@@ -62259,6 +62263,12 @@ class EosDesigns(EosDesignsRootModel):
     change at any time.
     Enable generation of the Digital Twin version of the fabric (Digital Twin
     topology, adjusted configuration, etc.).
+    By default, Digital Twin artifacts (such as the topology
+    file, adjusted structured and EOS configuration, device and fabric documentation) are output to the
+    AVD `root_dir`, potentially replacing original fabric artifacts.
+    To keep Digital Twin artifacts
+    separate, adjust the `root_dir` variable for both `eos_designs` and `eos_cli_config_gen` to point to
+    a dedicated output location.
 
     Default value: `False`
     """
@@ -64227,6 +64237,12 @@ class EosDesigns(EosDesignsRootModel):
                    change at any time.
                    Enable generation of the Digital Twin version of the fabric (Digital Twin
                    topology, adjusted configuration, etc.).
+                   By default, Digital Twin artifacts (such as the topology
+                   file, adjusted structured and EOS configuration, device and fabric documentation) are output to the
+                   AVD `root_dir`, potentially replacing original fabric artifacts.
+                   To keep Digital Twin artifacts
+                   separate, adjust the `root_dir` variable for both `eos_designs` and `eos_cli_config_gen` to point to
+                   a dedicated output location.
                 dns_settings:
                    DNS settings
 

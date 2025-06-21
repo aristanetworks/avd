@@ -4,13 +4,14 @@
 from __future__ import annotations
 
 from dataclasses import field, make_dataclass
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast
 
 from pyavd._utils import get
 from pyavd.api.fabric_documentation import (
-    DigitalTwinFabricDocumentationActLink,
-    DigitalTwinFabricDocumentationActNode,
-    DigitalTwinFabricDocumentationActNodeType,
+    ACTDigitalTwin,
+    ActLinkSettings,
+    ActNodeSettings,
+    ActNodeTypeSettings,
     FabricDocumentation,
 )
 
@@ -122,7 +123,7 @@ def _get_p2p_links_csv(fabric_documentation_facts: FabricDocumentationFacts) -> 
     return csv_content.read()
 
 
-def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> object:
+def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin | None:
     digital_twin_env = next(
         (
             environment
@@ -135,30 +136,33 @@ def _get_digital_twin(fabric_documentation_facts: FabricDocumentationFacts) -> o
         case "act":
             return _get_digital_twin_act(fabric_documentation_facts)
         case _:
-            return ""
+            return None
 
 
 def _act_dynamic_digital_twin_fabric_documentation(
     cls_name: str,
     node_types: dict,
-    nodes: tuple[dict[str, DigitalTwinFabricDocumentationActNode], ...],
-    links: tuple[DigitalTwinFabricDocumentationActLink, ...],
-) -> object:
-    return make_dataclass(
-        cls_name,
-        # Process ACT node_types
-        [(key, DigitalTwinFabricDocumentationActNodeType, field(default=value)) for key, value in node_types.items()]
-        +
-        # Process ACT nodes
-        [("nodes", tuple[dict[str, DigitalTwinFabricDocumentationActNode], ...], field(default=nodes))]
-        +
-        # Process ACT links
-        [("links", tuple[DigitalTwinFabricDocumentationActLink, ...], field(default=links))],
-        frozen=True,
-    )()
+    nodes: tuple[dict[str, ActNodeSettings], ...],
+    links: tuple[ActLinkSettings, ...],
+) -> ACTDigitalTwin:
+    return cast(
+        "ACTDigitalTwin",
+        make_dataclass(
+            cls_name,
+            # Process ACT node_types
+            [(str(key).replace("-", "_"), ActNodeTypeSettings, field(default=value)) for key, value in node_types.items()]
+            +
+            # Process ACT nodes
+            [("nodes", tuple[dict[str, ActNodeSettings], ...], field(default=nodes))]
+            +
+            # Process ACT links
+            [("links", tuple[ActLinkSettings, ...], field(default=links))],
+            frozen=True,
+        )(),
+    )
 
 
-def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> object:
+def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) -> ACTDigitalTwin:
     digital_twin_node_types: set[str] = set()
 
     # Identify common username for fabric nodes
@@ -181,7 +185,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         None,
     )
 
-    digital_twin_devices: list[dict[str, DigitalTwinFabricDocumentationActNode]] = []
+    digital_twin_devices: list[dict[str, ActNodeSettings]] = []
     device_list: list[str] = list(fabric_documentation_facts.avd_facts)
     for device in sorted(device_list):
         if (digital_twin_node_type := get(fabric_documentation_facts.structured_configs, f"{device}.metadata.digital_twin.node_type")) is not None:
@@ -189,7 +193,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
 
         digital_twin_devices.append(
             {
-                device: DigitalTwinFabricDocumentationActNode(
+                device: ActNodeSettings(
                     node_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator=".."),
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
@@ -200,14 +204,12 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     return _act_dynamic_digital_twin_fabric_documentation(
         cls_name="digital_twin_act_data",
         node_types={
-            digital_twin_node_type: DigitalTwinFabricDocumentationActNodeType(
-                username=str(digital_twin_fabric_username), password=str(digital_twin_fabric_password)
-            )
+            digital_twin_node_type: ActNodeTypeSettings(username=str(digital_twin_fabric_username), password=str(digital_twin_fabric_password))
             for digital_twin_node_type in sorted(digital_twin_node_types)
         },
         nodes=tuple(digital_twin_devices),
         links=tuple(
-            DigitalTwinFabricDocumentationActLink(
+            ActLinkSettings(
                 connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")
             )
             for topology_link in fabric_documentation_facts.topology_links

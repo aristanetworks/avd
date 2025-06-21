@@ -108,7 +108,7 @@ platform_settings:
       act_node_type: veos
   - platforms: [CloudEOS]
     digital_twin:
-      act_node_type: cloudeos
+      act_node_type: tools-server
 
 custom_platform_settings:
   - platforms:

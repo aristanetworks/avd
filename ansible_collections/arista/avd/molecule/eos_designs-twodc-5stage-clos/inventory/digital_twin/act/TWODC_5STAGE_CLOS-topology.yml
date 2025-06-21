@@ -1,4 +1,4 @@
-cloudeos:
+tools-server:
   username: act_user
   password: act_pass
 veos:
@@ -6,7 +6,7 @@ veos:
   password: act_pass
 nodes:
 - DC1-POD1-L2LEAF1A:
-    node_type: cloudeos
+    node_type: tools-server
     ip_addr: 192.168.1.10/24
     version: 4.33.0F
 - DC1-POD1-L2LEAF2A:

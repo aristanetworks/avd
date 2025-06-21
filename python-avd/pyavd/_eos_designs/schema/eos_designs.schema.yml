@@ -1218,20 +1218,19 @@ keys:
         default: act
       fabric:
         type: dict
-        description: Global Digital Twin settings related to the configuration of
-          fabric nodes.
+        description: Settings for Digital Twin fabric devices.
         required: true
         keys:
           os_version:
             type: str
-            description: Desired Digital Twin OS version for fabric nodes.
+            description: OS version for Digital Twin fabric devices.
           username:
             type: str
-            description: Desired Digital Twin username for fabric nodes.
+            description: Username for Digital Twin fabric devices.
             required: true
           password:
             type: str
-            description: Desired Digital Twin clear-text password for fabric nodes.
+            description: Cleartext password for Digital Twin fabric devices.
             required: true
   digital_twin_mode:
     documentation_options:
@@ -1241,7 +1240,14 @@ keys:
       or generated configuration can change at any time.
 
       Enable generation of the Digital Twin version of the fabric (Digital Twin topology,
-      adjusted configuration, etc.).'
+      adjusted configuration, etc.).
+
+      By default, Digital Twin artifacts (such as the topology file, adjusted structured
+      and EOS configuration, device and fabric documentation) are output to the AVD
+      `root_dir`, potentially replacing original fabric artifacts.
+
+      To keep Digital Twin artifacts separate, adjust the `root_dir` variable for
+      both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location.'
     default: false
   dns_settings:
     documentation_options:
@@ -3680,21 +3686,25 @@ keys:
           description: 'PREVIEW: This option is marked as "preview", meaning the data
             models or generated configuration can change at any time.
 
-            Data model that controls the selection of the casted AVD platform as well
-            as the selection of the Digital Twin virtual platform.'
+            Digital Twin settings applied when `digital_twin_mode` is `true`.'
           keys:
             platform:
               type: str
-              description: Platform name used to match the AVD `platform_settings`
-                item to enforce platform-specific settings during AVD execution in
-                Digital Twin mode.
+              description: 'Name of an alternate `platform_settings` platform used
+                when running in Digital Twin mode.
+
+                The `platform_settings` for the regular `platform` is used if this
+                is not set.'
             act_node_type:
               type: str
               description: ACT node type.
               valid_values:
-              - veos
               - cloudeos
+              - cvp
               - generic
+              - third-party
+              - tools-server
+              - veos
         structured_config:
           type: dict
           relaxed_validation: true

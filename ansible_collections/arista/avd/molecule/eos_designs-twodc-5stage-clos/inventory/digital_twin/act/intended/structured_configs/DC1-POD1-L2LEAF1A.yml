@@ -42,7 +42,7 @@ metadata:
   fabric_name: TWODC_5STAGE_CLOS
   digital_twin:
     environment: act
-    node_type: cloudeos
+    node_type: tools-server
     ip_addr: 192.168.1.10/24
     version: 4.33.0F
     username: act_user

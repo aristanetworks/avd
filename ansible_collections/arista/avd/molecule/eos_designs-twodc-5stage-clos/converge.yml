@@ -15,7 +15,7 @@
       ansible.builtin.import_role:
         name: arista.avd.eos_designs
       vars:
-        root_dir: "inventory/digital_twin/act"
+        root_dir: "{{ inventory_dir }}/digital_twin/act"
         digital_twin_mode: true
         # Dynamically pass vars specific to each Digital Twin environment (to allow runs for different Digital Twin environments)
         digital_twin:

@@ -13,4 +13,6 @@ keys:
     description: |-
       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Enable generation of the Digital Twin version of the fabric (Digital Twin topology, adjusted configuration, etc.).
+      By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation) are output to the AVD `root_dir`, potentially replacing original fabric artifacts.
+      To keep Digital Twin artifacts separate, adjust the `root_dir` variable for both `eos_designs` and `eos_cli_config_gen` to point to a dedicated output location.
     default: false
