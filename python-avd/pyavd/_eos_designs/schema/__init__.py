@@ -38914,7 +38914,7 @@ class EosDesigns(EosDesignsRootModel):
                             """
                             Key password.
                             Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-                            for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
+                            for each entry under `l3_interfaces`, `l3_port_channels` and `svis`.
                             To protect the password at rest
                             it is strongly recommended to make use of a vault or similar.
                             Configuration at the interface level
@@ -38944,7 +38944,7 @@ class EosDesigns(EosDesignsRootModel):
                                         key:
                                            Key password.
                                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password
-                                           for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
+                                           for each entry under `l3_interfaces`, `l3_port_channels` and `svis`.
                                            To protect the password at rest
                                            it is strongly recommended to make use of a vault or similar.
                                            Configuration at the interface level
@@ -41073,7 +41073,6 @@ class EosDesigns(EosDesignsRootModel):
                                 Expects a cleartext password if `encrypt_passwords: true`, otherwise
                                 expects a type 7 password.
                                 Maximum 16 characters for cleartext password.
-
                                 NOTE: when using type 7
                                 password, the l3_interfaces.interfaces list must not be more than 1 interface
                                 or they must all be
@@ -41105,7 +41104,6 @@ class EosDesigns(EosDesignsRootModel):
                                                Expects a cleartext password if `encrypt_passwords: true`, otherwise
                                                expects a type 7 password.
                                                Maximum 16 characters for cleartext password.
-
                                                NOTE: when using type 7
                                                password, the l3_interfaces.interfaces list must not be more than 1 interface
                                                or they must all be
@@ -41147,12 +41145,11 @@ class EosDesigns(EosDesignsRootModel):
                             Expects a cleartext password if `encrypt_passwords: true`,
                             otherwise expects a type 7 password.
                             Maximum 8 characters for cleartext password.
-
                             NOTE: when using
                             type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
-                                  or they
-                            must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
-                            name (when common encryption is disabled).
+                            or they must
+                            all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
+                            (when common encryption is disabled).
                             """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -41187,12 +41184,11 @@ class EosDesigns(EosDesignsRootModel):
                                            Expects a cleartext password if `encrypt_passwords: true`,
                                            otherwise expects a type 7 password.
                                            Maximum 8 characters for cleartext password.
-
                                            NOTE: when using
                                            type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
-                                                 or they
-                                           must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
-                                           name (when common encryption is disabled).
+                                           or they must
+                                           all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
+                                           (when common encryption is disabled).
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
