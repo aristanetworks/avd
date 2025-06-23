@@ -53,7 +53,7 @@ class EthernetInterfacesMixin(Protocol):
             # Used for p2p uplinks as well as main interface for p2p-vrfs.
             if link.type == "underlay_p2p":
                 ethernet_interface._update(
-                    mtu=self.shared_utils.p2p_uplinks_mtu,
+                    mtu=self.shared_utils.get_interface_mtu(link.interface, self.shared_utils.p2p_uplinks_mtu),
                     service_profile=self.inputs.p2p_uplinks_qos_profile,
                     ipv6_enable=link.ipv6_enable,
                     flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, output_type=EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
@@ -88,7 +88,9 @@ class EthernetInterfacesMixin(Protocol):
 
                 # IP address
                 if link.ip_address:
-                    if "unnumbered" in link.ip_address.lower():
+                    if self.shared_utils.underlay_ipv6_numbered:
+                        ethernet_interface.ipv6_address = f"{link.ip_address}/{link.prefix_length}"
+                    elif "unnumbered" in link.ip_address.lower():
                         ethernet_interface.ip_address = link.ip_address
                     else:
                         ethernet_interface.ip_address = f"{link.ip_address}/{link.prefix_length}"
@@ -196,7 +198,7 @@ class EthernetInterfacesMixin(Protocol):
                         description=description or None,
                         shutdown=self.inputs.shutdown_interfaces_towards_undeployed_peers and not link.peer_is_deployed,
                         ipv6_enable=subinterface.ipv6_enable,
-                        mtu=self.shared_utils.p2p_uplinks_mtu,
+                        mtu=self.shared_utils.get_interface_mtu(subinterface.interface, self.shared_utils.p2p_uplinks_mtu),
                         flow_tracker=self.shared_utils.get_flow_tracker(link.flow_tracking, EosCliConfigGen.EthernetInterfacesItem.FlowTracker),
                     )
                     ethernet_subinterface.encapsulation_dot1q.vlan = subinterface.encapsulation_dot1q_vlan
@@ -205,6 +207,9 @@ class EthernetInterfacesMixin(Protocol):
 
                     if subinterface.ip_address:
                         ethernet_subinterface.ip_address = f"{subinterface.ip_address}/{subinterface.prefix_length}"
+
+                    if subinterface.ipv6_address:
+                        ethernet_subinterface.ipv6_address = f"{subinterface.ipv6_address}/{subinterface.ipv6_prefix_length}"
 
                     self.structured_config.ethernet_interfaces.append(ethernet_subinterface)
 

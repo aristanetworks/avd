@@ -25,15 +25,16 @@ class RouterBgpMixin(Protocol):
         if not self.shared_utils.underlay_bgp:
             return
 
+        af_type = "ipv4" if not self.shared_utils.underlay_ipv6_numbered else "ipv6"
+
         peer_group = EosCliConfigGen.RouterBgp.PeerGroupsItem(
             name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-            type="ipv4",
+            type=af_type,
             password=self.inputs.bgp_peer_groups.ipv4_underlay_peers.password,
             bfd=self.inputs.bgp_peer_groups.ipv4_underlay_peers.bfd or None,
             maximum_routes=12000,
             send_community="all",
         )
-
         if self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config:
             self.custom_structured_configs.nested.router_bgp.peer_groups.obtain(self.inputs.bgp_peer_groups.ipv4_underlay_peers.name)._deepmerge(
                 self.inputs.bgp_peer_groups.ipv4_underlay_peers.structured_config, list_merge=self.custom_structured_configs.list_merge_strategy
@@ -51,16 +52,16 @@ class RouterBgpMixin(Protocol):
 
         # Address Families
         # TODO: - see if it makes sense to extract logic in method
-        address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
-            name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
-        )
+        if not self.shared_utils.underlay_ipv6_numbered:
+            address_family_ipv4_peer_group = EosCliConfigGen.RouterBgp.AddressFamilyIpv4.PeerGroupsItem(
+                name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
+            )
+            if self.inputs.underlay_rfc5549 is True:
+                address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
 
-        if self.inputs.underlay_rfc5549 is True:
-            address_family_ipv4_peer_group.next_hop.address_family_ipv6._update(enabled=True, originate=True)
+            self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
 
-        self.structured_config.router_bgp.address_family_ipv4.peer_groups.append(address_family_ipv4_peer_group)
-
-        if self.shared_utils.underlay_ipv6 is True:
+        if self.shared_utils.underlay_ipv6:
             self.structured_config.router_bgp.address_family_ipv6.peer_groups.append_new(
                 name=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name, activate=True
             )
@@ -121,10 +122,19 @@ class RouterBgpMixin(Protocol):
                     if subinterface_vrf not in self.structured_config.router_bgp.vrfs:
                         self.structured_config.router_bgp.vrfs.append_new(name=subinterface_vrf, router_id=self.shared_utils.router_id)
 
-                    self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
-                        ip_address=cast("str", subinterface.peer_ip_address),
-                        peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
-                        remote_as=link.peer_bgp_as,
-                        description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
-                        bfd=link.bfd,
-                    )
+                    if subinterface.peer_ipv6_address is not None:
+                        self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
+                            ip_address=cast("str", subinterface.peer_ipv6_address),
+                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                            remote_as=link.peer_bgp_as,
+                            description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
+                            bfd=link.bfd,
+                        )
+                    else:
+                        self.structured_config.router_bgp.vrfs[subinterface_vrf].neighbors.append_new(
+                            ip_address=cast("str", subinterface.peer_ip_address),
+                            peer_group=self.inputs.bgp_peer_groups.ipv4_underlay_peers.name,
+                            remote_as=link.peer_bgp_as,
+                            description=f"{f'{link.peer}_{subinterface.peer_interface}'}_vrf_{subinterface_vrf}",
+                            bfd=link.bfd,
+                        )

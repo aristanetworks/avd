@@ -102,6 +102,7 @@
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
+  - [Router Path-selection](#router-path-selection)
 - [Router L2 VPN](#router-l2-vpn)
   - [Router L2 VPN Summary](#router-l2-vpn-summary)
   - [Router L2 VPN Device Configuration](#router-l2-vpn-device-configuration)
@@ -1515,6 +1516,20 @@ application traffic recognition
    application l4 l4-app-1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
+```
+
+### Router Path-selection
+
+#### MTU Discovery Summary
+
+- MTU discovery for hosts on the LAN: Enabled
+
+#### Router Path-selection Device Configuration
+
+```eos
+!
+router path-selection
+   mtu discovery hosts
 ```
 
 ## Router L2 VPN

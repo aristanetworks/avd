@@ -27,6 +27,16 @@
 {%     if vxlan_config.vxlan.vtep_to_vtep_bridging is arista.avd.defined(true) %}
 | Vtep-to-Vtep Bridging | {{ vxlan_config.vxlan.vtep_to_vtep_bridging }} |
 {%     endif %}
+{%     if vxlan_config.vxlan.encapsulations.ipv4 is arista.avd.defined(true) or vxlan_config.vxlan.encapsulations.ipv6 is arista.avd.defined(true) %}
+{%         set tmp_encapsulations = [] %}
+{%         if vxlan_config.vxlan.encapsulations.ipv4 is arista.avd.defined(true) %}
+{%             do tmp_encapsulations.append("ipv4") %}
+{%         endif %}
+{%         if vxlan_config.vxlan.encapsulations.ipv6 is arista.avd.defined(true) %}
+{%             do tmp_encapsulations.append("ipv6") %}
+{%         endif %}
+| Vxlan Encapsulation | {{ tmp_encapsulations | join(", ") }} |
+{%     endif %}
 {%     if vxlan_config.vxlan.virtual_router_encapsulation_mac_address is arista.avd.defined %}
 | EVPN MLAG Shared Router MAC | {{ vxlan_config.vxlan.virtual_router_encapsulation_mac_address }} |
 {%     endif %}
