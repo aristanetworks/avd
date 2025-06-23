@@ -10,6 +10,9 @@ vxlan_interface:
         headend_replication: true
       controller_client:
         enabled: true
+      encapsulations:
+        ipv4: true
+        ipv6: true
       mlag_source_interface: Loopback1
       udp_port: 4789
       vtep_to_vtep_bridging: true

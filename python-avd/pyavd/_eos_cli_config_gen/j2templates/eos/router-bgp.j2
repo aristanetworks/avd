@@ -831,8 +831,8 @@ router bgp {{ router_bgp.as }}
       bgp additional-paths send backup
 {%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp is arista.avd.defined(true) %}
       bgp additional-paths send ecmp
-{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.limit is arista.avd.defined %}
-      bgp additional-paths send ecmp limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.limit }}
+{%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit is arista.avd.defined %}
+      bgp additional-paths send ecmp limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.ecmp_limit }}
 {%         elif router_bgp.address_family_evpn.bgp_additional_paths.send.limit is arista.avd.defined %}
       bgp additional-paths send limit {{ router_bgp.address_family_evpn.bgp_additional_paths.send.limit }}
 {%         endif %}

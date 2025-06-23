@@ -16,7 +16,7 @@
     ```yaml
     # This key is deprecated.
     # Support will be removed in AVD version 6.0.0.
-    # Use <samp>ip_community_lists</samp> instead.
+    # Use `ip_community_lists` instead.
     community_lists:
 
         # Community-list Name.

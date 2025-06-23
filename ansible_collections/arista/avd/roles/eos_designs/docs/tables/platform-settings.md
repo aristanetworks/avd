@@ -196,6 +196,10 @@
           # Feature will be ignored on unsupported platforms.
           poe: <bool; default=False>
 
+          # Support for MTU configuration under sub-interfaces.
+          # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
+          subinterface_mtu: <bool; default=True>
+
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
           # Effectively this means that all settings regarding interface MTU will be ignored if this is false.
           # Platforms without support for per interface MTU can use a single default interface MTU setting. Set this via "default_interface_mtu"
@@ -403,6 +407,10 @@
           # Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
           # Feature will be ignored on unsupported platforms.
           poe: <bool; default=False>
+
+          # Support for MTU configuration under sub-interfaces.
+          # When this key is set to False, MTU is not rendered under sub-interfaces even if it is set in the inputs.
+          subinterface_mtu: <bool; default=True>
 
           # Support for configuration of per interface MTU for p2p links, MLAG SVIs and Network Services.
           # Effectively this means that all settings regarding interface MTU will be ignored if this is false.

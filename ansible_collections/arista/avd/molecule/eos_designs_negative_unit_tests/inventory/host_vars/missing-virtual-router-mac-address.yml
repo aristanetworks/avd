@@ -1,0 +1,35 @@
+type: l3leaf
+mgmt_gateway: 192.168.200.1
+
+underlay_multicast: true
+evpn_multicast: true
+
+l3leaf:
+  defaults:
+    platform: vEOS-LAB
+    loopback_ipv4_pool: 192.168.255.0/24
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    bgp_as: 65101
+  nodes:
+    - name: missing-virtual-router-mac-address
+      id: 1
+      mgmt_ip: 192.168.200.105/24
+      uplink_switch_interfaces: [ Ethernet1 ]
+
+tenants:
+  - name: Tenant_A
+    evpn_l2_multicast:
+      enabled: true
+    vrfs:
+      - name: MULTICAST_ENABLED_110
+        description: "MULTICAST_ENABLED_110"
+        svis:
+          - id: 110
+            name: "MULTICAST_ENABLED_110"
+            enabled: true
+            ip_address_virtual: 10.1.10.1/24
+            evpn_l3_multicast:
+              enabled: true
+
+expected_error_message: >-
+  'virtual_router_mac_address' must be set for node 'missing-virtual-router-mac-address' when using 'ip_address_virtual' under 'svis'.

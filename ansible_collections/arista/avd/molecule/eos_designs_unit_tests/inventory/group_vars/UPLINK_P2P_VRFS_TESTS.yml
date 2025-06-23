@@ -64,6 +64,15 @@ l3leaf:
       id: 3
       uplink_switch_interfaces: [ Ethernet1, Ethernet2 ]
 
+    # Test leaf with underlay_ipv6_numbered (set in hostvars) and p2p_uplinks_vrf
+    - name: UPLINK_P2P_VRFS_TESTS_LEAF2
+      id: 5
+      loopback_ipv6_pool: 2001:db8:1:0::1/56
+      vtep_loopback_ipv6_pool: 2001:db8:2:0::1/56
+      uplink_ipv6_pool: 2001:db8:3:0::1/56
+      router_id_pool: 192.168.43.0/24
+      uplink_switch_interfaces: [ Ethernet2, Ethernet1 ]
+
 l2leaf:
   defaults:
     platform: vEOS-LAB

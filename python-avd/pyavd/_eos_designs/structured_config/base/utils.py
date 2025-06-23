@@ -11,6 +11,7 @@ if TYPE_CHECKING:
     from typing import TypeVar
 
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+    from pyavd._eos_designs.schema import EosDesigns
 
     from . import AvdStructuredConfigBaseProtocol
 
@@ -22,6 +23,14 @@ if TYPE_CHECKING:
         EosCliConfigGen.IpTacacsSourceInterfaces,
         EosCliConfigGen.SnmpServer.LocalInterfaces,
         EosCliConfigGen.IpRadiusSourceInterfaces,
+    )
+
+    T_ProtocolVrfs = TypeVar(
+        "T_ProtocolVrfs",
+        EosDesigns.DnsSettings.Vrfs,
+        EosDesigns.LoggingSettings.Vrfs,
+        EosDesigns.SflowSettings.Vrfs,
+        EosDesigns.SnmpSettings.Vrfs,
     )
 
 
@@ -76,3 +85,108 @@ class UtilsMixin(Protocol):
             )
 
         return source_interfaces
+
+    def _get_vrf_and_source_interface(
+        self: AvdStructuredConfigBaseProtocol,
+        vrf_input: str | None,
+        vrfs: T_ProtocolVrfs,
+        set_source_interfaces: bool,
+        context: str,
+    ) -> tuple[str, str | None]:
+        """
+        Helper function to interpret the VRF field for a management protocol.
+
+        The value of `vrf` will be interpreted according to these rules:
+        - `use_mgmt_interface_vrf` will return `(<mgmt_interface_vrf>, <vrfs[].source_interface or mgmt_interface>)`.
+          An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+        - `use_inband_mgmt_vrf` will return `(<inband_mgmt_vrf>, <vrfs[].source_interface or inband_mgmt_interface>)`.
+          An error will be raised if inband management is not configured for the device.
+        - `use_default_mgmt_method_vrf` will return one of the options above depending on the value of `default_mgmt_method`.
+          If `default_mgmt_method: none` an error will be raised.
+        - Any other string will return `(<vrf_input>, <vrfs[].source_interface or None)`
+
+        Args:
+            vrf_input: The VRF input value for one server.
+            vrfs: The 'vrfs' input list with potential source interface overrides.
+            set_source_interfaces: Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+            context: The variable path for the vrf input used for error messages.
+
+        Returns:
+            VRF name
+            Source Interface if available.
+
+        Raises:
+            AristaAvdInvalidInputsError raised by get_vrf() if conditions mentioned above are not met.
+        """
+        source_interface: str | None = None
+        vrf = self.get_vrf(vrf_input, context=context)
+        if set_source_interfaces:
+            # source_interface may be overridden below if given in the 'vrfs'
+            match vrf_input:
+                case None | "" | "use_default_mgmt_method_vrf":
+                    source_interface = self.shared_utils.default_mgmt_protocol_interface
+                case "use_mgmt_interface_vrf":
+                    source_interface = self.shared_utils.mgmt_interface
+                case "use_inband_mgmt_vrf":
+                    source_interface = self.shared_utils.inband_mgmt_interface
+
+        if vrf in vrfs and vrfs[vrf].source_interface:
+            source_interface = vrfs[vrf].source_interface
+
+        return (vrf, source_interface)
+
+    def get_vrf(
+        self: AvdStructuredConfigBaseProtocol,
+        vrf_input: str | None,
+        context: str,
+    ) -> str:
+        """
+        Helper function to interpret the VRF field for a management protocol.
+
+        The value of `vrf` will be interpreted according to these rules:
+        - `use_mgmt_interface_vrf` will return `(<mgmt_interface_vrf>, <vrfs[].source_interface or mgmt_interface>)`.
+          An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+        - `use_inband_mgmt_vrf` will return `(<inband_mgmt_vrf>, <vrfs[].source_interface or inband_mgmt_interface>)`.
+          An error will be raised if inband management is not configured for the device.
+        - `use_default_mgmt_method_vrf` will return one of the options above depending on the value of `default_mgmt_method`.
+          If `default_mgmt_method: none` an error will be raised.
+        - Any other string will be returned directly.
+
+        Args:
+            vrf_input: The VRF input value for one server.
+            context: The variable path for the vrf input used for error messages.
+
+        Returns:
+            VRF name
+
+        Raises:
+            AristaAvdInvalidInputsError: If `vrf` is unset or set to `use_default_mgmt_method_vrf` and `default_mgmt_method` is set to 'none'.
+            AristaAvdInvalidInputsError: If `vrf` is set to `use_mgmt_interface_vrf` and no `mgmt_ip` is set for this device.
+            AristaAvdInvalidInputsError: If `vrf` is set to `use_inband_mgmt_vrf` and inband management is not configured for this device.
+        """
+        if not vrf_input or vrf_input == "use_default_mgmt_method_vrf":
+            match self.inputs.default_mgmt_method:
+                case "oob":
+                    vrf_input = "use_mgmt_interface_vrf"
+                case "inband":
+                    vrf_input = "use_inband_mgmt_vrf"
+                case "none":
+                    msg = f"The VRF '{context}' must be set when 'default_mgmt_method' is set to 'none'. Use 'default' for the default VRF."
+                    raise AristaAvdInvalidInputsError(msg)
+
+        match vrf_input:
+            case "use_mgmt_interface_vrf":
+                has_mgmt_ip = (self.shared_utils.node_config.mgmt_ip is not None) or (self.shared_utils.node_config.ipv6_mgmt_ip is not None)
+                if not has_mgmt_ip:
+                    msg = f"'{context}' is set to 'use_mgmt_interface_vrf' but this node is missing 'mgmt_ip' or 'ipv6_mgmt_ip'."
+                    raise AristaAvdInvalidInputsError(msg)
+
+                return self.inputs.mgmt_interface_vrf
+            case "use_inband_mgmt_vrf":
+                if self.shared_utils.inband_mgmt_interface is None:
+                    msg = f"'{context}' is set to 'use_inband_mgmt_vrf' but this node is missing configuration for inband management."
+                    raise AristaAvdInvalidInputsError(msg)
+
+                return self.shared_utils.inband_mgmt_vrf or "default"
+            case _:
+                return vrf_input

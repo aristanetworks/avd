@@ -29,6 +29,7 @@ SCHEMA = AvdSchemaTools(schema_id="eos_cli_config_gen").avdschema._schema
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
     "eos_cli_config_gen",
     "eos_cli_config_gen_deprecated_vars",
 )
