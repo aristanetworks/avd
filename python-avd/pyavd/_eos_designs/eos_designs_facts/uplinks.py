@@ -145,6 +145,7 @@ class UplinksMixin(EosDesignsFactsProtocol, Protocol):
                 # uplink_type: lan' only supports a single uplink interface.
                 # Got {self._uplink_interfaces}. Consider 'uplink_type: lan-port-channel' if applicable.
             get_uplink = self._get_l2_uplink
+        # This condition does not occur.
         else:
             msg = f"Invalid uplink_type '{self.shared_utils.uplink_type}'."
             raise AristaAvdError(msg)
