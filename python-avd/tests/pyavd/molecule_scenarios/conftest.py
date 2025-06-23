@@ -22,13 +22,43 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
 
     Reads/updates MOLECULE_SCENARIOS for caching.
     """
-    molecule_scenario_names = chain.from_iterable(list(mark.args) for mark in metafunc.definition.iter_markers(name="molecule_scenarios"))
     molecule_scenarios: list[MoleculeScenario] = []
-    for molecule_scenario_name in molecule_scenario_names:
-        if molecule_scenario_name not in MOLECULE_SCENARIOS:
-            # Using this method since setdefault triggers init of the class which is expensive.
-            MOLECULE_SCENARIOS[molecule_scenario_name] = MoleculeScenario(molecule_scenario_name)
-        molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_name])
+
+    for marker in metafunc.definition.iter_markers(name="molecule_scenarios"):
+        for arg in marker.args:
+            artifacts_path_offset = ""
+            if isinstance(arg, str):
+                molecule_scenario_name = arg
+            elif isinstance(arg, tuple):
+                if len(arg) != 2:
+                    msg = f"molecule_scenarios marker error: Length of the tuple must be 2. Provided tuple: '{arg}'"
+                    raise ValueError(msg)
+                molecule_scenario_name = arg[0]
+                if not isinstance(molecule_scenario_name, str):
+                    msg = (
+                        "molecule_scenarios marker error: Scenario's name must be provided as a 'str'. "
+                        f"Actual input ('{molecule_scenario_name}') has type '{type(molecule_scenario_name)}'"
+                    )
+                    raise TypeError(msg)
+                artifacts_path_offset = arg[1]
+                if not isinstance(artifacts_path_offset, str):
+                    msg = (
+                        "molecule_scenarios marker error: Scenario's path offset must be provided as a 'str'. "
+                        f"Actual input ('{artifacts_path_offset}') has type '{type(artifacts_path_offset)}'"
+                    )
+                    raise TypeError(msg)
+            else:
+                msg = (
+                    "molecule_scenarios marker error: Accepted formats: <str> (molecule scenario name) OR "
+                    "<tuple[str, str]> (molecule scenario name followed by the path offset)."
+                )
+                raise TypeError(msg)
+
+            molecule_scenario_extended_name = molecule_scenario_name + artifacts_path_offset
+            if molecule_scenario_extended_name not in MOLECULE_SCENARIOS:
+                # Using this method since setdefault triggers init of the class which is expensive.
+                MOLECULE_SCENARIOS[molecule_scenario_extended_name] = MoleculeScenario(molecule_scenario_name, artifacts_path_offset)
+            molecule_scenarios.append(MOLECULE_SCENARIOS[molecule_scenario_extended_name])
 
     if "molecule_host" in metafunc.fixturenames:
         metafunc.parametrize("molecule_host", chain.from_iterable(scenario.hosts for scenario in molecule_scenarios), ids=get_test_id)

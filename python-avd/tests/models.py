@@ -43,7 +43,7 @@ class MoleculeHost:
     @cached_property
     def structured_config(self) -> dict:
         """The intended structured config for the host, as read from the YAML file in the molecule scenario."""
-        structured_config_path = self.scenario.path / "intended/structured_configs" / f"{self.name}.yml"
+        structured_config_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/structured_configs", f"{self.name}.yml")
         if not structured_config_path.exists():
             return {}
 
@@ -52,7 +52,7 @@ class MoleculeHost:
     @cached_property
     def config(self) -> str | None:
         """The intended EOS config for the host, as read from the cfg file in the molecule scenario."""
-        config_path = self.scenario.path / "intended/configs" / f"{self.name}.cfg"
+        config_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "intended/configs", f"{self.name}.cfg")
         if not config_path.exists():
             return None
 
@@ -61,7 +61,7 @@ class MoleculeHost:
     @cached_property
     def doc(self) -> str | None:
         """The intended MarkDown documentation for the host, as read from the md file in the molecule scenario."""
-        doc_path = self.scenario.path / "documentation/devices" / f"{self.name}.md"
+        doc_path = self.scenario.path.joinpath(self.scenario.artifacts_path_offset, "documentation/devices", f"{self.name}.md")
         if not doc_path.exists():
             return None
 
@@ -81,18 +81,21 @@ class MoleculeScenario:
     hosts: list[MoleculeHost]
     pool_manager: PoolManager | None
     extra_python_paths: list[str]
+    artifacts_path_offset: Path
 
-    def __init__(self, name: str) -> None:
+    def __init__(self, name: str, artifacts_path_offset: str = "") -> None:
         """
         Class representing one Molecule scenario.
 
         Args:
             name: Molecule scenario name
+            artifacts_path_offset: Relative path offset for configuration and documentation artifacts
 
         The Ansible inventory of the Molecule scenario will be parsed and MoleculeHost instances will be inserted into the `hosts` property
         for each host found in the inventory.
         """
         self.name = name
+        self.artifacts_path_offset = Path(artifacts_path_offset)
         if name.startswith("example-"):
             # Example paths
             self.path = EXAMPLE_PATH / name.removeprefix("example-")
@@ -138,7 +141,7 @@ class MoleculeScenario:
 
         None if no fabric documentation is found in the molecule artifacts.
         """
-        fabric_doc_path = self.path / "documentation/fabric"
+        fabric_doc_path = self.path.joinpath(self.artifacts_path_offset, "documentation/fabric")
         files = list(fabric_doc_path.glob("*-documentation.md"))
         if not files:
             return None
@@ -156,7 +159,7 @@ class MoleculeScenario:
 
         None if no Topology CSV is found in the molecule artifacts.
         """
-        fabric_doc_path = self.path / "documentation/fabric"
+        fabric_doc_path = self.path.joinpath(self.artifacts_path_offset, "documentation/fabric")
         files = list(fabric_doc_path.glob("*-topology.csv"))
         if not files:
             return None
@@ -174,7 +177,7 @@ class MoleculeScenario:
 
         None if no P2P Links CSV is found in the molecule artifacts.
         """
-        fabric_doc_path = self.path / "documentation/fabric"
+        fabric_doc_path = self.path.joinpath(self.artifacts_path_offset, "documentation/fabric")
         files = list(fabric_doc_path.glob("*-p2p-links.csv"))
         if not files:
             return None
