@@ -144,6 +144,32 @@ router_bgp:
     - name: EVPN-OVERLAY-PEERS
       activate: false
 service_routing_protocols_model: multi-agent
+snmp_server:
+  ipv4_acls:
+  - name: SNMP-MGMT
+    vrf: MGMT
+  - name: onur
+  ipv6_acls:
+  - name: SNMP-MGMT
+    vrf: MGMT
+  - name: onur_v6
+  local_interfaces:
+  - name: Management1
+  - name: Vlan10
+    vrf: INBANDMGMT
+  hosts:
+  - host: 10.6.75.127
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  - host: 10.6.75.127
+    vrf: INBANDMGMT
+    version: 2c
+    community: SNMP-COMMUNITY-2
+  vrfs:
+  - name: default
+    enable: true
+  - name: INBANDMGMT
+    enable: true
 static_routes:
 - vrf: default
   prefix: 0.0.0.0

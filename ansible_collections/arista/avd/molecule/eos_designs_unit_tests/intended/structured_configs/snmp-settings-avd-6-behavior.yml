@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: snmp-settings-2
+hostname: snmp-settings-avd-6-behavior
 ip_igmp_snooping:
   globally_enabled: true
 is_deployed: true
@@ -11,62 +11,52 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.43/26
+  type: oob
+  gateway: 10.10.10.1
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
 snmp_server:
   ipv4_acls:
+  - name: acl-for-vrf-MGMT
   - name: acl-for-vrf-default
+    vrf: default
   ipv6_acls:
+  - name: acl-for-vrf-MGMT
   - name: acl-for-vrf-default
+    vrf: default
   local_interfaces:
-  - name: Vlan123
+  - name: Management1
+    vrf: MGMT
   hosts:
-  - host: 10.6.75.125
-    vrf: SNMPVRF
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  - host: 10.6.75.126
+  - host: 10.6.75.124
     version: '3'
     users:
     - username: USER-WRITE
       authentication_level: auth
-  - host: 10.6.75.127
-    vrf: SNMPVRF
-    version: 2c
-    community: SNMP-COMMUNITY-2
-  - host: 10.6.75.129
-    version: 2c
-    community: SNMP-COMMUNITY-2
   - host: 10.6.75.130
+    vrf: MGMT
     version: 2c
     community: SNMP-COMMUNITY-2
-  traps:
-    snmp_traps:
-    - name: foo
-      enabled: true
   vrfs:
   - name: default
-    enable: true
-  - name: SNMPVRF
-    enable: true
+    enable: false
+static_routes:
+- vrf: MGMT
+  prefix: 0.0.0.0/0
+  next_hop: 10.10.10.1
 transceiver_qsfp_default_mode_4x10: true
-vlan_interfaces:
-- name: Vlan123
-  description: Inband Management
-  shutdown: false
-  ip_address: 192.168.0.1/24
-  mtu: 1500
-  type: inband_mgmt
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
-vlans:
-- id: 4092
-  name: INBAND_MGMT
-  tenant: system
 vrfs:
 - name: MGMT
   ip_routing: false
