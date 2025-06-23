@@ -1,23 +1,29 @@
 aaa_root:
   disabled: true
 aaa_server_groups:
-- name: TACACS1
-  type: tacacs+
+- name: RADIUS1
+  type: radius
   servers:
-  - server: 10.10.10.1
+  - server: 11.10.10.11
+    vrf: default
+  - server: 11.10.10.1
     vrf: MGMT
-- name: TACACS2
-  type: tacacs+
+  - server: 11.10.10.2
+    vrf: MGMT
+  - server: 11.10.10.3
+    vrf: MGMT
+- name: RADIUS2
+  type: radius
   servers:
-  - server: 10.10.10.1
+  - server: 11.10.10.1
     vrf: MGMT
 config_end: true
 enable_password:
   disabled: true
-hostname: aaa-settings-tacacs-1
+hostname: aaa-settings-radius-1
 ip_igmp_snooping:
   globally_enabled: true
-ip_tacacs_source_interfaces:
+ip_radius_source_interfaces:
 - name: Management1
   vrf: MGMT
 - name: Management1
@@ -36,28 +42,21 @@ management_interfaces:
   type: oob
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
-service_routing_protocols_model: multi-agent
-tacacs_servers:
+radius_server:
   hosts:
-  - host: 10.10.10.1
+  - host: 11.10.10.11
     vrf: default
-    key_type: '7'
-  - host: 10.10.10.1
+    key: password
+  - host: 11.10.10.1
     vrf: MGMT
     key: password
-    key_type: '0'
-    single_connection: true
-    timeout: 100
-  - host: 10.10.10.2
+  - host: 11.10.10.2
     vrf: MGMT
-    key_type: '7'
-  - host: 10.10.10.2
-    vrf: other_vrf
-    key_type: '7'
-  - host: 10.10.10.3
+    key: password
+  - host: 11.10.10.3
     vrf: MGMT
-    key_type: '7'
-  policy_unknown_mandatory_attribute_ignore: true
+    key: password
+service_routing_protocols_model: multi-agent
 transceiver_qsfp_default_mode_4x10: true
 vlan_internal_order:
   allocation: ascending

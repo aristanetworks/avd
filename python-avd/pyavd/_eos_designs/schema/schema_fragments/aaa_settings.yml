@@ -10,30 +10,33 @@ keys:
             type: list
             items:
               type: dict
-              $ref: "eos_cli_config_gen#/keys/tacacs_servers/keys/hosts/items"
               keys:
+                host:
+                  type: str
+                  description: Host IP address or name.
                 groups:
                   type: list
-                  # required: true
-                  # min_length: 1
+                  required: true
+                  min_length: 1
                   items:
                     type: str
-                # vrf:
-                #   type: str
-                #   description:description: |-
-                #     VRF name.
-                #     The value will be interpreted according to these rules:
-                #     - `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
-                #       An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                #     - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-                #       An error will be raised if inband management is not configured for the device.
-                #     - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
-                #     - Any other string will be used directly as the VRF name.
-                #   convert_types:
-                #     - int
-                # Port key is not supported yet in eos_cli_config_gen
-                # port:
-                #   type: int
+                vrf:
+                  type: str
+                  description: |-
+                    VRF name.
+                    The value will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name.
+                  convert_types:
+                    - int
+                key:
+                  type: str
+                  description: Encrypted key.
+                  required: true
           vrfs:
             type: list
             items:
@@ -68,16 +71,31 @@ keys:
             items:
               type: dict
               keys:
-                name:
+                host:
                   type: str
+                  description: Host IP address or name.
                 groups:
                   type: list
                   required: true
                   min_length: 1
                   items:
                     type: str
+                vrf:
+                  type: str
+                  description: |-
+                    VRF name.
+                    The value will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name.
+                  convert_types:
+                    - int
                 key:
                   type: str
+                  description: Encrypted key.
                   required: true
           vrfs:
             type: list
@@ -86,6 +104,17 @@ keys:
               keys:
                 name:
                   type: str
+                  description: |-
+                    VRF Name.
+                    The value of `vrf` will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                  convert_types:
+                    - int
                 source_interface:
                   type: str
       authentication:

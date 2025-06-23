@@ -34,40 +34,40 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {
-                    "groups": {"type": Groups},
-                    "host": {"type": str},
-                    "vrf": {"type": str},
-                    "key": {"type": str},
-                    "key_type": {"type": str, "default": "7"},
-                    "single_connection": {"type": bool},
-                    "timeout": {"type": int},
-                }
-                groups: Groups
-                """Subclass of AvdList with `str` items."""
+                _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
                 host: str | None
                 """Host IP address or name."""
+                groups: Groups
+                """Subclass of AvdList with `str` items."""
                 vrf: str | None
-                key: str | None
+                """
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will
+                configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if
+                `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will
+                configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband
+                management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+                """
+                key: str
                 """Encrypted key."""
-                key_type: Literal["0", "7", "8a"]
-                """Default value: `"7"`"""
-                single_connection: bool | None
-                timeout: int | None
-                """Timeout in seconds."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
                         self,
                         *,
-                        groups: Groups | UndefinedType = Undefined,
                         host: str | None | UndefinedType = Undefined,
+                        groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
-                        key: str | None | UndefinedType = Undefined,
-                        key_type: Literal["0", "7", "8a"] | UndefinedType = Undefined,
-                        single_connection: bool | None | UndefinedType = Undefined,
-                        timeout: int | None | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -76,13 +76,24 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            groups: Subclass of AvdList with `str` items.
                             host: Host IP address or name.
-                            vrf: vrf
+                            groups: Subclass of AvdList with `str` items.
+                            vrf:
+                               VRF name.
+                               The value will be interpreted according to these rules:
+                               - `use_mgmt_interface_vrf` will
+                               configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                                 An error will be raised if
+                               `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will
+                               configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if inband
+                               management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure the VRF
+                               and source-interface for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the VRF name.
                             key: Encrypted key.
-                            key_type: key_type
-                            single_connection: single_connection
-                            timeout: Timeout in seconds.
 
                         """
 
@@ -210,16 +221,40 @@ class EosDesigns(EosDesignsRootModel):
 
                 Groups._item_type = str
 
-                _fields: ClassVar[dict] = {"name": {"type": str}, "groups": {"type": Groups}, "key": {"type": str}}
-                name: str | None
+                _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
+                host: str | None
+                """Host IP address or name."""
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
+                vrf: str | None
+                """
+                VRF name.
+                The value will be interpreted according to these rules:
+                - `use_mgmt_interface_vrf` will
+                configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                  An error will be raised if
+                `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will
+                configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if inband
+                management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF
+                and source-interface for one of the two options above depending on the value of
+                `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+                """
                 key: str
+                """Encrypted key."""
 
                 if TYPE_CHECKING:
 
                     def __init__(
-                        self, *, name: str | None | UndefinedType = Undefined, groups: Groups | UndefinedType = Undefined, key: str | UndefinedType = Undefined
+                        self,
+                        *,
+                        host: str | None | UndefinedType = Undefined,
+                        groups: Groups | UndefinedType = Undefined,
+                        vrf: str | None | UndefinedType = Undefined,
+                        key: str | UndefinedType = Undefined,
                     ) -> None:
                         """
                         ServersItem.
@@ -228,9 +263,24 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: name
+                            host: Host IP address or name.
                             groups: Subclass of AvdList with `str` items.
-                            key: key
+                            vrf:
+                               VRF name.
+                               The value will be interpreted according to these rules:
+                               - `use_mgmt_interface_vrf` will
+                               configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                                 An error will be raised if
+                               `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will
+                               configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if inband
+                               management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure the VRF
+                               and source-interface for one of the two options above depending on the value of
+                               `default_mgmt_method`.
+                               - Any other string will be used directly as the VRF name.
+                            key: Encrypted key.
 
                         """
 
@@ -244,6 +294,24 @@ class EosDesigns(EosDesignsRootModel):
 
                 _fields: ClassVar[dict] = {"name": {"type": str}, "source_interface": {"type": str}}
                 name: str | None
+                """
+                VRF Name.
+                The value of `vrf` will be interpreted according to these rules:
+                -
+                `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
+                and set the `mgmt_interface` as SNMP source-interface.
+                  An error will be raised if `mgmt_ip` or
+                `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the SNMP
+                host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
+                interface.
+                  An error will be raised if inband management is not configured for the device.
+                -
+                `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                above depending on the value of `default_mgmt_method`.
+                - Any other string will be used directly as
+                the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                """
                 source_interface: str | None
 
                 if TYPE_CHECKING:
@@ -256,7 +324,23 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
 
                         Args:
-                            name: name
+                            name:
+                               VRF Name.
+                               The value of `vrf` will be interpreted according to these rules:
+                               -
+                               `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
+                               and set the `mgmt_interface` as SNMP source-interface.
+                                 An error will be raised if `mgmt_ip` or
+                               `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf` will configure the SNMP
+                               host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
+                               interface.
+                                 An error will be raised if inband management is not configured for the device.
+                               -
+                               `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
+                               above depending on the value of `default_mgmt_method`.
+                               - Any other string will be used directly as
+                               the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
                             source_interface: source_interface
 
                         """

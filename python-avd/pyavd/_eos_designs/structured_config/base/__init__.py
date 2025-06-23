@@ -614,6 +614,12 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if eos_cli:
             self.structured_config.eos_cli = eos_cli
 
+    @structured_config_contributor
+    def aaa_settings(self) -> None:
+        self.ip_tacacs_source_interfaces()
+        self.tacacs_servers()
+        self.ip_tacacs_source_interfaces()
+
     # need to update return type in self._build_source_interfaces() method, then update the below cached_property where this method is used
     @structured_config_contributor
     def ip_radius_source_interfaces(self) -> None:
@@ -627,15 +633,43 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             self.structured_config.ip_radius_source_interfaces = source_interfaces
 
     @structured_config_contributor
+    def radius_servers(self) -> None:
+        """Parse source_interfaces.tacacs and return list of source_interfaces."""
+        if not self.inputs.aaa_settings.radius:
+            return
+
+        vrfs = self.inputs.aaa_settings.radius.vrfs
+        for server in self.inputs.aaa_settings.radius.servers:
+            server_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=server.vrf,
+                vrfs=vrfs,
+                set_source_interfaces=True,
+                context=f"aaa_sttings.servers[ip_address={server.host}].vrf",
+            )
+            if source_interface:
+                self.structured_config.ip_radius_source_interfaces.append_new(name=source_interface, vrf=server_vrf)
+            self.structured_config.radius_server.hosts.append_new(
+                host=server.host, vrf=server_vrf, key=server.key
+            )
+            for group in server.groups:
+                radius_servers = self.structured_config.aaa_server_groups.obtain(group)
+                radius_servers.type = "radius"
+                radius_servers.servers.append_new(server=server.host,vrf=server_vrf)
+
+    @structured_config_contributor
+    def ip_tacacs_source_interfaces(self) -> None:
+        """Parse source_interfaces.tacacs and return list of source_interfaces."""
+        if not (inputs := self.inputs.source_interfaces.tacacs):
+            return
+
+        if source_interfaces := self._build_source_interfaces(
+            inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Tacacs", output_type=EosCliConfigGen.IpTacacsSourceInterfaces
+        ):
+            self.structured_config.ip_tacacs_source_interfaces.extend(source_interfaces)
+
+    @structured_config_contributor
     def tacacs_servers(self) -> None:
         """Parse source_interfaces.tacacs and return list of source_interfaces."""
-        if (inputs := self.inputs.source_interfaces.tacacs) and (
-            source_interfaces := self._build_source_interfaces(
-                inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Tacacs", output_type=EosCliConfigGen.IpTacacsSourceInterfaces
-            )
-        ):
-            self.structured_config.ip_tacacs_source_interfaces = source_interfaces
-
         if not self.inputs.aaa_settings.tacacs:
             return
 
@@ -644,14 +678,19 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             server_vrf, source_interface = self._get_vrf_and_source_interface(
                 vrf_input=server.vrf,
                 vrfs=vrfs,
-                set_source_interfaces=self.inputs.dns_settings.set_source_interfaces,
+                set_source_interfaces=True,
                 context=f"aaa_sttings.servers[ip_address={server.host}].vrf",
             )
             if source_interface:
                 self.structured_config.ip_tacacs_source_interfaces.append_new(name=source_interface, vrf=server_vrf)
             self.structured_config.tacacs_servers.hosts.append_new(
-                host=server.host, vrf=server_vrf, key=server.key, key_type=server.key_type, single_connection=server.single_connection, timeout=server.timeout
+                host=server.host, vrf=server_vrf, key=server.key
             )
+            for group in server.groups:
+                tacacs_server = self.structured_config.aaa_server_groups.obtain(group)
+                tacacs_server.type = "tacacs+"
+                tacacs_server.servers.append_new(server=server.host,vrf=server_vrf)
+        self.structured_config.tacacs_servers.policy_unknown_mandatory_attribute_ignore = self.inputs.aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute
 
     @structured_config_contributor
     def ip_ssh_client_source_interfaces(self) -> None:
