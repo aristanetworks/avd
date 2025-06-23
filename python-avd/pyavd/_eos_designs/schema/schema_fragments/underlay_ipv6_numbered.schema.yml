@@ -1,0 +1,28 @@
+# Copyright (c) 2023-2024 Arista Networks, Inc.
+# Use of this source code is governed by the Apache License 2.0
+# that can be found in the LICENSE file.
+# yaml-language-server: $schema=../../../_schema/avd_meta_schema.json
+# Line above is used by RedHat's YAML Schema vscode extension
+# Use Ctrl + Space to get suggestions for every field. Autocomplete will pop up after typing 2 letters.
+type: dict
+keys:
+  underlay_ipv6_numbered:
+    documentation_options:
+      table: fabric-settings
+    description: |
+      This feature allows pure IPv6 underlay routing protocol with numbered addresses.
+      Currently sets both underlay and overlay, including MLAG, to use IPv6 addresses.
+      Currently BGP peer-groups are named with IPv4 by default. This can be modified under `bgp_peer_groups`.
+      Requires:
+        - "underlay_ipv6: true"
+        - "loopback_ipv6_pool"
+        - "underlay_routing_protocol: ebgp"
+      Some settings are not yet supported with IPv6 underlay:
+        - underlay_multicast
+        - underlay_multicast_rp_interfaces
+        - underlay_rfc5549
+        - wan_role
+        - vtep_vvtep_ip
+        - inband_ztp
+    type: bool
+    default: false

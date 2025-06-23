@@ -324,6 +324,61 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
             self.structured_config.ip_name_servers.append_new(ip_address=server.ip_address, vrf=server_vrf, priority=server.priority)
 
     @structured_config_contributor
+    def logging(self) -> None:
+        """
+        Configures logging settings based on the input data model.
+
+        Applies global logging parameters and per-VRF host logging configuration,
+        including source interfaces, protocols, ports, and SSL profiles.
+        Ensures that each VRF has a unique and consistent source interface.
+        """
+        if not self.inputs.logging_settings:
+            return
+
+        settings = self.inputs.logging_settings
+
+        # Apply global logging parameters
+        self.structured_config.logging._update(
+            console=settings.console,
+            monitor=settings.monitor,
+            repeat_messages=settings.repeat_messages,
+            trap=settings.trap,
+            facility=settings.facility,
+            buffered=settings.buffered,
+            synchronous=settings.synchronous,
+            format=settings.format,
+            policy=settings.policy,
+            event=settings.event,
+            level=settings.level,
+        )
+
+        # Temporary structure to detect source interface conflicts
+        vrf_logging_config = EosCliConfigGen.Logging.Vrfs()
+
+        for host in settings.hosts:
+            # Determine the correct VRF and source interface for the host
+            host_vrf, source_interface = self._get_vrf_and_source_interface(
+                vrf_input=host.vrf,
+                vrfs=settings.vrfs,
+                set_source_interfaces=True,
+                context=f"logging_settings.hosts[name={host.name}].vrf",
+            )
+
+            logging_vrf = self.structured_config.logging.vrfs.obtain(host_vrf)
+            if source_interface:
+                # Add to local tmp object to detect conflicts.
+                vrf_logging_config.append_new(name=host_vrf, source_interface=source_interface)
+                logging_vrf.source_interface = source_interface
+
+            # Add host entry under the correct VRF
+            logging_vrf.hosts.append_new(
+                name=host.name,
+                protocol=host.protocol,
+                ssl_profile=host.ssl_profile,
+                ports=EosCliConfigGen.Logging.VrfsItem.HostsItem.Ports(items=host.ports),
+            )
+
+    @structured_config_contributor
     def redundancy(self) -> None:
         """Redundancy set based on redundancy data-model."""
         if self.inputs.redundancy.protocol:

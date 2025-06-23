@@ -30,6 +30,16 @@ interface Vxlan1
 {%     if vxlan_config.vxlan.flood_vtep_learned_data_plane is arista.avd.defined(true) %}
    vxlan flood vtep learned data-plane
 {%     endif %}
+{%     if vxlan_config.vxlan.encapsulations.ipv4 is arista.avd.defined(true) or vxlan_config.vxlan.encapsulations.ipv6 is arista.avd.defined(true) %}
+{%         set tmp_encapsulations = [] %}
+{%         if vxlan_config.vxlan.encapsulations.ipv4 is arista.avd.defined(true) %}
+{%             do tmp_encapsulations.append("ipv4") %}
+{%         endif %}
+{%         if vxlan_config.vxlan.encapsulations.ipv6 is arista.avd.defined(true) %}
+{%             do tmp_encapsulations.append("ipv6") %}
+{%         endif %}
+   vxlan encapsulation {{ tmp_encapsulations | join(" ") }}
+{%     endif %}
 {%     set range_vlans = vxlan_config.vxlan.vlan_range.vlans | arista.avd.default([]) | arista.avd.range_expand %}
 {%     for vlan in vxlan_config.vxlan.vlans | arista.avd.natural_sort('id') %}
 {%         if vlan.vni is arista.avd.defined and vlan.id | string not in range_vlans %}

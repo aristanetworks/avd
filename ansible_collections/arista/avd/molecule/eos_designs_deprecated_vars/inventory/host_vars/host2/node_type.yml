@@ -14,3 +14,4 @@ pe:
       id: 102
       bgp_as: 102
       virtual_router_mac_address: 00:1c:73:00:dc:01
+      mgmt_ip: 192.168.100.123/24

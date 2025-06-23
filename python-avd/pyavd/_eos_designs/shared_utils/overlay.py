@@ -195,6 +195,9 @@ class OverlayMixin(Protocol):
         if self.overlay_routing_protocol_address_family == "ipv6":
             return self.ipv6_router_id
 
+        if self.underlay_ipv6_numbered:
+            return self.ipv6_router_id
+
         return self.router_id
 
     @cached_property

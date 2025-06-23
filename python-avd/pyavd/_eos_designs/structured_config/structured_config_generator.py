@@ -4,10 +4,12 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Literal, Protocol, cast
+from functools import wraps
+from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.avdfacts import AvdFacts, AvdFactsProtocol
+from pyavd._utils.get import get_v2
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Mapping
@@ -22,14 +24,69 @@ if TYPE_CHECKING:
     T_StructuredConfigGeneratorSubclass = TypeVar("T_StructuredConfigGeneratorSubclass", bound="StructuredConfigGeneratorProtocol")
 
 
-def structured_config_contributor(func: Callable[[T_StructuredConfigGeneratorSubclass], None]) -> Callable[[T_StructuredConfigGeneratorSubclass], None]:
+# Overload when assigned with args.
+@overload
+def structured_config_contributor(
+    func: None = None, *, toggle_and_value: tuple[str, bool] | None = None
+) -> Callable[[Callable[[T_StructuredConfigGeneratorSubclass], None]], Callable[[T_StructuredConfigGeneratorSubclass], None]]: ...
+
+
+# Overload when assigned without args.
+@overload
+def structured_config_contributor(func: Callable[[T_StructuredConfigGeneratorSubclass], None]) -> Callable[[T_StructuredConfigGeneratorSubclass], None]: ...
+
+
+def structured_config_contributor(
+    func: Callable[[T_StructuredConfigGeneratorSubclass], None] | None = None, *, toggle_and_value: tuple[str, bool] | None = None
+) -> (
+    Callable[[T_StructuredConfigGeneratorSubclass], None]
+    | Callable[[Callable[[T_StructuredConfigGeneratorSubclass], None]], Callable[[T_StructuredConfigGeneratorSubclass], None]]
+):
     """
     Decorator to mark methods that contribute to the structured config.
 
+    The decorator can be attached with or without args:
+        ```
+        @structured_config_contributor
+        def ...
+        ```
+        or
+        ```
+        @structured_config_contributor(toggle_and_value=("avd_6_behaviors.snmp_settings.vrfs", True))
+        def ...
+        ```
+
+    Args:
+        func: The method to decorate.
+        toggle_and_value: A tuple of variable path and expected value, deciding if this method should run.
+            The path is a string like `avd_6_behaviors.snmp_settings_vrfs`, pointing to the feature toggle.
+
     TODO: Store the functions in a class variable on StructuredConfigGeneratorProtocol instead of modifying the func.
     """
-    func._is_structured_config_contributor = True  # pyright: ignore [reportFunctionMemberAccess]
-    return func
+
+    def decorator(fnc: Callable[[T_StructuredConfigGeneratorSubclass], None]) -> Callable[[T_StructuredConfigGeneratorSubclass], None]:
+        """Inner actual decorator. Nested to handle assignment both with and without args."""
+        fnc._is_structured_config_contributor = True  # pyright: ignore [reportFunctionMemberAccess]
+        if toggle_and_value is None:
+            return fnc
+
+        toggle, toggle_value = toggle_and_value
+
+        @wraps(fnc)
+        def wrapped_func(self: T_StructuredConfigGeneratorSubclass) -> None:
+            if get_v2(self.inputs, toggle, default=False) == toggle_value:
+                return fnc(self)
+
+            return None
+
+        return wrapped_func
+
+    if func is not None:
+        # This is a @structured_config_contributor assignment without args.
+        return decorator(func)
+
+    # This is a @structured_config_contributor(...) assignment with args.
+    return decorator
 
 
 @dataclass

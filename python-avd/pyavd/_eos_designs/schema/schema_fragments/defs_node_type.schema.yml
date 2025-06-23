@@ -192,6 +192,15 @@ $defs:
               uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
             type: str
             format: ipv4_pool
+          uplink_ipv6_pool:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: |-
+              Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              IPv6 subnets used to connect to uplink switches will be deviced from this pool based on the node id,
+              uplink interface index, 'max_uplink_switches' and 'max_parallel_uplinks'.
+            type: str
+            format: ipv6_pool
           uplink_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -457,6 +466,14 @@ $defs:
               The IPv4 address used for VTEP-Loopback will be derived from this pool based on the node id and 'loopback_ipv4_offset'.
             type: str
             format: ipv4_pool
+          vtep_loopback_ipv6_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description:
+              Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              The IPv6 address used for VTEP-Loopback will be derived from this pool based on the node id and 'loopback_ipv6_offset'.
+            type: str
+            format: ipv6_pool
           vtep_loopback_ipv4_address:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -466,6 +483,15 @@ $defs:
               Note: AVD does not check for validity of the IPv4 address and does not catch duplicates.
             type: str
             format: ipv4
+          vtep_loopback_ipv6_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: |-
+              IPv6 address without mask for VTEP-Loopback.
+              When set, it takes precedence over `vtep_loopback_ipv6_pool`.
+              Note: AVD does not check for validity of the IPv6 address and does not catch duplicates.
+            type: str
+            format: ipv6
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -477,6 +503,14 @@ $defs:
             convert_types:
               - str
             default: 0
+          router_id_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description:
+              Required when underlay_ipv6_numbered is used to configured an IPv6 underlay and IPv6 overlay.
+              router_id_pool is an IPv4 subnet used only for allocation of BGP router-id's since an IPv4 address will not exist on the device.
+            type: str
+            format: ipv4_pool
           loopback_ipv6_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -830,6 +864,15 @@ $defs:
               Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
             type: str
             format: ipv4_pool
+          mlag_peer_l3_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: |
+              Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+              The IPv6 subnet used for MLAG underlay L3 peering is derived from this pool based on the node id of the first MLAG switch.
+              Required when MLAG leafs present in topology and they are using a separate L3 peering VLAN.
+            type: str
+            format: ipv6_pool
           mlag_peer_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -1539,6 +1582,12 @@ $defs:
                     description: |-
                       Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
                       IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+                  ipv6_pool:
+                    type: str
+                    format: ipv6_pool
+                    description: |-
+                      Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+                      IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
                   downlink_interfaces:
                     type: list
                     description: List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.

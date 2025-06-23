@@ -24332,6 +24332,15 @@ keys:
                 type: int
                 convert_types:
                 - str
+              encapsulations:
+                type: dict
+                keys:
+                  ipv4:
+                    type: bool
+                    description: Use IPv4 for VXLAN Encapsulation.
+                  ipv6:
+                    type: bool
+                    description: Use IPv6 for VXLAN Encapsulation.
               vtep_to_vtep_bridging:
                 type: bool
                 description: Enable bridging between different VTEPs in vxlan overlay.
