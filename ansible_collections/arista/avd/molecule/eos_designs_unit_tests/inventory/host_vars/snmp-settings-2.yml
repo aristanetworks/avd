@@ -14,6 +14,7 @@ l2leaf:
 default_mgmt_method: inband
 
 snmp_settings:
+  enable_inband_mgmt_vrf: true
   vrfs:
     - name: SNMPVRF
       enable: true
@@ -49,8 +50,17 @@ snmp_settings:
       vrf: use_default_mgmt_method_vrf
       version: 2c
       community: SNMP-COMMUNITY-2
+    - host: 10.6.75.131
+      use_inband_mgmt_vrf: true
+      vrf: use_inband_mgmt_vrf
+      version: 2c
+      community: SNMP-COMMUNITY-2
 
   traps:
     snmp_traps:
       - name: foo
         enabled: true
+
+source_interfaces:
+  snmp:
+    inband_mgmt_interface: true

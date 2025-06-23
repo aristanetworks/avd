@@ -65,7 +65,7 @@ snmp_settings:
       version: 2c
       community: SNMP-COMMUNITY-2
     # test without vrf
-    - host: 10.6.75.129
+    - host: 10.6.75.131
       version: 3
       community: SNMP-COMMUNITY-2
 
