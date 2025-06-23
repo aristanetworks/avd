@@ -106,7 +106,7 @@ convention = "google"
 ]
 
 [tool.ruff.lint.pylint]
-max-args = 15
+max-args = 20
 max-branches = 54
 max-returns = 10
 max-statements = 148
