@@ -3,6 +3,7 @@
 # that can be found in the LICENSE file.
 import json
 import sys
+from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
 from typing import Any
@@ -137,22 +138,23 @@ def test_digital_twin_act_get_fabric_documentation(molecule_scenario: MoleculeSc
         monkeypatch.setattr(type(host), "hostvars", property(lambda host: mocked_hostvars(host, "act")))
 
     with patch("sys.path", [*sys.path, *molecule_scenario.extra_python_paths]):
+        device_digital_twin_metadata = defaultdict(dict)
+        for host in molecule_scenario.hosts:
+            device_digital_twin_metadata[host.name] = get(host.structured_config, "metadata")
+            host.__dict__.pop("structured_config", None)
+
         # Temporarily adjust scenario's path to get original structured config for the devices.
         # This is required for generating documentation based on the same ip addressing scheme that was used by Molecule.
         original_artifacts_path_offset = molecule_scenario.artifacts_path_offset
         molecule_scenario.artifacts_path_offset = Path()
 
-        for host in molecule_scenario.hosts:
-            host.__dict__.pop("structured_config", None)
-        molecule_structured_configs = {host.name: deepcopy(host.structured_config) for host in molecule_scenario.hosts}
+        molecule_structured_configs = {
+            host.name: deepcopy(host.structured_config | {"metadata": device_digital_twin_metadata[host.name]}) for host in molecule_scenario.hosts
+        }
 
         # Rollback scenario's path
         molecule_scenario.artifacts_path_offset = original_artifacts_path_offset
         del original_artifacts_path_offset
-
-        # Drop metadata.platform obtained from the original structured config.
-        for v in molecule_structured_configs.values():
-            v["metadata"].pop("platform", None)
 
         molecule_avd_facts = molecule_scenario.avd_facts
 
