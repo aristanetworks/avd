@@ -850,10 +850,9 @@ $defs:
                             Key for OSPF simple authentication.
                             Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                             Maximum 8 characters for cleartext password.
-
                             NOTE: when using type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
-                                  or they must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface
-                                  name (when common encryption is disabled).
+                            or they must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
+                            (when common encryption is disabled).
                         message_digest_keys:
                           type: list
                           items:
@@ -878,7 +877,6 @@ $defs:
                                   Key for OSPF message digest.
                                   Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
                                   Maximum 16 characters for cleartext password.
-
                                   NOTE: when using type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
                                   or they must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
                                   (when common encryption is disabled).
