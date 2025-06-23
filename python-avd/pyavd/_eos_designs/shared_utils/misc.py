@@ -139,8 +139,6 @@ class MiscMixin(Protocol):
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtilsProtocol) -> int | None:
-        if not self.platform_settings.feature_support.per_interface_mtu:
-            return None
         p2p_uplinks_mtu = default(self.platform_settings.p2p_uplinks_mtu, self.inputs.p2p_uplinks_mtu)
         return default(self.node_config.uplink_mtu, p2p_uplinks_mtu)
 
@@ -168,6 +166,14 @@ class MiscMixin(Protocol):
     @cached_property
     def evpn_multicast(self: SharedUtilsProtocol) -> bool:
         return self.switch_facts.evpn_multicast is True
+
+    def get_interface_mtu(self: SharedUtilsProtocol, interface_name: str, configured_mtu: int | None) -> int | None:
+        """Returns MTU value for the interface."""
+        if not self.platform_settings.feature_support.per_interface_mtu:
+            return None
+        if "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu:
+            return None
+        return configured_mtu
 
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None

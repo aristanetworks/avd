@@ -7,6 +7,7 @@ from functools import cached_property
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
+from pyavd._errors import AristaAvdInvalidInputsError
 
 if TYPE_CHECKING:
     from . import SharedUtilsProtocol
@@ -83,3 +84,29 @@ class UnderlayMixin(Protocol):
             return underlay_multicast_rp_interfaces
 
         return None
+
+    @cached_property
+    def underlay_ipv6_numbered(self: SharedUtilsProtocol) -> bool:
+        if self.inputs.underlay_ipv6_numbered:
+            if self.is_wan_router:
+                msg = "Invalid combination of inputs. WAN is not yet supported with IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.underlay_multicast_rp_interfaces or self.underlay_multicast:
+                msg = "Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.underlay_rfc5549:
+                msg = "Invalid combination of inputs. RFC5549 is not supported with numbered IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.vtep_vvtep_ip:
+                msg = "Invalid combination of inputs. vtep_vvtep_ip is not supported with numbered IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.node_config.inband_ztp:
+                msg = "Invalid combination of inputs. inband_ztp is not supported with numbered IPv6 underlay"
+                raise AristaAvdInvalidInputsError(msg)
+            if self.inputs.underlay_routing_protocol not in (None, "ebgp"):
+                msg = (
+                    f"Invalid combination of inputs. {self.inputs.underlay_routing_protocol} is not supported with numbered IPv6 underlay. "
+                    "underlay_routing_protocol must be set to 'ebgp'"
+                )
+                raise AristaAvdInvalidInputsError(msg)
+        return self.inputs.underlay_ipv6_numbered

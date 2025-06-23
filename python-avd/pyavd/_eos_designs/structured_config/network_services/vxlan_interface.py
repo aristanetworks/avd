@@ -88,6 +88,9 @@ class VxlanInterfaceMixin(Protocol):
         if self.shared_utils.overlay_cvx:
             vxlan.controller_client.enabled = True
 
+        if self.shared_utils.underlay_ipv6_numbered:
+            vxlan.encapsulations.ipv6 = True
+
         # Keep track of the VNIs added to check for duplicates
         # The entries are {<vni>: (<type>, <name>, <tenant>)}
         vnis: dict[int, set[VniContext]] = defaultdict(set)

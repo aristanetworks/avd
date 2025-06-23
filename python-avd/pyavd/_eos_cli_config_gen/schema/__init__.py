@@ -65165,6 +65165,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class Encapsulations(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                    ipv4: bool | None
+                    """Use IPv4 for VXLAN Encapsulation."""
+                    ipv6: bool | None
+                    """Use IPv6 for VXLAN Encapsulation."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Encapsulations.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ipv4: Use IPv4 for VXLAN Encapsulation.
+                                ipv6: Use IPv6 for VXLAN Encapsulation.
+
+                            """
+
                 class BfdVtepEvpn(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65386,6 +65410,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
                     "udp_port": {"type": int},
+                    "encapsulations": {"type": Encapsulations},
                     "vtep_to_vtep_bridging": {"type": bool},
                     "virtual_router_encapsulation_mac_address": {"type": str},
                     "bfd_vtep_evpn": {"type": BfdVtepEvpn},
@@ -65408,6 +65433,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 mlag_source_interface: str | None
                 udp_port: int | None
+                encapsulations: Encapsulations
+                """Subclass of AvdModel."""
                 vtep_to_vtep_bridging: bool | None
                 """Enable bridging between different VTEPs in vxlan overlay."""
                 virtual_router_encapsulation_mac_address: str | None
@@ -65456,6 +65483,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
                         udp_port: int | None | UndefinedType = Undefined,
+                        encapsulations: Encapsulations | UndefinedType = Undefined,
                         vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
                         virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
                         bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
@@ -65481,6 +65509,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             mlag_source_interface: mlag_source_interface
                             udp_port: udp_port
+                            encapsulations: Subclass of AvdModel.
                             vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
                             virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
                             bfd_vtep_evpn: Subclass of AvdModel.
@@ -65590,6 +65619,30 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
 
                             """
 
+                class Encapsulations(AvdModel):
+                    """Subclass of AvdModel."""
+
+                    _fields: ClassVar[dict] = {"ipv4": {"type": bool}, "ipv6": {"type": bool}}
+                    ipv4: bool | None
+                    """Use IPv4 for VXLAN Encapsulation."""
+                    ipv6: bool | None
+                    """Use IPv6 for VXLAN Encapsulation."""
+
+                    if TYPE_CHECKING:
+
+                        def __init__(self, *, ipv4: bool | None | UndefinedType = Undefined, ipv6: bool | None | UndefinedType = Undefined) -> None:
+                            """
+                            Encapsulations.
+
+
+                            Subclass of AvdModel.
+
+                            Args:
+                                ipv4: Use IPv4 for VXLAN Encapsulation.
+                                ipv6: Use IPv6 for VXLAN Encapsulation.
+
+                            """
+
                 class BfdVtepEvpn(AvdModel):
                     """Subclass of AvdModel."""
 
@@ -65811,6 +65864,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     "controller_client": {"type": ControllerClient},
                     "mlag_source_interface": {"type": str},
                     "udp_port": {"type": int},
+                    "encapsulations": {"type": Encapsulations},
                     "vtep_to_vtep_bridging": {"type": bool},
                     "virtual_router_encapsulation_mac_address": {"type": str},
                     "bfd_vtep_evpn": {"type": BfdVtepEvpn},
@@ -65833,6 +65887,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 """
                 mlag_source_interface: str | None
                 udp_port: int | None
+                encapsulations: Encapsulations
+                """Subclass of AvdModel."""
                 vtep_to_vtep_bridging: bool | None
                 """Enable bridging between different VTEPs in vxlan overlay."""
                 virtual_router_encapsulation_mac_address: str | None
@@ -65881,6 +65937,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                         controller_client: ControllerClient | UndefinedType = Undefined,
                         mlag_source_interface: str | None | UndefinedType = Undefined,
                         udp_port: int | None | UndefinedType = Undefined,
+                        encapsulations: Encapsulations | UndefinedType = Undefined,
                         vtep_to_vtep_bridging: bool | None | UndefinedType = Undefined,
                         virtual_router_encapsulation_mac_address: str | None | UndefinedType = Undefined,
                         bfd_vtep_evpn: BfdVtepEvpn | UndefinedType = Undefined,
@@ -65906,6 +65963,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                                Subclass of AvdModel.
                             mlag_source_interface: mlag_source_interface
                             udp_port: udp_port
+                            encapsulations: Subclass of AvdModel.
                             vtep_to_vtep_bridging: Enable bridging between different VTEPs in vxlan overlay.
                             virtual_router_encapsulation_mac_address: "mlag-system-id" or ethernet_address (H.H.H).
                             bfd_vtep_evpn: Subclass of AvdModel.
