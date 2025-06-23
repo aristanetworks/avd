@@ -138,6 +138,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                         "peer_node_group": data.peer_node_group,
                         "peer_node_group_or_peer": data.peer_node_group or data.peer,
                         "peer_node_group_or_uppercase_peer": data.peer_node_group or str(data.peer or "").upper() or None,
+                        "wan_carrier": data.wan_carrier,
                     }
                 ),
             )
@@ -165,7 +166,7 @@ class AvdInterfaceDescriptions(AvdFacts):
             description = self.inputs.underlay_l2_port_channel_description
         else:
             # This is for L3 port-channels
-            elems = [data.wan_carrier, data.wan_circuit_id, data.peer, data.peer_interface]
+            elems = [data.wan_carrier or data.main_port_channel_wan_carrier, data.wan_circuit_id, data.peer, data.peer_interface]
             return "_".join([elem for elem in elems if elem])
 
         return AvdStringFormatter().format(
@@ -180,6 +181,9 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "peer_node_group": data.peer_node_group,
                     "peer_node_group_or_peer": data.peer_node_group or data.peer,
                     "peer_node_group_or_uppercase_peer": data.peer_node_group or str(data.peer or "").upper() or None,
+                    "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
+                    "main_port_channel_wan_carrier": data.main_port_channel_wan_carrier,
                 }
             ),
         )

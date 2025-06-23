@@ -486,6 +486,8 @@ underlay_port_channel_interfaces:
 - `{{ link.channel_group_id }}`
 - `{{ link.peer }}`
 - `{{ link.peer_channel_group_id }}`
+- `{{ link.wan_carrier }}`
+- `{{ link.main_port_channel_wan_carrier }}`
 - All group/hostvars
 
 mlag_ethernet_interfaces:
