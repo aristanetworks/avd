@@ -9,6 +9,8 @@ keys:
   ip_tacacs_source_interfaces:
     type: list
     display_name: IP Tacacs Source Interfaces
+    unique_keys:
+      - vrf
     items:
       type: dict
       keys:
