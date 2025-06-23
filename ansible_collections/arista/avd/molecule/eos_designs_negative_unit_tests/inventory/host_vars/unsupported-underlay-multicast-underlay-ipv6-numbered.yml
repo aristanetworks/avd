@@ -1,0 +1,29 @@
+---
+type: spine
+fabric_name: FABRIC_UNSPPORTED_UNDERLAY_MULTICAST_UNDERLAY_IPV6_UNMBERED
+underlay_multicast: true
+underlay_multicast_rps:
+  - rp: 192.168.200.4
+    groups:
+      - 239.255.4.0/24
+    access_list_name: RP_ACL_4
+    nodes:
+      - name: unsupported-underlay-multicast-underlay-ipv6-numbered
+        loopback_number: 4
+
+underlay_routing_protocol: ebgp
+underlay_ipv6_numbered: true
+
+spine:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    router_id_pool: 10.255.1.0/24
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      nodes:
+        - name: unsupported-underlay-multicast-underlay-ipv6-numbered
+          id: 1
+
+expected_error_message: >-
+  Invalid combination of inputs. Underlay multicast is not yet supported with IPv6 underlay for host 'unsupported-underlay-multicast-underlay-ipv6-numbered'.

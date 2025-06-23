@@ -47,11 +47,22 @@ class UtilsMixin(Protocol):
         return self.shared_utils.mlag_peer_l3_ipv4_pool
 
     @cached_property
+    def _mlag_peer_l3_ipv6_pool(self: AvdIpAddressingProtocol) -> str:
+        return self.shared_utils.mlag_peer_l3_ipv6_pool
+
+    @cached_property
     def _uplink_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
         if self.shared_utils.node_config.uplink_ipv4_pool is None:
             msg = "'uplink_ipv4_pool' is required to calculate uplink IP addresses."
             raise AristaAvdInvalidInputsError(msg)
         return self.shared_utils.node_config.uplink_ipv4_pool
+
+    @cached_property
+    def _uplink_ipv6_pool(self: AvdIpAddressingProtocol) -> str:
+        if self.shared_utils.node_config.uplink_ipv6_pool is None:
+            msg = "'uplink_ipv6_pool' is required to calculate uplink IPv6 addresses"
+            raise AristaAvdInvalidInputsError(msg)
+        return self.shared_utils.node_config.uplink_ipv6_pool
 
     @cached_property
     def _id(self: AvdIpAddressingProtocol) -> int:
@@ -93,8 +104,20 @@ class UtilsMixin(Protocol):
         return self.shared_utils.node_config.vtep_loopback_ipv4_address
 
     @cached_property
-    def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str:
+    def _vtep_loopback_ipv6_address(self: AvdIpAddressingProtocol) -> str:
+        return self.shared_utils.node_config.vtep_loopback_ipv6_address
+
+    @cached_property
+    def _vtep_loopback_ipv4_pool(self: AvdIpAddressingProtocol) -> str | None:
         return self.shared_utils.vtep_loopback_ipv4_pool
+
+    @cached_property
+    def _vtep_loopback_ipv6_pool(self: AvdIpAddressingProtocol) -> str:
+        return self.shared_utils.vtep_loopback_ipv6_pool
+
+    @cached_property
+    def _router_id_pool(self: AvdIpAddressingProtocol) -> str:
+        return self.shared_utils.router_id_pool
 
     @cached_property
     def _mlag_odd_id_based_offset(self: AvdIpAddressingProtocol) -> int:
@@ -130,7 +153,6 @@ class UtilsMixin(Protocol):
 
         for downlink_pool in downlink_pools:
             if not downlink_pool.ipv4_pool:
-                # TODO: Consider making it required in the schema
                 continue
 
             downlink_interfaces = range_expand(downlink_pool.downlink_interfaces)
@@ -138,6 +160,38 @@ class UtilsMixin(Protocol):
             for interface_index, downlink_interface in enumerate(downlink_interfaces):
                 if uplink_switch_interface == downlink_interface:
                     return (downlink_pool.ipv4_pool, interface_index)
+
+        # If none of the interfaces match up, throw error
+        msg = (
+            f"'downlink_pools' was defined at uplink_switch, but one of the 'uplink_switch_interfaces' ({uplink_switch_interface}) "
+            "in the downlink_switch does not match any of the downlink_pools"
+        )
+        raise AristaAvdError(msg)
+
+    def _get_downlink_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int] | tuple[None, None]:
+        """
+        Returns the downlink IP pool and offset as a tuple according to the uplink_switch_index.
+
+        Offset is the matching interface's index in the list of downlink_interfaces
+        (None, None) is returned if downlink_pools are not used
+        """
+        uplink_switch_interface = self.shared_utils.uplink_switch_interfaces[uplink_switch_index]
+        uplink_switch = self.shared_utils.uplink_switches[uplink_switch_index]
+        peer_facts = self.shared_utils.get_peer_facts(uplink_switch, required=True)
+        downlink_pools = peer_facts.downlink_pools
+
+        if not downlink_pools:
+            return (None, None)
+
+        for downlink_pool in downlink_pools:
+            if not downlink_pool.ipv6_pool:
+                continue
+
+            downlink_interfaces = range_expand(downlink_pool.downlink_interfaces)
+
+            for interface_index, downlink_interface in enumerate(downlink_interfaces):
+                if uplink_switch_interface == downlink_interface:
+                    return (downlink_pool.ipv6_pool, interface_index)
 
         # If none of the interfaces match up, throw error
         msg = (
@@ -171,6 +225,38 @@ class UtilsMixin(Protocol):
 
         if uplink_pool is None and downlink_pool is None:
             msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv4_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
+            raise AristaAvdInvalidInputsError(msg)
+
+        if uplink_pool is not None:
+            return (uplink_pool, uplink_offset)
+
+        return (downlink_pool, downlink_offset)
+
+    def _get_p2p_ipv6_pool_and_offset(self: AvdIpAddressingProtocol, uplink_switch_index: int) -> tuple[str, int]:
+        """
+        Returns IP pool and offset as a tuple according to the uplink_switch_index.
+
+        Uplink pool or downlink pool is returned with its corresponding offset
+        A downlink pool's offset is the matching interface's index in the list of downlink_interfaces
+        A uplink pool's offset is `((id - 1) * 2 * max_uplink_switches * max_parallel_uplinks) + (uplink_switch_index * 2) + 1`
+
+        One and only one of these pools are required to be set, otherwise an error will be thrown
+        """
+        uplink_pool = self.shared_utils.node_config.uplink_ipv6_pool
+        if uplink_pool is not None:
+            uplink_offset = ((self._id - 1) * self._max_uplink_switches * self._max_parallel_uplinks) + uplink_switch_index
+
+        downlink_pool, downlink_offset = self._get_downlink_ipv6_pool_and_offset(uplink_switch_index)
+
+        if uplink_pool is not None and downlink_pool is not None:
+            msg = (
+                f"Unable to assign IPs for uplinks. 'uplink_ipv6_pool' ({uplink_pool}) on this switch cannot be combined "
+                f"with 'downlink_pools' ({downlink_pool}) on any uplink switch."
+            )
+            raise AristaAvdError(msg)
+
+        if uplink_pool is None and downlink_pool is None:
+            msg = "Unable to assign IPs for uplinks. Either 'uplink_ipv6_pool' on this switch or 'downlink_pools' on all the uplink switches must be set."
             raise AristaAvdInvalidInputsError(msg)
 
         if uplink_pool is not None:

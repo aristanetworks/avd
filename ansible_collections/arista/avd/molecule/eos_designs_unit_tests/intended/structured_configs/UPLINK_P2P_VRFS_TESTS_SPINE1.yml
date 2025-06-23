@@ -38,6 +38,40 @@ ethernet_interfaces:
   peer: UPLINK_P2P_VRFS_TESTS_LEAF1
   peer_interface: Ethernet1.66
   peer_type: l3leaf
+- name: Ethernet2
+  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet1
+  shutdown: false
+  mtu: 9214
+  ip_address: 2001:db8:3:8::1/64
+  mac_security:
+    profile: TEST
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+  peer_interface: Ethernet1
+  peer_type: l3leaf
+  switchport:
+    enabled: false
+- name: Ethernet2.42
+  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet1.42_VRF_PROD
+  shutdown: false
+  mtu: 9214
+  vrf: PROD
+  encapsulation_dot1q:
+    vlan: 42
+  ipv6_address: 2001:db8:3:8::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+  peer_interface: Ethernet1.42
+  peer_type: l3leaf
+- name: Ethernet2.66
+  description: P2P_UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet1.66_VRF_ONLY-ON-L2LEAF
+  shutdown: false
+  mtu: 9214
+  vrf: ONLY-ON-L2LEAF
+  encapsulation_dot1q:
+    vlan: 66
+  ipv6_address: 2001:db8:3:8::2/64
+  peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+  peer_interface: Ethernet1.66
+  peer_type: l3leaf
 hostname: UPLINK_P2P_VRFS_TESTS_SPINE1
 ip_routing: true
 is_deployed: true
@@ -75,6 +109,11 @@ router_bgp:
     remote_as: '65000'
     peer: UPLINK_P2P_VRFS_TESTS_LEAF1
     description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1
+  - ip_address: 2001:db8:3:8::2
+    peer_group: IPv4-UNDERLAY-PEERS
+    remote_as: '65000'
+    peer: UPLINK_P2P_VRFS_TESTS_LEAF2
+    description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet1
   redistribute:
     connected:
       enabled: true
@@ -90,6 +129,10 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.42_vrf_PROD
+    - ip_address: 2001:db8:3:8::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet1.42_vrf_PROD
   - name: ONLY-ON-L2LEAF
     router_id: 192.168.42.1
     neighbors:
@@ -97,6 +140,10 @@ router_bgp:
       peer_group: IPv4-UNDERLAY-PEERS
       remote_as: '65000'
       description: UPLINK_P2P_VRFS_TESTS_LEAF1_Ethernet1.66_vrf_ONLY-ON-L2LEAF
+    - ip_address: 2001:db8:3:8::1
+      peer_group: IPv4-UNDERLAY-PEERS
+      remote_as: '65000'
+      description: UPLINK_P2P_VRFS_TESTS_LEAF2_Ethernet1.66_vrf_ONLY-ON-L2LEAF
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none

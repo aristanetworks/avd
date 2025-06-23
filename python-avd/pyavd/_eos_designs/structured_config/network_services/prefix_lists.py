@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from ipaddress import IPv4Network
+from ipaddress import IPv4Network, IPv6Network
 from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
@@ -38,7 +38,12 @@ class PrefixListsMixin(Protocol):
             for index, mlag_prefix in enumerate(mlag_prefixes, start=1):
                 sequence_numbers.append_new(sequence=index * 10, action=f"permit {mlag_prefix}")
 
-            self.structured_config.prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
+            if not self.shared_utils.underlay_ipv6_numbered:
+                self.structured_config.prefix_lists.append_new(name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers)
+            else:
+                self.structured_config.ipv6_prefix_lists.append_new(
+                    name="PL-MLAG-PEER-VRFS", sequence_numbers=sequence_numbers._cast_as(EosCliConfigGen.Ipv6PrefixListsItem.SequenceNumbers)
+                )
 
     def _set_prefix_lists_vrf_default(self: AvdStructuredConfigNetworkServicesProtocol) -> None:
         """Set the prefix_lists for EVPN services in VRF "default"."""
@@ -70,11 +75,13 @@ class PrefixListsMixin(Protocol):
                     # By default the BGP peering is redistributed, so we only need the prefix-list for the false case.
                     continue
 
-                if (mlag_ip_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address")) is None:
+                # Convert mlag_ip_address to network prefix string and add to set.
+                if mlag_ipv4_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ip_address"):
+                    mlag_prefixes.add(str(IPv4Network(mlag_ipv4_address, strict=False)))
+                elif mlag_ipv6_address := self._get_vlan_ip_config_for_mlag_peering(vrf).get("ipv6_address"):
+                    mlag_prefixes.add(str(IPv6Network(mlag_ipv6_address, strict=False)))
+                else:
                     # No MLAG prefix for this VRF (could be RFC5549)
                     continue
-
-                # Convert mlag_ip_address to network prefix string and add to set.
-                mlag_prefixes.add(str(IPv4Network(mlag_ip_address, strict=False)))
 
         return natural_sort(mlag_prefixes)

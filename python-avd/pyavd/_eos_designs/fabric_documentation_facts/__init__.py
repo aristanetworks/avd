@@ -180,6 +180,7 @@ class FabricDocumentationFacts(AvdFacts):
             ]
         )
 
+    # TODO: - Add IPv6 to fabric docs.
     @cached_property
     def uplink_ipv4_networks(self) -> list[dict]:
         """List of unique networks from uplink_ipv4_pools containing information about size and usage."""
