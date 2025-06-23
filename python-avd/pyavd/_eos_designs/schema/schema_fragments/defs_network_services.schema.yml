@@ -596,7 +596,7 @@ $defs:
                             - int
                           description: |-
                             Key password.
-                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
+                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each entry under `l3_interfaces`, `l3_port_channels` and `svis`.
                             To protect the password at rest it is strongly recommended to make use of a vault or similar.
                             Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
                             `encrypt_passwords` value does not have any effect on this key.
