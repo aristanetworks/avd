@@ -362,7 +362,7 @@ def _get_running_collection_version(running_collection_name: str, result: dict[s
     try:
         # Try to detect a git tag
         # Using subprocess for now
-        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S603, S607
+        with Popen(["git", "describe", "--tags"], stdout=PIPE, stderr=PIPE, cwd=collection_path) as process:  # noqa: S607
             output, err = process.communicate()
             if err:
                 # Not that when molecule runs, it runs in a copy of the directory that is not a git repo
