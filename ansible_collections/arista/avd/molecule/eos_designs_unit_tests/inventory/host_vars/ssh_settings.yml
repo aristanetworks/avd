@@ -17,4 +17,10 @@ ssh_settings:
     - name: VRF10
       enabled: true
       ipv6_acl: ACL-SSH6
+    - name: VRF12
+      enabled: false
+      ipv4_acl: ACL-SSH-VRF-DISABLED
+    - name: default
+      enabled: true
+      ipv6_acl: ACL-SSH-VRF-DEFAULT
   idle_timeout: 15
