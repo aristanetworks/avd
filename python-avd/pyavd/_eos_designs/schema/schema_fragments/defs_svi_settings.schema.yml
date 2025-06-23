@@ -250,9 +250,16 @@ $defs:
           simple_auth_key:
             type: str
             description: |-
-              Key for OSPF simple authentication.
-              Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
-              Maximum 8 characters for cleartext password.
+              Type 7 encrypted key for OSPF simple authentication.
+              It takes precedence over `cleartext_simple_auth_key`
+          cleartext_simple_auth_key:
+            type: str
+            description: |-
+              Cleartext key for OSPF simple authentication.
+              `simple_auth_key` takes precedence over this key.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
+            min_length: 1
+            max_length: 8
           message_digest_keys:
             type: list
             # TODO: AVD 6.0.0: Make id primary_key and key required.
@@ -275,9 +282,16 @@ $defs:
                 key:
                   type: str
                   description: |-
-                    Key for OSPF simple authentication.
-                    Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
-                    Maximum 8 characters for cleartext password.
+                    Type 7 encrypted key for OSPF message-digest authentication.
+                    It takes precedence over `cleartext_key`
+                cleartext_key:
+                  type: str
+                  description: |-
+                    Cleartext key for OSPF message-digest authentication
+                    `key` takes precedence over this key.
+                    To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                  min_length: 1
+                  max_length: 16
       bgp:
         type: dict
         keys:

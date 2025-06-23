@@ -563,16 +563,14 @@ $defs:
                     description: |-
                       Configure OSPF authentication for all interfaces under the VRF.
                       Can be overridden at the interface level under `l3_interfaces`, `l3_port_channels` or `svis`.
-                  simple_auth_key:
+                  cleartext_simple_auth_key:
                     type: str
+                    description: |-
+                      Cleartext password used with simple authentication.
+                      To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                      Configuration at the interface level under `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
                     min_length: 1
                     max_length: 8
-                    description: |-
-                      Password used with simple authentication.
-                      Only plaintext passwords are supported here as `eos_designs` will encrypt the key for type7 for each individual `l3_interfaces`, `l3_port_channels` or `svis`.
-                      To protect the password at rest it is strongly recommended to make use of Ansible Vault or similar.
-                      Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
-                      `encrypt_passwords` value does not have any effect on this key.
                   message_digest_keys:
                     type: list
                     primary_key: id
@@ -594,19 +592,17 @@ $defs:
                             - sha384
                             - sha512
                           default: sha512
-                        key:
+                        cleartext_key:
                           type: str
                           required: true
-                          max_length: 16
-                          min_length: 1
                           convert_types:
                             - int
                           description: |-
-                            Key password.
-                            Only plaintext passwords are supported here as `eos_designs` will encrypt the password for each entry under `l3_interfaces`, `l3_port_channels` and `svis`.
+                            Cleartext key for OSPF message-digest authentication
                             To protect the password at rest it is strongly recommended to make use of a vault or similar.
-                            Configuration at the interface level under `l3_interfaces` or `l3_port_channels` takes precedence.
-                            `encrypt_passwords` value does not have any effect on this key.
+                            Configuration at the interface level under `l3_interfaces`, `l3_port_channels` or `svis` takes precedence.
+                          min_length: 1
+                          max_length: 16
                   nodes:
                     type: list
                     items:
@@ -854,11 +850,18 @@ $defs:
                         simple_auth_key:
                           type: str
                           description: |-
-                            Key for OSPF simple authentication.
-                            Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
-                            Maximum 8 characters for cleartext password.
-                            NOTE: when using type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
-                            or they must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                            Type 7 encrypted key for OSPF simple authentication.
+                            It takes precedence over `cleartext_simple_auth_key`
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: |-
+                            Cleartext key for OSPF simple authentication.
+                            `simple_auth_key` takes precedence over this key.
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
                           # TODO: AVD 6.0.0: Make id primary_key and key required.
@@ -881,11 +884,18 @@ $defs:
                               key:
                                 type: str
                                 description: |-
-                                  Key for OSPF message digest.
-                                  Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
-                                  Maximum 16 characters for cleartext password.
-                                  NOTE: when using type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
-                                  or they must all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name.
+                                  Type 7 encrypted key for OSPF message-digest authentication.
+                                  It takes precedence over `cleartext_key`
+                                  NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                              cleartext_key:
+                                type: str
+                                description: |-
+                                  Cleartext key for OSPF message-digest authentication
+                                  `key` takes precedence over this key.
+                                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                min_length: 1
+                                max_length: 16
                     pim:
                       type: dict
                       description: |
@@ -1060,9 +1070,18 @@ $defs:
                         simple_auth_key:
                           type: str
                           description: |-
-                            Key for OSPF simple authentication.
-                            Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
-                            Maximum 8 characters for cleartext password.
+                            Type 7 encrypted key for OSPF simple authentication.
+                            It takes precedence over `cleartext_simple_auth_key`
+                            NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                        cleartext_simple_auth_key:
+                          type: str
+                          description: |-
+                            Cleartext key for OSPF simple authentication.
+                            `simple_auth_key` takes precedence over this key.
+                            To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                          min_length: 1
+                          max_length: 8
                         message_digest_keys:
                           type: list
                           # TODO: AVD 6.0.0: Make id primary_key and key required.
@@ -1085,9 +1104,18 @@ $defs:
                               key:
                                 type: str
                                 description: |-
-                                  Key for OSPF message digest.
-                                  Expects a cleartext password if `encrypt_passwords: true`, otherwise expects a type 7 password.
-                                  Maximum 16 characters for cleartext password.
+                                  Type 7 encrypted key for OSPF message-digest authentication.
+                                  It takes precedence over `cleartext_key`
+                                  NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
+                                  (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
+                              cleartext_key:
+                                type: str
+                                description: |-
+                                  Cleartext key for OSPF message-digest authentication
+                                  `key` takes precedence over this key.
+                                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                min_length: 1
+                                max_length: 16
                     flow_tracking:
                       type: dict
                       $ref: "eos_designs#/$defs/flow_tracking_link"

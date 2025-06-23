@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from functools import cached_property
-from typing import TYPE_CHECKING, Literal, Protocol, overload
+from typing import TYPE_CHECKING, Literal, Protocol, cast, overload
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
@@ -474,23 +474,25 @@ class FilteredTenantsMixin(Protocol):
         match ospf_authentication:
             case "simple":
                 if network_services_interface.ospf.simple_auth_key is not None:
-                    if self.inputs.encrypt_passwords:
-                        ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.simple_auth_key, interface.name)
-                    else:
-                        ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
-                elif vrf.ospf.simple_auth_key is not None:
+                    ospf_simple_auth_key = network_services_interface.ospf.simple_auth_key
+                elif network_services_interface.ospf.cleartext_simple_auth_key is not None:
+                    ospf_simple_auth_key = ospf_simple_encrypt(network_services_interface.ospf.cleartext_simple_auth_key, interface.name)
+                elif vrf.ospf.cleartext_simple_auth_key is not None:
                     # Always encrypt if defined at VRF level.
-                    ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
+                    ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.cleartext_simple_auth_key, interface.name)
                 else:
                     match interface:
                         case EosCliConfigGen.EthernetInterfacesItem():
-                            key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
+                            interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf"
                         case EosCliConfigGen.PortChannelInterfacesItem():
-                            key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
+                            interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf"
                         case _:
                             # This is EosCliConfigGen.VlanInterfacesItem
-                            key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
-                    msg = f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
+                            interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf"
+                    msg = (
+                        f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.cleartext_simple_auth_key` or `{interface_ospf_path}.simple_auth_key` "
+                        f"or `{interface_ospf_path}.cleartext_simple_auth_key`"
+                    )
 
                     raise AristaAvdMissingVariableError(msg)
 
@@ -502,11 +504,11 @@ class FilteredTenantsMixin(Protocol):
                 # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required - it means the two lists will should be merged instead of replacing.
                 if network_services_interface.ospf.message_digest_keys:
                     for ospf_key in network_services_interface.ospf.message_digest_keys:
-                        self.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
+                        self.update_message_digest_key(ospf_key, interface, vrf, tenant)
 
                 elif vrf.ospf.message_digest_keys:
                     for ospf_key in vrf.ospf.message_digest_keys:
-                        self.update_message_digest_key(ospf_key, interface, encrypt=True)
+                        self.update_message_digest_key(ospf_key, interface, vrf, tenant)
 
                 # TODO: decide if we should raise if we end up with no keys
                 if interface.ospf_message_digest_keys:
@@ -519,20 +521,41 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.Ospf.MessageDigestKeysItem,
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
-        encrypt: bool,
+        vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
         """Handle OSPF authentication for one message digest key."""
-        if not (ospf_key.id and ospf_key.key):
+        if not ospf_key.id:
             return
-        if encrypt:
+        # VRF level does not have a 'key' attribute.
+        if hasattr(ospf_key, "key") and ospf_key.key is not None:
+            key = ospf_key.key
+        elif ospf_key.cleartext_key is not None:
+            # ospf_key.cleartext_key is not None
             key = ospf_message_digest_encrypt(
-                password=ospf_key.key,
+                password=cast("str", ospf_key.cleartext_key),
                 key=interface.name,
                 hash_algorithm=ospf_key.hash_algorithm,
                 key_id=str(ospf_key.id),
             )
         else:
-            key = ospf_key.key
+            match interface:
+                case EosCliConfigGen.EthernetInterfacesItem():
+                    interface_ospf_path = (
+                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.message_digest_keys[key={ospf_key.id}]"
+                    )
+                case EosCliConfigGen.PortChannelInterfacesItem():
+                    interface_ospf_path = (
+                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.message_digest_keys[key={ospf_key.id}]"
+                    )
+                case _:
+                    # This is EosCliConfigGen.VlanInterfacesItem
+                    interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.message_digest_keys[key={ospf_key.id}]"
+            msg = (
+                f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.message_digest_keys[id=keyid].cleartext_key` or `{interface_ospf_path}.key` "
+                f"or `{interface_ospf_path}.cleartext_key`"
+            )
+            raise AristaAvdMissingVariableError(msg)
 
         interface.ospf_message_digest_keys.append_new(
             id=ospf_key.id,
