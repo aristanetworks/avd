@@ -17,7 +17,7 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "dns_settings.vrfs.[].name") | String | Required, Unique |  |  | VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "dns_settings.vrfs.[].source_interface") | String |  |  |  | Source interface to use for DNS lookups in this VRF.<br>If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`, this setting will take precedence. |
     | [<samp>&nbsp;&nbsp;set_source_interfaces</samp>](## "dns_settings.set_source_interfaces") | Boolean |  | `True` |  | Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.<br>Can be set to `false` to avoid changes when migrating from old `name_servers` model. |
-    | [<samp>encrypt_passwords</samp>](## "encrypt_passwords") | Boolean |  | `False` |  | When `true`, `eos_designs` will automatically encrypt the following keys:<br>- `<network_services_key>.vrfs.svis.ospf.simple_auth_key`<br>- `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`<br>- `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`<br>- `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`<br>- `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`<br>- `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`<br>- `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`<br>- `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`<br><br>This implies that the keys and passwords must be provided as cleartext (via a vault preferably).<br><br>When `false`, the keys and passwords must be provided as type 7. |
+    | [<samp>encrypt_passwords</samp>](## "encrypt_passwords") | Boolean |  | `False` |  | When `true`, `eos_designs` will automatically encrypt the following keys:<br>  - `<network_services_key>.vrfs.svis.ospf.simple_auth_key`<br>  - `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`<br>  - `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`<br>  - `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`<br>  - `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`<br>  - `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`<br>  - `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`<br>  - `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`<br>This implies that the keys and passwords must be provided as cleartext (via a vault preferably).<br>When `false`, the keys and passwords must be provided as type 7. |
     | [<samp>event_handlers</samp>](## "event_handlers") | List, items: Dictionary |  |  |  | Gives the ability to monitor and react to Syslog messages.<br>Event Handlers provide a powerful and flexible tool that can be used to apply self-healing actions,<br>customize the system behavior, and implement workarounds to problems discovered in the field.<br> |
     | [<samp>&nbsp;&nbsp;-&nbsp;name</samp>](## "event_handlers.[].name") | String | Required, Unique |  |  | Event Handler Name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;actions</samp>](## "event_handlers.[].actions") | Dictionary |  |  |  | Note: `bash_command` and `log` are mutually exclusive. `bash_command` takes precedence over `log`. |
@@ -170,17 +170,15 @@
       set_source_interfaces: <bool; default=True>
 
     # When `true`, `eos_designs` will automatically encrypt the following keys:
-    # - `<network_services_key>.vrfs.svis.ospf.simple_auth_key`
-    # - `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`
-    # - `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`
-    # - `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`
-    # - `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`
-    # - `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`
-    # - `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`
-    # - `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`
-    #
+    #   - `<network_services_key>.vrfs.svis.ospf.simple_auth_key`
+    #   - `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`
+    #   - `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`
+    #   - `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`
+    #   - `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`
+    #   - `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`
+    #   - `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`
+    #   - `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`
     # This implies that the keys and passwords must be provided as cleartext (via a vault preferably).
-    #
     # When `false`, the keys and passwords must be provided as type 7.
     encrypt_passwords: <bool; default=False>
 

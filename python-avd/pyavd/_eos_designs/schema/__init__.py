@@ -41076,9 +41076,7 @@ class EosDesigns(EosDesignsRootModel):
                                 NOTE: when using type 7
                                 password, the l3_interfaces.interfaces list must not be more than 1 interface
                                 or they must all be
-                                the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
-                                (when
-                                common encryption is disabled).
+                                the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name.
                                 """
 
                                 if TYPE_CHECKING:
@@ -41107,9 +41105,7 @@ class EosDesigns(EosDesignsRootModel):
                                                NOTE: when using type 7
                                                password, the l3_interfaces.interfaces list must not be more than 1 interface
                                                or they must all be
-                                               the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
-                                               (when
-                                               common encryption is disabled).
+                                               the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name.
 
                                         """
 
@@ -41148,8 +41144,7 @@ class EosDesigns(EosDesignsRootModel):
                             NOTE: when using
                             type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
                             or they must
-                            all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
-                            (when common encryption is disabled).
+                            all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                             """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -41187,8 +41182,7 @@ class EosDesigns(EosDesignsRootModel):
                                            NOTE: when using
                                            type 7 password, the l3_interfaces.interfaces list must not be more than 1 interface
                                            or they must
-                                           all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface name
-                                           (when common encryption is disabled).
+                                           all be the same (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -62558,26 +62552,24 @@ class EosDesigns(EosDesignsRootModel):
     encrypt_passwords: bool
     """
     When `true`, `eos_designs` will automatically encrypt the following keys:
-    -
+      -
     `<network_services_key>.vrfs.svis.ospf.simple_auth_key`
-    -
+      -
     `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`
-    -
+      -
     `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`
-    -
+      -
     `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`
-    -
+      -
     `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`
-    -
+      -
     `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`
-    -
+      -
     `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`
-    -
+      -
     `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`
-
     This implies that the
     keys and passwords must be provided as cleartext (via a vault preferably).
-
     When `false`, the keys
     and passwords must be provided as type 7.
 
@@ -64556,26 +64548,24 @@ class EosDesigns(EosDesignsRootModel):
                    See "Details on enable_trunk_groups" below before enabling this feature.
                 encrypt_passwords:
                    When `true`, `eos_designs` will automatically encrypt the following keys:
-                   -
+                     -
                    `<network_services_key>.vrfs.svis.ospf.simple_auth_key`
-                   -
+                     -
                    `<network_services_key>.vrfs.svis.ospf.message_digest_keys.key`
-                   -
+                     -
                    `<network_services_key>.vrfs.svis.nodes.ospf.simple_auth_key`
-                   -
+                     -
                    `<network_services_key>.vrfs.svis.nodes.ospf.message_digest_keys.key`
-                   -
+                     -
                    `<network_services_key>.vrfs.l3_interfaces.ospf.simple_auth_key`
-                   -
+                     -
                    `<network_services_key>.vrfs.l3_interfaces.ospf.message_digest_keys.key`
-                   -
+                     -
                    `<network_services_key>.vrfs.l3_port_channels.ospf.simple_auth_key`
-                   -
+                     -
                    `<network_services_key>.vrfs.l3_port_channels.ospf.message_digest_keys.key`
-
                    This implies that the
                    keys and passwords must be provided as cleartext (via a vault preferably).
-
                    When `false`, the keys
                    and passwords must be provided as type 7.
                 eos_designs_custom_templates: Subclass of AvdList with `EosDesignsCustomTemplatesItem` items.

@@ -414,7 +414,7 @@ class FilteredTenantsMixin(Protocol):
         config: EosCliConfigGen.VlanInterfacesItem | EosCliConfigGen.EthernetInterfacesItem,
         svi: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
-        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
         """
         Adding IP helpers and OSPF for SVIs via a common function.
@@ -447,7 +447,7 @@ class FilteredTenantsMixin(Protocol):
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem
         | EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem,
         vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem,
-        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem | None,
+        tenant: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem,
     ) -> None:
         """
         Handle OSPF authentication for l3_interfaces, l3_port_channels and SVIs.
@@ -461,6 +461,7 @@ class FilteredTenantsMixin(Protocol):
             interface: The EosCliConfigGen interface to update with authentication.
             network_services_interface: The l3_interface, l3_port_channel_interface or SVI input.
             vrf: The VRF object containing OSPF/BGP and vtep_diagnostic details.
+            tenant: The tenant object containing the VRF.
 
         Raises:
             AristaAvdMissingVariableError: If key is missing.
@@ -481,20 +482,15 @@ class FilteredTenantsMixin(Protocol):
                     # Always encrypt if defined at VRF level.
                     ospf_simple_auth_key = ospf_simple_encrypt(vrf.ospf.simple_auth_key, interface.name)
                 else:
-                    if tenant is not None:
-                        match interface:
-                            case EosCliConfigGen.EthernetInterfacesItem():
-                                key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
-                            case EosCliConfigGen.PortChannelInterfacesItem():
-                                key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
-                            case _:
-                                # This is EosCliConfigGen.VlanInterfacesItem
-                                key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
-                        msg = f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
-                    else:
-                        # get_additional_svi_config was called from uplink
-                        # this should never happen
-                        msg = "Missing OSPF simple_auth_key for uplink"
+                    match interface:
+                        case EosCliConfigGen.EthernetInterfacesItem():
+                            key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.simple_auth_key"
+                        case EosCliConfigGen.PortChannelInterfacesItem():
+                            key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.simple_auth_key"
+                        case _:
+                            # This is EosCliConfigGen.VlanInterfacesItem
+                            key_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.simple_auth_key"
+                    msg = f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.simple_auth_key` or `{key_path}`"
 
                     raise AristaAvdMissingVariableError(msg)
 
@@ -503,7 +499,7 @@ class FilteredTenantsMixin(Protocol):
             case _:
                 # This is "message-digest"
                 # The full list of keys is EITHER taken from the network_services_interface or from the VRF
-                # TODO: consider merging the two lists if the `id` are not clashing - today the keys are AvdList so we replace.
+                # TODO: AVD 6.0.0 Make 'id' a primary key and 'key' required - it means the two lists will should be merged instead of replacing.
                 if network_services_interface.ospf.message_digest_keys:
                     for ospf_key in network_services_interface.ospf.message_digest_keys:
                         self.update_message_digest_key(ospf_key, interface, encrypt=self.inputs.encrypt_passwords)
@@ -525,9 +521,7 @@ class FilteredTenantsMixin(Protocol):
         interface: EosCliConfigGen.EthernetInterfacesItem | EosCliConfigGen.PortChannelInterfacesItem | EosCliConfigGen.VlanInterfacesItem,
         encrypt: bool,
     ) -> None:
-        """
-        Handle OSPF authentication for one message digest key.
-        """
+        """Handle OSPF authentication for one message digest key."""
         if not (ospf_key.id and ospf_key.key):
             return
         if encrypt:

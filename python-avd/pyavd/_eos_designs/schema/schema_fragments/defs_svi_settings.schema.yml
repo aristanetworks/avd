@@ -255,6 +255,7 @@ $defs:
               Maximum 8 characters for cleartext password.
           message_digest_keys:
             type: list
+            # TODO: AVD 6.0.0: Make id primary_key and key required.
             items:
               type: dict
               keys:
