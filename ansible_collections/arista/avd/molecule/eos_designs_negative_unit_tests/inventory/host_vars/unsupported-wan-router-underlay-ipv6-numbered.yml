@@ -1,0 +1,55 @@
+---
+wan_mode: cv-pathfinder
+fabric_name: FABRIC_UNSPPORTED_WAN_ROUTER_UNDERLAY_IPV6_UNMBERED
+type: wan_router
+underlay_routing_protocol: ebgp
+underlay_ipv6_numbered: true
+
+cv_pathfinder_regions:
+  - name: AVD_Land_East
+    id: 43
+    description: AVD Region
+    sites:
+      - name: Site511
+        id: 511
+        location: Miami
+
+bgp_peer_groups:
+  wan_overlay_peers:
+    password: "htm4AZe9mIQOO1uiMuGgYQ=="
+    listen_range_prefixes:
+      - 192.168.142.0/24
+      - 192.168.143.0/24
+
+wan_router:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    router_id_pool: 10.255.1.0/24
+    bgp_as: 65000
+  node_groups:
+    - group: Site511
+      cv_pathfinder_region: AVD_Land_East
+      cv_pathfinder_site: Site511
+      nodes:
+        - name: unsupported-wan-router-underlay-ipv6-numbered
+          id: 1
+          l3_interfaces:
+            - name: Ethernet1
+              peer: peer3
+              peer_interface: Ethernet42
+              wan_carrier: Comcast
+              wan_circuit_id: 666
+              dhcp_accept_default_route: true
+              ip_address: dhcp
+
+wan_path_groups:
+  - name: INET
+    id: 101
+
+wan_carriers:
+  - name: Comcast
+    path_group: INET
+    trusted: true
+
+expected_error_message: >-
+  Invalid combination of inputs. WAN is not yet supported with IPv6 underlay for host 'unsupported-wan-router-underlay-ipv6-numbered'.

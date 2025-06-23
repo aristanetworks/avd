@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -179,7 +179,7 @@ class VlanInterfacesMixin(Protocol):
 
     def _get_vlan_ip_config_for_mlag_peering(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Build IP config for MLAG peering SVI for the given VRF.
 
@@ -189,6 +189,23 @@ class VlanInterfacesMixin(Protocol):
         """
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             return {"ipv6_enable": True}
+
+        if self.shared_utils.underlay_ipv6_numbered:
+            if vrf.mlag_ibgp_peering_ipv6_pool:
+                if self.shared_utils.mlag_role == "primary":
+                    return {
+                        "ipv6_address": (
+                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                            f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                        )
+                    }
+                return {
+                    "ipv6_address": (
+                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                        f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                    )
+                }
+            return {"ipv6_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"}
 
         if vrf.mlag_ibgp_peering_ipv4_pool:
             if self.shared_utils.mlag_role == "primary":

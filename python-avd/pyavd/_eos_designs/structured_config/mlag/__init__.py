@@ -102,7 +102,10 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             mtu=self.shared_utils.get_interface_mtu(l3_vlan_interface_name, self.shared_utils.p2p_uplinks_mtu),
         )
         if not self.inputs.underlay_rfc5549:
-            l3_vlan_interface.ip_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
+            if self.shared_utils.underlay_ipv6_numbered:
+                l3_vlan_interface.ipv6_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+            else:
+                l3_vlan_interface.ip_address = f"{self.shared_utils.mlag_l3_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv4_prefix_length}"
 
         self._set_mlag_l3_vlan_interface(l3_vlan_interface)
 
@@ -281,7 +284,6 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             return
 
         # MLAG Peer group
-        peer_group_name = self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name
         self.shared_utils.update_router_bgp_with_mlag_peer_group(self.structured_config.router_bgp, self.custom_structured_configs)
 
         vlan = default(self.shared_utils.mlag_peer_l3_vlan, self.shared_utils.node_config.mlag_peer_vlan)
@@ -291,7 +293,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
         if self.inputs.underlay_rfc5549:
             self.structured_config.router_bgp.neighbor_interfaces.append_new(
                 name=interface_name,
-                peer_group=peer_group_name,
+                peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
                 peer=self.shared_utils.mlag_peer,
                 remote_as=self.shared_utils.bgp_as,
                 description=AvdStringFormatter().format(
@@ -306,7 +308,7 @@ class AvdStructuredConfigMlag(StructuredConfigGenerator):
             neighbor_ip = default(self.shared_utils.mlag_peer_l3_ip, self.shared_utils.mlag_peer_ip)
             self.structured_config.router_bgp.neighbors.append_new(
                 ip_address=neighbor_ip,
-                peer_group=peer_group_name,
+                peer_group=self.inputs.bgp_peer_groups.mlag_ipv4_underlay_peer.name,
                 peer=self.shared_utils.mlag_peer,
                 description=AvdStringFormatter().format(
                     self.inputs.mlag_bgp_peer_description,
