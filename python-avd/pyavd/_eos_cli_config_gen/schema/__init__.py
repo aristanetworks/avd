@@ -23278,8 +23278,8 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 "username": {"type": str},
                 "password": {"type": str},
             }
-            environment: str | None
-            """Targeted Digital Twin environment (ACT, etc.)."""
+            environment: Literal["act"] | None
+            """Targeted Digital Twin environment."""
             node_type: str | None
             ip_addr: str | None
             """IPv4_address/Mask."""
@@ -23292,7 +23292,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                 def __init__(
                     self,
                     *,
-                    environment: str | None | UndefinedType = Undefined,
+                    environment: Literal["act"] | None | UndefinedType = Undefined,
                     node_type: str | None | UndefinedType = Undefined,
                     ip_addr: str | None | UndefinedType = Undefined,
                     version: str | None | UndefinedType = Undefined,
@@ -23306,7 +23306,7 @@ class EosCliConfigGen(EosCliConfigGenRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        environment: Targeted Digital Twin environment (ACT, etc.).
+                        environment: Targeted Digital Twin environment.
                         node_type: node_type
                         ip_addr: IPv4_address/Mask.
                         version: version

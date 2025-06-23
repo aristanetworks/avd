@@ -361,7 +361,9 @@ keys:
         keys:
           environment:
             type: str
-            description: Targeted Digital Twin environment (ACT, etc.).
+            description: Targeted Digital Twin environment.
+            valid_values:
+              - act
           node_type:
             type: str
           ip_addr:
