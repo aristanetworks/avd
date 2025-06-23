@@ -28,6 +28,7 @@ from tests.models import MoleculeHost
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
 )
 def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     """Test get_device_structured_config."""
