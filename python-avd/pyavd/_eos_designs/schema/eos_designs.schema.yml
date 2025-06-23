@@ -8312,17 +8312,7 @@ $defs:
                       '
               private_vlan:
                 type: dict
-                keys:
-                  type:
-                    type: str
-                    valid_values:
-                    - community
-                    - isolated
-                  primary_vlan:
-                    type: int
-                    convert_types:
-                    - str
-                    description: Primary VLAN ID.
+                $ref: eos_cli_config_gen#/keys/vlans/items/keys/private_vlan
         point_to_point_services:
           documentation_options:
             table: network-services-point-to-point-services-settings
