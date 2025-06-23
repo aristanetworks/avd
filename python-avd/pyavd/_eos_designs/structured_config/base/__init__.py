@@ -15,6 +15,7 @@ from pyavd._errors import AristaAvdInvalidInputsError
 from pyavd._utils import default
 from pyavd.j2filters import natural_sort
 
+from .daemon_terminattr import DaemonTerminattrMixin
 from .management_ssh import ManagementSshMixin
 from .ntp import NtpMixin
 from .platform_mixin import PlatformMixin
@@ -24,7 +25,15 @@ from .utils import UtilsMixin
 
 
 class AvdStructuredConfigBaseProtocol(
-    ManagementSshMixin, NtpMixin, SnmpServerMixin, RouterGeneralMixin, PlatformMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol
+    DaemonTerminattrMixin,
+    ManagementSshMixin,
+    NtpMixin,
+    SnmpServerMixin,
+    RouterGeneralMixin,
+    PlatformMixin,
+    UtilsMixin,
+    StructuredConfigGeneratorProtocol,
+    Protocol,
 ):
     """
     Protocol for the AvdStructuredConfig Class, which is imported by "get_structured_config" to render parts of the structured config.
@@ -192,51 +201,6 @@ class AvdStructuredConfigBaseProtocol(
         if tmp_speed_groups:
             for speed_group in natural_sort(tmp_speed_groups):
                 self.structured_config.hardware.speed_groups.append_new(speed_group=speed_group, serdes=tmp_speed_groups[speed_group])
-
-    @structured_config_contributor
-    def daemon_terminattr(self) -> None:
-        """
-        daemon_terminattr set based on cvp_instance_ips.
-
-        Updating cvaddrs and cvauth considering conditions for cvaas and cvp_on_prem IPs
-
-            if 'arista.io' in cvp_instance_ips:
-                 <updating as cvaas_ip>
-            else:
-                 <updating as cvp_on_prem ip>
-        """
-        cvp_instance_ip_list = self.inputs.cvp_instance_ips
-        if not cvp_instance_ip_list:
-            return
-
-        for cvp_instance_ip in cvp_instance_ip_list:
-            if "arista.io" in cvp_instance_ip:
-                # updating for cvaas_ips
-                self.structured_config.daemon_terminattr.cvaddrs.append(f"{cvp_instance_ip}:443")
-                self.structured_config.daemon_terminattr.cvauth._update(
-                    method="token-secure",
-                    # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                    token_file=self.inputs.cvp_token_file or "/tmp/cv-onboarding-token",  # NOSONAR # noqa: S108
-                )
-            else:
-                # updating for cvp_on_prem_ips
-                cv_address = f"{cvp_instance_ip}:{self.inputs.terminattr_ingestgrpcurl_port}"
-                self.structured_config.daemon_terminattr.cvaddrs.append(cv_address)
-                if (cvp_ingestauth_key := self.inputs.cvp_ingestauth_key) is not None:
-                    self.structured_config.daemon_terminattr.cvauth._update(method="key", key=cvp_ingestauth_key)
-                else:
-                    self.structured_config.daemon_terminattr.cvauth._update(
-                        method="token",
-                        # Ignoring sonar-lint false positive for tmp path since this is config for EOS
-                        token_file=self.inputs.cvp_token_file or "/tmp/token",  # NOSONAR # noqa: S108
-                    )
-
-        self.structured_config.daemon_terminattr._update(
-            cvvrf=self.inputs.mgmt_interface_vrf,
-            smashexcludes=self.inputs.terminattr_smashexcludes,
-            ingestexclude=self.inputs.terminattr_ingestexclude,
-            disable_aaa=self.inputs.terminattr_disable_aaa,
-        )
 
     @structured_config_contributor
     def vlan_internal_order(self) -> None:
