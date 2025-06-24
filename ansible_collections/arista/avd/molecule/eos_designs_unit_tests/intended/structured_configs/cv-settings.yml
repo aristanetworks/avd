@@ -5,7 +5,7 @@ daemon_terminattr:
   clusters:
   - name: cvaas-oob
     cvaddrs:
-    - www.arista.io:443
+    - apiserver.arista.io:443
     cvauth:
       method: token-secure
       token_file: /tmp/cv-onboarding-token
@@ -13,7 +13,7 @@ daemon_terminattr:
     cvvrf: MGMT
   - name: cvaas_inband_1
     cvaddrs:
-    - www.cv-prod-euwest-2.arista.io:443
+    - apiserver.cv-prod-euwest-2.arista.io:443
     cvauth:
       method: token-secure
       token_file: /tmp/cv-onboarding-token
@@ -21,7 +21,7 @@ daemon_terminattr:
     cvvrf: INBAND_MGMT_VRF
   - name: cvaas_mgmt_intf
     cvaddrs:
-    - www.arista.io:443
+    - apiserver.arista.io:443
     cvauth:
       method: token-secure
       token_file: /tmp/cv-onboarding-token
@@ -29,7 +29,7 @@ daemon_terminattr:
     cvvrf: INBAND_MGMT_VRF
   - name: cvaas_inband_2
     cvaddrs:
-    - www.cv-prod-euwest-2.arista.io:443
+    - apiserver.cv-prod-euwest-2.arista.io:443
     cvauth:
       method: token-secure
       token_file: /tmp/cv-onboarding-token

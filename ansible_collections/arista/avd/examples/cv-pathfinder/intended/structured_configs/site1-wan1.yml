@@ -73,7 +73,7 @@ as_path:
 config_end: true
 daemon_terminattr:
   cvaddrs:
-  - www.cv-staging.corp.arista.io:443
+  - apiserver.cv-staging.corp.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/cv-onboarding-token

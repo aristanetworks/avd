@@ -5,7 +5,7 @@ daemon_terminattr:
   cvaddrs:
   - 192.168.200.12:9910
   - 192.168.200.13:9910
-  - www.arista.io:443
+  - apiserver.arista.io:443
   cvauth:
     method: token-secure
     token_file: /tmp/anothertoken

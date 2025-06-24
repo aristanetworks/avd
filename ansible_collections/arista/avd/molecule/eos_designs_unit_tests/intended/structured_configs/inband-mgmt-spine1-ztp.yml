@@ -17,7 +17,7 @@ dhcp_servers:
   - 1.1.1.1
   - 8.8.8.8
   tftp_server:
-    file_ipv4: https://apiserver.arista.io/ztp/bootstrap
+    file_ipv4: https://www.arista.io/ztp/bootstrap
   ipv4_vendor_options:
   - vendor_id: NTP
     sub_options:
