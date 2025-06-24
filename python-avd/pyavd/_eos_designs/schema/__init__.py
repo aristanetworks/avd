@@ -10798,9 +10798,6 @@ class EosDesigns(EosDesignsRootModel):
                         poe:
                            Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
                            Feature will be ignored on unsupported platforms.
-                        queue_monitor_length_notify: queue_monitor_length_notify
-                        interface_storm_control: interface_storm_control
-                        poe: poe
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
@@ -11446,7 +11443,6 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            """Default value: `False`"""
             subinterface_mtu: bool
             """
             Support for MTU configuration under sub-interfaces.
@@ -11571,9 +11567,6 @@ class EosDesigns(EosDesignsRootModel):
                         poe:
                            Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
                            Feature will be ignored on unsupported platforms.
-                        queue_monitor_length_notify: queue_monitor_length_notify
-                        interface_storm_control: interface_storm_control
-                        poe: poe
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
                            When this key is set to False, MTU is not
