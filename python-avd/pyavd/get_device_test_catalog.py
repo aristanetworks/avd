@@ -54,11 +54,11 @@ def get_device_test_catalog(
     AntaCatalog
         The generated ANTA catalog for the device.
     """
-    from ._anta.factories import create_catalog
-    from ._anta.index import AVD_TEST_INDEX, AVD_TEST_NAMES
-    from ._anta.lib import AntaCatalog
-    from ._anta.utils import dump_anta_catalog
-    from .api._anta import AvdCatalogGenerationSettings
+    from ._anta.factories import create_catalog  # noqa: PLC0415
+    from ._anta.index import AVD_TEST_INDEX, AVD_TEST_NAMES  # noqa: PLC0415
+    from ._anta.lib import AntaCatalog  # noqa: PLC0415
+    from ._anta.utils import dump_anta_catalog  # noqa: PLC0415
+    from .api._anta import AvdCatalogGenerationSettings  # noqa: PLC0415
 
     settings = settings or AvdCatalogGenerationSettings()
 
