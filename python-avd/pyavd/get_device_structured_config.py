@@ -23,14 +23,11 @@ def get_device_structured_config(hostname: str, inputs: dict, avd_facts: dict[st
     Returns:
         Device Structured Configuration as a dictionary
     """
-    # pylint: disable=import-outside-toplevel
-    from ._eos_designs.structured_config import get_structured_config
-    from ._errors import AristaAvdError
-    from .avd_schema_tools import AvdSchemaTools
-    from .constants import EOS_DESIGNS_SCHEMA_ID
+    from ._eos_designs.structured_config import get_structured_config  # noqa: PLC0415
+    from ._errors import AristaAvdError  # noqa: PLC0415
+    from .avd_schema_tools import AvdSchemaTools  # noqa: PLC0415
+    from .constants import EOS_DESIGNS_SCHEMA_ID  # noqa: PLC0415
 
-    # pylint: enable=import-outside-toplevel
-    #
     # Map in avd_facts without touching the hostvars
     mapped_hostvars = ChainMap(
         {
