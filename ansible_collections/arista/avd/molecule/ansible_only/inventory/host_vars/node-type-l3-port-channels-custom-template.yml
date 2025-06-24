@@ -65,8 +65,13 @@ wan_router:
               ip_address: 192.168.100.115/31
             - name: Port-Channel5.105
               ip_address: 192.168.100.116/31
+              peer: peer3
+              wan_carrier: Telstra
 wan_carriers:
   - name: StreamFast
+    path_group: INET
+    trusted: true
+  - name: Telstra
     path_group: INET
     trusted: true
 

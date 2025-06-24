@@ -143,7 +143,9 @@ metadata:
     - interface: Port-Channel5.105
       tags:
       - name: Type
-        value: lan
+        value: wan
+      - name: Carrier
+        value: Telstra
   cv_pathfinder:
     role: edge
     region: AVD_Land_East
@@ -156,9 +158,12 @@ metadata:
       carrier: StreamFast
       circuit_id: '102'
       pathgroup: INET
+    - name: Port-Channel5.105
+      carrier: Telstra
+      pathgroup: INET
 port_channel_interfaces:
 - name: Port-Channel5
-  description: custom_StreamFast_peer2
+  description: custom_template_description_StreamFast
   shutdown: false
   ip_address: 192.168.1.105/31
   peer: peer2
@@ -167,18 +172,19 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel5.100
-  description: custom_StreamFast_
+  description: custom_template_description_StreamFast
   shutdown: false
   encapsulation_dot1q:
     vlan: 100
   ip_address: 192.168.100.115/31
   peer_type: l3_port_channel
 - name: Port-Channel5.105
-  description: custom_StreamFast_
+  description: custom_template_description_Telstra
   shutdown: false
   encapsulation_dot1q:
     vlan: 105
   ip_address: 192.168.100.116/31
+  peer: peer3
   peer_type: l3_port_channel
 prefix_lists:
 - name: PL-LOOPBACKS-EVPN-OVERLAY
@@ -328,6 +334,7 @@ router_path_selection:
     ipsec_profile: CP-PROFILE
     local_interfaces:
     - name: Port-Channel5
+    - name: Port-Channel5.105
     dynamic_peers:
       enabled: true
   load_balance_policies:
