@@ -3581,15 +3581,13 @@ keys:
             interface_storm_control:
               type: bool
               default: true
-              description: 'Support for configuration of per interface storm-control
-                settings on Ethernet or Port-channel interfaces.
+              description: 'Support for storm-control.
 
                 Feature will be ignored on unsupported platforms.'
             poe:
               type: bool
               default: false
-              description: 'Support for configuration of per interface PoE settings
-                on Ethernet or Port-channel interfaces.
+              description: 'Support for PoE.
 
                 Feature will be ignored on unsupported platforms.'
             subinterface_mtu:
@@ -3677,180 +3675,116 @@ keys:
               default: false
               description: Support for all-active EVPN gateway redundancy.
             hardware_counters:
-              type: dict
-              description: 'Support for enabling counters for features using programmable
-                hardware counter resources.
+              type: bool
+              description: 'Support for enabling counters using programmable hardware
+                counter resources.
 
                 Feature will be ignored on unsupported platforms.'
+              default: true
+            hardware_counters_features:
+              type: dict
               keys:
                 supported:
                   type: bool
-                  description: 'General support for the `hardware counter` CLI.
+                  description: 'General support for the `hardware counter feature`
+                    CLI.
 
                     Setting this key to `false` for the specific platform will disable
-                    support of any specific hardware counter functionality (`feature`,
-                    `drop`, etc.) for this platform.'
+                    support of any specific hardware counter feature for this platform.'
                   default: true
-                feature:
+                features:
                   type: dict
+                  description: Per-feature support for the hardware counters.
                   keys:
-                    supported:
-                      type: bool
-                      description: 'General support for the `hardware counter feature`
-                        CLI.
-
-                        Setting this key to `false` for the specific platform will
-                        disable support of any specific hardware counter feature for
-                        this platform.'
-                      default: true
                     acl:
                       type: bool
-                      description: Support for the hardware counter for the `acl`
-                        feature.
                       default: true
                     decap_group:
                       type: bool
-                      description: Support for the hardware counter for the `decap-group`
-                        feature.
                       default: true
                     directflow:
                       type: bool
-                      description: Support for the hardware counter for the `directflow`
-                        feature.
                       default: true
                     ecn:
                       type: bool
-                      description: Support for the hardware counter for the `ecn`
-                        feature.
                       default: true
                     flow_spec:
                       type: bool
-                      description: Support for the hardware counter for the `flow-spec`
-                        feature.
                       default: true
                     gre_tunnel_interface:
                       type: bool
-                      description: Support for the hardware counter for the `gre tunnel
-                        interface` feature.
                       default: true
                     ip:
                       type: bool
-                      description: Support for the hardware counter for the `ip` feature.
                       default: true
                     mpls_interface:
                       type: bool
-                      description: Support for the hardware counter for the `mpls
-                        interface` feature.
                       default: true
                     mpls_lfib:
                       type: bool
-                      description: Support for the hardware counter for the `mpls
-                        lfib` feature.
                       default: true
                     mpls_tunnel:
                       type: bool
-                      description: Support for the hardware counter for the `mpls
-                        tunnel` feature.
                       default: true
                     multicast:
                       type: bool
-                      description: Support for the hardware counter for the `multicast`
-                        feature.
                       default: true
                     nexthop:
                       type: bool
-                      description: Support for the hardware counter for the `nexthop`
-                        feature.
                       default: true
                     pbr:
                       type: bool
-                      description: Support for the hardware counter for the `pbr`
-                        feature.
                       default: true
                     pdp:
                       type: bool
-                      description: Support for the hardware counter for the `pdp`
-                        feature.
                       default: true
                     policing_interface:
                       type: bool
-                      description: Support for the hardware counter for the `policing
-                        interface` feature.
                       default: true
                     qos:
                       type: bool
-                      description: Support for the hardware counter for the `qos`
-                        feature.
                       default: true
                     qos_dual_rate_policer:
                       type: bool
-                      description: Support for the hardware counter for the `qos dual-rate-policer`
-                        feature.
                       default: true
                     route:
                       type: bool
-                      description: Support for the hardware counter for the `route`
-                        feature.
                       default: true
                     routed_port:
                       type: bool
-                      description: Support for the hardware counter for the `routed-port`
-                        feature.
                       default: true
                     segment_security:
                       type: bool
-                      description: Support for the hardware counter for the `segment-security`
-                        feature.
                       default: true
                     subinterface:
                       type: bool
-                      description: Support for the hardware counter for the `subinterface`
-                        feature.
                       default: true
                     tapagg:
                       type: bool
-                      description: Support for the hardware counter for the `tapagg`
-                        feature.
                       default: true
                     traffic_class:
                       type: bool
-                      description: Support for the hardware counter for the `traffic-class`
-                        feature.
                       default: true
                     traffic_policy:
                       type: bool
-                      description: Support for the hardware counter for the `traffic-policy`
-                        feature.
                       default: true
                     vlan:
                       type: bool
-                      description: Support for the hardware counter for the `vlan`
-                        feature.
                       default: true
                     vlan_interface:
                       type: bool
-                      description: Support for the hardware counter for the `vlan-interface`
-                        feature.
                       default: true
                     vni_decap:
                       type: bool
-                      description: Support for the hardware counter for the `vni decap`
-                        feature.
                       default: true
                     vni_encap:
                       type: bool
-                      description: Support for the hardware counter for the `vni encap`
-                        feature.
                       default: true
                     vtep_decap:
                       type: bool
-                      description: Support for the hardware counter for the `vtep
-                        decap` feature.
                       default: true
                     vtep_encap:
                       type: bool
-                      description: Support for the hardware counter for the `vtep
-                        encap` feature.
                       default: true
             hardware_speed_group:
               type: bool

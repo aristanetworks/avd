@@ -31,8 +31,8 @@ custom_platform_settings:
       queue_monitor: false
       queue_monitor_length_notify: false
       evpn_gateway_all_active_multihoming: true
-      hardware_counters:
-        feature:
+      hardware_counters_features:
+        features:
           decap_group: false
           directflow: false
           ecn: false
@@ -72,8 +72,8 @@ custom_platform_settings:
       queue_monitor: false
       queue_monitor_length_notify: false
       evpn_gateway_all_active_multihoming: true
-      hardware_counters:
-        feature:
+      hardware_counters_features:
+        features:
           decap_group: false
           directflow: false
           ecn: false
@@ -107,8 +107,7 @@ custom_platform_settings:
       - CloudEOS
       - cloudEOS
     feature_support:
-      hardware_counters:
-        supported: false
+      hardware_counters: false
       bgp_update_wait_install: false
       interface_storm_control: false
       queue_monitor: false
@@ -116,6 +115,11 @@ custom_platform_settings:
       hardware_speed_group: false
       per_interface_l2_mru: false
     p2p_uplinks_mtu: 9194
+  - platforms:
+      - customplatform
+    feature_support:
+      hardware_counters_features:
+        supported: false
 
 type: l3leaf
 
@@ -142,6 +146,9 @@ l3leaf:
       id: 5
       # Supports queue-monitor length notifying
       platform: 7280R
+    - name: HARDWARE_FEATURES_CUSTOM_PLATFORM
+      id: 6
+      platform: customplatform
 
 # Test `queue-monitor`
 queue_monitor_length:

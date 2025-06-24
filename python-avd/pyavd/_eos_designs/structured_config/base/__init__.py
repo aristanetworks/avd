@@ -169,27 +169,31 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         Contributing data sources:
           - hardware_counters.features variable.
           - platform_settings.feature_support.hardware_counters fact.
+          - platform_settings.feature_support.hardware_counters_features fact.
         """
         if not self.inputs.hardware_counters:
             return
         # Avoid collision with eos_cli_config_gen
-        if not self.shared_utils.platform_settings.feature_support.hardware_counters.supported:
+        if not self.shared_utils.platform_settings.feature_support.hardware_counters:
             self.custom_structured_configs.nested.hardware_counters = EosCliConfigGen.HardwareCounters._from_null()
             return
-        hardware_counters = self.inputs.hardware_counters._cast_as(EosCliConfigGen.HardwareCounters)
+        hardware_counters = self.inputs.hardware_counters
 
         # Filter different hardware counter features based on the platform supportability
-        if self.shared_utils.platform_settings.feature_support.hardware_counters.feature.supported:
+        if self.shared_utils.platform_settings.feature_support.hardware_counters_features.supported:
             hardware_counters.features = hardware_counters.features._filtered(
                 lambda feature: get_v2(
-                    self.shared_utils.platform_settings.feature_support.hardware_counters.feature,
+                    self.shared_utils.platform_settings.feature_support.hardware_counters_features.features,
                     feature.name.replace(" ", "_").replace("-", "_"),
                     # Assume all uncovered/new features are supported
                     default=True,
                 )
             )
-        elif hasattr(hardware_counters, "features"):
-            del hardware_counters.features
+        else:
+            if hardware_counters.features:
+                del hardware_counters.features
+            # Avoid collision with eos_cli_config_gen
+            self.custom_structured_configs.nested.hardware_counters.features = EosCliConfigGen.HardwareCounters.Features._from_null()
 
         self.structured_config.hardware_counters = hardware_counters
 

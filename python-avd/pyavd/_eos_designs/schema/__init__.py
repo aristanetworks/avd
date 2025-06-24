@@ -10287,14 +10287,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class HardwareCounters(AvdModel):
+            class HardwareCountersFeatures(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Feature(AvdModel):
+                class Features(AvdModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {
-                        "supported": {"type": bool, "default": True},
                         "acl": {"type": bool, "default": True},
                         "decap_group": {"type": bool, "default": True},
                         "directflow": {"type": bool, "default": True},
@@ -10326,201 +10325,72 @@ class EosDesigns(EosDesignsRootModel):
                         "vtep_decap": {"type": bool, "default": True},
                         "vtep_encap": {"type": bool, "default": True},
                     }
-                    supported: bool
-                    """
-                    General support for the `hardware counter feature` CLI.
-                    Setting this key to `false` for the specific
-                    platform will disable support of any specific hardware counter feature for this platform.
-
-                    Default value: `True`
-                    """
                     acl: bool
-                    """
-                    Support for the hardware counter for the `acl` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     decap_group: bool
-                    """
-                    Support for the hardware counter for the `decap-group` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     directflow: bool
-                    """
-                    Support for the hardware counter for the `directflow` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     ecn: bool
-                    """
-                    Support for the hardware counter for the `ecn` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     flow_spec: bool
-                    """
-                    Support for the hardware counter for the `flow-spec` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     gre_tunnel_interface: bool
-                    """
-                    Support for the hardware counter for the `gre tunnel interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     ip: bool
-                    """
-                    Support for the hardware counter for the `ip` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     mpls_interface: bool
-                    """
-                    Support for the hardware counter for the `mpls interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     mpls_lfib: bool
-                    """
-                    Support for the hardware counter for the `mpls lfib` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     mpls_tunnel: bool
-                    """
-                    Support for the hardware counter for the `mpls tunnel` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     multicast: bool
-                    """
-                    Support for the hardware counter for the `multicast` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     nexthop: bool
-                    """
-                    Support for the hardware counter for the `nexthop` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     pbr: bool
-                    """
-                    Support for the hardware counter for the `pbr` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     pdp: bool
-                    """
-                    Support for the hardware counter for the `pdp` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     policing_interface: bool
-                    """
-                    Support for the hardware counter for the `policing interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     qos: bool
-                    """
-                    Support for the hardware counter for the `qos` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     qos_dual_rate_policer: bool
-                    """
-                    Support for the hardware counter for the `qos dual-rate-policer` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     route: bool
-                    """
-                    Support for the hardware counter for the `route` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     routed_port: bool
-                    """
-                    Support for the hardware counter for the `routed-port` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     segment_security: bool
-                    """
-                    Support for the hardware counter for the `segment-security` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     subinterface: bool
-                    """
-                    Support for the hardware counter for the `subinterface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     tapagg: bool
-                    """
-                    Support for the hardware counter for the `tapagg` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     traffic_class: bool
-                    """
-                    Support for the hardware counter for the `traffic-class` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     traffic_policy: bool
-                    """
-                    Support for the hardware counter for the `traffic-policy` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vlan: bool
-                    """
-                    Support for the hardware counter for the `vlan` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vlan_interface: bool
-                    """
-                    Support for the hardware counter for the `vlan-interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vni_decap: bool
-                    """
-                    Support for the hardware counter for the `vni decap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vni_encap: bool
-                    """
-                    Support for the hardware counter for the `vni encap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vtep_decap: bool
-                    """
-                    Support for the hardware counter for the `vtep decap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vtep_encap: bool
-                    """
-                    Support for the hardware counter for the `vtep encap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            supported: bool | UndefinedType = Undefined,
                             acl: bool | UndefinedType = Undefined,
                             decap_group: bool | UndefinedType = Undefined,
                             directflow: bool | UndefinedType = Undefined,
@@ -10553,78 +10423,79 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_encap: bool | UndefinedType = Undefined,
                         ) -> None:
                             """
-                            Feature.
+                            Features.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                supported:
-                                   General support for the `hardware counter feature` CLI.
-                                   Setting this key to `false` for the specific
-                                   platform will disable support of any specific hardware counter feature for this platform.
-                                acl: Support for the hardware counter for the `acl` feature.
-                                decap_group: Support for the hardware counter for the `decap-group` feature.
-                                directflow: Support for the hardware counter for the `directflow` feature.
-                                ecn: Support for the hardware counter for the `ecn` feature.
-                                flow_spec: Support for the hardware counter for the `flow-spec` feature.
-                                gre_tunnel_interface: Support for the hardware counter for the `gre tunnel interface` feature.
-                                ip: Support for the hardware counter for the `ip` feature.
-                                mpls_interface: Support for the hardware counter for the `mpls interface` feature.
-                                mpls_lfib: Support for the hardware counter for the `mpls lfib` feature.
-                                mpls_tunnel: Support for the hardware counter for the `mpls tunnel` feature.
-                                multicast: Support for the hardware counter for the `multicast` feature.
-                                nexthop: Support for the hardware counter for the `nexthop` feature.
-                                pbr: Support for the hardware counter for the `pbr` feature.
-                                pdp: Support for the hardware counter for the `pdp` feature.
-                                policing_interface: Support for the hardware counter for the `policing interface` feature.
-                                qos: Support for the hardware counter for the `qos` feature.
-                                qos_dual_rate_policer: Support for the hardware counter for the `qos dual-rate-policer` feature.
-                                route: Support for the hardware counter for the `route` feature.
-                                routed_port: Support for the hardware counter for the `routed-port` feature.
-                                segment_security: Support for the hardware counter for the `segment-security` feature.
-                                subinterface: Support for the hardware counter for the `subinterface` feature.
-                                tapagg: Support for the hardware counter for the `tapagg` feature.
-                                traffic_class: Support for the hardware counter for the `traffic-class` feature.
-                                traffic_policy: Support for the hardware counter for the `traffic-policy` feature.
-                                vlan: Support for the hardware counter for the `vlan` feature.
-                                vlan_interface: Support for the hardware counter for the `vlan-interface` feature.
-                                vni_decap: Support for the hardware counter for the `vni decap` feature.
-                                vni_encap: Support for the hardware counter for the `vni encap` feature.
-                                vtep_decap: Support for the hardware counter for the `vtep decap` feature.
-                                vtep_encap: Support for the hardware counter for the `vtep encap` feature.
+                                acl: acl
+                                decap_group: decap_group
+                                directflow: directflow
+                                ecn: ecn
+                                flow_spec: flow_spec
+                                gre_tunnel_interface: gre_tunnel_interface
+                                ip: ip
+                                mpls_interface: mpls_interface
+                                mpls_lfib: mpls_lfib
+                                mpls_tunnel: mpls_tunnel
+                                multicast: multicast
+                                nexthop: nexthop
+                                pbr: pbr
+                                pdp: pdp
+                                policing_interface: policing_interface
+                                qos: qos
+                                qos_dual_rate_policer: qos_dual_rate_policer
+                                route: route
+                                routed_port: routed_port
+                                segment_security: segment_security
+                                subinterface: subinterface
+                                tapagg: tapagg
+                                traffic_class: traffic_class
+                                traffic_policy: traffic_policy
+                                vlan: vlan
+                                vlan_interface: vlan_interface
+                                vni_decap: vni_decap
+                                vni_encap: vni_encap
+                                vtep_decap: vtep_decap
+                                vtep_encap: vtep_encap
 
                             """
 
-                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": True}, "feature": {"type": Feature}}
+                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": True}, "features": {"type": Features}}
                 supported: bool
                 """
-                General support for the `hardware counter` CLI.
+                General support for the `hardware counter feature` CLI.
                 Setting this key to `false` for the specific
-                platform will disable support of any specific hardware counter functionality (`feature`, `drop`,
-                etc.) for this platform.
+                platform will disable support of any specific hardware counter feature for this platform.
 
                 Default value: `True`
                 """
-                feature: Feature
-                """Subclass of AvdModel."""
+                features: Features
+                """
+                Per-feature support for the hardware counters.
+
+                Subclass of AvdModel.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, supported: bool | UndefinedType = Undefined, feature: Feature | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, supported: bool | UndefinedType = Undefined, features: Features | UndefinedType = Undefined) -> None:
                         """
-                        HardwareCounters.
+                        HardwareCountersFeatures.
 
 
                         Subclass of AvdModel.
 
                         Args:
                             supported:
-                               General support for the `hardware counter` CLI.
+                               General support for the `hardware counter feature` CLI.
                                Setting this key to `false` for the specific
-                               platform will disable support of any specific hardware counter functionality (`feature`, `drop`,
-                               etc.) for this platform.
-                            feature: Subclass of AvdModel.
+                               platform will disable support of any specific hardware counter feature for this platform.
+                            features:
+                               Per-feature support for the hardware counters.
+
+                               Subclass of AvdModel.
 
                         """
 
@@ -10641,7 +10512,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
-                "hardware_counters": {"type": HardwareCounters},
+                "hardware_counters": {"type": bool, "default": True},
+                "hardware_counters_features": {"type": HardwareCountersFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
             }
             queue_monitor: bool
@@ -10661,15 +10533,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             interface_storm_control: bool
             """
-            Support for configuration of per interface storm-control settings on Ethernet or Port-channel
-            interfaces.
+            Support for storm-control.
             Feature will be ignored on unsupported platforms.
 
             Default value: `True`
             """
             poe: bool
             """
-            Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
+            Support for PoE.
             Feature will be ignored on unsupported platforms.
 
             Default value: `False`
@@ -10741,14 +10612,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            hardware_counters: HardwareCounters
+            hardware_counters: bool
             """
-            Support for enabling counters for features using programmable hardware counter resources.
-            Feature
-            will be ignored on unsupported platforms.
+            Support for enabling counters using programmable hardware counter resources.
+            Feature will be ignored
+            on unsupported platforms.
 
-            Subclass of AvdModel.
+            Default value: `True`
             """
+            hardware_counters_features: HardwareCountersFeatures
+            """Subclass of AvdModel."""
             hardware_speed_group: bool
             """
             Support for configurable speeds per speed-group.
@@ -10774,7 +10647,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
-                    hardware_counters: HardwareCounters | UndefinedType = Undefined,
+                    hardware_counters: bool | UndefinedType = Undefined,
+                    hardware_counters_features: HardwareCountersFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -10792,11 +10666,10 @@ class EosDesigns(EosDesignsRootModel):
                            Feature
                            will be ignored on unsupported platforms.
                         interface_storm_control:
-                           Support for configuration of per interface storm-control settings on Ethernet or Port-channel
-                           interfaces.
+                           Support for storm-control.
                            Feature will be ignored on unsupported platforms.
                         poe:
-                           Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
+                           Support for PoE.
                            Feature will be ignored on unsupported platforms.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
@@ -10835,11 +10708,10 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
                         hardware_counters:
-                           Support for enabling counters for features using programmable hardware counter resources.
-                           Feature
-                           will be ignored on unsupported platforms.
-
-                           Subclass of AvdModel.
+                           Support for enabling counters using programmable hardware counter resources.
+                           Feature will be ignored
+                           on unsupported platforms.
+                        hardware_counters_features: Subclass of AvdModel.
                         hardware_speed_group:
                            Support for configurable speeds per speed-group.
                            Feature will be ignored on unsupported platforms.
@@ -11056,14 +10928,13 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class HardwareCounters(AvdModel):
+            class HardwareCountersFeatures(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Feature(AvdModel):
+                class Features(AvdModel):
                     """Subclass of AvdModel."""
 
                     _fields: ClassVar[dict] = {
-                        "supported": {"type": bool, "default": True},
                         "acl": {"type": bool, "default": True},
                         "decap_group": {"type": bool, "default": True},
                         "directflow": {"type": bool, "default": True},
@@ -11095,201 +10966,72 @@ class EosDesigns(EosDesignsRootModel):
                         "vtep_decap": {"type": bool, "default": True},
                         "vtep_encap": {"type": bool, "default": True},
                     }
-                    supported: bool
-                    """
-                    General support for the `hardware counter feature` CLI.
-                    Setting this key to `false` for the specific
-                    platform will disable support of any specific hardware counter feature for this platform.
-
-                    Default value: `True`
-                    """
                     acl: bool
-                    """
-                    Support for the hardware counter for the `acl` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     decap_group: bool
-                    """
-                    Support for the hardware counter for the `decap-group` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     directflow: bool
-                    """
-                    Support for the hardware counter for the `directflow` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     ecn: bool
-                    """
-                    Support for the hardware counter for the `ecn` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     flow_spec: bool
-                    """
-                    Support for the hardware counter for the `flow-spec` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     gre_tunnel_interface: bool
-                    """
-                    Support for the hardware counter for the `gre tunnel interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     ip: bool
-                    """
-                    Support for the hardware counter for the `ip` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     mpls_interface: bool
-                    """
-                    Support for the hardware counter for the `mpls interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     mpls_lfib: bool
-                    """
-                    Support for the hardware counter for the `mpls lfib` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     mpls_tunnel: bool
-                    """
-                    Support for the hardware counter for the `mpls tunnel` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     multicast: bool
-                    """
-                    Support for the hardware counter for the `multicast` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     nexthop: bool
-                    """
-                    Support for the hardware counter for the `nexthop` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     pbr: bool
-                    """
-                    Support for the hardware counter for the `pbr` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     pdp: bool
-                    """
-                    Support for the hardware counter for the `pdp` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     policing_interface: bool
-                    """
-                    Support for the hardware counter for the `policing interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     qos: bool
-                    """
-                    Support for the hardware counter for the `qos` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     qos_dual_rate_policer: bool
-                    """
-                    Support for the hardware counter for the `qos dual-rate-policer` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     route: bool
-                    """
-                    Support for the hardware counter for the `route` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     routed_port: bool
-                    """
-                    Support for the hardware counter for the `routed-port` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     segment_security: bool
-                    """
-                    Support for the hardware counter for the `segment-security` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     subinterface: bool
-                    """
-                    Support for the hardware counter for the `subinterface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     tapagg: bool
-                    """
-                    Support for the hardware counter for the `tapagg` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     traffic_class: bool
-                    """
-                    Support for the hardware counter for the `traffic-class` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     traffic_policy: bool
-                    """
-                    Support for the hardware counter for the `traffic-policy` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vlan: bool
-                    """
-                    Support for the hardware counter for the `vlan` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vlan_interface: bool
-                    """
-                    Support for the hardware counter for the `vlan-interface` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vni_decap: bool
-                    """
-                    Support for the hardware counter for the `vni decap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vni_encap: bool
-                    """
-                    Support for the hardware counter for the `vni encap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vtep_decap: bool
-                    """
-                    Support for the hardware counter for the `vtep decap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
                     vtep_encap: bool
-                    """
-                    Support for the hardware counter for the `vtep encap` feature.
-
-                    Default value: `True`
-                    """
+                    """Default value: `True`"""
 
                     if TYPE_CHECKING:
 
                         def __init__(
                             self,
                             *,
-                            supported: bool | UndefinedType = Undefined,
                             acl: bool | UndefinedType = Undefined,
                             decap_group: bool | UndefinedType = Undefined,
                             directflow: bool | UndefinedType = Undefined,
@@ -11322,78 +11064,79 @@ class EosDesigns(EosDesignsRootModel):
                             vtep_encap: bool | UndefinedType = Undefined,
                         ) -> None:
                             """
-                            Feature.
+                            Features.
 
 
                             Subclass of AvdModel.
 
                             Args:
-                                supported:
-                                   General support for the `hardware counter feature` CLI.
-                                   Setting this key to `false` for the specific
-                                   platform will disable support of any specific hardware counter feature for this platform.
-                                acl: Support for the hardware counter for the `acl` feature.
-                                decap_group: Support for the hardware counter for the `decap-group` feature.
-                                directflow: Support for the hardware counter for the `directflow` feature.
-                                ecn: Support for the hardware counter for the `ecn` feature.
-                                flow_spec: Support for the hardware counter for the `flow-spec` feature.
-                                gre_tunnel_interface: Support for the hardware counter for the `gre tunnel interface` feature.
-                                ip: Support for the hardware counter for the `ip` feature.
-                                mpls_interface: Support for the hardware counter for the `mpls interface` feature.
-                                mpls_lfib: Support for the hardware counter for the `mpls lfib` feature.
-                                mpls_tunnel: Support for the hardware counter for the `mpls tunnel` feature.
-                                multicast: Support for the hardware counter for the `multicast` feature.
-                                nexthop: Support for the hardware counter for the `nexthop` feature.
-                                pbr: Support for the hardware counter for the `pbr` feature.
-                                pdp: Support for the hardware counter for the `pdp` feature.
-                                policing_interface: Support for the hardware counter for the `policing interface` feature.
-                                qos: Support for the hardware counter for the `qos` feature.
-                                qos_dual_rate_policer: Support for the hardware counter for the `qos dual-rate-policer` feature.
-                                route: Support for the hardware counter for the `route` feature.
-                                routed_port: Support for the hardware counter for the `routed-port` feature.
-                                segment_security: Support for the hardware counter for the `segment-security` feature.
-                                subinterface: Support for the hardware counter for the `subinterface` feature.
-                                tapagg: Support for the hardware counter for the `tapagg` feature.
-                                traffic_class: Support for the hardware counter for the `traffic-class` feature.
-                                traffic_policy: Support for the hardware counter for the `traffic-policy` feature.
-                                vlan: Support for the hardware counter for the `vlan` feature.
-                                vlan_interface: Support for the hardware counter for the `vlan-interface` feature.
-                                vni_decap: Support for the hardware counter for the `vni decap` feature.
-                                vni_encap: Support for the hardware counter for the `vni encap` feature.
-                                vtep_decap: Support for the hardware counter for the `vtep decap` feature.
-                                vtep_encap: Support for the hardware counter for the `vtep encap` feature.
+                                acl: acl
+                                decap_group: decap_group
+                                directflow: directflow
+                                ecn: ecn
+                                flow_spec: flow_spec
+                                gre_tunnel_interface: gre_tunnel_interface
+                                ip: ip
+                                mpls_interface: mpls_interface
+                                mpls_lfib: mpls_lfib
+                                mpls_tunnel: mpls_tunnel
+                                multicast: multicast
+                                nexthop: nexthop
+                                pbr: pbr
+                                pdp: pdp
+                                policing_interface: policing_interface
+                                qos: qos
+                                qos_dual_rate_policer: qos_dual_rate_policer
+                                route: route
+                                routed_port: routed_port
+                                segment_security: segment_security
+                                subinterface: subinterface
+                                tapagg: tapagg
+                                traffic_class: traffic_class
+                                traffic_policy: traffic_policy
+                                vlan: vlan
+                                vlan_interface: vlan_interface
+                                vni_decap: vni_decap
+                                vni_encap: vni_encap
+                                vtep_decap: vtep_decap
+                                vtep_encap: vtep_encap
 
                             """
 
-                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": True}, "feature": {"type": Feature}}
+                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": True}, "features": {"type": Features}}
                 supported: bool
                 """
-                General support for the `hardware counter` CLI.
+                General support for the `hardware counter feature` CLI.
                 Setting this key to `false` for the specific
-                platform will disable support of any specific hardware counter functionality (`feature`, `drop`,
-                etc.) for this platform.
+                platform will disable support of any specific hardware counter feature for this platform.
 
                 Default value: `True`
                 """
-                feature: Feature
-                """Subclass of AvdModel."""
+                features: Features
+                """
+                Per-feature support for the hardware counters.
+
+                Subclass of AvdModel.
+                """
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, supported: bool | UndefinedType = Undefined, feature: Feature | UndefinedType = Undefined) -> None:
+                    def __init__(self, *, supported: bool | UndefinedType = Undefined, features: Features | UndefinedType = Undefined) -> None:
                         """
-                        HardwareCounters.
+                        HardwareCountersFeatures.
 
 
                         Subclass of AvdModel.
 
                         Args:
                             supported:
-                               General support for the `hardware counter` CLI.
+                               General support for the `hardware counter feature` CLI.
                                Setting this key to `false` for the specific
-                               platform will disable support of any specific hardware counter functionality (`feature`, `drop`,
-                               etc.) for this platform.
-                            feature: Subclass of AvdModel.
+                               platform will disable support of any specific hardware counter feature for this platform.
+                            features:
+                               Per-feature support for the hardware counters.
+
+                               Subclass of AvdModel.
 
                         """
 
@@ -11410,7 +11153,8 @@ class EosDesigns(EosDesignsRootModel):
                 "bgp_update_wait_for_convergence": {"type": bool, "default": True},
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
-                "hardware_counters": {"type": HardwareCounters},
+                "hardware_counters": {"type": bool, "default": True},
+                "hardware_counters_features": {"type": HardwareCountersFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
             }
             queue_monitor: bool
@@ -11430,15 +11174,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             interface_storm_control: bool
             """
-            Support for configuration of per interface storm-control settings on Ethernet or Port-channel
-            interfaces.
+            Support for storm-control.
             Feature will be ignored on unsupported platforms.
 
             Default value: `True`
             """
             poe: bool
             """
-            Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
+            Support for PoE.
             Feature will be ignored on unsupported platforms.
 
             Default value: `False`
@@ -11510,14 +11253,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `False`
             """
-            hardware_counters: HardwareCounters
+            hardware_counters: bool
             """
-            Support for enabling counters for features using programmable hardware counter resources.
-            Feature
-            will be ignored on unsupported platforms.
+            Support for enabling counters using programmable hardware counter resources.
+            Feature will be ignored
+            on unsupported platforms.
 
-            Subclass of AvdModel.
+            Default value: `True`
             """
+            hardware_counters_features: HardwareCountersFeatures
+            """Subclass of AvdModel."""
             hardware_speed_group: bool
             """
             Support for configurable speeds per speed-group.
@@ -11543,7 +11288,8 @@ class EosDesigns(EosDesignsRootModel):
                     bgp_update_wait_for_convergence: bool | UndefinedType = Undefined,
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
-                    hardware_counters: HardwareCounters | UndefinedType = Undefined,
+                    hardware_counters: bool | UndefinedType = Undefined,
+                    hardware_counters_features: HardwareCountersFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -11561,11 +11307,10 @@ class EosDesigns(EosDesignsRootModel):
                            Feature
                            will be ignored on unsupported platforms.
                         interface_storm_control:
-                           Support for configuration of per interface storm-control settings on Ethernet or Port-channel
-                           interfaces.
+                           Support for storm-control.
                            Feature will be ignored on unsupported platforms.
                         poe:
-                           Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
+                           Support for PoE.
                            Feature will be ignored on unsupported platforms.
                         subinterface_mtu:
                            Support for MTU configuration under sub-interfaces.
@@ -11604,11 +11349,10 @@ class EosDesigns(EosDesignsRootModel):
                            Subclass of AvdModel.
                         evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
                         hardware_counters:
-                           Support for enabling counters for features using programmable hardware counter resources.
-                           Feature
-                           will be ignored on unsupported platforms.
-
-                           Subclass of AvdModel.
+                           Support for enabling counters using programmable hardware counter resources.
+                           Feature will be ignored
+                           on unsupported platforms.
+                        hardware_counters_features: Subclass of AvdModel.
                         hardware_speed_group:
                            Support for configurable speeds per speed-group.
                            Feature will be ignored on unsupported platforms.
