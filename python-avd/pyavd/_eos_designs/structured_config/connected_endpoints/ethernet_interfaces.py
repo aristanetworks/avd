@@ -242,6 +242,6 @@ class EthernetInterfacesMixin(Protocol):
 
         # Propagate campus_link_type for campus devices
         if self.shared_utils.is_campus_device and adapter.campus_link_type:
-            ethernet_interface.campus_link_type = adapter.campus_link_type._cast_as(EosCliConfigGen.EthernetInterfacesItem.CampusLinkType)
+            ethernet_interface._internal_data.campus_link_type = list(adapter.campus_link_type)
 
         return ethernet_interface
