@@ -14214,15 +14214,13 @@ class EosDesigns(EosDesignsRootModel):
                     key: str | None
                     """
                     Type 7 encrypted key for OSPF message-digest authentication.
-                    It takes precedence over
-                    `cleartext_key`
+                    Takes precedence over `cleartext_key`.
                     """
                     cleartext_key: str | None
                     """
                     Cleartext key for OSPF message-digest authentication
-                    `key` takes precedence over this key.
-                    To
-                    protect the password at rest it is strongly recommended to make use of a vault or similar.
+                    To protect the password at rest it is strongly
+                    recommended to make use of a vault or similar.
                     """
 
                     if TYPE_CHECKING:
@@ -14246,13 +14244,11 @@ class EosDesigns(EosDesignsRootModel):
                                 hash_algorithm: hash_algorithm
                                 key:
                                    Type 7 encrypted key for OSPF message-digest authentication.
-                                   It takes precedence over
-                                   `cleartext_key`
+                                   Takes precedence over `cleartext_key`.
                                 cleartext_key:
                                    Cleartext key for OSPF message-digest authentication
-                                   `key` takes precedence over this key.
-                                   To
-                                   protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                   To protect the password at rest it is strongly
+                                   recommended to make use of a vault or similar.
 
                             """
 
@@ -14286,15 +14282,14 @@ class EosDesigns(EosDesignsRootModel):
                 simple_auth_key: str | None
                 """
                 Type 7 encrypted key for OSPF simple authentication.
-                It takes precedence over
+                Takes precedence over
                 `cleartext_simple_auth_key`
                 """
                 cleartext_simple_auth_key: str | None
                 """
                 Cleartext key for OSPF simple authentication.
-                `simple_auth_key` takes precedence over this key.
-                To
-                protect the password at rest it is strongly recommended to make use of a vault or similar.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
                 """
                 message_digest_keys: MessageDigestKeys
                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -14327,13 +14322,12 @@ class EosDesigns(EosDesignsRootModel):
                             authentication: authentication
                             simple_auth_key:
                                Type 7 encrypted key for OSPF simple authentication.
-                               It takes precedence over
+                               Takes precedence over
                                `cleartext_simple_auth_key`
                             cleartext_simple_auth_key:
                                Cleartext key for OSPF simple authentication.
-                               `simple_auth_key` takes precedence over this key.
-                               To
-                               protect the password at rest it is strongly recommended to make use of a vault or similar.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                         """
@@ -15029,15 +15023,13 @@ class EosDesigns(EosDesignsRootModel):
                 key: str | None
                 """
                 Type 7 encrypted key for OSPF message-digest authentication.
-                It takes precedence over
-                `cleartext_key`
+                Takes precedence over `cleartext_key`.
                 """
                 cleartext_key: str | None
                 """
                 Cleartext key for OSPF message-digest authentication
-                `key` takes precedence over this key.
-                To
-                protect the password at rest it is strongly recommended to make use of a vault or similar.
+                To protect the password at rest it is strongly
+                recommended to make use of a vault or similar.
                 """
 
                 if TYPE_CHECKING:
@@ -15061,13 +15053,11 @@ class EosDesigns(EosDesignsRootModel):
                             hash_algorithm: hash_algorithm
                             key:
                                Type 7 encrypted key for OSPF message-digest authentication.
-                               It takes precedence over
-                               `cleartext_key`
+                               Takes precedence over `cleartext_key`.
                             cleartext_key:
                                Cleartext key for OSPF message-digest authentication
-                               `key` takes precedence over this key.
-                               To
-                               protect the password at rest it is strongly recommended to make use of a vault or similar.
+                               To protect the password at rest it is strongly
+                               recommended to make use of a vault or similar.
 
                         """
 
@@ -15101,15 +15091,14 @@ class EosDesigns(EosDesignsRootModel):
             simple_auth_key: str | None
             """
             Type 7 encrypted key for OSPF simple authentication.
-            It takes precedence over
+            Takes precedence over
             `cleartext_simple_auth_key`
             """
             cleartext_simple_auth_key: str | None
             """
             Cleartext key for OSPF simple authentication.
-            `simple_auth_key` takes precedence over this key.
-            To
-            protect the password at rest it is strongly recommended to make use of a vault or similar.
+            To protect the password at rest it is strongly
+            recommended to make use of a vault or similar.
             """
             message_digest_keys: MessageDigestKeys
             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -15142,13 +15131,12 @@ class EosDesigns(EosDesignsRootModel):
                         authentication: authentication
                         simple_auth_key:
                            Type 7 encrypted key for OSPF simple authentication.
-                           It takes precedence over
+                           Takes precedence over
                            `cleartext_simple_auth_key`
                         cleartext_simple_auth_key:
                            Cleartext key for OSPF simple authentication.
-                           `simple_auth_key` takes precedence over this key.
-                           To
-                           protect the password at rest it is strongly recommended to make use of a vault or similar.
+                           To protect the password at rest it is strongly
+                           recommended to make use of a vault or similar.
                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                     """
@@ -15902,7 +15890,6 @@ class EosDesigns(EosDesignsRootModel):
             Clear text key.
             To protect the password at rest it is strongly recommended to make use of a vault or
             similar.
-            `cleartext_key` takes precedence.
             """
             cleartext_key: str | None
             """
@@ -15934,7 +15921,6 @@ class EosDesigns(EosDesignsRootModel):
                            Clear text key.
                            To protect the password at rest it is strongly recommended to make use of a vault or
                            similar.
-                           `cleartext_key` takes precedence.
                         cleartext_key:
                            Cleartext key for OSPF message-digest authentication
                            To protect the password at rest it is strongly
@@ -39615,15 +39601,13 @@ class EosDesigns(EosDesignsRootModel):
                                     key: str | None
                                     """
                                     Type 7 encrypted key for OSPF message-digest authentication.
-                                    It takes precedence over
-                                    `cleartext_key`
+                                    Takes precedence over `cleartext_key`.
                                     """
                                     cleartext_key: str | None
                                     """
                                     Cleartext key for OSPF message-digest authentication
-                                    `key` takes precedence over this key.
-                                    To
-                                    protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                    To protect the password at rest it is strongly
+                                    recommended to make use of a vault or similar.
                                     """
 
                                     if TYPE_CHECKING:
@@ -39647,13 +39631,11 @@ class EosDesigns(EosDesignsRootModel):
                                                 hash_algorithm: hash_algorithm
                                                 key:
                                                    Type 7 encrypted key for OSPF message-digest authentication.
-                                                   It takes precedence over
-                                                   `cleartext_key`
+                                                   Takes precedence over `cleartext_key`.
                                                 cleartext_key:
                                                    Cleartext key for OSPF message-digest authentication
-                                                   `key` takes precedence over this key.
-                                                   To
-                                                   protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                                   To protect the password at rest it is strongly
+                                                   recommended to make use of a vault or similar.
 
                                             """
 
@@ -39687,15 +39669,14 @@ class EosDesigns(EosDesignsRootModel):
                                 simple_auth_key: str | None
                                 """
                                 Type 7 encrypted key for OSPF simple authentication.
-                                It takes precedence over
+                                Takes precedence over
                                 `cleartext_simple_auth_key`
                                 """
                                 cleartext_simple_auth_key: str | None
                                 """
                                 Cleartext key for OSPF simple authentication.
-                                `simple_auth_key` takes precedence over this key.
-                                To
-                                protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
                                 """
                                 message_digest_keys: MessageDigestKeys
                                 """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -39728,13 +39709,12 @@ class EosDesigns(EosDesignsRootModel):
                                             authentication: authentication
                                             simple_auth_key:
                                                Type 7 encrypted key for OSPF simple authentication.
-                                               It takes precedence over
+                                               Takes precedence over
                                                `cleartext_simple_auth_key`
                                             cleartext_simple_auth_key:
                                                Cleartext key for OSPF simple authentication.
-                                               `simple_auth_key` takes precedence over this key.
-                                               To
-                                               protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
                                             message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                         """
@@ -40453,15 +40433,13 @@ class EosDesigns(EosDesignsRootModel):
                                 key: str | None
                                 """
                                 Type 7 encrypted key for OSPF message-digest authentication.
-                                It takes precedence over
-                                `cleartext_key`
+                                Takes precedence over `cleartext_key`.
                                 """
                                 cleartext_key: str | None
                                 """
                                 Cleartext key for OSPF message-digest authentication
-                                `key` takes precedence over this key.
-                                To
-                                protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
                                 """
 
                                 if TYPE_CHECKING:
@@ -40485,13 +40463,11 @@ class EosDesigns(EosDesignsRootModel):
                                             hash_algorithm: hash_algorithm
                                             key:
                                                Type 7 encrypted key for OSPF message-digest authentication.
-                                               It takes precedence over
-                                               `cleartext_key`
+                                               Takes precedence over `cleartext_key`.
                                             cleartext_key:
                                                Cleartext key for OSPF message-digest authentication
-                                               `key` takes precedence over this key.
-                                               To
-                                               protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -40525,15 +40501,14 @@ class EosDesigns(EosDesignsRootModel):
                             simple_auth_key: str | None
                             """
                             Type 7 encrypted key for OSPF simple authentication.
-                            It takes precedence over
+                            Takes precedence over
                             `cleartext_simple_auth_key`
                             """
                             cleartext_simple_auth_key: str | None
                             """
                             Cleartext key for OSPF simple authentication.
-                            `simple_auth_key` takes precedence over this key.
-                            To
-                            protect the password at rest it is strongly recommended to make use of a vault or similar.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -40566,13 +40541,12 @@ class EosDesigns(EosDesignsRootModel):
                                         authentication: authentication
                                         simple_auth_key:
                                            Type 7 encrypted key for OSPF simple authentication.
-                                           It takes precedence over
+                                           Takes precedence over
                                            `cleartext_simple_auth_key`
                                         cleartext_simple_auth_key:
                                            Cleartext key for OSPF simple authentication.
-                                           `simple_auth_key` takes precedence over this key.
-                                           To
-                                           protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -41189,18 +41163,16 @@ class EosDesigns(EosDesignsRootModel):
                                 key: str | None
                                 """
                                 Type 7 encrypted key for OSPF message-digest authentication.
-                                It takes precedence over
-                                `cleartext_key`
-                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they
-                                must all be the same
+                                Takes precedence over `cleartext_key`
+                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                same
                                 (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                                 """
                                 cleartext_key: str | None
                                 """
                                 Cleartext key for OSPF message-digest authentication
-                                `key` takes precedence over this key.
-                                To
-                                protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
                                 """
 
                                 if TYPE_CHECKING:
@@ -41224,16 +41196,14 @@ class EosDesigns(EosDesignsRootModel):
                                             hash_algorithm: hash_algorithm
                                             key:
                                                Type 7 encrypted key for OSPF message-digest authentication.
-                                               It takes precedence over
-                                               `cleartext_key`
-                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they
-                                               must all be the same
+                                               Takes precedence over `cleartext_key`
+                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                               same
                                                (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                                             cleartext_key:
                                                Cleartext key for OSPF message-digest authentication
-                                               `key` takes precedence over this key.
-                                               To
-                                               protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -41267,8 +41237,8 @@ class EosDesigns(EosDesignsRootModel):
                             simple_auth_key: str | None
                             """
                             Type 7 encrypted key for OSPF simple authentication.
-                            It takes precedence over
-                            `cleartext_simple_auth_key`
+                            Takes precedence over
+                            `cleartext_simple_auth_key`.
                             NOTE: The l3_interfaces.interfaces list must not be more than 1
                             interface or they must all be the same
                             (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
@@ -41277,9 +41247,8 @@ class EosDesigns(EosDesignsRootModel):
                             cleartext_simple_auth_key: str | None
                             """
                             Cleartext key for OSPF simple authentication.
-                            `simple_auth_key` takes precedence over this key.
-                            To
-                            protect the password at rest it is strongly recommended to make use of a vault or similar.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -41312,17 +41281,16 @@ class EosDesigns(EosDesignsRootModel):
                                         authentication: authentication
                                         simple_auth_key:
                                            Type 7 encrypted key for OSPF simple authentication.
-                                           It takes precedence over
-                                           `cleartext_simple_auth_key`
+                                           Takes precedence over
+                                           `cleartext_simple_auth_key`.
                                            NOTE: The l3_interfaces.interfaces list must not be more than 1
                                            interface or they must all be the same
                                            (e.g. [Ethernet7, Ethernet7]) as the type7 password depends
                                            on the interface.
                                         cleartext_simple_auth_key:
                                            Cleartext key for OSPF simple authentication.
-                                           `simple_auth_key` takes precedence over this key.
-                                           To
-                                           protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """
@@ -41693,18 +41661,16 @@ class EosDesigns(EosDesignsRootModel):
                                 key: str | None
                                 """
                                 Type 7 encrypted key for OSPF message-digest authentication.
-                                It takes precedence over
-                                `cleartext_key`
-                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they
-                                must all be the same
+                                Takes precedence over `cleartext_key`
+                                NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                same
                                 (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                                 """
                                 cleartext_key: str | None
                                 """
                                 Cleartext key for OSPF message-digest authentication
-                                `key` takes precedence over this key.
-                                To
-                                protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                To protect the password at rest it is strongly
+                                recommended to make use of a vault or similar.
                                 """
 
                                 if TYPE_CHECKING:
@@ -41728,16 +41694,14 @@ class EosDesigns(EosDesignsRootModel):
                                             hash_algorithm: hash_algorithm
                                             key:
                                                Type 7 encrypted key for OSPF message-digest authentication.
-                                               It takes precedence over
-                                               `cleartext_key`
-                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they
-                                               must all be the same
+                                               Takes precedence over `cleartext_key`
+                                               NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the
+                                               same
                                                (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                                             cleartext_key:
                                                Cleartext key for OSPF message-digest authentication
-                                               `key` takes precedence over this key.
-                                               To
-                                               protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                               To protect the password at rest it is strongly
+                                               recommended to make use of a vault or similar.
 
                                         """
 
@@ -41771,7 +41735,7 @@ class EosDesigns(EosDesignsRootModel):
                             simple_auth_key: str | None
                             """
                             Type 7 encrypted key for OSPF simple authentication.
-                            It takes precedence over
+                            Takes precedence over
                             `cleartext_simple_auth_key`
                             NOTE: The l3_interfaces.interfaces list must not be more than 1
                             interface or they must all be the same
@@ -41781,9 +41745,8 @@ class EosDesigns(EosDesignsRootModel):
                             cleartext_simple_auth_key: str | None
                             """
                             Cleartext key for OSPF simple authentication.
-                            `simple_auth_key` takes precedence over this key.
-                            To
-                            protect the password at rest it is strongly recommended to make use of a vault or similar.
+                            To protect the password at rest it is strongly
+                            recommended to make use of a vault or similar.
                             """
                             message_digest_keys: MessageDigestKeys
                             """Subclass of AvdList with `MessageDigestKeysItem` items."""
@@ -41816,7 +41779,7 @@ class EosDesigns(EosDesignsRootModel):
                                         authentication: authentication
                                         simple_auth_key:
                                            Type 7 encrypted key for OSPF simple authentication.
-                                           It takes precedence over
+                                           Takes precedence over
                                            `cleartext_simple_auth_key`
                                            NOTE: The l3_interfaces.interfaces list must not be more than 1
                                            interface or they must all be the same
@@ -41824,9 +41787,8 @@ class EosDesigns(EosDesignsRootModel):
                                            on the interface.
                                         cleartext_simple_auth_key:
                                            Cleartext key for OSPF simple authentication.
-                                           `simple_auth_key` takes precedence over this key.
-                                           To
-                                           protect the password at rest it is strongly recommended to make use of a vault or similar.
+                                           To protect the password at rest it is strongly
+                                           recommended to make use of a vault or similar.
                                         message_digest_keys: Subclass of AvdList with `MessageDigestKeysItem` items.
 
                                     """

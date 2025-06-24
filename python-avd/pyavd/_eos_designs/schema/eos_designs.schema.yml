@@ -4976,9 +4976,7 @@ keys:
               description: 'Clear text key.
 
                 To protect the password at rest it is strongly recommended to make
-                use of a vault or similar.
-
-                `cleartext_key` takes precedence.'
+                use of a vault or similar.'
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
@@ -4993,10 +4991,6 @@ keys:
                 use of a vault or similar.'
               min_length: 1
               max_length: 16
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: cleartext_key
   underlay_ospf_bfd_enable:
     documentation_options:
       table: ospf-settings
@@ -7488,7 +7482,7 @@ $defs:
                           type: str
                           description: 'Type 7 encrypted key for OSPF simple authentication.
 
-                            It takes precedence over `cleartext_simple_auth_key`
+                            Takes precedence over `cleartext_simple_auth_key`.
 
                             NOTE: The l3_interfaces.interfaces list must not be more
                             than 1 interface or they must all be the same
@@ -7498,8 +7492,6 @@ $defs:
                         cleartext_simple_auth_key:
                           type: str
                           description: 'Cleartext key for OSPF simple authentication.
-
-                            `simple_auth_key` takes precedence over this key.
 
                             To protect the password at rest it is strongly recommended
                             to make use of a vault or similar.'
@@ -7528,7 +7520,7 @@ $defs:
                                 description: 'Type 7 encrypted key for OSPF message-digest
                                   authentication.
 
-                                  It takes precedence over `cleartext_key`
+                                  Takes precedence over `cleartext_key`
 
                                   NOTE: The l3_interfaces.interfaces list must not
                                   be more than 1 interface or they must all be the
@@ -7540,8 +7532,6 @@ $defs:
                                 type: str
                                 description: 'Cleartext key for OSPF message-digest
                                   authentication
-
-                                  `key` takes precedence over this key.
 
                                   To protect the password at rest it is strongly recommended
                                   to make use of a vault or similar.'
@@ -7741,7 +7731,7 @@ $defs:
                           type: str
                           description: 'Type 7 encrypted key for OSPF simple authentication.
 
-                            It takes precedence over `cleartext_simple_auth_key`
+                            Takes precedence over `cleartext_simple_auth_key`
 
                             NOTE: The l3_interfaces.interfaces list must not be more
                             than 1 interface or they must all be the same
@@ -7751,8 +7741,6 @@ $defs:
                         cleartext_simple_auth_key:
                           type: str
                           description: 'Cleartext key for OSPF simple authentication.
-
-                            `simple_auth_key` takes precedence over this key.
 
                             To protect the password at rest it is strongly recommended
                             to make use of a vault or similar.'
@@ -7781,7 +7769,7 @@ $defs:
                                 description: 'Type 7 encrypted key for OSPF message-digest
                                   authentication.
 
-                                  It takes precedence over `cleartext_key`
+                                  Takes precedence over `cleartext_key`
 
                                   NOTE: The l3_interfaces.interfaces list must not
                                   be more than 1 interface or they must all be the
@@ -7793,8 +7781,6 @@ $defs:
                                 type: str
                                 description: 'Cleartext key for OSPF message-digest
                                   authentication
-
-                                  `key` takes precedence over this key.
 
                                   To protect the password at rest it is strongly recommended
                                   to make use of a vault or similar.'
@@ -11596,12 +11582,10 @@ $defs:
             type: str
             description: 'Type 7 encrypted key for OSPF simple authentication.
 
-              It takes precedence over `cleartext_simple_auth_key`'
+              Takes precedence over `cleartext_simple_auth_key`'
           cleartext_simple_auth_key:
             type: str
             description: 'Cleartext key for OSPF simple authentication.
-
-              `simple_auth_key` takes precedence over this key.
 
               To protect the password at rest it is strongly recommended to make use
               of a vault or similar.'
@@ -11629,12 +11613,10 @@ $defs:
                   type: str
                   description: 'Type 7 encrypted key for OSPF message-digest authentication.
 
-                    It takes precedence over `cleartext_key`'
+                    Takes precedence over `cleartext_key`.'
                 cleartext_key:
                   type: str
                   description: 'Cleartext key for OSPF message-digest authentication
-
-                    `key` takes precedence over this key.
 
                     To protect the password at rest it is strongly recommended to
                     make use of a vault or similar.'
