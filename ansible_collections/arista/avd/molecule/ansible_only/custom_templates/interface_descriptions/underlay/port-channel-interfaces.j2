@@ -1,5 +1,5 @@
-{% if link.main_port_channel_wan_carrier is arista.avd.defined %}
-custom_{{ link.main_port_channel_wan_carrier }}_{{ link.peer }}
+{% if link.main_interface_wan_carrier is arista.avd.defined %}
+custom_{{ link.main_interface_wan_carrier }}_{{ link.peer }}
 {% elif link.wan_carrier is arista.avd.defined %}
 custom_{{ link.wan_carrier }}_{{ link.peer }}
 {% else %}

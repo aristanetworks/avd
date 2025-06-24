@@ -128,7 +128,6 @@ port_channel_interfaces:
   switchport:
     enabled: false
 - name: Port-Channel5.108
-  description: StreamFast
   shutdown: false
   encapsulation_dot1q:
     vlan: 108
