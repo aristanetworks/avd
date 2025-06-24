@@ -851,14 +851,13 @@ $defs:
                           type: str
                           description: |-
                             Type 7 encrypted key for OSPF simple authentication.
-                            It takes precedence over `cleartext_simple_auth_key`
+                            Takes precedence over `cleartext_simple_auth_key`.
                             NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
                             (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                         cleartext_simple_auth_key:
                           type: str
                           description: |-
                             Cleartext key for OSPF simple authentication.
-                            `simple_auth_key` takes precedence over this key.
                             To protect the password at rest it is strongly recommended to make use of a vault or similar.
                           min_length: 1
                           max_length: 8
@@ -885,14 +884,13 @@ $defs:
                                 type: str
                                 description: |-
                                   Type 7 encrypted key for OSPF message-digest authentication.
-                                  It takes precedence over `cleartext_key`
+                                  Takes precedence over `cleartext_key`
                                   NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
                                   (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                               cleartext_key:
                                 type: str
                                 description: |-
                                   Cleartext key for OSPF message-digest authentication
-                                  `key` takes precedence over this key.
                                   To protect the password at rest it is strongly recommended to make use of a vault or similar.
                                 min_length: 1
                                 max_length: 16
@@ -1071,14 +1069,13 @@ $defs:
                           type: str
                           description: |-
                             Type 7 encrypted key for OSPF simple authentication.
-                            It takes precedence over `cleartext_simple_auth_key`
+                            Takes precedence over `cleartext_simple_auth_key`
                             NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
                             (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                         cleartext_simple_auth_key:
                           type: str
                           description: |-
                             Cleartext key for OSPF simple authentication.
-                            `simple_auth_key` takes precedence over this key.
                             To protect the password at rest it is strongly recommended to make use of a vault or similar.
                           min_length: 1
                           max_length: 8
@@ -1105,14 +1102,13 @@ $defs:
                                 type: str
                                 description: |-
                                   Type 7 encrypted key for OSPF message-digest authentication.
-                                  It takes precedence over `cleartext_key`
+                                  Takes precedence over `cleartext_key`
                                   NOTE: The l3_interfaces.interfaces list must not be more than 1 interface or they must all be the same
                                   (e.g. [Ethernet7, Ethernet7]) as the type7 password depends on the interface.
                               cleartext_key:
                                 type: str
                                 description: |-
                                   Cleartext key for OSPF message-digest authentication
-                                  `key` takes precedence over this key.
                                   To protect the password at rest it is strongly recommended to make use of a vault or similar.
                                 min_length: 1
                                 max_length: 16

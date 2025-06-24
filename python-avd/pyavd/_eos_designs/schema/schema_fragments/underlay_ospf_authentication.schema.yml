@@ -48,7 +48,6 @@ keys:
               description: |-
                 Clear text key.
                 To protect the password at rest it is strongly recommended to make use of a vault or similar.
-                `cleartext_key` takes precedence.
               deprecation:
                 warning: true
                 remove_in_version: 6.0.0
@@ -64,7 +63,3 @@ keys:
                 To protect the password at rest it is strongly recommended to make use of a vault or similar.
               min_length: 1
               max_length: 16
-              deprecation:
-                warning: true
-                remove_in_version: 6.0.0
-                new_key: cleartext_key
