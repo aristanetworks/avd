@@ -36,9 +36,6 @@ class ManagementSshMixin(Protocol):
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
         vrfs = EosCliConfigGen.ManagementSsh.Vrfs()
         for vrf in ssh_settings.vrfs:
-            if vrf.enabled is None:
-                continue
-
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
             vrfs.append_new(name=vrf_name, enable=vrf.enabled)
             self.structured_config.management_ssh.vrfs = vrfs._natural_sorted()

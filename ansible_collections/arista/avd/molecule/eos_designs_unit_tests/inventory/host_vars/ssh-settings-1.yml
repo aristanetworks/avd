@@ -2,7 +2,7 @@ type: l2leaf
 
 l2leaf:
   nodes:
-    - name: snmp-settings-1
+    - name: ssh-settings-1
       id: 43
       mgmt_ip: 10.10.10.43/26
 
@@ -23,4 +23,7 @@ ssh_settings:
     - name: default
       enabled: true
       ipv6_acl: ACL-SSH-VRF-DEFAULT
+    - name: use_mgmt_interface_vrf
+      enabled: true
+      ipv4_acl: ACL-SSH-MGMT-INTERFACE
   idle_timeout: 15

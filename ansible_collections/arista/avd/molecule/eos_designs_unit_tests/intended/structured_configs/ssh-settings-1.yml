@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: ssh_settings
+hostname: ssh-settings-1
 ip_igmp_snooping:
   globally_enabled: true
 is_deployed: true
@@ -11,12 +11,22 @@ management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.10.10.43/26
+  type: oob
+  gateway: 10.10.10.1
 management_ssh:
   access_groups:
   - name: ACL-SSH
     vrf: MGMT
   - name: ACL-SSH-VRF-DISABLED
     vrf: VRF12
+  - name: ACL-SSH-MGMT-INTERFACE
+    vrf: use_mgmt_interface_vrf
   ipv6_access_groups:
   - name: ACL-SSH6
     vrf: VRF10
