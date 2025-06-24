@@ -10,15 +10,7 @@ ip_http_client_source_interfaces:
   vrf: INBANDMGMT
 ip_igmp_snooping:
   globally_enabled: true
-ip_radius_source_interfaces:
-- name: Management1
-- name: Vlan4092
-  vrf: INBANDMGMT
 ip_ssh_client_source_interfaces:
-- name: Management1
-- name: Vlan4092
-  vrf: INBANDMGMT
-ip_tacacs_source_interfaces:
 - name: Management1
 - name: Vlan4092
   vrf: INBANDMGMT

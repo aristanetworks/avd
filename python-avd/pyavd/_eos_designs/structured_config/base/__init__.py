@@ -624,7 +624,7 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         if source_interfaces := self._build_source_interfaces(
             inputs.mgmt_interface, inputs.inband_mgmt_interface, "IP Radius", output_type=EosCliConfigGen.IpRadiusSourceInterfaces
         ):
-            self.structured_config.ip_radius_source_interfaces = source_interfaces
+            self.structured_config.ip_radius_source_interfaces.extend(source_interfaces)
 
     @structured_config_contributor
     def radius_servers(self) -> None:
