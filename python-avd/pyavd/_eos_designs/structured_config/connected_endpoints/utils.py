@@ -34,9 +34,6 @@ if TYPE_CHECKING:
         "T_EvpnEthernetSegment", EosCliConfigGen.EthernetInterfacesItem.EvpnEthernetSegment, EosCliConfigGen.PortChannelInterfacesItem.EvpnEthernetSegment
     )
     T_Phone = TypeVar("T_Phone", EosCliConfigGen.EthernetInterfacesItem.Switchport.Phone, EosCliConfigGen.PortChannelInterfacesItem.Switchport.Phone)
-    ADAPTER_SETTINGS = TypeVar(
-        "ADAPTER_SETTINGS", EosDesigns._DynamicKeys.DynamicConnectedEndpointsItem.ConnectedEndpointsItem.AdaptersItem, EosDesigns.NetworkPortsItem
-    )
 
 
 class UtilsMixin(Protocol):
