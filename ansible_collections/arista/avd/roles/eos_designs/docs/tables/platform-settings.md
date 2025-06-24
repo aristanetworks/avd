@@ -243,7 +243,7 @@
           hardware_counters:
 
             # General support for the `hardware counter` CLI.
-            # Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform.
+            # Setting this key to `false` for a platform will disable support for all hardware counter functionality (`feature`, `drop`, etc.) for this platform.
             supported: <bool; default=True>
             feature:
 
