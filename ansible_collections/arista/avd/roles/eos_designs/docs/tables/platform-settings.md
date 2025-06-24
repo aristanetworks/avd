@@ -190,11 +190,11 @@
           # Feature will be ignored on unsupported platforms.
           queue_monitor_length_notify: <bool; default=True>
 
-          # Support for storm-control.
+          # Support for configuration of per interface storm-control settings on Ethernet or Port-channel interfaces.
           # Feature will be ignored on unsupported platforms.
           interface_storm_control: <bool; default=True>
 
-          # Support for PoE.
+          # Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
           # Feature will be ignored on unsupported platforms.
           poe: <bool; default=False>
 
@@ -243,7 +243,7 @@
           hardware_counters:
 
             # General support for the `hardware counter` CLI.
-            # Setting this key to `false` for a platform will disable support for all hardware counter functionality (`feature`, `drop`, etc.) for this platform.
+            # Setting this key to `false` for the specific platform will disable support of any specific hardware counter functionality (`feature`, `drop`, etc.) for this platform.
             supported: <bool; default=True>
             feature:
 
