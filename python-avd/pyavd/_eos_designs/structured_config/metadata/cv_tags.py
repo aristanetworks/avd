@@ -4,7 +4,7 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from typing import TYPE_CHECKING, Any, Protocol, cast
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._errors import AristaAvdError
@@ -48,6 +48,14 @@ INVALID_CUSTOM_DEVICE_TAGS = [
     "Role",
 ]
 """These tag names overlap with CV system tags or topology_hints"""
+CAMPUS_LINK_TYPE_MAP = {
+    "downlink": "Downlink",
+    "egress": "Egress",
+    "fabric": "Fabric",
+    "mlag": "MLAG",
+    "uplink": "Uplink",
+}
+"""Convert input tag values to the values compliant with the CloudVision."""
 
 
 class CvTagsMixin(Protocol):
@@ -104,7 +112,7 @@ class CvTagsMixin(Protocol):
                 "Access-Pod",
                 None
                 if self.shared_utils.campus_hint_type == "Spine"
-                else default(self.inputs.campus_access_pod, self.shared_utils.node_config.campus_access_pod),
+                else default(self.shared_utils.node_config.campus_access_pod, self.inputs.campus_access_pod),
             ),
         ]:
             tag = self._tag_dict(name, value)
@@ -211,14 +219,20 @@ class CvTagsMixin(Protocol):
 
             if self.inputs.generate_cv_tags.topology_hints and self.shared_utils.is_campus_device:
                 interface_campus_tags, subif_parent_interface_name = self._get_campus_interface_tags(ethernet_interface)
-                # Process parent interface of the sub-interface
+                # Process parent interface of the tagged sub-interface and stage assignment of all proposed sub-interface tags to the parent interface instead.
                 if subif_parent_interface_name:
+                    # Loop through all currently calculated tags and stage those which are unique.
+                    # Same physical interface may be processed multiple times because it can be a parent of multiple sub-interfaces.
+                    # append_unique allows to avoid duplication of the same tags.
                     for tag in tags:
                         tags_of_subif_parent_interfaces[subif_parent_interface_name].append_unique(tag)
+                    # Loop through all currently calculated Campus tags and stage those which are unique.
                     for tag in interface_campus_tags:
                         tags_of_subif_parent_interfaces[subif_parent_interface_name].append_unique(tag)
                     continue
-                # Process standalone interface which is as well a parent for at least one sub-interface
+                # Other parts of the AVD code will add physical interfaces for all sub-interfaces into the self.structured_config.ethernet_interfaces.
+                # Sub-interfaces will be processed here first. Physical interfaces will follow their sub-interfaces.
+                # Process physical interface (added to ethernet_interfaces by other AVD logic) which is as well a parent for at least one tagged sub-interface.
                 if ethernet_interface.name in tags_of_subif_parent_interfaces:
                     for tag in tags:
                         tags_of_subif_parent_interfaces[ethernet_interface.name].append_unique(tag)
@@ -231,7 +245,7 @@ class CvTagsMixin(Protocol):
             if tags:
                 self.structured_config.metadata.cv_tags.interface_tags.append_new(interface=ethernet_interface.name, tags=tags)
 
-        # Handle tags for sub-interface parent interfaces
+        # Render tags if any sub-interface tags were staged for the assignment to the physical parent.
         if tags_of_subif_parent_interfaces:
             for subif_parent_interface, subif_parent_interface_tags in tags_of_subif_parent_interfaces.items():
                 self.structured_config.metadata.cv_tags.interface_tags.append_new(interface=subif_parent_interface, tags=subif_parent_interface_tags)
@@ -304,23 +318,23 @@ class CvTagsMixin(Protocol):
         If the interface is a sub-interface, also return the name of the parent interface where the tags should eventually be applied.
         """
         tags = EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.Tags()
-        interface_peer = generic_interface.peer
-
         tags.append_new(name="Link-Type", value="AVD-Managed")
 
-        if interface_peer in self.shared_utils.all_fabric_devices:
-            tags.append_new(name="Link-Type", value="Fabric")
+        if interface_peer := generic_interface.peer:
+            if interface_peer in self.shared_utils.all_fabric_devices:
+                tags.append_new(name="Link-Type", value="Fabric")
 
-        if generic_interface.peer_type == "mlag_peer" and interface_peer == self.facts.mlag_peer:
-            tags.append_new(name="Link-Type", value="MLAG")
-        elif self.facts.uplink_peers and interface_peer in cast("list", self.facts.uplink_peers):
-            tags.append_new(name="Link-Type", value="Uplink")
-        elif self.facts.downlink_switches and interface_peer in cast("list", self.facts.downlink_switches):
-            tags.append_new(name="Link-Type", value="Downlink")
+            if generic_interface.peer_type == "mlag_peer":
+                tags.append_new(name="Link-Type", value="MLAG")
+            elif self.facts.uplink_peers and interface_peer in self.facts.uplink_peers:
+                tags.append_new(name="Link-Type", value="Uplink")
+            elif self.facts.downlink_switches and interface_peer in self.facts.downlink_switches:
+                tags.append_new(name="Link-Type", value="Downlink")
 
         if campus_link_types := generic_interface.campus_link_type:
             for campus_link_type in campus_link_types:
-                tags.append_unique(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name="Link-Type", value=campus_link_type))
+                if campus_link_type := CAMPUS_LINK_TYPE_MAP.get(campus_link_type):
+                    tags.append_unique(EosCliConfigGen.Metadata.CvTags.InterfaceTagsItem.TagsItem(name="Link-Type", value=campus_link_type))
 
         if "." in generic_interface.name:
             return tags, generic_interface.name.split(".", maxsplit=1)[0]

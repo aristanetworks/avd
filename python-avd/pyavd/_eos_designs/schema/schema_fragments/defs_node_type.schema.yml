@@ -1545,21 +1545,21 @@ $defs:
               table: node-type-common-configuration
             description: |-
               PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-              Name of the campus.
+              Name of the campus. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
             type: str
           campus_pod:
             documentation_options:
               table: node-type-common-configuration
             description: |-
               PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-              Name of the campus pod.
+              Name of the campus pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
             type: str
           campus_access_pod:
             documentation_options:
               table: node-type-common-configuration
             description: |-
               PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
-              Name of the campus access pod.
+              Name of the campus access pod. Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric` feature.
             type: str
           cv_tags_topology_type:
             documentation_options:

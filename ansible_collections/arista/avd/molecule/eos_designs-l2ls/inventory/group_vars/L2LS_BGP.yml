@@ -37,7 +37,7 @@ tenants:
               - "10.0.1.0/31"
             nodes:
               - BGP-SPINE1
-            campus_link_type: ["Egress"]
+            campus_link_type: ["egress"]
           # Not labeled as Campus Egress
           - interfaces:
               - Ethernet9
@@ -52,7 +52,7 @@ tenants:
               - "10.0.1.4/31"
             nodes:
               - BGP-SPINE1
-            campus_link_type: ["Egress"]
+            campus_link_type: ["egress"]
           # Sub-interface not labeled as Campus Egress
           - interfaces:
               - Ethernet18.100
@@ -70,7 +70,7 @@ tenants:
               - "10.0.1.8/31"
             nodes:
               - BGP-SPINE1
-            campus_link_type: ["Egress"]
+            campus_link_type: ["egress"]
           # Sub-interface not labeled as Campus Egress
           - interfaces:
               - Ethernet18.101
@@ -81,7 +81,7 @@ tenants:
 
 port_profiles:
   - profile: campus_eggress
-    campus_link_type: ["Egress"]
+    campus_link_type: ["egress"]
   - profile: no_campus_eggress
 
 network_ports:
@@ -115,7 +115,7 @@ network_ports:
       - "BGP-SPINE1"
     switch_ports:
       - "Ethernet10"
-    campus_link_type: ["Egress"]
+    campus_link_type: ["egress"]
   # Standalone interface not labeled as Campus Egress
   - switches:
       - "BGP-SPINE2"
@@ -142,7 +142,7 @@ network_ports:
       - "Ethernet12"
     port_channel:
       mode: active
-    campus_link_type: ["Egress"]
+    campus_link_type: ["egress"]
   # Port-channel member interface not labeled as Campus Egress
   - switches:
       - "BGP-SPINE2"
@@ -175,7 +175,7 @@ firewalls:
       - endpoint_ports: [Eth0]
         switch_ports: [Ethernet14]
         switches: [BGP-SPINE1]
-        campus_link_type: ["Egress"]
+        campus_link_type: ["egress"]
       # Standalone interface not labeled as Campus Egress
       - endpoint_ports: [Eth1]
         switch_ports: [Ethernet14]
@@ -198,7 +198,7 @@ firewalls:
         switches: [BGP-SPINE1]
         port_channel:
           mode: active
-        campus_link_type: ["Egress"]
+        campus_link_type: ["egress"]
       # Port-channel member interface not labeled as Campus Egress
       - endpoint_ports: [Eth5]
         switch_ports: [Ethernet16]
@@ -225,7 +225,7 @@ firewalls:
 core_interfaces:
   p2p_links_profiles:
     - name: campus_egress
-      campus_link_type: ["Egress"]
+      campus_link_type: ["egress"]
     - name: not_campus_egress
   p2p_links:
     # Standalone interface labeled as Campus Egress
@@ -233,7 +233,7 @@ core_interfaces:
       nodes: [BGP-SPINE1, DUMMY-CORE]
       interfaces: [Ethernet5, Ethernet1/3]
       as: [65001, 65000]
-      campus_link_type: ["Egress"]
+      campus_link_type: ["egress"]
     # Standalone interface not labeled as Campus Egress
     - subnet: 192.168.253.6/31
       nodes: [BGP-SPINE2, DUMMY-CORE]
@@ -264,7 +264,7 @@ core_interfaces:
             interfaces: [Ethernet7]
           - node: DUMMY-CORE
             interfaces: [Ethernet1/7]
-      campus_link_type: ["Egress"]
+      campus_link_type: ["egress"]
     # Port-channel member interface not labeled as Campus Egress
     - subnet: 192.168.253.14/31
       nodes: [BGP-SPINE2, DUMMY-CORE]

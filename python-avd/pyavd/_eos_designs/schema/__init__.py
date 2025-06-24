@@ -1409,7 +1409,19 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of AvdModel.
             """
             campus_link_type: CampusLinkType
-            """Subclass of AvdList with `str` items."""
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -1539,7 +1551,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type: Subclass of AvdList with `str` items.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -1990,7 +2013,19 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of AvdModel.
             """
             campus_link_type: CampusLinkType
-            """Subclass of AvdList with `str` items."""
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -2120,7 +2155,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type: Subclass of AvdList with `str` items.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -5639,7 +5685,19 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of AvdModel.
             """
             campus_link_type: CampusLinkType
-            """Subclass of AvdList with `str` items."""
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -5769,7 +5827,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type: Subclass of AvdList with `str` items.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -6220,7 +6289,19 @@ class EosDesigns(EosDesignsRootModel):
             Subclass of AvdModel.
             """
             campus_link_type: CampusLinkType
-            """Subclass of AvdList with `str` items."""
+            """
+            PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+            change at any time.
+            Values for the CloudVision `Link-Type` user tags to be associated with an
+            interface.
+            Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+            in the same tags being associated with the parent Ethernet interface instead.
+            Attempting to
+            associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+            associated with the member Ethernet interfaces instead.
+
+            Subclass of AvdList with `str` items.
+            """
             raw_eos_cli: str | None
             """EOS CLI rendered directly on the point-to-point interface in the final EOS configuration."""
             routing_protocol: Literal["ebgp"] | None
@@ -6350,7 +6431,18 @@ class EosDesigns(EosDesignsRootModel):
                            Port-channel parameters.
 
                            Subclass of AvdModel.
-                        campus_link_type: Subclass of AvdList with `str` items.
+                        campus_link_type:
+                           PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                           change at any time.
+                           Values for the CloudVision `Link-Type` user tags to be associated with an
+                           interface.
+                           Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                           in the same tags being associated with the parent Ethernet interface instead.
+                           Attempting to
+                           associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                           associated with the member Ethernet interfaces instead.
+
+                           Subclass of AvdList with `str` items.
                         raw_eos_cli: EOS CLI rendered directly on the point-to-point interface in the final EOS configuration.
                         routing_protocol:
                            Enables deviation of the routing protocol used on this link from the fabric underlay default.
@@ -8607,7 +8699,19 @@ class EosDesigns(EosDesignsRootModel):
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
         campus_link_type: CampusLinkType
-        """Subclass of AvdList with `str` items."""
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Values for the CloudVision `Link-Type` user tags to be associated with an
+        interface.
+        Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+        in the same tags being associated with the parent Ethernet interface instead.
+        Attempting to
+        associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+        associated with the member Ethernet interfaces instead.
+
+        Subclass of AvdList with `str` items.
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -8806,7 +8910,18 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                    campus_link_type: Subclass of AvdList with `str` items.
+                    campus_link_type:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Values for the CloudVision `Link-Type` user tags to be associated with an
+                       interface.
+                       Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                       in the same tags being associated with the parent Ethernet interface instead.
+                       Attempting to
+                       associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                       associated with the member Ethernet interfaces instead.
+
+                       Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -12279,7 +12394,19 @@ class EosDesigns(EosDesignsRootModel):
         validate_lldp: bool | None
         """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
         campus_link_type: CampusLinkType
-        """Subclass of AvdList with `str` items."""
+        """
+        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+        change at any time.
+        Values for the CloudVision `Link-Type` user tags to be associated with an
+        interface.
+        Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+        in the same tags being associated with the parent Ethernet interface instead.
+        Attempting to
+        associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+        associated with the member Ethernet interfaces instead.
+
+        Subclass of AvdList with `str` items.
+        """
         raw_eos_cli: str | None
         """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
         structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -12437,7 +12564,18 @@ class EosDesigns(EosDesignsRootModel):
                        Set to false to disable interface state and LLDP topology validation performed by the
                        `eos_validate_state` role.
                     validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                    campus_link_type: Subclass of AvdList with `str` items.
+                    campus_link_type:
+                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                       change at any time.
+                       Values for the CloudVision `Link-Type` user tags to be associated with an
+                       interface.
+                       Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                       in the same tags being associated with the parent Ethernet interface instead.
+                       Attempting to
+                       associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                       associated with the member Ethernet interfaces instead.
+
+                       Subclass of AvdList with `str` items.
                     raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -19100,7 +19238,19 @@ class EosDesigns(EosDesignsRootModel):
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
                     campus_link_type: CampusLinkType
-                    """Subclass of AvdList with `str` items."""
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Values for the CloudVision `Link-Type` user tags to be associated with an
+                    interface.
+                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                    in the same tags being associated with the parent Ethernet interface instead.
+                    Attempting to
+                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                    associated with the member Ethernet interfaces instead.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -19295,7 +19445,18 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                                campus_link_type: Subclass of AvdList with `str` items.
+                                campus_link_type:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Values for the CloudVision `Link-Type` user tags to be associated with an
+                                   interface.
+                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                   in the same tags being associated with the parent Ethernet interface instead.
+                                   Attempting to
+                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                   associated with the member Ethernet interfaces instead.
+
+                                   Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -20693,7 +20854,19 @@ class EosDesigns(EosDesignsRootModel):
                     validate_lldp: bool | None
                     """Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role."""
                     campus_link_type: CampusLinkType
-                    """Subclass of AvdList with `str` items."""
+                    """
+                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                    change at any time.
+                    Values for the CloudVision `Link-Type` user tags to be associated with an
+                    interface.
+                    Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                    in the same tags being associated with the parent Ethernet interface instead.
+                    Attempting to
+                    associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                    associated with the member Ethernet interfaces instead.
+
+                    Subclass of AvdList with `str` items.
+                    """
                     raw_eos_cli: str | None
                     """EOS CLI rendered directly on the ethernet interface in the final EOS configuration."""
                     structured_config: EosCliConfigGen.EthernetInterfacesItem
@@ -20888,7 +21061,18 @@ class EosDesigns(EosDesignsRootModel):
                                    Set to false to disable interface state and LLDP topology validation performed by the
                                    `eos_validate_state` role.
                                 validate_lldp: Set to false to disable the LLDP topology validation performed by the `eos_validate_state` role.
-                                campus_link_type: Subclass of AvdList with `str` items.
+                                campus_link_type:
+                                   PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                   change at any time.
+                                   Values for the CloudVision `Link-Type` user tags to be associated with an
+                                   interface.
+                                   Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                   in the same tags being associated with the parent Ethernet interface instead.
+                                   Attempting to
+                                   associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                   associated with the member Ethernet interfaces instead.
+
+                                   Subclass of AvdList with `str` items.
                                 raw_eos_cli: EOS CLI rendered directly on the ethernet interface in the final EOS configuration.
                                 structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
 
@@ -24365,19 +24549,22 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus pod.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_access_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus access pod.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     cv_tags_topology_type: str | None
                     """
@@ -25094,15 +25281,18 @@ class EosDesigns(EosDesignsRootModel):
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus pod.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_access_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus access pod.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
@@ -28607,19 +28797,22 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Name of the campus.
+                        Name of the campus. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
                         """
                         campus_pod: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Name of the campus pod.
+                        Name of the campus pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
                         """
                         campus_access_pod: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Name of the campus access pod.
+                        Name of the campus access pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
                         """
                         cv_tags_topology_type: str | None
                         """
@@ -29345,15 +29538,18 @@ class EosDesigns(EosDesignsRootModel):
                                     campus:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Name of the campus.
+                                       Name of the campus. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
                                     campus_pod:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Name of the campus pod.
+                                       Name of the campus pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
                                     campus_access_pod:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Name of the campus access pod.
+                                       Name of the campus access pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
                                     cv_tags_topology_type:
                                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                        "edge" or "member-leaf".
@@ -32769,19 +32965,22 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus pod.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_access_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus access pod.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     cv_tags_topology_type: str | None
                     """
@@ -33509,15 +33708,18 @@ class EosDesigns(EosDesignsRootModel):
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus pod.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_access_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus access pod.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
@@ -37005,19 +37207,22 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus pod.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_access_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus access pod.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     cv_tags_topology_type: str | None
                     """
@@ -37743,15 +37948,18 @@ class EosDesigns(EosDesignsRootModel):
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus pod.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_access_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus access pod.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
@@ -41420,7 +41628,19 @@ class EosDesigns(EosDesignsRootModel):
                         Subclass of AvdModel.
                         """
                         campus_link_type: CampusLinkType
-                        """Subclass of AvdList with `str` items."""
+                        """
+                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                        change at any time.
+                        Values for the CloudVision `Link-Type` user tags to be associated with an
+                        interface.
+                        Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                        in the same tags being associated with the parent Ethernet interface instead.
+                        Attempting to
+                        associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                        associated with the member Ethernet interfaces instead.
+
+                        Subclass of AvdList with `str` items.
+                        """
                         structured_config: EosCliConfigGen.EthernetInterfacesItem
                         """Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen."""
                         raw_eos_cli: str | None
@@ -41496,7 +41716,18 @@ class EosDesigns(EosDesignsRootModel):
                                     flow_tracking:
                                        Configures flow-tracking on the interface. Overrides `fabric_flow_tracking.l3_interfaces` setting.
                                        Subclass of AvdModel.
-                                    campus_link_type: Subclass of AvdList with `str` items.
+                                    campus_link_type:
+                                       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
+                                       change at any time.
+                                       Values for the CloudVision `Link-Type` user tags to be associated with an
+                                       interface.
+                                       Attempting to associate `Link-Type` user tags with an Ethernet sub-interface will result
+                                       in the same tags being associated with the parent Ethernet interface instead.
+                                       Attempting to
+                                       associate `Link-Type` user tags with a Port-Channel interface will result in the same tags being
+                                       associated with the member Ethernet interfaces instead.
+
+                                       Subclass of AvdList with `str` items.
                                     structured_config: Custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen.
                                     raw_eos_cli: EOS CLI rendered directly on the Ethernet interface in the final EOS configuration.
 
@@ -48337,19 +48568,22 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus pod.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_access_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus access pod.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     cv_tags_topology_type: str | None
                     """
@@ -49066,15 +49300,18 @@ class EosDesigns(EosDesignsRootModel):
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus pod.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_access_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus access pod.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
@@ -52579,19 +52816,22 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Name of the campus.
+                        Name of the campus. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
                         """
                         campus_pod: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Name of the campus pod.
+                        Name of the campus pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
                         """
                         campus_access_pod: str | None
                         """
                         PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                         change at any time.
-                        Name of the campus access pod.
+                        Name of the campus access pod. Used to generate CloudVision device tags with the
+                        `generate_cv_tags.campus_fabric` feature.
                         """
                         cv_tags_topology_type: str | None
                         """
@@ -53317,15 +53557,18 @@ class EosDesigns(EosDesignsRootModel):
                                     campus:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Name of the campus.
+                                       Name of the campus. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
                                     campus_pod:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Name of the campus pod.
+                                       Name of the campus pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
                                     campus_access_pod:
                                        PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                        change at any time.
-                                       Name of the campus access pod.
+                                       Name of the campus access pod. Used to generate CloudVision device tags with the
+                                       `generate_cv_tags.campus_fabric` feature.
                                     cv_tags_topology_type:
                                        Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                        "edge" or "member-leaf".
@@ -56741,19 +56984,22 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus pod.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_access_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus access pod.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     cv_tags_topology_type: str | None
                     """
@@ -57481,15 +57727,18 @@ class EosDesigns(EosDesignsRootModel):
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus pod.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_access_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus access pod.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
@@ -60977,19 +61226,22 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus.
+                    Name of the campus. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus pod.
+                    Name of the campus pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     campus_access_pod: str | None
                     """
                     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                     change at any time.
-                    Name of the campus access pod.
+                    Name of the campus access pod. Used to generate CloudVision device tags with the
+                    `generate_cv_tags.campus_fabric` feature.
                     """
                     cv_tags_topology_type: str | None
                     """
@@ -61715,15 +61967,18 @@ class EosDesigns(EosDesignsRootModel):
                                 campus:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus.
+                                   Name of the campus. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus pod.
+                                   Name of the campus pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 campus_access_pod:
                                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                                    change at any time.
-                                   Name of the campus access pod.
+                                   Name of the campus access pod. Used to generate CloudVision device tags with the
+                                   `generate_cv_tags.campus_fabric` feature.
                                 cv_tags_topology_type:
                                    Device type that CloudVision should use when generating the Topology like "leaf", "spine", "core",
                                    "edge" or "member-leaf".
@@ -62412,23 +62667,24 @@ class EosDesigns(EosDesignsRootModel):
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
     Name of the Campus fabric.
-    Used to generate CloudVision device Topology tags
-    with the `generate_cv_tags` feature.
+    Used to generate CloudVision device tags with the
+    `generate_cv_tags.campus_fabric` feature.
     """
     campus_access_pod: str | None
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
     Name of the Campus access pod.
-    Used to generate CloudVision device Topology
-    tags.
+    Used to generate CloudVision device tags with the
+    `generate_cv_tags.campus_fabric` feature.
     """
     campus_pod: str | None
     """
     PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
     change at any time.
     Name of the Campus pod.
-    Used to generate CloudVision device Topology tags.
+    Used to generate CloudVision device tags with the
+    `generate_cv_tags.campus_fabric` feature.
     """
     custom_connected_endpoints_keys: CustomConnectedEndpointsKeys
     """
@@ -64494,19 +64750,20 @@ class EosDesigns(EosDesignsRootModel):
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
                    Name of the Campus fabric.
-                   Used to generate CloudVision device Topology tags
-                   with the `generate_cv_tags` feature.
+                   Used to generate CloudVision device tags with the
+                   `generate_cv_tags.campus_fabric` feature.
                 campus_access_pod:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
                    Name of the Campus access pod.
-                   Used to generate CloudVision device Topology
-                   tags.
+                   Used to generate CloudVision device tags with the
+                   `generate_cv_tags.campus_fabric` feature.
                 campus_pod:
                    PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can
                    change at any time.
                    Name of the Campus pod.
-                   Used to generate CloudVision device Topology tags.
+                   Used to generate CloudVision device tags with the
+                   `generate_cv_tags.campus_fabric` feature.
                 custom_connected_endpoints_keys:
                    `custom_connected_endpoints_keys` offers a flexible way to extend endpoint definitions without
                    altering the `connected_endpoints_keys`.

@@ -229,7 +229,7 @@ class EthernetInterfacesMixin(Protocol):
 
                 # Propagate campus_link_type for campus devices
                 if self.shared_utils.is_campus_device and l3_interface.campus_link_type:
-                    interface.campus_link_type = l3_interface.campus_link_type
+                    interface.campus_link_type = l3_interface.campus_link_type._cast_as(EosCliConfigGen.EthernetInterfacesItem.CampusLinkType)
                 self.structured_config.ethernet_interfaces.append(interface)
 
     def _set_point_to_point_interfaces(

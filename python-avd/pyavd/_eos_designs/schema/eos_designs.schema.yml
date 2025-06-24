@@ -555,7 +555,7 @@ keys:
 
       Name of the Campus fabric.
 
-      Used to generate CloudVision device Topology tags with the `generate_cv_tags`
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
       feature.'
     type: str
   campus_access_pod:
@@ -566,7 +566,8 @@ keys:
 
       Name of the Campus access pod.
 
-      Used to generate CloudVision device Topology tags.'
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
+      feature.'
     type: str
   campus_pod:
     documentation_options:
@@ -576,7 +577,8 @@ keys:
 
       Name of the Campus pod.
 
-      Used to generate CloudVision device Topology tags.'
+      Used to generate CloudVision device tags with the `generate_cv_tags.campus_fabric`
+      feature.'
     type: str
   custom_connected_endpoints_keys:
     $ref: eos_designs#/keys/connected_endpoints_keys
@@ -6286,20 +6288,7 @@ $defs:
           by the `eos_validate_state` role.
       campus_link_type:
         type: list
-        items:
-          type: str
-          description: 'PREVIEW: This option is marked as "preview", meaning the data
-            models or generated configuration can change at any time.
-
-            An arbitrary value for the new CloudVision `Link-Type` interface-level
-            user tag to be associated with an interface.'
-          valid_values:
-          - AVD-Managed
-          - Downlink
-          - Egress
-          - Fabric
-          - MLAG
-          - Uplink
+        $ref: eos_designs#/$defs/campus_link_type
       raw_eos_cli:
         type: str
         description: EOS CLI rendered directly on the ethernet interface in the final
@@ -6312,6 +6301,28 @@ $defs:
         documentation_options:
           hide_keys: true
         $ref: eos_cli_config_gen#/keys/ethernet_interfaces/items
+  campus_link_type:
+    type: list
+    description: 'PREVIEW: This option is marked as "preview", meaning the data models
+      or generated configuration can change at any time.
+
+      Values for the CloudVision `Link-Type` user tags to be associated with an interface.
+
+      Attempting to associate `Link-Type` user tags with an Ethernet sub-interface
+      will result in the same tags being associated with the parent Ethernet interface
+      instead.
+
+      Attempting to associate `Link-Type` user tags with a Port-Channel interface
+      will result in the same tags being associated with the member Ethernet interfaces
+      instead.'
+    items:
+      type: str
+      valid_values:
+      - downlink
+      - egress
+      - fabric
+      - mlag
+      - uplink
   connected_endpoints:
     type: list
     primary_key: name
@@ -7522,21 +7533,7 @@ $defs:
                         `fabric_flow_tracking.l3_interfaces` setting.
                     campus_link_type:
                       type: list
-                      items:
-                        type: str
-                        description: 'PREVIEW: This option is marked as "preview",
-                          meaning the data models or generated configuration can change
-                          at any time.
-
-                          An arbitrary value for the new CloudVision `Link-Type` interface-level
-                          user tag to be associated with an interface.'
-                        valid_values:
-                        - AVD-Managed
-                        - Downlink
-                        - Egress
-                        - Fabric
-                        - MLAG
-                        - Uplink
+                      $ref: eos_designs#/$defs/campus_link_type
                     structured_config:
                       type: dict
                       relaxed_validation: true
@@ -10393,7 +10390,8 @@ $defs:
             description: 'PREVIEW: This option is marked as "preview", meaning the
               data models or generated configuration can change at any time.
 
-              Name of the campus.'
+              Name of the campus. Used to generate CloudVision device tags with the
+              `generate_cv_tags.campus_fabric` feature.'
             type: str
           campus_pod:
             documentation_options:
@@ -10401,7 +10399,8 @@ $defs:
             description: 'PREVIEW: This option is marked as "preview", meaning the
               data models or generated configuration can change at any time.
 
-              Name of the campus pod.'
+              Name of the campus pod. Used to generate CloudVision device tags with
+              the `generate_cv_tags.campus_fabric` feature.'
             type: str
           campus_access_pod:
             documentation_options:
@@ -10409,7 +10408,8 @@ $defs:
             description: 'PREVIEW: This option is marked as "preview", meaning the
               data models or generated configuration can change at any time.
 
-              Name of the campus access pod.'
+              Name of the campus access pod. Used to generate CloudVision device tags
+              with the `generate_cv_tags.campus_fabric` feature.'
             type: str
           cv_tags_topology_type:
             documentation_options:
@@ -11150,20 +11150,7 @@ $defs:
                       an id is generated using the `channel_id_algorithm`.
         campus_link_type:
           type: list
-          items:
-            type: str
-            description: 'PREVIEW: This option is marked as "preview", meaning the
-              data models or generated configuration can change at any time.
-
-              An arbitrary value for the new CloudVision `Link-Type` interface-level
-              user tag to be associated with an interface.'
-            valid_values:
-            - AVD-Managed
-            - Downlink
-            - Egress
-            - Fabric
-            - MLAG
-            - Uplink
+          $ref: eos_designs#/$defs/campus_link_type
         raw_eos_cli:
           type: str
           description: EOS CLI rendered directly on the point-to-point interface in

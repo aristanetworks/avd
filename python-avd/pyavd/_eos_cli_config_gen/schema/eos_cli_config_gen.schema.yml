@@ -4746,12 +4746,11 @@ keys:
               An arbitrary value for the new CloudVision `Link-Type` interface-level
               user tag to be associated with an interface.'
             valid_values:
-            - AVD-Managed
-            - Downlink
-            - Egress
-            - Fabric
-            - MLAG
-            - Uplink
+            - downlink
+            - egress
+            - fabric
+            - mlag
+            - uplink
         eos_cli:
           type: str
           description: Multiline EOS CLI rendered directly on the ethernet interface

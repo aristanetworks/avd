@@ -51,7 +51,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet6
   description: P2P_DUMMY-CORE_Ethernet1/5
   shutdown: false
@@ -63,7 +63,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet7
   description: P2P_DUMMY-CORE_Ethernet1/7
   shutdown: false
@@ -74,7 +74,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1/7
   peer_type: other
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet8
   description: P2P_DUMMY-CORE_Ethernet1/9
   shutdown: false
@@ -85,7 +85,7 @@ ethernet_interfaces:
   peer_interface: Ethernet1/9
   peer_type: other
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet9
   shutdown: false
   ip_address: 10.0.1.0/31
@@ -93,7 +93,7 @@ ethernet_interfaces:
   switchport:
     enabled: false
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet18.100
   shutdown: false
   encapsulation_dot1q:
@@ -101,7 +101,7 @@ ethernet_interfaces:
   ip_address: 10.0.1.4/31
   peer_type: l3_interface
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet18.101
   shutdown: false
   vrf: New_VRF
@@ -110,7 +110,7 @@ ethernet_interfaces:
   ip_address: 10.0.1.8/31
   peer_type: l3_interface
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet18
   shutdown: false
   peer_type: l3_interface
@@ -125,7 +125,7 @@ ethernet_interfaces:
   switchport:
     enabled: true
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet15
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth2
   shutdown: false
@@ -136,7 +136,7 @@ ethernet_interfaces:
   switchport:
     enabled: true
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet16
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth4
   shutdown: false
@@ -147,7 +147,7 @@ ethernet_interfaces:
   peer_interface: Eth4
   peer_type: firewall
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet17
   description: FIREWALL_CAMPUS_EGRESS_FW_1_Eth6
   shutdown: false
@@ -159,14 +159,14 @@ ethernet_interfaces:
   peer_type: firewall
   port_profile: campus_eggress
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet10
   shutdown: false
   peer_type: network_port
   switchport:
     enabled: true
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet11
   shutdown: false
   peer_type: network_port
@@ -174,7 +174,7 @@ ethernet_interfaces:
   switchport:
     enabled: true
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet12
   shutdown: false
   channel_group:
@@ -182,7 +182,7 @@ ethernet_interfaces:
     mode: active
   peer_type: network_port
   campus_link_type:
-  - Egress
+  - egress
 - name: Ethernet13
   shutdown: false
   channel_group:
@@ -191,7 +191,7 @@ ethernet_interfaces:
   peer_type: network_port
   port_profile: campus_eggress
   campus_link_type:
-  - Egress
+  - egress
 hostname: BGP-SPINE1
 ip_igmp_snooping:
   globally_enabled: true
