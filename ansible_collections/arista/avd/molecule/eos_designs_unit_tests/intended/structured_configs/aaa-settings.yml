@@ -178,11 +178,7 @@ ip_igmp_snooping:
 ip_radius_source_interfaces:
 - name: Management1
   vrf: MGMT
-- name: Management1
-  vrf: MGMT
 ip_tacacs_source_interfaces:
-- name: Management1
-  vrf: MGMT
 - name: Management1
   vrf: MGMT
 is_deployed: true

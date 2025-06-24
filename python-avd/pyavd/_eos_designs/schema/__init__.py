@@ -35,7 +35,7 @@ class EosDesigns(EosDesignsRootModel):
                 Groups._item_type = str
 
                 _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
-                host: str | None
+                host: str
                 """Host IP address or name."""
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
@@ -64,7 +64,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        host: str | None | UndefinedType = Undefined,
+                        host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,
@@ -222,7 +222,7 @@ class EosDesigns(EosDesignsRootModel):
                 Groups._item_type = str
 
                 _fields: ClassVar[dict] = {"host": {"type": str}, "groups": {"type": Groups}, "vrf": {"type": str}, "key": {"type": str}}
-                host: str | None
+                host: str
                 """Host IP address or name."""
                 groups: Groups
                 """Subclass of AvdList with `str` items."""
@@ -251,7 +251,7 @@ class EosDesigns(EosDesignsRootModel):
                     def __init__(
                         self,
                         *,
-                        host: str | None | UndefinedType = Undefined,
+                        host: str | UndefinedType = Undefined,
                         groups: Groups | UndefinedType = Undefined,
                         vrf: str | None | UndefinedType = Undefined,
                         key: str | UndefinedType = Undefined,

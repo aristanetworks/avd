@@ -23,6 +23,7 @@ keys:
                 host:
                   type: str
                   description: Host IP address or name.
+                  required: true
                 groups:
                   type: list
                   required: true
@@ -88,6 +89,7 @@ keys:
                 host:
                   type: str
                   description: Host IP address or name.
+                  required: true
                 groups:
                   type: list
                   required: true

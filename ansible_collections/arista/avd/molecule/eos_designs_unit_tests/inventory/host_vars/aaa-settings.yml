@@ -37,7 +37,7 @@ aaa_settings:
       # Testing override of source for VRF default - no VRF in output source interface model.
       - name: default
         source_interface: Vlan123
-    
+
     policy:
       ignore_unknown_mandatory_attribute: true
 
