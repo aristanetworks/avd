@@ -39,8 +39,6 @@ keys:
               default: sha512
             key:
               type: str
-              # Relaxing the deprecated schema...!
-              # required: true
               min_length: 1
               max_length: 16
               convert_types:
