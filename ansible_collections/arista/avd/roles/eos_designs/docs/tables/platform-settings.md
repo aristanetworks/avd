@@ -190,7 +190,7 @@
           # Feature will be ignored on unsupported platforms.
           queue_monitor_length_notify: <bool; default=True>
 
-          # Support for configuration of per interface storm-control settings on Ethernet or Port-channel interfaces.
+          # Support for storm-control.
           # Feature will be ignored on unsupported platforms.
           interface_storm_control: <bool; default=True>
 
