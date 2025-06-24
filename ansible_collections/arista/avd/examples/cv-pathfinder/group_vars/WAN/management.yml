@@ -11,7 +11,7 @@ ntp_settings:
 cv_settings:
   cvaas:
     - name: primary
-      fqdn: www.cv-staging.corp.arista.io
+      fqdn: apiserver.cv-staging.corp.arista.io
 
 # For each local user in this example, password == username
 local_users:

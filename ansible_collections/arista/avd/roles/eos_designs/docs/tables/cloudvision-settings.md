@@ -10,7 +10,7 @@
     | [<samp>cv_settings</samp>](## "cv_settings") | Dictionary |  |  |  | Settings for CloudVision telemetry streaming and provisioning. |
     | [<samp>&nbsp;&nbsp;cvaas</samp>](## "cv_settings.cvaas") | List, items: Dictionary |  |  |  | CloudVision-as-a-Service. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "cv_settings.cvaas.[].name") | String | Required, Unique |  | Pattern: `^[a-zA-Z1-9-_]+$` | Short name for the CVaaS cluster. Used when configuring multiple clusters. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fqdn</samp>](## "cv_settings.cvaas.[].fqdn") | String | Required |  | Pattern: `^[a-z1-9\.-]+\.arista\.io$` | CVaaS FQDN like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fqdn</samp>](## "cv_settings.cvaas.[].fqdn") | String | Required |  | Pattern: `^[a-z1-9\.-]+\.arista\.io$` | CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "cv_settings.cvaas.[].vrf") | String |  | `use_default_mgmt_method_vrf` |  | The VRF used to connect to CloudVision.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;token_file</samp>](## "cv_settings.cvaas.[].token_file") | String |  | `/tmp/cv-onboarding-token` |  | Path to the onboarding token used for certificate based authentication.<br>The path is on the EOS device and the token file must be copied to the device first. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "cv_settings.cvaas.[].source_interface") | String |  |  |  | Source-interface used to connect to CloudVision.<br>If not set, the source interface may be set automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`. |
@@ -48,7 +48,7 @@
           # Short name for the CVaaS cluster. Used when configuring multiple clusters.
         - name: <str; required; unique>
 
-          # CVaaS FQDN like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'.
+          # CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'.
           fqdn: <str; required>
 
           # The VRF used to connect to CloudVision.

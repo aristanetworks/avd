@@ -2722,7 +2722,7 @@ class EosDesigns(EosDesignsRootModel):
             name: str
             """Short name for the CVaaS cluster. Used when configuring multiple clusters."""
             fqdn: str
-            """CVaaS FQDN like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'."""
+            """CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'."""
             vrf: str
             """
             The VRF used to connect to CloudVision.
@@ -2777,7 +2777,7 @@ class EosDesigns(EosDesignsRootModel):
 
                     Args:
                         name: Short name for the CVaaS cluster. Used when configuring multiple clusters.
-                        fqdn: CVaaS FQDN like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'.
+                        fqdn: CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'.
                         vrf:
                            The VRF used to connect to CloudVision.
                            The value will be interpreted according to these rules:

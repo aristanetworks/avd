@@ -3,4 +3,4 @@
 cvp_instance_ips:
   - 192.168.200.12
   - 192.168.200.13
-  - 'www.arista.io'
+  - 'apiserver.arista.io'

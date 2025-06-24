@@ -78,12 +78,7 @@ class DhcpServersMixin(Protocol):
             return next(iter(self.inputs.cv_settings.onprem_clusters)).name
 
         if self.inputs.cvp_instance_ips:
-            server = self.inputs.cvp_instance_ips[0]
-            if "arista.io" in server:
-                clean_cvaas_fqdn = re.sub(r"https:\/\/|www\.|apiserver\.", "", server)
-                return f"www.{clean_cvaas_fqdn}"
-
-            return server
+            return self.inputs.cvp_instance_ips[0]
 
         return None
 
@@ -94,6 +89,11 @@ class DhcpServersMixin(Protocol):
             return
         if not (cvp_server := self._get_cvp_server_for_dhcp()):
             return
+
+        if "arista.io" in cvp_server:
+            # Change apiserver.<...>arista.io to www.<...>arista.io
+            domain = re.sub(r"https:\/\/|www\.|apiserver\.", "", cvp_server)
+            cvp_server = f"www.{domain}"
 
         dhcp_server.tftp_server.file_ipv4 = f"https://{cvp_server}/ztp/bootstrap"
 

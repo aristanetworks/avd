@@ -12,15 +12,15 @@ cv_settings:
   cvaas:
     - name: cvaas-oob  # Name with dash
       vrf: use_mgmt_interface_vrf
-      fqdn: www.arista.io
+      fqdn: apiserver.arista.io
     - name: cvaas_inband_1  # Name with underscore and number
       vrf: use_inband_mgmt_vrf
-      fqdn: www.cv-prod-euwest-2.arista.io
+      fqdn: apiserver.cv-prod-euwest-2.arista.io
     - name: cvaas_mgmt_intf
-      fqdn: www.arista.io
+      fqdn: apiserver.arista.io
       source_interface: Loopback0
     - name: cvaas_inband_2
-      fqdn: www.cv-prod-euwest-2.arista.io
+      fqdn: apiserver.cv-prod-euwest-2.arista.io
       # No VRF, so we use default_mgmt_method by default, inband mgmt here.
   onprem_clusters:
     - name: onprem-oob

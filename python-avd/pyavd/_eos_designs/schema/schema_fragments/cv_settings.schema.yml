@@ -29,7 +29,7 @@ keys:
               type: str
               required: true
               pattern: "^[a-z1-9\\.-]+\\.arista\\.io$"
-              description: CVaaS FQDN like 'www.arista.io' or 'www.cv-prod-euwest-2.arista.io'.
+              description: CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'.
             vrf:
               type: str
               default: use_default_mgmt_method_vrf
