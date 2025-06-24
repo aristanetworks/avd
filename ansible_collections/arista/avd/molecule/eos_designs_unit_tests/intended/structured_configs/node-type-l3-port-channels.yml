@@ -291,7 +291,7 @@ port_channel_interfaces:
 
     '
 - name: Port-Channel5.100
-  description: ExtremeCable_105_peer2_Port-Channel15
+  description: ExtremeCable_105
   shutdown: false
   encapsulation_dot1q:
     vlan: 108

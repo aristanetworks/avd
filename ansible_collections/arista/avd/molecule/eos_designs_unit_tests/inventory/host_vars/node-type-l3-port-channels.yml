@@ -93,6 +93,7 @@ wan_router:
               name: Port-Channel5.100
               encapsulation_dot1q_vlan: 108
               ip_address: 192.168.100.115/31
+              description: "{wan_carrier}_{wan_circuit_id}"
               peer: peer2
               peer_port_channel: Port-Channel15
               peer_ip: 192.168.100.114
