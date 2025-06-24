@@ -510,7 +510,7 @@ class FilteredTenantsMixin(Protocol):
                     for ospf_key in vrf.ospf.message_digest_keys:
                         self.update_message_digest_key(ospf_key, interface, vrf, tenant)
 
-                # TODO: decide if we should raise if we end up with no keys
+                # TODO: AVD 6.0: raise if we end up with no keys
                 if interface.ospf_message_digest_keys:
                     interface.ospf_authentication = ospf_authentication
 
