@@ -169,31 +169,30 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         Contributing data sources:
           - hardware_counters.features variable.
           - platform_settings.feature_support.hardware_counters fact.
-          - platform_settings.feature_support.hardware_counters_features fact.
+          - platform_settings.feature_support.hardware_counter_features fact.
         """
         if not self.inputs.hardware_counters:
             return
-        # Avoid collision with eos_cli_config_gen
         if not self.shared_utils.platform_settings.feature_support.hardware_counters:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
             self.custom_structured_configs.nested.hardware_counters = EosCliConfigGen.HardwareCounters._from_null()
             return
-        hardware_counters = self.inputs.hardware_counters
+        hardware_counters = self.inputs.hardware_counters._deepcopy()
 
         # Filter different hardware counter features based on the platform supportability
-        if self.shared_utils.platform_settings.feature_support.hardware_counters_features.supported:
-            hardware_counters.features = hardware_counters.features._filtered(
-                lambda feature: get_v2(
-                    self.shared_utils.platform_settings.feature_support.hardware_counters_features.features,
-                    feature.name.replace(" ", "_").replace("-", "_"),
-                    # Assume all uncovered/new features are supported
-                    default=True,
-                )
+        hardware_counters.features = hardware_counters.features._filtered(
+            lambda feature: get_v2(
+                self.shared_utils.platform_settings.feature_support.hardware_counter_features,
+                feature.name.replace(" ", "_").replace("-", "_"),
+                # Assume all uncovered/new features are supported
+                default=True,
             )
-        else:
-            if hardware_counters.features:
-                del hardware_counters.features
-            # Avoid collision with eos_cli_config_gen
-            self.custom_structured_configs.nested.hardware_counters.features = EosCliConfigGen.HardwareCounters.Features._from_null()
+        )
+        # Use case where all specific features are filtered out leaving an empty list
+        if not hardware_counters.features:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
+            self.custom_structured_configs.nested.hardware_counters = EosCliConfigGen.HardwareCounters._from_null()
+            return
 
         self.structured_config.hardware_counters = hardware_counters
 
@@ -331,8 +330,8 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         """
         if not self.inputs.queue_monitor_length:
             return
-        # Avoid collision with eos_cli_config_gen
         if not self.shared_utils.platform_settings.feature_support.queue_monitor:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
             self.custom_structured_configs.nested.queue_monitor_length = EosCliConfigGen.QueueMonitorLength._from_null()
             return
 
@@ -534,8 +533,8 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
         """queue_monitor_streaming set based on queue_monitor_streaming data-model and platform_settings.feature_support.queue_monitor fact."""
         if not self.inputs.queue_monitor_streaming:
             return
-        # Avoid collision with eos_cli_config_gen
         if not self.shared_utils.platform_settings.feature_support.queue_monitor:
+            # Since we use the same data model in eos_cli_config_gen, it would pick up the input vars unless we explicitly set it to null.
             self.custom_structured_configs.nested.queue_monitor_streaming = EosCliConfigGen.QueueMonitorStreaming._from_null()
             return
         self.structured_config.queue_monitor_streaming = self.inputs.queue_monitor_streaming

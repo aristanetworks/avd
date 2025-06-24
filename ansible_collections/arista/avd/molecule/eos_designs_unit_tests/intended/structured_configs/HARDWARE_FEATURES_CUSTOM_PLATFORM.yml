@@ -3,8 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hardware_counters:
-  features: null
+hardware_counters: null
 hostname: HARDWARE_FEATURES_CUSTOM_PLATFORM
 ip_igmp_snooping:
   globally_enabled: true

@@ -165,116 +165,111 @@ keys:
             evpn_gateway_all_active_multihoming:
               type: bool
               default: false
-              description: Support for all-active EVPN gateway redundancy.
+              description: |-
+                Support for all-active EVPN gateway redundancy.
+                An error will be raised if the feature is enabled for unsupported platforms.
             hardware_counters:
               type: bool
               description: |-
                 Support for enabling counters using programmable hardware counter resources.
-                Feature will be ignored on unsupported platforms.
+                Setting this key to `false` for the specific platform will ignore all hardware counter features for this platform.
               default: true
-            hardware_counters_features:
+            hardware_counter_features:
               type: dict
+              description:  |-
+                Per-feature support for the hardware counters.
+                Feature will be ignored on unsupported platforms.
               keys:
-                supported:
+                acl:
                   type: bool
-                  description: |-
-                    General support for the `hardware counter feature` CLI.
-                    Setting this key to `false` for the specific platform will disable support of any specific hardware counter feature for this platform.
                   default: true
-                features:
-                  type: dict
-                  description:  Per-feature support for the hardware counters.
-                  keys:
-                    acl:
-                      type: bool
-                      default: true
-                    decap_group:
-                      type: bool
-                      default: true
-                    directflow:
-                      type: bool
-                      default: true
-                    ecn:
-                      type: bool
-                      default: true
-                    flow_spec:
-                      type: bool
-                      default: true
-                    gre_tunnel_interface:
-                      type: bool
-                      default: true
-                    ip:
-                      type: bool
-                      default: true
-                    mpls_interface:
-                      type: bool
-                      default: true
-                    mpls_lfib:
-                      type: bool
-                      default: true
-                    mpls_tunnel:
-                      type: bool
-                      default: true
-                    multicast:
-                      type: bool
-                      default: true
-                    nexthop:
-                      type: bool
-                      default: true
-                    pbr:
-                      type: bool
-                      default: true
-                    pdp:
-                      type: bool
-                      default: true
-                    policing_interface:
-                      type: bool
-                      default: true
-                    qos:
-                      type: bool
-                      default: true
-                    qos_dual_rate_policer:
-                      type: bool
-                      default: true
-                    route:
-                      type: bool
-                      default: true
-                    routed_port:
-                      type: bool
-                      default: true
-                    segment_security:
-                      type: bool
-                      default: true
-                    subinterface:
-                      type: bool
-                      default: true
-                    tapagg:
-                      type: bool
-                      default: true
-                    traffic_class:
-                      type: bool
-                      default: true
-                    traffic_policy:
-                      type: bool
-                      default: true
-                    vlan:
-                      type: bool
-                      default: true
-                    vlan_interface:
-                      type: bool
-                      default: true
-                    vni_decap:
-                      type: bool
-                      default: true
-                    vni_encap:
-                      type: bool
-                      default: true
-                    vtep_decap:
-                      type: bool
-                      default: true
-                    vtep_encap:
-                      type: bool
-                      default: true
+                decap_group:
+                  type: bool
+                  default: true
+                directflow:
+                  type: bool
+                  default: true
+                ecn:
+                  type: bool
+                  default: true
+                flow_spec:
+                  type: bool
+                  default: true
+                gre_tunnel_interface:
+                  type: bool
+                  default: true
+                ip:
+                  type: bool
+                  default: true
+                mpls_interface:
+                  type: bool
+                  default: true
+                mpls_lfib:
+                  type: bool
+                  default: true
+                mpls_tunnel:
+                  type: bool
+                  default: true
+                multicast:
+                  type: bool
+                  default: true
+                nexthop:
+                  type: bool
+                  default: true
+                pbr:
+                  type: bool
+                  default: true
+                pdp:
+                  type: bool
+                  default: true
+                policing_interface:
+                  type: bool
+                  default: true
+                qos:
+                  type: bool
+                  default: true
+                qos_dual_rate_policer:
+                  type: bool
+                  default: true
+                route:
+                  type: bool
+                  default: true
+                routed_port:
+                  type: bool
+                  default: true
+                segment_security:
+                  type: bool
+                  default: true
+                subinterface:
+                  type: bool
+                  default: true
+                tapagg:
+                  type: bool
+                  default: true
+                traffic_class:
+                  type: bool
+                  default: true
+                traffic_policy:
+                  type: bool
+                  default: true
+                vlan:
+                  type: bool
+                  default: true
+                vlan_interface:
+                  type: bool
+                  default: true
+                vni_decap:
+                  type: bool
+                  default: true
+                vni_encap:
+                  type: bool
+                  default: true
+                vtep_decap:
+                  type: bool
+                  default: true
+                vtep_encap:
+                  type: bool
+                  default: true
             hardware_speed_group:
               type: bool
               description: |-

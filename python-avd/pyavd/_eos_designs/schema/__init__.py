@@ -10287,215 +10287,175 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class HardwareCountersFeatures(AvdModel):
+            class HardwareCounterFeatures(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Features(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "acl": {"type": bool, "default": True},
-                        "decap_group": {"type": bool, "default": True},
-                        "directflow": {"type": bool, "default": True},
-                        "ecn": {"type": bool, "default": True},
-                        "flow_spec": {"type": bool, "default": True},
-                        "gre_tunnel_interface": {"type": bool, "default": True},
-                        "ip": {"type": bool, "default": True},
-                        "mpls_interface": {"type": bool, "default": True},
-                        "mpls_lfib": {"type": bool, "default": True},
-                        "mpls_tunnel": {"type": bool, "default": True},
-                        "multicast": {"type": bool, "default": True},
-                        "nexthop": {"type": bool, "default": True},
-                        "pbr": {"type": bool, "default": True},
-                        "pdp": {"type": bool, "default": True},
-                        "policing_interface": {"type": bool, "default": True},
-                        "qos": {"type": bool, "default": True},
-                        "qos_dual_rate_policer": {"type": bool, "default": True},
-                        "route": {"type": bool, "default": True},
-                        "routed_port": {"type": bool, "default": True},
-                        "segment_security": {"type": bool, "default": True},
-                        "subinterface": {"type": bool, "default": True},
-                        "tapagg": {"type": bool, "default": True},
-                        "traffic_class": {"type": bool, "default": True},
-                        "traffic_policy": {"type": bool, "default": True},
-                        "vlan": {"type": bool, "default": True},
-                        "vlan_interface": {"type": bool, "default": True},
-                        "vni_decap": {"type": bool, "default": True},
-                        "vni_encap": {"type": bool, "default": True},
-                        "vtep_decap": {"type": bool, "default": True},
-                        "vtep_encap": {"type": bool, "default": True},
-                    }
-                    acl: bool
-                    """Default value: `True`"""
-                    decap_group: bool
-                    """Default value: `True`"""
-                    directflow: bool
-                    """Default value: `True`"""
-                    ecn: bool
-                    """Default value: `True`"""
-                    flow_spec: bool
-                    """Default value: `True`"""
-                    gre_tunnel_interface: bool
-                    """Default value: `True`"""
-                    ip: bool
-                    """Default value: `True`"""
-                    mpls_interface: bool
-                    """Default value: `True`"""
-                    mpls_lfib: bool
-                    """Default value: `True`"""
-                    mpls_tunnel: bool
-                    """Default value: `True`"""
-                    multicast: bool
-                    """Default value: `True`"""
-                    nexthop: bool
-                    """Default value: `True`"""
-                    pbr: bool
-                    """Default value: `True`"""
-                    pdp: bool
-                    """Default value: `True`"""
-                    policing_interface: bool
-                    """Default value: `True`"""
-                    qos: bool
-                    """Default value: `True`"""
-                    qos_dual_rate_policer: bool
-                    """Default value: `True`"""
-                    route: bool
-                    """Default value: `True`"""
-                    routed_port: bool
-                    """Default value: `True`"""
-                    segment_security: bool
-                    """Default value: `True`"""
-                    subinterface: bool
-                    """Default value: `True`"""
-                    tapagg: bool
-                    """Default value: `True`"""
-                    traffic_class: bool
-                    """Default value: `True`"""
-                    traffic_policy: bool
-                    """Default value: `True`"""
-                    vlan: bool
-                    """Default value: `True`"""
-                    vlan_interface: bool
-                    """Default value: `True`"""
-                    vni_decap: bool
-                    """Default value: `True`"""
-                    vni_encap: bool
-                    """Default value: `True`"""
-                    vtep_decap: bool
-                    """Default value: `True`"""
-                    vtep_encap: bool
-                    """Default value: `True`"""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            acl: bool | UndefinedType = Undefined,
-                            decap_group: bool | UndefinedType = Undefined,
-                            directflow: bool | UndefinedType = Undefined,
-                            ecn: bool | UndefinedType = Undefined,
-                            flow_spec: bool | UndefinedType = Undefined,
-                            gre_tunnel_interface: bool | UndefinedType = Undefined,
-                            ip: bool | UndefinedType = Undefined,
-                            mpls_interface: bool | UndefinedType = Undefined,
-                            mpls_lfib: bool | UndefinedType = Undefined,
-                            mpls_tunnel: bool | UndefinedType = Undefined,
-                            multicast: bool | UndefinedType = Undefined,
-                            nexthop: bool | UndefinedType = Undefined,
-                            pbr: bool | UndefinedType = Undefined,
-                            pdp: bool | UndefinedType = Undefined,
-                            policing_interface: bool | UndefinedType = Undefined,
-                            qos: bool | UndefinedType = Undefined,
-                            qos_dual_rate_policer: bool | UndefinedType = Undefined,
-                            route: bool | UndefinedType = Undefined,
-                            routed_port: bool | UndefinedType = Undefined,
-                            segment_security: bool | UndefinedType = Undefined,
-                            subinterface: bool | UndefinedType = Undefined,
-                            tapagg: bool | UndefinedType = Undefined,
-                            traffic_class: bool | UndefinedType = Undefined,
-                            traffic_policy: bool | UndefinedType = Undefined,
-                            vlan: bool | UndefinedType = Undefined,
-                            vlan_interface: bool | UndefinedType = Undefined,
-                            vni_decap: bool | UndefinedType = Undefined,
-                            vni_encap: bool | UndefinedType = Undefined,
-                            vtep_decap: bool | UndefinedType = Undefined,
-                            vtep_encap: bool | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Features.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                acl: acl
-                                decap_group: decap_group
-                                directflow: directflow
-                                ecn: ecn
-                                flow_spec: flow_spec
-                                gre_tunnel_interface: gre_tunnel_interface
-                                ip: ip
-                                mpls_interface: mpls_interface
-                                mpls_lfib: mpls_lfib
-                                mpls_tunnel: mpls_tunnel
-                                multicast: multicast
-                                nexthop: nexthop
-                                pbr: pbr
-                                pdp: pdp
-                                policing_interface: policing_interface
-                                qos: qos
-                                qos_dual_rate_policer: qos_dual_rate_policer
-                                route: route
-                                routed_port: routed_port
-                                segment_security: segment_security
-                                subinterface: subinterface
-                                tapagg: tapagg
-                                traffic_class: traffic_class
-                                traffic_policy: traffic_policy
-                                vlan: vlan
-                                vlan_interface: vlan_interface
-                                vni_decap: vni_decap
-                                vni_encap: vni_encap
-                                vtep_decap: vtep_decap
-                                vtep_encap: vtep_encap
-
-                            """
-
-                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": True}, "features": {"type": Features}}
-                supported: bool
-                """
-                General support for the `hardware counter feature` CLI.
-                Setting this key to `false` for the specific
-                platform will disable support of any specific hardware counter feature for this platform.
-
-                Default value: `True`
-                """
-                features: Features
-                """
-                Per-feature support for the hardware counters.
-
-                Subclass of AvdModel.
-                """
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": bool, "default": True},
+                    "decap_group": {"type": bool, "default": True},
+                    "directflow": {"type": bool, "default": True},
+                    "ecn": {"type": bool, "default": True},
+                    "flow_spec": {"type": bool, "default": True},
+                    "gre_tunnel_interface": {"type": bool, "default": True},
+                    "ip": {"type": bool, "default": True},
+                    "mpls_interface": {"type": bool, "default": True},
+                    "mpls_lfib": {"type": bool, "default": True},
+                    "mpls_tunnel": {"type": bool, "default": True},
+                    "multicast": {"type": bool, "default": True},
+                    "nexthop": {"type": bool, "default": True},
+                    "pbr": {"type": bool, "default": True},
+                    "pdp": {"type": bool, "default": True},
+                    "policing_interface": {"type": bool, "default": True},
+                    "qos": {"type": bool, "default": True},
+                    "qos_dual_rate_policer": {"type": bool, "default": True},
+                    "route": {"type": bool, "default": True},
+                    "routed_port": {"type": bool, "default": True},
+                    "segment_security": {"type": bool, "default": True},
+                    "subinterface": {"type": bool, "default": True},
+                    "tapagg": {"type": bool, "default": True},
+                    "traffic_class": {"type": bool, "default": True},
+                    "traffic_policy": {"type": bool, "default": True},
+                    "vlan": {"type": bool, "default": True},
+                    "vlan_interface": {"type": bool, "default": True},
+                    "vni_decap": {"type": bool, "default": True},
+                    "vni_encap": {"type": bool, "default": True},
+                    "vtep_decap": {"type": bool, "default": True},
+                    "vtep_encap": {"type": bool, "default": True},
+                }
+                acl: bool
+                """Default value: `True`"""
+                decap_group: bool
+                """Default value: `True`"""
+                directflow: bool
+                """Default value: `True`"""
+                ecn: bool
+                """Default value: `True`"""
+                flow_spec: bool
+                """Default value: `True`"""
+                gre_tunnel_interface: bool
+                """Default value: `True`"""
+                ip: bool
+                """Default value: `True`"""
+                mpls_interface: bool
+                """Default value: `True`"""
+                mpls_lfib: bool
+                """Default value: `True`"""
+                mpls_tunnel: bool
+                """Default value: `True`"""
+                multicast: bool
+                """Default value: `True`"""
+                nexthop: bool
+                """Default value: `True`"""
+                pbr: bool
+                """Default value: `True`"""
+                pdp: bool
+                """Default value: `True`"""
+                policing_interface: bool
+                """Default value: `True`"""
+                qos: bool
+                """Default value: `True`"""
+                qos_dual_rate_policer: bool
+                """Default value: `True`"""
+                route: bool
+                """Default value: `True`"""
+                routed_port: bool
+                """Default value: `True`"""
+                segment_security: bool
+                """Default value: `True`"""
+                subinterface: bool
+                """Default value: `True`"""
+                tapagg: bool
+                """Default value: `True`"""
+                traffic_class: bool
+                """Default value: `True`"""
+                traffic_policy: bool
+                """Default value: `True`"""
+                vlan: bool
+                """Default value: `True`"""
+                vlan_interface: bool
+                """Default value: `True`"""
+                vni_decap: bool
+                """Default value: `True`"""
+                vni_encap: bool
+                """Default value: `True`"""
+                vtep_decap: bool
+                """Default value: `True`"""
+                vtep_encap: bool
+                """Default value: `True`"""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, supported: bool | UndefinedType = Undefined, features: Features | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        acl: bool | UndefinedType = Undefined,
+                        decap_group: bool | UndefinedType = Undefined,
+                        directflow: bool | UndefinedType = Undefined,
+                        ecn: bool | UndefinedType = Undefined,
+                        flow_spec: bool | UndefinedType = Undefined,
+                        gre_tunnel_interface: bool | UndefinedType = Undefined,
+                        ip: bool | UndefinedType = Undefined,
+                        mpls_interface: bool | UndefinedType = Undefined,
+                        mpls_lfib: bool | UndefinedType = Undefined,
+                        mpls_tunnel: bool | UndefinedType = Undefined,
+                        multicast: bool | UndefinedType = Undefined,
+                        nexthop: bool | UndefinedType = Undefined,
+                        pbr: bool | UndefinedType = Undefined,
+                        pdp: bool | UndefinedType = Undefined,
+                        policing_interface: bool | UndefinedType = Undefined,
+                        qos: bool | UndefinedType = Undefined,
+                        qos_dual_rate_policer: bool | UndefinedType = Undefined,
+                        route: bool | UndefinedType = Undefined,
+                        routed_port: bool | UndefinedType = Undefined,
+                        segment_security: bool | UndefinedType = Undefined,
+                        subinterface: bool | UndefinedType = Undefined,
+                        tapagg: bool | UndefinedType = Undefined,
+                        traffic_class: bool | UndefinedType = Undefined,
+                        traffic_policy: bool | UndefinedType = Undefined,
+                        vlan: bool | UndefinedType = Undefined,
+                        vlan_interface: bool | UndefinedType = Undefined,
+                        vni_decap: bool | UndefinedType = Undefined,
+                        vni_encap: bool | UndefinedType = Undefined,
+                        vtep_decap: bool | UndefinedType = Undefined,
+                        vtep_encap: bool | UndefinedType = Undefined,
+                    ) -> None:
                         """
-                        HardwareCountersFeatures.
+                        HardwareCounterFeatures.
 
 
                         Subclass of AvdModel.
 
                         Args:
-                            supported:
-                               General support for the `hardware counter feature` CLI.
-                               Setting this key to `false` for the specific
-                               platform will disable support of any specific hardware counter feature for this platform.
-                            features:
-                               Per-feature support for the hardware counters.
-
-                               Subclass of AvdModel.
+                            acl: acl
+                            decap_group: decap_group
+                            directflow: directflow
+                            ecn: ecn
+                            flow_spec: flow_spec
+                            gre_tunnel_interface: gre_tunnel_interface
+                            ip: ip
+                            mpls_interface: mpls_interface
+                            mpls_lfib: mpls_lfib
+                            mpls_tunnel: mpls_tunnel
+                            multicast: multicast
+                            nexthop: nexthop
+                            pbr: pbr
+                            pdp: pdp
+                            policing_interface: policing_interface
+                            qos: qos
+                            qos_dual_rate_policer: qos_dual_rate_policer
+                            route: route
+                            routed_port: routed_port
+                            segment_security: segment_security
+                            subinterface: subinterface
+                            tapagg: tapagg
+                            traffic_class: traffic_class
+                            traffic_policy: traffic_policy
+                            vlan: vlan
+                            vlan_interface: vlan_interface
+                            vni_decap: vni_decap
+                            vni_encap: vni_encap
+                            vtep_decap: vtep_decap
+                            vtep_encap: vtep_encap
 
                         """
 
@@ -10513,7 +10473,7 @@ class EosDesigns(EosDesignsRootModel):
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
-                "hardware_counters_features": {"type": HardwareCountersFeatures},
+                "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
             }
             queue_monitor: bool
@@ -10609,19 +10569,25 @@ class EosDesigns(EosDesignsRootModel):
             evpn_gateway_all_active_multihoming: bool
             """
             Support for all-active EVPN gateway redundancy.
+            An error will be raised if the feature is enabled
+            for unsupported platforms.
 
             Default value: `False`
             """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
-            Feature will be ignored
-            on unsupported platforms.
+            Setting this key to
+            `false` for the specific platform will ignore all hardware counter features for this platform.
 
             Default value: `True`
             """
-            hardware_counters_features: HardwareCountersFeatures
-            """Subclass of AvdModel."""
+            hardware_counter_features: HardwareCounterFeatures
+            """
+            Per-feature support for the hardware counters.
+            Feature will be ignored on unsupported platforms.
+            Subclass of AvdModel.
+            """
             hardware_speed_group: bool
             """
             Support for configurable speeds per speed-group.
@@ -10648,7 +10614,7 @@ class EosDesigns(EosDesignsRootModel):
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
-                    hardware_counters_features: HardwareCountersFeatures | UndefinedType = Undefined,
+                    hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -10706,12 +10672,18 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
+                        evpn_gateway_all_active_multihoming:
+                           Support for all-active EVPN gateway redundancy.
+                           An error will be raised if the feature is enabled
+                           for unsupported platforms.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
-                           Feature will be ignored
-                           on unsupported platforms.
-                        hardware_counters_features: Subclass of AvdModel.
+                           Setting this key to
+                           `false` for the specific platform will ignore all hardware counter features for this platform.
+                        hardware_counter_features:
+                           Per-feature support for the hardware counters.
+                           Feature will be ignored on unsupported platforms.
+                           Subclass of AvdModel.
                         hardware_speed_group:
                            Support for configurable speeds per speed-group.
                            Feature will be ignored on unsupported platforms.
@@ -10928,215 +10900,175 @@ class EosDesigns(EosDesignsRootModel):
 
                         """
 
-            class HardwareCountersFeatures(AvdModel):
+            class HardwareCounterFeatures(AvdModel):
                 """Subclass of AvdModel."""
 
-                class Features(AvdModel):
-                    """Subclass of AvdModel."""
-
-                    _fields: ClassVar[dict] = {
-                        "acl": {"type": bool, "default": True},
-                        "decap_group": {"type": bool, "default": True},
-                        "directflow": {"type": bool, "default": True},
-                        "ecn": {"type": bool, "default": True},
-                        "flow_spec": {"type": bool, "default": True},
-                        "gre_tunnel_interface": {"type": bool, "default": True},
-                        "ip": {"type": bool, "default": True},
-                        "mpls_interface": {"type": bool, "default": True},
-                        "mpls_lfib": {"type": bool, "default": True},
-                        "mpls_tunnel": {"type": bool, "default": True},
-                        "multicast": {"type": bool, "default": True},
-                        "nexthop": {"type": bool, "default": True},
-                        "pbr": {"type": bool, "default": True},
-                        "pdp": {"type": bool, "default": True},
-                        "policing_interface": {"type": bool, "default": True},
-                        "qos": {"type": bool, "default": True},
-                        "qos_dual_rate_policer": {"type": bool, "default": True},
-                        "route": {"type": bool, "default": True},
-                        "routed_port": {"type": bool, "default": True},
-                        "segment_security": {"type": bool, "default": True},
-                        "subinterface": {"type": bool, "default": True},
-                        "tapagg": {"type": bool, "default": True},
-                        "traffic_class": {"type": bool, "default": True},
-                        "traffic_policy": {"type": bool, "default": True},
-                        "vlan": {"type": bool, "default": True},
-                        "vlan_interface": {"type": bool, "default": True},
-                        "vni_decap": {"type": bool, "default": True},
-                        "vni_encap": {"type": bool, "default": True},
-                        "vtep_decap": {"type": bool, "default": True},
-                        "vtep_encap": {"type": bool, "default": True},
-                    }
-                    acl: bool
-                    """Default value: `True`"""
-                    decap_group: bool
-                    """Default value: `True`"""
-                    directflow: bool
-                    """Default value: `True`"""
-                    ecn: bool
-                    """Default value: `True`"""
-                    flow_spec: bool
-                    """Default value: `True`"""
-                    gre_tunnel_interface: bool
-                    """Default value: `True`"""
-                    ip: bool
-                    """Default value: `True`"""
-                    mpls_interface: bool
-                    """Default value: `True`"""
-                    mpls_lfib: bool
-                    """Default value: `True`"""
-                    mpls_tunnel: bool
-                    """Default value: `True`"""
-                    multicast: bool
-                    """Default value: `True`"""
-                    nexthop: bool
-                    """Default value: `True`"""
-                    pbr: bool
-                    """Default value: `True`"""
-                    pdp: bool
-                    """Default value: `True`"""
-                    policing_interface: bool
-                    """Default value: `True`"""
-                    qos: bool
-                    """Default value: `True`"""
-                    qos_dual_rate_policer: bool
-                    """Default value: `True`"""
-                    route: bool
-                    """Default value: `True`"""
-                    routed_port: bool
-                    """Default value: `True`"""
-                    segment_security: bool
-                    """Default value: `True`"""
-                    subinterface: bool
-                    """Default value: `True`"""
-                    tapagg: bool
-                    """Default value: `True`"""
-                    traffic_class: bool
-                    """Default value: `True`"""
-                    traffic_policy: bool
-                    """Default value: `True`"""
-                    vlan: bool
-                    """Default value: `True`"""
-                    vlan_interface: bool
-                    """Default value: `True`"""
-                    vni_decap: bool
-                    """Default value: `True`"""
-                    vni_encap: bool
-                    """Default value: `True`"""
-                    vtep_decap: bool
-                    """Default value: `True`"""
-                    vtep_encap: bool
-                    """Default value: `True`"""
-
-                    if TYPE_CHECKING:
-
-                        def __init__(
-                            self,
-                            *,
-                            acl: bool | UndefinedType = Undefined,
-                            decap_group: bool | UndefinedType = Undefined,
-                            directflow: bool | UndefinedType = Undefined,
-                            ecn: bool | UndefinedType = Undefined,
-                            flow_spec: bool | UndefinedType = Undefined,
-                            gre_tunnel_interface: bool | UndefinedType = Undefined,
-                            ip: bool | UndefinedType = Undefined,
-                            mpls_interface: bool | UndefinedType = Undefined,
-                            mpls_lfib: bool | UndefinedType = Undefined,
-                            mpls_tunnel: bool | UndefinedType = Undefined,
-                            multicast: bool | UndefinedType = Undefined,
-                            nexthop: bool | UndefinedType = Undefined,
-                            pbr: bool | UndefinedType = Undefined,
-                            pdp: bool | UndefinedType = Undefined,
-                            policing_interface: bool | UndefinedType = Undefined,
-                            qos: bool | UndefinedType = Undefined,
-                            qos_dual_rate_policer: bool | UndefinedType = Undefined,
-                            route: bool | UndefinedType = Undefined,
-                            routed_port: bool | UndefinedType = Undefined,
-                            segment_security: bool | UndefinedType = Undefined,
-                            subinterface: bool | UndefinedType = Undefined,
-                            tapagg: bool | UndefinedType = Undefined,
-                            traffic_class: bool | UndefinedType = Undefined,
-                            traffic_policy: bool | UndefinedType = Undefined,
-                            vlan: bool | UndefinedType = Undefined,
-                            vlan_interface: bool | UndefinedType = Undefined,
-                            vni_decap: bool | UndefinedType = Undefined,
-                            vni_encap: bool | UndefinedType = Undefined,
-                            vtep_decap: bool | UndefinedType = Undefined,
-                            vtep_encap: bool | UndefinedType = Undefined,
-                        ) -> None:
-                            """
-                            Features.
-
-
-                            Subclass of AvdModel.
-
-                            Args:
-                                acl: acl
-                                decap_group: decap_group
-                                directflow: directflow
-                                ecn: ecn
-                                flow_spec: flow_spec
-                                gre_tunnel_interface: gre_tunnel_interface
-                                ip: ip
-                                mpls_interface: mpls_interface
-                                mpls_lfib: mpls_lfib
-                                mpls_tunnel: mpls_tunnel
-                                multicast: multicast
-                                nexthop: nexthop
-                                pbr: pbr
-                                pdp: pdp
-                                policing_interface: policing_interface
-                                qos: qos
-                                qos_dual_rate_policer: qos_dual_rate_policer
-                                route: route
-                                routed_port: routed_port
-                                segment_security: segment_security
-                                subinterface: subinterface
-                                tapagg: tapagg
-                                traffic_class: traffic_class
-                                traffic_policy: traffic_policy
-                                vlan: vlan
-                                vlan_interface: vlan_interface
-                                vni_decap: vni_decap
-                                vni_encap: vni_encap
-                                vtep_decap: vtep_decap
-                                vtep_encap: vtep_encap
-
-                            """
-
-                _fields: ClassVar[dict] = {"supported": {"type": bool, "default": True}, "features": {"type": Features}}
-                supported: bool
-                """
-                General support for the `hardware counter feature` CLI.
-                Setting this key to `false` for the specific
-                platform will disable support of any specific hardware counter feature for this platform.
-
-                Default value: `True`
-                """
-                features: Features
-                """
-                Per-feature support for the hardware counters.
-
-                Subclass of AvdModel.
-                """
+                _fields: ClassVar[dict] = {
+                    "acl": {"type": bool, "default": True},
+                    "decap_group": {"type": bool, "default": True},
+                    "directflow": {"type": bool, "default": True},
+                    "ecn": {"type": bool, "default": True},
+                    "flow_spec": {"type": bool, "default": True},
+                    "gre_tunnel_interface": {"type": bool, "default": True},
+                    "ip": {"type": bool, "default": True},
+                    "mpls_interface": {"type": bool, "default": True},
+                    "mpls_lfib": {"type": bool, "default": True},
+                    "mpls_tunnel": {"type": bool, "default": True},
+                    "multicast": {"type": bool, "default": True},
+                    "nexthop": {"type": bool, "default": True},
+                    "pbr": {"type": bool, "default": True},
+                    "pdp": {"type": bool, "default": True},
+                    "policing_interface": {"type": bool, "default": True},
+                    "qos": {"type": bool, "default": True},
+                    "qos_dual_rate_policer": {"type": bool, "default": True},
+                    "route": {"type": bool, "default": True},
+                    "routed_port": {"type": bool, "default": True},
+                    "segment_security": {"type": bool, "default": True},
+                    "subinterface": {"type": bool, "default": True},
+                    "tapagg": {"type": bool, "default": True},
+                    "traffic_class": {"type": bool, "default": True},
+                    "traffic_policy": {"type": bool, "default": True},
+                    "vlan": {"type": bool, "default": True},
+                    "vlan_interface": {"type": bool, "default": True},
+                    "vni_decap": {"type": bool, "default": True},
+                    "vni_encap": {"type": bool, "default": True},
+                    "vtep_decap": {"type": bool, "default": True},
+                    "vtep_encap": {"type": bool, "default": True},
+                }
+                acl: bool
+                """Default value: `True`"""
+                decap_group: bool
+                """Default value: `True`"""
+                directflow: bool
+                """Default value: `True`"""
+                ecn: bool
+                """Default value: `True`"""
+                flow_spec: bool
+                """Default value: `True`"""
+                gre_tunnel_interface: bool
+                """Default value: `True`"""
+                ip: bool
+                """Default value: `True`"""
+                mpls_interface: bool
+                """Default value: `True`"""
+                mpls_lfib: bool
+                """Default value: `True`"""
+                mpls_tunnel: bool
+                """Default value: `True`"""
+                multicast: bool
+                """Default value: `True`"""
+                nexthop: bool
+                """Default value: `True`"""
+                pbr: bool
+                """Default value: `True`"""
+                pdp: bool
+                """Default value: `True`"""
+                policing_interface: bool
+                """Default value: `True`"""
+                qos: bool
+                """Default value: `True`"""
+                qos_dual_rate_policer: bool
+                """Default value: `True`"""
+                route: bool
+                """Default value: `True`"""
+                routed_port: bool
+                """Default value: `True`"""
+                segment_security: bool
+                """Default value: `True`"""
+                subinterface: bool
+                """Default value: `True`"""
+                tapagg: bool
+                """Default value: `True`"""
+                traffic_class: bool
+                """Default value: `True`"""
+                traffic_policy: bool
+                """Default value: `True`"""
+                vlan: bool
+                """Default value: `True`"""
+                vlan_interface: bool
+                """Default value: `True`"""
+                vni_decap: bool
+                """Default value: `True`"""
+                vni_encap: bool
+                """Default value: `True`"""
+                vtep_decap: bool
+                """Default value: `True`"""
+                vtep_encap: bool
+                """Default value: `True`"""
 
                 if TYPE_CHECKING:
 
-                    def __init__(self, *, supported: bool | UndefinedType = Undefined, features: Features | UndefinedType = Undefined) -> None:
+                    def __init__(
+                        self,
+                        *,
+                        acl: bool | UndefinedType = Undefined,
+                        decap_group: bool | UndefinedType = Undefined,
+                        directflow: bool | UndefinedType = Undefined,
+                        ecn: bool | UndefinedType = Undefined,
+                        flow_spec: bool | UndefinedType = Undefined,
+                        gre_tunnel_interface: bool | UndefinedType = Undefined,
+                        ip: bool | UndefinedType = Undefined,
+                        mpls_interface: bool | UndefinedType = Undefined,
+                        mpls_lfib: bool | UndefinedType = Undefined,
+                        mpls_tunnel: bool | UndefinedType = Undefined,
+                        multicast: bool | UndefinedType = Undefined,
+                        nexthop: bool | UndefinedType = Undefined,
+                        pbr: bool | UndefinedType = Undefined,
+                        pdp: bool | UndefinedType = Undefined,
+                        policing_interface: bool | UndefinedType = Undefined,
+                        qos: bool | UndefinedType = Undefined,
+                        qos_dual_rate_policer: bool | UndefinedType = Undefined,
+                        route: bool | UndefinedType = Undefined,
+                        routed_port: bool | UndefinedType = Undefined,
+                        segment_security: bool | UndefinedType = Undefined,
+                        subinterface: bool | UndefinedType = Undefined,
+                        tapagg: bool | UndefinedType = Undefined,
+                        traffic_class: bool | UndefinedType = Undefined,
+                        traffic_policy: bool | UndefinedType = Undefined,
+                        vlan: bool | UndefinedType = Undefined,
+                        vlan_interface: bool | UndefinedType = Undefined,
+                        vni_decap: bool | UndefinedType = Undefined,
+                        vni_encap: bool | UndefinedType = Undefined,
+                        vtep_decap: bool | UndefinedType = Undefined,
+                        vtep_encap: bool | UndefinedType = Undefined,
+                    ) -> None:
                         """
-                        HardwareCountersFeatures.
+                        HardwareCounterFeatures.
 
 
                         Subclass of AvdModel.
 
                         Args:
-                            supported:
-                               General support for the `hardware counter feature` CLI.
-                               Setting this key to `false` for the specific
-                               platform will disable support of any specific hardware counter feature for this platform.
-                            features:
-                               Per-feature support for the hardware counters.
-
-                               Subclass of AvdModel.
+                            acl: acl
+                            decap_group: decap_group
+                            directflow: directflow
+                            ecn: ecn
+                            flow_spec: flow_spec
+                            gre_tunnel_interface: gre_tunnel_interface
+                            ip: ip
+                            mpls_interface: mpls_interface
+                            mpls_lfib: mpls_lfib
+                            mpls_tunnel: mpls_tunnel
+                            multicast: multicast
+                            nexthop: nexthop
+                            pbr: pbr
+                            pdp: pdp
+                            policing_interface: policing_interface
+                            qos: qos
+                            qos_dual_rate_policer: qos_dual_rate_policer
+                            route: route
+                            routed_port: routed_port
+                            segment_security: segment_security
+                            subinterface: subinterface
+                            tapagg: tapagg
+                            traffic_class: traffic_class
+                            traffic_policy: traffic_policy
+                            vlan: vlan
+                            vlan_interface: vlan_interface
+                            vni_decap: vni_decap
+                            vni_encap: vni_encap
+                            vtep_decap: vtep_decap
+                            vtep_encap: vtep_encap
 
                         """
 
@@ -11154,7 +11086,7 @@ class EosDesigns(EosDesignsRootModel):
                 "platform_sfe_interface_profile": {"type": PlatformSfeInterfaceProfile},
                 "evpn_gateway_all_active_multihoming": {"type": bool, "default": False},
                 "hardware_counters": {"type": bool, "default": True},
-                "hardware_counters_features": {"type": HardwareCountersFeatures},
+                "hardware_counter_features": {"type": HardwareCounterFeatures},
                 "hardware_speed_group": {"type": bool, "default": True},
             }
             queue_monitor: bool
@@ -11250,19 +11182,25 @@ class EosDesigns(EosDesignsRootModel):
             evpn_gateway_all_active_multihoming: bool
             """
             Support for all-active EVPN gateway redundancy.
+            An error will be raised if the feature is enabled
+            for unsupported platforms.
 
             Default value: `False`
             """
             hardware_counters: bool
             """
             Support for enabling counters using programmable hardware counter resources.
-            Feature will be ignored
-            on unsupported platforms.
+            Setting this key to
+            `false` for the specific platform will ignore all hardware counter features for this platform.
 
             Default value: `True`
             """
-            hardware_counters_features: HardwareCountersFeatures
-            """Subclass of AvdModel."""
+            hardware_counter_features: HardwareCounterFeatures
+            """
+            Per-feature support for the hardware counters.
+            Feature will be ignored on unsupported platforms.
+            Subclass of AvdModel.
+            """
             hardware_speed_group: bool
             """
             Support for configurable speeds per speed-group.
@@ -11289,7 +11227,7 @@ class EosDesigns(EosDesignsRootModel):
                     platform_sfe_interface_profile: PlatformSfeInterfaceProfile | UndefinedType = Undefined,
                     evpn_gateway_all_active_multihoming: bool | UndefinedType = Undefined,
                     hardware_counters: bool | UndefinedType = Undefined,
-                    hardware_counters_features: HardwareCountersFeatures | UndefinedType = Undefined,
+                    hardware_counter_features: HardwareCounterFeatures | UndefinedType = Undefined,
                     hardware_speed_group: bool | UndefinedType = Undefined,
                 ) -> None:
                     """
@@ -11347,12 +11285,18 @@ class EosDesigns(EosDesignsRootModel):
                            Support for Platform SFE Interface Profiles.
 
                            Subclass of AvdModel.
-                        evpn_gateway_all_active_multihoming: Support for all-active EVPN gateway redundancy.
+                        evpn_gateway_all_active_multihoming:
+                           Support for all-active EVPN gateway redundancy.
+                           An error will be raised if the feature is enabled
+                           for unsupported platforms.
                         hardware_counters:
                            Support for enabling counters using programmable hardware counter resources.
-                           Feature will be ignored
-                           on unsupported platforms.
-                        hardware_counters_features: Subclass of AvdModel.
+                           Setting this key to
+                           `false` for the specific platform will ignore all hardware counter features for this platform.
+                        hardware_counter_features:
+                           Per-feature support for the hardware counters.
+                           Feature will be ignored on unsupported platforms.
+                           Subclass of AvdModel.
                         hardware_speed_group:
                            Support for configurable speeds per speed-group.
                            Feature will be ignored on unsupported platforms.

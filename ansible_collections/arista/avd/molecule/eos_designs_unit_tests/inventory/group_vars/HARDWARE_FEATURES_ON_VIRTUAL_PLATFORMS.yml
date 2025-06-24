@@ -31,29 +31,28 @@ custom_platform_settings:
       queue_monitor: false
       queue_monitor_length_notify: false
       evpn_gateway_all_active_multihoming: true
-      hardware_counters_features:
-        features:
-          decap_group: false
-          directflow: false
-          ecn: false
-          flow_spec: false
-          gre_tunnel_interface: false
-          ip: false
-          mpls_interface: false
-          multicast: false
-          pdp: false
-          policing_interface: false
-          qos: false
-          qos_dual_rate_policer: false
-          route: false
-          routed_port: false
-          segment_security: false
-          subinterface: false
-          tapagg: false
-          traffic_class: false
-          traffic_policy: false
-          vlan: false
-          vlan_interface: false
+      hardware_counter_features:
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        gre_tunnel_interface: false
+        ip: false
+        mpls_interface: false
+        multicast: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        route: false
+        routed_port: false
+        segment_security: false
+        subinterface: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+        vlan_interface: false
       hardware_speed_group: false
       per_interface_l2_mtu: false
       per_interface_l2_mru: false
@@ -72,29 +71,28 @@ custom_platform_settings:
       queue_monitor: false
       queue_monitor_length_notify: false
       evpn_gateway_all_active_multihoming: true
-      hardware_counters_features:
-        features:
-          decap_group: false
-          directflow: false
-          ecn: false
-          flow_spec: false
-          gre_tunnel_interface: false
-          ip: false
-          mpls_interface: false
-          multicast: false
-          pdp: false
-          policing_interface: false
-          qos: false
-          qos_dual_rate_policer: false
-          route: false
-          routed_port: false
-          segment_security: false
-          subinterface: false
-          tapagg: false
-          traffic_class: false
-          traffic_policy: false
-          vlan: false
-          vlan_interface: false
+      hardware_counter_features:
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        gre_tunnel_interface: false
+        ip: false
+        mpls_interface: false
+        multicast: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        route: false
+        routed_port: false
+        segment_security: false
+        subinterface: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+        vlan_interface: false
       hardware_speed_group: false
       per_interface_l2_mtu: false
       per_interface_l2_mru: false
@@ -118,8 +116,38 @@ custom_platform_settings:
   - platforms:
       - customplatform
     feature_support:
-      hardware_counters_features:
-        supported: false
+      # Test with all features explicitly disabled
+      hardware_counter_features:
+        acl: false
+        decap_group: false
+        directflow: false
+        ecn: false
+        flow_spec: false
+        gre_tunnel_interface: false
+        ip: false
+        mpls_interface: false
+        mpls_lfib: false
+        mpls_tunnel: false
+        multicast: false
+        nexthop: false
+        pbr: false
+        pdp: false
+        policing_interface: false
+        qos: false
+        qos_dual_rate_policer: false
+        route: false
+        routed_port: false
+        segment_security: false
+        subinterface: false
+        tapagg: false
+        traffic_class: false
+        traffic_policy: false
+        vlan: false
+        vlan_interface: false
+        vni_decap: false
+        vni_encap: false
+        vtep_decap: false
+        vtep_encap: false
 
 type: l3leaf
 
