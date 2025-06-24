@@ -37,11 +37,6 @@ management_interfaces:
 metadata:
   fabric_name: EOS_DESIGNS_UNIT_TESTS
 service_routing_protocols_model: multi-agent
-snmp_server:
-  local_interfaces:
-  - name: Management1
-  - name: Vlan4092
-    vrf: INBANDMGMT
 static_routes:
 - vrf: INBANDMGMT
   prefix: 0.0.0.0/0

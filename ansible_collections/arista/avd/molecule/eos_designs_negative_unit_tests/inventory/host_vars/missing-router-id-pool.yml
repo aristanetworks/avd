@@ -1,0 +1,22 @@
+---
+fabric_name: FABRIC_MISSING_ROUTER_ID_POOL
+underlay_ipv6: true
+underlay_ipv6_numbered: true
+underlay_routing_protocol: ebgp
+
+type: l3leaf
+
+l3leaf:
+  defaults:
+    loopback_ipv6_pool: 2001:DB8:1::/48
+    platform: vEOS-LAB
+  node_groups:
+    - group: fabric_missing_router_id_pool
+      bgp_as: 923
+      nodes:
+        - name: missing-router-id-pool
+          id: 1
+          mgmt_ip: 192.168.201.116/24
+
+expected_error_message: >-
+  'router_id_pool' is required but was not found for host 'missing-router-id-pool'.
