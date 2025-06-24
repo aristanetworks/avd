@@ -1,0 +1,8 @@
+---
+underlay_routing_protocol: ospf
+underlay_ospf_authentication:
+  enabled: true
+  message_digest_keys:
+    - id: 1
+      # replaced by cleartext_key
+      key: arista123arista

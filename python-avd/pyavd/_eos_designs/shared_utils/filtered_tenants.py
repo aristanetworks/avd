@@ -539,22 +539,24 @@ class FilteredTenantsMixin(Protocol):
                 key_id=str(ospf_key.id),
             )
         else:
-            match interface:
-                case EosCliConfigGen.EthernetInterfacesItem():
+            # This cannot happen for Vrf level as cleartext_key is required.
+            match ospf_key:
+                case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3InterfacesItem.Ospf.MessageDigestKeysItem():
                     interface_ospf_path = (
                         f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_interfaces[name={interface.name}].ospf.message_digest_keys[key={ospf_key.id}]"
                     )
-                case EosCliConfigGen.PortChannelInterfacesItem():
+                    msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
+                case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.L3PortChannelsItem.Ospf.MessageDigestKeysItem():
                     interface_ospf_path = (
                         f"tenants[name={tenant.name}].vrfs[name={vrf.name}].l3_port_channels[name={interface.name}].ospf.message_digest_keys[key={ospf_key.id}]"
                     )
-                case _:
-                    # This is EosCliConfigGen.VlanInterfacesItem
-                    interface_ospf_path = f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={network_services_interface.id}].ospf.message_digest_keys[key={ospf_key.id}]"
-            msg = (
-                f"`tenants[name={tenant.name}].vrfs[name={vrf.name}].ospf.message_digest_keys[id=keyid].cleartext_key` or `{interface_ospf_path}.key` "
-                f"or `{interface_ospf_path}.cleartext_key`"
-            )
+                    msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
+                case EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem.SvisItem.Ospf.MessageDigestKeysItem():
+                    interface_ospf_path = (
+                        f"tenants[name={tenant.name}].vrfs[name={vrf.name}].svis[id={interface.name[4:]}].ospf.message_digest_keys[key={ospf_key.id}]"
+                    )
+                    msg = f"`{interface_ospf_path}.key` or `{interface_ospf_path}.cleartext_key`"
+
             raise AristaAvdMissingVariableError(msg)
 
         interface.ospf_message_digest_keys.append_new(
