@@ -26,7 +26,12 @@ if TYPE_CHECKING:
     )
 
     T_ProtocolVrfs = TypeVar(
-        "T_ProtocolVrfs", EosDesigns.DnsSettings.Vrfs, EosDesigns.SflowSettings.Vrfs, EosDesigns.LoggingSettings.Vrfs, EosDesigns.AaaSettings.Tacacs.Vrfs, EosDesigns.AaaSettings.Radius.Vrfs
+        "T_ProtocolVrfs",
+        EosDesigns.DnsSettings.Vrfs,
+        EosDesigns.SflowSettings.Vrfs,
+        EosDesigns.LoggingSettings.Vrfs,
+        EosDesigns.AaaSettings.Tacacs.Vrfs,
+        EosDesigns.AaaSettings.Radius.Vrfs,
     )
 
 
