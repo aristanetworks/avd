@@ -194,7 +194,7 @@
           # Feature will be ignored on unsupported platforms.
           interface_storm_control: <bool; default=True>
 
-          # Support for configuration of per interface PoE settings on Ethernet or Port-channel interfaces.
+          # Support for PoE.
           # Feature will be ignored on unsupported platforms.
           poe: <bool; default=False>
 
