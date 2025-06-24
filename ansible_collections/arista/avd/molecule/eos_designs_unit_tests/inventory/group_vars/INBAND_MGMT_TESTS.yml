@@ -27,8 +27,11 @@ default_interfaces:
 
 default_mgmt_method: inband
 
-cvp_instance_ips:
-  - apiserver.arista.io
+cv_settings:
+  cvaas:
+    - name: primary
+      fqdn: apiserver.arista.io
+  set_source_interfaces: false
 
 dns_settings:
   servers:

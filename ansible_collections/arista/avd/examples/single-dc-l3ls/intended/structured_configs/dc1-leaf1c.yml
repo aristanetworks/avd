@@ -7,6 +7,7 @@ daemon_terminattr:
   cvauth:
     method: token
     token_file: /tmp/token
+  cvsourceintf: Management1
   cvvrf: MGMT
   disable_aaa: true
   ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent

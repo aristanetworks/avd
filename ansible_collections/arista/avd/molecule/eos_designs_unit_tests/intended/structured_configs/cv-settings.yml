@@ -53,7 +53,7 @@ daemon_terminattr:
       token_file: /tmp/anothertoken
     cvsourceintf: Management1/1
     cvvrf: INBAND_MGMT_VRF
-  - name: onprem_inband_2
+  - name: onprem_inband_two
     cvaddrs:
     - onprem_inband_2:9910
     cvauth:

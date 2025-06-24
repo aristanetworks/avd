@@ -36,7 +36,7 @@ cv_settings:
         - name: onprem_inband_1
       token_file: /tmp/anothertoken
       source_interface: Management1/1
-    - name: onprem_inband_2
+    - name: onprem_inband_two
       servers:
         - name: onprem_inband_2
       # No VRF, so we use default_mgmt_method by default, inband mgmt here.

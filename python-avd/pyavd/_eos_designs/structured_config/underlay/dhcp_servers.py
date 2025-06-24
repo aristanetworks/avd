@@ -69,19 +69,33 @@ class DhcpServersMixin(Protocol):
                     subnet_item.ranges.append_new(start=str(uplink.ip_address), end=str(uplink.ip_address))
                     dhcp_server.subnets.append(subnet_item)
 
+    def _get_cvp_server_for_dhcp(self: AvdStructuredConfigUnderlayProtocol) -> str | None:
+        """Return the first CVP server using either new or old data models."""
+        if self.inputs.cv_settings.cvaas:
+            return next(iter(self.inputs.cv_settings.cvaas)).fqdn
+
+        if self.inputs.cv_settings.onprem_clusters:
+            return next(iter(self.inputs.cv_settings.onprem_clusters)).name
+
+        if self.inputs.cvp_instance_ips:
+            server = self.inputs.cvp_instance_ips[0]
+            if "arista.io" in server:
+                clean_cvaas_fqdn = re.sub(r"https:\/\/|www\.|apiserver\.", "", server)
+                return f"www.{clean_cvaas_fqdn}"
+
+            return server
+
+        return None
+
     def _update_ipv4_ztp_boot_file(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
         """Update the file name to allow for ZTP to CV."""
         if self.inputs.inband_ztp_bootstrap_file:
             dhcp_server.tftp_server.file_ipv4 = self.inputs.inband_ztp_bootstrap_file
             return
-        if not (cvp_instance_ips := self.inputs.cvp_instance_ips):
+        if not (cvp_server := self._get_cvp_server_for_dhcp()):
             return
 
-        if "arista.io" in cvp_instance_ips[0]:
-            clean_cvaas_fqdn = re.sub(r"https:\/\/|www\.|apiserver\.", "", cvp_instance_ips[0])
-            cvp_instance_ips[0] = f"www.{clean_cvaas_fqdn}"
-
-        dhcp_server.tftp_server.file_ipv4 = f"https://{cvp_instance_ips[0]}/ztp/bootstrap"
+        dhcp_server.tftp_server.file_ipv4 = f"https://{cvp_server}/ztp/bootstrap"
 
     def _update_ntp_servers(self: AvdStructuredConfigUnderlayProtocol, dhcp_server: EosCliConfigGen.DhcpServersItem) -> None:
         """Set list of NTP servers."""
