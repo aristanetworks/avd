@@ -153,6 +153,7 @@ class AvdInterfaceDescriptions(AvdFacts):
                     "channel_description": data.port_channel_description,
                     "peer_node_group": data.peer_node_group,
                     "wan_carrier": data.wan_carrier,
+                    "wan_circuit_id": data.wan_circuit_id,
                     "main_interface_wan_carrier": data.main_interface_wan_carrier,
                 },
             )
