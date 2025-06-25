@@ -24,7 +24,7 @@ from .utils import UtilsMixin
 
 
 class AvdStructuredConfigBaseProtocol(
-    NtpMixin, SnmpServerMixin, RouterGeneralMixin, PlatformMixin, ManagementSshMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol
+    ManagementSshMixin, NtpMixin, SnmpServerMixin, RouterGeneralMixin, PlatformMixin, UtilsMixin, StructuredConfigGeneratorProtocol, Protocol
 ):
     """
     Protocol for the AvdStructuredConfig Class, which is imported by "get_structured_config" to render parts of the structured config.

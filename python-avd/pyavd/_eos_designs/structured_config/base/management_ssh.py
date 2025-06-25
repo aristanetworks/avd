@@ -32,7 +32,7 @@ class ManagementSshMixin(Protocol):
 
         self._ssh_vrfs_acls(ssh_settings)
 
-    def _ssh_vrfs_acls(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
+    def _ssh_vrfs(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
         vrfs = EosCliConfigGen.ManagementSsh.Vrfs()
         for vrf in ssh_settings.vrfs:
