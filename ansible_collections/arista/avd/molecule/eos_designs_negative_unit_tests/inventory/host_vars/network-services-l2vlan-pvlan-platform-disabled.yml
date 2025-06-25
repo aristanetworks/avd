@@ -25,5 +25,5 @@ tenants:
           primary_vlan: 2
 
 expected_error_message: >-
-  The primary VLAN feature is not enabled by default for this platform. It can be enabled in the platform settings, but might need additional configurations
+  The private VLAN feature is not enabled by default for this platform. It can be enabled in the platform settings, but might need additional configurations
   to work.
