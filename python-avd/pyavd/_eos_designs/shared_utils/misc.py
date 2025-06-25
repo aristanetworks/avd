@@ -418,11 +418,17 @@ class MiscMixin(Protocol):
 
         return all_connected_endpoints
 
-    def get_ipsec_key(self: SharedUtilsProtocol, stuff: str) -> str:
+    def get_ipsec_key(self: SharedUtilsProtocol, cleartext_key: str) -> str:
         """
         Return a type 7 encrypted shared key for IPsec.
 
         Args:
-            stuff: dasdas
+            cleartext_key: str
+
+        Returns:
+            str: type 7 encrypted key.
         """
-        return simple_7_encrypt(stuff)
+        # Need to compute it deterministically
+        salt = 0
+
+        return simple_7_encrypt(key, salt)
