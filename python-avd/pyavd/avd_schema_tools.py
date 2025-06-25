@@ -30,10 +30,7 @@ class AvdSchemaTools:
             schema_id:
                 Optional Name of AVD Schema to load from store
         """
-        # pylint: disable=import-outside-toplevel
-        from ._schema.avdschema import AvdSchema
-
-        # pylint: enable=import-outside-toplevel
+        from ._schema.avdschema import AvdSchema  # noqa: PLC0415
 
         self.avdschema = AvdSchema(schema=schema, schema_id=schema_id)
 
@@ -50,11 +47,8 @@ class AvdSchemaTools:
         Returns:
             ValidationResult object with any validation errors or deprecation warnings.
         """
-        # pylint: disable=import-outside-toplevel
-        from ._errors import AvdDeprecationWarning
-        from .validation_result import ValidationResult
-
-        # pylint: enable=import-outside-toplevel
+        from ._errors import AvdDeprecationWarning  # noqa: PLC0415
+        from .validation_result import ValidationResult  # noqa: PLC0415
 
         result = ValidationResult(failed=False)
 
@@ -88,11 +82,8 @@ class AvdSchemaTools:
         Returns:
             Validation result object with any validation errors or deprecation warnings.
         """
-        # pylint: disable=import-outside-toplevel
-        from ._errors import AvdDeprecationWarning, AvdValidationError
-        from .validation_result import ValidationResult
-
-        # pylint: enable=import-outside-toplevel
+        from ._errors import AvdDeprecationWarning, AvdValidationError  # noqa: PLC0415
+        from .validation_result import ValidationResult  # noqa: PLC0415
 
         result = ValidationResult(failed=False)
 
