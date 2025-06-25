@@ -14,51 +14,78 @@ keys:
       Settings for CloudVision telemetry streaming and provisioning.
     keys:
       cvaas:
-        type: list
-        description: CloudVision-as-a-Service.
-        primary_key: name
-        items:
-          type: dict
-          keys:
-            name:
-              type: str
-              description: |-
-                Short name for the CVaaS cluster. Used when configuring multiple clusters.
-              pattern: "^[a-zA-Z1-9-_]+$"
-            fqdn:
-              type: str
-              required: true
-              pattern: "^[a-z1-9\\.-]+\\.arista\\.io$"
-              description: CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'.
-            vrf:
-              type: str
-              default: use_default_mgmt_method_vrf
-              convert_types:
-                - int
-              description: |-
-                The VRF used to connect to CloudVision.
-                The value will be interpreted according to these rules:
-                - `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.
-                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-                - `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
-                  An error will be raised if inband management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
-                - Any other string will be used directly as the VRF name.
-            token_file:
-              type: str
-              description: |-
-                Path to the onboarding token used for certificate based authentication.
-                The path is on the EOS device and the token file must be copied to the device first.
-              default: "/tmp/cv-onboarding-token"
-            source_interface:
-              type: str
-              description: |-
-                Source-interface used to connect to CloudVision.
-                If not set, the source interface may be set automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+        type: dict
+        description: |-
+          State streaming to CloudVision-as-a-Service.
+        keys:
+          enabled:
+            type: bool
+            required: true
+            description: |-
+              Enable streaming to CVaaS.
+              When enabled it will stream to 'apiserver.arista.io:443' using the VRF obtained from `default_mgmt_method` unless overridden under `clusters`.
+          clusters:
+            type: list
+            primary_key: name
+            default:
+              - name: cvaas
+            items:
+              type: dict
+              keys:
+                name:
+                  type: str
+                  description: |-
+                    Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
+                  pattern: "^[a-zA-Z1-9-_]+$"
+                region:
+                  type: str
+                  description: |-
+                    Optionally set the region to stream to.
+                    The "auto" region will use 'apiserver.arista.io:443' which will redirect to the correct region based on the device's serial number.
+                  default: "auto"
+                  valid_values:
+                    - auto
+                    - us-central1-a
+                    - us-central1-c
+                    - apnortheast-1
+                    - euwest-2
+                    - ausoutheast-1
+                    - na-northeast1-b
+                    - uk-1
+                    - staging
+                    - dev
+                    - play
+                vrf:
+                  type: str
+                  default: use_default_mgmt_method_vrf
+                  convert_types:
+                    - int
+                  description: |-
+                    The VRF used to connect to CloudVision.
+                    The value will be interpreted according to these rules:
+                    - `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the `mgmt_interface` as the source interface.
+                      An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                    - `use_inband_mgmt_vrf` will configure the VRF set with `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                      An error will be raised if inband management is not configured for the device.
+                    - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
+                    - Any other string will be used directly as the VRF name.
+                token_file:
+                  type: str
+                  description: |-
+                    Path to the onboarding token used for certificate based authentication.
+                    The path is on the EOS device and the token file must be copied to the device first.
+                  default: "/tmp/cv-onboarding-token"
+                source_interface:
+                  type: str
+                  description: |-
+                    Source-interface used to connect to CloudVision.
+                    If not set, the source interface may be set automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
       onprem_clusters:
         type: list
         description: On-premise CloudVision clusters.
         primary_key: name
+        unique_keys:
+          - servers.name
         items:
           type: dict
           description: |-
@@ -68,7 +95,8 @@ keys:
             name:
               type: str
               description: |-
-                Short name for the cluster. Used when configuring multiple clusters.
+                Short name for the cluster. Required here, but only used when configuring multiple clusters.
+              pattern: "^[a-zA-Z1-9-_]+$"
             servers:
               type: list
               required: true

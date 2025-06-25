@@ -2709,108 +2709,170 @@ class EosDesigns(EosDesignsRootModel):
     class CvSettings(AvdModel):
         """Subclass of AvdModel."""
 
-        class CvaasItem(AvdModel):
+        class Cvaas(AvdModel):
             """Subclass of AvdModel."""
 
+            class ClustersItem(AvdModel):
+                """Subclass of AvdModel."""
+
+                _fields: ClassVar[dict] = {
+                    "name": {"type": str},
+                    "region": {"type": str, "default": "auto"},
+                    "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
+                    "token_file": {"type": str, "default": "/tmp/cv-onboarding-token"},
+                    "source_interface": {"type": str},
+                }
+                name: str
+                """Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters."""
+                region: Literal[
+                    "auto", "us-central1-a", "us-central1-c", "apnortheast-1", "euwest-2", "ausoutheast-1", "na-northeast1-b", "uk-1", "staging", "dev", "play"
+                ]
+                """
+                Optionally set the region to stream to.
+                The "auto" region will use 'apiserver.arista.io:443' which
+                will redirect to the correct region based on the device's serial number.
+
+                Default value: `"auto"`
+                """
+                vrf: str
+                """
+                The VRF used to connect to CloudVision.
+                The value will be interpreted according to these rules:
+                -
+                `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
+                `mgmt_interface` as the source interface.
+                  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
+                are not configured for the device.
+                - `use_inband_mgmt_vrf` will configure the VRF set with
+                `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                  An error will
+                be raised if inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf`
+                will configure the VRF and source-interface for one of the two options above depending on the value
+                of `default_mgmt_method`.
+                - Any other string will be used directly as the VRF name.
+
+                Default value: `"use_default_mgmt_method_vrf"`
+                """
+                token_file: str
+                """
+                Path to the onboarding token used for certificate based authentication.
+                The path is on the EOS
+                device and the token file must be copied to the device first.
+
+                Default value: `"/tmp/cv-onboarding-token"`
+                """
+                source_interface: str | None
+                """
+                Source-interface used to connect to CloudVision.
+                If not set, the source interface may be set
+                automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+                """
+
+                if TYPE_CHECKING:
+
+                    def __init__(
+                        self,
+                        *,
+                        name: str | UndefinedType = Undefined,
+                        region: Literal[
+                            "auto",
+                            "us-central1-a",
+                            "us-central1-c",
+                            "apnortheast-1",
+                            "euwest-2",
+                            "ausoutheast-1",
+                            "na-northeast1-b",
+                            "uk-1",
+                            "staging",
+                            "dev",
+                            "play",
+                        ]
+                        | UndefinedType = Undefined,
+                        vrf: str | UndefinedType = Undefined,
+                        token_file: str | UndefinedType = Undefined,
+                        source_interface: str | None | UndefinedType = Undefined,
+                    ) -> None:
+                        """
+                        ClustersItem.
+
+
+                        Subclass of AvdModel.
+
+                        Args:
+                            name: Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters.
+                            region:
+                               Optionally set the region to stream to.
+                               The "auto" region will use 'apiserver.arista.io:443' which
+                               will redirect to the correct region based on the device's serial number.
+                            vrf:
+                               The VRF used to connect to CloudVision.
+                               The value will be interpreted according to these rules:
+                               -
+                               `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
+                               `mgmt_interface` as the source interface.
+                                 An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
+                               are not configured for the device.
+                               - `use_inband_mgmt_vrf` will configure the VRF set with
+                               `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
+                                 An error will
+                               be raised if inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf`
+                               will configure the VRF and source-interface for one of the two options above depending on the value
+                               of `default_mgmt_method`.
+                               - Any other string will be used directly as the VRF name.
+                            token_file:
+                               Path to the onboarding token used for certificate based authentication.
+                               The path is on the EOS
+                               device and the token file must be copied to the device first.
+                            source_interface:
+                               Source-interface used to connect to CloudVision.
+                               If not set, the source interface may be set
+                               automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+
+                        """
+
+            class Clusters(AvdIndexedList[str, ClustersItem]):
+                """Subclass of AvdIndexedList with `ClustersItem` items. Primary key is `name` (`str`)."""
+
+                _primary_key: ClassVar[str] = "name"
+
+            Clusters._item_type = ClustersItem
+
             _fields: ClassVar[dict] = {
-                "name": {"type": str},
-                "fqdn": {"type": str},
-                "vrf": {"type": str, "default": "use_default_mgmt_method_vrf"},
-                "token_file": {"type": str, "default": "/tmp/cv-onboarding-token"},
-                "source_interface": {"type": str},
+                "enabled": {"type": bool},
+                "clusters": {"type": Clusters, "default": lambda cls: coerce_type([{"name": "cvaas"}], target_type=cls)},
             }
-            name: str
-            """Short name for the CVaaS cluster. Used when configuring multiple clusters."""
-            fqdn: str
-            """CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'."""
-            vrf: str
+            enabled: bool
             """
-            The VRF used to connect to CloudVision.
-            The value will be interpreted according to these rules:
-            -
-            `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
-            `mgmt_interface` as the source interface.
-              An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
-            are not configured for the device.
-            - `use_inband_mgmt_vrf` will configure the VRF set with
-            `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
-              An error will
-            be raised if inband management is not configured for the device.
-            - `use_default_mgmt_method_vrf`
-            will configure the VRF and source-interface for one of the two options above depending on the value
-            of `default_mgmt_method`.
-            - Any other string will be used directly as the VRF name.
+            Enable streaming to CVaaS.
+            When enabled it will stream to 'apiserver.arista.io:443' using the VRF
+            obtained from `default_mgmt_method` unless overridden under `clusters`.
+            """
+            clusters: Clusters
+            """
+            Subclass of AvdIndexedList with `ClustersItem` items. Primary key is `name` (`str`).
 
-            Default value: `"use_default_mgmt_method_vrf"`
-            """
-            token_file: str
-            """
-            Path to the onboarding token used for certificate based authentication.
-            The path is on the EOS
-            device and the token file must be copied to the device first.
-
-            Default value: `"/tmp/cv-onboarding-token"`
-            """
-            source_interface: str | None
-            """
-            Source-interface used to connect to CloudVision.
-            If not set, the source interface may be set
-            automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+            Default value: `lambda cls: coerce_type([{"name": "cvaas"}], target_type=cls)`
             """
 
             if TYPE_CHECKING:
 
-                def __init__(
-                    self,
-                    *,
-                    name: str | UndefinedType = Undefined,
-                    fqdn: str | UndefinedType = Undefined,
-                    vrf: str | UndefinedType = Undefined,
-                    token_file: str | UndefinedType = Undefined,
-                    source_interface: str | None | UndefinedType = Undefined,
-                ) -> None:
+                def __init__(self, *, enabled: bool | UndefinedType = Undefined, clusters: Clusters | UndefinedType = Undefined) -> None:
                     """
-                    CvaasItem.
+                    Cvaas.
 
 
                     Subclass of AvdModel.
 
                     Args:
-                        name: Short name for the CVaaS cluster. Used when configuring multiple clusters.
-                        fqdn: CVaaS FQDN like 'apiserver.arista.io' or 'apiserver.cv-prod-euwest-2.arista.io'.
-                        vrf:
-                           The VRF used to connect to CloudVision.
-                           The value will be interpreted according to these rules:
-                           -
-                           `use_mgmt_interface_vrf` will configure the VRF set with `mgmt_interface_vrf` and configure the
-                           `mgmt_interface` as the source interface.
-                             An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip`
-                           are not configured for the device.
-                           - `use_inband_mgmt_vrf` will configure the VRF set with
-                           `inband_mgmt_vrf` and configure the `inband_mgmt_interface` as the source interface.
-                             An error will
-                           be raised if inband management is not configured for the device.
-                           - `use_default_mgmt_method_vrf`
-                           will configure the VRF and source-interface for one of the two options above depending on the value
-                           of `default_mgmt_method`.
-                           - Any other string will be used directly as the VRF name.
-                        token_file:
-                           Path to the onboarding token used for certificate based authentication.
-                           The path is on the EOS
-                           device and the token file must be copied to the device first.
-                        source_interface:
-                           Source-interface used to connect to CloudVision.
-                           If not set, the source interface may be set
-                           automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+                        enabled:
+                           Enable streaming to CVaaS.
+                           When enabled it will stream to 'apiserver.arista.io:443' using the VRF
+                           obtained from `default_mgmt_method` unless overridden under `clusters`.
+                        clusters: Subclass of AvdIndexedList with `ClustersItem` items. Primary key is `name` (`str`).
 
                     """
-
-        class Cvaas(AvdIndexedList[str, CvaasItem]):
-            """Subclass of AvdIndexedList with `CvaasItem` items. Primary key is `name` (`str`)."""
-
-            _primary_key: ClassVar[str] = "name"
-
-        Cvaas._item_type = CvaasItem
 
         class OnpremClustersItem(AvdModel):
             """Subclass of AvdModel."""
@@ -2854,7 +2916,7 @@ class EosDesigns(EosDesignsRootModel):
                 "source_interface": {"type": str},
             }
             name: str
-            """Short name for the cluster. Used when configuring multiple clusters."""
+            """Short name for the cluster. Required here, but only used when configuring multiple clusters."""
             servers: Servers
             """
             CloudVision servers that makes up one cluster.
@@ -2915,7 +2977,7 @@ class EosDesigns(EosDesignsRootModel):
                     Subclass of AvdModel.
 
                     Args:
-                        name: Short name for the cluster. Used when configuring multiple clusters.
+                        name: Short name for the cluster. Required here, but only used when configuring multiple clusters.
                         servers:
                            CloudVision servers that makes up one cluster.
 
@@ -2965,10 +3027,9 @@ class EosDesigns(EosDesignsRootModel):
         }
         cvaas: Cvaas
         """
-        CloudVision-as-a-Service.
+        State streaming to CloudVision-as-a-Service.
 
-        Subclass of AvdIndexedList with `CvaasItem` items. Primary key is `name`
-        (`str`).
+        Subclass of AvdModel.
         """
         onprem_clusters: OnpremClusters
         """
@@ -3027,10 +3088,9 @@ class EosDesigns(EosDesignsRootModel):
 
                 Args:
                     cvaas:
-                       CloudVision-as-a-Service.
+                       State streaming to CloudVision-as-a-Service.
 
-                       Subclass of AvdIndexedList with `CvaasItem` items. Primary key is `name`
-                       (`str`).
+                       Subclass of AvdModel.
                     onprem_clusters:
                        On-premise CloudVision clusters.
 

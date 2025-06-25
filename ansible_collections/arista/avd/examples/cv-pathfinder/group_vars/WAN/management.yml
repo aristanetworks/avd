@@ -10,8 +10,10 @@ ntp_settings:
 # CloudVision/TerminAttr
 cv_settings:
   cvaas:
-    - name: primary
-      fqdn: apiserver.cv-staging.corp.arista.io
+    enabled: true
+    clusters:
+      - name: primary
+        region: staging
 
 # For each local user in this example, password == username
 local_users:

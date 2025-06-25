@@ -29,8 +29,7 @@ default_mgmt_method: inband
 
 cv_settings:
   cvaas:
-    - name: primary
-      fqdn: apiserver.arista.io
+    enabled: true
   set_source_interfaces: false
 
 dns_settings:

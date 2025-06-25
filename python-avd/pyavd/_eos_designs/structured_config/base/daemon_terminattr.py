@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.schema import EosDesigns
+from pyavd._eos_designs.structured_config.constants import CV_REGION_TO_SERVER_MAP
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
@@ -39,7 +40,11 @@ class DaemonTerminattrMixin(Protocol):
             disable_aaa=cv_settings.terminattr_disable_aaa,
         )
 
-        clusters = list(cv_settings.cvaas) + list(cv_settings.onprem_clusters)
+        clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
+            list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
+        )
+        clusters.extend(cv_settings.onprem_clusters)
+
         if len(clusters) == 1:
             # Only one cluster so we add it with general terminattr config.
             cluster = clusters[0]
@@ -54,6 +59,7 @@ class DaemonTerminattrMixin(Protocol):
             )
             return
 
+        # Multiple clusters
         for cluster in clusters:
             self.structured_config.daemon_terminattr.clusters.append_new(
                 name=cluster.name,
@@ -67,25 +73,26 @@ class DaemonTerminattrMixin(Protocol):
             )
 
     @staticmethod
-    def get_cv_cluster_vrf_context(cluster: EosDesigns.CvSettings.CvaasItem | EosDesigns.CvSettings.OnpremClustersItem) -> str:
+    def get_cv_cluster_vrf_context(cluster: EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem) -> str:
         match cluster:
-            case EosDesigns.CvSettings.CvaasItem():
+            case EosDesigns.CvSettings.Cvaas.ClustersItem():
                 return f"cv_settings.cvaas[name={cluster.name}].vrf"
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return f"cv_settings.onprem_clusters[name={cluster.name}].vrf"
 
     @staticmethod
-    def get_cv_addrs(cluster: EosDesigns.CvSettings.CvaasItem | EosDesigns.CvSettings.OnpremClustersItem) -> EosCliConfigGen.DaemonTerminattr.Cvaddrs:
+    def get_cv_addrs(cluster: EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem) -> EosCliConfigGen.DaemonTerminattr.Cvaddrs:
         match cluster:
-            case EosDesigns.CvSettings.CvaasItem():
-                return EosCliConfigGen.DaemonTerminattr.Cvaddrs([f"{cluster.fqdn}:443"])
+            case EosDesigns.CvSettings.Cvaas.ClustersItem():
+                fqdn = CV_REGION_TO_SERVER_MAP[cluster.region]
+                return EosCliConfigGen.DaemonTerminattr.Cvaddrs([f"{fqdn}:443"])
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvaddrs(f"{server.name}:{server.port}" for server in cluster.servers)
 
     @staticmethod
-    def get_cv_auth(cluster: EosDesigns.CvSettings.CvaasItem | EosDesigns.CvSettings.OnpremClustersItem) -> EosCliConfigGen.DaemonTerminattr.Cvauth:
+    def get_cv_auth(cluster: EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem) -> EosCliConfigGen.DaemonTerminattr.Cvauth:
         match cluster:
-            case EosDesigns.CvSettings.CvaasItem():
+            case EosDesigns.CvSettings.Cvaas.ClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token-secure", token_file=cluster.token_file)
             case EosDesigns.CvSettings.OnpremClustersItem():
                 return EosCliConfigGen.DaemonTerminattr.Cvauth(method="token", token_file=cluster.token_file)

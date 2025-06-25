@@ -10,35 +10,39 @@ default_mgmt_method: inband
 
 cv_settings:
   cvaas:
-    - name: cvaas-oob  # Name with dash
-      vrf: use_mgmt_interface_vrf
-      fqdn: apiserver.arista.io
-    - name: cvaas_inband_1  # Name with underscore and number
-      vrf: use_inband_mgmt_vrf
-      fqdn: apiserver.cv-prod-euwest-2.arista.io
-    - name: cvaas_mgmt_intf
-      fqdn: apiserver.arista.io
-      source_interface: Loopback0
-    - name: cvaas_inband_2
-      fqdn: apiserver.cv-prod-euwest-2.arista.io
-      # No VRF, so we use default_mgmt_method by default, inband mgmt here.
+    enabled: true
+    clusters:
+      - name: cvaas-oob  # Name with dash
+        vrf: use_mgmt_interface_vrf
+        # no region - defaulting to "auto"
+      - name: cvaas_inband_1  # Name with underscore and number
+        vrf: use_inband_mgmt_vrf
+        region: euwest-2
+      - name: cvaas_mgmt_intf
+        region: auto
+        source_interface: Loopback0
+      - name: cvaas_inband_2
+        region: apnortheast-1
+        # No VRF, so we use default_mgmt_method by default, inband mgmt here.
+        source_interface: Loopback123
+        token_file: /tmp/anothercvaastoken
   onprem_clusters:
     - name: onprem-oob
       vrf: use_mgmt_interface_vrf
       servers:
-        - name: onprem_oob1
+        - name: onprem_oob_server_1
           port: 9911
-        - name: onprem_oob2
-        - name: onprem_oob3
+        - name: onprem_oob_server_2
+        - name: onprem_oob_server_3
     - name: onprem_inband
       vrf: use_inband_mgmt_vrf
       servers:
-        - name: onprem_inband_1
+        - name: onprem_inband_server_1
       token_file: /tmp/anothertoken
       source_interface: Management1/1
     - name: onprem_inband_two
       servers:
-        - name: onprem_inband_2
+        - name: onprem_inband_server_2
       # No VRF, so we use default_mgmt_method by default, inband mgmt here.
   terminattr_disable_aaa: true
   terminattr_ingestexclude: this_is_ingest_excluded
