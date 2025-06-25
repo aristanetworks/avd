@@ -4,6 +4,23 @@ config_end: true
 enable_password:
   disabled: true
 ethernet_interfaces:
+- name: Ethernet42
+  description: P2P_host2_Ethernet42
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.42.201/31
+  ospf_network_point_to_point: true
+  ospf_area: 0.0.0.0
+  ospf_authentication: message-digest
+  ospf_message_digest_keys:
+  - id: 1
+    hash_algorithm: sha512
+    key: cJ25Oy2bNyqRwTqh1A2FXmcCqBSvRAvV
+  peer: host2
+  peer_interface: Ethernet42
+  peer_type: pe
+  switchport:
+    enabled: false
 - name: Ethernet47
   shutdown: false
   ip_address: 10.10.1.1/30
@@ -128,6 +145,8 @@ router_ospf:
     passive_interface_default: true
     router_id: 192.168.255.101
     bfd_enable: false
+    no_passive_interfaces:
+    - Ethernet42
     max_lsa: 12000
 service_routing_protocols_model: multi-agent
 snmp_server:

@@ -3,6 +3,23 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
+ethernet_interfaces:
+- name: Ethernet42
+  description: P2P_host1_Ethernet42
+  shutdown: false
+  mtu: 9214
+  ip_address: 192.168.42.200/31
+  isis_enable: CORE
+  isis_metric: 50
+  isis_network_point_to_point: true
+  isis_circuit_type: level-2
+  mpls:
+    ip: true
+  peer: host1
+  peer_interface: Ethernet42
+  peer_type: l3leaf
+  switchport:
+    enabled: false
 hostname: host2
 ip_igmp_snooping:
   globally_enabled: true
