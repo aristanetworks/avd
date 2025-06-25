@@ -13965,7 +13965,7 @@ class EosDesigns(EosDesignsRootModel):
             """Subclass of AvdModel."""
 
             _fields: ClassVar[dict] = {"name": {"type": str}, "enabled": {"type": bool}, "ipv4_acl": {"type": str}, "ipv6_acl": {"type": str}}
-            name: str | None
+            name: str
             """
             VRF name.
             The value will be interpreted according to these rules:
@@ -13994,7 +13994,7 @@ class EosDesigns(EosDesignsRootModel):
                 def __init__(
                     self,
                     *,
-                    name: str | None | UndefinedType = Undefined,
+                    name: str | UndefinedType = Undefined,
                     enabled: bool | UndefinedType = Undefined,
                     ipv4_acl: str | None | UndefinedType = Undefined,
                     ipv6_acl: str | None | UndefinedType = Undefined,
@@ -14027,14 +14027,16 @@ class EosDesigns(EosDesignsRootModel):
 
                     """
 
-        class Vrfs(AvdList[VrfsItem]):
-            """Subclass of AvdList with `VrfsItem` items."""
+        class Vrfs(AvdIndexedList[str, VrfsItem]):
+            """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
+
+            _primary_key: ClassVar[str] = "name"
 
         Vrfs._item_type = VrfsItem
 
         _fields: ClassVar[dict] = {"vrfs": {"type": Vrfs}, "idle_timeout": {"type": int}}
         vrfs: Vrfs
-        """Subclass of AvdList with `VrfsItem` items."""
+        """Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`)."""
         idle_timeout: int | None
         """Idle timeout in minutes."""
 
@@ -14048,7 +14050,7 @@ class EosDesigns(EosDesignsRootModel):
                 Subclass of AvdModel.
 
                 Args:
-                    vrfs: Subclass of AvdList with `VrfsItem` items.
+                    vrfs: Subclass of AvdIndexedList with `VrfsItem` items. Primary key is `name` (`str`).
                     idle_timeout: Idle timeout in minutes.
 
                 """
