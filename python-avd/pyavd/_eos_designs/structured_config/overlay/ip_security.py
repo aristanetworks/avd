@@ -53,7 +53,7 @@ class IpSecurityMixin(Protocol):
         if data_plane_config.shared_key:
             key = data_plane_config.shared_key
         elif data_plane_config.cleartext_shared_key:
-            key = self.shared_utils.get_ipsec_key(data_plane_config.cleartext_shared_key)
+            key = self.shared_utils.get_ipsec_key(data_plane_config.cleartext_shared_key, profile_name)
         else:
             msg = "`wan_ipsec_profile.data_plane.shared_key` or `wan_ipsec_profile.data_plane.cleartext_shared_key`"
             raise AristaAvdMissingVariableError(msg)
@@ -80,7 +80,7 @@ class IpSecurityMixin(Protocol):
         if control_plane_config.shared_key:
             key = control_plane_config.shared_key
         elif control_plane_config.cleartext_shared_key:
-            key = self.shared_utils.get_ipsec_key(control_plane_config.cleartext_shared_key)
+            key = self.shared_utils.get_ipsec_key(control_plane_config.cleartext_shared_key, profile_name)
         else:
             msg = "`wan_ipsec_profile.control_plane.shared_key` or `wan_ipsec_profile.control_plane.cleartext_shared_key`"
             raise AristaAvdMissingVariableError(msg)
