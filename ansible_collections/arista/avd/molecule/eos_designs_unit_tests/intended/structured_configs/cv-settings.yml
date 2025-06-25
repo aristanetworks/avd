@@ -29,17 +29,17 @@ daemon_terminattr:
     cvvrf: INBAND_MGMT_VRF
   - name: cvaas_inband_2
     cvaddrs:
-    - apiserver.cv-prod-euwest-2.arista.io:443
+    - apiserver.cv-prod-apnortheast-1.arista.io:443
     cvauth:
       method: token-secure
-      token_file: /tmp/cv-onboarding-token
-    cvsourceintf: Vlan4092
+      token_file: /tmp/anothercvaastoken
+    cvsourceintf: Loopback123
     cvvrf: INBAND_MGMT_VRF
   - name: onprem-oob
     cvaddrs:
-    - onprem_oob1:9911
-    - onprem_oob2:9910
-    - onprem_oob3:9910
+    - onprem_oob_server_1:9911
+    - onprem_oob_server_2:9910
+    - onprem_oob_server_3:9910
     cvauth:
       method: token
       token_file: /tmp/token
@@ -47,7 +47,7 @@ daemon_terminattr:
     cvvrf: MGMT
   - name: onprem_inband
     cvaddrs:
-    - onprem_inband_1:9910
+    - onprem_inband_server_1:9910
     cvauth:
       method: token
       token_file: /tmp/anothertoken
@@ -55,7 +55,7 @@ daemon_terminattr:
     cvvrf: INBAND_MGMT_VRF
   - name: onprem_inband_two
     cvaddrs:
-    - onprem_inband_2:9910
+    - onprem_inband_server_2:9910
     cvauth:
       method: token
       token_file: /tmp/token
