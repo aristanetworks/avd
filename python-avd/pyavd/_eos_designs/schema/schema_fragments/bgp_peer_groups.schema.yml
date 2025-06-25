@@ -24,8 +24,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: false
@@ -52,8 +57,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: false
@@ -74,8 +84,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: false
@@ -96,8 +111,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: true
@@ -115,6 +135,16 @@ keys:
             type: str
             default: EVPN-OVERLAY-CORE
             description: Name of peer group.
+          password:
+            type: str
+            description: |-
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           password:
             type: str
             description: |-
@@ -140,8 +170,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: true
@@ -162,8 +197,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: true
@@ -184,8 +224,13 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
           bfd:
             type: bool
             default: true
@@ -206,9 +251,19 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
-              Type 7 encrypted password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+              it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+              This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+              If the password is not set, the static BGP peerings between Pathfinders may not come up.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
+
               When configuring a password on the `wan_overlay_peers` BGP peer group,
               it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
               This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
@@ -264,8 +319,18 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+              BGP peer group Type 7 password.
+              Takes precedence over `cleartext_password`.
+
+              When configuring a password on the `wan_overlay_peers` BGP peer group,
+              it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+              This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+              If the password is not set, the static BGP peerings between Pathfinders may not come up.
+          cleartext_password:
+            type: str
+            description: |-
+              BGP peer group cleartext password.
+              To protect the password at rest it is strongly recommended to make use of a vault or similar.
 
               When configuring a password on the `wan_overlay_peers` BGP peer group,
               it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.

@@ -102,8 +102,13 @@ $defs:
               password:
                 type: str
                 description: |-
-                  BGP Peer group password.
-                  Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                  Type 7 encrypted password.
+                  Takes precedence over `cleartext_password`.
+              cleartext_password:
+                type: str
+                description: |-
+                  BGP peer group cleartext password.
+                  To protect the password at rest it is strongly recommended to make use of a vault or similar.
               nodes:
                 type: list
                 items:
@@ -1179,8 +1184,13 @@ $defs:
                     password:
                       type: str
                       description: |-
-                        BGP Peer password.
-                        Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     send_community:
                       type: str
                       description: |
@@ -1324,8 +1334,13 @@ $defs:
                     password:
                       type: str
                       description: |-
-                        BGP Peer group password.
-                        Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                    cleartext_password:
+                      type: str
+                      description: |-
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to make use of a vault or similar.
                     address_family_ipv4:
                       type: dict
                       keys:

@@ -129,6 +129,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "IPv4-UNDERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -140,9 +141,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `False`"""
@@ -156,6 +162,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -168,9 +175,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -182,6 +192,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -189,9 +200,14 @@ class EosDesigns(EosDesignsRootModel):
             """Name of peer group."""
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `False`"""
@@ -205,6 +221,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -217,9 +234,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -231,6 +251,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "MLAG-IPv4-UNDERLAY-PEER"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": False},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -242,9 +263,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `False`"""
@@ -258,6 +284,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -270,9 +297,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -284,6 +314,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "EVPN-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -295,9 +326,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `True`"""
@@ -311,6 +347,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -323,9 +360,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -337,6 +377,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "EVPN-OVERLAY-CORE"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -352,6 +393,12 @@ class EosDesigns(EosDesignsRootModel):
             Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
             a type 7 password.
             """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+            """
             bfd: bool
             """Default value: `True`"""
             structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem
@@ -364,6 +411,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -379,6 +427,10 @@ class EosDesigns(EosDesignsRootModel):
                            BGP peer group password.
                            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
                            a type 7 password.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -390,6 +442,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "MPLS-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -401,9 +454,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `True`"""
@@ -417,6 +475,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -429,9 +488,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -443,6 +505,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "RR-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -454,9 +517,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `True`"""
@@ -470,6 +538,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -482,9 +551,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -496,6 +568,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "IPVPN-GATEWAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "structured_config": {"type": EosCliConfigGen.RouterBgp.PeerGroupsItem},
             }
@@ -507,9 +580,14 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
             """
             bfd: bool
             """Default value: `True`"""
@@ -523,6 +601,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     structured_config: EosCliConfigGen.RouterBgp.PeerGroupsItem | UndefinedType = Undefined,
                 ) -> None:
@@ -535,9 +614,12 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
                         bfd: bfd
                         structured_config: Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
 
@@ -595,6 +677,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "WAN-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "bfd_timers": {"type": BfdTimers},
                 "listen_range_prefixes": {"type": ListenRangePrefixes},
@@ -609,18 +692,31 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
-            Type 7 encrypted password.
-            When configuring a password on the `wan_overlay_peers`
-            BGP peer group,
-            it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer
-            group.
-            This is required in the case where one or more pathfinders use the same VTEP IP range as the
-            edge routers.
-            If the password is not set, the static BGP peerings between Pathfinders may not come
-            up.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
+
+            When configuring a
+            password on the `wan_overlay_peers` BGP peer group,
+            it may also be required to set a password for
+            the `wan_rr_overlay_peers` BGP peer group.
+            This is required in the case where one or more
+            pathfinders use the same VTEP IP range as the edge routers.
+            If the password is not set, the static
+            BGP peerings between Pathfinders may not come up.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+
+            When configuring a password on the `wan_overlay_peers` BGP peer
+            group,
+            it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+            This
+            is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+            routers.
+            If the password is not set, the static BGP peerings between Pathfinders may not come up.
             """
             bfd: bool
             """Default value: `True`"""
@@ -655,6 +751,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
                     listen_range_prefixes: ListenRangePrefixes | UndefinedType = Undefined,
@@ -670,18 +767,29 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
-                           Type 7 encrypted password.
-                           When configuring a password on the `wan_overlay_peers`
-                           BGP peer group,
-                           it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer
-                           group.
-                           This is required in the case where one or more pathfinders use the same VTEP IP range as the
-                           edge routers.
-                           If the password is not set, the static BGP peerings between Pathfinders may not come
-                           up.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
+
+                           When configuring a
+                           password on the `wan_overlay_peers` BGP peer group,
+                           it may also be required to set a password for
+                           the `wan_rr_overlay_peers` BGP peer group.
+                           This is required in the case where one or more
+                           pathfinders use the same VTEP IP range as the edge routers.
+                           If the password is not set, the static
+                           BGP peerings between Pathfinders may not come up.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
+
+                           When configuring a password on the `wan_overlay_peers` BGP peer
+                           group,
+                           it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+                           This
+                           is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+                           routers.
+                           If the password is not set, the static BGP peerings between Pathfinders may not come up.
                         bfd: bfd
                         bfd_timers:
                            Specify the BFD timers to override the default values.
@@ -750,6 +858,7 @@ class EosDesigns(EosDesignsRootModel):
             _fields: ClassVar[dict] = {
                 "name": {"type": str, "default": "WAN-RR-OVERLAY-PEERS"},
                 "password": {"type": str},
+                "cleartext_password": {"type": str},
                 "bfd": {"type": bool, "default": True},
                 "bfd_timers": {"type": BfdTimers},
                 "ttl_maximum_hops": {"type": int, "default": 1},
@@ -763,17 +872,31 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
 
-            When configuring a password on the `wan_overlay_peers` BGP peer group,
-            it may
-            also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
-            This is required
-            in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
-            If the
-            password is not set, the static BGP peerings between Pathfinders may not come up.
+            When configuring a
+            password on the `wan_overlay_peers` BGP peer group,
+            it may also be required to set a password for
+            the `wan_rr_overlay_peers` BGP peer group.
+            This is required in the case where one or more
+            pathfinders use the same VTEP IP range as the edge routers.
+            If the password is not set, the static
+            BGP peerings between Pathfinders may not come up.
+            """
+            cleartext_password: str | None
+            """
+            BGP peer group cleartext password.
+            To protect the password at rest it is strongly recommended to
+            make use of a vault or similar.
+
+            When configuring a password on the `wan_overlay_peers` BGP peer
+            group,
+            it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+            This
+            is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+            routers.
+            If the password is not set, the static BGP peerings between Pathfinders may not come up.
             """
             bfd: bool
             """Default value: `True`"""
@@ -799,6 +922,7 @@ class EosDesigns(EosDesignsRootModel):
                     *,
                     name: str | UndefinedType = Undefined,
                     password: str | None | UndefinedType = Undefined,
+                    cleartext_password: str | None | UndefinedType = Undefined,
                     bfd: bool | UndefinedType = Undefined,
                     bfd_timers: BfdTimers | UndefinedType = Undefined,
                     ttl_maximum_hops: int | UndefinedType = Undefined,
@@ -813,17 +937,29 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
 
-                           When configuring a password on the `wan_overlay_peers` BGP peer group,
-                           it may
-                           also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
-                           This is required
-                           in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
-                           If the
-                           password is not set, the static BGP peerings between Pathfinders may not come up.
+                           When configuring a
+                           password on the `wan_overlay_peers` BGP peer group,
+                           it may also be required to set a password for
+                           the `wan_rr_overlay_peers` BGP peer group.
+                           This is required in the case where one or more
+                           pathfinders use the same VTEP IP range as the edge routers.
+                           If the password is not set, the static
+                           BGP peerings between Pathfinders may not come up.
+                        cleartext_password:
+                           BGP peer group cleartext password.
+                           To protect the password at rest it is strongly recommended to
+                           make use of a vault or similar.
+
+                           When configuring a password on the `wan_overlay_peers` BGP peer
+                           group,
+                           it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+                           This
+                           is required in the case where one or more pathfinders use the same VTEP IP range as the edge
+                           routers.
+                           If the password is not set, the static BGP peerings between Pathfinders may not come up.
                         bfd: bfd
                         bfd_timers:
                            Specify the BFD timers to override the default values.
@@ -38128,6 +38264,7 @@ class EosDesigns(EosDesignsRootModel):
                     _fields: ClassVar[dict] = {
                         "name": {"type": str},
                         "password": {"type": str},
+                        "cleartext_password": {"type": str},
                         "nodes": {"type": Nodes},
                         "address_family_ipv4": {"type": AddressFamilyIpv4},
                         "address_family_ipv6": {"type": AddressFamilyIpv6},
@@ -38169,9 +38306,14 @@ class EosDesigns(EosDesignsRootModel):
                     """BGP peer group name."""
                     password: str | None
                     """
-                    BGP Peer group password.
-                    Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                    a type 7 password.
+                    Type 7 encrypted password.
+                    Takes precedence over `cleartext_password`.
+                    """
+                    cleartext_password: str | None
+                    """
+                    BGP peer group cleartext password.
+                    To protect the password at rest it is strongly recommended to
+                    make use of a vault or similar.
                     """
                     nodes: Nodes
                     """
@@ -38281,6 +38423,7 @@ class EosDesigns(EosDesignsRootModel):
                             *,
                             name: str | UndefinedType = Undefined,
                             password: str | None | UndefinedType = Undefined,
+                            cleartext_password: str | None | UndefinedType = Undefined,
                             nodes: Nodes | UndefinedType = Undefined,
                             address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                             address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
@@ -38327,9 +38470,12 @@ class EosDesigns(EosDesignsRootModel):
                             Args:
                                 name: BGP peer group name.
                                 password:
-                                   BGP Peer group password.
-                                   Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                                   a type 7 password.
+                                   Type 7 encrypted password.
+                                   Takes precedence over `cleartext_password`.
+                                cleartext_password:
+                                   BGP peer group cleartext password.
+                                   To protect the password at rest it is strongly recommended to
+                                   make use of a vault or similar.
                                 nodes:
                                    Nodes is required to restrict configuration of BGP neighbors to certain nodes in the network.
                                    If not
@@ -42014,6 +42160,7 @@ class EosDesigns(EosDesignsRootModel):
                             "remote_as": {"type": str},
                             "description": {"type": str},
                             "password": {"type": str},
+                            "cleartext_password": {"type": str},
                             "send_community": {"type": str},
                             "next_hop_self": {"type": bool},
                             "timers": {"type": str},
@@ -42049,9 +42196,14 @@ class EosDesigns(EosDesignsRootModel):
                         description: str | None
                         password: str | None
                         """
-                        BGP Peer password.
-                        Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type
-                        7 password.
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                        """
+                        cleartext_password: str | None
+                        """
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to
+                        make use of a vault or similar.
                         """
                         send_community: str | None
                         """'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'."""
@@ -42124,6 +42276,7 @@ class EosDesigns(EosDesignsRootModel):
                                 remote_as: str | None | UndefinedType = Undefined,
                                 description: str | None | UndefinedType = Undefined,
                                 password: str | None | UndefinedType = Undefined,
+                                cleartext_password: str | None | UndefinedType = Undefined,
                                 send_community: str | None | UndefinedType = Undefined,
                                 next_hop_self: bool | None | UndefinedType = Undefined,
                                 timers: str | None | UndefinedType = Undefined,
@@ -42161,9 +42314,12 @@ class EosDesigns(EosDesignsRootModel):
                                        number.
                                     description: description
                                     password:
-                                       BGP Peer password.
-                                       Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type
-                                       7 password.
+                                       Type 7 encrypted password.
+                                       Takes precedence over `cleartext_password`.
+                                    cleartext_password:
+                                       BGP peer group cleartext password.
+                                       To protect the password at rest it is strongly recommended to
+                                       make use of a vault or similar.
                                     send_community: 'all' or a combination of 'standard', 'extended', 'large' and 'link-bandwidth (w/options)'.
                                     next_hop_self: next_hop_self
                                     timers: BGP Keepalive and Hold Timer values in seconds as string <0-3600> <0-3600>.
@@ -42815,6 +42971,7 @@ class EosDesigns(EosDesignsRootModel):
                             "name": {"type": str},
                             "nodes": {"type": Nodes},
                             "password": {"type": str},
+                            "cleartext_password": {"type": str},
                             "address_family_ipv4": {"type": AddressFamilyIpv4},
                             "address_family_ipv6": {"type": AddressFamilyIpv6},
                             "type": {"type": str},
@@ -42865,9 +43022,14 @@ class EosDesigns(EosDesignsRootModel):
                         """
                         password: str | None
                         """
-                        BGP Peer group password.
-                        Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                        a type 7 password.
+                        Type 7 encrypted password.
+                        Takes precedence over `cleartext_password`.
+                        """
+                        cleartext_password: str | None
+                        """
+                        BGP peer group cleartext password.
+                        To protect the password at rest it is strongly recommended to
+                        make use of a vault or similar.
                         """
                         address_family_ipv4: AddressFamilyIpv4
                         """Subclass of AvdModel."""
@@ -42968,6 +43130,7 @@ class EosDesigns(EosDesignsRootModel):
                                 name: str | UndefinedType = Undefined,
                                 nodes: Nodes | UndefinedType = Undefined,
                                 password: str | None | UndefinedType = Undefined,
+                                cleartext_password: str | None | UndefinedType = Undefined,
                                 address_family_ipv4: AddressFamilyIpv4 | UndefinedType = Undefined,
                                 address_family_ipv6: AddressFamilyIpv6 | UndefinedType = Undefined,
                                 type: str | None | UndefinedType = Undefined,
@@ -43021,9 +43184,12 @@ class EosDesigns(EosDesignsRootModel):
 
                                        Subclass of AvdList with `str` items.
                                     password:
-                                       BGP Peer group password.
-                                       Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                                       a type 7 password.
+                                       Type 7 encrypted password.
+                                       Takes precedence over `cleartext_password`.
+                                    cleartext_password:
+                                       BGP peer group cleartext password.
+                                       To protect the password at rest it is strongly recommended to
+                                       make use of a vault or similar.
                                     address_family_ipv4: Subclass of AvdModel.
                                     address_family_ipv6: Subclass of AvdModel.
                                     type: Key only used for documentation or validation purposes.
