@@ -10359,6 +10359,8 @@ class EosDesigns(EosDesignsRootModel):
             Support for PVLAN feature.
             On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
             set this via "private_vlan" in the specific platform settings.
+            See the TOI at
+            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
             Default value: `True`
             """
@@ -10419,6 +10421,8 @@ class EosDesigns(EosDesignsRootModel):
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
                            set this via "private_vlan" in the specific platform settings.
+                           See the TOI at
+                           https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
                     """
 
@@ -10704,6 +10708,8 @@ class EosDesigns(EosDesignsRootModel):
             Support for PVLAN feature.
             On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
             set this via "private_vlan" in the specific platform settings.
+            See the TOI at
+            https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
             Default value: `True`
             """
@@ -10764,6 +10770,8 @@ class EosDesigns(EosDesignsRootModel):
                            Support for PVLAN feature.
                            On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3
                            set this via "private_vlan" in the specific platform settings.
+                           See the TOI at
+                           https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
 
                     """
 
@@ -43732,6 +43740,31 @@ class EosDesigns(EosDesignsRootModel):
 
                                 """
 
+                    class PrivateVlan(AvdModel):
+                        """Subclass of AvdModel."""
+
+                        _fields: ClassVar[dict] = {"type": {"type": str}, "primary_vlan": {"type": int}}
+                        type: Literal["community", "isolated"]
+                        primary_vlan: int
+                        """Primary VLAN ID."""
+
+                        if TYPE_CHECKING:
+
+                            def __init__(
+                                self, *, type: Literal["community", "isolated"] | UndefinedType = Undefined, primary_vlan: int | UndefinedType = Undefined
+                            ) -> None:
+                                """
+                                PrivateVlan.
+
+
+                                Subclass of AvdModel.
+
+                                Args:
+                                    type: type
+                                    primary_vlan: Primary VLAN ID.
+
+                                """
+
                     _fields: ClassVar[dict] = {
                         "id": {"type": int},
                         "vni_override": {"type": int},
@@ -43748,7 +43781,7 @@ class EosDesigns(EosDesignsRootModel):
                         "igmp_snooping_enabled": {"type": bool},
                         "igmp_snooping_querier": {"type": IgmpSnoopingQuerier},
                         "bgp": {"type": Bgp},
-                        "private_vlan": {"type": EosCliConfigGen.VlansItem.PrivateVlan},
+                        "private_vlan": {"type": PrivateVlan},
                     }
                     id: int
                     """VLAN ID."""
@@ -43850,7 +43883,8 @@ class EosDesigns(EosDesignsRootModel):
                     """
                     bgp: Bgp
                     """Subclass of AvdModel."""
-                    private_vlan: EosCliConfigGen.VlansItem.PrivateVlan
+                    private_vlan: PrivateVlan
+                    """Subclass of AvdModel."""
 
                     if TYPE_CHECKING:
 
@@ -43872,7 +43906,7 @@ class EosDesigns(EosDesignsRootModel):
                             igmp_snooping_enabled: bool | None | UndefinedType = Undefined,
                             igmp_snooping_querier: IgmpSnoopingQuerier | UndefinedType = Undefined,
                             bgp: Bgp | UndefinedType = Undefined,
-                            private_vlan: EosCliConfigGen.VlansItem.PrivateVlan | UndefinedType = Undefined,
+                            private_vlan: PrivateVlan | UndefinedType = Undefined,
                         ) -> None:
                             """
                             L2vlansItem.
@@ -43951,7 +43985,7 @@ class EosDesigns(EosDesignsRootModel):
 
                                    Subclass of AvdModel.
                                 bgp: Subclass of AvdModel.
-                                private_vlan: private_vlan
+                                private_vlan: Subclass of AvdModel.
 
                             """
 

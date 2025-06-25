@@ -27,6 +27,8 @@ tenants:
         private_vlan:
           type: community
           primary_vlan: 10
+  - name: TENANT2
+    mac_vrf_vni_base: 10001
     vrfs:
       - name: TEST_VRF
         vrf_vni: 789654

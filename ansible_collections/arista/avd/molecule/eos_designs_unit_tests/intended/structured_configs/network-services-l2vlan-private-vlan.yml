@@ -71,14 +71,6 @@ router_bgp:
       enabled: true
       route_map: RM-CONN-2-BGP
   vlans:
-  - id: 2
-    tenant: TENANT1
-    rd: 192.168.255.109:10002
-    route_targets:
-      both:
-      - 10002:10002
-    redistribute_routes:
-    - learned
   - id: 10
     tenant: TENANT1
     rd: 192.168.255.109:10010
@@ -101,6 +93,14 @@ router_bgp:
     route_targets:
       both:
       - 10090:10090
+    redistribute_routes:
+    - learned
+  - id: 2
+    tenant: TENANT2
+    rd: 192.168.255.109:10003
+    route_targets:
+      both:
+      - 10003:10003
     redistribute_routes:
     - learned
   address_family_evpn:
@@ -137,16 +137,13 @@ vlan_interfaces:
   shutdown: false
   vrf: TEST_VRF
   ip_address_virtual: 10.1.40.1/24
-  tenant: TENANT1
+  tenant: TENANT2
 vlan_internal_order:
   allocation: ascending
   range:
     beginning: 1006
     ending: 1199
 vlans:
-- id: 2
-  name: primary2
-  tenant: TENANT1
 - id: 10
   name: primary1
   tenant: TENANT1
@@ -162,12 +159,15 @@ vlans:
     type: community
     primary_vlan: 10
   tenant: TENANT1
+- id: 2
+  name: primary2
+  tenant: TENANT2
 vrfs:
 - name: MGMT
   ip_routing: false
 - name: TEST_VRF
   ip_routing: true
-  tenant: TENANT1
+  tenant: TENANT2
 vxlan_interface:
   vxlan1:
     description: network-services-l2vlan-private-vlan_VTEP
@@ -175,14 +175,14 @@ vxlan_interface:
       source_interface: Loopback1
       udp_port: 4789
       vlans:
-      - id: 2
-        vni: 10002
       - id: 10
         vni: 10010
       - id: 90
         vni: 10090
       - id: 100
         vni: 10100
+      - id: 2
+        vni: 10003
       vrfs:
       - name: TEST_VRF
         vni: 789654

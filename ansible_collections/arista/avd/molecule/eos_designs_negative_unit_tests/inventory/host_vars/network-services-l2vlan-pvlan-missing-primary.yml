@@ -24,4 +24,4 @@ tenants:
           primary_vlan: 2
 
 expected_error_message: >-
-  The primary VLAN '2' is referenced in a private_vlan definition, but does not exist. The primary VLAN must be defined as 'l2vlan' or 'svi'.
+  There are one or more primary VLANs referenced in a private_vlan definition, which do not exist. The primary VLANs must be defined as 'l2vlan' or 'svi'.
