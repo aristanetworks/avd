@@ -3,7 +3,7 @@ aaa_root:
 config_end: true
 enable_password:
   disabled: true
-hostname: host_inline_jinja
+hostname: host_ansible_only
 ip_igmp_snooping:
   globally_enabled: true
 ip_routing: true
@@ -98,7 +98,7 @@ vrfs:
   ip_routing: false
 vxlan_interface:
   vxlan1:
-    description: host_inline_jinja_VTEP
+    description: host_ansible_only_VTEP
     vxlan:
       source_interface: Loopback1
       udp_port: 4789

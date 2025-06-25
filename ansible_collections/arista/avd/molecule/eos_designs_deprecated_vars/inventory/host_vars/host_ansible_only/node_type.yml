@@ -11,9 +11,9 @@ l3leaf:
       id: 101
       bgp_as: 101
   node_groups:
-    - group: inline-jinja-group
+    - group: this-group
       bgp_as: 65105
       nodes:
-        - name: host_inline_jinja
+        - name: host_ansible_only
           id: 6
           mgmt_ip: 192.168.0.104/24
