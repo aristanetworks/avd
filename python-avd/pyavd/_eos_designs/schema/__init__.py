@@ -2727,8 +2727,8 @@ class EosDesigns(EosDesignsRootModel):
                 region: Literal[
                     "auto",
                     "us-central1-a",
-                    "us-central1-c",
                     "us-central1-b",
+                    "us-central1-c",
                     "apnortheast-1",
                     "euwest-2",
                     "ausoutheast-1",
@@ -2790,8 +2790,8 @@ class EosDesigns(EosDesignsRootModel):
                         region: Literal[
                             "auto",
                             "us-central1-a",
-                            "us-central1-c",
                             "us-central1-b",
+                            "us-central1-c",
                             "apnortheast-1",
                             "euwest-2",
                             "ausoutheast-1",
