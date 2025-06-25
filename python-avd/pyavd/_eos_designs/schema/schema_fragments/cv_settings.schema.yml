@@ -47,11 +47,13 @@ keys:
                     - auto
                     - us-central1-a
                     - us-central1-c
+                    - us-central1-b
                     - apnortheast-1
                     - euwest-2
                     - ausoutheast-1
                     - na-northeast1-b
                     - uk-1
+                    - india-1
                     - staging
                     - dev
                     - play

@@ -2725,7 +2725,19 @@ class EosDesigns(EosDesignsRootModel):
                 name: str
                 """Short name for the CVaaS cluster. Required here, but only used when configuring multiple clusters."""
                 region: Literal[
-                    "auto", "us-central1-a", "us-central1-c", "apnortheast-1", "euwest-2", "ausoutheast-1", "na-northeast1-b", "uk-1", "staging", "dev", "play"
+                    "auto",
+                    "us-central1-a",
+                    "us-central1-c",
+                    "us-central1-b",
+                    "apnortheast-1",
+                    "euwest-2",
+                    "ausoutheast-1",
+                    "na-northeast1-b",
+                    "uk-1",
+                    "india-1",
+                    "staging",
+                    "dev",
+                    "play",
                 ]
                 """
                 Optionally set the region to stream to.
@@ -2779,11 +2791,13 @@ class EosDesigns(EosDesignsRootModel):
                             "auto",
                             "us-central1-a",
                             "us-central1-c",
+                            "us-central1-b",
                             "apnortheast-1",
                             "euwest-2",
                             "ausoutheast-1",
                             "na-northeast1-b",
                             "uk-1",
+                            "india-1",
                             "staging",
                             "dev",
                             "play",
