@@ -145,11 +145,6 @@ keys:
             description: |-
               BGP peer group cleartext password.
               To protect the password at rest it is strongly recommended to make use of a vault or similar.
-          password:
-            type: str
-            description: |-
-              BGP peer group password.
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise expect a type 7 password.
           bfd:
             type: bool
             default: true

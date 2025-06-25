@@ -368,10 +368,9 @@ keys:
             description: Name of peer group.
           password:
             type: str
-            description: 'BGP peer group password.
+            description: 'BGP peer group Type 7 password.
 
-              Expect a cleartext password if `encrypt_passwords: true`, otherwise
-              expect a type 7 password.'
+              Takes precedence over `cleartext_password`.'
           cleartext_password:
             type: str
             description: 'BGP peer group cleartext password.

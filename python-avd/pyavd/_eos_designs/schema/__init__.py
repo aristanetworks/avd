@@ -389,9 +389,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             password: str | None
             """
-            BGP peer group password.
-            Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-            a type 7 password.
+            BGP peer group Type 7 password.
+            Takes precedence over `cleartext_password`.
             """
             cleartext_password: str | None
             """
@@ -424,9 +423,8 @@ class EosDesigns(EosDesignsRootModel):
                     Args:
                         name: Name of peer group.
                         password:
-                           BGP peer group password.
-                           Expect a cleartext password if `encrypt_passwords: true`, otherwise expect
-                           a type 7 password.
+                           BGP peer group Type 7 password.
+                           Takes precedence over `cleartext_password`.
                         cleartext_password:
                            BGP peer group cleartext password.
                            To protect the password at rest it is strongly recommended to
