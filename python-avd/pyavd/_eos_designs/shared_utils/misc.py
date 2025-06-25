@@ -11,6 +11,7 @@ from pyavd._eos_designs.eos_designs_facts.schema import EosDesignsFacts
 from pyavd._eos_designs.schema import EosDesigns
 from pyavd._errors import AristaAvdError, AristaAvdInvalidInputsError, AristaAvdMissingVariableError
 from pyavd._utils import default, get
+from pyavd._utils.password_utils.password import simple_7_encrypt
 from pyavd.api.interface_descriptions import InterfaceDescriptionData
 from pyavd.api.pool_manager import PoolManager
 from pyavd.j2filters import range_expand
@@ -416,3 +417,12 @@ class MiscMixin(Protocol):
                 all_connected_endpoints.append(connected_endpoint)
 
         return all_connected_endpoints
+
+    def get_ipsec_key(self: SharedUtilsProtocol, stuff: str) -> str:
+        """
+        Return a type 7 encrypted shared key for IPsec.
+
+        Args:
+            stuff: dasdas
+        """
+        return simple_7_encrypt(stuff)

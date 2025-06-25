@@ -15984,6 +15984,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sa_policy_name": {"type": str, "default": "CP-SA-POLICY"},
                 "profile_name": {"type": str, "default": "CP-PROFILE"},
                 "shared_key": {"type": str},
+                "cleartext_shared_key": {"type": str},
             }
             ike_policy_name: str
             """
@@ -16003,9 +16004,16 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"CP-PROFILE"`
             """
-            shared_key: str
+            shared_key: str | None
             """
-            The IPSec shared key.
+            Type 7 IPSec shared key.
+            Takes precedence over `cleartext_shared_key`.
+            This variable is sensitive
+            and SHOULD be configured using some vault mechanism.
+            """
+            cleartext_shared_key: str | None
+            """
+            Cleartext IPSec shared key.
             This variable is sensitive and SHOULD be configured using some vault
             mechanism.
             """
@@ -16018,7 +16026,8 @@ class EosDesigns(EosDesignsRootModel):
                     ike_policy_name: str | UndefinedType = Undefined,
                     sa_policy_name: str | UndefinedType = Undefined,
                     profile_name: str | UndefinedType = Undefined,
-                    shared_key: str | UndefinedType = Undefined,
+                    shared_key: str | None | UndefinedType = Undefined,
+                    cleartext_shared_key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     ControlPlane.
@@ -16031,7 +16040,12 @@ class EosDesigns(EosDesignsRootModel):
                         sa_policy_name: Name of the SA policy.
                         profile_name: Name of the IPSec profile.
                         shared_key:
-                           The IPSec shared key.
+                           Type 7 IPSec shared key.
+                           Takes precedence over `cleartext_shared_key`.
+                           This variable is sensitive
+                           and SHOULD be configured using some vault mechanism.
+                        cleartext_shared_key:
+                           Cleartext IPSec shared key.
                            This variable is sensitive and SHOULD be configured using some vault
                            mechanism.
 
@@ -16045,6 +16059,7 @@ class EosDesigns(EosDesignsRootModel):
                 "sa_policy_name": {"type": str, "default": "DP-SA-POLICY"},
                 "profile_name": {"type": str, "default": "DP-PROFILE"},
                 "shared_key": {"type": str},
+                "cleartext_shared_key": {"type": str},
             }
             ike_policy_name: str
             """
@@ -16064,11 +16079,18 @@ class EosDesigns(EosDesignsRootModel):
 
             Default value: `"DP-PROFILE"`
             """
-            shared_key: str
+            shared_key: str | None
             """
-            The type 7 encrypted IPSec shared key.
-            This variable is sensitive and should be configured using
-            some vault mechanism.
+            Type 7 IPSec shared key.
+            Takes precedence over `cleartext_shared_key`.
+            This variable is sensitive
+            and SHOULD be configured using some vault mechanism.
+            """
+            cleartext_shared_key: str | None
+            """
+            Cleartext IPSec shared key.
+            This variable is sensitive and SHOULD be configured using some vault
+            mechanism.
             """
 
             if TYPE_CHECKING:
@@ -16079,7 +16101,8 @@ class EosDesigns(EosDesignsRootModel):
                     ike_policy_name: str | UndefinedType = Undefined,
                     sa_policy_name: str | UndefinedType = Undefined,
                     profile_name: str | UndefinedType = Undefined,
-                    shared_key: str | UndefinedType = Undefined,
+                    shared_key: str | None | UndefinedType = Undefined,
+                    cleartext_shared_key: str | None | UndefinedType = Undefined,
                 ) -> None:
                     """
                     DataPlane.
@@ -16092,9 +16115,14 @@ class EosDesigns(EosDesignsRootModel):
                         sa_policy_name: Name of the SA policy.
                         profile_name: Name of the IPSec profile.
                         shared_key:
-                           The type 7 encrypted IPSec shared key.
-                           This variable is sensitive and should be configured using
-                           some vault mechanism.
+                           Type 7 IPSec shared key.
+                           Takes precedence over `cleartext_shared_key`.
+                           This variable is sensitive
+                           and SHOULD be configured using some vault mechanism.
+                        cleartext_shared_key:
+                           Cleartext IPSec shared key.
+                           This variable is sensitive and SHOULD be configured using some vault
+                           mechanism.
 
                     """
 
