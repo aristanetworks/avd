@@ -2160,7 +2160,7 @@
           rcf: <str>
       # This key is deprecated.
       # Support will be removed in AVD version 6.0.0.
-      # Use <samp>redistribute</samp> instead.
+      # Use `redistribute` instead.
       redistribute_routes:
         - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
           route_map: <str>
@@ -2448,7 +2448,7 @@
         # BGP additional-paths commands.
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>bgp.additional_paths</samp> instead.
+        # Use `bgp.additional_paths` instead.
         bgp_additional_paths:
 
           # Receive multiple paths.
@@ -2750,7 +2750,7 @@
             rcf: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>redistribute</samp> instead.
+        # Use `redistribute` instead.
         redistribute_routes:
           - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
             route_map: <str>
@@ -3131,7 +3131,7 @@
             route_map: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>redistribute</samp> instead.
+        # Use `redistribute` instead.
         redistribute_routes:
           - source_protocol: <str; required>
             route_map: <str>
@@ -3386,7 +3386,7 @@
             rcf: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>redistribute</samp> instead.
+        # Use `redistribute` instead.
         redistribute_routes:
           - source_protocol: <str; required>
             route_map: <str>
@@ -3502,7 +3502,7 @@
             route_map: <str>
         # This key is deprecated.
         # Support will be removed in AVD version 6.0.0.
-        # Use <samp>redistribute</samp> instead.
+        # Use `redistribute` instead.
         redistribute_routes:
           - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
 
@@ -4154,7 +4154,7 @@
               rcf: <str>
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>redistribute</samp> instead.
+          # Use `redistribute` instead.
           redistribute_routes:
             - source_protocol: <str; required>
               route_map: <str>
@@ -4389,7 +4389,7 @@
                 rcf: <str>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>redistribute</samp> instead.
+            # Use `redistribute` instead.
             redistribute_routes:
               - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dynamic" | "isis" | "ospf" | "ospfv3" | "rip" | "static" | "user"; required>
                 route_map: <str>
@@ -4576,7 +4576,7 @@
                 rcf: <str>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>redistribute</samp> instead.
+            # Use `redistribute` instead.
             redistribute_routes:
               - source_protocol: <str; "attached-host" | "bgp" | "connected" | "dhcp" | "dynamic" | "isis" | "ospfv3" | "static" | "user"; required>
                 route_map: <str>
@@ -4700,7 +4700,7 @@
                 route_map: <str>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>redistribute</samp> instead.
+            # Use `redistribute` instead.
             redistribute_routes:
               - source_protocol: <str; "attached-host" | "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
                 route_map: <str>
@@ -4811,7 +4811,7 @@
                 route_map: <str>
             # This key is deprecated.
             # Support will be removed in AVD version 6.0.0.
-            # Use <samp>redistribute</samp> instead.
+            # Use `redistribute` instead.
             redistribute_routes:
               - source_protocol: <str; "connected" | "isis" | "ospf" | "ospfv3" | "static"; required>
                 route_map: <str>

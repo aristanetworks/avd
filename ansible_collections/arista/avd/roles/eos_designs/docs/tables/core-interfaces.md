@@ -244,7 +244,7 @@
           # Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>underlay_multicast_pim_sm</samp> instead.
+          # Use `underlay_multicast_pim_sm` instead.
           underlay_multicast: <bool; default=False>
 
           # Configure PIM sparse-mode on specific P2P uplink interfaces.
@@ -421,7 +421,7 @@
           # Enable PIM sparse mode. Requires `include_in_underlay_protocol` and the global `underlay_multicast` to be `true`.
           # This key is deprecated.
           # Support will be removed in AVD version 6.0.0.
-          # Use <samp>underlay_multicast_pim_sm</samp> instead.
+          # Use `underlay_multicast_pim_sm` instead.
           underlay_multicast: <bool; default=False>
 
           # Configure PIM sparse-mode on specific P2P uplink interfaces.

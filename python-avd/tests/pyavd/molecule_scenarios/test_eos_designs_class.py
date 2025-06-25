@@ -77,6 +77,7 @@ def test_eos_designs_custom_structured_configuration(prefix: str | None, expecte
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
 )
 def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test EosDesigns model with valid data."""
@@ -110,6 +111,7 @@ def test_eos_designs_initialize_kwargs_with_valid_data(molecule_host: MoleculeHo
     "example-isis-ldp-ipvpn",
     "example-l2ls-fabric",
     "example-single-dc-l3ls",
+    "example-single-dc-l3ls-ipv6",
 )
 def test_eos_designs_initialize_dict_with_valid_data(molecule_host: MoleculeHost) -> None:
     """Test EosDesigns model with valid data."""

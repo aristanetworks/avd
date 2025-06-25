@@ -1,0 +1,15 @@
+---
+# This tests the VRFs and SNMP hosts only using oob management VRF.
+snmp_settings:
+  # Deprecated. To be removed in 6.0.0
+  enable_inband_mgmt_vrf: true # This one should not be in the output, since this host has no inband mgmt
+  # Deprecated. To be removed in 6.0.0
+  enable_mgmt_interface_vrf: true # This one *should* be in the output, since this host *has* oob mgmt
+  hosts:
+    - host: 10.6.75.127
+      # Deprecated. To be removed in 6.0.0
+      use_inband_mgmt_vrf: true # This one should not be in the output, since this host has no inband mgmt
+      # Deprecated. To be removed in 6.0.0
+      use_mgmt_interface_vrf: true # This one *should* be in the output, since this host *has* oob mgmt
+      version: 2c
+      community: SNMP-COMMUNITY-2

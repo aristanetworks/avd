@@ -115,6 +115,9 @@
   - [Spanning Tree Summary](#spanning-tree-summary)
   - [Spanning Tree Device Configuration](#spanning-tree-device-configuration)
   - [Synchronous Ethernet (SyncE) Settings](#synchronous-ethernet-synce-settings)
+- [Port-Channel](#port-channel)
+  - [Port-Channel Summary](#port-channel-summary)
+  - [Port-channel Device Configuration](#port-channel-device-configuration)
 - [Internal VLAN Allocation Policy](#internal-vlan-allocation-policy)
   - [Internal VLAN Allocation Policy Summary](#internal-vlan-allocation-policy-summary)
   - [Internal VLAN Allocation Policy Device Configuration](#internal-vlan-allocation-policy-device-configuration)
@@ -3490,6 +3493,39 @@ sync-e
    network option 2
 ```
 
+## Port-Channel
+
+### Port-Channel Summary
+
+#### Port-channel Load-balance Trident UDF Eth-type Headers
+
+| Eth-Type | IP Protocol | Header | Offset | Mask |
+| -------- | ----------- | ------ | ------ | ---- |
+| IPv4 | GRE | inner l3 | 30 | 0x01 |
+| IPv4 | - | inner l3 | 10 | 0xff |
+| IPv4 | - | inner l4 | 2 | - |
+| IPv4 | 10 | inner l4 | 20 | 0x02 |
+| IPv4 | SCTP | outer l2 | 39 | - |
+| IPv6 | - | outer l3 | 30 | 0x01 |
+| IPv6 | - | inner l3 | 20 | - |
+| IPv6 | TCP | outer l4 | 20 | - |
+| IPv6 | 2 | inner l4 | 10 | 0x02 |
+
+### Port-channel Device Configuration
+
+```eos
+!
+port-channel load-balance trident udf eth-type IPv4 ip-protocol gre header inner l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv4 header inner l3 offset 10 mask 0xff
+port-channel load-balance trident udf eth-type IPv4 header inner l4 offset 2
+port-channel load-balance trident udf eth-type IPv4 ip-protocol 10 header inner l4 offset 20 mask 0x02
+port-channel load-balance trident udf eth-type IPv4 ip-protocol sctp header outer l2 offset 39
+port-channel load-balance trident udf eth-type IPv6 header outer l3 offset 30 mask 0x01
+port-channel load-balance trident udf eth-type IPv6 header inner l3 offset 20
+port-channel load-balance trident udf eth-type IPv6 ip-protocol tcp header outer l4 offset 20
+port-channel load-balance trident udf eth-type IPv6 ip-protocol 2 header inner l4 offset 10 mask 0x02
+```
+
 ## Internal VLAN Allocation Policy
 
 ### Internal VLAN Allocation Policy Summary
@@ -6848,6 +6884,7 @@ interface Vlan4094
 | MLAG Source Interface | Loopback1 |
 | UDP port | 4789 |
 | Vtep-to-Vtep Bridging | True |
+| Vxlan Encapsulation | ipv4, ipv6 |
 | EVPN MLAG Shared Router MAC | mlag-system-id |
 | VXLAN flood-lists learning from data-plane | Enabled |
 | Qos dscp propagation encapsulation | Enabled |
@@ -6893,6 +6930,7 @@ interface Vxlan1
    vxlan udp-port 4789
    vxlan bridging vtep-to-vtep
    vxlan flood vtep learned data-plane
+   vxlan encapsulation ipv4 ipv6
    vxlan vlan 110 vni 10110
    vxlan vlan 111 vni 10111
    vxlan vrf Tenant_A_OP_Zone vni 10
@@ -11123,6 +11161,24 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 
 ##### mc_example_profile
 
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 12 bytes |
+| Threshold | 1/32 |
+| Resume | 33 |
+| Reserved | 23 cells |
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+| 1 | 1 | - |
+| 2 | 1/32 | 3 bytes |
+
+###### Egress
+
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
 | Unicast | 1 | - | 0 bytes | - |
@@ -11132,6 +11188,24 @@ ipv6 address virtual source-nat vrf TEST_04 address 2001:db8:85a3::8a2e:370:7335
 | Multicast | 7 | 1/64 | 0 cells | - |
 
 ##### unused_profile
+
+###### Ingress
+
+| Settings | Value |
+| -------- | ----- |
+| Headroom | 121 cells |
+| Threshold | - |
+| Resume | - |
+| Reserved | 232 bytes |
+
+###### Ingress Priority Groups
+
+| Group Number | Threshold | Reserved |
+| ------------ | --------- | -------- |
+| 2 | - | 55 bytes |
+| 5 | 1/32 | 34 cells |
+
+###### Egress
 
 | Type | Egress Queue | Threshold | Reserved | Drop-Precedence |
 | ---- | ------------ | --------- | -------- | --------------- |
@@ -11558,6 +11632,12 @@ router segment-security
 | ----------------- | --------- |
 | 200 | ingress |
 
+#### MTU Discovery Summary
+
+- MTU discovery interval: 100 seconds.
+- MTU discovery for hosts on the LAN: Enabled
+- Maximum rate of ICMP packet generation per CPU core: 100 pps
+
 #### Interfaces Metric Bandwidth
 
 | Interface name | Transmit Bandwidth (Mbps) | Receive Bandwidth (Mbps) |
@@ -11684,6 +11764,8 @@ router segment-security
 router path-selection
    peer dynamic source stun
    tcp mss ceiling ipv4 200 ingress
+   mtu discovery interval 100 seconds
+   mtu discovery hosts fragmentation-needed rate-limit 100 packets-per-second
    !
    interface Ethernet1
       metric bandwidth receive 100 Mbps
