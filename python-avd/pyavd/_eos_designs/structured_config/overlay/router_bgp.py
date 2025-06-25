@@ -601,16 +601,10 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
     def _set_mpls_route_clients(self: AvdStructuredConfigOverlayProtocol) -> None:
-        if self._is_mpls_server is not True:
+        if not self._is_mpls_server:
             return
 
         for route_reflector_client in natural_sort(self.facts.mpls_route_reflector_clients):
-            # TODO: This condition will never meet as it is conflicting with the condition in self._mpls_route_reflectors
-            # The code will reach here only when self._is_mpls_server is true (line 604), but in self._mpls_route_reflectors
-            # if mpls_overlay_role or evpn_role is server it returns {}
-            if route_reflector_client in self._mpls_route_reflectors:
-                continue
-
             peer_facts = self.shared_utils.get_peer_facts(route_reflector_client)
             if not self._is_peer_mpls_client(peer_facts):
                 continue
@@ -651,7 +645,7 @@ class RouterBgpMixin(Protocol):
             self.structured_config.router_bgp.neighbors.append(neighbor)
 
     def _set_mpls_rr_peers(self: AvdStructuredConfigOverlayProtocol) -> None:
-        if self._is_mpls_server is not True:
+        if not self._is_mpls_server:
             return
 
         for route_reflector in self.facts.mpls_route_reflectors:
