@@ -11,37 +11,44 @@ l2leaf:
       inband_mgmt_interface: Vlan123
       # inband_mgmt_vrf: default ("default" by default)
 
+default_mgmt_method: inband
+
 snmp_settings:
-  enable_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
-  enable_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
   vrfs:
     - name: SNMPVRF
       enable: true
+    # Testing automatically picking up the inband VRF with the 'use_inband_mgmt_vrf' keyword.
+    # This errors if inband management is not configured.
+    - name: use_inband_mgmt_vrf
+      enable: true
+      ipv4_acl: acl-for-vrf-default
+      ipv6_acl: acl-for-vrf-default
   hosts:
     - host: 10.6.75.125
       vrf: SNMPVRF
-      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
       version: 2c
       community: SNMP-COMMUNITY-2
     - host: 10.6.75.126
-      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
       version: 3
       users:
         - username: USER-WRITE
           authentication_level: auth
     - host: 10.6.75.127
       vrf: SNMPVRF
-      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
-      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
       version: 2c
       community: SNMP-COMMUNITY-2
-    - host: 10.6.75.128
-      use_inband_mgmt_vrf: true # This one *should* be in the output, since this host *has* inband mgmt
-      use_mgmt_interface_vrf: true # This one should not be in the output, since this host has no oob mgmt
-      version: 3
-      users:
-        - username: USER-WRITE
-          authentication_level: auth
+    # Testing automatically picking up the inband VRF with the 'use_inband_mgmt_vrf' keyword.
+    # This errors if inband management is not configured.
+    - host: 10.6.75.129
+      vrf: use_inband_mgmt_vrf
+      version: 2c
+      community: SNMP-COMMUNITY-2
+    # Testing automatically picking up the inband VRF with the 'use_default_mgmt_method_vrf' keyword.
+    # This errors if inband management is not configured.
+    - host: 10.6.75.130
+      vrf: use_default_mgmt_method_vrf
+      version: 2c
+      community: SNMP-COMMUNITY-2
 
   traps:
     snmp_traps:

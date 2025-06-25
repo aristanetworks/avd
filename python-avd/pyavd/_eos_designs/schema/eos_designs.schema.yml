@@ -12,6 +12,25 @@ keys:
   application_classification:
     type: dict
     $ref: eos_cli_config_gen#/keys/application_traffic_recognition
+  avd_6_behaviors:
+    type: dict
+    description: Opt-in to AVD 6 behaviors. These behaviors will be the default behaviors
+      in AVD 6.0.
+    documentation_options:
+      table: role-settings
+    deprecation:
+      warning: false
+      remove_in_version: 6.0.0
+    keys:
+      snmp_settings_vrfs:
+        type: bool
+        default: false
+        description: "Opt-in to the new behavior for snmp_settings:\n- SNMP will only
+          be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.\n  Note
+          this means SNMP will be disabled for VRF \"default\" unless it is defined
+          there.\n- `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.\n
+          \ If `default_mgmt_method` is 'none', the VRF must be specified. For VRF
+          default set the string \"default\"."
   avd_data_conversion_mode:
     documentation_options:
       table: role-input-validation
@@ -1065,12 +1084,12 @@ keys:
     type: str
     description: "`default_mgmt_method` controls the default VRF and source interface
       used for the following management and monitoring protocols configured with `eos_designs`:\n
-      \ - `ntp_settings`\n  - `sflow_settings`\n\n`oob` means the protocols will be
-      configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as
-      the source interface.\n`inband` means the protocols will be configured with
-      the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.\n`none`
-      means the VRF and or interface must be manually set for each protocol.\nThis
-      can be overridden under the settings for each protocol.\n"
+      \ - `logging_settings`\n  - `ntp_settings`\n  - `sflow_settings`\n  - `snmp_settings`\n\n`oob`
+      means the protocols will be configured with the VRF set by `mgmt_interface_vrf`
+      and `mgmt_interface` as the source interface.\n`inband` means the protocols
+      will be configured with the VRF set by `inband_mgmt_vrf` and `inband_mgmt_interface`
+      as the source interface.\n`none` means the VRF and or interface must be manually
+      set for each protocol.\nThis can be overridden under the settings for each protocol.\n"
     valid_values:
     - oob
     - inband
@@ -1598,6 +1617,21 @@ keys:
   fabric_ip_addressing:
     type: dict
     keys:
+      loopback:
+        type: dict
+        keys:
+          ipv6_prefix_length:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: IPv6 prefix length used for Router ID, VTEP and diagnostic
+              loopbacks.
+            type: int
+            default: 128
+            valid_values:
+            - 64
+            - 128
+            convert_types:
+            - str
       mlag:
         type: dict
         keys:
@@ -1649,6 +1683,14 @@ keys:
             convert_types:
             - str
             description: IPv4 prefix length used for L3 point-to-point uplinks.
+          ipv6_prefix_length:
+            type: int
+            default: 64
+            min: 1
+            max: 127
+            convert_types:
+            - str
+            description: IPv6 prefix length used for L3 point-to-point uplinks.
       wan_ha:
         type: dict
         description: Allow to manipulate the IP addressing scheme for WAN HA direct
@@ -4168,8 +4210,6 @@ keys:
     type: dict
     description: 'SNMP settings.
 
-      For SNMP local-interfaces see "source_interfaces.snmp".
-
       Configuration of remote SNMP engine IDs are currently only possible using `structured_config`.'
     keys:
       contact:
@@ -4181,11 +4221,44 @@ keys:
         description: Set SNMP location. Formatted as "<fabric_name> <dc_name> <pod_name>
           <switch_rack> <inventory_hostname>".
       vrfs:
-        $ref: eos_cli_config_gen#/keys/snmp_server/keys/vrfs
         type: list
-        description: 'Enable/disable SNMP for one or more VRFs.
+        primary_key: name
+        items:
+          type: dict
+          keys:
+            name:
+              type: str
+              description: "VRF name.\nThe value will be interpreted according to
+                these rules:\n- `use_mgmt_interface_vrf` will configure the SNMP ACL
+                under the VRF set with `mgmt_interface_vrf`.\n  An error will be raised
+                if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
+                `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set
+                with `inband_mgmt_vrf`.\n  An error will be raised if inband management
+                is not configured for the device.\n- `use_default_mgmt_method_vrf`
+                will configure the VRF and source-interface for one of the two options
+                above depending on the value of `default_mgmt_method`.\n- Any other
+                string will be used directly as the VRF name."
+              convert_types:
+              - int
+            enable:
+              type: bool
+              description: Enable/disable SNMP for this VRF.
+            source_interface:
+              type: str
+              description: 'Source interface to use for SNMP hosts in this VRF.
 
-          Can be used in combination with "enable_mgmt_interface_vrf" and "enable_inband_mgmt_vrf".'
+                If set for the VRFs defined by `mgmt_interface_vrf` or `inband_mgmt_vrf`,
+                this setting will take precedence.'
+            ipv4_acl:
+              type: str
+              description: IPv4 access-list name.
+              convert_types:
+              - int
+            ipv6_acl:
+              type: str
+              description: IPv6 access-list name.
+              convert_types:
+              - int
       enable_mgmt_interface_vrf:
         type: bool
         description: 'Enable/disable SNMP for the VRF set with "mgmt_interface_vrf".
@@ -4193,6 +4266,10 @@ keys:
           Ignored if ''mgmt_ip'' or ''ipv6_mgmt_ip'' are not configured for the device.
 
           Can be used in combination with "vrfs" and "enable_inband_mgmt_vrf".'
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_mgmt_interface_vrf"].enabled
       enable_inband_mgmt_vrf:
         type: bool
         description: 'Enable/disable SNMP for the VRF set with "inband_mgmt_vrf".
@@ -4200,6 +4277,10 @@ keys:
           Ignored if inband management is not configured for the device.
 
           Can be used in combination with "vrfs" and "enable_mgmt_interface_vrf".'
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[name="use_inband_mgmt_vrf"].enabled
       compute_local_engineid:
         type: bool
         default: false
@@ -4282,13 +4363,21 @@ keys:
           keys:
             host:
               type: str
-              $ref: eos_cli_config_gen#/keys/snmp_server/keys/hosts/items/keys/host
             vrf:
               type: str
-              description: 'VRF Name.
-
-                Can be used in combination with "use_mgmt_interface_vrf" and "use_inband_mgmt_vrf"
-                to configure the SNMP host under multiple VRFs.'
+              description: "VRF Name.\nThe value of `vrf` will be interpreted according
+                to these rules:\n- `use_mgmt_interface_vrf` will configure the SNMP
+                host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface`
+                as SNMP source-interface.\n  An error will be raised if `mgmt_ip`
+                or `ipv6_mgmt_ip` are not configured for the device.\n- `use_inband_mgmt_vrf`
+                will configure the SNMP host under the VRF set with `inband_mgmt_vrf`
+                and set the `inband_mgmt_interface` as SNMP source-interface.\n  An
+                error will be raised if inband management is not configured for the
+                device.\n- `use_default_mgmt_method_vrf` will configure the VRF and
+                source-interface for one of the two options above depending on the
+                value of `default_mgmt_method`.\n- Any other string will be used directly
+                as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface`
+                if needed."
               convert_types:
               - int
             use_mgmt_interface_vrf:
@@ -4299,6 +4388,10 @@ keys:
                 will not be configured at all. Can be used in combination with "vrf"
                 and "use_inband_mgmt_vrf" to configure the SNMP host under multiple
                 VRFs.
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: 'vrf: "use_mgmt_interface_vrf"'
             use_inband_mgmt_vrf:
               type: bool
               description: Configure the SNMP host under the VRF set with "inband_mgmt_vrf".
@@ -4306,15 +4399,27 @@ keys:
                 if the host is only configured with this VRF, the host will not be
                 configured at all. Can be used in combination with "vrf" and "use_mgmt_interface_vrf"
                 to configure the SNMP host under multiple VRFs.
+              deprecation:
+                warning: true
+                remove_in_version: 6.0.0
+                new_key: 'vrf: "use_inband_mgmt_vrf"'
       communities:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/communities
       ipv4_acls:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv4_acls
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[].ipv4_acl
       ipv6_acls:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/ipv6_acls
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: vrfs[].ipv6_acl
       views:
         type: list
         $ref: eos_cli_config_gen#/keys/snmp_server/keys/views
@@ -4409,6 +4514,12 @@ keys:
       snmp:
         type: dict
         description: SNMP local-interfaces.
+        deprecation:
+          warning: true
+          remove_in_version: 6.0.0
+          new_key: 'snmp_settings.vrfs[].source_interface or snmp_settings.hosts[].vrf:
+            use_mgmt_interface_vrf or snmp_settings.hosts[].vrf: use_inband_mgmt_vrf
+            or avd_6_behaviors.snmp_settings_vrfs'
         keys:
           mgmt_interface:
             type: bool
@@ -4640,6 +4751,18 @@ keys:
       settings.
 
       '
+    type: bool
+    default: false
+  underlay_ipv6_numbered:
+    documentation_options:
+      table: fabric-settings
+    description: "This feature allows pure IPv6 underlay routing protocol with numbered
+      addresses.\nCurrently sets both underlay and overlay, including MLAG, to use
+      IPv6 addresses.\nCurrently BGP peer-groups are named with IPv4 by default. This
+      can be modified under `bgp_peer_groups`.\nRequires:\n  - \"underlay_ipv6: true\"\n
+      \ - \"loopback_ipv6_pool\"\n  - \"underlay_routing_protocol: ebgp\"\nSome settings
+      are not yet supported with IPv6 underlay:\n  - underlay_multicast\n  - underlay_multicast_rp_interfaces\n
+      \ - underlay_rfc5549\n  - wan_role\n  - vtep_vvtep_ip\n  - inband_ztp\n"
     type: bool
     default: false
   underlay_isis_authentication_key:
@@ -6773,6 +6896,17 @@ $defs:
                   If not set, "mlag_peer_l3_ipv4_pool" or "mlag_peer_ipv4_pool" will
                   be used.'
                 format: ipv4_pool
+              mlag_ibgp_peering_ipv6_pool:
+                type: str
+                description: 'Comma separated list of prefixes (IPv6 address/Mask)
+                  or ranges (IPv6_address-IPv6_address).
+
+                  The subnet used for the iBGP peering in the VRF is derived from
+                  this pool based on the ID of the first MLAG switch.
+
+                  If not set, "mlag_peer_l3_ipv6_pool" or "mlag_peer_ipv6_pool" will
+                  be used.'
+                format: ipv6_pool
               ip_helpers:
                 type: list
                 primary_key: ip_helper
@@ -8516,6 +8650,18 @@ $defs:
               uplink interface index, ''max_uplink_switches'' and ''max_parallel_uplinks''.'
             type: str
             format: ipv4_pool
+          uplink_ipv6_pool:
+            documentation_options:
+              table: node-type-uplink-configuration
+            description: 'Comma separated list of prefixes (IPv6 address/Mask) or
+              ranges (IPv6_address-IPv6_address).
+
+              IPv6 subnets used to connect to uplink switches will be deviced from
+              this pool based on the node id,
+
+              uplink interface index, ''max_uplink_switches'' and ''max_parallel_uplinks''.'
+            type: str
+            format: ipv6_pool
           uplink_interfaces:
             documentation_options:
               table: node-type-uplink-configuration
@@ -8849,6 +8995,14 @@ $defs:
               will be derived from this pool based on the node id and 'loopback_ipv4_offset'.
             type: str
             format: ipv4_pool
+          vtep_loopback_ipv6_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: Comma separated list of prefixes (IPv6 address/Mask) or ranges
+              (IPv6_address-IPv6_address). The IPv6 address used for VTEP-Loopback
+              will be derived from this pool based on the node id and 'loopback_ipv6_offset'.
+            type: str
+            format: ipv6_pool
           vtep_loopback_ipv4_address:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -8860,6 +9014,17 @@ $defs:
               catch duplicates.'
             type: str
             format: ipv4
+          vtep_loopback_ipv6_address:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: 'IPv6 address without mask for VTEP-Loopback.
+
+              When set, it takes precedence over `vtep_loopback_ipv6_pool`.
+
+              Note: AVD does not check for validity of the IPv6 address and does not
+              catch duplicates.'
+            type: str
+            format: ipv6
           loopback_ipv4_offset:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -8876,6 +9041,15 @@ $defs:
             convert_types:
             - str
             default: 0
+          router_id_pool:
+            documentation_options:
+              table: node-type-loopback-vtep-configuration
+            description: Required when underlay_ipv6_numbered is used to configured
+              an IPv6 underlay and IPv6 overlay. router_id_pool is an IPv4 subnet
+              used only for allocation of BGP router-id's since an IPv4 address will
+              not exist on the device.
+            type: str
+            format: ipv4_pool
           loopback_ipv6_pool:
             documentation_options:
               table: node-type-loopback-vtep-configuration
@@ -9309,6 +9483,21 @@ $defs:
               '
             type: str
             format: ipv4_pool
+          mlag_peer_l3_ipv6_pool:
+            documentation_options:
+              table: node-type-l2-mlag-configuration
+            description: 'Comma separated list of prefixes (IPv6 address/Mask) or
+              ranges (IPv6_address-IPv6_address).
+
+              The IPv6 subnet used for MLAG underlay L3 peering is derived from this
+              pool based on the node id of the first MLAG switch.
+
+              Required when MLAG leafs present in topology and they are using a separate
+              L3 peering VLAN.
+
+              '
+            type: str
+            format: ipv6_pool
           mlag_peer_vlan:
             documentation_options:
               table: node-type-l2-mlag-configuration
@@ -10166,6 +10355,15 @@ $defs:
                       or ranges (IPv4_address-IPv4_address).
 
                       IPv4 subnets used for links to downlink switches will be derived
+                      from this pool based on index the peer''s uplink interface''s
+                      index in ''downlink_interfaces''.'
+                  ipv6_pool:
+                    type: str
+                    format: ipv6_pool
+                    description: 'Comma separated list of prefixes (IPv6 address/Mask)
+                      or ranges (IPv6_address-IPv6_address).
+
+                      IPv6 subnets used for links to downlink switches will be derived
                       from this pool based on index the peer''s uplink interface''s
                       index in ''downlink_interfaces''.'
                   downlink_interfaces:
