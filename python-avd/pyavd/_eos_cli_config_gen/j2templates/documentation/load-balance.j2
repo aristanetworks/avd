@@ -21,11 +21,11 @@
 | Destination Port | {{ profile.fields.udp.dst_port }} |
 {%             if profile.fields.udp.match is arista.avd.defined %}
 | Match Payload Bits | {{ profile.fields.udp.match.payload_bits }} |
-| Match Pattern Bit | {{ profile.fields.udp.match.pattern }} |
+| Match Pattern | {{ profile.fields.udp.match.pattern }} |
 | Match Hash Payload Bytes | {{ profile.fields.udp.match.hash_payload_bytes }} |
 {%             endif %}
-{%             if profile.fields.udp.payload_bytes is arista.avd.defined or profile.fields.udp.single_line_payload_bytes is arista.avd.defined %}
-| UDP Payload Bytes | {{ profile.fields.udp.payload_bytes | arista.avd.default(profile.fields.udp.single_line_payload_bytes) }} |
+{%             if profile.fields.udp.payload_bytes is arista.avd.defined %}
+| UDP Payload | {{ profile.fields.udp.payload_bytes }} |
 {%             endif %}
 {%         endif %}
 {%     endfor %}

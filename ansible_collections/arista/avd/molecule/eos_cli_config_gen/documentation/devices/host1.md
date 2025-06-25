@@ -3276,7 +3276,7 @@ hardware tcam
 | Setting | Value |
 | ------- | ----- |
 | Destination Port | 101 |
-| UDP Payload Bytes | 25 |
+| UDP Payload | 25 |
 
 #### Profile_B
 
@@ -3286,18 +3286,9 @@ hardware tcam
 | ------- | ----- |
 | Destination Port | 100 |
 | Match Payload Bits | 10 |
-| Match Pattern Bit | 1 |
+| Match Pattern | 1 |
 | Match Hash Payload Bytes | 10 |
-| UDP Payload Bytes | 10-20 |
-
-#### Profile_C
-
-##### UDP Fields Settings
-
-| Setting | Value |
-| ------- | ----- |
-| Destination Port | 101 |
-| UDP Payload Bytes | 10,20 |
+| UDP Payload | 10-20 |
 
 ### Load Balance Configuration
 
@@ -3312,9 +3303,6 @@ load-balance policies
       fields udp dst-port 100
          match payload bits 10 pattern 1 hash payload bytes 10
          payload bytes 10-20
-   !
-   load-balance sand profile Profile_C
-      fields udp dst-port 101 payload bytes 10,20
 ```
 
 ### Link Tracking

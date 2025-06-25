@@ -15,8 +15,3 @@ load_balance:
           udp:
             dst_port: 101
             payload_bytes: 25
-      - name: Profile_C
-        fields:
-          udp:
-            dst_port: 101
-            single_line_payload_bytes: 10,20
