@@ -15887,7 +15887,7 @@ class EosDesigns(EosDesignsRootModel):
             """Default value: `"sha512"`"""
             key: str | None
             """
-            Clear text key.
+            Cleartext key.
             To protect the password at rest it is strongly recommended to make use of a vault or
             similar.
             """
@@ -15918,7 +15918,7 @@ class EosDesigns(EosDesignsRootModel):
                         id: id
                         hash_algorithm: hash_algorithm
                         key:
-                           Clear text key.
+                           Cleartext key.
                            To protect the password at rest it is strongly recommended to make use of a vault or
                            similar.
                         cleartext_key:

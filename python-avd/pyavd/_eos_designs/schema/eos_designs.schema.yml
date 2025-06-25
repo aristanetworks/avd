@@ -4973,7 +4973,7 @@ keys:
               max_length: 16
               convert_types:
               - int
-              description: 'Clear text key.
+              description: 'Cleartext key.
 
                 To protect the password at rest it is strongly recommended to make
                 use of a vault or similar.'
