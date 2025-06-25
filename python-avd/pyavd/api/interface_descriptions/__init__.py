@@ -564,7 +564,8 @@ class InterfaceDescriptionData:
     main_interface_wan_carrier: str | None
     """ WAN carrier of parent interface"""
 
-    def __init__(
+    # We accept more arguments than max-args number for this method.
+    def __init__(  # noqa: PLR0913
         self,
         shared_utils: SharedUtilsProtocol,
         description: str | None = None,
