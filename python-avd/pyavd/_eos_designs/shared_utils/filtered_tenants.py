@@ -12,6 +12,8 @@ from pyavd._utils import default, unique
 from pyavd.j2filters import natural_sort, range_expand
 
 if TYPE_CHECKING:
+    from typing import Any
+
     from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 
     from . import SharedUtilsProtocol
@@ -216,7 +218,7 @@ class FilteredTenantsMixin(Protocol):
                                 msg = f"'pim_rp_addresses.rps' under VRF '{vrf.name}' in Tenant '{tenant.name}' is required."
                                 raise AristaAvdInvalidInputsError(msg)
                             for rp_ip in rp_entry.rps:
-                                rp_address = {"address": rp_ip}
+                                rp_address: dict[str, Any] = {"address": rp_ip}
                                 if rp_entry.groups:
                                     if rp_entry.access_list_name:
                                         rp_address["access_lists"] = [rp_entry.access_list_name]

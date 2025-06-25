@@ -77,7 +77,9 @@ class LogMessage(Enum):
 
     # Peer-related messages
     PEER_UNAVAILABLE = "{identity} skipped - Peer {peer} not in fabric or not deployed"
-    PEER_INTERFACE_NO_IP = "{interface} skipped - Peer {peer} interface {peer_interface} has no IP"
+    PEER_INTERFACE_NOT_FOUND = "{interface} skipped - peer {peer} interface {peer_interface} not found"
+    PEER_INTERFACE_USING_DHCP = "{interface} skipped - peer {peer} interface {peer_interface} using DHCP"
+    PEER_INTERFACE_UNNUMBERED = "{interface} skipped - peer {peer} interface {peer_interface} using IP unnumbered"
 
     # Interface state messages
     INTERFACE_SHUTDOWN = "{interface} skipped - Interface is shutdown"
@@ -85,10 +87,13 @@ class LogMessage(Enum):
     INTERFACE_IS_SUBINTERFACE = "{interface} skipped - Subinterface"
     INTERFACE_VALIDATION_DISABLED = "{interface} skipped - validate_state or validate_lldp disabled"
     INTERFACE_NO_IP = "{interface} skipped - No IP address configured"
+    INTERFACE_UNNUMBERED = "{interface} skipped - IP unnumbered interface"
 
     # WAN-specific messages
     PATH_GROUP_NO_STUN_INTERFACE = "path group {path_group} skipped - No STUN client interfaces found"
+    PATH_GROUP_NO_LOCAL_INTERFACES = "path group {path_group} skipped - No local interfaces found"
     PATH_GROUP_NO_STATIC_PEERS = "path group {path_group} skipped - No static peers configured"
+    NO_STATIC_PEERS = "skipped - No static peers configured in any path groups"
 
     # Input generation messages
     INPUT_NONE_FOUND = "skipped - No inputs available"

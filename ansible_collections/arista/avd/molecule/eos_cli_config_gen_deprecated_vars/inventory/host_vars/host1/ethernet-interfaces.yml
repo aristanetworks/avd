@@ -14,6 +14,10 @@ ethernet_interfaces:
     type: switched
     mode: access
     vlans: 100
+    # Test for deprecated ipv4_segment_size and ipv6_segment_size key
+    tcp_mss_ceiling:
+      ipv4_segment_size: 200
+      ipv6_segment_size: 201
 
   - name: Ethernet2
     description: Test_trunk_groups_and_native_vlan
@@ -118,3 +122,8 @@ ethernet_interfaces:
     isis_enable: ISIS_TEST
     isis_authentication_mode: md5
     isis_authentication_key: "asfddja23452"
+
+  - name: Ethernet13
+    description: Traffic Engineering Interface
+    traffic_engineering:
+      srlg: TEST

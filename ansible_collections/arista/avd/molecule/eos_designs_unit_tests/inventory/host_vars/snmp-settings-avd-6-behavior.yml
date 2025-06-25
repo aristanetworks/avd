@@ -1,0 +1,49 @@
+---
+# Minimum config to only test the specific feature.
+# This tests the general snmp_settings, excluding the tests for location, localize, engine id since that is tested in other files.
+# This tests the SNMP hosts ignoring inband management VRF.
+type: l2leaf
+
+l2leaf:
+  nodes:
+    - name: snmp-settings-avd-6-behavior
+      id: 43
+      mgmt_ip: 10.10.10.43/26
+
+mgmt_interface_vrf: MGMT
+mgmt_gateway: 10.10.10.1
+
+# AVD 6 behavior:
+# SNMP will only be enabled for VRFs specifically enabled under `snmp_settings.vrfs`.
+# Note this means SNMP will be disabled for VRF "default" unless it is defined there.
+# `snmp_settings.hosts[].vrf` defaults to `use_default_mgmt_method_vrf`.
+# If `default_mgmt_method` is 'none', the VRF must be specified. For VRF default set the string "default".
+avd_6_behaviors:
+  snmp_settings_vrfs: true
+
+snmp_settings:
+  hosts:
+    - host: 10.6.75.124
+      version: 3
+      vrf: default  # VRF must be set to "default" since the default changes.
+      users:
+        - username: USER-WRITE
+          authentication_level: auth
+    # Testing automatically picking up the oob VRF with the 'use_default_mgmt_method_vrf' keyword.
+    # This errors if mgmt_ip is missing.
+    - host: 10.6.75.130
+      # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
+      version: 2c
+      community: SNMP-COMMUNITY-2
+
+  ipv4_acls:
+    - name: acl-for-vrf-MGMT
+      # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
+    - name: acl-for-vrf-default
+      vrf: default  # VRF must be set to "default" since the default changes.
+
+  ipv6_acls:
+    - name: acl-for-vrf-MGMT
+      # Notice no VRF here. With the AVD 6 behavior this means "use_default_mgmt_method_vrf"
+    - name: acl-for-vrf-default
+      vrf: default  # VRF must be set to "default" since the default changes.

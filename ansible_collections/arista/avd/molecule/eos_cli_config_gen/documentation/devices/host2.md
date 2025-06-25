@@ -96,9 +96,13 @@
   - [AS Path Lists](#as-path-lists)
 - [802.1X Port Security](#8021x-port-security)
   - [802.1X Summary](#8021x-summary)
+- [Platform](#platform)
+  - [Platform Summary](#platform-summary)
+  - [Platform Device Configuration](#platform-device-configuration)
 - [Application Traffic Recognition](#application-traffic-recognition)
   - [Applications](#applications)
   - [Router Application-Traffic-Recognition Device Configuration](#router-application-traffic-recognition-device-configuration)
+  - [Router Path-selection](#router-path-selection)
 - [Router L2 VPN](#router-l2-vpn)
   - [Router L2 VPN Summary](#router-l2-vpn-summary)
   - [Router L2 VPN Device Configuration](#router-l2-vpn-device-configuration)
@@ -442,6 +446,7 @@ aaa accounting commands 0 default none
 | Settings | Value |
 | -------- | ----- |
 | Reversible password encryption | aes-256-gcm |
+| Signature verification | Enabled |
 
 ### Management Security SSL Profiles
 
@@ -454,6 +459,7 @@ aaa accounting commands 0 default none
 ```eos
 !
 management security
+   signature-verification extension
    password encryption reversible aes-256-gcm
    !
    ssl profile cipher-v1.0-v1.3
@@ -651,6 +657,18 @@ sflow interface egress enable default
 | Tracker Name | Exporter Name | Collector IP/Host | Collector Port | Local Interface |
 | ------------ | ------------- | ----------------- | -------------- | --------------- |
 
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+| default | mpls |
+
+##### Trackers Summary
+
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+| T1 | 3666 | 5666 | 0 |
+
 #### Flow Tracking Device Configuration
 
 ```eos
@@ -662,6 +680,11 @@ flow tracking sampled
       record export on inactive timeout 3666
       record export on interval 5666
       record export mpls
+!
+flow tracking mirror-on-drop
+   tracker T1
+      record export on inactive timeout 3666
+      record export on interval 5666
 ```
 
 ### Monitor Telemetry Postcard Policy
@@ -1302,9 +1325,9 @@ mpls rsvp
 
 ### Queue Monitor Length
 
-| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low |
-| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ |
-| True | - | 100 | - | disabled | disabled | - | - |
+| Enabled | Logging Interval | Default Thresholds High | Default Thresholds Low | Notifying | TX Latency | CPU Thresholds High | CPU Thresholds Low | Mirroring Enabled | Mirror destinations |
+| ------- | ---------------- | ----------------------- | ---------------------- | --------- | ---------- | ------------------- | ------------------ | ----------------- | ------------------ |
+| True | - | 100 | - | disabled | disabled | - | - | - | Tunnel |
 
 ### Queue Monitor Streaming
 
@@ -1319,6 +1342,8 @@ mpls rsvp
 queue-monitor length
 no queue-monitor length notifying
 queue-monitor length default threshold 100
+!
+queue-monitor length mirror destination tunnel mode gre source 1.1.1.1 destination 3.3.3.3 ttl 200 dscp 45 protocol 0xFFFF vrf VRF10
 !
 queue-monitor streaming
    shutdown
@@ -1433,6 +1458,31 @@ router pim sparse-mode
 | ------------ | ---------- |
 | True | 1500 |
 
+## Platform
+
+### Platform Summary
+
+#### Platform Trident Summary
+
+| Settings | Value |
+| -------- | ----- |
+| MMU Headroom-pool Limit | 557 bytes |
+
+#### Platform FAP Summary
+
+| Settings | Value |
+| -------- | ----- |
+| Buffering Egress Profile | balanced |
+
+### Platform Device Configuration
+
+```eos
+!
+platform fap buffering egress profile balanced
+!
+platform trident mmu headroom-pool limit 557
+```
+
 ## Application Traffic Recognition
 
 ### Applications
@@ -1466,6 +1516,20 @@ application traffic recognition
    application l4 l4-app-1
       protocol tcp source port field-set src_port_set1 destination port field-set dest_port_set1
       protocol udp
+```
+
+### Router Path-selection
+
+#### MTU Discovery Summary
+
+- MTU discovery for hosts on the LAN: Enabled
+
+#### Router Path-selection Device Configuration
+
+```eos
+!
+router path-selection
+   mtu discovery hosts
 ```
 
 ## Router L2 VPN

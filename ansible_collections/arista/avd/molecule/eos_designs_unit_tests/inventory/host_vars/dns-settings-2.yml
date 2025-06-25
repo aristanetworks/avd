@@ -1,0 +1,32 @@
+---
+# Testing with inband mgmt.
+
+type: l2leaf
+l2leaf:
+  defaults:
+  nodes:
+    - name: dns-settings-2
+      inband_mgmt_ip: 192.168.1.2/24
+      inband_mgmt_vrf: INBAND_MGMT
+
+default_mgmt_method: inband
+
+dns_settings:
+  domain: testfabric.local
+  servers:
+    - ip_address: 10.10.10.1
+      priority: 1
+      vrf: default
+
+    - ip_address: 10.10.10.1
+      priority: 1
+      vrf: use_inband_mgmt_vrf
+
+    - ip_address: 10.10.10.2
+      vrf: INBAND_MGMT
+
+    - ip_address: 10.10.10.2
+      vrf: other_vrf
+
+    - ip_address: 10.10.10.3
+      # No VRF, so it should honor default_mgmt_method which is inband in this case

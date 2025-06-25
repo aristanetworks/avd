@@ -154,6 +154,8 @@
 {% include 'eos/service-unsupported-transceiver.j2' %}
 {# transceiver #}
 {% include 'eos/transceiver.j2' %}
+{# port-channel #}
+{% include 'eos/port-channel.j2' %}
 {# system l1 #}
 {% include 'eos/system-l1.j2' %}
 {# Tap Aggregation #}
@@ -230,6 +232,8 @@
 {% include 'eos/monitor-connectivity.j2' %}
 {# MAC address-table aging #}
 {% include 'eos/mac-address-table-aging-time.j2' %}
+{# MAC address-table static entries #}
+{% include 'eos/mac-address-table-static-entries.j2' %}
 {# event handler #}
 {% include 'eos/event-handlers.j2' %}
 {# router segment-security #}
@@ -369,6 +373,8 @@
 {% include 'eos/traffic-policies.j2' %}
 {# platform apply #}
 {% include 'eos/platform-apply.j2' %}
+{# platform headroom-pool #}
+{% include 'eos/platform-headroom-pool.j2' %}
 {# vmtracer sessions #}
 {% include 'eos/vmtracer-sessions.j2' %}
 {# dot1x part2 #}
