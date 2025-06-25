@@ -23,14 +23,14 @@ management_ssh:
   access_groups:
   - name: ACL-SSH
     vrf: MGMT
-  - name: ACL-SSH-VRF-DISABLED
-    vrf: VRF12
   - name: ACL-SSH-MGMT-INTERFACE
     vrf: use_mgmt_interface_vrf
+  - name: ACL-SSH-VRF-DISABLED
+    vrf: VRF12
   ipv6_access_groups:
+  - name: ACL-SSH-VRF-DEFAULT
   - name: ACL-SSH6
     vrf: VRF10
-  - name: ACL-SSH-VRF-DEFAULT
   idle_timeout: 15
   vrfs:
   - name: default

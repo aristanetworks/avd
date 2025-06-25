@@ -30,15 +30,15 @@ class ManagementSshMixin(Protocol):
         if ssh_settings.idle_timeout:
             self.structured_config.management_ssh.idle_timeout = ssh_settings.idle_timeout
 
-        self._ssh_vrfs_acls(ssh_settings)
+        self._ssh_vrfs(ssh_settings)
 
     def _ssh_vrfs(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
         vrfs = EosCliConfigGen.ManagementSsh.Vrfs()
-        for vrf in ssh_settings.vrfs:
+        for vrf in ssh_settings.vrfs._natural_sorted():
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
             vrfs.append_new(name=vrf_name, enable=vrf.enabled)
-            self.structured_config.management_ssh.vrfs = vrfs._natural_sorted()
+            self.structured_config.management_ssh.vrfs = vrfs
 
             if vrf.ipv4_acl:
                 self.structured_config.management_ssh.access_groups.append_new(name=vrf.ipv4_acl, vrf=vrf.name if vrf.name != "default" else None)
