@@ -3,7 +3,7 @@
 # that can be found in the LICENSE file.
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol
+from typing import TYPE_CHECKING, Any, Protocol
 
 from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
@@ -49,7 +49,7 @@ class VlanInterfacesMixin(Protocol):
     def _check_virtual_router_mac_address(self: AvdStructuredConfigNetworkServicesProtocol, variable: str) -> None:
         """Raise if virtual router mac address is required but missing, otherwise return None."""
         if self.shared_utils.node_config.virtual_router_mac_address is None:
-            msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using '{variable}' under 'svi'"
+            msg = f"'virtual_router_mac_address' must be set for node '{self.shared_utils.hostname}' when using '{variable}' under 'svis'."
             raise AristaAvdInvalidInputsError(msg)
 
     def _get_vlan_interface_config_for_svi(
@@ -73,7 +73,7 @@ class VlanInterfacesMixin(Protocol):
             ip_address=svi.ip_address,
             ipv6_address=svi.ipv6_address,
             ipv6_enable=svi.ipv6_enable,
-            mtu=svi.mtu if self.shared_utils.platform_settings.feature_support.per_interface_mtu else None,
+            mtu=self.shared_utils.get_interface_mtu(interface_name, svi.mtu),
             eos_cli=svi.raw_eos_cli,
         )
 
@@ -130,7 +130,7 @@ class VlanInterfacesMixin(Protocol):
                 if (vrf_diagnostic_loopback := vrf.vtep_diagnostic.loopback) is None:
                     msg = (
                         f"No vtep_diagnostic loopback defined on VRF '{vrf.name}' in Tenant '{tenant.name}'."
-                        "This is required when 'l3_multicast' is enabled on the VRF and ip_address_virtual is used on an SVI in that VRF."
+                        " This is required when 'l3_multicast' is enabled on the VRF and 'ip_address_virtual' is used on an SVI in that VRF."
                     )
                     raise AristaAvdInvalidInputsError(msg)
                 vlan_interface_config.pim.ipv4.local_interface = f"Loopback{vrf_diagnostic_loopback}"
@@ -179,7 +179,7 @@ class VlanInterfacesMixin(Protocol):
 
     def _get_vlan_ip_config_for_mlag_peering(
         self: AvdStructuredConfigNetworkServicesProtocol, vrf: EosDesigns._DynamicKeys.DynamicNetworkServicesItem.NetworkServicesItem.VrfsItem
-    ) -> dict:
+    ) -> dict[str, Any]:
         """
         Build IP config for MLAG peering SVI for the given VRF.
 
@@ -189,6 +189,23 @@ class VlanInterfacesMixin(Protocol):
         """
         if self.inputs.underlay_rfc5549 and self.inputs.overlay_mlag_rfc5549:
             return {"ipv6_enable": True}
+
+        if self.shared_utils.underlay_ipv6_numbered:
+            if vrf.mlag_ibgp_peering_ipv6_pool:
+                if self.shared_utils.mlag_role == "primary":
+                    return {
+                        "ipv6_address": (
+                            f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_primary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                            f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                        )
+                    }
+                return {
+                    "ipv6_address": (
+                        f"{self.shared_utils.ip_addressing.mlag_ibgp_peering_ipv6_secondary(vrf.mlag_ibgp_peering_ipv6_pool)}/"
+                        f"{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"
+                    )
+                }
+            return {"ipv6_address": f"{self.shared_utils.mlag_ibgp_ip}/{self.inputs.fabric_ip_addressing.mlag.ipv6_prefix_length}"}
 
         if vrf.mlag_ibgp_peering_ipv4_pool:
             if self.shared_utils.mlag_role == "primary":

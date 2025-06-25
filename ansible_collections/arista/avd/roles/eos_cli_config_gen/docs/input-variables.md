@@ -253,6 +253,12 @@ ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/peer-filters
 ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/policy-maps.md
 --8<--
 
+### Port-channel
+
+--8<--
+ansible_collections/arista/avd/roles/eos_cli_config_gen/docs/tables/port-channel.md
+--8<--
+
 ### Prefix-lists
 
 --8<--

@@ -128,6 +128,52 @@ Software export of IPFIX data records enabled.
 {%             endfor %}
 {%         endif %}
 {%     endif %}
+{%     if flow_tracking.mirror_on_drop is arista.avd.defined %}
+
+#### Flow Tracking mirror-on-drop
+
+| Sample Limit Size | Encapsulations |
+| ----------------- | -------------- |
+{%         set sample_limit_size = flow_tracking.mirror_on_drop.sample_limit | arista.avd.default("default") %}
+{%         set encapsulations_list = [] %}
+{%         if flow_tracking.mirror_on_drop.encapsulation.ipv4_ipv6 is arista.avd.defined(true) %}
+{%             do encapsulations_list.append('ipv4, ipv6') %}
+{%         endif %}
+{%         if flow_tracking.mirror_on_drop.encapsulation.mpls is arista.avd.defined(true) %}
+{%             do encapsulations_list.append('mpls') %}
+{%         endif %}
+{%         set encapsulations = (encapsulations_list or ["-"]) | join(", ") %}
+| {{ sample_limit_size }} | {{ encapsulations }} |
+{%         if flow_tracking.mirror_on_drop.trackers is arista.avd.defined %}
+{%             set ns_count_exporter = namespace(count_exporter = 0) %}
+
+##### Trackers Summary
+
+{# Note: Add the Applied On Interface column similar to sample and hardware once support is available under ethernet_interface/port_channel_interface/dps_interfaces #}
+| Tracker Name | Record Export On Inactive Timeout | Record Export On Interval | Number of Exporters |
+| ------------ | --------------------------------- | ------------------------- | ------------------- |
+{%             for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
+{%                 set on_inactive_timeout = tracker.record_export.on_inactive_timeout | arista.avd.default("-") %}
+{%                 set on_interval = tracker.record_export.on_interval | arista.avd.default("-") %}
+{%                 set ns_count_exporter.count_exporter = tracker.exporters | arista.avd.default([]) | length %}
+| {{ tracker.name }} | {{ on_inactive_timeout }} | {{ on_interval }} | {{ ns_count_exporter.count_exporter }} |
+{%             endfor %}
+{%             if ns_count_exporter.count_exporter > 0 %}
+
+##### Exporters Summary
+
+| Tracker Name | Exporter Name |  Local Interface | Template Interval | Collector IP/Host/Sflow | Collector Port | DSCP Value | Format |
+| ------------ | ------------- | ---------------- | ------------------| ----------------------- | -------------- | ---------- | ------ |
+{%                 for tracker in flow_tracking.mirror_on_drop.trackers | arista.avd.natural_sort('name') %}
+{%                     for exporter in tracker.exporters | arista.avd.natural_sort('name') %}
+{%                         set current_exporter_collector_hosts = exporter.collectors | arista.avd.natural_sort | map(attribute='host') | list %}
+{%                         set current_exporter_collector_ports = exporter.collectors | arista.avd.natural_sort | map(attribute='port') | map('arista.avd.default', '-') | list %}
+| {{ tracker.name }} | {{ exporter.name }} | {{ exporter.local_interface | arista.avd.default("-") }} | {{ exporter.template_interval | arista.avd.default("-") }} | {{ current_exporter_collector_hosts | join('<br>') }} | {{ current_exporter_collector_ports | join('<br>') }} | {{ exporter.dscp | arista.avd.default("-") }} | {{ exporter.format | arista.avd.default("-") }} |
+{%                     endfor %}
+{%                 endfor %}
+{%             endif %}
+{%         endif %}
+{%     endif %}
 
 #### Flow Tracking Device Configuration
 
