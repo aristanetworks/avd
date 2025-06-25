@@ -1,30 +1,6 @@
 aaa_root:
   disabled: true
-agents:
-- name: KernelFib
-  environment_variables:
-  - name: KERNELFIB_PROGRAM_ALL_ECMP
-    value: '1'
-application_traffic_recognition:
-  field_sets:
-    ipv4_prefixes:
-    - name: PFX-PATHFINDERS
-  applications:
-    ipv4_applications:
-    - name: APP-CONTROL-PLANE
-      dest_prefix_set_name: PFX-PATHFINDERS
-  application_profiles:
-  - name: APP-PROFILE-CONTROL-PLANE
-    applications:
-    - name: APP-CONTROL-PLANE
 config_end: true
-dps_interfaces:
-- name: Dps1
-  description: DPS Interface
-  mtu: 9194
-  ip_address: 192.168.142.1/32
-  flow_tracker:
-    sampled: FLOW-TRACKER
 enable_password:
   disabled: true
 ethernet_interfaces:
@@ -38,129 +14,27 @@ ethernet_interfaces:
   peer: peerDevice2
   peer_interface: Ethernet1/12
   peer_type: l3_port_channel_member
-flow_tracking:
-  sampled:
-    sample: 10000
-    trackers:
-    - record_export:
-        on_inactive_timeout: 70000
-        on_interval: 300000
-      name: FLOW-TRACKER
-      exporters:
-      - name: CV-TELEMETRY
-        collector:
-          host: 127.0.0.1
-        local_interface: Loopback0
-        template_interval: 3600000
-    shutdown: false
 hostname: node-type-l3-port-channels-custom-template
-ip_extcommunity_lists:
-- name: ECL-EVPN-SOO
-  entries:
-  - type: permit
-    extcommunities: soo 192.168.255.1:511
 ip_routing: true
-ip_security:
-  ike_policies:
-  - name: CP-IKE-POLICY
-    local_id: 192.168.142.1
-  sa_policies:
-  - name: DP-SA-POLICY
-    esp:
-      encryption: aes256gcm128
-    pfs_dh_group: 14
-  - name: CP-SA-POLICY
-    esp:
-      encryption: aes256gcm128
-    pfs_dh_group: 14
-  profiles:
-  - name: DP-PROFILE
-    sa_policy: DP-SA-POLICY
-    connection: start
-    shared_key: ABCDEF1234567890666
-    dpd:
-      interval: 10
-      time: 50
-      action: clear
-    mode: transport
-  - name: CP-PROFILE
-    ike_policy: CP-IKE-POLICY
-    sa_policy: CP-SA-POLICY
-    connection: start
-    shared_key: ABCDEF1234567890
-    dpd:
-      interval: 10
-      time: 50
-      action: clear
-    mode: transport
-  key_controller:
-    profile: DP-PROFILE
 is_deployed: true
 loopback_interfaces:
 - name: Loopback0
   description: ROUTER_ID
   shutdown: false
-  ip_address: 192.168.255.1/32
+  ip_address: 192.0.255.2/32
 management_api_http:
   enable_https: true
   enable_vrfs:
   - name: MGMT
-management_security:
-  ssl_profiles:
-  - name: STUN-DTLS
-    tls_versions: '1.2'
-    trust_certificate:
-      certificates:
-      - aristaDeviceCertProvisionerDefaultRootCA.crt
-    certificate:
-      file: STUN-DTLS.crt
-      key: STUN-DTLS.key
+management_interfaces:
+- name: Management1
+  description: OOB_MANAGEMENT
+  shutdown: false
+  vrf: MGMT
+  ip_address: 10.1.1.2/24
+  type: oob
 metadata:
   fabric_name: ANSIBLE_ONLY
-  cv_tags:
-    device_tags:
-    - name: Role
-      value: edge
-    - name: Region
-      value: AVD_Land_East
-    - name: Zone
-      value: AVD_Land_East-ZONE
-    - name: Site
-      value: Site511
-    interface_tags:
-    - interface: Port-Channel5
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: StreamFast
-      - name: Circuit
-        value: '102'
-    - interface: Port-Channel5.100
-      tags:
-      - name: Type
-        value: lan
-    - interface: Port-Channel5.105
-      tags:
-      - name: Type
-        value: wan
-      - name: Carrier
-        value: Telstra
-  cv_pathfinder:
-    role: edge
-    region: AVD_Land_East
-    zone: AVD_Land_East-ZONE
-    site: Site511
-    vtep_ip: 192.168.142.1
-    ssl_profile: STUN-DTLS
-    interfaces:
-    - name: Port-Channel5
-      carrier: StreamFast
-      circuit_id: '102'
-      pathgroup: INET
-    - name: Port-Channel5.105
-      carrier: Telstra
-      pathgroup: INET
 port_channel_interfaces:
 - name: Port-Channel5
   description: custom_template_description_StreamFast
@@ -186,181 +60,15 @@ port_channel_interfaces:
   ip_address: 192.168.100.116/31
   peer: peer3
   peer_type: l3_port_channel
-prefix_lists:
-- name: PL-LOOPBACKS-EVPN-OVERLAY
-  sequence_numbers:
-  - sequence: 10
-    action: permit 192.168.255.0/24 eq 32
-route_maps:
-- name: RM-CONN-2-BGP
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - ip address prefix-list PL-LOOPBACKS-EVPN-OVERLAY
-    set:
-    - extcommunity soo 192.168.255.1:511 additive
-- name: RM-EVPN-SOO-IN
-  sequence_numbers:
-  - sequence: 10
-    type: deny
-    match:
-    - extcommunity ECL-EVPN-SOO
-  - sequence: 20
-    type: permit
-- name: RM-EVPN-SOO-OUT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    set:
-    - extcommunity soo 192.168.255.1:511 additive
-- name: RM-EVPN-EXPORT-VRF-DEFAULT
-  sequence_numbers:
-  - sequence: 10
-    type: permit
-    match:
-    - extcommunity ECL-EVPN-SOO
-router_adaptive_virtual_topology:
-  topology_role: edge
-  region:
-    name: AVD_Land_East
-    id: 43
-  zone:
-    name: AVD_Land_East-ZONE
-    id: 1
-  site:
-    name: Site511
-    id: 511
-  profiles:
-  - name: DEFAULT-POLICY-CONTROL-PLANE
-    load_balance_policy: LB-DEFAULT-POLICY-CONTROL-PLANE
-  - name: DEFAULT-POLICY-DEFAULT
-    load_balance_policy: LB-DEFAULT-POLICY-DEFAULT
-  policies:
-  - name: DEFAULT-POLICY-WITH-CP
-    matches:
-    - application_profile: APP-PROFILE-CONTROL-PLANE
-      avt_profile: DEFAULT-POLICY-CONTROL-PLANE
-    - application_profile: default
-      avt_profile: DEFAULT-POLICY-DEFAULT
-  vrfs:
-  - name: default
-    policy: DEFAULT-POLICY-WITH-CP
-    profiles:
-    - name: DEFAULT-POLICY-CONTROL-PLANE
-      id: 254
-    - name: DEFAULT-POLICY-DEFAULT
-      id: 1
-router_bfd:
-  multihop:
-    interval: 300
-    min_rx: 300
-    multiplier: 3
-router_bgp:
-  as: '65005'
-  router_id: 192.168.255.1
-  maximum_paths:
-    paths: 16
-  updates:
-    wait_install: true
-  bgp:
-    default:
-      ipv4_unicast: false
-  peer_groups:
-  - name: WAN-OVERLAY-PEERS
-    type: wan
-    remote_as: '65005'
-    update_source: Dps1
-    bfd: true
-    bfd_timers:
-      interval: 1000
-      min_rx: 1000
-      multiplier: 10
-    password: htm4AZe9mIQOO1uiMuGgYQ==
-    send_community: all
-    maximum_routes: 0
-    ttl_maximum_hops: 1
-  redistribute:
-    connected:
-      enabled: true
-      route_map: RM-CONN-2-BGP
-  address_family_evpn:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-      route_map_in: RM-EVPN-SOO-IN
-      route_map_out: RM-EVPN-SOO-OUT
-      encapsulation: path-selection
-  address_family_ipv4:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: false
-  address_family_ipv4_sr_te:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-  address_family_link_state:
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-    path_selection:
-      roles:
-        producer: true
-  address_family_path_selection:
-    bgp:
-      additional_paths:
-        receive: true
-        send: any
-    peer_groups:
-    - name: WAN-OVERLAY-PEERS
-      activate: true
-  vrfs:
-  - name: default
-    rd: 192.168.255.1:1
-    route_targets:
-      import:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-      export:
-      - address_family: evpn
-        route_targets:
-        - '1:1'
-        - route-map RM-EVPN-EXPORT-VRF-DEFAULT
-router_path_selection:
-  path_groups:
-  - name: INET
-    id: 101
-    ipsec_profile: CP-PROFILE
-    local_interfaces:
-    - name: Port-Channel5
-    - name: Port-Channel5.105
-    dynamic_peers:
-      enabled: true
-  load_balance_policies:
-  - name: LB-DEFAULT-POLICY-CONTROL-PLANE
-    path_groups:
-    - name: INET
-  - name: LB-DEFAULT-POLICY-DEFAULT
-    path_groups:
-    - name: INET
-  tcp_mss_ceiling:
-    ipv4: auto
-router_traffic_engineering:
-  enabled: true
 service_routing_protocols_model: multi-agent
 spanning_tree:
   mode: none
-transceiver_qsfp_default_mode_4x10: false
+transceiver_qsfp_default_mode_4x10: true
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
 vrfs:
 - name: MGMT
   ip_routing: false
-vxlan_interface:
-  vxlan1:
-    description: node-type-l3-port-channels-custom-template_VTEP
-    vxlan:
-      source_interface: Dps1
-      udp_port: 4789
-      vrfs:
-      - name: default
-        vni: 1
