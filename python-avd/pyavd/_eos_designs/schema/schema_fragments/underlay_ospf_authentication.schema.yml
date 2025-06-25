@@ -44,7 +44,7 @@ keys:
               convert_types:
                 - int
               description: |-
-                Clear text key.
+                Cleartext key.
                 To protect the password at rest it is strongly recommended to make use of a vault or similar.
               deprecation:
                 warning: true

@@ -4,5 +4,5 @@ underlay_ospf_authentication:
   enabled: true
   message_digest_keys:
     - id: 1
-      # replaced by cleartext_key
+      # Deprecated key, replaced by cleartext_key. To be removed in AVD 6.0.0
       key: arista123arista
