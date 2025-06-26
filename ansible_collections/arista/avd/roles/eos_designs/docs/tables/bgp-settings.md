@@ -21,47 +21,56 @@
     | [<samp>bgp_peer_groups</samp>](## "bgp_peer_groups") | Dictionary |  |  |  | Leverage an Arista EOS switch to generate the encrypted password using the correct peer group name.<br>Note that the name of the peer groups use '-' instead of '_' in EOS configuration.<br> |
     | [<samp>&nbsp;&nbsp;ipv4_underlay_peers</samp>](## "bgp_peer_groups.ipv4_underlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipv4_underlay_peers.name") | String |  | `IPv4-UNDERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.ipv4_underlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.ipv4_underlay_peers.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipv4_underlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;mlag_ipv4_vrfs_peer</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer") | Dictionary |  |  |  | Set this peer group name to use a different peer-group for MLAG peerings in VRFs.<br>By default AVD uses the `mlag_ipv4_underlay_peer` peer group for the Underlay and for all the VRFs.<br><br>If `mlag_ipv4_vrfs_peer.name` and `mlag_ipv4_underlay_peer.name` are the same,<br>then all the attributes set here are ignored. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.name") | String | Required |  |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_vrfs_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;mlag_ipv4_underlay_peer</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.name") | String |  | `MLAG-IPv4-UNDERLAY-PEER` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.bfd") | Boolean |  | `False` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mlag_ipv4_underlay_peer.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;evpn_overlay_peers</samp>](## "bgp_peer_groups.evpn_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_peers.name") | String |  | `EVPN-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.evpn_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.evpn_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;evpn_overlay_core</samp>](## "bgp_peer_groups.evpn_overlay_core") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.evpn_overlay_core.name") | String |  | `EVPN-OVERLAY-CORE` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_core.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.evpn_overlay_core.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.evpn_overlay_core.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.evpn_overlay_core.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.evpn_overlay_core.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;mpls_overlay_peers</samp>](## "bgp_peer_groups.mpls_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.mpls_overlay_peers.name") | String |  | `MPLS-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mpls_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.mpls_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.mpls_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.mpls_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.mpls_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;rr_overlay_peers</samp>](## "bgp_peer_groups.rr_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.rr_overlay_peers.name") | String |  | `RR-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.rr_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.rr_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.rr_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.rr_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;ipvpn_gateway_peers</samp>](## "bgp_peer_groups.ipvpn_gateway_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.name") | String |  | `IPVPN-GATEWAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.password") | String |  |  |  | Type 7 encrypted password. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.ipvpn_gateway_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;wan_overlay_peers</samp>](## "bgp_peer_groups.wan_overlay_peers") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_overlay_peers.name") | String |  | `WAN-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_overlay_peers.password") | String |  |  |  | Type 7 encrypted password.<br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`.<br><br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.wan_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br><br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers") | Dictionary |  |  |  | Specify the BFD timers to override the default values.<br>It is recommended to keep BFD total timeout longer than the DPS timeout.<br>The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "bgp_peer_groups.wan_overlay_peers.bfd_timers.interval") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Interval in milliseconds. |
@@ -73,7 +82,8 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "bgp_peer_groups.wan_overlay_peers.structured_config") | Dictionary |  |  |  | Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen. |
     | [<samp>&nbsp;&nbsp;wan_rr_overlay_peers</samp>](## "bgp_peer_groups.wan_rr_overlay_peers") | Dictionary |  |  |  | Configuration options for the peer-group created to peer between AutoVPN RRs or CV Pathfinders. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;name</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.name") | String |  | `WAN-RR-OVERLAY-PEERS` |  | Name of peer group. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.password") | String |  |  |  | Type 7 encrypted password.<br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.password") | String |  |  |  | BGP peer group Type 7 encrypted password.<br>Takes precedence over `cleartext_password`.<br><br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_password</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.cleartext_password") | String |  |  |  | BGP peer group cleartext password.<br>To protect the password at rest it is strongly recommended to make use of a vault or similar.<br><br>When configuring a password on the `wan_overlay_peers` BGP peer group,<br>it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.<br>This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.<br>If the password is not set, the static BGP peerings between Pathfinders may not come up. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd") | Boolean |  | `True` |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;bfd_timers</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd_timers") | Dictionary |  |  |  | Specify the BFD timers to override the default values.<br>It is recommended to keep BFD total timeout longer than the DPS timeout.<br>The Default BFD timeout is 10 x 1 seconds and the default DPS timeout is 5 x 1 seconds. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;interval</samp>](## "bgp_peer_groups.wan_rr_overlay_peers.bfd_timers.interval") | Integer | Required | `1000` | Min: 50<br>Max: 60000 | Interval in milliseconds. |
@@ -125,8 +135,13 @@
         # Name of peer group.
         name: <str; default="IPv4-UNDERLAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=False>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -142,8 +157,13 @@
         # Name of peer group.
         name: <str; required>
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=False>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -153,8 +173,13 @@
         # Name of peer group.
         name: <str; default="MLAG-IPv4-UNDERLAY-PEER">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=False>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -164,8 +189,13 @@
         # Name of peer group.
         name: <str; default="EVPN-OVERLAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -175,8 +205,13 @@
         # Name of peer group.
         name: <str; default="EVPN-OVERLAY-CORE">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -186,8 +221,13 @@
         # Name of peer group.
         name: <str; default="MPLS-OVERLAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -197,8 +237,13 @@
         # Name of peer group.
         name: <str; default="RR-OVERLAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -208,8 +253,13 @@
         # Name of peer group.
         name: <str; default="IPVPN-GATEWAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Custom structured config added under router_bgp.peer_groups.[name=<name>] for eos_cli_config_gen.
@@ -219,12 +269,23 @@
         # Name of peer group.
         name: <str; default="WAN-OVERLAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
+        #
         # When configuring a password on the `wan_overlay_peers` BGP peer group,
         # it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
         # This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
         # If the password is not set, the static BGP peerings between Pathfinders may not come up.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        #
+        # When configuring a password on the `wan_overlay_peers` BGP peer group,
+        # it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+        # This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+        # If the password is not set, the static BGP peerings between Pathfinders may not come up.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Specify the BFD timers to override the default values.
@@ -256,12 +317,23 @@
         # Name of peer group.
         name: <str; default="WAN-RR-OVERLAY-PEERS">
 
-        # Type 7 encrypted password.
+        # BGP peer group Type 7 encrypted password.
+        # Takes precedence over `cleartext_password`.
+        #
         # When configuring a password on the `wan_overlay_peers` BGP peer group,
         # it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
         # This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
         # If the password is not set, the static BGP peerings between Pathfinders may not come up.
         password: <str>
+
+        # BGP peer group cleartext password.
+        # To protect the password at rest it is strongly recommended to make use of a vault or similar.
+        #
+        # When configuring a password on the `wan_overlay_peers` BGP peer group,
+        # it may also be required to set a password for the `wan_rr_overlay_peers` BGP peer group.
+        # This is required in the case where one or more pathfinders use the same VTEP IP range as the edge routers.
+        # If the password is not set, the static BGP peerings between Pathfinders may not come up.
+        cleartext_password: <str>
         bfd: <bool; default=True>
 
         # Specify the BFD timers to override the default values.
