@@ -16,5 +16,5 @@ keys:
       See cvp_ingestauth_key for details.
     deprecation:
       warning: true
-      new_key: cv_settings.onprem_clusters[].token_file or cv_settings.cvaas.token_file
+      new_key: cv_settings
       remove_in_version: 6.0.0

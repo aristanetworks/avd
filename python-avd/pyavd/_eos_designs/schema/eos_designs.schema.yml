@@ -991,7 +991,9 @@ keys:
                   description: 'Optionally set the region to stream to.
 
                     The "auto" region will use ''apiserver.arista.io:443'' which will
-                    redirect to the correct region based on the device''s serial number.'
+                    redirect to the correct region based on the device''s serial number.
+
+                    "staging", "dev" and "play" are for internal Arista use.'
                   default: auto
                   valid_values:
                   - auto
@@ -1036,8 +1038,9 @@ keys:
                   type: str
                   description: 'Source-interface used to connect to CloudVision.
 
-                    If not set, the source interface may be set automatically set
-                    when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.'
+                    If not set, the source interface may be set automatically when
+                    VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf`
+                    or `use_default_mgmt_method_vrf`.'
       onprem_clusters:
         type: list
         description: On-premise CloudVision clusters.
@@ -1046,11 +1049,6 @@ keys:
         - servers.name
         items:
           type: dict
-          description: 'Unless `key` is set, TerminAttr will be configured with certificate
-            based authentication.
-
-            The default token path is ''/tmp/token'', and the token must be copied
-            to the device first.'
           keys:
             name:
               type: str
@@ -1104,27 +1102,27 @@ keys:
               type: str
               description: 'Source-interface used to connect to CloudVision.
 
-                If not set, the source interface may be set automatically set when
-                VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.'
-      terminattr_ingestexclude:
-        type: str
-        description: Exclude paths from Sysdb on the ingest side.
-        default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
-      terminattr_smashexcludes:
-        type: str
-        description: Exclude paths from the shared memory table.
-        default: ale,flexCounter,hardware,kni,pulse,strata
-      terminattr_disable_aaa:
-        type: bool
-        description: 'Disable AAA authorization and accounting.
-
-          When setting this flag, all commands pushed from CloudVision are applied
-          directly to the CLI without authorization'
-        default: false
+                If not set, the source interface may be set automatically when VRF
+                is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.'
+      terminattr:
+        type: dict
+        description: Specific settings for the TerminAttr daemon.
+        keys:
+          ingestexclude:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/ingestexclude
+          smashexcludes:
+            type: str
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/smashexcludes
+            default: ale,flexCounter,hardware,kni,pulse,strata
+          disable_aaa:
+            type: bool
+            $ref: eos_cli_config_gen#/keys/daemon_terminattr/keys/disable_aaa
+            default: false
       set_source_interfaces:
         type: bool
-        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`
-          and `use_inband_mgmt_vrf`.
+        description: 'Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+          `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
 
           Can be set to `false` to avoid changes when migrating from old `cv_instances`
           model.'
@@ -1210,7 +1208,7 @@ keys:
       table: cloudvision-settings
     deprecation:
       warning: true
-      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas
+      new_key: cv_settings
       remove_in_version: 5.0.0
       removed: true
     type: str
@@ -1238,7 +1236,7 @@ keys:
       description: IPv4 address or DNS name for CloudVision
     deprecation:
       warning: true
-      new_key: cv_settings.onprem_clusters[].servers[].name or cv_settings.cvaas
+      new_key: cv_settings
       remove_in_version: 6.0.0
   cvp_token_file:
     documentation_options:
@@ -1251,7 +1249,7 @@ keys:
       See cvp_ingestauth_key for details.'
     deprecation:
       warning: true
-      new_key: cv_settings.onprem_clusters[].token_file or cv_settings.cvaas.token_file
+      new_key: cv_settings
       remove_in_version: 6.0.0
   dc_name:
     documentation_options:
@@ -4986,7 +4984,7 @@ keys:
     default: false
     deprecation:
       warning: true
-      new_key: cv_settings.terminattr_disable_aaa
+      new_key: cv_settings
       remove_in_version: 6.0.0
   terminattr_ingestexclude:
     documentation_options:
@@ -4995,7 +4993,7 @@ keys:
     default: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
     deprecation:
       warning: true
-      new_key: cv_settings.terminattr_ingestexclude
+      new_key: cv_settings
       remove_in_version: 6.0.0
   terminattr_ingestgrpcurl_port:
     documentation_options:
@@ -5011,7 +5009,7 @@ keys:
       is ignored.'
     deprecation:
       warning: true
-      new_key: cv_settings.onprem_clusters[].servers[].port
+      new_key: cv_settings
       remove_in_version: 6.0.0
   terminattr_smashexcludes:
     documentation_options:
@@ -5020,7 +5018,7 @@ keys:
     default: ale,flexCounter,hardware,kni,pulse,strata
     deprecation:
       warning: true
-      new_key: cv_settings.terminattr_smashexcludes
+      new_key: cv_settings
       remove_in_version: 6.0.0
   timezone:
     documentation_options:

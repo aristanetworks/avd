@@ -34,16 +34,20 @@ class DaemonTerminattrMixin(Protocol):
 
         cv_settings = self.inputs.cv_settings
 
-        self.structured_config.daemon_terminattr._update(
-            ingestexclude=cv_settings.terminattr_ingestexclude,
-            smashexcludes=cv_settings.terminattr_smashexcludes,
-            disable_aaa=cv_settings.terminattr_disable_aaa,
-        )
-
         clusters: list[EosDesigns.CvSettings.Cvaas.ClustersItem | EosDesigns.CvSettings.OnpremClustersItem] = (
             list(cv_settings.cvaas.clusters) if cv_settings.cvaas.enabled else []
         )
         clusters.extend(cv_settings.onprem_clusters)
+
+        if not clusters:
+            # Do not add any config when we have no clusters configured.
+            return
+
+        self.structured_config.daemon_terminattr._update(
+            ingestexclude=cv_settings.terminattr.ingestexclude,
+            smashexcludes=cv_settings.terminattr.smashexcludes,
+            disable_aaa=cv_settings.terminattr.disable_aaa,
+        )
 
         if len(clusters) == 1:
             # Only one cluster so we add it with general terminattr config.

@@ -13,5 +13,5 @@ keys:
     default: "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
     deprecation:
       warning: true
-      new_key: cv_settings.terminattr_ingestexclude
+      new_key: cv_settings
       remove_in_version: 6.0.0

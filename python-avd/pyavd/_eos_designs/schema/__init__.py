@@ -2743,6 +2743,8 @@ class EosDesigns(EosDesignsRootModel):
                 Optionally set the region to stream to.
                 The "auto" region will use 'apiserver.arista.io:443' which
                 will redirect to the correct region based on the device's serial number.
+                "staging", "dev" and "play"
+                are for internal Arista use.
 
                 Default value: `"auto"`
                 """
@@ -2778,7 +2780,8 @@ class EosDesigns(EosDesignsRootModel):
                 """
                 Source-interface used to connect to CloudVision.
                 If not set, the source interface may be set
-                automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+                automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                `use_default_mgmt_method_vrf`.
                 """
 
                 if TYPE_CHECKING:
@@ -2819,6 +2822,8 @@ class EosDesigns(EosDesignsRootModel):
                                Optionally set the region to stream to.
                                The "auto" region will use 'apiserver.arista.io:443' which
                                will redirect to the correct region based on the device's serial number.
+                               "staging", "dev" and "play"
+                               are for internal Arista use.
                             vrf:
                                The VRF used to connect to CloudVision.
                                The value will be interpreted according to these rules:
@@ -2842,7 +2847,8 @@ class EosDesigns(EosDesignsRootModel):
                             source_interface:
                                Source-interface used to connect to CloudVision.
                                If not set, the source interface may be set
-                               automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+                               automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                               `use_default_mgmt_method_vrf`.
 
                         """
 
@@ -2970,7 +2976,8 @@ class EosDesigns(EosDesignsRootModel):
             """
             Source-interface used to connect to CloudVision.
             If not set, the source interface may be set
-            automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+            automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+            `use_default_mgmt_method_vrf`.
             """
 
             if TYPE_CHECKING:
@@ -3020,7 +3027,8 @@ class EosDesigns(EosDesignsRootModel):
                         source_interface:
                            Source-interface used to connect to CloudVision.
                            If not set, the source interface may be set
-                           automatically set when VRF is set to `use_mgmt_interface_vrf` and `use_inband_mgmt_vrf`.
+                           automatically when VRF is set to `use_mgmt_interface_vrf`, `use_inband_mgmt_vrf` or
+                           `use_default_mgmt_method_vrf`.
 
                     """
 
@@ -3031,12 +3039,68 @@ class EosDesigns(EosDesignsRootModel):
 
         OnpremClusters._item_type = OnpremClustersItem
 
+        class Terminattr(AvdModel):
+            """Subclass of AvdModel."""
+
+            _fields: ClassVar[dict] = {
+                "ingestexclude": {"type": str},
+                "smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
+                "disable_aaa": {"type": bool, "default": False},
+            }
+            ingestexclude: str | None
+            """
+            Exclude paths from Sysdb on the ingest side.
+            e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+            """
+            smashexcludes: str
+            """
+            Exclude paths from the shared memory table.
+            e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+
+            Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`
+            """
+            disable_aaa: bool
+            """
+            Disable AAA authorization and accounting.
+            When setting this flag, all commands pushed from
+            CloudVision are applied directly to the CLI without authorization.
+
+            Default value: `False`
+            """
+
+            if TYPE_CHECKING:
+
+                def __init__(
+                    self,
+                    *,
+                    ingestexclude: str | None | UndefinedType = Undefined,
+                    smashexcludes: str | UndefinedType = Undefined,
+                    disable_aaa: bool | UndefinedType = Undefined,
+                ) -> None:
+                    """
+                    Terminattr.
+
+
+                    Subclass of AvdModel.
+
+                    Args:
+                        ingestexclude:
+                           Exclude paths from Sysdb on the ingest side.
+                           e.g. "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"
+                        smashexcludes:
+                           Exclude paths from the shared memory table.
+                           e.g. "ale,flexCounter,hardware,kni,pulse,strata"
+                        disable_aaa:
+                           Disable AAA authorization and accounting.
+                           When setting this flag, all commands pushed from
+                           CloudVision are applied directly to the CLI without authorization.
+
+                    """
+
         _fields: ClassVar[dict] = {
             "cvaas": {"type": Cvaas},
             "onprem_clusters": {"type": OnpremClusters},
-            "terminattr_ingestexclude": {"type": str, "default": "/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"},
-            "terminattr_smashexcludes": {"type": str, "default": "ale,flexCounter,hardware,kni,pulse,strata"},
-            "terminattr_disable_aaa": {"type": bool, "default": False},
+            "terminattr": {"type": Terminattr},
             "set_source_interfaces": {"type": bool, "default": True},
         }
         cvaas: Cvaas
@@ -3052,32 +3116,18 @@ class EosDesigns(EosDesignsRootModel):
         Subclass of AvdIndexedList with `OnpremClustersItem` items.
         Primary key is `name` (`str`).
         """
-        terminattr_ingestexclude: str
+        terminattr: Terminattr
         """
-        Exclude paths from Sysdb on the ingest side.
+        Specific settings for the TerminAttr daemon.
 
-        Default value: `"/Sysdb/cell/1/agent,/Sysdb/cell/2/agent"`
-        """
-        terminattr_smashexcludes: str
-        """
-        Exclude paths from the shared memory table.
-
-        Default value: `"ale,flexCounter,hardware,kni,pulse,strata"`
-        """
-        terminattr_disable_aaa: bool
-        """
-        Disable AAA authorization and accounting.
-        When setting this flag, all commands pushed from
-        CloudVision are applied directly to the CLI without authorization
-
-        Default value: `False`
+        Subclass of AvdModel.
         """
         set_source_interfaces: bool
         """
-        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
-        `use_inband_mgmt_vrf`.
-        Can be set to `false` to avoid changes when migrating from old `cv_instances`
-        model.
+        Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+        `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+        Can be set to `false` to avoid changes when
+        migrating from old `cv_instances` model.
 
         Default value: `True`
         """
@@ -3089,9 +3139,7 @@ class EosDesigns(EosDesignsRootModel):
                 *,
                 cvaas: Cvaas | UndefinedType = Undefined,
                 onprem_clusters: OnpremClusters | UndefinedType = Undefined,
-                terminattr_ingestexclude: str | UndefinedType = Undefined,
-                terminattr_smashexcludes: str | UndefinedType = Undefined,
-                terminattr_disable_aaa: bool | UndefinedType = Undefined,
+                terminattr: Terminattr | UndefinedType = Undefined,
                 set_source_interfaces: bool | UndefinedType = Undefined,
             ) -> None:
                 """
@@ -3110,17 +3158,15 @@ class EosDesigns(EosDesignsRootModel):
 
                        Subclass of AvdIndexedList with `OnpremClustersItem` items.
                        Primary key is `name` (`str`).
-                    terminattr_ingestexclude: Exclude paths from Sysdb on the ingest side.
-                    terminattr_smashexcludes: Exclude paths from the shared memory table.
-                    terminattr_disable_aaa:
-                       Disable AAA authorization and accounting.
-                       When setting this flag, all commands pushed from
-                       CloudVision are applied directly to the CLI without authorization
+                    terminattr:
+                       Specific settings for the TerminAttr daemon.
+
+                       Subclass of AvdModel.
                     set_source_interfaces:
-                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf` and
-                       `use_inband_mgmt_vrf`.
-                       Can be set to `false` to avoid changes when migrating from old `cv_instances`
-                       model.
+                       Automatically set source interface when VRF is set to `use_mgmt_interface_vrf`,
+                       `use_inband_mgmt_vrf` or `use_default_mgmt_method_vrf`.
+                       Can be set to `false` to avoid changes when
+                       migrating from old `cv_instances` model.
 
                 """
 

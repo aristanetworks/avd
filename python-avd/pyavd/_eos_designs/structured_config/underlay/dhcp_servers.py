@@ -77,7 +77,7 @@ class DhcpServersMixin(Protocol):
             return CV_REGION_TO_SERVER_MAP[region]
 
         if self.inputs.cv_settings.onprem_clusters:
-            return next(iter(self.inputs.cv_settings.onprem_clusters)).name
+            return next(iter(next(iter(self.inputs.cv_settings.onprem_clusters)).servers)).name
 
         if self.inputs.cvp_instance_ips:
             return self.inputs.cvp_instance_ips[0]

@@ -127,7 +127,6 @@ class UtilsMixin(Protocol):
 
     def get_source_interface(self: AvdStructuredConfigBaseProtocol, vrf_input: str | None, source_interface_override: str | None) -> str | None:
         """Returns source interface for the given vrf, letting the given override take precedence."""
-        # source_interface may be overridden below if given in the 'vrfs'
         if source_interface_override:
             return source_interface_override
 

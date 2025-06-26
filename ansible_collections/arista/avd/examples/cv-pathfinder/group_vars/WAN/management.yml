@@ -7,13 +7,12 @@ ntp_settings:
   servers:
     - name: 0.pool.ntp.org
 
+terminattr_smashexcludes: "foo"
+
 # CloudVision/TerminAttr
 cv_settings:
   cvaas:
     enabled: true
-    clusters:
-      - name: primary
-        region: staging
 
 # For each local user in this example, password == username
 local_users:
