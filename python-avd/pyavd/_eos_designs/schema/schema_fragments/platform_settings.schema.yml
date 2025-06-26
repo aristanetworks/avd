@@ -137,6 +137,13 @@ keys:
               type: bool
               default: false
               description: Support for all-active EVPN gateway redundancy.
+            private_vlan:
+              type: bool
+              default: true
+              description: |
+                Support for PVLAN feature.
+                On platforms with additional requirements to use PVLAN, ex. 7280R/R2/R3 set this via "private_vlan" in the specific platform settings.
+                See the TOI at https://www.arista.com/en/support/toi/eos-4-25-0f/14609-support-for-private-vlan.
         management_interface:
           type: str
           default: Management1
@@ -234,6 +241,8 @@ keys:
           mlag: 900
           non_mlag: 1020
         tcam_profile: vxlan-routing
+        feature_support:
+          private_vlan: false
       - platforms:
           - 7280R3
         reload_delay:
@@ -242,6 +251,7 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           evpn_gateway_all_active_multihoming: true
+          private_vlan: false
       - platforms:
           - 7500R
           - 7500R2
@@ -251,6 +261,8 @@ keys:
           mlag: 900
           non_mlag: 1020
         tcam_profile: vxlan-routing
+        feature_support:
+          private_vlan: false
       - platforms:
           - 7500R3
           - 7800R3
@@ -261,6 +273,7 @@ keys:
         tcam_profile: vxlan-routing
         feature_support:
           evpn_gateway_all_active_multihoming: true
+          private_vlan: false
       - platforms:
           - 7358X4
         management_interface: Management1/1
