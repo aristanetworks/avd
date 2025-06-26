@@ -17,7 +17,7 @@
   vars:
     output_dir_name: "digital_twin/intended"
     documentation_dir_name: "digital_twin/documentation"
-    digital_twin_mode: true
+    avd_digital_twin_mode: true
   tasks:
 
     - name: Generate intended variables in ACT Digital Twin mode

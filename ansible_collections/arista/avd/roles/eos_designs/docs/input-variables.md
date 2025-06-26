@@ -1660,6 +1660,15 @@ ansible_collections/arista/avd/roles/eos_designs/docs/tables/cv-topology.md
 
 ## PREVIEW - Digital Twin settings
 
+!!! note
+    Remember to set `avd_digital_twin_mode: true` in the playbook vars.
+
+    By default, Digital Twin artifacts (such as the topology file, adjusted structured and EOS configuration, device and fabric documentation)
+    will replace original fabric artifacts.
+
+    To keep Digital Twin artifacts separate, adjust the `output_dir_name` and `documentation_dir_name` variables for both `eos_designs`
+    and `eos_cli_config_gen` to point to a dedicated output location.
+
 --8<--
 ansible_collections/arista/avd/roles/eos_designs/docs/tables/digital-twin-configuration.md
 --8<--

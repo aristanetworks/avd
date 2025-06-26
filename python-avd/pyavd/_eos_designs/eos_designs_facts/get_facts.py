@@ -35,7 +35,7 @@ def get_facts(
         all_hostvars: Dictionaries with validated input vars.
         templar: Templater used to render custom jinja templates.
         pool_manager: instance of pool-manager used for dynamic assignments like node ids.
-        digital_twin: Optional flag to enable digital_twin_mode.
+        digital_twin: Optional flag to enable avd_digital_twin_mode.
 
     Returns:
         EosDesignsFacts instances for each device.

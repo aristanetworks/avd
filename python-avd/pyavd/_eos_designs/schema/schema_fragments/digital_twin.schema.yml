@@ -13,6 +13,7 @@ keys:
     description: |-
       PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
       Global settings to configure the Digital Twin of the Fabric.
+      These settings are required when `avd_digital_twin_mode` is `true`
     keys:
       environment:
         type: str

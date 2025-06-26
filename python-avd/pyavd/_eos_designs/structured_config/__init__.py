@@ -91,7 +91,7 @@ def get_structured_config(
         validate:
             Optional flag to disable validation for the input schema.
         digital_twin:
-            Optional flag to enable digital_twin_mode.
+            Optional flag to enable avd_digital_twin_mode.
 
     Returns:
         The structured config as an EosCliConfigGen instance or None if validation failed.
