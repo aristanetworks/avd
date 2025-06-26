@@ -60,7 +60,8 @@ cv_settings:
     - name: primary
       servers:
         - name: 192.168.1.12
-  terminattr_disable_aaa: true
+  terminattr:
+    disable_aaa: true
 
 # DNS Server
 dns_settings:

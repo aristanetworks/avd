@@ -20,7 +20,8 @@ cv_settings:
       vrf: use_mgmt_interface_vrf
       servers:
         - name: 192.168.200.11
-  terminattr_disable_aaa: true
+  terminattr:
+    disable_aaa: true
 
 # OOB Management network default gateway.
 mgmt_gateway: 192.168.200.5

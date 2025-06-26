@@ -12,7 +12,6 @@ daemon_terminattr:
     token_file: /tmp/token
   cvvrf: MGMT
   disable_aaa: false
-  ingestexclude: /Sysdb/cell/1/agent,/Sysdb/cell/2/agent
   smashexcludes: ale,flexCounter,hardware,kni,pulse,strata
 enable_password:
   disabled: true

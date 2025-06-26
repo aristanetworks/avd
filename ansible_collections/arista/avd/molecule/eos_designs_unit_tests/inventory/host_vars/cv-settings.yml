@@ -44,6 +44,7 @@ cv_settings:
       servers:
         - name: onprem_inband_server_2
       # No VRF, so we use default_mgmt_method by default, inband mgmt here.
-  terminattr_disable_aaa: true
-  terminattr_ingestexclude: this_is_ingest_excluded
-  terminattr_smashexcludes: this_is_smash_excluded
+  terminattr:
+    disable_aaa: true
+    ingestexclude: this_is_ingest_excluded
+    smashexcludes: this_is_smash_excluded
