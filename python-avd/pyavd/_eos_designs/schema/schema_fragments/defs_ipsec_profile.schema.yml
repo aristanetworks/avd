@@ -21,7 +21,7 @@ $defs:
       shared_key:
         type: str
         description: |-
-          Type 7 IPSec shared key.
+          Type 7 obfuscated IPSec shared key.
           Takes precedence over `cleartext_shared_key`.
           This variable is sensitive and SHOULD be configured using some vault mechanism.
       cleartext_shared_key:
