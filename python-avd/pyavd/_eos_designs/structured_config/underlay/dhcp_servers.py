@@ -34,7 +34,11 @@ class DhcpServersMixin(Protocol):
         # Set ZTP bootfile
         self._update_ipv4_ztp_boot_file(dhcp_server)
         # Set DNS servers
-        if dns_servers := self.inputs.name_servers:
+        # TODO: Figure out if / how we should filter on VRFs. Currently just adding all servers.
+        if dns_servers := self.inputs.dns_settings.servers:
+            for dns_server in dns_servers:
+                dhcp_server.dns_servers_ipv4.append(dns_server.ip_address)
+        elif dns_servers := self.inputs.name_servers:
             dhcp_server.dns_servers_ipv4 = dns_servers._cast_as(EosCliConfigGen.DhcpServersItem.DnsServersIpv4)
         # Set NTP servers
         self._update_ntp_servers(dhcp_server)

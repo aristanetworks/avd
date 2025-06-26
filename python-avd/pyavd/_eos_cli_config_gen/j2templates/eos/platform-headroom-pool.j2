@@ -4,11 +4,12 @@
  that can be found in the LICENSE file.
 #}
 {# eos - platform profile apply #}
-{% if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined or platform.trident.mmu.headroom_pool_limit.cells is arista.avd.defined %}
-!
-{%     if platform.trident.mmu.headroom_pool_limit.bytes is arista.avd.defined %}
-platform trident mmu headroom-pool limit {{ platform.trident.mmu.headroom_pool_limit.bytes }}
-{%     else %}
-platform trident mmu headroom-pool limit cells {{ platform.trident.mmu.headroom_pool_limit.cells }}
+{% if platform.trident.mmu.headroom_pool.limit is arista.avd.defined %}
+{%     set headroom_pool_limit = "platform trident mmu headroom-pool limit " %}
+{%     if platform.trident.mmu.headroom_pool.unit is arista.avd.defined %}
+{%         set headroom_pool_limit = headroom_pool_limit ~ platform.trident.mmu.headroom_pool.unit ~ " " %}
 {%     endif %}
+{%     set headroom_pool_limit = headroom_pool_limit ~ platform.trident.mmu.headroom_pool.limit %}
+!
+{{ headroom_pool_limit }}
 {% endif %}

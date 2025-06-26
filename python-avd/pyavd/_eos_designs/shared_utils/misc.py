@@ -64,10 +64,14 @@ class MiscMixin(Protocol):
             id_from_pool = self.pool_manager.get_assignment(pool_type="node_id_pools", shared_utils=self, requested_value=node_id)
 
             if node_id is not None and node_id != id_from_pool:
-                msg = (
-                    "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible. "
-                    f"Unfortunately the 'id: {node_id}' is not available in the Node ID pool at this time. The 'id' setting must either be removed or changed. "
-                    f"If you prefer to keep the 'id' setting, the next available value is {id_from_pool}."
+                pool = self.pool_manager.get_pool(pool_type="node_id_pools", shared_utils=self)
+                msg = "When 'fabric_numbering.node_id.algorithm' is set to 'pool_manager', any 'id' set for the node will be reserved in the pool if possible."
+                if (assignment := pool.get_assignment_by_value(node_id)) is None:
+                    msg += f" The given 'id: {node_id}' is not a valid Node ID for the Pool Manager."
+                else:
+                    msg += f" The given 'id: {node_id}' is already assigned to '{assignment.key}'."
+                msg += (
+                    f" The 'id' setting must either be removed or changed. If you prefer to keep the 'id' setting, the next available value is {id_from_pool}."
                 )
                 raise AristaAvdInvalidInputsError(msg)
 
@@ -135,8 +139,6 @@ class MiscMixin(Protocol):
 
     @cached_property
     def p2p_uplinks_mtu(self: SharedUtilsProtocol) -> int | None:
-        if not self.platform_settings.feature_support.per_interface_mtu:
-            return None
         p2p_uplinks_mtu = default(self.platform_settings.p2p_uplinks_mtu, self.inputs.p2p_uplinks_mtu)
         return default(self.node_config.uplink_mtu, p2p_uplinks_mtu)
 
@@ -164,6 +166,14 @@ class MiscMixin(Protocol):
     @cached_property
     def evpn_multicast(self: SharedUtilsProtocol) -> bool:
         return self.switch_facts.evpn_multicast is True
+
+    def get_interface_mtu(self: SharedUtilsProtocol, interface_name: str, configured_mtu: int | None) -> int | None:
+        """Returns MTU value for the interface."""
+        if not self.platform_settings.feature_support.per_interface_mtu:
+            return None
+        if "." in interface_name and not self.platform_settings.feature_support.subinterface_mtu:
+            return None
+        return configured_mtu
 
     def get_ipv4_acl(
         self: SharedUtilsProtocol, name: str, interface_name: str, *, interface_ip: str | None = None, peer_ip: str | None = None

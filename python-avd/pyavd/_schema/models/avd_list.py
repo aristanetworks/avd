@@ -20,7 +20,7 @@ if TYPE_CHECKING:
 NATURAL_SORT_PATTERN = re.compile(r"(\d+)")
 
 
-class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):
+class AvdList(Sequence[T_ItemType], Generic[T_ItemType], AvdBase):  # noqa: PLW1641 - __hash__ will be set to None.
     """
     Base class used for schema-based data classes holding lists-of-dictionaries-with-primary-key loaded from AVD inputs.
 

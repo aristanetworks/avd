@@ -1,0 +1,56 @@
+aaa_root:
+  disabled: true
+config_end: true
+dns_domain: testfabric.local
+enable_password:
+  disabled: true
+hostname: dns-settings-2
+ip_domain_lookup:
+  source_interfaces:
+  - name: Vlan4092
+    vrf: INBAND_MGMT
+ip_igmp_snooping:
+  globally_enabled: true
+ip_name_servers:
+- ip_address: 10.10.10.1
+  vrf: default
+  priority: 1
+- ip_address: 10.10.10.1
+  vrf: INBAND_MGMT
+  priority: 1
+- ip_address: 10.10.10.2
+  vrf: INBAND_MGMT
+- ip_address: 10.10.10.2
+  vrf: other_vrf
+- ip_address: 10.10.10.3
+  vrf: INBAND_MGMT
+is_deployed: true
+management_api_http:
+  enable_https: true
+  enable_vrfs:
+  - name: MGMT
+metadata:
+  fabric_name: EOS_DESIGNS_UNIT_TESTS
+service_routing_protocols_model: multi-agent
+transceiver_qsfp_default_mode_4x10: true
+vlan_interfaces:
+- name: Vlan4092
+  description: Inband Management
+  shutdown: false
+  vrf: INBAND_MGMT
+  ip_address: 192.168.1.2/24
+  mtu: 1500
+  type: inband_mgmt
+vlan_internal_order:
+  allocation: ascending
+  range:
+    beginning: 1006
+    ending: 1199
+vlans:
+- id: 4092
+  name: INBAND_MGMT
+  tenant: system
+vrfs:
+- name: MGMT
+  ip_routing: false
+- name: INBAND_MGMT

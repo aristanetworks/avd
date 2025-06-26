@@ -19,7 +19,6 @@ ethernet_interfaces:
 - name: Ethernet1.42
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.42_VRF_PROD
   shutdown: false
-  mtu: 9214
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42
@@ -30,7 +29,6 @@ ethernet_interfaces:
 - name: Ethernet1.66
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE1_Ethernet1.66_VRF_ONLY-ON-L2LEAF
   shutdown: false
-  mtu: 9214
   vrf: ONLY-ON-L2LEAF
   encapsulation_dot1q:
     vlan: 66
@@ -53,7 +51,6 @@ ethernet_interfaces:
 - name: Ethernet2.100
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.100_VRF_IT
   shutdown: false
-  mtu: 9214
   vrf: IT
   encapsulation_dot1q:
     vlan: 100
@@ -64,7 +61,6 @@ ethernet_interfaces:
 - name: Ethernet2.42
   description: P2P_UPLINK_P2P_VRFS_TESTS_SPINE2_Ethernet2.42_VRF_PROD
   shutdown: false
-  mtu: 9214
   vrf: PROD
   encapsulation_dot1q:
     vlan: 42

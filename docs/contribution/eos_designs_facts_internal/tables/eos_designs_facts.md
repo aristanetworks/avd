@@ -17,9 +17,12 @@
     | [<samp>mpls_lsr</samp>](## "mpls_lsr") | Boolean | Required |  |  |  |
     | [<samp>evpn_multicast</samp>](## "evpn_multicast") | Boolean |  |  |  |  |
     | [<samp>loopback_ipv4_pool</samp>](## "loopback_ipv4_pool") | String |  |  |  |  |
+    | [<samp>loopback_ipv6_pool</samp>](## "loopback_ipv6_pool") | String |  |  |  |  |
     | [<samp>uplink_ipv4_pool</samp>](## "uplink_ipv4_pool") | String |  |  |  |  |
+    | [<samp>uplink_ipv6_pool</samp>](## "uplink_ipv6_pool") | String |  |  |  |  |
     | [<samp>downlink_pools</samp>](## "downlink_pools") | List, items: Dictionary |  |  |  | IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch. |
     | [<samp>&nbsp;&nbsp;-&nbsp;ipv4_pool</samp>](## "downlink_pools.[].ipv4_pool") | String |  |  | Format: ipv4_pool | Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).<br>IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ipv6_pool</samp>](## "downlink_pools.[].ipv6_pool") | String |  |  | Format: ipv6_pool | Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).<br>IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;downlink_interfaces</samp>](## "downlink_pools.[].downlink_interfaces") | List, items: String |  |  |  | List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "downlink_pools.[].downlink_interfaces.[]") | String |  |  |  |  |
     | [<samp>bgp_as</samp>](## "bgp_as") | String |  |  |  |  |
@@ -63,6 +66,7 @@
     | [<samp>&nbsp;&nbsp;peering_address</samp>](## "overlay.peering_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;evpn_mpls</samp>](## "overlay.evpn_mpls") | Boolean | Required |  |  |  |
     | [<samp>vtep_ip</samp>](## "vtep_ip") | String |  |  |  |  |
+    | [<samp>vtep_ipv6</samp>](## "vtep_ipv6") | String |  |  |  |  |
     | [<samp>max_parallel_uplinks</samp>](## "max_parallel_uplinks") | Integer |  | `1` |  | Number of parallel links towards uplink switches.<br>Changing this value may change interface naming on uplinks (and corresponding downlinks).<br>Can be used to reserve interfaces for future parallel uplinks.<br> |
     | [<samp>max_uplink_switches</samp>](## "max_uplink_switches") | Integer | Required |  |  |  |
     | [<samp>uplinks</samp>](## "uplinks") | List, items: Dictionary | Required |  |  | List of uplinks with all parameters<br>These facts are leveraged by templates for this device when rendering uplinks<br>and by templates for peer devices when rendering downlinks |
@@ -119,8 +123,11 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;encapsulation_dot1q_vlan</samp>](## "uplinks.[].subinterfaces.[].encapsulation_dot1q_vlan") | Integer | Required |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_enable</samp>](## "uplinks.[].subinterfaces.[].ipv6_enable") | Boolean |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;prefix_length</samp>](## "uplinks.[].subinterfaces.[].prefix_length") | Integer |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_prefix_length</samp>](## "uplinks.[].subinterfaces.[].ipv6_prefix_length") | Integer |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ip_address</samp>](## "uplinks.[].subinterfaces.[].ip_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ipv6_address</samp>](## "uplinks.[].subinterfaces.[].ipv6_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ip_address</samp>](## "uplinks.[].subinterfaces.[].peer_ip_address") | String |  |  |  |  |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;peer_ipv6_address</samp>](## "uplinks.[].subinterfaces.[].peer_ipv6_address") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;structured_config</samp>](## "uplinks.[].subinterfaces.[].structured_config") | Dictionary |  |  |  | Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".<br>When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.<br>When uplink_type == "port-channel", custom structured config added under port_channel_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the port-channel interface level.<br>"uplink_structured_config" is applied after "structured_config", so it can override "structured_config" defined on node-level.<br>Note! The content of this dictionary is _not_ validated by the schema, since it can be either ethernet_interfaces or port_channel_interfaces.<br> |
     | [<samp>uplink_peers</samp>](## "uplink_peers") | List, items: String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "uplink_peers.[]") | String |  |  |  |  |
@@ -174,7 +181,9 @@
     mpls_lsr: <bool; required>
     evpn_multicast: <bool>
     loopback_ipv4_pool: <str>
+    loopback_ipv6_pool: <str>
     uplink_ipv4_pool: <str>
+    uplink_ipv6_pool: <str>
 
     # IPv4 pools used for links to downlink switches. Set this on the parent switch. Cannot be combined with `uplink_ipv4_pool` set on the downlink switch.
     downlink_pools:
@@ -182,6 +191,10 @@
         # Comma separated list of prefixes (IPv4 address/Mask) or ranges (IPv4_address-IPv4_address).
         # IPv4 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
       - ipv4_pool: <str>
+
+        # Comma separated list of prefixes (IPv6 address/Mask) or ranges (IPv6_address-IPv6_address).
+        # IPv6 subnets used for links to downlink switches will be derived from this pool based on index the peer's uplink interface's index in 'downlink_interfaces'.
+        ipv6_pool: <str>
 
         # List of downlink interfaces or ranges of interfaces to use this pool. The index of the interface in this list will determine which subnet will be taken from the pool.
         downlink_interfaces:
@@ -252,6 +265,7 @@
       peering_address: <str>
       evpn_mpls: <bool; required>
     vtep_ip: <str>
+    vtep_ipv6: <str>
 
     # Number of parallel links towards uplink switches.
     # Changing this value may change interface naming on uplinks (and corresponding downlinks).
@@ -328,8 +342,11 @@
             encapsulation_dot1q_vlan: <int; required>
             ipv6_enable: <bool>
             prefix_length: <int>
+            ipv6_prefix_length: <int>
             ip_address: <str>
+            ipv6_address: <str>
             peer_ip_address: <str>
+            peer_ipv6_address: <str>
 
             # Custom structured config applied to "uplink_interfaces", and "uplink_switch_interfaces".
             # When uplink_type == "p2p", custom structured config added under ethernet_interfaces.[name=<interface>] for eos_cli_config_gen overrides the settings on the ethernet interface level.

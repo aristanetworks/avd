@@ -75,6 +75,10 @@ ethernet_interfaces:
     mode: active
   peer_type: l3_port_channel_member
 hostname: inet-cloud
+ip_domain_lookup:
+  source_interfaces:
+  - name: Management1
+    vrf: MGMT
 ip_name_servers:
 - ip_address: 192.168.17.1
   vrf: MGMT
