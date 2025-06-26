@@ -1,13 +1,13 @@
 # Copyright (c) 2025 Arista Networks, Inc.
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Any
 
 from ansible.plugins.action import ActionBase
 
 
-class AvdActionPlugin(ActionBase, ABC):
+class AvdActionPlugin(ActionBase):
     """Base class for AVD Ansible action plugins to provide common functionality."""
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:

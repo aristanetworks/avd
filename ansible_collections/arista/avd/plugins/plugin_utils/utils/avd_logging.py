@@ -2,14 +2,18 @@
 # Use of this source code is governed by the Apache License 2.0
 # that can be found in the LICENSE file.
 import logging
+import warnings
 from collections.abc import Callable, Generator
 from contextlib import contextmanager
 from functools import wraps
 from typing import Any
 
+from ansible.errors import AnsibleActionFail
 from ansible.utils.display import Display
 
 from .avd_action_plugin import AvdActionPlugin
+
+AVD_GLOBAL_DISPLAY_HANDLER_NAME = "avd_global_display_handler"
 
 ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
     0: {  # Verbosity: 0
@@ -66,6 +70,8 @@ ANSIBLE_VERBOSITY_MAPPING: dict[int, dict[str, int]] = {
 # Ignoring hpack logger from cv_workflow, too noisy
 EXTERNAL_LIB_LOGGERS = ["asyncio", "httpcore", "httpx", "requests", "urllib3"]
 
+INTERNAL_LIB_LOGGERS = ["ansible_collections.arista.avd", "pyavd", "schema_tools", "anta"]
+
 
 class ContextFilter(logging.Filter):
     """A logging filter that injects a dictionary of context attributes into the log record."""
@@ -84,10 +90,10 @@ class ContextFilter(logging.Filter):
 class AnsibleDisplayHandler(logging.Handler):
     """Ansible display handler."""
 
-    def __init__(self) -> None:
+    def __init__(self, display: Display | None = None) -> None:
         """Initialize the handler."""
         super().__init__()
-        self.display = Display()
+        self.display = display if display is not None else Display()
 
     def emit(self, record: logging.LogRecord) -> None:
         """Process a log record."""
@@ -95,67 +101,97 @@ class AnsibleDisplayHandler(logging.Handler):
         if record.levelno >= logging.ERROR:
             self.display.error(message, wrap_text=False)
         elif record.levelno == logging.WARNING:
-            self.display.warning(message, wrap_text=False)
+            self.display.warning(message)
         elif record.levelno == logging.INFO:
             self.display.v(message)
         elif record.levelno == logging.DEBUG:
             self.display.vvv(message)
 
 
+class SaveToResultHandler(logging.Handler):
+    """A handler that saves log records to the Ansible result dictionary."""
+
+    def __init__(self, result_dict: dict) -> None:
+        super().__init__()
+        self.result = result_dict
+        self.result.setdefault("logs", {"warnings": [], "errors": []})
+
+    def emit(self, record: logging.LogRecord) -> None:
+        message = self.format(record)
+        if record.levelno >= logging.ERROR:
+            self.result["logs"]["errors"].append(message)
+        elif record.levelno >= logging.WARNING:
+            self.result["logs"]["warnings"].append(message)
+
+
 @contextmanager
-def avd_logging_manager(
-    logger_names: list[str], handlers: list[logging.Handler], filters: list[logging.Filter], log_format: str | None = None
+def avd_logging_context(
+    logger_names: list[str], temp_handlers: list[logging.Handler], temp_filters: list[logging.Filter], log_format: str, *, remove_global_handler: bool
 ) -> Generator[None, None, None]:
-    """Context manager to temporarily add handlers/filters and set a formatter on all handlers associated with the target loggers."""
-    # Find all unique handlers currently on the target loggers
+    """Context manager to temporarily modify loggers, ensuring all changes are reverted."""
+    loggers = [logging.getLogger(name) for name in logger_names]
+
+    # Collect all handlers from target loggers
     existing_handlers: list[logging.Handler] = []
-    for name in logger_names:
-        existing_handlers.extend(logging.getLogger(name).handlers)
+    for logger in loggers:
+        existing_handlers.extend(logger.handlers)
 
     # We will modify all existing handlers plus any new temporary handlers
-    all_handlers_to_modify = set(existing_handlers + handlers)
+    all_handlers_to_modify = set(existing_handlers + temp_handlers)
 
-    # Save original formatters to restore them later
-    original_formatters = {handler: handler.formatter for handler in all_handlers_to_modify}
-
-    # Keep track of what we add so we can remove it
+    # Keep track of what we add/remove so we can revert it
     loggers_with_new_handlers: list[tuple[logging.Logger, logging.Handler]] = []
     handlers_with_new_filters: list[tuple[logging.Handler, logging.Filter]] = []
+    loggers_with_removed_handlers: list[tuple[logging.Logger, logging.Handler]] = []
+    original_formatters = {handler: handler.formatter for handler in all_handlers_to_modify}
 
     try:
-        new_formatter = logging.Formatter(log_format) if log_format else None
+        new_formatter = logging.Formatter(log_format)
+
+        # Remove the global handler from loggers if requested
+        if remove_global_handler:
+            for logger in loggers:
+                for handler in list(logger.handlers):
+                    if handler.name == AVD_GLOBAL_DISPLAY_HANDLER_NAME:
+                        loggers_with_removed_handlers.append((logger, handler))
+                        logger.removeHandler(handler)
+
+        removed_handlers = {h for _l, h in loggers_with_removed_handlers}
 
         # Apply new formatter and filters to all targeted handlers
         for handler in all_handlers_to_modify:
-            if new_formatter:
-                handler.setFormatter(new_formatter)
-            for temp_filter in filters:
+            if handler in removed_handlers:
+                continue
+
+            handler.setFormatter(new_formatter)
+            for temp_filter in temp_filters:
                 handler.addFilter(temp_filter)
                 handlers_with_new_filters.append((handler, temp_filter))
 
         # Add new temporary handlers to loggers
-        for name in logger_names:
-            logger = logging.getLogger(name)
-            for temp_handler in handlers:
+        for logger in loggers:
+            for temp_handler in temp_handlers:
                 logger.addHandler(temp_handler)
                 loggers_with_new_handlers.append((logger, temp_handler))
         yield
 
     finally:
-        # Remove temporary handlers from the loggers
         for logger, temp_handler in loggers_with_new_handlers:
             logger.removeHandler(temp_handler)
 
-        # Restore original formatters and remove temporary filters
-        for handler in all_handlers_to_modify:
-            handler.setFormatter(original_formatters[handler])
-            for _handler, temp_filter in handlers_with_new_filters:
-                if temp_filter in handler.filters:
-                    handler.removeFilter(temp_filter)
+        for handler, temp_filter in handlers_with_new_filters:
+            if temp_filter in handler.filters:
+                handler.removeFilter(temp_filter)
+
+        for logger, removed_handler in loggers_with_removed_handlers:
+            logger.addHandler(removed_handler)
+
+        for handler, original_formatter in original_formatters.items():
+            handler.setFormatter(original_formatter)
 
 
 def avd_logging(add_hostname_context: bool = False, add_role_context: bool = False, target_loggers: list[str] | None = None) -> Callable:
-    """Decorator for an action plugin to augment existing loggers."""
+    """Decorator for an AVD action plugin 'run_plugin' method to augment loggers."""
 
     def decorator(func: Callable) -> Callable:
         if func.__name__ != "run_plugin":
@@ -168,28 +204,60 @@ def avd_logging(add_hostname_context: bool = False, add_role_context: bool = Fal
             task_vars = args[0] if args else kwargs.get("task_vars", {})
             loggers_to_target = target_loggers or ["ansible_collections.arista.avd"]
 
-            # Prepare context data and format string based on knobs
-            context_data = {}
-            format_parts = []
+            # Prepare handlers, filters, and format based on knobs and task arguments
+            temp_handlers = []
+            if self._task.args.get("save_logs", False):
+                temp_handlers.append(SaveToResultHandler(result_dict=self.result))
 
+            # Build the context data and log format string dynamically
+            context_data, format_parts = {}, []
             if add_role_context:
                 context_data["role_name"] = task_vars.get("ansible_role_name")
                 format_parts.append("[%(role_name)s] -")
-
             if add_hostname_context:
                 context_data["hostname"] = task_vars.get("inventory_hostname")
                 format_parts.append("<%(hostname)s>")
 
-            if format_parts:
-                format_parts.append("%(message)s")
-            final_format_string = " ".join(format_parts)
+            format_parts.append("%(message)s")
+            log_format = " ".join(format_parts)
 
-            temp_handlers = []
             temp_filters = [ContextFilter(context_data)] if context_data else []
 
-            # Use the context manager function to apply and then clean up the changes
-            with avd_logging_manager(logger_names=loggers_to_target, handlers=temp_handlers, filters=temp_filters, log_format=final_format_string):
-                return func(self, *args, **kwargs)
+            remove_global_handler = not self._task.args.get("live_display", True)
+
+            # Use the context manager to apply changes and ensure cleanup
+            with (
+                warnings.catch_warnings(record=True) as captured_warnings,
+                avd_logging_context(
+                    logger_names=loggers_to_target,
+                    temp_handlers=temp_handlers,
+                    temp_filters=temp_filters,
+                    log_format=log_format,
+                    remove_global_handler=remove_global_handler,
+                ),
+            ):
+                try:
+                    final_result = func(self, *args, **kwargs)
+                except BaseException as exc:
+                    # Recast errors as AnsibleActionFail
+                    msg = f"Error during plugin execution: {exc}"
+                    raise AnsibleActionFail(msg) from exc
+
+                # Process captured Python warnings and update the result object
+                if captured_warnings:
+                    final_result.setdefault("deprecations", [])
+                    final_result.setdefault("warnings", [])
+                    for w in captured_warnings:
+                        msg = str(w.message)
+                        if issubclass(w.category, DeprecationWarning):
+                            # AvdDeprecationWarning's are added from AvdSchemaTools with more context
+                            # This is a catch-all for other deprecations
+                            final_result["deprecations"].append({"msg": msg})
+                        else:
+                            # Catch-all for standard Python warnings from any library
+                            final_result["warnings"].append(msg)
+
+            return final_result
 
         return wrapper
 
@@ -211,7 +279,7 @@ def map_verbosity_to_log_levels(verbosity: int) -> dict[str, int]:
     effective_verbosity = min(verbosity, max_defined_verbosity)
 
     # Get the base log levels from the mapping
-    levels = ANSIBLE_VERBOSITY_MAPPING[effective_verbosity]
+    levels = ANSIBLE_VERBOSITY_MAPPING[effective_verbosity].copy()
 
     # Expand the 'external_libs' key into individual logger entries
     external_level = levels.pop("external_libs")
@@ -221,15 +289,17 @@ def map_verbosity_to_log_levels(verbosity: int) -> dict[str, int]:
     return levels
 
 
-def init_avd_logging() -> None:
+def init_avd_logging(display: Display | None = None) -> None:
     """Initialize AVD logging."""
-    display = Display()
-    verbosity = display.verbosity
+    display = display if display is not None else Display()
 
-    log_level_map = map_verbosity_to_log_levels(verbosity)
-    handler = AnsibleDisplayHandler()
+    log_level_map = map_verbosity_to_log_levels(display.verbosity)
+    handler = AnsibleDisplayHandler(display)
+    handler.set_name(AVD_GLOBAL_DISPLAY_HANDLER_NAME)
 
     for logger_name, level in log_level_map.items():
         logger = logging.getLogger(logger_name)
         logger.setLevel(level)
-        logger.addHandler(handler)
+        # Avoid adding duplicate handlers if this function is ever called more than once
+        if not any(h.name == AVD_GLOBAL_DISPLAY_HANDLER_NAME for h in logger.handlers):
+            logger.addHandler(handler)

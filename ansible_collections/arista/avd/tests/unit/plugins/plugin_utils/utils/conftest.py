@@ -4,8 +4,9 @@
 """Fixtures for testing the utils modules."""
 
 import logging
+from collections.abc import Generator
 from pathlib import Path
-from unittest.mock import Mock
+from unittest.mock import MagicMock
 
 import pytest
 from ansible.cli import Display
@@ -16,6 +17,8 @@ from ansible.playbook.play import Play
 from ansible.playbook.task import Task
 from ansible.vars.manager import VariableManager
 
+from ansible_collections.arista.avd.plugins.plugin_utils.utils.avd_logging import EXTERNAL_LIB_LOGGERS, INTERNAL_LIB_LOGGERS
+
 TESTS_PATH = Path(__file__).parents[4]
 DEFAULT_INVENTORY_PATH = TESTS_PATH / "inventory/inventory.yml"
 
@@ -25,13 +28,8 @@ DEFAULT_BLOCK_DATA = {"name": "Test Block", "block": [{"name": "Task from Block"
 
 DEFAULT_TASK_DATA = {"name": "Test Task", "debug": {"msg": "Hello from Task"}}
 
-
-class MinimalActionPlugin:
-    """Minimal Ansible action plugin for testing."""
-
-    def __init__(self, task: Task) -> None:
-        """Initialize with a dummy Ansible task."""
-        self._task = task
+MANAGED_LOGGERS = INTERNAL_LIB_LOGGERS + EXTERNAL_LIB_LOGGERS
+"""Combined list of all loggers managed by the `init_avd_logging` function."""
 
 
 @pytest.fixture
@@ -65,25 +63,33 @@ def ansible_task(request: pytest.FixtureRequest) -> Task:
     return Task.load(task_data, block, variable_manager=variable_manager, loader=loader)
 
 
-def create_log_record(name: str, level: int, msg: str, unique_id: str | None = None, args: tuple = ()) -> logging.LogRecord:
-    """Helper function to create a LogRecord, optionally adding unique_id."""
-    record = logging.LogRecord(
-        name=name,
-        level=level,
-        pathname="dummy_path",
-        lineno=123,
-        msg=msg,
-        args=args,
-        exc_info=None,
-        func="dummy_func",
-    )
-    # Simulate the filter adding the unique_id *before* it reaches the handler
-    if unique_id:
-        record.unique_id = unique_id
-    return record
+@pytest.fixture
+def mock_display() -> MagicMock:
+    """Fixture for creating a mock Ansible Display object."""
+    mock = MagicMock(spec=Display)
+    mock.verbosity = 0
+    return mock
+
+
+@pytest.fixture(autouse=True)
+def reset_loggers() -> Generator[None, None, None]:
+    """Fixture to automatically reset all relevant loggers before each test."""
+    yield
+
+    # Teardown
+    for logger_name in MANAGED_LOGGERS:
+        logger = logging.getLogger(logger_name)
+        logger.handlers.clear()
+        logger.filters.clear()
+        logger.propagate = True
+        logger.setLevel(logging.NOTSET)
 
 
 @pytest.fixture
-def mock_display() -> Mock:
-    """Fixture for creating a mock Ansible Display object."""
-    return Mock(spec=Display)
+def mock_action_plugin() -> MagicMock:
+    """Fixture that provides a mock of a generic AvdActionPlugin instance."""
+    plugin = MagicMock()
+    plugin._task = MagicMock()
+    plugin._task.args = {}
+    plugin.result = {}
+    return plugin

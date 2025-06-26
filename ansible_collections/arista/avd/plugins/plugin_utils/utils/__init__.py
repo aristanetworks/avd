@@ -5,6 +5,7 @@ from ansible_collections.arista.avd.plugins.plugin_utils.pyavd_wrappers import R
 
 from .action_plugin_vars import ActionPluginVars
 from .anta_workflow_logging import AntaWorkflowFilter, AntaWorkflowHandler
+from .avd_logging import init_avd_logging
 from .avd_switch_facts_default_dict import AvdSwitchFactsDefaultDict
 from .compile_searchpath import compile_searchpath
 from .cprofile_decorator import cprofile
@@ -40,6 +41,7 @@ __all__ = [
     "get_templar",
     "get_validated_path",
     "get_validated_value",
+    "init_avd_logging",
     "log_message",
     "write_file",
 ]
