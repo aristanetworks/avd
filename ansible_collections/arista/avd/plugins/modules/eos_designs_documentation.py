@@ -55,11 +55,15 @@ options:
     default: false
     type: bool
   digital_twin_file:
-    description: Path to output Digital Twin topology file.
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Path to output Digital Twin topology file.
     required: true
     type: str
   digital_twin:
-    description: Generate Digital Twin topology information.
+    description: |-
+      PREVIEW: This option is marked as "preview", meaning the data models or generated configuration can change at any time.
+      Generate Digital Twin topology information.
     default: false
     type: bool
 """

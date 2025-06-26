@@ -156,7 +156,10 @@ def _act_dynamic_digital_twin_fabric_documentation(
             [("nodes", tuple[dict[str, ActNodeSettings], ...], field(default=nodes))]
             +
             # Process ACT links
-            [("links", tuple[ActLinkSettings, ...], field(default=links))],
+            # links attribute of the ACT topology file can not be an empty list. Drop key completely if this is the case.
+            [("links", tuple[ActLinkSettings, ...], field(default=links))]
+            if links
+            else [],
             frozen=True,
         )(),
     )
@@ -166,23 +169,21 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     digital_twin_node_types: set[str] = set()
 
     # Identify common username for fabric nodes
-    digital_twin_fabric_username: str | None = next(
+    # Value is enforced as a non-empty string during the generation of the metadata part of the structured_config
+    digital_twin_fabric_username: str = next(
         (
-            username
+            get(device_structurude_config, "metadata.digital_twin.username")
             for device_structurude_config in fabric_documentation_facts.structured_configs.values()
-            if (username := get(device_structurude_config, "metadata.digital_twin.username")) is not None
         ),
-        None,
     )
 
     # Identify common password for fabric nodes
-    digital_twin_fabric_password: str | None = next(
+    # Value is enforced as a non-empty string during the generation of the metadata part of the structured_config
+    digital_twin_fabric_password: str = next(
         (
-            password
+            get(device_structurude_config, "metadata.digital_twin.password")
             for device_structurude_config in fabric_documentation_facts.structured_configs.values()
-            if (password := get(device_structurude_config, "metadata.digital_twin.password")) is not None
         ),
-        None,
     )
 
     digital_twin_devices: list[dict[str, ActNodeSettings]] = []
@@ -194,6 +195,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
         digital_twin_devices.append(
             {
                 device: ActNodeSettings(
+                    # All three values are enforced as non-empty strings during the generation of the metadata part of the structured_config
                     node_type=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..node_type", separator=".."),
                     ip_addr=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..ip_addr", separator=".."),
                     version=get(fabric_documentation_facts.structured_configs, f"{device}..metadata..digital_twin..version", separator=".."),
@@ -204,7 +206,7 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
     return _act_dynamic_digital_twin_fabric_documentation(
         cls_name="digital_twin_act_data",
         node_types={
-            digital_twin_node_type: ActNodeTypeSettings(username=str(digital_twin_fabric_username), password=str(digital_twin_fabric_password))
+            digital_twin_node_type: ActNodeTypeSettings(username=digital_twin_fabric_username, password=digital_twin_fabric_password)
             for digital_twin_node_type in sorted(digital_twin_node_types)
         },
         nodes=tuple(digital_twin_devices),
@@ -213,5 +215,16 @@ def _get_digital_twin_act(fabric_documentation_facts: FabricDocumentationFacts) 
                 connection=(f"{topology_link['node']}:{topology_link['node_interface']}", f"{topology_link['peer']}:{topology_link['peer_interface']}")
             )
             for topology_link in fabric_documentation_facts.topology_links
+            # Skip connections where at least one of the contributing sources is not a non-empty string
+            if (
+                isinstance(topology_link["node"], str)
+                and topology_link["node"]
+                and isinstance(topology_link["node_interface"], str)
+                and topology_link["node_interface"]
+                and isinstance(topology_link["peer"], str)
+                and topology_link["peer"]
+                and isinstance(topology_link["peer_interface"], str)
+                and topology_link["peer_interface"]
+            )
         ),
     )

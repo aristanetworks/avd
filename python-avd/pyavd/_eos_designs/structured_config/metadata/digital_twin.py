@@ -29,7 +29,7 @@ class DigitalTwinMixin(Protocol):
         match environment:
             case "act":
                 digital_twin_node_type = self.shared_utils.platform_settings.digital_twin.act_node_type
-                if digital_twin_node_type is None:
+                if not (isinstance(digital_twin_node_type, str) and digital_twin_node_type):
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}' using platform '{self.shared_utils.platform}'."
                         f" 'digital_twin.{environment}_node_type' key is missing in platform settings."
@@ -37,18 +37,32 @@ class DigitalTwinMixin(Protocol):
                     raise AristaAvdError(msg)
                 ip_addr = default(self.shared_utils.node_config.digital_twin.mgmt_ip, self.shared_utils.node_config.mgmt_ip)
                 # TODO: Adjust once dynamic pool-based IP allocation is implemented.
-                if ip_addr is None:
+                if not (isinstance(ip_addr, str) and ip_addr):
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
                         " 'mgmt_ip' attribute must be set in the node configuration settings using either the 'digital_twin.mgmt_ip' or 'mgmt_ip' key."
                     )
                     raise AristaAvdError(msg)
                 version = default(self.shared_utils.node_config.digital_twin.os_version, self.inputs.digital_twin.fabric.os_version)
-                if version is None:
+                if not (isinstance(version, str) and version):
                     msg = (
                         f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
                         " 'os_version' attribute must be set using either the global 'digital_twin.fabric.os_version' key or "
                         "the node configuration 'digital_twin.os_version' key."
+                    )
+                    raise AristaAvdError(msg)
+                username = self.inputs.digital_twin.fabric.username
+                if not (isinstance(username, str) and username):
+                    msg = (
+                        f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
+                        " 'username' attribute must be set using the global 'digital_twin.fabric.username' key."
+                    )
+                    raise AristaAvdError(msg)
+                password = self.inputs.digital_twin.fabric.password
+                if not (isinstance(password, str) and password):
+                    msg = (
+                        f"Failed to generate ACT Digital Twin metadata for device '{self.shared_utils.hostname}'."
+                        " 'password' attribute must be set using the global 'digital_twin.fabric.password' key."
                     )
                     raise AristaAvdError(msg)
                 self.structured_config.metadata.digital_twin._update(
@@ -57,7 +71,7 @@ class DigitalTwinMixin(Protocol):
                     # TODO: How-to guide explaining ip_addr requirements and limitations for each Digital Twin environment.
                     ip_addr=ip_addr,
                     version=version,
-                    username=self.inputs.digital_twin.fabric.username,
-                    password=self.inputs.digital_twin.fabric.password,
+                    username=username,
+                    password=password,
                 )
                 return

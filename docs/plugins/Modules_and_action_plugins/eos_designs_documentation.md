@@ -36,8 +36,8 @@ The `arista.avd.eos_designs_documentation` module is an Ansible Action Plugin pr
 | <samp>topology_csv</samp> | bool | optional | False |  | Generate Topology CSV with all interfaces towards other devices. |
 | <samp>p2p_links_csv_file</samp> | str | True | None |  | Path to output P2P links CSV file. |
 | <samp>p2p_links_csv</samp> | bool | optional | False |  | Generate P2P links CSV with all routed point-to-point links between devices. |
-| <samp>digital_twin_file</samp> | str | True | None |  | Path to output Digital Twin topology file. |
-| <samp>digital_twin</samp> | bool | optional | False |  | Generate Digital Twin topology information. |
+| <samp>digital_twin_file</samp> | str | True | None |  | PREVIEW: This option is marked as &#34;preview&#34;, meaning the data models or generated configuration can change at any time.<br>Path to output Digital Twin topology file. |
+| <samp>digital_twin</samp> | bool | optional | False |  | PREVIEW: This option is marked as &#34;preview&#34;, meaning the data models or generated configuration can change at any time.<br>Generate Digital Twin topology information. |
 
 ## Examples
 

@@ -8,20 +8,20 @@ from typing import Protocol
 
 @dataclass(frozen=True)
 class ActLinkSettings:
-    connection: tuple[str | None, str | None]
+    connection: tuple[str, str]
 
 
 @dataclass(frozen=True)
 class ActNodeTypeSettings:
-    username: str | None = None
-    password: str | None = None
+    username: str
+    password: str
 
 
 @dataclass(frozen=True)
 class ActNodeSettings:
-    node_type: str | None = None
-    ip_addr: str | None = None
-    version: str | None = None
+    node_type: str
+    ip_addr: str
+    version: str
 
 
 class ACTDigitalTwin(Protocol):
@@ -29,8 +29,9 @@ class ACTDigitalTwin(Protocol):
 
     # Always present attributes
     nodes: tuple[dict[str, ActNodeSettings], ...]
-    links: tuple[ActLinkSettings, ...]
     # Dynamically-added attributes
+    # links attribute may be missing if fabric has no links defined
+    links: tuple[ActLinkSettings, ...] | None
     cloudeos: ActNodeTypeSettings | None
     cvp: ActNodeTypeSettings | None
     generic: ActNodeTypeSettings | None
