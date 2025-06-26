@@ -44,15 +44,15 @@ class EosDesigns(EosDesignsRootModel):
                 VRF name.
                 The value will be interpreted according to these rules:
                 - `use_mgmt_interface_vrf` will
-                configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                configure the TACACS host under the VRF set with `mgmt_interface_vrf`.
                   An error will be raised if
                 `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will
-                configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-                  An error will be raised if inband
-                management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF
-                and source-interface for one of the two options above depending on the value of
+                configure the TACACS host under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if
+                inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure
+                the VRF and source-interface for one of the two options above depending on the value of
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
@@ -82,15 +82,15 @@ class EosDesigns(EosDesignsRootModel):
                                VRF name.
                                The value will be interpreted according to these rules:
                                - `use_mgmt_interface_vrf` will
-                               configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                               configure the TACACS host under the VRF set with `mgmt_interface_vrf`.
                                  An error will be raised if
                                `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                                - `use_inband_mgmt_vrf` will
-                               configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-                                 An error will be raised if inband
-                               management is not configured for the device.
-                               - `use_default_mgmt_method_vrf` will configure the VRF
-                               and source-interface for one of the two options above depending on the value of
+                               configure the TACACS host under the VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if
+                               inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure
+                               the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
                             key: Encrypted key.
@@ -111,19 +111,20 @@ class EosDesigns(EosDesignsRootModel):
                 VRF Name.
                 The value of `vrf` will be interpreted according to these rules:
                 -
-                `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as SNMP source-interface.
-                  An error will be raised if `mgmt_ip` or
-                `ipv6_mgmt_ip` are not configured for the device.
-                - `use_inband_mgmt_vrf` will configure the SNMP
-                host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
-                interface.
-                  An error will be raised if inband management is not configured for the device.
-                -
-                `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-                above depending on the value of `default_mgmt_method`.
-                - Any other string will be used directly as
-                the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                `use_mgmt_interface_vrf` will configure the TACACS destination under the VRF set with
+                `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+                  An error will be
+                raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf`
+                will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the
+                `inband_mgmt_interface` as SNMP source-interface.
+                  An error will be raised if inband management is
+                not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any
+                other string will be used directly as the VRF name. Remember to set the
+                `snmp_settings.vrfs[].source_interface` if needed.
                 """
                 source_interface: str | None
 
@@ -141,19 +142,20 @@ class EosDesigns(EosDesignsRootModel):
                                VRF Name.
                                The value of `vrf` will be interpreted according to these rules:
                                -
-                               `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
-                               and set the `mgmt_interface` as SNMP source-interface.
-                                 An error will be raised if `mgmt_ip` or
-                               `ipv6_mgmt_ip` are not configured for the device.
-                               - `use_inband_mgmt_vrf` will configure the SNMP
-                               host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
-                               interface.
-                                 An error will be raised if inband management is not configured for the device.
-                               -
-                               `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-                               above depending on the value of `default_mgmt_method`.
-                               - Any other string will be used directly as
-                               the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                               `use_mgmt_interface_vrf` will configure the TACACS destination under the VRF set with
+                               `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+                                 An error will be
+                               raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf`
+                               will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the
+                               `inband_mgmt_interface` as SNMP source-interface.
+                                 An error will be raised if inband management is
+                               not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                               interface for one of the two options above depending on the value of `default_mgmt_method`.
+                               - Any
+                               other string will be used directly as the VRF name. Remember to set the
+                               `snmp_settings.vrfs[].source_interface` if needed.
                             source_interface: source_interface
 
                         """
@@ -231,15 +233,15 @@ class EosDesigns(EosDesignsRootModel):
                 VRF name.
                 The value will be interpreted according to these rules:
                 - `use_mgmt_interface_vrf` will
-                configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                configure the Radius host under the VRF set with `mgmt_interface_vrf`.
                   An error will be raised if
                 `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                 - `use_inband_mgmt_vrf` will
-                configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-                  An error will be raised if inband
-                management is not configured for the device.
-                - `use_default_mgmt_method_vrf` will configure the VRF
-                and source-interface for one of the two options above depending on the value of
+                configure the Radius host under the VRF set with `inband_mgmt_vrf`.
+                  An error will be raised if
+                inband management is not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure
+                the VRF and source-interface for one of the two options above depending on the value of
                 `default_mgmt_method`.
                 - Any other string will be used directly as the VRF name.
                 """
@@ -269,15 +271,15 @@ class EosDesigns(EosDesignsRootModel):
                                VRF name.
                                The value will be interpreted according to these rules:
                                - `use_mgmt_interface_vrf` will
-                               configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+                               configure the Radius host under the VRF set with `mgmt_interface_vrf`.
                                  An error will be raised if
                                `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
                                - `use_inband_mgmt_vrf` will
-                               configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
-                                 An error will be raised if inband
-                               management is not configured for the device.
-                               - `use_default_mgmt_method_vrf` will configure the VRF
-                               and source-interface for one of the two options above depending on the value of
+                               configure the Radius host under the VRF set with `inband_mgmt_vrf`.
+                                 An error will be raised if
+                               inband management is not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure
+                               the VRF and source-interface for one of the two options above depending on the value of
                                `default_mgmt_method`.
                                - Any other string will be used directly as the VRF name.
                             key: Encrypted key.
@@ -298,19 +300,20 @@ class EosDesigns(EosDesignsRootModel):
                 VRF Name.
                 The value of `vrf` will be interpreted according to these rules:
                 -
-                `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
-                and set the `mgmt_interface` as SNMP source-interface.
-                  An error will be raised if `mgmt_ip` or
-                `ipv6_mgmt_ip` are not configured for the device.
-                - `use_inband_mgmt_vrf` will configure the SNMP
-                host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
-                interface.
-                  An error will be raised if inband management is not configured for the device.
-                -
-                `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-                above depending on the value of `default_mgmt_method`.
-                - Any other string will be used directly as
-                the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                `use_mgmt_interface_vrf` will configure the Radius destination under the VRF set with
+                `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+                  An error will be
+                raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                - `use_inband_mgmt_vrf`
+                will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the
+                `inband_mgmt_interface` as SNMP source-interface.
+                  An error will be raised if inband management is
+                not configured for the device.
+                - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                interface for one of the two options above depending on the value of `default_mgmt_method`.
+                - Any
+                other string will be used directly as the VRF name. Remember to set the
+                `snmp_settings.vrfs[].source_interface` if needed.
                 """
                 source_interface: str | None
 
@@ -328,19 +331,20 @@ class EosDesigns(EosDesignsRootModel):
                                VRF Name.
                                The value of `vrf` will be interpreted according to these rules:
                                -
-                               `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf`
-                               and set the `mgmt_interface` as SNMP source-interface.
-                                 An error will be raised if `mgmt_ip` or
-                               `ipv6_mgmt_ip` are not configured for the device.
-                               - `use_inband_mgmt_vrf` will configure the SNMP
-                               host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-
-                               interface.
-                                 An error will be raised if inband management is not configured for the device.
-                               -
-                               `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options
-                               above depending on the value of `default_mgmt_method`.
-                               - Any other string will be used directly as
-                               the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
+                               `use_mgmt_interface_vrf` will configure the Radius destination under the VRF set with
+                               `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+                                 An error will be
+                               raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
+                               - `use_inband_mgmt_vrf`
+                               will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the
+                               `inband_mgmt_interface` as SNMP source-interface.
+                                 An error will be raised if inband management is
+                               not configured for the device.
+                               - `use_default_mgmt_method_vrf` will configure the VRF and source-
+                               interface for one of the two options above depending on the value of `default_mgmt_method`.
+                               - Any
+                               other string will be used directly as the VRF name. Remember to set the
+                               `snmp_settings.vrfs[].source_interface` if needed.
                             source_interface: source_interface
 
                         """
@@ -62606,14 +62610,17 @@ class EosDesigns(EosDesignsRootModel):
     `ntp_settings`
       - `sflow_settings`
       - `snmp_settings`
+      - `aaa_settings`
 
-    `oob` means the protocols will be
-    configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-    `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and
-    `inband_mgmt_interface` as the source interface.
-    `none` means the VRF and or interface must be
-    manually set for each protocol.
-    This can be overridden under the settings for each protocol.
+    `oob` means the
+    protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the
+    source interface.
+    `inband` means the protocols will be configured with the VRF set by
+    `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
+    `none` means the VRF and or
+    interface must be manually set for each protocol.
+    This can be overridden under the settings for each
+    protocol.
 
     Default value: `"oob"`
     """
@@ -64610,14 +64617,17 @@ class EosDesigns(EosDesignsRootModel):
                    `ntp_settings`
                      - `sflow_settings`
                      - `snmp_settings`
+                     - `aaa_settings`
 
-                   `oob` means the protocols will be
-                   configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the source interface.
-                   `inband` means the protocols will be configured with the VRF set by `inband_mgmt_vrf` and
-                   `inband_mgmt_interface` as the source interface.
-                   `none` means the VRF and or interface must be
-                   manually set for each protocol.
-                   This can be overridden under the settings for each protocol.
+                   `oob` means the
+                   protocols will be configured with the VRF set by `mgmt_interface_vrf` and `mgmt_interface` as the
+                   source interface.
+                   `inband` means the protocols will be configured with the VRF set by
+                   `inband_mgmt_vrf` and `inband_mgmt_interface` as the source interface.
+                   `none` means the VRF and or
+                   interface must be manually set for each protocol.
+                   This can be overridden under the settings for each
+                   protocol.
                 default_network_ports_description:
                    Default description or description template to be used on all ports defined under `network_ports`.
                    This can be a template using the AVD string formatter syntax:

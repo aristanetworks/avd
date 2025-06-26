@@ -13,10 +13,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "aaa_settings.tacacs.servers.[].host") | String | Required |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "aaa_settings.tacacs.servers.[].groups") | List, items: String | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "aaa_settings.tacacs.servers.[].groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.tacacs.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.tacacs.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.tacacs.servers.[].key") | String | Required |  |  | Encrypted key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "aaa_settings.tacacs.vrfs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.tacacs.vrfs.[].name") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.tacacs.vrfs.[].name") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the TACACS destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "aaa_settings.tacacs.vrfs.[].source_interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;policy</samp>](## "aaa_settings.tacacs.policy") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ignore_unknown_mandatory_attribute</samp>](## "aaa_settings.tacacs.policy.ignore_unknown_mandatory_attribute") | Boolean |  | `False` |  |  |
@@ -25,10 +25,10 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;host</samp>](## "aaa_settings.radius.servers.[].host") | String | Required |  |  | Host IP address or name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;groups</samp>](## "aaa_settings.radius.servers.[].groups") | List, items: String | Required |  | Min Length: 1 |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&lt;str&gt;</samp>](## "aaa_settings.radius.servers.[].groups.[]") | String |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.radius.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;vrf</samp>](## "aaa_settings.radius.servers.[].vrf") | String |  |  |  | VRF name.<br>The value will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the Radius host under the VRF set with `mgmt_interface_vrf`.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the Radius host under the VRF set with `inband_mgmt_vrf`.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;key</samp>](## "aaa_settings.radius.servers.[].key") | String | Required |  |  | Encrypted key. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;vrfs</samp>](## "aaa_settings.radius.vrfs") | List, items: Dictionary |  |  |  |  |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.radius.vrfs.[].name") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;name</samp>](## "aaa_settings.radius.vrfs.[].name") | String |  |  |  | VRF Name.<br>The value of `vrf` will be interpreted according to these rules:<br>- `use_mgmt_interface_vrf` will configure the Radius destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.<br>  An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.<br>- `use_inband_mgmt_vrf` will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.<br>  An error will be raised if inband management is not configured for the device.<br>- `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.<br>- Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;source_interface</samp>](## "aaa_settings.radius.vrfs.[].source_interface") | String |  |  |  |  |
     | [<samp>&nbsp;&nbsp;authentication</samp>](## "aaa_settings.authentication") | Dictionary |  |  |  |  |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;login</samp>](## "aaa_settings.authentication.login") | Dictionary |  |  |  |  |
@@ -129,9 +129,9 @@
 
             # VRF name.
             # The value will be interpreted according to these rules:
-            # - `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+            # - `use_mgmt_interface_vrf` will configure the TACACS host under the VRF set with `mgmt_interface_vrf`.
             #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            # - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+            # - `use_inband_mgmt_vrf` will configure the TACACS host under the VRF set with `inband_mgmt_vrf`.
             #   An error will be raised if inband management is not configured for the device.
             # - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
             # - Any other string will be used directly as the VRF name.
@@ -143,9 +143,9 @@
 
             # VRF Name.
             # The value of `vrf` will be interpreted according to these rules:
-            # - `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+            # - `use_mgmt_interface_vrf` will configure the TACACS destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
             #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            # - `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
+            # - `use_inband_mgmt_vrf` will configure the TACACS destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
             #   An error will be raised if inband management is not configured for the device.
             # - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
             # - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.
@@ -163,9 +163,9 @@
 
             # VRF name.
             # The value will be interpreted according to these rules:
-            # - `use_mgmt_interface_vrf` will configure the SNMP ACL under the VRF set with `mgmt_interface_vrf`.
+            # - `use_mgmt_interface_vrf` will configure the Radius host under the VRF set with `mgmt_interface_vrf`.
             #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            # - `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set with `inband_mgmt_vrf`.
+            # - `use_inband_mgmt_vrf` will configure the Radius host under the VRF set with `inband_mgmt_vrf`.
             #   An error will be raised if inband management is not configured for the device.
             # - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
             # - Any other string will be used directly as the VRF name.
@@ -177,9 +177,9 @@
 
             # VRF Name.
             # The value of `vrf` will be interpreted according to these rules:
-            # - `use_mgmt_interface_vrf` will configure the SNMP host under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
+            # - `use_mgmt_interface_vrf` will configure the Radius destination under the VRF set with `mgmt_interface_vrf` and set the `mgmt_interface` as SNMP source-interface.
             #   An error will be raised if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.
-            # - `use_inband_mgmt_vrf` will configure the SNMP host under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
+            # - `use_inband_mgmt_vrf` will configure the Radius destination under the VRF set with `inband_mgmt_vrf` and set the `inband_mgmt_interface` as SNMP source-interface.
             #   An error will be raised if inband management is not configured for the device.
             # - `use_default_mgmt_method_vrf` will configure the VRF and source-interface for one of the two options above depending on the value of `default_mgmt_method`.
             # - Any other string will be used directly as the VRF name. Remember to set the `snmp_settings.vrfs[].source_interface` if needed.

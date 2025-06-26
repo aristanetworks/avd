@@ -27,11 +27,11 @@ aaa_settings:
         groups:
           - TACACS1
 
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 10.10.10.3
         key: password
         groups:
           - TACACS1
-      #   # No VRF, so it should honor default_mgmt_method which is oob in this case
 
     vrfs:
       # Testing override of source for VRF default - no VRF in output source interface model.
@@ -62,11 +62,11 @@ aaa_settings:
         groups:
           - RADIUS1
 
+      # No VRF, so it should honor default_mgmt_method which is oob in this case
       - host: 11.10.10.3
         key: password
         groups:
           - RADIUS1
-      #   # No VRF, so it should honor default_mgmt_method which is oob in this case
 
     vrfs:
       # Testing override of source for VRF default - no VRF in output source interface model.
@@ -209,7 +209,7 @@ aaa_settings:
           default: "group tacacs+ local"
         - level: "5"
           default: "group radius"
-        # To handle the not define cases
+        # To handle the not defined cases
         - level: "6"
         - default: "group radius"
   root_login:

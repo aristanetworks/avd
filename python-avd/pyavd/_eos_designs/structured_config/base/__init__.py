@@ -696,31 +696,31 @@ class AvdStructuredConfigBaseProtocol(NtpMixin, SnmpServerMixin, RouterGeneralMi
     @structured_config_contributor
     def aaa_authentication(self) -> None:
         """Assign AAA authentication configuration from inputs to structured config."""
-        if not (inputs := self.inputs.aaa_settings.authentication):
+        if not (aaa_authentication := self.inputs.aaa_settings.authentication):
             return
-        self.structured_config.aaa_authentication = inputs
+        self.structured_config.aaa_authentication = aaa_authentication
 
     @structured_config_contributor
     def aaa_authorization(self) -> None:
         """Assign AAA authorization configuration from inputs to structured config."""
-        if not (inputs := self.inputs.aaa_settings.authorization):
+        if not (aaa_authorization := self.inputs.aaa_settings.authorization):
             return
-        self.structured_config.aaa_authorization = inputs
+        self.structured_config.aaa_authorization = aaa_authorization
 
     @structured_config_contributor
     def aaa_accounting(self) -> None:
         """Assign AAA accounting configuration from inputs to structured config."""
-        if not (inputs := self.inputs.aaa_settings.accounting):
+        if not (aaa_accounting := self.inputs.aaa_settings.accounting):
             return
-        self.structured_config.aaa_accounting = inputs
+        self.structured_config.aaa_accounting = aaa_accounting
 
     @structured_config_contributor
     def aaa_root_login(self) -> None:
         """Assign AAA root login configuration from inputs to structured config."""
-        if not (inputs := self.inputs.aaa_settings.root_login):
+        if not (aaa_root_login := self.inputs.aaa_settings.root_login):
             return
-        self.structured_config.aaa_root.disabled = inputs.enabled
-        self.structured_config.aaa_root.secret.sha512_password = inputs.sha512_password
+        self.structured_config.aaa_root.disabled = aaa_root_login.enabled
+        self.structured_config.aaa_root.secret.sha512_password = aaa_root_login.sha512_password
 
     @structured_config_contributor
     def ip_ssh_client_source_interfaces(self) -> None:
