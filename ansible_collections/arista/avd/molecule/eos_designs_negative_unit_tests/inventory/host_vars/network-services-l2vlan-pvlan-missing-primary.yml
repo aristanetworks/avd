@@ -1,0 +1,32 @@
+---
+type: l3leaf
+l3leaf:
+  defaults:
+    loopback_ipv4_pool: 192.168.255.0/24
+    loopback_ipv4_offset: 8
+    vtep_loopback_ipv4_pool: 192.168.254.0/24
+    virtual_router_mac_address: 00:dc:00:00:00:0a
+  nodes:
+    - name: network-services-l2vlan-pvlan-missing-primary
+      id: 101
+      bgp_as: 101
+
+tenants:
+  - name: TENANT1
+    mac_vrf_vni_base: 10000
+    l2vlans:
+      - id: 10
+        name: primary1
+      - id: 90
+        name: secondary_isolated_90
+        private_vlan:
+          type: isolated
+          primary_vlan: 2
+      - id: 91
+        name: secondary_isolated_91
+        private_vlan:
+          type: isolated
+          primary_vlan: 3
+
+expected_error_message: >-
+  The primary VLANs '2-3' referenced in a private_vlan definition, do not exist. The primary VLANs must be defined under 'l2vlans' or 'svis'.
