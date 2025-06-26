@@ -5,7 +5,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol
 
-from pyavd._eos_cli_config_gen.schema import EosCliConfigGen
 from pyavd._eos_designs.structured_config.structured_config_generator import structured_config_contributor
 
 if TYPE_CHECKING:
@@ -34,11 +33,9 @@ class ManagementSshMixin(Protocol):
 
     def _ssh_vrfs(self: AvdStructuredConfigBaseProtocol, ssh_settings: EosDesigns.SshSettings) -> None:
         """SSH IPv4/IPv6 ACLs with VRFs. Resolves VRF from management VRFs."""
-        vrfs = EosCliConfigGen.ManagementSsh.Vrfs()
         for vrf in ssh_settings.vrfs._natural_sorted():
             vrf_name = self.get_vrf(vrf.name, context=f"ssh_settings.vrfs[name={vrf.name}]")
-            vrfs.append_new(name=vrf_name, enable=vrf.enabled)
-            self.structured_config.management_ssh.vrfs = vrfs
+            self.structured_config.management_ssh.vrfs.append_new(name=vrf_name, enable=vrf.enabled)
 
             if vrf.ipv4_acl:
                 self.structured_config.management_ssh.access_groups.append_new(name=vrf.ipv4_acl, vrf=vrf.name if vrf.name != "default" else None)

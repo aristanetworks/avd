@@ -4595,15 +4595,15 @@ keys:
               convert_types:
               - int
               description: "VRF name.\nThe value will be interpreted according to
-                these rules:\n- `use_mgmt_interface_vrf` will configure the SNMP ACL
+                these rules:\n- `use_mgmt_interface_vrf` will configure the SSH ACL
                 under the VRF set with `mgmt_interface_vrf`.\n  An error will be raised
                 if `mgmt_ip` or `ipv6_mgmt_ip` are not configured for the device.\n-
-                `use_inband_mgmt_vrf` will configure the SNMP ACL under the VRF set
+                `use_inband_mgmt_vrf` will configure the SSH ACL under the VRF set
                 with `inband_mgmt_vrf`.\n  An error will be raised if inband management
                 is not configured for the device.\n- `use_default_mgmt_method_vrf`
-                will configure the VRF and source-interface for one of the two options
-                above depending on the value of `default_mgmt_method`.\n- Any other
-                string will be used directly as the VRF name."
+                will configure the VRF for one of the two options above depending
+                on the value of `default_mgmt_method`.\n- Any other string will be
+                used directly as the VRF name."
             enabled:
               type: bool
               required: true
