@@ -16042,10 +16042,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             shared_key: str | None
             """
-            Type 7 IPSec shared key.
+            Type 7 obfuscated IPSec shared key.
             Takes precedence over `cleartext_shared_key`.
-            This variable is sensitive
-            and SHOULD be configured using some vault mechanism.
+            This variable is
+            sensitive and SHOULD be configured using some vault mechanism.
             """
             cleartext_shared_key: str | None
             """
@@ -16076,10 +16076,10 @@ class EosDesigns(EosDesignsRootModel):
                         sa_policy_name: Name of the SA policy.
                         profile_name: Name of the IPSec profile.
                         shared_key:
-                           Type 7 IPSec shared key.
+                           Type 7 obfuscated IPSec shared key.
                            Takes precedence over `cleartext_shared_key`.
-                           This variable is sensitive
-                           and SHOULD be configured using some vault mechanism.
+                           This variable is
+                           sensitive and SHOULD be configured using some vault mechanism.
                         cleartext_shared_key:
                            Cleartext IPSec shared key.
                            This variable is sensitive and SHOULD be configured using some vault
@@ -16117,10 +16117,10 @@ class EosDesigns(EosDesignsRootModel):
             """
             shared_key: str | None
             """
-            Type 7 IPSec shared key.
+            Type 7 obfuscated IPSec shared key.
             Takes precedence over `cleartext_shared_key`.
-            This variable is sensitive
-            and SHOULD be configured using some vault mechanism.
+            This variable is
+            sensitive and SHOULD be configured using some vault mechanism.
             """
             cleartext_shared_key: str | None
             """
@@ -16151,10 +16151,10 @@ class EosDesigns(EosDesignsRootModel):
                         sa_policy_name: Name of the SA policy.
                         profile_name: Name of the IPSec profile.
                         shared_key:
-                           Type 7 IPSec shared key.
+                           Type 7 obfuscated IPSec shared key.
                            Takes precedence over `cleartext_shared_key`.
-                           This variable is sensitive
-                           and SHOULD be configured using some vault mechanism.
+                           This variable is
+                           sensitive and SHOULD be configured using some vault mechanism.
                         cleartext_shared_key:
                            Cleartext IPSec shared key.
                            This variable is sensitive and SHOULD be configured using some vault

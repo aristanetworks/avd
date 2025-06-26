@@ -6355,7 +6355,7 @@ $defs:
         description: Name of the IPSec profile.
       shared_key:
         type: str
-        description: 'Type 7 IPSec shared key.
+        description: 'Type 7 obfuscated IPSec shared key.
 
           Takes precedence over `cleartext_shared_key`.
 

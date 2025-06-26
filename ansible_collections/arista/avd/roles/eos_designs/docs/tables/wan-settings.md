@@ -17,13 +17,13 @@
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.control_plane.ike_policy_name") | String |  | `CP-IKE-POLICY` |  | Name of the IKE policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.control_plane.sa_policy_name") | String |  | `CP-SA-POLICY` |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.control_plane.profile_name") | String |  | `CP-PROFILE` |  | Name of the IPSec profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.control_plane.shared_key") | String |  |  |  | Type 7 IPSec shared key.<br>Takes precedence over `cleartext_shared_key`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.control_plane.shared_key") | String |  |  |  | Type 7 obfuscated IPSec shared key.<br>Takes precedence over `cleartext_shared_key`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_shared_key</samp>](## "wan_ipsec_profiles.control_plane.cleartext_shared_key") | String |  |  |  | Cleartext IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;data_plane</samp>](## "wan_ipsec_profiles.data_plane") | Dictionary |  |  |  | If `data_plane` is not defined, `control_plane` information is used for both. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;ike_policy_name</samp>](## "wan_ipsec_profiles.data_plane.ike_policy_name") | String |  | `DP-IKE-POLICY` |  | Name of the IKE policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;sa_policy_name</samp>](## "wan_ipsec_profiles.data_plane.sa_policy_name") | String |  | `DP-SA-POLICY` |  | Name of the SA policy. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;profile_name</samp>](## "wan_ipsec_profiles.data_plane.profile_name") | String |  | `DP-PROFILE` |  | Name of the IPSec profile. |
-    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String |  |  |  | Type 7 IPSec shared key.<br>Takes precedence over `cleartext_shared_key`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
+    | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;shared_key</samp>](## "wan_ipsec_profiles.data_plane.shared_key") | String |  |  |  | Type 7 obfuscated IPSec shared key.<br>Takes precedence over `cleartext_shared_key`.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>&nbsp;&nbsp;&nbsp;&nbsp;cleartext_shared_key</samp>](## "wan_ipsec_profiles.data_plane.cleartext_shared_key") | String |  |  |  | Cleartext IPSec shared key.<br>This variable is sensitive and SHOULD be configured using some vault mechanism. |
     | [<samp>wan_mode</samp>](## "wan_mode") | String |  | `cv-pathfinder` | Valid Values:<br>- <code>autovpn</code><br>- <code>cv-pathfinder</code> | Select if the WAN should be run using CV Pathfinder or AutoVPN only. |
     | [<samp>wan_stun_dtls_disable</samp>](## "wan_stun_dtls_disable") | Boolean |  | `False` |  | WAN STUN connections are authenticated and secured with DTLS by default.<br>For CV Pathfinder deployments CloudVision will automatically deploy certificates on the devices.<br>In case of AutoVPN the certificates must be deployed manually to all devices.<br><br>For LAB environments this can be disabled, if there are no certificates available.<br>This should NOT be disabled for a WAN network connected to the internet, since it will leave the STUN service exposed with no authentication. |
@@ -64,7 +64,7 @@
         # Name of the IPSec profile.
         profile_name: <str; default="CP-PROFILE">
 
-        # Type 7 IPSec shared key.
+        # Type 7 obfuscated IPSec shared key.
         # Takes precedence over `cleartext_shared_key`.
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
         shared_key: <str>
@@ -85,7 +85,7 @@
         # Name of the IPSec profile.
         profile_name: <str; default="DP-PROFILE">
 
-        # Type 7 IPSec shared key.
+        # Type 7 obfuscated IPSec shared key.
         # Takes precedence over `cleartext_shared_key`.
         # This variable is sensitive and SHOULD be configured using some vault mechanism.
         shared_key: <str>
