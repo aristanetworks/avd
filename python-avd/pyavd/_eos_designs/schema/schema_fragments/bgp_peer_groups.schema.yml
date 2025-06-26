@@ -24,7 +24,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -57,7 +57,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -84,7 +84,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -111,7 +111,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -138,7 +138,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -165,7 +165,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -192,7 +192,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -219,7 +219,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
           cleartext_password:
             type: str
@@ -246,7 +246,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
 
               When configuring a password on the `wan_overlay_peers` BGP peer group,
@@ -314,7 +314,7 @@ keys:
           password:
             type: str
             description: |-
-              BGP peer group Type 7 password.
+              BGP peer group Type 7 encrypted password.
               Takes precedence over `cleartext_password`.
 
               When configuring a password on the `wan_overlay_peers` BGP peer group,
