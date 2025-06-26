@@ -81,8 +81,6 @@ class AvdDeprecationWarning(AristaAvdError):  # noqa: N818
                 f"The input data model '{self.path}' is deprecated and cannot be used in conjunction with the new data model '{self.new_key_path}'. "
                 "This usually happens when a data model has been updated and custom structured configuration still uses the old model."
             )
-            if not url:
-                url = "the porting guide on https://avd.arista.com"
         else:
             messages.append(f"The input data model '{self.path}' is deprecated.")
 

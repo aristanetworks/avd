@@ -7,8 +7,6 @@ ntp_settings:
   servers:
     - name: 0.pool.ntp.org
 
-terminattr_smashexcludes: "foo"
-
 # CloudVision/TerminAttr
 cv_settings:
   cvaas:
