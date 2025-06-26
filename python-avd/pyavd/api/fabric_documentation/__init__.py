@@ -32,6 +32,7 @@ class ACTDigitalTwin:
     # Dynamically-added attributes
     # links attribute may be missing if fabric has no links defined
     links: tuple[ActLinkSettings, ...] | None = None
+
     cloudeos: ActNodeTypeSettings | None = None
     cvp: ActNodeTypeSettings | None = None
     generic: ActNodeTypeSettings | None = None
