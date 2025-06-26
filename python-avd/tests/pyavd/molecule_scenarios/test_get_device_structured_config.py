@@ -9,6 +9,7 @@ from unittest.mock import patch
 import pytest
 
 from pyavd import get_device_structured_config, validate_inputs
+from pyavd._utils import get
 from tests.models import MoleculeHost
 
 
@@ -38,11 +39,22 @@ def test_get_device_structured_config(molecule_host: MoleculeHost) -> None:
     # run validation on inputs to ensure it is converted
     validate_inputs(inputs)
 
-    expected_structured_config = molecule_host.structured_config
+    expected_structured_config = deepcopy(molecule_host.structured_config)
 
     with patch("sys.path", [*sys.path, *molecule_host.scenario.extra_python_paths]):
         avd_facts = molecule_host.scenario.avd_facts
-        structured_config = get_device_structured_config(molecule_host.name, inputs, avd_facts)
+        structured_config = get_device_structured_config(molecule_host.name, inputs, avd_facts, digital_twin=molecule_host.scenario.digital_twin)
+
+    if molecule_host.scenario.digital_twin:
+        # Drop calculated IPs on Spines' P2P links due to inability to support inline Jinja
+        for ethernet_interface in get(expected_structured_config, "ethernet_interfaces", []):
+            ethernet_interface.pop("ip_address", None)
+        for bgp_peer in get(expected_structured_config, "router_bgp.neighbors", []):
+            bgp_peer.pop("ip_address", None)
+        for ethernet_interface in get(structured_config, "ethernet_interfaces", []):
+            ethernet_interface.pop("ip_address", None)
+        for bgp_peer in get(structured_config, "router_bgp.neighbors", []):
+            bgp_peer.pop("ip_address", None)
 
     assert isinstance(structured_config, dict)
     assert molecule_host.name == structured_config["hostname"]

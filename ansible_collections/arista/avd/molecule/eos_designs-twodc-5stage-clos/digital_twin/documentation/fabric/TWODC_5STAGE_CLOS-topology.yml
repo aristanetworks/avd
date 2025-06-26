@@ -265,6 +265,9 @@ nodes:
     ip_addr: 192.168.1.17/24
     node_type: veos
     version: 4.33.0F
+tools-server:
+  password: act_pass
+  username: act_user
 veos:
   password: act_pass
   username: act_user
