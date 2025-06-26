@@ -32,6 +32,16 @@ MANAGED_LOGGERS = INTERNAL_LIB_LOGGERS + EXTERNAL_LIB_LOGGERS
 """Combined list of all loggers managed by the `init_avd_logging` function."""
 
 
+def _clear_managed_loggers() -> None:
+    """Perform the actual cleanup of AVD-managed loggers."""
+    for logger_name in MANAGED_LOGGERS:
+        logger = logging.getLogger(logger_name)
+        logger.handlers.clear()
+        logger.filters.clear()
+        logger.propagate = True
+        logger.setLevel(logging.NOTSET)
+
+
 @pytest.fixture
 def ansible_task(request: pytest.FixtureRequest) -> Task:
     """
@@ -73,16 +83,13 @@ def mock_display() -> MagicMock:
 
 @pytest.fixture(autouse=True)
 def reset_loggers() -> Generator[None, None, None]:
-    """Fixture to automatically reset all relevant loggers before each test."""
+    """Fixture to automatically reset all AVD-managed loggers BEFORE and AFTER each test."""
+    # Setup - Clean the state before the test runs
+    _clear_managed_loggers()
     yield
 
-    # Teardown
-    for logger_name in MANAGED_LOGGERS:
-        logger = logging.getLogger(logger_name)
-        logger.handlers.clear()
-        logger.filters.clear()
-        logger.propagate = True
-        logger.setLevel(logging.NOTSET)
+    # Teardown - Clean the state after the test runs
+    _clear_managed_loggers()
 
 
 @pytest.fixture
